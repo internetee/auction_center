@@ -27,5 +27,8 @@
 /public/assets
 .byebug_history
 
+# Test files
+/coverage/
+
 # Ignore master key for decrypting credentials and more.
 /config/master.key
