@@ -1,0 +1,28 @@
+version: "2"
+prepare:
+  fetch:
+    - "https://raw.githubusercontent.com/internetee/style-guide/master/ruby/.rubocop.yml"
+plugins:
+  brakeman:
+    enabled: true
+  bundler-audit:
+    enabled: true
+  duplication:
+    enabled: true
+    config:
+      languages:
+      - ruby
+      - javascript
+  eslint:
+    enabled: true
+  fixme:
+    enabled: true
+  rubocop:
+    enabled: true
+exclude_patterns:
+  - "bin/"
+  - "config/"
+  - "db/"
+  - "lib/"
+  - "vendor/"
+  - "test/"
