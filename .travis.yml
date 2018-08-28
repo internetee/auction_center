@@ -1,0 +1,26 @@
+language: ruby
+cache: bundler
+env:
+  - DB=postgresql
+bundler_args: --without development staging production
+before_install:
+  - "wget -N http://chromedriver.storage.googleapis.com/2.40/chromedriver_linux64.zip -P ~/"
+  - "unzip ~/chromedriver_linux64.zip -d ~/"
+  - "rm ~/chromedriver_linux64.zip"
+  - "sudo mv -f ~/chromedriver /usr/local/share/"
+  - "sudo chmod +x /usr/local/share/chromedriver"
+  - "sudo ln -s /usr/local/share/chromedriver /usr/local/bin/chromedriver"
+before_script:
+  - "bundle exec rake db:setup"
+  - "curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter"
+  - "chmod +x ./cc-test-reporter"
+  - "./cc-test-reporter before-build"
+script:
+  - "bundle exec rails test"
+after_script:
+  - "./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT"
+services:
+  - postgresql
+addons:
+  postgresql: "9.4"
+  chrome: stable
