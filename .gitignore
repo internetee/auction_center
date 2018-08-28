@@ -17,6 +17,10 @@
 /storage/*
 !/storage/.keep
 
+# Configuration files
+/config/database.yml
+/config/application.yml
+
 /node_modules
 /yarn-error.log
 
