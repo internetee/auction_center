@@ -19,7 +19,6 @@
 
 # Configuration files
 /config/database.yml
-/config/application.yml
 /config/environments/development.rb
 
 /node_modules
