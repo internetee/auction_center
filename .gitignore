@@ -20,6 +20,7 @@
 # Configuration files
 /config/database.yml
 /config/application.yml
+/config/environments/development_example.rb
 
 /node_modules
 /yarn-error.log
