@@ -1,0 +1,16 @@
+{
+	"name": "auction_center",
+	"private": true,
+	"dependencies": {
+		"bootstrap": "^4.1.3"
+	},
+	"version": "0.0.1",
+	"description": "Domain auction software",
+	"main": "index.js",
+	"repository": "git@github.com:internetee/auction_center",
+	"license": "MIT/X11",
+	"contributors": [
+		"Maciej Szlosarczyk <maciej.szlosarczyk@eestiinternet.ee>",
+		"Artur Beljajev <artur.beljajev@eestiinternet.ee>"
+	]
+}
