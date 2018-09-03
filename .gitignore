@@ -26,6 +26,7 @@
 
 /public/assets
 .byebug_history
+.rubocop.yml
 
 # Test files
 /coverage/
