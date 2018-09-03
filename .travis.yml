@@ -30,6 +30,7 @@ before_script:
 
 script:
   - "bundle exec rails test"
+  - "bundle exec rails test:system"
 
 after_script:
   - "./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT"
