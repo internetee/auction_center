@@ -1,0 +1,47 @@
+<div class="text-center">
+    <div class="row justify-content-center">
+        <div class="col-4">
+            <h1 class="mb-3 mt-3">Editing <%= @user.display_name %></h1>
+            <hr>
+            <%= form_for(@user, as: @user, url: user_path(@user), html: { method: :put }) do |f| %>
+                <div class="form-group">
+                    <%= f.label :email %><br />
+                    <%= f.email_field :email, autofocus: true, autocomplete: "email",
+                                      class: "form-control" %>
+                </div>
+
+                <% if @user.pending_reconfirmation? %>
+                    <div>Currently waiting confirmation for: <%= @user.unconfirmed_email %></div>
+                <% end %>
+
+                <div class="form-group">
+                    <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
+                    <%= f.password_field :password, autocomplete: "new-password",
+                                         class: "form-control" %>
+                    <% if @minimum_password_length %>
+                        <br />
+                        <em><%= @minimum_password_length %> characters minimum</em>
+                    <% end %>
+                </div>
+
+                <div class="form-group">
+                    <%= f.label :password_confirmation %><br />
+                    <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control" %>
+                </div>
+
+                <div class="form-group">
+                    <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
+                    <%= f.password_field :current_password, autocomplete: "current-password", class: "form-control" %>
+                </div>
+                <%= f.submit "Update", class: "btn btn-primary form-control" %>
+            <% end %>
+
+            <hr>
+            <h3 class="mb-4 mt-4">Cancel my account</h3>
+            <p>Unhappy? <%= button_to "Cancel my account", user_path(@user),
+                        data: { confirm: "Are you sure?" }, method: :delete,
+                        class: "btn btn-secondary form-control" %></p>
+            <%= link_to "Back", :back %>
+        </div>
+    </div>
+</div>

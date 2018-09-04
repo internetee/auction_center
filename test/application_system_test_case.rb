@@ -13,4 +13,5 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   end
 
   driven_by :headless_chrome
+  Capybara.server = :puma, { Silent: true }
 end

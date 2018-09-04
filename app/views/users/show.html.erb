@@ -1,0 +1,15 @@
+<div class="text-center">
+    <div class="row justify-content_center">
+        <div class="col-sm-4 col-lg-8">
+            <h1 class="mb-3">User account</h1>
+
+            <p><%= @user.given_names %></p>
+            <p><%= @user.surname %></p>
+            <p><%= @user.country_code %></p>
+            <p><%= @user.identity_code %></p>
+            <p><%= @user.email %></p>
+
+            <p><%= link_to 'Edit', edit_user_path(@user) %> | <%= link_to :back, :back %></p>
+        </div>
+    </div>
+</div>
