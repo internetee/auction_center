@@ -1,0 +1,7 @@
+administrator:
+  email: 'administrator@auction.test'
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
+  alpha_two_country_code: 'EE'
+  identity_code: '7981298123'
+  given_names: 'John Joe'
+  surname: 'Administrator'
