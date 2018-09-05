@@ -1,0 +1,4 @@
+en:
+  users:
+    update:
+      incorrect_password: 'Incorrect current password'

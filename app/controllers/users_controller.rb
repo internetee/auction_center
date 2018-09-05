@@ -11,31 +11,53 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
 
-    if @user.save
-      sign_in(User, @user)
-      redirect_to users_path(user, notice: 'Your account was created.')
-    else
-      render :new
+    respond_to do |format|
+      if @user.save
+        format.html do
+          sign_in(User, @user)
+          redirect_to user_path(@user), notice: 'Your account was created.'
+        end
+
+        format.json do
+          sign_in(User, @user)
+          render :show, status: :created, location: @user
+        end
+      else
+        format.html { render :new }
+        format.json { render json: @user.errors, status: :unprocessable_entity }
+      end
     end
   end
 
   def edit; end
 
   def update
-    @user.update(update_params)
+    if @user.valid_password?(params.dig(:user, :current_password))
+      respond_to do |format|
+        if @user.update(update_params)
+          format.html { redirect_to @user, notice: t('devise.confirmations.send_instructions') }
+          format.json { render :show, status: :ok, location: @user }
+        else
+          format.html { render :edit }
+          format.json { render json: @user.errors, status: :unprocessable_entity }
+        end
+      end
+    else
+      redirect_to edit_user_path(@user), notice: t('.incorrect_password')
+    end
   end
 
   private
 
   def user_params
     params.require(:user)
-          .permit(:email, :password, :password_confirmation, :identity_code,
-                  :country_code, :given_names, :surname)
+      .permit(:email, :password, :password_confirmation, :identity_code,
+              :country_code, :given_names, :surname)
   end
 
   def update_params
-    params.require(:user)
-          .permit(:email, :password, :password_confirmation)
+    update_params = params.require(:user).permit(:email, :password, :password_confirmation)
+    update_params.reject! { |_k, v| v.blank? }
   end
 
   def set_minimum_password_length

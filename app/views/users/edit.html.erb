@@ -3,11 +3,20 @@
         <div class="col-4">
             <h1 class="mb-3 mt-3">Editing <%= @user.display_name %></h1>
             <hr>
-            <%= form_for(@user, as: @user, url: user_path(@user), html: { method: :put }) do |f| %>
+            <%= form_with(model: @user, url: user_path(@user), html: { method: :put }) do |f| %>
+                <% if @user.errors.any? %>
+                    <div id="error_explanation">
+                        <ul>
+                            <% @user.errors.full_messages.each do |message| %>
+                                <li><%= message %></li>
+                            <% end %>
+                        </ul>
+                    </div>
+                <% end %>
                 <div class="form-group">
                     <%= f.label :email %><br />
                     <%= f.email_field :email, autofocus: true, autocomplete: "email",
-                                      class: "form-control" %>
+                    class: "form-control" %>
                 </div>
 
                 <% if @user.pending_reconfirmation? %>
@@ -17,7 +26,7 @@
                 <div class="form-group">
                     <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
                     <%= f.password_field :password, autocomplete: "new-password",
-                                         class: "form-control" %>
+                    class: "form-control" %>
                     <% if @minimum_password_length %>
                         <br />
                         <em><%= @minimum_password_length %> characters minimum</em>
