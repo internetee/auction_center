@@ -53,6 +53,7 @@ GEM
       msgpack (~> 1.0)
     builder (3.2.3)
     byebug (10.0.2)
+    cancancan (2.2.0)
     capybara (3.6.0)
       addressable
       mini_mime (>= 0.1.3)
@@ -206,6 +207,7 @@ PLATFORMS
 DEPENDENCIES
   bootsnap (>= 1.1.0)
   byebug
+  cancancan
   capybara (>= 2.15)
   chromedriver-helper
   devise
