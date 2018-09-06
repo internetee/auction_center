@@ -4,6 +4,8 @@ class UsersController < ApplicationController
   before_action :set_minimum_password_length, only: %i[new edit]
   before_action :set_user, only: %i[show edit update destroy]
 
+  def index; end
+
   def new
     @user = User.new
   end
@@ -52,7 +54,7 @@ class UsersController < ApplicationController
   def user_params
     params.require(:user)
       .permit(:email, :password, :password_confirmation, :identity_code,
-              :country_code, :given_names, :surname)
+              :country_code, :given_names, :surname, :mobile_phone)
   end
 
   def update_params

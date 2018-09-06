@@ -36,16 +36,20 @@ class DeviseCreateUsers < ActiveRecord::Migration[5.2]
       t.timestamps null: false
 
       # Identification
-      t.string :alpha_two_country_code, limit: 2
-      t.string :identity_code
+      t.string :alpha_two_country_code, limit: 2, null: false
+      t.string :identity_code, null: false
 
       t.string :given_names, null: false
       t.string :surname, null: false
+
+      t.string :mobile_phone, null: false
     end
 
     add_index :users, :email,                unique: true
     add_index :users, :reset_password_token, unique: true
     add_index :users, :confirmation_token,   unique: true
     # add_index :users, :unlock_token,         unique: true
+
+    add_index :users, [:alpha_two_country_code, :identity_code], unique: true
   end
 end

@@ -2,16 +2,18 @@ administrator:
   email: 'administrator@auction.test'
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
   alpha_two_country_code: 'EE'
-  identity_code: '7981298123'
+  identity_code: '51007050118'
   given_names: 'John Joe'
   surname: 'Administrator'
   confirmed_at: <%= Time.parse("2010-07-05 00:15:00 UTC") %>
+  mobile_phone: '+37255000001'
 
 user:
   email: 'user@auction.test'
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
   alpha_two_country_code: 'EE'
-  identity_code: '7981298124'
+  identity_code: '51007050120'
   given_names: 'Joe John'
   surname: 'User'
   confirmed_at: <%= Time.parse("2010-07-05 00:15:00 UTC") %>
+  mobile_phone: '+37255000002'

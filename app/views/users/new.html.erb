@@ -43,6 +43,11 @@
                 </div>
 
                 <div class="form-group">
+                    <%= f.label :mobile_phone %><br />
+                    <%= f.telephone_field :mobile_phone, autofocus: true, class: "form-control" %>
+                </div>
+
+                <div class="form-group">
                     <%= f.label :password %>
                     <% if @minimum_password_length %>
                         <em>(<%= @minimum_password_length %> characters minimum)</em>

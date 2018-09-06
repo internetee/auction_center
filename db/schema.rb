@@ -27,10 +27,12 @@ ActiveRecord::Schema.define(version: 2018_08_29_130641) do
     t.string "unconfirmed_email"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "alpha_two_country_code", limit: 2
-    t.string "identity_code"
+    t.string "alpha_two_country_code", limit: 2, null: false
+    t.string "identity_code", null: false
     t.string "given_names", null: false
     t.string "surname", null: false
+    t.string "mobile_phone", null: false
+    t.index ["alpha_two_country_code", "identity_code"], name: "index_users_on_alpha_two_country_code_and_identity_code", unique: true
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
