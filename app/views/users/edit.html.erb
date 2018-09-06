@@ -1,7 +1,7 @@
 <div class="text-center">
     <div class="row justify-content-center">
         <div class="col-12">
-            <h1 class="mb-3 mt-4">Editing Your User Profile</h1>
+            <h1 class="mb-3 mt-4"><%= t('.title')%></h1>
             <%= form_with(model: @user, url: user_path(@user), html: { method: :put }) do |f| %>
                 <% if @user.errors.any? %>
                     <div id="error_explanation">
@@ -17,7 +17,7 @@
 
     <div class="row justify-content-center">
         <div class="col-12 col-lg-6">
-            <h3 class="p3">Contact data</h3>
+            <h3 class="p3"><%= t('.contact_data') %></h3>
             <div class="form-group">
                 <%= f.label :email %><br />
                 <%= f.email_field :email, autofocus: true, autocomplete: "email",
@@ -28,7 +28,7 @@
             </div>
             <div class="form-group">
                 <%= f.label :mobile_phone %><br />
-                <%= f.telephone_field :mobile_phone, autofocus: true, autocomplete: "",
+                <%= f.telephone_field :mobile_phone, autofocus: true, autocomplete: "off",
                 class: "form-control" %>
             </div>
             <div class="form-group">
@@ -44,31 +44,31 @@
         </div>
 
         <div class="col-12 col-lg-6">
-            <h3 class="p3">New Password</h3>
+            <h3 class="p3"><%= t('.new_password') %></h3>
             <div class="form-group">
-                <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
+                <%= f.label :password %> <i><%= t('.you_can_leave_blank') %></i><br />
                 <%= f.password_field :password, autocomplete: "new-password",
                 class: "form-control" %>
             </div>
             <div class="form-group">
                 <%= f.label :password_confirmation %><br />
-                <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control" %>
+                <%= f.password_field :password_confirmation, autocomplete: "off", class: "form-control" %>
             </div>
         </div>
     </div>
     <hr>
     <div class="row justify-content-center mt-4">
-        <h3 class="p3">Confirm your changes</h3>
+        <h3 class="p3"><%= t('.confirm_your_changes') %></h3>
         <div class="col-12">
             <div class="form-group">
-                <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
-                <%= f.password_field :current_password, autocomplete: "current-password", class: "form-control" %>
+                <%= f.label :current_password %> <i><%= t('.we_need_your_password') %></i><br />
+                <%= f.password_field :current_password, autocomplete: "off", class: "form-control" %>
             </div>
         </div>
-        <div class="col-12">
-            <%= f.submit "Update", class: "btn btn-primary form-control" %>
+        <div class="col-12 mt-4">
+            <%= f.submit t(:update), class: "btn btn-primary form-control mb-4" %>
             <% end %>
-            <%= link_to "Back", :back, class: "mt-4" %>
+            <%= link_to t(:back), :back, class: "mt-4" %>
         </div>
     </div>
 </div>

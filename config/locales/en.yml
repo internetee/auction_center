@@ -30,4 +30,9 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
+  back: "Back"
+  update: "Update"
+
   hello: "Hello world"
+  portal_name: "EIS auction center"
+  lorem_ipsum: "Lorem Ipsum"
