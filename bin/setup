@@ -23,10 +23,17 @@ chdir APP_ROOT do
   puts "\n== Copying sample files =="
   unless File.exist?('config/database.yml')
     cp 'config/database.yml.sample', 'config/database.yml'
+    puts "\n== config/database.yml ready for customization =="
   end
 
   unless File.exist?('config/environments/development.rb.sample')
     cp 'config/environments/development.rb.sample', 'config/environments/development.rb.sample'
+    puts "\n== config/environments/development.rb ready for customization =="
+  end
+
+  unless File.exist?('config/customization.yml')
+    cp 'config/customization.yml.sample', 'config/customization.yml'
+    puts "\n== config/customization.yml ready for customization =="
   end
 
   puts "\n== Removing old logs and tempfiles =="

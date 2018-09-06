@@ -1,0 +1,14 @@
+default: &default
+  # This is your application name, as displayed in the UI
+  application_name: "EIS Auction Center"
+
+  # Generate your own with rails secret
+  devise_secret_key: "Your very secret key used for devise tokens"
+
+
+development:
+  <<: *default
+test:
+  <<: *default
+production:
+  <<: *default
