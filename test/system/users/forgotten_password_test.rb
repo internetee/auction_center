@@ -17,7 +17,7 @@ class ForgottenPasswordTest < ApplicationSystemTestCase
 
     # Match link from the email, for example:
     # <p><a href=\"https://auction.example.com/sessions/password/edit?reset_password_token=c3vwRxLdSKot7HzTnVVh\">
-    match_token = last_email.body.match(/reset_password_token=((\w|-1)+)/)
+    match_token = last_email.body.match(/reset_password_token=((\w|-)+)/)
     assert(match_token)
 
     visit edit_user_password_path(reset_password_token: match_token[1])
