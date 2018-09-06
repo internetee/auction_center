@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>AuctionCenter</title>
+        <title>Auction Center</title>
         <%= csrf_meta_tags %>
         <%= csp_meta_tag %>
 
@@ -11,13 +11,20 @@
 
     <body>
         <div class="container-fluid">
+            <header class="site-header">
+                <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+                    <%= link_to "Auction Center", :root, class: "navbar-brand" %>
+                </nav>
+            </header>
             <div id="flash">
                 <% flash.each do |key, value| -%>
                     <div class="alert alert-primary"><%=h value %></div>
                 <% end %>
             </div>
 
-            <%= yield %>
+            <div class="container">
+                <%= yield %>
+            </div>
         </div>
     </body>
 </html>

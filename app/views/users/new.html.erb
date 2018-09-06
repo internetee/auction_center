@@ -1,6 +1,6 @@
 <div class="text-center">
     <div class="row justify-content-center">
-        <div class="col-4">
+        <div class="col-12">
             <h1 class="mb-3 mt-4">Sign up</h1>
             <%= form_with(model: @user, url: users_path(@user), local: true) do |f| %>
                 <% if @user.errors.any? %>
@@ -14,56 +14,63 @@
                         </ul>
                     </div>
                 <% end %>
-                <div class="form-group">
-                    <%= f.label :identity_code %><br />
-                    <%= f.text_field :identity_code, class: "form-control" %>
-                </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-6">
+            <div class="form-group">
+                <%= f.label :identity_code %><br />
+                <%= f.text_field :identity_code, class: "form-control" %>
+            </div>
 
-                <div class="form-group">
-                    <%= f.label :country %><br />
-                    <%= f.select :country_code,
-                    options_for_select(Countries::ALPHA_2_SELECTION, ['Estonia', 'EE']),
-                    {},
-                    class: "form-control form-control-lg" %>
-                </div>
+            <div class="form-group">
+                <%= f.label :country %><br />
+                <%= f.select :country_code,
+                options_for_select(Countries::ALPHA_2_SELECTION, ['Estonia', 'EE']),
+                {},
+                class: "form-control form-control" %>
+            </div>
 
-                <div class="form-group">
-                    <%= f.label :given_names %><br />
-                    <%= f.text_field :given_names, class: "form-control" %>
-                </div>
+            <div class="form-group">
+                <%= f.label :given_names %><br />
+                <%= f.text_field :given_names, class: "form-control" %>
+            </div>
 
-                <div class="form-group">
-                    <%= f.label :surname %><br />
-                    <%= f.text_field :surname, class: "form-control" %>
-                </div>
+            <div class="form-group">
+                <%= f.label :surname %><br />
+                <%= f.text_field :surname, class: "form-control" %>
+            </div>
+        </div>
+        <div class="col-12 col-lg-6">
+            <div class="form-group">
+                <%= f.label :email %><br />
+                <%= f.email_field :email, autofocus: true, class: "form-control" %>
+            </div>
 
-                <div class="form-group">
-                    <%= f.label :email %><br />
-                    <%= f.email_field :email, autofocus: true, class: "form-control" %>
-                </div>
+            <div class="form-group">
+                <%= f.label :mobile_phone %><br />
+                <%= f.telephone_field :mobile_phone, autofocus: true, class: "form-control" %>
+            </div>
 
-                <div class="form-group">
-                    <%= f.label :mobile_phone %><br />
-                    <%= f.telephone_field :mobile_phone, autofocus: true, class: "form-control" %>
-                </div>
+            <div class="form-group">
+                <%= f.label :password %>
+                <% if @minimum_password_length %>
+                    <em>(<%= @minimum_password_length %> characters minimum)</em>
+                <% end %><br />
+                <%= f.password_field :password, class: "form-control" %>
+            </div>
 
-                <div class="form-group">
-                    <%= f.label :password %>
-                    <% if @minimum_password_length %>
-                        <em>(<%= @minimum_password_length %> characters minimum)</em>
-                    <% end %><br />
-                    <%= f.password_field :password, class: "form-control" %>
-                </div>
-
-                <div class="form-group">
-                    <%= f.label :password_confirmation %><br />
-                    <%= f.password_field :password_confirmation, class: "form-control" %>
-                </div>
-
-
-                <div class="mt-4">
-                    <%= f.submit "Sign up", class: "btn btn-primary form-control" %>
-                </div>
+            <div class="form-group">
+                <%= f.label :password_confirmation %><br />
+                <%= f.password_field :password_confirmation, class: "form-control" %>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-6">
+            <div class="mt-4">
+                <%= f.submit "Sign up", class: "btn btn-primary form-control" %>
+            </div>
             <% end %>
         </div>
     </div>

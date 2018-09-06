@@ -1,8 +1,7 @@
 <div class="text-center">
     <div class="row justify-content-center">
-        <div class="col-4">
-            <h1 class="mb-3">Log in</h1>
-
+        <div class="col-12 col-lg-6">
+            <h1 class="mb-3 mt-4">Log in</h1>
             <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
                 <div class="form-group">
                     <%= f.label :email %><br />
@@ -17,11 +16,11 @@
                 <% if devise_mapping.rememberable? -%>
                     <div class="form-check">
                         <%= f.check_box :remember_me, class: "form-check-input" %>
-                        <%= f.label :remember_me %>
+                        <%= f.label :remember_me, class: "mb-3" %>
                     </div>
                 <% end -%>
 
-                <%= f.submit "Log in", class: "btn btn-lg btn-primary btn-block form-control" %>
+                <%= f.submit "Log in", class: "btn btn-lg btn-primary btn-block form-control mb-4" %>
             <% end %>
 
             <%= render "devise/shared/links" %>
