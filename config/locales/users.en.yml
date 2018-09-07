@@ -10,7 +10,6 @@ en:
 
     index:
       welcome_back: "Welcome back, %{display_name}"
-      sign_in: "Sign in"
       create_an_account: "Create an account"
 
     new:

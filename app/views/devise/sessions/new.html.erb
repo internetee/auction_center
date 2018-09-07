@@ -1,7 +1,7 @@
 <div class="text-center">
     <div class="row justify-content-center">
         <div class="col-12 col-lg-6">
-            <h1 class="mb-3 mt-4">Log in</h1>
+            <h1 class="mb-3 mt-4"><%= t(:sign_in) %></h1>
             <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
                 <div class="form-group">
                     <%= f.label :email %><br />
@@ -20,7 +20,7 @@
                     </div>
                 <% end -%>
 
-                <%= f.submit "Log in", class: "btn btn-lg btn-primary btn-block form-control mb-4" %>
+                <%= f.submit t(:sign_in), class: "btn btn-primary form-control mb-4" %>
             <% end %>
 
             <%= render "devise/shared/links" %>

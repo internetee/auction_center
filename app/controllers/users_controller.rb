@@ -53,8 +53,8 @@ class UsersController < ApplicationController
 
   def user_params
     params.require(:user)
-      .permit(:email, :password, :password_confirmation, :identity_code,
-              :country_code, :given_names, :surname, :mobile_phone)
+          .permit(:email, :password, :password_confirmation, :identity_code,
+                  :country_code, :given_names, :surname, :mobile_phone)
   end
 
   def update_params
