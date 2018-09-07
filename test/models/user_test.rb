@@ -71,4 +71,12 @@ class UserTest < ActiveSupport::TestCase
 
     assert_equal('New Given Name Administrator', @administrator.display_name)
   end
+
+  def test_has_default_role
+    user = User.new
+
+    assert_equal([User::PARTICIPANT_ROLE], user.roles)
+    assert(user.role?(User::PARTICIPANT_ROLE))
+    refute(user.role?(User::ADMINISTATOR_ROLE))
+  end
 end

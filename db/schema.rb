@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_29_130641) do
+ActiveRecord::Schema.define(version: 2018_09_07_083511) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,6 +32,7 @@ ActiveRecord::Schema.define(version: 2018_08_29_130641) do
     t.string "given_names", null: false
     t.string "surname", null: false
     t.string "mobile_phone", null: false
+    t.string "roles", default: ["participant"], array: true
     t.index ["alpha_two_country_code", "identity_code"], name: "index_users_on_alpha_two_country_code_and_identity_code", unique: true
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
