@@ -1,6 +1,6 @@
 require 'application_system_test_case'
 
-class Admin::UsersListTest < ApplicationSystemTestCase
+class AdminUsersListTest < ApplicationSystemTestCase
   def setup
     super
 

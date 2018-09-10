@@ -1,6 +1,6 @@
 require 'application_system_test_case'
 
-class Admin::UsersEditTest < ApplicationSystemTestCase
+class AdminUsersEditTest < ApplicationSystemTestCase
   def setup
     super
 
