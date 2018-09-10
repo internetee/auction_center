@@ -16,6 +16,9 @@ module AuctionCenter
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
 
+    # Load any YAML file nested under locales
+    config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.yml').to_s]
+
     config.customization = config_for(:customization)
   end
 end
