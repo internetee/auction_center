@@ -1,0 +1,32 @@
+<div class="text-center">
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <h1 class="mb-3 mt-4"><%= t('.title') %></h1>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <table class="table" id="users-table">
+                <thead>
+                    <tr>
+                        <th scope="col"><%= t('.display_name') %></th>
+                        <th scope="col"><%= t('.phone') %></th>
+                        <th scope="col"><%= t('.email') %></th>
+                        <th scope="col"><%= t('.roles') %></th>
+                    </tr>
+                </thead>
+
+                <tbody id="users-table-body">
+                    <% @users.each do |user| %>
+                        <tr class="users-table-row">
+                            <th scope="row"><%= link_to user.display_name, admin_user_path(user) %></th>
+                            <td><%= user.mobile_phone %></td>
+                            <td><%= user.email %></td>
+                            <td><%= user.roles.join(', ') %></td>
+                        </tr>
+                    <% end %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

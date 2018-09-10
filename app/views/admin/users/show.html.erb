@@ -1,0 +1,25 @@
+    <div class="row text-center">
+        <div class="col-12">
+            <h1 class="mb-3 mt-4"><%= t('.title') %></h1>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h2><%= @user.display_name %></h2>
+
+                <ul id="user-details-list" class="mb-4 no-bullets">
+                    <li><%= @user.email %></li>
+                    <li><%= @user.mobile_phone %></li>
+                    <li><%= @user.roles.join(', ') %></li>
+                    <li><%= @user.country_code %></li>
+                    <li><%= @user.created_at %></li>
+                    <li><%= @user.identity_code %></li>
+                </ul>
+
+                <%= link_to t(:edit), edit_admin_user_path(@user), class: "card-link mt" %>
+                <%= link_to t(:delete), admin_user_path(@user), method: :delete, class: "card-link" %>
+            </div>
+        </div>
+    </div>
