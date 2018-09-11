@@ -9,10 +9,10 @@
             <table class="table" id="users-table">
                 <thead>
                     <tr>
-                        <th scope="col"><%= t('.display_name') %></th>
-                        <th scope="col"><%= t('.phone') %></th>
-                        <th scope="col"><%= t('.email') %></th>
-                        <th scope="col"><%= t('.roles') %></th>
+                        <th scope="col"><%= t('users.display_name') %></th>
+                        <th scope="col"><%= t('users.mobile_phone') %></th>
+                        <th scope="col"><%= t('users.email') %></th>
+                        <th scope="col"><%= t('users.roles') %></th>
                     </tr>
                 </thead>
 
@@ -27,6 +27,9 @@
                     <% end %>
                 </tbody>
             </table>
+        </div>
+        <div class="col-12">
+            <p><%= link_to t('.new_user'), new_admin_user_path %></p>
         </div>
     </div>
 </div>

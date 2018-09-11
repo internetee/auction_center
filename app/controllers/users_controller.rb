@@ -12,13 +12,13 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(user_params)
+    @user = User.new(create_params)
 
     respond_to do |format|
       if @user.save
         format.html do
           sign_in(User, @user)
-          redirect_to user_path(@user), notice: 'Your account was created.'
+          redirect_to user_path(@user), notice: t(:created_successfully)
         end
 
         format.json do
@@ -52,7 +52,7 @@ class UsersController < ApplicationController
 
   private
 
-  def user_params
+  def create_params
     params.require(:user)
           .permit(:email, :password, :password_confirmation, :identity_code,
                   :country_code, :given_names, :surname, :mobile_phone)

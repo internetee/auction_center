@@ -33,17 +33,21 @@ en:
   back: "Back"
   update: "Update"
   edit: "Edit"
+  submit: "Submit"
   delete: "Delete"
+  created: "Created successfully."
+
   are_you_sure: "Are you sure?"
   deleted_successfully: "Deleted successfully."
 
   hello: "Hello world"
-  portal_name: "EIS auction center"
   lorem_ipsum: "Lorem Ipsum"
+
   sign_in: "Sign in"
   sign_out: "Sign out"
 
   users:
+    display_name: "Display name"
     email: "Email"
     mobile_phone: "Mobile phone"
     role: "Role"

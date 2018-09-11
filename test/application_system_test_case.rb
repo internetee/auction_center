@@ -16,5 +16,4 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
 
   driven_by :headless_chrome
   Capybara.server = :puma, { Silent: true }
-  Capybara.default_max_wait_time = 5
 end
