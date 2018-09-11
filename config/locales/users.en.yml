@@ -19,3 +19,6 @@ en:
 
     update:
       incorrect_password: 'Incorrect current password'
+
+    show:
+      title: "User Profile"

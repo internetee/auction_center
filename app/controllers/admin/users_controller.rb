@@ -3,6 +3,8 @@ module Admin
     load_and_authorize_resource
     before_action :set_user, except: [:index, :new]
 
+    def new; end
+
     # GET /admin/users
     def index
       @users = User.all.order(created_at: :desc)
@@ -17,7 +19,7 @@ module Admin
     # PUT /admin/users/1
     def update
       respond_to do |format|
-        if @user.update(update_params)
+        if @user.update!(update_params)
           format.html { redirect_to admin_user_path(@user) }
           format.json { render :show, status: :ok, location: admin_user_path(@user) }
         else
@@ -27,14 +29,20 @@ module Admin
       end
     end
 
-    # DELET /admin/users/1
-    def destroy; end
+    # DELETE /admin/users/1
+    def destroy
+      @user.destroy
+      respond_to do |format|
+        format.html { redirect_to admin_users_path, notice: t(:deleted_successfully) }
+        format.json { head :no_content }
+      end
+    end
 
     private
 
     def update_params
       update_params = params.require(:user)
-                            .permit(:email, :given_names, :surname, :mobile_phone, roles: [])
+        .permit(:email, :given_names, :surname, :mobile_phone, roles: [])
       update_params.reject! { |_k, v| v.blank? }
     end
 

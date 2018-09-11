@@ -1,25 +1,38 @@
-    <div class="row text-center">
-        <div class="col-12">
-            <h1 class="mb-3 mt-4"><%= t('.title') %></h1>
-        </div>
-    </div>
-
+<div class="row text-center">
     <div class="col-12">
-        <div class="card">
-            <div class="card-body">
-                <h2><%= @user.display_name %></h2>
+        <h1 class="mb-3 mt-4"><%= t('.title') %></h1>
+    </div>
+</div>
 
-                <ul id="user-details-list" class="mb-4 no-bullets">
-                    <li><%= @user.email %></li>
-                    <li><%= @user.mobile_phone %></li>
-                    <li><%= @user.roles.join(', ') %></li>
-                    <li><%= @user.country_code %></li>
-                    <li><%= @user.created_at %></li>
-                    <li><%= @user.identity_code %></li>
-                </ul>
+<div class="col-12">
+    <div class="card">
+        <div class="card-body">
+            <h2><%= @user.display_name %></h2>
 
-                <%= link_to t(:edit), edit_admin_user_path(@user), class: "card-link mt" %>
-                <%= link_to t(:delete), admin_user_path(@user), method: :delete, class: "card-link" %>
-            </div>
+            <dl id="user-details-list" class="mb-4 no-bullets">
+                <dt><%= t('users.email') %></dt>
+                <dd><%= @user.email %></dd>
+
+                <dt><%= t('users.mobile_phone') %></dt>
+                <dd><%= @user.mobile_phone %></dd>
+
+                <dt><%= t('users.roles') %></dt>
+                <dd><%= @user.roles.join(', ') %></dd>
+
+                <dt><%= t('users.country_code') %></dt>
+                <dd><%= @user.country_code %></dd>
+
+                <dt><%= t('users.identity_code') %></dt>
+                <dd><%= @user.identity_code %></dd>
+
+                <dt><%= t('created_at') %></dt>
+                <dd><%= @user.created_at %></dd>
+            </dl>
+
+            <%= link_to t(:edit), edit_admin_user_path(@user), class: "card-link mt" %>
+            <%= link_to t(:delete), admin_user_path(@user),
+                        method: :delete, data: { confirm: t(:are_you_sure) } ,
+                        remote: true, class: "card-link" %>
         </div>
     </div>
+</div>
