@@ -1,6 +1,6 @@
 require 'application_system_test_case'
 
-class AdminUsersEditTest < ApplicationSystemTestCase
+class AdminUsersProfileTest < ApplicationSystemTestCase
   def setup
     super
     @user = users(:user)
