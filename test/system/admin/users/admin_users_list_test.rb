@@ -46,4 +46,18 @@ class AdminUsersListTest < ApplicationSystemTestCase
     assert_equal('Confirmation instructions', last_email.subject)
     assert_equal(['new-user@auction.test'], last_email.to)
   end
+
+  def test_certain_fields_are_required
+    click_link('New user')
+    click_link_or_button('Submit')
+
+    errors_list = page.find('#errors').all('li')
+    assert_equal(4, errors_list.size)
+    errors_array = errors_list.collect { |i| i.text }
+
+    expected_errors = ["Email can't be blank", "Password can't be blank",
+                     "Identity code can't be blank", "Mobile phone can't be blank"]
+
+    assert_equal(errors_array.to_set, expected_errors.to_set)
+  end
 end
