@@ -8,7 +8,6 @@ class User < ApplicationRecord
   alias_attribute :country_code, :alpha_two_country_code
 
   validates :identity_code, uniqueness: { scope: :alpha_two_country_code }
-
   validates :identity_code, presence: true
   validates :mobile_phone, presence: true
 
