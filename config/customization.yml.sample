@@ -8,6 +8,28 @@ default: &default
   # Address from which the emails come from
   email_from_address: "noreply@internet.ee"
 
+  mailer:
+    # SMTP server address, i.e 'smtp.auction.test'
+    address: ''
+    # 587, 465
+    port: ''
+    # true/false (without quotation marks)
+    enable_starttls_auto: true
+    # SMTP user name, i.e 'user@auction.test'
+    user_name: ''
+    # SMTP password, i.e 'password'
+    password: ''
+    # 'plain', 'login', 'cram_md5'
+    authentication: ''
+    # domain for HELO check
+    domain: ''
+    # Use "none" only when for a self-signed and/or wildcard certificate
+    # openssl_verify_mode: 'peer' # 'none', 'peer', 'client_once','fail_if_no_peer_cert'
+    # Detects if STARTTLS is enabled in your SMTP server and starts to use it. Defaults to true.
+    # Set this to false if there is a problem with your server certificate that you cannot resolve.
+    # 'none', 'peer', 'client_once','fail_if_no_peer_cert'
+    openssl_verify_mode: ''
+
 development:
   <<: *default
 test:
