@@ -26,7 +26,7 @@
                 <dd><%= @user.identity_code %></dd>
 
                 <dt><%= t('created_at') %></dt>
-                <dd><%= @user.created_at %></dd>
+                <dd><%= I18n.l(@user.created_at) %></dd>
             </dl>
 
             <%= link_to t(:edit), edit_user_path(@user), class: "card-link mt" %>

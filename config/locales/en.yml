@@ -10,8 +10,6 @@ en:
   are_you_sure: "Are you sure?"
   deleted_successfully: "Deleted successfully."
 
-  lorem_ipsum: "Lorem Ipsum"
-
   sign_in: "Sign in"
   sign_out: "Sign out"
 
@@ -25,3 +23,12 @@ en:
     identity_code: "Identity code"
 
   created_at: "Created at"
+
+  time:
+    formats:
+      default: "%Y-%m-%d %H:%M"
+      long: "%A, %e. %B %Y, %H:%M"
+      short: "%d.%m.%y, %H:%M"
+      date: "%Y-%m-%d"
+      date_long: "%d. %B %Y"
+      filename: "%Y-%m-%d_%H.%M"
