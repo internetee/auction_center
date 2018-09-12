@@ -3,17 +3,18 @@
         <div class="col-12">
             <h1 class="mb-3 mt-4"><%= t('.title')%></h1>
             <% if @user.errors.any? %>
-                <div id="error_explanation">
-                    <ul>
-                        <% @user.errors.full_messages.each do |message| %>
-                            <li><%= message %></li>
-                        <% end %>
-                    </ul>
-                </div>
+                <h3 id="error-explanation">
+                    <%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:
+                </h3>
+                <ul id="errors">
+                    <% @user.errors.full_messages.each do |message| %>
+                        <li><%= message %></li>
+                    <% end %>
+                </ul>
             <% end %>
         </div>
     </div>
-    <%= form_with(model: @user, url: admin_user_path(@user),
+    <%= form_with(model: @user, url: admin_user_path(@user), local: true,
                   html: { method: :put, id: "user-edit-form" }) do |f| %>
         <div class="row">
             <div class="col-12 col-lg-6">

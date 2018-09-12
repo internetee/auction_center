@@ -14,7 +14,7 @@ class EditAccountTest < ApplicationSystemTestCase
     fill_in('user[email]', with: 'updated-email@auction.test')
     fill_in('user[current_password]', with: 'password123')
     click_link_or_button('Update')
-    assert(page.has_css?('div.alert', text: 'You will receive an email with instructions for how to confirm your email address in a few minutes.'))
+    assert(page.has_css?('div.alert', text: 'Updated successfully.'))
 
     last_email = ActionMailer::Base.deliveries.last
     assert_equal('Confirmation instructions', last_email.subject)
@@ -40,9 +40,35 @@ class EditAccountTest < ApplicationSystemTestCase
     fill_in('user[current_password]', with: 'password123')
     click_link_or_button('Update')
 
-    assert(page.has_css?('div.alert', text: 'You will receive an email with instructions for how to confirm your email address in a few minutes.'))
+    assert(page.has_css?('div.alert', text: 'Updated successfully.'))
 
     @user.reload
     assert_equal('New Surname', @user.surname)
+  end
+
+  def test_blank_values_are_ommited
+    visit edit_user_path(@user)
+
+    fill_in('user[surname]', with: '')
+    fill_in('user[current_password]', with: 'password123')
+    click_link_or_button('Update')
+
+    assert(page.has_css?('div.alert', text: 'Updated successfully.'))
+
+    @user.reload
+    assert_equal('User', @user.surname)
+  end
+
+  def test_administrator_can_also_edit_their_own_data
+    administrator = users(:administrator)
+    sign_in(administrator)
+
+    visit edit_user_path(administrator)
+    fill_in('user[given_names]', with: 'New Given Name')
+    fill_in('user[current_password]', with: 'password123')
+    click_link_or_button('Update')
+
+    assert(page.has_css?('div.alert', text: 'Updated successfully.'))
+    assert_text('New Given Name')
   end
 end

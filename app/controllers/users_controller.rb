@@ -18,7 +18,7 @@ class UsersController < ApplicationController
       if @user.save
         format.html do
           sign_in(User, @user)
-          redirect_to user_path(@user), notice: t(:created_successfully)
+          redirect_to user_path(@user), notice: t(:created)
         end
 
         format.json do
@@ -38,7 +38,7 @@ class UsersController < ApplicationController
     if @user.valid_password?(params.dig(:user, :current_password))
       respond_to do |format|
         if @user.update(update_params)
-          format.html { redirect_to @user, notice: t('devise.confirmations.send_instructions') }
+          format.html { redirect_to @user, notice: t(:updated) }
           format.json { render :show, status: :ok, location: @user }
         else
           format.html { render :edit }
