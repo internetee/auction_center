@@ -1,16 +1,18 @@
 require 'countries'
 
 class UsersController < ApplicationController
-  before_action :set_user, only: %i[show edit update destroy]
+  before_action :set_user, only: %i[show edit update]
   before_action :set_minimum_password_length, only: %i[new edit]
   before_action :authorize_user, except: %i[new index create]
 
   def index; end
 
+  # GET /users/new
   def new
     @user = User.new
   end
 
+  # POST /users/new
   def create
     @user = User.new(create_params)
 
@@ -32,8 +34,13 @@ class UsersController < ApplicationController
     end
   end
 
+  # GET /users/1
+  def show; end
+
+  # GET /users/1/edit
   def edit; end
 
+  # PUT /users/1
   def update
     if @user.valid_password?(params.dig(:user, :current_password))
       respond_to do |format|
