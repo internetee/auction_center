@@ -5,6 +5,8 @@ default: &default
   # Generate your own with rails secret
   devise_secret_key: "Your very secret key used for devise tokens"
 
+  # Address from which the emails come from
+  email_from_address: "noreply@internet.ee"
 
 development:
   <<: *default

@@ -19,6 +19,7 @@ module AuctionCenter
     # Load any YAML file nested under locales
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.yml').to_s]
 
+    # Load customization from special file
     config.customization = config_for(:customization)
   end
 end
