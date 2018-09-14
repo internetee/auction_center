@@ -1,0 +1,19 @@
+<div class="row">
+    <div class="col-12">
+        <h1 class="display-4"><%= application_name %></h1>
+    </div>
+</div>
+<div class="row">
+    <%- if signed_in? %>
+        <div class="col-12 col-lg-6">
+            <p><%= t('.welcome_back', display_name: current_user.display_name)%></p>
+        </div>
+    <%- else %>
+        <div class="col-12 col-lg-6">
+            <p><%= link_to t(:sign_in), new_user_session_path, class: "btn btn-secondary" %></p>
+        </div>
+        <div class="col-12 col-lg-6">
+            <p><%= link_to t('.create_an_account'), new_user_path, class: "btn btn-primary" %></p>
+        </div>
+    <%- end %>
+</div>

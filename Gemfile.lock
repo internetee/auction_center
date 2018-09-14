@@ -47,11 +47,13 @@ GEM
     archive-zip (0.11.0)
       io-like (~> 0.3.0)
     arel (9.0.0)
+    bcrypt (3.1.12)
     bindex (0.5.0)
     bootsnap (1.3.1)
       msgpack (~> 1.0)
     builder (3.2.3)
     byebug (10.0.2)
+    cancancan (2.2.0)
     capybara (3.6.0)
       addressable
       mini_mime (>= 0.1.3)
@@ -64,8 +66,15 @@ GEM
     chromedriver-helper (1.2.0)
       archive-zip (~> 0.10)
       nokogiri (~> 1.8)
+    coderay (1.1.2)
     concurrent-ruby (1.0.5)
     crass (1.0.4)
+    devise (4.5.0)
+      bcrypt (~> 3.0)
+      orm_adapter (~> 0.1)
+      railties (>= 4.1.0, < 6.0)
+      responders
+      warden (~> 1.2.3)
     docile (1.3.1)
     erubi (1.7.1)
     execjs (2.7.0)
@@ -100,7 +109,11 @@ GEM
     nio4r (2.3.1)
     nokogiri (1.8.4)
       mini_portile2 (~> 2.3.0)
+    orm_adapter (0.5.0)
     pg (1.1.1)
+    pry (0.11.3)
+      coderay (~> 1.1.0)
+      method_source (~> 0.9.0)
     public_suffix (3.0.3)
     puma (3.12.0)
     rack (2.0.5)
@@ -134,6 +147,9 @@ GEM
     rb-fsevent (0.10.3)
     rb-inotify (0.9.10)
       ffi (>= 0.5.0, < 2)
+    responders (2.4.0)
+      actionpack (>= 4.2.0, < 5.3)
+      railties (>= 4.2.0, < 5.3)
     ruby_dep (1.5.0)
     rubyzip (1.2.1)
     sass (3.5.7)
@@ -172,6 +188,8 @@ GEM
       thread_safe (~> 0.1)
     uglifier (4.1.18)
       execjs (>= 0.3.0, < 3)
+    warden (1.2.7)
+      rack (>= 1.0)
     web-console (3.6.2)
       actionview (>= 5.0)
       activemodel (>= 5.0)
@@ -189,11 +207,14 @@ PLATFORMS
 DEPENDENCIES
   bootsnap (>= 1.1.0)
   byebug
+  cancancan
   capybara (>= 2.15)
   chromedriver-helper
+  devise
   jbuilder (~> 2.5)
   listen (>= 3.0.5, < 3.2)
   pg (>= 0.18, < 2.0)
+  pry
   puma (~> 3.11)
   rails (~> 5.2.1)
   sass-rails (~> 5.0)
@@ -208,4 +229,4 @@ RUBY VERSION
    ruby 2.4.4p296
 
 BUNDLED WITH
-   1.16.2
+   1.16.4

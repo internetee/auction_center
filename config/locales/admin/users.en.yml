@@ -1,0 +1,22 @@
+en:
+  admin:
+    users:
+      new:
+        title: "New user"
+        identification_data: 'Identification data'
+        contact_data: 'Contact data'
+        roles: 'Roles'
+
+      index:
+        title: "Users"
+        new_user: "New user"
+
+      show:
+        title: User
+
+      edit:
+        title: "Edit user"
+        contact_data: "Contact data"
+        new_password: "New password"
+        you_can_leave_blank: "You can leave this field blank"
+        roles: "Roles"

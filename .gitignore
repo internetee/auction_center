@@ -19,6 +19,7 @@
 
 # Configuration files
 /config/database.yml
+/config/customization.yml
 /config/environments/development.rb
 
 /node_modules
@@ -26,6 +27,7 @@
 
 /public/assets
 .byebug_history
+.rubocop.yml
 
 # Test files
 /coverage/

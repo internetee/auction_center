@@ -15,5 +15,22 @@ module AuctionCenter
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
+
+    # Load any YAML file nested under locales
+    config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.yml').to_s]
+
+    # Load customization from special file
+    config.customization = config_for(:customization)
+
+    config.action_mailer.smtp_settings = {
+      address:              config.customization.dig('mailer', 'address'),
+      port:                 config.customization.dig('mailer', 'port'),
+      enable_starttls_auto: config.customization.dig('mailer', 'enable_starttls_auto'),
+      user_name:            config.customization.dig('mailer', 'user_name'),
+      password:             config.customization.dig('mailer', 'password'),
+      authentication:       config.customization.dig('mailer', 'authentication'),
+      domain:               config.customization.dig('mailer', 'domain'),
+      openssl_verify_mode:  config.customization.dig('mailer', 'openssl_verify_mode')
+    }
   end
 end
