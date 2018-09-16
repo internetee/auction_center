@@ -34,5 +34,7 @@ development:
   <<: *default
 test:
   <<: *default
+staging:
+  <<: *default
 production:
   <<: *default
