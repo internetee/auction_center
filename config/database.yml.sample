@@ -65,7 +65,6 @@ test:
 staging:
   <<: *default
   database: auction_center_staging
-  username: auction_center
   password: <%= ENV['AUCTION_CENTER_DATABASE_PASSWORD'] %>
 
 # As with config/secrets.yml, you never want to store sensitive information,
