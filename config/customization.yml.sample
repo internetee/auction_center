@@ -9,6 +9,9 @@ default: &default
   email_from_address: "noreply@internet.ee"
 
   mailer:
+    # Host to which links from emails should redirect to
+    host: 'https://auction.example.test'
+
     # SMTP server address, i.e 'smtp.auction.test'
     address: ''
     # 587, 465
