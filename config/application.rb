@@ -32,5 +32,9 @@ module AuctionCenter
       domain:               config.customization.dig('mailer', 'domain'),
       openssl_verify_mode:  config.customization.dig('mailer', 'openssl_verify_mode')
     }
+
+    config.action_mailer.default_url_options = {
+      host: config.customization.dig('mailer', 'host'),
+    }
   end
 end
