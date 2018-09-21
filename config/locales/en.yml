@@ -13,6 +13,8 @@ en:
   sign_in: "Sign in"
   sign_out: "Sign out"
 
+  versions_name: 'Versions'
+
   users:
     display_name: "Display name"
     email: "Email"
@@ -21,6 +23,11 @@ en:
     roles: "Roles"
     country_code: "Country code"
     identity_code: "Identity code"
+
+  versions:
+    action: 'Action'
+    recorded_at: 'Recorded at'
+    new_values: 'New values'
 
   created_at: "Created at"
 
