@@ -65,6 +65,7 @@ SET default_with_oids = false;
 --
 
 CREATE TABLE audit.users (
+    id integer NOT NULL,
     object_id bigint,
     action text NOT NULL,
     recorded_at timestamp without time zone,
@@ -72,6 +73,25 @@ CREATE TABLE audit.users (
     new_value jsonb,
     CONSTRAINT users_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
 );
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE; Schema: audit; Owner: -
+--
+
+CREATE SEQUENCE audit.users_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: audit; Owner: -
+--
+
+ALTER SEQUENCE audit.users_id_seq OWNED BY audit.users.id;
 
 
 --
@@ -141,10 +161,25 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 
 --
+-- Name: id; Type: DEFAULT; Schema: audit; Owner: -
+--
+
+ALTER TABLE ONLY audit.users ALTER COLUMN id SET DEFAULT nextval('audit.users_id_seq'::regclass);
+
+
+--
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
+
+
+--
+-- Name: users_pkey; Type: CONSTRAINT; Schema: audit; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY audit.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
 
 
 --
@@ -172,17 +207,17 @@ ALTER TABLE ONLY public.users
 
 
 --
--- Name: index_audit_users_on_object_id; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
+-- Name: users_object_id_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
 --
 
-CREATE INDEX index_audit_users_on_object_id ON audit.users USING btree (object_id);
+CREATE INDEX users_object_id_idx ON audit.users USING btree (object_id);
 
 
 --
--- Name: index_audit_users_on_recorded_at; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
+-- Name: users_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
 --
 
-CREATE INDEX index_audit_users_on_recorded_at ON audit.users USING btree (recorded_at);
+CREATE INDEX users_recorded_at_idx ON audit.users USING btree (recorded_at);
 
 
 --

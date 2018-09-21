@@ -8,6 +8,7 @@ class AuditMigration
   def create_table
     sql = <<~SQL
       CREATE TABLE IF NOT EXISTS audit.#{model_name.pluralize} (
+           id                 serial NOT NULL,
            object_id          bigint,
            action TEXT NOT NULL CHECK (action IN ('INSERT', 'UPDATE', 'DELETE', 'TRUNCATE')),
            recorded_at        timestamp without time zone,
@@ -15,10 +16,10 @@ class AuditMigration
            new_value          jsonb
         );
 
-        CREATE INDEX index_audit_#{model_name.pluralize}_on_object_id
-        ON audit.#{model_name.pluralize} USING btree (object_id);
-        CREATE INDEX index_audit_#{model_name.pluralize}_on_recorded_at
-        ON audit.#{model_name.pluralize} USING btree (recorded_at)
+
+        ALTER TABLE audit.#{model_name.pluralize} ADD PRIMARY KEY (id);
+        CREATE INDEX ON audit.#{model_name.pluralize} USING btree (object_id);
+        CREATE INDEX ON audit.#{model_name.pluralize} USING btree (recorded_at)
     SQL
 
     sql
