@@ -11,8 +11,8 @@ class AuditMigration
            object_id          bigint,
            action TEXT NOT NULL CHECK (action IN ('INSERT', 'UPDATE', 'DELETE', 'TRUNCATE')),
            recorded_at        timestamp without time zone,
-           old_record         jsonb,
-           new_record         jsonb
+           old_value          jsonb,
+           new_value          jsonb
         );
 
         CREATE INDEX index_audit_#{model_name.pluralize}_on_object_id
@@ -31,17 +31,17 @@ class AuditMigration
         BEGIN
           IF (TG_OP = 'INSERT') THEN
             INSERT INTO audit.#{model_name.pluralize}
-            (object_id, action, recorded_at, old_record, new_record)
+            (object_id, action, recorded_at, old_value, new_value)
             VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
             RETURN NEW;
           ELSEIF (TG_OP = 'UPDATE') THEN
             INSERT INTO audit.#{model_name.pluralize}
-            (object_id, action, recorded_at, old_record, new_record)
+            (object_id, action, recorded_at, old_value, new_value)
             VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
             RETURN NEW;
           ELSEIF (TG_OP = 'DELETE') THEN
             INSERT INTO audit.#{model_name.pluralize}
-            (object_id, action, recorded_at, old_record, new_record)
+            (object_id, action, recorded_at, old_value, new_value)
             VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
             RETURN OLD;
           END IF;

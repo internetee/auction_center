@@ -37,17 +37,17 @@ CREATE FUNCTION public.process_user_audit() RETURNS trigger
     BEGIN
       IF (TG_OP = 'INSERT') THEN
         INSERT INTO audit.users
-        (object_id, action, recorded_at, old_record, new_record)
+        (object_id, action, recorded_at, old_value, new_value)
         VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
         RETURN NEW;
       ELSEIF (TG_OP = 'UPDATE') THEN
         INSERT INTO audit.users
-        (object_id, action, recorded_at, old_record, new_record)
+        (object_id, action, recorded_at, old_value, new_value)
         VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
         RETURN NEW;
       ELSEIF (TG_OP = 'DELETE') THEN
         INSERT INTO audit.users
-        (object_id, action, recorded_at, old_record, new_record)
+        (object_id, action, recorded_at, old_value, new_value)
         VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
         RETURN OLD;
       END IF;
@@ -68,8 +68,8 @@ CREATE TABLE audit.users (
     object_id bigint,
     action text NOT NULL,
     recorded_at timestamp without time zone,
-    old_record jsonb,
-    new_record jsonb,
+    old_value jsonb,
+    new_value jsonb,
     CONSTRAINT users_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
 );
 
