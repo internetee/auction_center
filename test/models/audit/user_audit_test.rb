@@ -45,8 +45,8 @@ class UserAuditTest < ActiveSupport::TestCase
     @user.update!(given_names: 'New Name')
     audit_record = Audit::User.find_by(object_id: @user.id, action: 'UPDATE')
 
-    ['updated_at', 'given_names'].each do |item|
-      assert(audit_record.diff.has_key?(item))
+    %w[updated_at given_names].each do |item|
+      assert(audit_record.diff.key?(item))
     end
 
     assert_equal(2, audit_record.diff.length)
