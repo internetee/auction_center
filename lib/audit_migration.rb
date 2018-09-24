@@ -27,8 +27,8 @@ class AuditMigration
 
   def create_trigger
     sql = <<~SQL
-    CREATE OR REPLACE FUNCTION process_#{model_name}_audit()
-    RETURNS TRIGGER AS $process_#{model_name}_audit$
+      CREATE OR REPLACE FUNCTION process_#{model_name}_audit()
+      RETURNS TRIGGER AS $process_#{model_name}_audit$
         BEGIN
           IF (TG_OP = 'INSERT') THEN
             INSERT INTO audit.#{model_name.pluralize}

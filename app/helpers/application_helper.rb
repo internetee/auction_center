@@ -26,6 +26,7 @@ module ApplicationHelper
           end
         )
       end
+
       if current_user&.role?(User::ADMINISTATOR_ROLE)
         concat(
           content_tag(:li, class: 'nav-item') do
