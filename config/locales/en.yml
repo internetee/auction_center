@@ -10,10 +10,12 @@ en:
   are_you_sure: "Are you sure?"
   deleted_successfully: "Deleted successfully."
 
+  profile: "Profile"
   sign_in: "Sign in"
   sign_out: "Sign out"
 
   versions_name: 'Versions'
+  users_name: 'Users'
 
   users:
     display_name: "Display name"
