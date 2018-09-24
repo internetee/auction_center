@@ -20,3 +20,11 @@ By default, the application creates an administrator user account that should be
 email: administrator@auction.test
 password: password
 ```
+
+## Audits
+
+Due to various regulatory requirements, all database tables are audited according to the following procedure:
+
+1. Changes in `public.users` table are recorded into audit.users. Audit records `action` `old_value`, `new_value`, `recorded_at` time according to postgres time zone and `object_id` which corresponds to the primary key of data in `users`.
+2. History of each object is visible in the UI for the administrator.
+3. Audit data is never deleted, even if the original object is. For example, if you destroy user with id `123`, it's history can still be accessed under `/admin/users/123/versions`.
