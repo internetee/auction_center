@@ -46,6 +46,16 @@ class EditAccountTest < ApplicationSystemTestCase
     assert_equal('New Surname', @user.surname)
   end
 
+  def test_mobile_phone_needs_to_be_valid
+    visit edit_user_path(@user)
+    fill_in('user[mobile_phone]', with: '+372500')
+    fill_in('user[current_password]', with: 'password123')
+    click_link_or_button('Update')
+
+    @user.reload
+    refute(@user.mobile_phone == '+372500')
+  end
+
   def test_blank_values_are_ommited
     visit edit_user_path(@user)
 
