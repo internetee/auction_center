@@ -29,6 +29,7 @@ before_script:
   - "./cc-test-reporter before-build"
 
 script:
+  - "bundle exec rails assets:precompile"
   - "bundle exec rails test"
   - "bundle exec rails test:system"
 
