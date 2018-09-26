@@ -19,22 +19,20 @@ class EstonianValidationsTest < ApplicationSystemTestCase
     end
   end
 
-  def test_invalid_phone_number_does_not_create_user
+  def test_invalid_phone_number_disables_submit_button
     fill_in('user[identity_code]', with: @valid_identity_code)
     fill_in('user[mobile_phone]', with: '+3727271000')
+    page.find('body').click # blur
 
-    assert_no_difference 'User.count' do
-      click_link_or_button('Sign up')
-    end
+    refute(page.has_button?('Sign up'))
   end
 
-  def test_invalid_identity_code_does_not_create_user
+  def test_invalid_identity_code_disables_submit_button
     fill_in('user[identity_code]', with: '05071020395')
     fill_in('user[mobile_phone]', with: @valid_mobile_number)
+    page.find('body').click # blur
 
-    assert_no_difference 'User.count' do
-      click_link_or_button('Sign up')
-    end
+    refute(page.has_button?('Sign up'))
   end
 
   def test_validations_are_ignored_for_different_countries

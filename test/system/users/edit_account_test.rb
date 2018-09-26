@@ -50,10 +50,15 @@ class EditAccountTest < ApplicationSystemTestCase
     visit edit_user_path(@user)
     fill_in('user[mobile_phone]', with: '+372500')
     fill_in('user[current_password]', with: 'password123')
+    refute(page.has_button?('Update'))
+
+    fill_in('user[mobile_phone]', with: '+37250006000')
+    page.find('body').click # blur
+    assert(page.has_button?('Update'))
     click_link_or_button('Update')
 
-    @user.reload
-    refute(@user.mobile_phone == '+372500')
+    assert(page.has_css?('div.alert', text: 'Updated successfully.'))
+    assert(page.has_text?('+37250006000'))
   end
 
   def test_blank_values_are_ommited

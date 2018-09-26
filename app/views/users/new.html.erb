@@ -68,9 +68,12 @@
             </div>
             <div class="col-12 col-lg-6">
                 <div class="mt-4">
-                    <%= f.submit t('.sign_up'), class: "btn btn-primary form-control" %>
+                    <%= f.submit t('.sign_up'), class: "btn btn-primary form-control", id: "user_form_commit" %>
                 </div>
             </div>
         </div>
     <% end %>
 </div>
+
+
+<%= javascript_pack_tag 'users', 'data-turbolinks-track': 'reload' %>

@@ -20,6 +20,13 @@ class CreateAccountTest < ApplicationSystemTestCase
     assert_equal(['new-user@auction.test'], last_email.to)
   end
 
+  def test_cannot_create_new_user_if_already_signed_in
+    sign_in(users(:user))
+    visit new_user_path
+
+    assert(page.has_css?('div.alert', text: 'You are already signed in'))
+  end
+
   def test_certain_fields_are_required
     visit new_user_path
     click_link_or_button('Sign up')

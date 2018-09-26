@@ -62,9 +62,11 @@
                 </div>
             </div>
             <div class="col-12 mt-4">
-                <%= f.submit t(:update), class: "btn btn-primary form-control mb-4" %>
+                <%= f.submit t(:update), class: "btn btn-primary form-control mb-4", id: "user_form_commit" %>
                 <%= link_to t(:back), :back, class: "mt-4" %>
             </div>
         </div>
     <% end %>
 </div>
+
+<%= javascript_pack_tag 'users', 'data-turbolinks-track': 'reload' %>
