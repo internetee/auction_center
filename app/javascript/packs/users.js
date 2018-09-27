@@ -1,4 +1,4 @@
-import IdentityCode from './identity-code';
+import IdentityCode from './identity_code';
 
 function MobilePhoneValidator(numberField) {
     this.number = numberField.value;
