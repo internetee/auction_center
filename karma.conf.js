@@ -16,7 +16,6 @@ module.exports = function(config) {
         plugins: ['karma-qunit',
                   'karma-coverage',
                   'karma-chrome-launcher',
-                  'karma-babel-preprocessor',
                   'karma-jquery',
                   'karma-webpack'],
 
