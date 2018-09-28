@@ -22,9 +22,16 @@ export default class IdentityCode {
     controlDigit() {
         if (this.countryCode === "EE") {
             let identityCode = this.identityCode;
-            let scales = [1, 2, 3, 4, 5, 6, 7, 8, 9, 1];
+            let total = this.calculateEstonianControlDigit(identityCode);
+            return total;
+        } else {
+            return this.identityCode;
+        }
+    }
 
-            let total = this.mapScalesWithIdentityCode(scales, identityCode);
+    calculateEstonianControlDigit(identityCode) {
+        let scales = [1, 2, 3, 4, 5, 6, 7, 8, 9, 1];
+        let total = this.mapScalesWithIdentityCode(scales, identityCode);
             if (total === 10) {
                 scales = [3, 4, 5, 6, 7, 8, 9, 1, 2, 3];
                 total = this.mapScalesWithIdentityCode(scales, identityCode);
@@ -37,9 +44,7 @@ export default class IdentityCode {
             } else {
                 return total;
             }
-        } else {
-            return this.identityCode;
-        }
+        return total;
     }
 
     mapScalesWithIdentityCode(scales, identityCode) {
