@@ -15,7 +15,7 @@
         </div>
     </div>
     <%= form_with(model: @user, url: admin_user_path(@user), local: true,
-                  html: { method: :put, id: "user-edit-form" }) do |f| %>
+                  html: { method: :put, id: "user_form" }) do |f| %>
         <div class="row">
             <div class="col-12 col-lg-6">
                 <h3 class="p3"><%= t('.contact_data') %></h3>
@@ -44,6 +44,24 @@
                 </div>
             </div>
             <div class="col-12 col-lg-6">
+                <h3 class="p3"><%= t('.personal_data') %></h3>
+                <div class="form-group">
+                    <%= f.label :identity_code %> <span class="small text-info">
+                    <%= f.text_field :identity_code, class: "form-control",
+                    placeholder: t('users.can_be_left_blank_if_not_estonian'), disabled: @user.identity_code.presence %>
+                </div>
+
+                <div class="form-group">
+                    <%= f.label :country %><br />
+                    <%= f.select :country_code,
+                    options_for_select(Countries::ALPHA_2_SELECTION, ['Estonia', 'EE']),
+                         {},
+                         class: "form-control form-control" %>
+                </div>
+            </div>
+
+            </div>
+            <div class="col-12 col-lg-6">
                 <h3 class="p3"><%= t('.roles') %></h3>
                 <%- User::ROLES.each do |role| %>
                     <div class="form-check text-left">
@@ -53,9 +71,11 @@
                 <% end %>
             </div>
             <div class="col-12">
-                <%= f.submit t(:update), class: "btn btn-primary form-control mb-2" %>
+                <%= f.submit t(:update), class: "btn btn-primary form-control mb-2", id: "user_form_commit" %>
                 <%= link_to t(:back), :back, class: "btn btn-secondary form-control" %>
             </div>
         </div>
     <% end %>
 </div>
+
+<%= javascript_pack_tag 'edit_users', 'data-turbolinks-track': 'reload' %>

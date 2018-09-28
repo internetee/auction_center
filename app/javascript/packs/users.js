@@ -37,7 +37,11 @@ document.addEventListener("DOMContentLoaded", function() {
     let mobilePhoneField = document.getElementById('user_mobile_phone');
     let identityCodeField = document.getElementById('user_identity_code');
     let countryCodeField = document.getElementById('user_country_code');
-    let button = document.getElementById('user_form_commit');
+
+    let completeForm = document.getElementById('user_form');
+    console.log(completeForm);
+
+    debugger;
 
     mobilePhoneField.addEventListener('blur', function(event) {
         resetMobileFields();

@@ -21,8 +21,10 @@ en:
     roles: "Roles"
     country_code: "Country code"
     identity_code: "Identity code"
+    can_be_left_blank_if_not_estonian: 'Can be left blank if you are not Estonian'
 
   created_at: "Created at"
+  is_invalid: "is invalid"
 
   time:
     formats:

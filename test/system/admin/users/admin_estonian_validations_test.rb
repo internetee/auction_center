@@ -1,6 +1,6 @@
 require 'application_system_test_case'
 
-class EstonianValidationsTest < ApplicationSystemTestCase
+class AdminEstonianValidationsTest < ApplicationSystemTestCase
   def setup
     super
 
@@ -16,7 +16,7 @@ class EstonianValidationsTest < ApplicationSystemTestCase
     page.find('body').click # blur
 
     assert_difference 'User.count' do
-      click_link_or_button('Sign up')
+      click_link_or_button('Submit')
     end
   end
 
@@ -25,7 +25,7 @@ class EstonianValidationsTest < ApplicationSystemTestCase
     fill_in('user[mobile_phone]', with: '+372 11111111111111111111111117 1000')
     page.find('body').click # blur
 
-    refute(page.has_button?('Sign up'))
+    refute(page.has_button?('Submit'))
   end
 
   def test_invalid_identity_code_disables_submit_button
@@ -33,7 +33,7 @@ class EstonianValidationsTest < ApplicationSystemTestCase
     fill_in('user[mobile_phone]', with: @valid_mobile_number)
     page.find('body').click # blur
 
-    refute(page.has_button?('Sign up'))
+    refute(page.has_button?('Submit'))
   end
 
   def test_identity_code_validations_are_ignored_for_different_countries
@@ -42,12 +42,13 @@ class EstonianValidationsTest < ApplicationSystemTestCase
     select('Latvia', from: 'user[country_code]')
 
     assert_difference 'User.count' do
-      click_link_or_button('Sign up')
+      click_link_or_button('Submit')
     end
   end
 
   def prefill_the_form
-    visit new_user_path
+    sign_in users(:administrator)
+    visit new_admin_user_path
     fill_in('user[email]', with: 'new-user@auction.test')
     fill_in('user[password]', with: 'password')
     fill_in('user[password_confirmation]', with: 'password')

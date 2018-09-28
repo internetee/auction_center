@@ -36,7 +36,7 @@ class EditAccountTest < ApplicationSystemTestCase
     fill_in('user[email]', with: 'updated-email@auction.test')
     fill_in('user[given_names]', with: 'New Given Name')
     fill_in('user[surname]', with: 'New Surname')
-    fill_in('user[mobile_phone]', with: '+372500110300')
+    fill_in('user[mobile_phone]', with: '+3725000600')
     fill_in('user[current_password]', with: 'password123')
     click_link_or_button('Update')
 
@@ -44,6 +44,11 @@ class EditAccountTest < ApplicationSystemTestCase
 
     @user.reload
     assert_equal('New Surname', @user.surname)
+  end
+
+  def test_identity_code_cannot_be_changed_once_set
+    visit edit_user_path(@user)
+    assert(page.has_field?('user[identity_code]', disabled: true))
   end
 
   def test_mobile_phone_needs_to_be_valid

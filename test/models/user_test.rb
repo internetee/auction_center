@@ -14,7 +14,6 @@ class UserTest < ActiveSupport::TestCase
     assert_equal(["can't be blank"], user.errors[:password])
     assert_equal(["can't be blank"], user.errors[:email])
     assert_equal(["can't be blank"], user.errors[:mobile_phone])
-    assert_equal(["can't be blank"], user.errors[:identity_code])
 
     user.email = 'email@example.com'
     user.password = 'email@example.com'
@@ -23,6 +22,17 @@ class UserTest < ActiveSupport::TestCase
     user.identity_code = '51007050687'
     user.country_code = 'EE'
 
+    assert(user.valid?)
+  end
+
+  def test_identity_code_can_be_empty_if_not_estonian
+    user = User.new
+
+    user.email = 'email@example.com'
+    user.password = 'email@example.com'
+    user.password_confirmation = 'email@example.com'
+    user.mobile_phone = '+372500100300'
+    user.country_code = 'PL'
     assert(user.valid?)
   end
 
@@ -89,19 +99,6 @@ class UserTest < ActiveSupport::TestCase
     refute(user.valid?)
 
     user.identity_code = '51007050360'
-    assert(user.valid?)
-  end
-
-  def test_mobile_phone_validation_in_estonia
-    user = boilerplate_user
-
-    user.mobile_phone = '+3727271000'
-    user.identity_code = '05071020395'
-    user.country_code = 'EE'
-
-    refute(user.valid?)
-
-    user.mobile_phone = '+3725317763'
     assert(user.valid?)
   end
 
