@@ -4,7 +4,7 @@ class ForgottenPasswordTest < ApplicationSystemTestCase
   def setup
     super
 
-    @user = users(:user)
+    @user = users(:participant)
   end
 
   def test_can_reset_password_by_email

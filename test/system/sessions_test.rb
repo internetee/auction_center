@@ -1,10 +1,6 @@
 require 'application_system_test_case'
 
 class SessionsTest < ApplicationSystemTestCase
-  def setup
-    super
-  end
-
   def test_can_sign_in_with_password
     visit(users_path)
 
@@ -23,7 +19,7 @@ class SessionsTest < ApplicationSystemTestCase
   end
 
   def test_can_sign_out_via_button
-    user = users(:user)
+    user = users(:participant)
     sign_in(user)
 
     visit(user_path(user))

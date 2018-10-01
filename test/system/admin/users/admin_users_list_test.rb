@@ -19,7 +19,7 @@ class AdminUsersListTest < ApplicationSystemTestCase
   end
 
   def test_user_display_names_are_links
-    edited_user = users(:user)
+    edited_user = users(:participant)
     display_name_cell_link = page.find('a', text: 'Joe John User')
     display_name_cell_link.click
 

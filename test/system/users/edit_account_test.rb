@@ -4,7 +4,7 @@ class EditAccountTest < ApplicationSystemTestCase
   def setup
     super
 
-    @user = users(:user)
+    @user = users(:participant)
     sign_in(@user)
   end
 

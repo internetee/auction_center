@@ -10,7 +10,7 @@ administrator:
   mobile_phone: '+37255000001'
   roles: ['administrator']
 
-user:
+participant:
   email: 'user@auction.test'
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
   alpha_two_country_code: 'EE'

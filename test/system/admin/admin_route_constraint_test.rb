@@ -12,7 +12,7 @@ class AdminRouteConstraintTest < ApplicationSystemTestCase
   end
 
   def test_cannot_see_the_routes_as_user
-    user = users(:user)
+    user = users(:participant)
     sign_in(user)
 
     assert_raise(ActionController::RoutingError) do
