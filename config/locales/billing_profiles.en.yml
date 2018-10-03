@@ -7,6 +7,9 @@ en:
     postal_code: "Postal Code"
     country: "Country"
 
+    edit:
+      title: "Edit billing profile"
+
     index:
       title: "Billing Profiles"
 

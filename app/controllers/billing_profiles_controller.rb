@@ -1,5 +1,5 @@
 class BillingProfilesController < ApplicationController
-  before_action :set_billing_profile, only: %i[show edit update delete]
+  before_action :set_billing_profile, only: %i[show edit update destroy]
   before_action :authorize_user, except: :new
 
   # GET /billing_profiles
@@ -34,7 +34,27 @@ class BillingProfilesController < ApplicationController
   def edit; end
 
   # PUT /billing_profiles/1
-  def update; end
+  def update
+    respond_to do |format|
+      if @billing_profile.update(update_params)
+        format.html { redirect_to billing_profile_path(@billing_profile), notice: t(:updated) }
+        format.json { render :show, status: :ok, location: @billing_profile }
+      else
+        format.html { render :edit }
+        format.json { render json: @billing_profile.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # DELETE /billing_profiles/1
+  def destroy
+    @billing_profile.destroy
+
+    respond_to do |format|
+      format.html { redirect_to billing_profiles_path, notice: t(:deleted) }
+      format.json { head :no_content }
+    end
+  end
 
   private
 

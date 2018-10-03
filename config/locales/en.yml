@@ -7,8 +7,10 @@ en:
 
   created: "Created successfully."
   updated: "Updated successfully."
+  deleted: "Deleted successfully."
   are_you_sure: "Are you sure?"
-  deleted_successfully: "Deleted successfully."
+
+  billing: "Billing"
 
   sign_in: "Sign in"
   sign_out: "Sign out"
