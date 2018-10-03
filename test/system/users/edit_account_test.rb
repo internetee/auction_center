@@ -56,7 +56,7 @@ class EditAccountTest < ApplicationSystemTestCase
     assert(page.has_css?('div.alert', text: 'Updated successfully.'))
 
     @user.reload
-    assert_equal('User', @user.surname)
+    assert_equal('Participant', @user.surname)
   end
 
   def test_administrator_can_also_edit_their_own_data

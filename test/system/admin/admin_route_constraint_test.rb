@@ -32,7 +32,7 @@ class AdminRouteConstraintTest < ApplicationSystemTestCase
 
     visit admin_users_path
 
-    assert_text('Joe John User')
+    assert_text('Joe John Participant')
     assert_text('John Joe Administrator')
   end
 end
