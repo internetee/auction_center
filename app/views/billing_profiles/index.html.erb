@@ -1,0 +1,40 @@
+<div class="row">
+    <div class="col-12">
+        <h1 class="mb-3 mt-4"><%= t('.title') %></h1>
+    </div>
+</div>
+
+<div class="row">
+    <% @billing_profiles.each do |billing_profile|  %>
+        <div class="col-12 col-lg-6">
+            <div class="card">
+                <div class="card-body">
+                    <h2><%= billing_profile.name %></h2>
+
+                    <dl class="mb-6 no-bullets billing-profile-card">
+                        <dt><%= t('billing_profiles.vat_code') %></dt>
+                        <dd><%= billing_profile.vat_code %></dd>
+
+                        <dt><%= t('billing_profiles.street') %></dt>
+                        <dd><%= billing_profile.street %></dd>
+
+                        <dt><%= t('billing_profiles.city') %></dt>
+                        <dd><%= billing_profile.city %></dd>
+
+                        <dt><%= t('billing_profiles.state') %></dt>
+                        <dd><%= billing_profile.state %></dd>
+
+                        <dt><%= t('billing_profiles.postal_code') %></dt>
+                        <dd><%= billing_profile.postal_code %></dd>
+
+                        <dt><%= t('billing_profiles.country') %></dt>
+                        <dd><%= billing_profile.country %></dd>
+
+                        <dt><%= t('created_at') %></dt>
+                        <dd><%= I18n.l(billing_profile.created_at) %></dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    <% end %>
+</div>

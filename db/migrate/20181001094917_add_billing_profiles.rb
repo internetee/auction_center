@@ -9,7 +9,7 @@ class AddBillingProfiles < ActiveRecord::Migration[5.2]
       t.string  :street,       null: false
       t.string  :city,         null: false
       t.string  :state,        null: true
-      t.string  :postal_index, null: false
+      t.string  :postal_code,  null: false
       t.string  :country,      null: false
 
       t.timestamps             null: false

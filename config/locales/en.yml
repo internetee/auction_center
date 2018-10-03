@@ -13,15 +13,6 @@ en:
   sign_in: "Sign in"
   sign_out: "Sign out"
 
-  users:
-    display_name: "Display name"
-    email: "Email"
-    mobile_phone: "Mobile phone"
-    role: "Role"
-    roles: "Roles"
-    country_code: "Country code"
-    identity_code: "Identity code"
-
   created_at: "Created at"
 
   time:

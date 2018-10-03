@@ -49,7 +49,7 @@ CREATE TABLE public.billing_profiles (
     street character varying NOT NULL,
     city character varying NOT NULL,
     state character varying,
-    postal_index character varying NOT NULL,
+    postal_code character varying NOT NULL,
     country character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL

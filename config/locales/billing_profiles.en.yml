@@ -1,0 +1,17 @@
+en:
+  billing_profiles:
+    vat_code: "VAT code"
+    street: "Street"
+    city: "City"
+    state: "State"
+    postal_code: "Postal Code"
+    country: "Country"
+
+    index:
+      title: "Billing Profiles"
+
+    new:
+      title: "Create a billing profile"
+
+    show:
+      title: "Billing profile"

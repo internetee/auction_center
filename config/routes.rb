@@ -6,7 +6,9 @@ Rails.application.routes.draw do
 
   namespace :admin, constraints: Constraints::Administrator.new do
     resources :users
+    resources :billing_profiles
   end
 
   resources :users, except: :destroy
+  resources :billing_profiles
 end

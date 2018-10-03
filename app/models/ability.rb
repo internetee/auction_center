@@ -10,9 +10,11 @@ class Ability
 
   def participant
     can :manage, User, id: user.id
+    can :manage, BillingProfile, user_id: user.id
   end
 
   def administrator
     can :manage, User
+    can :manage, BillingProfile
   end
 end
