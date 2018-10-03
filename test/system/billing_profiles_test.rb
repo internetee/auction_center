@@ -14,6 +14,12 @@ class BillingProfilesTest < ApplicationSystemTestCase
     assert(page.has_link?('Billing', href: billing_profiles_path))
   end
 
+  def test_billing_profiles_list_contains_links_to_profiles
+    visit billing_profiles_path
+    assert(page.has_link?('Joe John Participant',
+                          href: billing_profile_path(@billing_profile)))
+  end
+
   def test_a_user_can_create_billing_profile_for_a_company
     visit new_billing_profile_path
     fill_in_address
