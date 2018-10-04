@@ -6,7 +6,7 @@ Rails.application.routes.draw do
 
   namespace :admin, constraints: Constraints::Administrator.new do
     resources :users
-    resources :billing_profiles
+    resources :billing_profiles, only: :index
   end
 
   resources :users, except: :destroy

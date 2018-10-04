@@ -5,6 +5,7 @@ class BillingProfileTest < ActiveSupport::TestCase
     super
 
     @user = users(:participant)
+    @billing_profile = billing_profiles(:company)
   end
 
   def test_required_fields
@@ -38,5 +39,17 @@ class BillingProfileTest < ActiveSupport::TestCase
     billing_profile.legal_entity = true
     refute(billing_profile.valid?)
     assert_equal(["can't be blank"], billing_profile.errors[:vat_code])
+  end
+
+  def test_address
+    expected_address = 'Baker Street 221B, NW1 6XE London, United Kingdom'
+
+    assert_equal(expected_address, @billing_profile.address)
+  end
+
+  def test_user_name
+    expected_username = 'Joe John Participant'
+
+    assert_equal(expected_username, @billing_profile.user_name)
   end
 end

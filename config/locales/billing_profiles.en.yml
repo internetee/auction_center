@@ -1,6 +1,10 @@
 en:
   billing_profiles:
+    user: "User"
+    name: "Name"
     vat_code: "VAT code"
+    legal_entity: "Legal entity"
+    address: "Address"
     street: "Street"
     city: "City"
     state: "State"
