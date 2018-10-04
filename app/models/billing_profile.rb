@@ -6,7 +6,7 @@ class BillingProfile < ApplicationRecord
   validates :postal_code, presence: true
   validates :country, presence: true
 
-  validates :vat_code, presence: true, if: Proc.new {|i| i.legal_entity }
+  validates :vat_code, presence: true, if: proc { |i| i.legal_entity }
 
   def address
     postal_code_with_city = [postal_code, city].join(' ')

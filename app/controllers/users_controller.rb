@@ -5,7 +5,7 @@ class UsersController < ApplicationController
   before_action :set_minimum_password_length, only: %i[new edit]
   before_action :authorize_user, except: %i[new index create]
 
- # GET /users
+  # GET /users
   def index; end
 
   # GET /users/new
