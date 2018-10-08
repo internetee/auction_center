@@ -14,6 +14,8 @@ class Ability
 
   def administrator
     can :manage, User
+    can %i[read update], Setting
+
     can :read, Audit::User
   end
 end

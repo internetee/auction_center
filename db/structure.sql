@@ -34,26 +34,26 @@ COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 CREATE FUNCTION public.process_user_audit() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
-    BEGIN
-      IF (TG_OP = 'INSERT') THEN
-        INSERT INTO audit.users
-        (object_id, action, recorded_at, old_value, new_value)
-        VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
-        RETURN NEW;
-      ELSEIF (TG_OP = 'UPDATE') THEN
-        INSERT INTO audit.users
-        (object_id, action, recorded_at, old_value, new_value)
-        VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
-        RETURN NEW;
-      ELSEIF (TG_OP = 'DELETE') THEN
-        INSERT INTO audit.users
-        (object_id, action, recorded_at, old_value, new_value)
-        VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
-        RETURN OLD;
-      END IF;
-      RETURN NULL;
-    END
-  $$;
+  BEGIN
+    IF (TG_OP = 'INSERT') THEN
+      INSERT INTO audit.users
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
+      RETURN NEW;
+    ELSEIF (TG_OP = 'UPDATE') THEN
+      INSERT INTO audit.users
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
+      RETURN NEW;
+    ELSEIF (TG_OP = 'DELETE') THEN
+      INSERT INTO audit.users
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
+      RETURN OLD;
+    END IF;
+    RETURN NULL;
+  END
+$$;
 
 
 SET default_tablespace = '';
@@ -116,6 +116,37 @@ CREATE TABLE public.schema_migrations (
 
 
 --
+-- Name: settings; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE public.settings (
+    id bigint NOT NULL,
+    code character varying NOT NULL,
+    description text NOT NULL,
+    value text NOT NULL
+);
+
+
+--
+-- Name: settings_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.settings_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: settings_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.settings_id_seq OWNED BY public.settings.id;
+
+
+--
 -- Name: users; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -171,6 +202,13 @@ ALTER TABLE ONLY audit.users ALTER COLUMN id SET DEFAULT nextval('audit.users_id
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY public.settings ALTER COLUMN id SET DEFAULT nextval('public.settings_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
 
 
@@ -199,6 +237,14 @@ ALTER TABLE ONLY public.schema_migrations
 
 
 --
+-- Name: settings_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY public.settings
+    ADD CONSTRAINT settings_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -218,6 +264,13 @@ CREATE INDEX users_object_id_idx ON audit.users USING btree (object_id);
 --
 
 CREATE INDEX users_recorded_at_idx ON audit.users USING btree (recorded_at);
+
+
+--
+-- Name: index_settings_on_code; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_settings_on_code ON public.settings USING btree (code);
 
 
 --
@@ -265,6 +318,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180829130641'),
 ('20180907083511'),
 ('20180919104523'),
-('20180921084531');
+('20180921084531'),
+('20181008124201');
 
 
