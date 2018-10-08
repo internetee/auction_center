@@ -1,0 +1,31 @@
+<div class="row justify-content-center">
+    <div class="col-12 text-center">
+        <h1 class="mb-3 mt-4"><%= t('.title') %></h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <%= link_to t(:back), :back %>
+        <table class="table" class="items-table">
+            <thead>
+                <th scope="col"><%= t('versions.recorded_at') %></th>
+                <th scope="col"><%= t('versions.action') %></th>
+                <th scope="col"><%= t('versions.new_values') %></th>
+            </thead>
+            <tbody class="items-table-body">
+                <% @items.each do |item| %>
+                    <tr class="items-table-row">
+                        <td><%= I18n.l(item.recorded_at) %></td>
+                        <td><%= item.action %></td>
+                        <td><% item.diff.each do |key, value| %>
+                            <dt><%= key.humanize %></dt>
+                            <dd><%= value %></dd>
+                        <% end %>
+                        </td>
+                    </tr>
+                <% end %>
+            </tbody>
+        </table>
+    </div>
+</div>

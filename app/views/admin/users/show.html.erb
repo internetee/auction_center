@@ -33,6 +33,8 @@
             <%= link_to t(:delete), admin_user_path(@user),
                         method: :delete, data: { confirm: t(:are_you_sure) } ,
                         remote: true, class: "card-link" %>
+
+            <%= link_to t(:versions_name), admin_user_versions_url(@user), class: "card-link mt" %>
         </div>
     </div>
 </div>
