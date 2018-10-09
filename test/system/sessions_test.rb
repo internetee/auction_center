@@ -1,11 +1,7 @@
 require 'application_system_test_case'
 
 class SessionsTest < ApplicationSystemTestCase
-  def setup
-    super
-  end
-
-  def test_user_can_sign_in_with_password
+  def test_can_sign_in_with_password
     visit(users_path)
 
     within('nav') do
@@ -19,11 +15,11 @@ class SessionsTest < ApplicationSystemTestCase
       click_link_or_button('Sign in')
     end
 
-    assert_text('Welcome back, Joe John User')
+    assert_text('Welcome back, Joe John Participant')
   end
 
-  def test_user_can_sign_out_via_button
-    user = users(:user)
+  def test_can_sign_out_via_button
+    user = users(:participant)
     sign_in(user)
 
     visit(user_path(user))
@@ -32,14 +28,14 @@ class SessionsTest < ApplicationSystemTestCase
   end
 
   def test_user_can_see_a_link_to_their_profile
-    user = users(:user)
+    user = users(:participant)
     sign_in(user)
 
     visit(users_path)
     assert(page.has_link?('Profile', href: user_path(user)))
     click_link_or_button('Profile')
 
-    assert_equal('Joe John User', page.find('h2').text)
+    assert_equal('Joe John Participant', page.find('h2').text)
   end
 
   def test_administrator_can_see_a_link_to_their_profile

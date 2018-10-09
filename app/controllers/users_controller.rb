@@ -5,6 +5,7 @@ class UsersController < ApplicationController
   before_action :set_minimum_password_length, only: %i[new edit]
   before_action :authorize_user, except: %i[new index create]
 
+  # GET /users
   def index; end
 
   # GET /users/new
@@ -78,7 +79,7 @@ class UsersController < ApplicationController
   end
 
   def set_user
-    @user = User.find(params[:id])
+    @user = User.accessible_by(current_ability).find(params[:id])
   end
 
   def authorize_user

@@ -9,8 +9,10 @@ Rails.application.routes.draw do
   end
 
   namespace :admin, constraints: Constraints::Administrator.new do
+    resources :billing_profiles, only: :index, concerns: [:auditable]
     resources :users, concerns: [:auditable]
   end
 
   resources :users, except: :destroy
+  resources :billing_profiles
 end

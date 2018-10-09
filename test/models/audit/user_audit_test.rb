@@ -4,7 +4,7 @@ class UserAuditTest < ActiveSupport::TestCase
   def setup
     super
 
-    @user = users(:user)
+    @user = users(:participant)
     travel_to Time.parse('2010-07-05 10:30 +0000')
   end
 

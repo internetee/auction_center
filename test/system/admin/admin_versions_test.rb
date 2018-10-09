@@ -19,7 +19,7 @@ class AdminVersionsTest < ApplicationSystemTestCase
   end
 
   def test_it_can_be_accessed_after_the_object_has_been_deleted
-    user = users(:user)
+    user = users(:participant)
     user.update(given_names: "New Given Name", surname: "New Surname")
     user.delete
     visit admin_user_versions_path(user)
