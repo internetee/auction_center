@@ -34,26 +34,26 @@ COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 CREATE FUNCTION public.process_user_audit() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
-    BEGIN
-      IF (TG_OP = 'INSERT') THEN
-        INSERT INTO audit.users
-        (object_id, action, recorded_at, old_value, new_value)
-        VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
-        RETURN NEW;
-      ELSEIF (TG_OP = 'UPDATE') THEN
-        INSERT INTO audit.users
-        (object_id, action, recorded_at, old_value, new_value)
-        VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
-        RETURN NEW;
-      ELSEIF (TG_OP = 'DELETE') THEN
-        INSERT INTO audit.users
-        (object_id, action, recorded_at, old_value, new_value)
-        VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
-        RETURN OLD;
-      END IF;
-      RETURN NULL;
-    END
-  $$;
+  BEGIN
+    IF (TG_OP = 'INSERT') THEN
+      INSERT INTO audit.users
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
+      RETURN NEW;
+    ELSEIF (TG_OP = 'UPDATE') THEN
+      INSERT INTO audit.users
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
+      RETURN NEW;
+    ELSEIF (TG_OP = 'DELETE') THEN
+      INSERT INTO audit.users
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
+      RETURN OLD;
+    END IF;
+    RETURN NULL;
+  END
+$$;
 
 
 SET default_tablespace = '';
@@ -221,13 +221,6 @@ CREATE INDEX users_recorded_at_idx ON audit.users USING btree (recorded_at);
 
 
 --
--- Name: index_users_on_alpha_two_country_code_and_identity_code; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE UNIQUE INDEX index_users_on_alpha_two_country_code_and_identity_code ON public.users USING btree (alpha_two_country_code, identity_code);
-
-
---
 -- Name: index_users_on_confirmation_token; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -249,6 +242,13 @@ CREATE UNIQUE INDEX index_users_on_reset_password_token ON public.users USING bt
 
 
 --
+-- Name: users_by_identity_code_and_country; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX users_by_identity_code_and_country ON public.users USING btree (alpha_two_country_code, identity_code) WHERE ((alpha_two_country_code)::text = 'EE'::text);
+
+
+--
 -- Name: process_user_audit; Type: TRIGGER; Schema: public; Owner: -
 --
 
@@ -265,6 +265,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180829130641'),
 ('20180907083511'),
 ('20180919104523'),
-('20180921084531');
+('20180921084531'),
+('20180928060715');
 
 
