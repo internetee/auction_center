@@ -14,6 +14,11 @@ class BillingProfilesTest < ApplicationSystemTestCase
     assert(page.has_link?('Billing', href: billing_profiles_path))
   end
 
+  def test_index_contains_a_link_to_new_billing_profile
+    visit billing_profiles_path
+    assert(page.has_link?('New', href: new_billing_profile_path))
+  end
+
   def test_billing_profiles_list_contains_links_to_profiles
     visit billing_profiles_path
     assert(page.has_link?('Joe John Participant',
