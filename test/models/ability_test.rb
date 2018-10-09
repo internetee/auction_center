@@ -2,7 +2,7 @@ require 'test_helper'
 
 class AbilityTest < ActiveSupport::TestCase
   def setup
-    @participant = users(:user)
+    @participant = users(:participant)
     @administrator = users(:administrator)
 
     @participant_ability = Ability.new(@participant)
@@ -27,8 +27,13 @@ class AbilityTest < ActiveSupport::TestCase
   end
 
   def test_administrator_can_read_audit_records
+    assert(@administrator_ability.can?(:read, Audit::BillingProfile))
     assert(@administrator_ability.can?(:read, Audit::User))
+    assert(@administrator_ability.can?(:read, Audit::Setting))
+
+    refute(@administrator_ability.can?(:create, Audit::BillingProfile))
     refute(@administrator_ability.can?(:create, Audit::User))
+    refute(@administrator_ability.can?(:create, Audit::Setting))
   end
 
   def test_administrator_can_edit_settings
