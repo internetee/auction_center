@@ -381,13 +381,6 @@ CREATE UNIQUE INDEX index_billing_profiles_on_vat_code ON public.billing_profile
 
 
 --
--- Name: index_users_on_alpha_two_country_code_and_identity_code; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE UNIQUE INDEX index_users_on_alpha_two_country_code_and_identity_code ON public.users USING btree (alpha_two_country_code, identity_code);
-
-
---
 -- Name: index_users_on_confirmation_token; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -406,6 +399,13 @@ CREATE UNIQUE INDEX index_users_on_email ON public.users USING btree (email);
 --
 
 CREATE UNIQUE INDEX index_users_on_reset_password_token ON public.users USING btree (reset_password_token);
+
+
+--
+-- Name: users_by_identity_code_and_country; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX users_by_identity_code_and_country ON public.users USING btree (alpha_two_country_code, identity_code) WHERE ((alpha_two_country_code)::text = 'EE'::text);
 
 
 --
@@ -433,6 +433,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180907083511'),
 ('20180919104523'),
 ('20180921084531'),
+('20180928060715'),
 ('20181001094917'),
 ('20181009104026');
 

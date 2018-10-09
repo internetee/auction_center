@@ -24,6 +24,7 @@ en:
       title: "Create a user account"
       password_requirements: "(at least %{minimum} characters)"
       sign_up: "Sign up"
+      already_signed_in: "You are already signed in"
 
     update:
       incorrect_password: 'Incorrect current password'
