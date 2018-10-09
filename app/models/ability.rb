@@ -14,7 +14,9 @@ class Ability
   end
 
   def administrator
-    can :manage, User
     can :manage, BillingProfile
+    can :manage, User
+
+    can :read, Audit::User
   end
 end

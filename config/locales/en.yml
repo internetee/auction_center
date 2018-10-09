@@ -12,10 +12,30 @@ en:
 
   billing: "Billing"
 
+  profile: "Profile"
   sign_in: "Sign in"
   sign_out: "Sign out"
 
+
+  versions_name: 'Versions'
+  users_name: 'Users'
+
+  users:
+    display_name: "Display name"
+    email: "Email"
+    mobile_phone: "Mobile phone"
+    role: "Role"
+    roles: "Roles"
+    country_code: "Country code"
+    identity_code: "Identity code"
+
+  versions:
+    action: 'Action'
+    recorded_at: 'Recorded at'
+    new_values: 'New values'
+
   created_at: "Created at"
+  updated_at: "Updated at"
 
   time:
     formats:
