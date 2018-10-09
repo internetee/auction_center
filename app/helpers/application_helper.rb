@@ -28,8 +28,8 @@ module ApplicationHelper
       end
 
       if current_user&.role?(User::ADMINISTATOR_ROLE)
-        links = [{name: t(:users_name), path: admin_users_path },
-                 {name: t(:settings_name), path: admin_settings_path }]
+        links = [{ name: t(:users_name), path: admin_users_path },
+                 { name: t(:settings_name), path: admin_settings_path }]
 
         links.each do |item|
           concat(
