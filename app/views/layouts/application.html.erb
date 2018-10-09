@@ -18,10 +18,8 @@
                     </button>
                     <div class="collapse navbar-collapse" id="navbar-toggler">
                         <%= link_to application_name, :root, class: "navbar-brand" %>
-                        <ul class="navbar-nav m mt-2 my-lg-0">
-                            <%= sign_in_button(current_user) %>
-                            <%= sign_out_button(current_user) %>
-                        </ul>
+                        <%= sign_in_links(current_user) %>
+                        <%= navigation_links(current_user) %>
                     </div>
                 </nav>
             </header>
@@ -35,7 +33,6 @@
                         </div>
                     </div>
                 </div>
-
 
                 <%= yield %>
             </div>
