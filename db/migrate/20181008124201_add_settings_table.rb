@@ -4,6 +4,8 @@ class AddSettingsTable < ActiveRecord::Migration[5.2]
       t.string :code, null: false
       t.text :description, null: false
       t.text :value, null: false
+
+      t.timestamps()
     end
 
     add_index :settings, :code, unique: true
