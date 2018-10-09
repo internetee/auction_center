@@ -12,15 +12,15 @@ class AdminUsersListTest < ApplicationSystemTestCase
   def test_users_are_ordered_by_descending_created_at_date
     display_name_cells = page.find('#users-table-body').find_all('th')
     # First is users(:user)
-    assert_equal('Joe John User', display_name_cells[0].text)
+    assert_equal('Joe John Participant', display_name_cells[0].text)
 
     # Second is users(:administrator) (self)
     assert_equal('John Joe Administrator', display_name_cells[1].text)
   end
 
   def test_user_display_names_are_links
-    edited_user = users(:user)
-    display_name_cell_link = page.find('a', text: 'Joe John User')
+    edited_user = users(:participant)
+    display_name_cell_link = page.find('a', text: 'Joe John Participant')
     display_name_cell_link.click
 
     assert_current_path(admin_user_path(edited_user))
@@ -52,11 +52,12 @@ class AdminUsersListTest < ApplicationSystemTestCase
     click_link_or_button('Submit')
 
     errors_list = page.find('#errors').all('li')
-    assert_equal(4, errors_list.size)
+    assert_equal(5, errors_list.size)
     errors_array = errors_list.collect { |i| i.text }
 
     expected_errors = ["Email can't be blank", "Password can't be blank",
-                     "Identity code can't be blank", "Mobile phone can't be blank"]
+                       "Identity code can't be blank", "Mobile phone can't be blank",
+                       "Identity code is invalid"]
 
     assert_equal(errors_array.to_set, expected_errors.to_set)
   end

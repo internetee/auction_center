@@ -1,0 +1,24 @@
+en:
+  billing_profiles:
+    user: "User"
+    name: "Name"
+    vat_code: "VAT code"
+    legal_entity: "Legal entity"
+    address: "Address"
+    street: "Street"
+    city: "City"
+    state: "State"
+    postal_code: "Postal Code"
+    country: "Country"
+
+    edit:
+      title: "Edit billing profile"
+
+    index:
+      title: "Billing Profiles"
+
+    new:
+      title: "Create a billing profile"
+
+    show:
+      title: "Billing profile"

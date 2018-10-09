@@ -4,7 +4,7 @@ class EditAccountTest < ApplicationSystemTestCase
   def setup
     super
 
-    @user = users(:user)
+    @user = users(:participant)
     sign_in(@user)
   end
 
@@ -36,7 +36,7 @@ class EditAccountTest < ApplicationSystemTestCase
     fill_in('user[email]', with: 'updated-email@auction.test')
     fill_in('user[given_names]', with: 'New Given Name')
     fill_in('user[surname]', with: 'New Surname')
-    fill_in('user[mobile_phone]', with: '+372500110300')
+    fill_in('user[mobile_phone]', with: '+3725000600')
     fill_in('user[current_password]', with: 'password123')
     click_link_or_button('Update')
 
@@ -44,6 +44,26 @@ class EditAccountTest < ApplicationSystemTestCase
 
     @user.reload
     assert_equal('New Surname', @user.surname)
+  end
+
+  def test_identity_code_cannot_be_changed_once_set
+    visit edit_user_path(@user)
+    assert(page.has_field?('user[identity_code]', disabled: true))
+  end
+
+  def test_mobile_phone_needs_to_be_valid
+    visit edit_user_path(@user)
+    fill_in('user[mobile_phone]', with: '+372 500')
+    fill_in('user[current_password]', with: 'password123')
+    refute(page.has_button?('Update'))
+
+    fill_in('user[mobile_phone]', with: '+37250006000')
+    page.find('body').click # blur
+    assert(page.has_button?('Update'))
+    click_link_or_button('Update')
+
+    assert(page.has_css?('div.alert', text: 'Updated successfully.'))
+    assert(page.has_text?('+37250006000'))
   end
 
   def test_blank_values_are_ommited
@@ -56,7 +76,7 @@ class EditAccountTest < ApplicationSystemTestCase
     assert(page.has_css?('div.alert', text: 'Updated successfully.'))
 
     @user.reload
-    assert_equal('User', @user.surname)
+    assert_equal('Participant', @user.surname)
   end
 
   def test_administrator_can_also_edit_their_own_data

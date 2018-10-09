@@ -15,13 +15,14 @@
         </div>
     </div>
     <%= form_with(model: @user, url: admin_users_path,
-                  method: :post, local: true) do |f| %>
+                  method: :post, local: true, id: 'user_form') do |f| %>
         <div class="row">
             <div class="col-12 col-lg-6">
                 <h3 class="p3"><%= t('.identification_data') %></h3>
                 <div class="form-group">
                     <%= f.label :identity_code %><br />
-                    <%= f.text_field :identity_code, class: "form-control" %>
+                    <%= f.text_field :identity_code, class: "form-control",
+                                     placeholder: t('users.can_be_left_blank_if_not_estonian')%>
                 </div>
 
                 <div class="form-group">
@@ -80,9 +81,11 @@
                 <% end %>
             </div>
             <div class="col-12">
-                <%= f.submit t(:submit), class: "btn btn-primary form-control mb-2" %>
+                <%= f.submit t(:submit), class: "btn btn-primary form-control mb-2", id: 'user_form_commit' %>
                 <%= link_to t(:back), :back, class: "btn btn-secondary form-control" %>
             </div>
         </div>
     <% end %>
 </div>
+
+<%= javascript_pack_tag 'users', 'data-turbolinks-track': 'reload' %>

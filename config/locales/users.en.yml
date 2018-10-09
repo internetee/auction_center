@@ -1,5 +1,13 @@
 en:
   users:
+    display_name: "Display name"
+    email: "Email"
+    mobile_phone: "Mobile phone"
+    role: "Role"
+    roles: "Roles"
+    country_code: "Country code"
+    identity_code: "Identity code"
+
     edit:
       title: "Edit your user profile"
       contact_data: "Contact data"
@@ -16,6 +24,7 @@ en:
       title: "Create a user account"
       password_requirements: "(at least %{minimum} characters)"
       sign_up: "Sign up"
+      already_signed_in: "You are already signed in"
 
     update:
       incorrect_password: 'Incorrect current password'
