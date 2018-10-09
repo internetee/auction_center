@@ -1,0 +1,26 @@
+<%= form_with(model: setting, local: true, url: url) do |f| %>
+    <div class="row">
+        <div class="col-12 col-lg-6">
+            <div class="form-group">
+                <%= f.label :code %><br />
+                <%= f.text_field :code, class: "form-control", value: setting.code, disabled: true %>
+            </div>
+        </div>
+        <div class="col-12 col-lg-6">
+            <div class="form-group">
+                <%= f.label :description %><br />
+                <%= f.text_field :description, class: "form-control", value: setting.description %>
+            </div>
+        </div>
+        <div class="col-12 col-lg-6">
+            <div class="form-group">
+                <%= f.label :value %><br />
+                <%= f.text_field :value, class: "form-control", value: setting.value %>
+            </div>
+        </div>
+        <div class="col-12">
+            <%= f.submit t(:submit), class: "btn btn-primary form-control mb-2" %>
+            <%= link_to t(:back), :back, class: "btn btn-secondary form-control" %>
+        </div>
+    </div>
+<% end %>

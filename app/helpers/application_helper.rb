@@ -28,11 +28,16 @@ module ApplicationHelper
       end
 
       if current_user&.role?(User::ADMINISTATOR_ROLE)
-        concat(
-          content_tag(:li, class: 'nav-item') do
-            link_to(t(:users_name), admin_users_path, class: 'nav-link')
-          end
-        )
+        links = [{name: t(:users_name), path: admin_users_path },
+                 {name: t(:settings_name), path: admin_settings_path }]
+
+        links.each do |item|
+          concat(
+            content_tag(:li, class: 'nav-item') do
+              link_to(item[:name], item[:path], class: 'nav-link')
+            end
+          )
+        end
       end
     end
   end

@@ -10,6 +10,7 @@ Rails.application.routes.draw do
 
   namespace :admin, constraints: Constraints::Administrator.new do
     resources :users, concerns: [:auditable]
+    resources :settings, except: %i[create destroy], concerns: [:auditable]
   end
 
   resources :users, except: :destroy
