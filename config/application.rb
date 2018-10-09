@@ -19,6 +19,9 @@ module AuctionCenter
     # Load any YAML file nested under locales
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.yml').to_s]
 
+    # Schema.rb does not retain information about triggers and schemas that are not public.
+    config.active_record.schema_format = :sql
+
     # Load customization from special file
     config.customization = config_for(:customization)
 
