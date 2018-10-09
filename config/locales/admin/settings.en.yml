@@ -1,0 +1,11 @@
+en:
+  admin:
+    settings:
+      index:
+        title: "Settings"
+
+      edit:
+        title: "Edit Setting"
+
+      show:
+        title: "Setting"

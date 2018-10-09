@@ -1,0 +1,32 @@
+<div class="text-center">
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <h1 class="mb-3 mt-4"><%= t('.title') %></h1>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <table class="table" id="settings-table">
+                <thead>
+                    <tr>
+                        <th scope="col"><%= t('settings.code') %></th>
+                        <th scope="col"><%= t('settings.description') %></th>
+                        <th scope="col"><%= t('settings.value') %></th>
+                    </tr>
+                </thead>
+
+                <tbody id="settings-table-body">
+                    <% @settings.each do |setting| %>
+                        <tr class="settings-table-row">
+                            <td class="setting-code">
+                                <%=link_to setting.code, admin_setting_path(setting) %>
+                            </td>
+                            <td><%= setting.description %></td>
+                            <td><%= setting.value %></td>
+                        </tr>
+                    <% end %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

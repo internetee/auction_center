@@ -1,0 +1,4 @@
+application_name:
+  code: application_name
+  description: Application name, as displayed in the header
+  value: EIS Auction Center

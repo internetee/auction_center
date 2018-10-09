@@ -1,0 +1,27 @@
+<div class="row text-center">
+    <div class="col-12">
+        <h1 class="mb-3 mt-4"><%= t('.title') %></h1>
+    </div>
+</div>
+
+<div class="col-12">
+    <div class="card">
+        <div class="card-body">
+            <h2><%= @setting.code %></h2>
+
+            <dl id="setting-details-list" class="mb-4 no-bullets">
+                <dt><%= t('settings.description') %></dt>
+                <dd><%= @setting.description %></dd>
+
+                <dt><%= t('settings.value') %></dt>
+                <dd><%= @setting.value %></dd>
+
+                <dt><%= t('created_at') %></dt>
+                <dd><%= I18n.l(@setting.created_at) %></dd>
+            </dl>
+
+            <%= link_to t(:edit), edit_admin_setting_path(@setting), class: "card-link mt" %>
+            <%= link_to t(:versions_name), admin_setting_versions_url(@setting), class: "card-link mt" %>
+        </div>
+    </div>
+</div>

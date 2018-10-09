@@ -16,7 +16,10 @@ class Ability
   def administrator
     can :manage, BillingProfile
     can :manage, User
+    can %i[read update], Setting
 
+    can :read, Audit::BillingProfile
     can :read, Audit::User
+    can :read, Audit::Setting
   end
 end
