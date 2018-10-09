@@ -28,37 +28,163 @@ COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 
 --
+-- Name: process_billing_profile_audit(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.process_billing_profile_audit() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+  BEGIN
+    IF (TG_OP = 'INSERT') THEN
+      INSERT INTO audit.billing_profiles
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
+      RETURN NEW;
+    ELSEIF (TG_OP = 'UPDATE') THEN
+      INSERT INTO audit.billing_profiles
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
+      RETURN NEW;
+    ELSEIF (TG_OP = 'DELETE') THEN
+      INSERT INTO audit.billing_profiles
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
+      RETURN OLD;
+    END IF;
+    RETURN NULL;
+  END
+$$;
+
+
+--
+-- Name: process_setting_audit(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.process_setting_audit() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+  BEGIN
+    IF (TG_OP = 'INSERT') THEN
+      INSERT INTO audit.settings
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
+      RETURN NEW;
+    ELSEIF (TG_OP = 'UPDATE') THEN
+      INSERT INTO audit.settings
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
+      RETURN NEW;
+    ELSEIF (TG_OP = 'DELETE') THEN
+      INSERT INTO audit.settings
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
+      RETURN OLD;
+    END IF;
+    RETURN NULL;
+  END
+$$;
+
+
+--
 -- Name: process_user_audit(); Type: FUNCTION; Schema: public; Owner: -
 --
 
 CREATE FUNCTION public.process_user_audit() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
-    BEGIN
-      IF (TG_OP = 'INSERT') THEN
-        INSERT INTO audit.users
-        (object_id, action, recorded_at, old_value, new_value)
-        VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
-        RETURN NEW;
-      ELSEIF (TG_OP = 'UPDATE') THEN
-        INSERT INTO audit.users
-        (object_id, action, recorded_at, old_value, new_value)
-        VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
-        RETURN NEW;
-      ELSEIF (TG_OP = 'DELETE') THEN
-        INSERT INTO audit.users
-        (object_id, action, recorded_at, old_value, new_value)
-        VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
-        RETURN OLD;
-      END IF;
-      RETURN NULL;
-    END
-  $$;
+  BEGIN
+    IF (TG_OP = 'INSERT') THEN
+      INSERT INTO audit.users
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
+      RETURN NEW;
+    ELSEIF (TG_OP = 'UPDATE') THEN
+      INSERT INTO audit.users
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
+      RETURN NEW;
+    ELSEIF (TG_OP = 'DELETE') THEN
+      INSERT INTO audit.users
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
+      RETURN OLD;
+    END IF;
+    RETURN NULL;
+  END
+$$;
 
 
 SET default_tablespace = '';
 
 SET default_with_oids = false;
+
+--
+-- Name: billing_profiles; Type: TABLE; Schema: audit; Owner: -; Tablespace: 
+--
+
+CREATE TABLE audit.billing_profiles (
+    id integer NOT NULL,
+    object_id bigint,
+    action text NOT NULL,
+    recorded_at timestamp without time zone,
+    old_value jsonb,
+    new_value jsonb,
+    CONSTRAINT billing_profiles_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
+);
+
+
+--
+-- Name: billing_profiles_id_seq; Type: SEQUENCE; Schema: audit; Owner: -
+--
+
+CREATE SEQUENCE audit.billing_profiles_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: billing_profiles_id_seq; Type: SEQUENCE OWNED BY; Schema: audit; Owner: -
+--
+
+ALTER SEQUENCE audit.billing_profiles_id_seq OWNED BY audit.billing_profiles.id;
+
+
+--
+-- Name: settings; Type: TABLE; Schema: audit; Owner: -; Tablespace: 
+--
+
+CREATE TABLE audit.settings (
+    id integer NOT NULL,
+    object_id bigint,
+    action text NOT NULL,
+    recorded_at timestamp without time zone,
+    old_value jsonb,
+    new_value jsonb,
+    CONSTRAINT settings_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
+);
+
+
+--
+-- Name: settings_id_seq; Type: SEQUENCE; Schema: audit; Owner: -
+--
+
+CREATE SEQUENCE audit.settings_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: settings_id_seq; Type: SEQUENCE OWNED BY; Schema: audit; Owner: -
+--
+
+ALTER SEQUENCE audit.settings_id_seq OWNED BY audit.settings.id;
+
 
 --
 -- Name: users; Type: TABLE; Schema: audit; Owner: -; Tablespace: 
@@ -107,12 +233,84 @@ CREATE TABLE public.ar_internal_metadata (
 
 
 --
+-- Name: billing_profiles; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE public.billing_profiles (
+    id bigint NOT NULL,
+    user_id integer NOT NULL,
+    name character varying,
+    vat_code character varying,
+    legal_entity boolean DEFAULT false,
+    street character varying NOT NULL,
+    city character varying NOT NULL,
+    state character varying,
+    postal_code character varying NOT NULL,
+    country character varying NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: billing_profiles_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.billing_profiles_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: billing_profiles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.billing_profiles_id_seq OWNED BY public.billing_profiles.id;
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE public.schema_migrations (
     version character varying NOT NULL
 );
+
+
+--
+-- Name: settings; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE public.settings (
+    id bigint NOT NULL,
+    code character varying NOT NULL,
+    description text NOT NULL,
+    value text NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: settings_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.settings_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: settings_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.settings_id_seq OWNED BY public.settings.id;
 
 
 --
@@ -164,6 +362,20 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 -- Name: id; Type: DEFAULT; Schema: audit; Owner: -
 --
 
+ALTER TABLE ONLY audit.billing_profiles ALTER COLUMN id SET DEFAULT nextval('audit.billing_profiles_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: audit; Owner: -
+--
+
+ALTER TABLE ONLY audit.settings ALTER COLUMN id SET DEFAULT nextval('audit.settings_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: audit; Owner: -
+--
+
 ALTER TABLE ONLY audit.users ALTER COLUMN id SET DEFAULT nextval('audit.users_id_seq'::regclass);
 
 
@@ -171,7 +383,37 @@ ALTER TABLE ONLY audit.users ALTER COLUMN id SET DEFAULT nextval('audit.users_id
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY public.billing_profiles ALTER COLUMN id SET DEFAULT nextval('public.billing_profiles_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.settings ALTER COLUMN id SET DEFAULT nextval('public.settings_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
+
+
+--
+-- Name: billing_profiles_pkey; Type: CONSTRAINT; Schema: audit; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY audit.billing_profiles
+    ADD CONSTRAINT billing_profiles_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: settings_pkey; Type: CONSTRAINT; Schema: audit; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY audit.settings
+    ADD CONSTRAINT settings_pkey PRIMARY KEY (id);
 
 
 --
@@ -191,6 +433,14 @@ ALTER TABLE ONLY public.ar_internal_metadata
 
 
 --
+-- Name: billing_profiles_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY public.billing_profiles
+    ADD CONSTRAINT billing_profiles_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -199,11 +449,47 @@ ALTER TABLE ONLY public.schema_migrations
 
 
 --
+-- Name: settings_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY public.settings
+    ADD CONSTRAINT settings_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: billing_profiles_object_id_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
+--
+
+CREATE INDEX billing_profiles_object_id_idx ON audit.billing_profiles USING btree (object_id);
+
+
+--
+-- Name: billing_profiles_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
+--
+
+CREATE INDEX billing_profiles_recorded_at_idx ON audit.billing_profiles USING btree (recorded_at);
+
+
+--
+-- Name: settings_object_id_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
+--
+
+CREATE INDEX settings_object_id_idx ON audit.settings USING btree (object_id);
+
+
+--
+-- Name: settings_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
+--
+
+CREATE INDEX settings_recorded_at_idx ON audit.settings USING btree (recorded_at);
 
 
 --
@@ -221,10 +507,24 @@ CREATE INDEX users_recorded_at_idx ON audit.users USING btree (recorded_at);
 
 
 --
--- Name: index_users_on_alpha_two_country_code_and_identity_code; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_billing_profiles_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE UNIQUE INDEX index_users_on_alpha_two_country_code_and_identity_code ON public.users USING btree (alpha_two_country_code, identity_code);
+CREATE INDEX index_billing_profiles_on_user_id ON public.billing_profiles USING btree (user_id);
+
+
+--
+-- Name: index_billing_profiles_on_vat_code; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_billing_profiles_on_vat_code ON public.billing_profiles USING btree (vat_code);
+
+
+--
+-- Name: index_settings_on_code; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_settings_on_code ON public.settings USING btree (code);
 
 
 --
@@ -249,6 +549,27 @@ CREATE UNIQUE INDEX index_users_on_reset_password_token ON public.users USING bt
 
 
 --
+-- Name: users_by_identity_code_and_country; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX users_by_identity_code_and_country ON public.users USING btree (alpha_two_country_code, identity_code) WHERE ((alpha_two_country_code)::text = 'EE'::text);
+
+
+--
+-- Name: process_billing_profile_audit; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER process_billing_profile_audit AFTER INSERT OR DELETE OR UPDATE ON public.billing_profiles FOR EACH ROW EXECUTE PROCEDURE public.process_billing_profile_audit();
+
+
+--
+-- Name: process_setting_audit; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER process_setting_audit AFTER INSERT OR DELETE OR UPDATE ON public.settings FOR EACH ROW EXECUTE PROCEDURE public.process_setting_audit();
+
+
+--
 -- Name: process_user_audit; Type: TRIGGER; Schema: public; Owner: -
 --
 
@@ -265,6 +586,11 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180829130641'),
 ('20180907083511'),
 ('20180919104523'),
-('20180921084531');
+('20180921084531'),
+('20180928060715'),
+('20181001094917'),
+('20181008124201'),
+('20181008133152'),
+('20181009104026');
 
 

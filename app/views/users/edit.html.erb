@@ -14,7 +14,7 @@
         </div>
     </div>
 
-    <%= form_with(model: @user, url: user_path(@user), html: { method: :put }) do |f| %>
+    <%= form_with(model: @user, url: user_path(@user), html: { method: :put }, id: 'user_form') do |f| %>
         <div class="row justify-content-center">
             <div class="col-12 col-lg-6">
                 <h3 class="p3"><%= t('.contact_data') %></h3>
@@ -41,6 +41,19 @@
                     <%= f.text_field :surname, autofocus: true, autocomplete: "off",
                     class: "form-control" %>
                 </div>
+                <div class="form-group">
+                    <%= f.label :identity_code %> <span class="small text-info">
+                    <%= f.text_field :identity_code, class: "form-control",
+                    placeholder: t('users.can_be_left_blank_if_not_estonian'), disabled: true %>
+                </div>
+
+                <div class="form-group">
+                    <%= f.label :country %><br />
+                    <%= f.select :country_code,
+                    options_for_select(Countries::ALPHA_2_SELECTION, ['Estonia', 'EE']),
+                    {},
+                    class: "form-control form-control" %>
+                </div>
             </div>
             <div class="col-12 col-lg-6">
                 <h3 class="p3"><%= t('.new_password') %></h3>
@@ -62,9 +75,11 @@
                 </div>
             </div>
             <div class="col-12 mt-4">
-                <%= f.submit t(:update), class: "btn btn-primary form-control mb-4" %>
+                <%= f.submit t(:update), class: "btn btn-primary form-control mb-4", id: "user_form_commit" %>
                 <%= link_to t(:back), :back, class: "mt-4" %>
             </div>
         </div>
     <% end %>
 </div>
+
+<%= javascript_pack_tag 'users', 'data-turbolinks-track': 'reload' %>

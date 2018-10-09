@@ -58,7 +58,7 @@ module Admin
     def destroy
       @user.destroy
       respond_to do |format|
-        format.html { redirect_to admin_users_path, notice: t(:deleted_successfully) }
+        format.html { redirect_to admin_users_path, notice: t(:deleted) }
         format.json { head :no_content }
       end
     end

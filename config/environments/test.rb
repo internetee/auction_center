@@ -18,9 +18,8 @@ Rails.application.configure do
     'Cache-Control' => "public, max-age=#{1.hour.to_i}"
   }
 
-  # Workaround for getting javascript to work properly in test.
-  config.assets.compile = true
-  config.assets.debug = true
+  config.assets.compile = false
+  config.assets.debug = false
 
   # Show full error reports and disable caching.
   config.consider_all_requests_local       = true
