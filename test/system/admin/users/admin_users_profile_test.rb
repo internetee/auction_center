@@ -26,7 +26,7 @@ class AdminUsersProfileTest < ApplicationSystemTestCase
   end
 
   def test_mobile_phone_needs_to_be_valid
-    visit edit_admin_user_path(@user)
+    visit edit_admin_user_path(@participant)
     fill_in('user[mobile_phone]', with: '+372 500')
     page.find('body').click # blur
     refute(page.has_button?('Update'))
@@ -39,7 +39,7 @@ class AdminUsersProfileTest < ApplicationSystemTestCase
   end
 
   def test_identity_code_cannot_be_changed_once_set
-    visit edit_admin_user_path(@user)
+    visit edit_admin_user_path(@participant)
 
     assert(page.has_field?('user[identity_code]', disabled: true))
   end

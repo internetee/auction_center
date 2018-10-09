@@ -21,7 +21,7 @@ class CreateAccountTest < ApplicationSystemTestCase
   end
 
   def test_cannot_create_new_user_if_already_signed_in
-    sign_in(users(:user))
+    sign_in(users(:participant))
     visit new_user_path
 
     assert(page.has_css?('div.alert', text: 'You are already signed in'))
