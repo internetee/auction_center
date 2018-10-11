@@ -233,6 +233,39 @@ CREATE TABLE public.ar_internal_metadata (
 
 
 --
+-- Name: auctions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE public.auctions (
+    id bigint NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    domain_name character varying NOT NULL,
+    ends_at timestamp without time zone,
+    starts_at timestamp without time zone
+);
+
+
+--
+-- Name: auctions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.auctions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: auctions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.auctions_id_seq OWNED BY public.auctions.id;
+
+
+--
 -- Name: billing_profiles; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -383,6 +416,13 @@ ALTER TABLE ONLY audit.users ALTER COLUMN id SET DEFAULT nextval('audit.users_id
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY public.auctions ALTER COLUMN id SET DEFAULT nextval('public.auctions_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY public.billing_profiles ALTER COLUMN id SET DEFAULT nextval('public.billing_profiles_id_seq'::regclass);
 
 
@@ -430,6 +470,14 @@ ALTER TABLE ONLY audit.users
 
 ALTER TABLE ONLY public.ar_internal_metadata
     ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
+
+
+--
+-- Name: auctions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY public.auctions
+    ADD CONSTRAINT auctions_pkey PRIMARY KEY (id);
 
 
 --
@@ -504,6 +552,20 @@ CREATE INDEX users_object_id_idx ON audit.users USING btree (object_id);
 --
 
 CREATE INDEX users_recorded_at_idx ON audit.users USING btree (recorded_at);
+
+
+--
+-- Name: index_auctions_on_domain_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_auctions_on_domain_name ON public.auctions USING btree (domain_name);
+
+
+--
+-- Name: index_auctions_on_ends_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_auctions_on_ends_at ON public.auctions USING btree (ends_at);
 
 
 --
@@ -591,6 +653,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181001094917'),
 ('20181008124201'),
 ('20181008133152'),
-('20181009104026');
+('20181009104026'),
+('20181011080931');
 
 
