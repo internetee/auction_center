@@ -28,6 +28,35 @@ COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 
 --
+-- Name: process_auction_audit(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.process_auction_audit() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+  BEGIN
+    IF (TG_OP = 'INSERT') THEN
+      INSERT INTO audit.auctions
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
+      RETURN NEW;
+    ELSEIF (TG_OP = 'UPDATE') THEN
+      INSERT INTO audit.auctions
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
+      RETURN NEW;
+    ELSEIF (TG_OP = 'DELETE') THEN
+      INSERT INTO audit.auctions
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
+      RETURN OLD;
+    END IF;
+    RETURN NULL;
+  END
+$$;
+
+
+--
 -- Name: process_billing_profile_audit(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -117,6 +146,40 @@ $$;
 SET default_tablespace = '';
 
 SET default_with_oids = false;
+
+--
+-- Name: auctions; Type: TABLE; Schema: audit; Owner: -; Tablespace: 
+--
+
+CREATE TABLE audit.auctions (
+    id integer NOT NULL,
+    object_id bigint,
+    action text NOT NULL,
+    recorded_at timestamp without time zone,
+    old_value jsonb,
+    new_value jsonb,
+    CONSTRAINT auctions_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
+);
+
+
+--
+-- Name: auctions_id_seq; Type: SEQUENCE; Schema: audit; Owner: -
+--
+
+CREATE SEQUENCE audit.auctions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: auctions_id_seq; Type: SEQUENCE OWNED BY; Schema: audit; Owner: -
+--
+
+ALTER SEQUENCE audit.auctions_id_seq OWNED BY audit.auctions.id;
+
 
 --
 -- Name: billing_profiles; Type: TABLE; Schema: audit; Owner: -; Tablespace: 
@@ -241,8 +304,8 @@ CREATE TABLE public.auctions (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     domain_name character varying NOT NULL,
-    ends_at timestamp without time zone,
-    starts_at timestamp without time zone
+    ends_at timestamp without time zone NOT NULL,
+    starts_at timestamp without time zone DEFAULT now() NOT NULL
 );
 
 
@@ -395,6 +458,13 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 -- Name: id; Type: DEFAULT; Schema: audit; Owner: -
 --
 
+ALTER TABLE ONLY audit.auctions ALTER COLUMN id SET DEFAULT nextval('audit.auctions_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: audit; Owner: -
+--
+
 ALTER TABLE ONLY audit.billing_profiles ALTER COLUMN id SET DEFAULT nextval('audit.billing_profiles_id_seq'::regclass);
 
 
@@ -438,6 +508,14 @@ ALTER TABLE ONLY public.settings ALTER COLUMN id SET DEFAULT nextval('public.set
 --
 
 ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
+
+
+--
+-- Name: auctions_pkey; Type: CONSTRAINT; Schema: audit; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY audit.auctions
+    ADD CONSTRAINT auctions_pkey PRIMARY KEY (id);
 
 
 --
@@ -510,6 +588,20 @@ ALTER TABLE ONLY public.settings
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auctions_object_id_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
+--
+
+CREATE INDEX auctions_object_id_idx ON audit.auctions USING btree (object_id);
+
+
+--
+-- Name: auctions_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
+--
+
+CREATE INDEX auctions_recorded_at_idx ON audit.auctions USING btree (recorded_at);
 
 
 --
@@ -618,6 +710,13 @@ CREATE UNIQUE INDEX users_by_identity_code_and_country ON public.users USING btr
 
 
 --
+-- Name: process_auction_audit; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER process_auction_audit AFTER INSERT OR DELETE OR UPDATE ON public.auctions FOR EACH ROW EXECUTE PROCEDURE public.process_auction_audit();
+
+
+--
 -- Name: process_billing_profile_audit; Type: TRIGGER; Schema: public; Owner: -
 --
 
@@ -654,6 +753,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181008124201'),
 ('20181008133152'),
 ('20181009104026'),
-('20181011080931');
+('20181011080931'),
+('20181011082830');
 
 

@@ -4,8 +4,8 @@ class AddAuctionsTable < ActiveRecord::Migration[5.2]
       t.timestamps()
 
       t.string :domain_name, null: false
-      t.datetime :ends_at
-      t.datetime :starts_at
+      t.datetime :ends_at, null: false
+      t.datetime :starts_at, null: false, default: -> { 'now()' }
     end
 
     add_index :auctions, :domain_name
