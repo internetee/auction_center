@@ -2,3 +2,8 @@ id_test:
   domain_name: 'id.test'
   starts_at: <%= Time.parse('2010-07-05 10:30 +0000') %>
   ends_at: <%= Time.parse('2010-07-06 10:30 +0000') %>
+
+expired:
+  domain_name: 'expired.test'
+  starts_at: <%= Time.parse('1999-07-05 10:30 +0000') %>
+  ends_at: <%= Time.parse('1999-07-05 11:30 +0000') %>
