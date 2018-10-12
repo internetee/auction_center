@@ -9,6 +9,9 @@
         <div class="card">
             <div class="card-body">
                 <h2><%= @auction.domain_name %></h2>
+                <%- if @auction.finished? %>
+                    <h3><%= t('.finished') %></h3>
+                <% end %>
 
                 <dl class="mb-6 no-bullets billing-profile-card">
                     <dt><%= t('auctions.starts_at') %></dt>

@@ -2,7 +2,7 @@ class AuctionsController < ApplicationController
   before_action :authorize_user
 
   def index
-    @auctions = Auction.accessible_by(current_ability)
+    @auctions = Auction.active.accessible_by(current_ability)
   end
 
   def show

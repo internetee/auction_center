@@ -9,3 +9,4 @@ en:
 
     show:
       title: "Auction details"
+      finished: "This auction has finished"
