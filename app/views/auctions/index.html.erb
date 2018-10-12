@@ -1,0 +1,30 @@
+<div class="text-center">
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <h1 class="mb-3 mt-4"><%= t('.title') %></h1>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <table class="table" id="auctions-table">
+                <thead>
+                    <tr>
+                        <th scope="col"><%= t('auctions.domain_name') %></th>
+                        <th scope="col"><%= t('auctions.ends_at') %></th>
+                    </tr>
+                </thead>
+
+                <tbody id="auctions-table-body">
+                    <% @auctions.each do |auction| %>
+                        <tr class="auctions-table-row">
+                            <td class="auction-domain-name">
+                                <%= link_to auction.domain_name, auction_path(auction) %>
+                            </td>
+                            <td><%= I18n.l(auction.ends_at) %></td>
+                        </tr>
+                    <% end %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

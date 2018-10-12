@@ -14,6 +14,7 @@ Rails.application.routes.draw do
     resources :settings, except: %i[create destroy], concerns: [:auditable]
   end
 
-  resources :users, except: :destroy
+  resources :auctions, only: %i[index show]
   resources :billing_profiles
+  resources :users, except: :destroy
 end
