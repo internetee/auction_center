@@ -64,4 +64,10 @@ class AbilityTest < ActiveSupport::TestCase
     assert(@participant_ability.can?(:read, Auction))
     assert(@administrator_ability.can?(:read, Auction))
   end
+
+  def test_administrator_can_manage_auctions
+    refute(@anonymous_ability.can?(:manage, Auction))
+    refute(@participant_ability.can?(:manage, Auction))
+    assert(@administrator_ability.can?(:manage, Auction))
+  end
 end

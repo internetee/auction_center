@@ -20,6 +20,12 @@
                     <dt><%= t('auctions.ends_at') %></dt>
                     <dd><%= @auction.ends_at %></dd>
                 </dl>
+
+
+                <%= link_to t(:edit), edit_admin_auction_path(@auction),
+                            class: "card-link mt" %>
+                <%= link_to t(:versions_name), admin_auction_versions_url(@auction),
+                            class: "card-link mt" %>
             </div>
         </div>
     </div>

@@ -1,0 +1,17 @@
+en:
+  admin:
+    auctions:
+      index:
+        title: "Auctions"
+        new_auction: "New auction"
+
+      new:
+        title: "New auction"
+        errors: "prohibited this auction from being saved"
+
+      show:
+        title: "Auction"
+
+      edit:
+        title: "Edit auction"
+        errors: "prohibited this auction from being saved"

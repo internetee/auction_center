@@ -3,10 +3,10 @@ en:
     domain_name: 'Domain Name'
     starts_at: 'Starts at'
     ends_at: 'Ends at'
+    finished: "This auction has finished"
 
     index:
       title: "Current auctions"
 
     show:
       title: "Auction details"
-      finished: "This auction has finished"

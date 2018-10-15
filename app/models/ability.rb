@@ -19,6 +19,7 @@ class Ability
   end
 
   def administrator
+    can :manage, Auction
     can :manage, BillingProfile
     can :manage, User
     can %i[read update], Setting

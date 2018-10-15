@@ -15,6 +15,7 @@ en:
       we_need_your_password: "(we need your current password to confirm your changes)"
       you_can_leave_blank: "(leave blank if you don't want to change it)"
       confirm_your_changes: "Confirm your changes"
+      errors: "prohibited this user from being saved"
 
     index:
       welcome_back: "Welcome back, %{display_name}"
@@ -25,6 +26,7 @@ en:
       password_requirements: "(at least %{minimum} characters)"
       sign_up: "Sign up"
       already_signed_in: "You are already signed in"
+      errors: "prohibited this user from being saved"
 
     update:
       incorrect_password: 'Incorrect current password'

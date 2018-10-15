@@ -28,7 +28,9 @@ module ApplicationHelper
       end
 
       if current_user&.role?(User::ADMINISTATOR_ROLE)
-        links = [{ name: t(:users_name), path: admin_users_path },
+        links = [{ name: t(:auctions_name), path: admin_auctions_path },
+                 { name: t(:billing_profiles_name), path: admin_billing_profiles_path },
+                 { name: t(:users_name), path: admin_users_path },
                  { name: t(:settings_name), path: admin_settings_path }]
 
         links.each do |item|
