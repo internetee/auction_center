@@ -1,7 +1,7 @@
 require 'constraints/administrator'
 
 Rails.application.routes.draw do
-  root to: 'users#index'
+  root to: 'auctions#index'
   devise_for :users, path: 'sessions'
 
   concern :auditable do

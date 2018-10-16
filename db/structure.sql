@@ -28,6 +28,20 @@ COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 
 --
+-- Name: btree_gist; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS btree_gist WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION btree_gist; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION btree_gist IS 'support for indexing common datatypes in GiST';
+
+
+--
 -- Name: process_auction_audit(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -305,7 +319,8 @@ CREATE TABLE public.auctions (
     updated_at timestamp without time zone NOT NULL,
     domain_name character varying NOT NULL,
     ends_at timestamp without time zone NOT NULL,
-    starts_at timestamp without time zone DEFAULT now() NOT NULL
+    starts_at timestamp without time zone DEFAULT now() NOT NULL,
+    CONSTRAINT starts_at_earlier_than_ends_at CHECK ((starts_at < ends_at))
 );
 
 
@@ -583,6 +598,14 @@ ALTER TABLE ONLY public.settings
 
 
 --
+-- Name: unique_domain_name_per_auction_duration; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY public.auctions
+    ADD CONSTRAINT unique_domain_name_per_auction_duration EXCLUDE USING gist (domain_name WITH =, tsrange(starts_at, ends_at, '[]'::text) WITH &&);
+
+
+--
 -- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -754,6 +777,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181008133152'),
 ('20181009104026'),
 ('20181011080931'),
-('20181011082830');
+('20181011082830'),
+('20181016124017');
 
 

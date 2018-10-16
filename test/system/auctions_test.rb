@@ -16,14 +16,14 @@ class AuctionsTest < ApplicationSystemTestCase
   end
 
   def test_auctions_index_contains_a_list
-    visit(auctions_path)
+    visit('/')
 
     assert(page.has_table?('auctions-table'))
     assert(page.has_link?('id.test', href: auction_path(@auction.id)))
   end
 
   def test_auctions_index_does_not_contain_auctions_that_are_finished
-    visit(auctions_path)
+    visit('/')
 
     refute(page.has_link?('expired.test'))
   end
