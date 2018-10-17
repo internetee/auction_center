@@ -19,7 +19,7 @@ class AdminAuctionsTest < ApplicationSystemTestCase
     visit(new_admin_auction_path)
 
     fill_in('auction[domain_name]', with: 'new-domain-auction.test')
-    fill_in('auction[starts_at]', with: Time.zone.now)
+    fill_in('auction[starts_at]', with: Time.zone.now + 30.minutes)
     fill_in('auction[ends_at]', with: (Time.zone.now + 1.day))
 
     assert_changes('Auction.count') do
@@ -34,6 +34,7 @@ class AdminAuctionsTest < ApplicationSystemTestCase
     fill_in('auction[starts_at]', with: Time.zone.now)
     fill_in('auction[ends_at]', with: (Time.zone.now - 1.day))
 
+    # Check in-browser validation
     validation_message = find("#auction_ends_at").native.attribute("validationMessage")
     assert(validation_message)
 
