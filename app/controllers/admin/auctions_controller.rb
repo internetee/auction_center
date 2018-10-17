@@ -40,7 +40,7 @@ module Admin
           format.json { head :no_content }
         else
           format.html { redirect_to admin_auctions_path, notice: t('.cannot_delete') }
-          format.json { render json: {errors: [t('.cannot_delete')] }, status: :forbidden }
+          format.json { render json: { errors: [t('.cannot_delete')] }, status: :forbidden }
         end
       end
     end
