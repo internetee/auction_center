@@ -577,6 +577,14 @@ CREATE TRIGGER process_user_audit AFTER INSERT OR DELETE OR UPDATE ON public.use
 
 
 --
+-- Name: fk_rails_8fda547d9d; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.billing_profiles
+    ADD CONSTRAINT fk_rails_8fda547d9d FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
 -- PostgreSQL database dump complete
 --
 
@@ -592,6 +600,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181008124201'),
 ('20181008133152'),
 ('20181009104026'),
-('20181017114957');
+('20181017114957'),
+('20181017122905');
 
 
