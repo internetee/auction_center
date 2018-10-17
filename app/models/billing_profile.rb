@@ -6,7 +6,8 @@ class BillingProfile < ApplicationRecord
   validates :postal_code, presence: true
   validates :country, presence: true
 
-  validates :vat_code, presence: true, if: proc { |i| i.legal_entity }
+  validates :name, presence: true, if: -> { legal_entity? }
+  validates :vat_code, uniqueness: { scope: :user_id }, allow_blank: true
 
   def address
     postal_code_with_city = [postal_code, city].join(' ')
@@ -15,5 +16,9 @@ class BillingProfile < ApplicationRecord
 
   def user_name
     user.display_name
+  end
+
+  def legal_entity?
+    legal_entity
   end
 end

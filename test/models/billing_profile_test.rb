@@ -38,13 +38,25 @@ class BillingProfileTest < ActiveSupport::TestCase
 
     billing_profile.legal_entity = true
     refute(billing_profile.valid?)
-    assert_equal(["can't be blank"], billing_profile.errors[:vat_code])
+    assert_equal(["can't be blank"], billing_profile.errors[:name])
   end
 
   def test_address
     expected_address = 'Baker Street 221B, NW1 6XE London, United Kingdom'
 
     assert_equal(expected_address, @billing_profile.address)
+  end
+
+  def test_vat_codes_must_be_unique_per_user
+    duplicate = @billing_profile.dup
+
+    refute(duplicate.valid?)
+    assert_equal(duplicate.errors[:vat_code], ['has already been taken'])
+
+    private_person_profile = billing_profiles(:private_person)
+
+    duplicate = private_person_profile.dup
+    assert(duplicate.valid?)
   end
 
   def test_user_name

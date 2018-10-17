@@ -6,6 +6,7 @@ class BillingProfilesTest < ApplicationSystemTestCase
 
     @user = users(:participant)
     @billing_profile = billing_profiles(:private_person)
+    @company_billing_profile = billing_profiles(:company)
     sign_in(@user)
   end
 
@@ -39,6 +40,21 @@ class BillingProfilesTest < ApplicationSystemTestCase
     end
 
     assert(page.has_css?('div.alert', text: 'Created successfully.'))
+  end
+
+  def test_billing_profile_vat_code_needs_to_be_unique_for_user
+    visit new_billing_profile_path
+    fill_in_address
+
+    fill_in('billing_profile[name]', with: @company_billing_profile.name)
+    fill_in('billing_profile[vat_code]', with: @company_billing_profile.vat_code)
+    check('billing_profile[legal_entity]')
+
+    assert_no_changes('BillingProfile.count') do
+      click_link_or_button('Submit')
+    end
+
+    assert(page.has_text?('Vat code has already been taken'))
   end
 
   def test_a_user_can_create_private_billing_profile_for_someone_else
