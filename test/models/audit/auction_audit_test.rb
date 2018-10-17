@@ -15,8 +15,9 @@ class AuctionAuditTest < ActiveSupport::TestCase
   end
 
   def test_creating_a_auction_creates_a_history_record
-    auction = Auction.new(domain_name: 'id.test',
-                          ends_at: Time.now + 2.days)
+    auction = Auction.new(domain_name: 'some-domain.test',
+                          ends_at: Time.now + 2.days,
+                          starts_at: Time.now)
 
     auction.save
 

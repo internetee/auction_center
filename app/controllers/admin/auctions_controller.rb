@@ -1,7 +1,7 @@
 module Admin
   class AuctionsController < BaseController
     before_action :authorize_user
-    before_action :set_auction, except: %i[index new create]
+    before_action :set_auction, only: %i[show destroy]
 
     # GET /admin/auctions/new
     def new
@@ -31,8 +31,19 @@ module Admin
     # GET /admin/auctions/1
     def show; end
 
-    # GET /admin/auctions/1/edit
-    def edit; end
+    # DELETE /admin/auctions/1
+    def destroy
+      respond_to do |format|
+        if @auction.can_be_deleted?
+          @auction.destroy
+          format.html { redirect_to admin_auctions_path, notice: t(:deleted) }
+          format.json { head :no_content }
+        else
+          format.html { redirect_to admin_auctions_path, notice: t('.cannot_delete') }
+          format.json { render json: {errors: [t('.cannot_delete')] }, status: :forbidden }
+        end
+      end
+    end
 
     private
 

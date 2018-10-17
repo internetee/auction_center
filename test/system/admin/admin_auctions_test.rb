@@ -11,6 +11,10 @@ class AdminAuctionsTest < ApplicationSystemTestCase
     sign_in(@user)
   end
 
+  def teardown
+    travel_back
+  end
+
   def test_administrator_can_create_new_auction
     visit(new_admin_auction_path)
 
@@ -72,24 +76,36 @@ class AdminAuctionsTest < ApplicationSystemTestCase
     end
   end
 
-  def test_updating_an_auction_that_has_not_started_is_possible
-    visit(edit_admin_auction_path(@expired_auction))
-    assert(page.has_button?('Submit'))
+  def test_administrator_can_remove_auction_if_it_has_not_started
+    travel_to Time.parse('2010-07-04 10:30 +0000')
 
-    fill_in('auction[domain_name]', with: 'new-domain-auction.test')
+    visit(admin_auction_path(@auction))
+
+    assert(page.has_link?('Delete'))
+
+    accept_confirm do
+      click_link_or_button('Delete')
+    end
+
+    assert(page.has_text?('Deleted successfully'))
   end
 
-  def test_updating_expired_auction_is_not_possible
-   visit(edit_admin_auction_path(@expired_auction))
-   refute(page.has_button?('Submit'))
-  end
+  def test_administrator_cannot_remove_auction_if_it_has_started
+    travel_to Time.parse('2010-07-05 11:30 +0000')
 
-  def test_updating_an_auction_in_progress_is_not_possible
-    travel_to Time.parse('2010-07-05 10:31 +0000')
+    visit(admin_auction_path(@auction))
 
-    visit(edit_admin_auction_path(@auction))
-    refute(page.has_button?('Submit'))
+    assert(page.has_link?('Delete'))
 
-    travel_back
+    assert_no_changes('Auction.count') do
+      accept_confirm do
+        click_link_or_button('Delete')
+      end
+    end
+
+    refute(page.has_text?('Deleted successfully'))
+    assert(
+      page.has_text?('You cannot delete an auction that is already in progress or has finished.')
+    )
   end
 end

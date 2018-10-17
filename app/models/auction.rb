@@ -1,27 +1,65 @@
 class Auction < ApplicationRecord
   validates :domain_name, presence: true
   validates :ends_at, presence: true
+  validates :starts_at, presence: true
 
-  # validate :must_not_overlap, on: :create
+  validate :does_not_overlap
+  validate :ends_at_later_than_starts_at
 
   scope :active, -> { where('ends_at >= ?', Time.now.utc) }
-  scope :overlapping, lambda { |auction|
-    sql = <<~SQL.squish
-             domain_name = ? AND
-             tsrange(starts_at, ends_at, '[]') && tsrange(?, ?, '[]')
-          SQL
 
-    where(sql,auction.domain_name, auction.starts_at, auction.ends_at)
-  }
+  def does_not_overlap
+    return unless starts_at && ends_at
+    return unless overlaping_auctions&.exists?
 
-  def must_not_overlap
-    if Auction.overlapping(self).exists?
-      errors.add(:starts_at, 'overlaps with another auction')
-      errors.add(:ends_at, 'overlaps with another auction')
+    errors.add(:starts_at, 'overlaps with another auction')
+    errors.add(:ends_at, 'overlaps with another auction')
+  end
+
+  def ends_at_later_than_starts_at
+    return unless starts_at && ends_at
+    return if ends_at > starts_at
+
+    errors.add(:starts_at, 'must be earlier than ends_at')
+  end
+
+  def overlaping_auctions
+    dates_order = [starts_at, ends_at].sort
+    if persisted?
+      sql = <<~SQL.squish
+        id <> ? and domain_name = ?
+        AND tsrange(starts_at, ends_at, '[]') && tsrange(?, ?, '[]')
+      SQL
+
+      Auction.where(sql, id, domain_name, dates_order.first, dates_order.second)
+    else
+      sql = "domain_name = ? AND tsrange(starts_at, ends_at, '[]') && tsrange(?, ?, '[]')"
+
+      Auction.where(sql, domain_name, dates_order.first, dates_order.second)
+    end
+  end
+
+  def can_be_deleted?
+    if valid?
+      !in_progress? && !finished?
+    else
+      false
     end
   end
 
   def finished?
-    Time.now.utc >= ends_at
+    if valid?
+      Time.now.utc > ends_at
+    else
+      false
+    end
+  end
+
+  def in_progress?
+    if valid?
+      Time.now.utc > starts_at && !finished?
+    else
+      false
+    end
   end
 end
