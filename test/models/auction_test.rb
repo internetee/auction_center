@@ -31,14 +31,20 @@ class AuctionTest < ActiveSupport::TestCase
 
   def test_finished_returns_a_boolean
     auction = Auction.new(domain_name: 'some-domain.test')
-    auction.starts_at = Time.now - 2.days
+    auction.starts_at = Time.now
     auction.ends_at = Time.now + 1.day
 
     refute(auction.finished?)
+    assert(@expired_auction.finished?)
+  end
 
-    auction.ends_at = Time.now - 1.day
+  def test_starts_at_cannot_be_in_the_past_on_create
+    auction = Auction.new(domain_name: 'some-domain.test')
+    auction.ends_at = Time.now + 2.days
+    auction.starts_at = Time.now - 2.days
 
-    assert(auction.finished?)
+    refute(auction.valid?(:create))
+    assert(auction.valid?(:update))
   end
 
   def test_in_progress_returns_a_boolean
@@ -47,11 +53,6 @@ class AuctionTest < ActiveSupport::TestCase
     auction.ends_at = Time.now + 3.days
 
     refute(auction.in_progress?)
-
-    auction.starts_at = Time.now - 1.day
-    auction.ends_at = Time.now + 3.days
-
-    assert(auction.in_progress?)
   end
 
   def test_can_be_deleted_returns_a_boolean
@@ -75,7 +76,7 @@ class AuctionTest < ActiveSupport::TestCase
   def test_auction_must_end_later_than_it_starts
     auction = Auction.new(domain_name: 'some-domain-name.test',
                           ends_at: Time.parse('2010-07-04 19:30 +0000'),
-                          starts_at: Time.parse('2010-07-05 00:30 +0000'))
+                          starts_at: Time.parse('2010-07-05 11:30 +0000'))
 
     refute(auction.valid?)
     assert_equal(auction.errors[:starts_at], ['must be earlier than ends_at'])
@@ -104,7 +105,7 @@ class AuctionTest < ActiveSupport::TestCase
   end
 
   def assert_overlap_error_messages(object)
-    assert_equal(object.errors[:ends_at], ['overlaps with another auction'])
-    assert_equal(object.errors[:starts_at], ['overlaps with another auction'])
+    assert(object.errors[:ends_at].include?('overlaps with another auction'))
+    assert(object.errors[:starts_at].include?('overlaps with another auction'))
   end
 end

@@ -5,6 +5,7 @@ class Auction < ApplicationRecord
 
   validate :does_not_overlap
   validate :ends_at_later_than_starts_at
+  validate :starts_at_cannot_be_in_the_past, on: :create
 
   scope :active, -> { where('ends_at >= ?', Time.now.utc) }
 
@@ -14,6 +15,13 @@ class Auction < ApplicationRecord
 
     errors.add(:starts_at, 'overlaps with another auction')
     errors.add(:ends_at, 'overlaps with another auction')
+  end
+
+  def starts_at_cannot_be_in_the_past
+    return unless starts_at
+    return if starts_at >= Time.now.utc
+
+    errors.add(:starts_at, 'cannot be in the past')
   end
 
   def ends_at_later_than_starts_at
