@@ -4,7 +4,7 @@
             <h1 class="mb-3 mt-4"><%= t('.title')%></h1>
             <% if @user.errors.any? %>
                 <h3 id="error-explanation">
-                    <%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:
+                    <%= pluralize(@user.errors.count, "error") %> <%= t('.errors') %>
                 </h3>
                 <ul id="errors">
                     <% @user.errors.full_messages.each do |message| %>

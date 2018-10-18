@@ -28,6 +28,49 @@ COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 
 --
+-- Name: btree_gist; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS btree_gist WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION btree_gist; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION btree_gist IS 'support for indexing common datatypes in GiST';
+
+
+--
+-- Name: process_auction_audit(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.process_auction_audit() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+  BEGIN
+    IF (TG_OP = 'INSERT') THEN
+      INSERT INTO audit.auctions
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
+      RETURN NEW;
+    ELSEIF (TG_OP = 'UPDATE') THEN
+      INSERT INTO audit.auctions
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
+      RETURN NEW;
+    ELSEIF (TG_OP = 'DELETE') THEN
+      INSERT INTO audit.auctions
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
+      RETURN OLD;
+    END IF;
+    RETURN NULL;
+  END
+$$;
+
+
+--
 -- Name: process_billing_profile_audit(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -117,6 +160,40 @@ $$;
 SET default_tablespace = '';
 
 SET default_with_oids = false;
+
+--
+-- Name: auctions; Type: TABLE; Schema: audit; Owner: -; Tablespace: 
+--
+
+CREATE TABLE audit.auctions (
+    id integer NOT NULL,
+    object_id bigint,
+    action text NOT NULL,
+    recorded_at timestamp without time zone,
+    old_value jsonb,
+    new_value jsonb,
+    CONSTRAINT auctions_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
+);
+
+
+--
+-- Name: auctions_id_seq; Type: SEQUENCE; Schema: audit; Owner: -
+--
+
+CREATE SEQUENCE audit.auctions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: auctions_id_seq; Type: SEQUENCE OWNED BY; Schema: audit; Owner: -
+--
+
+ALTER SEQUENCE audit.auctions_id_seq OWNED BY audit.auctions.id;
+
 
 --
 -- Name: billing_profiles; Type: TABLE; Schema: audit; Owner: -; Tablespace: 
@@ -230,6 +307,40 @@ CREATE TABLE public.ar_internal_metadata (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
+
+
+--
+-- Name: auctions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE public.auctions (
+    id bigint NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    domain_name character varying NOT NULL,
+    ends_at timestamp without time zone NOT NULL,
+    starts_at timestamp without time zone DEFAULT now() NOT NULL,
+    CONSTRAINT starts_at_earlier_than_ends_at CHECK ((starts_at < ends_at))
+);
+
+
+--
+-- Name: auctions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.auctions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: auctions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.auctions_id_seq OWNED BY public.auctions.id;
 
 
 --
@@ -361,6 +472,13 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 -- Name: id; Type: DEFAULT; Schema: audit; Owner: -
 --
 
+ALTER TABLE ONLY audit.auctions ALTER COLUMN id SET DEFAULT nextval('audit.auctions_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: audit; Owner: -
+--
+
 ALTER TABLE ONLY audit.billing_profiles ALTER COLUMN id SET DEFAULT nextval('audit.billing_profiles_id_seq'::regclass);
 
 
@@ -382,6 +500,13 @@ ALTER TABLE ONLY audit.users ALTER COLUMN id SET DEFAULT nextval('audit.users_id
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY public.auctions ALTER COLUMN id SET DEFAULT nextval('public.auctions_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY public.billing_profiles ALTER COLUMN id SET DEFAULT nextval('public.billing_profiles_id_seq'::regclass);
 
 
@@ -397,6 +522,14 @@ ALTER TABLE ONLY public.settings ALTER COLUMN id SET DEFAULT nextval('public.set
 --
 
 ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
+
+
+--
+-- Name: auctions_pkey; Type: CONSTRAINT; Schema: audit; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY audit.auctions
+    ADD CONSTRAINT auctions_pkey PRIMARY KEY (id);
 
 
 --
@@ -432,6 +565,14 @@ ALTER TABLE ONLY public.ar_internal_metadata
 
 
 --
+-- Name: auctions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY public.auctions
+    ADD CONSTRAINT auctions_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: billing_profiles_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -456,11 +597,33 @@ ALTER TABLE ONLY public.settings
 
 
 --
+-- Name: unique_domain_name_per_auction_duration; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY public.auctions
+    ADD CONSTRAINT unique_domain_name_per_auction_duration EXCLUDE USING gist (domain_name WITH =, tsrange(starts_at, ends_at, '[]'::text) WITH &&);
+
+
+--
 -- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auctions_object_id_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
+--
+
+CREATE INDEX auctions_object_id_idx ON audit.auctions USING btree (object_id);
+
+
+--
+-- Name: auctions_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
+--
+
+CREATE INDEX auctions_recorded_at_idx ON audit.auctions USING btree (recorded_at);
 
 
 --
@@ -503,6 +666,20 @@ CREATE INDEX users_object_id_idx ON audit.users USING btree (object_id);
 --
 
 CREATE INDEX users_recorded_at_idx ON audit.users USING btree (recorded_at);
+
+
+--
+-- Name: index_auctions_on_domain_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_auctions_on_domain_name ON public.auctions USING btree (domain_name);
+
+
+--
+-- Name: index_auctions_on_ends_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_auctions_on_ends_at ON public.auctions USING btree (ends_at);
 
 
 --
@@ -555,6 +732,13 @@ CREATE UNIQUE INDEX users_by_identity_code_and_country ON public.users USING btr
 
 
 --
+-- Name: process_auction_audit; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER process_auction_audit AFTER INSERT OR DELETE OR UPDATE ON public.auctions FOR EACH ROW EXECUTE PROCEDURE public.process_auction_audit();
+
+
+--
 -- Name: process_billing_profile_audit; Type: TRIGGER; Schema: public; Owner: -
 --
 
@@ -599,6 +783,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181008124201'),
 ('20181008133152'),
 ('20181009104026'),
+('20181011080931'),
+('20181011082830'),
+('20181016124017'),
 ('20181017114957'),
 ('20181017122905'),
 ('20181018064054');

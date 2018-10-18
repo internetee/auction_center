@@ -2,7 +2,7 @@ require 'countries'
 
 module Admin
   class UsersController < BaseController
-    load_and_authorize_resource
+    before_action :authorize_user
     before_action :set_user, except: %i[index new create]
 
     def new
@@ -75,6 +75,10 @@ module Admin
       update_params = params.require(:user)
                             .permit(:email, :given_names, :surname, :mobile_phone, roles: [])
       update_params.reject! { |_k, v| v.blank? }
+    end
+
+    def authorize_user
+      authorize! :manage, User
     end
 
     def set_user

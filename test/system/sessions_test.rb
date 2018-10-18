@@ -15,7 +15,7 @@ class SessionsTest < ApplicationSystemTestCase
       click_link_or_button('Sign in')
     end
 
-    assert_text('Welcome back, Joe John Participant')
+    assert_text('Signed in successfully')
   end
 
   def test_can_sign_out_via_button

@@ -6,6 +6,7 @@ en:
         identification_data: 'Identification data'
         contact_data: 'Contact data'
         roles: 'Roles'
+        errors: "prohibited this user from being saved"
 
       index:
         title: "Users"
@@ -21,3 +22,4 @@ en:
         new_password: "New password"
         you_can_leave_blank: "You can leave this field blank"
         roles: "Roles"
+        errors: "prohibited this user from being saved"

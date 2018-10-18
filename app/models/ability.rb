@@ -5,7 +5,12 @@ class Ability
 
   def initialize(user = User.new)
     @user = user
+    anonymous_user
     user&.roles&.each { |role| send(role.to_sym) }
+  end
+
+  def anonymous_user
+    can :read, Auction
   end
 
   def participant
@@ -14,10 +19,12 @@ class Ability
   end
 
   def administrator
+    can :manage, Auction
     can :manage, BillingProfile
     can :manage, User
     can %i[read update], Setting
 
+    can :read, Audit::Auction
     can :read, Audit::BillingProfile
     can :read, Audit::User
     can :read, Audit::Setting

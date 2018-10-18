@@ -4,7 +4,7 @@
             <h1 class="mb-3 mt-4"><%= t('.title')%></h1>
             <% if @user.errors.any? %>
                 <h3 id="error-explanation">
-                    <%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:
+                    <%= pluralize(@user.errors.count, "error") %> <%= t('.errors') %>
                 </h3>
                 <ul id="errors">
                     <% @user.errors.full_messages.each do |message| %>
@@ -54,27 +54,26 @@
                 <div class="form-group">
                     <%= f.label :country %><br />
                     <%= f.select :country_code,
-                    options_for_select(Countries::ALPHA_2_SELECTION, ['Estonia', 'EE']),
-                         {},
-                         class: "form-control form-control" %>
+                                 options_for_select(Countries::ALPHA_2_SELECTION, ['Estonia', 'EE']),
+                                 {}, class: "form-control form-control" %>
                 </div>
             </div>
 
-            </div>
-            <div class="col-12 col-lg-6">
-                <h3 class="p3"><%= t('.roles') %></h3>
-                <%- User::ROLES.each do |role| %>
-                    <div class="form-check text-left">
-                        <%= f.check_box :roles, { multiple: true, class: "form-check-input" }, role, nil %>
-                        <%= f.label role, class: "form-check-label" %>
-                    </div>
-                <% end %>
-            </div>
-            <div class="col-12">
-                <%= f.submit t(:update), class: "btn btn-primary form-control mb-2", id: "user_form_commit" %>
-                <%= link_to t(:back), :back, class: "btn btn-secondary form-control" %>
-            </div>
         </div>
+        <div class="col-12 col-lg-6">
+            <h3 class="p3"><%= t('.roles') %></h3>
+            <%- User::ROLES.each do |role| %>
+                <div class="form-check text-left">
+                    <%= f.check_box :roles, { multiple: true, class: "form-check-input" }, role, nil %>
+                    <%= f.label role, class: "form-check-label" %>
+                </div>
+            <% end %>
+        </div>
+        <div class="col-12">
+            <%= f.submit t(:update), class: "btn btn-primary form-control mb-2", id: "user_form_commit" %>
+            <%= link_to t(:back), :back, class: "btn btn-secondary form-control" %>
+        </div>
+</div>
     <% end %>
 </div>
 
