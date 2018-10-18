@@ -21,7 +21,7 @@ class AdminVersionsTest < ApplicationSystemTestCase
   def test_it_can_be_accessed_after_the_object_has_been_deleted
     user = users(:participant)
     user.update(given_names: "New Given Name", surname: "New Surname")
-    user.delete
+    user.destroy
     visit admin_user_versions_path(user)
 
     page.within('tbody.items-table-body') do

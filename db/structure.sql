@@ -241,7 +241,6 @@ CREATE TABLE public.billing_profiles (
     user_id integer NOT NULL,
     name character varying,
     vat_code character varying,
-    legal_entity boolean DEFAULT false,
     street character varying NOT NULL,
     city character varying NOT NULL,
     state character varying,
@@ -514,10 +513,10 @@ CREATE INDEX index_billing_profiles_on_user_id ON public.billing_profiles USING 
 
 
 --
--- Name: index_billing_profiles_on_vat_code; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_billing_profiles_on_vat_code_and_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE UNIQUE INDEX index_billing_profiles_on_vat_code ON public.billing_profiles USING btree (vat_code);
+CREATE UNIQUE INDEX index_billing_profiles_on_vat_code_and_user_id ON public.billing_profiles USING btree (vat_code, user_id);
 
 
 --
@@ -577,6 +576,14 @@ CREATE TRIGGER process_user_audit AFTER INSERT OR DELETE OR UPDATE ON public.use
 
 
 --
+-- Name: fk_rails_8fda547d9d; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.billing_profiles
+    ADD CONSTRAINT fk_rails_8fda547d9d FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
 -- PostgreSQL database dump complete
 --
 
@@ -591,6 +598,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181001094917'),
 ('20181008124201'),
 ('20181008133152'),
-('20181009104026');
+('20181009104026'),
+('20181017114957'),
+('20181017122905'),
+('20181018064054');
 
 

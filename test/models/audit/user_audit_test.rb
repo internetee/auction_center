@@ -34,7 +34,7 @@ class UserAuditTest < ActiveSupport::TestCase
   end
 
   def test_deleting_a_user_creates_a_history_record
-    @user.delete
+    @user.destroy
 
     assert_equal(1, Audit::User.where(object_id: @user.id, action: 'DELETE').count)
     assert(audit_record = Audit::User.find_by(object_id: @user.id, action: 'DELETE'))

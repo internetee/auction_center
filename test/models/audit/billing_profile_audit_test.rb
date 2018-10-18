@@ -17,7 +17,7 @@ class BillingProfileAuditTest < ActiveSupport::TestCase
 
   def test_creating_a_billing_profile_creates_a_history_record
     billing_profile = BillingProfile.new(user: @user, name: "New Billing Profile",
-                                         legal_entity: true, vat_code: "1234567890",
+                                         vat_code: "1234567890",
                                          street: "New Street 11",
                                          city: "London", postal_code: "NW1 6XE",
                                          country: "United Kingdom")
