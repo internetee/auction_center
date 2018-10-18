@@ -18,8 +18,10 @@ class BillingProfileTest < ActiveSupport::TestCase
     assert_equal(["can't be blank"], billing_profile.errors[:city])
     assert_equal(["can't be blank"], billing_profile.errors[:postal_code])
     assert_equal(["can't be blank"], billing_profile.errors[:country])
+    assert_equal(["can't be blank"], billing_profile.errors[:name])
 
     billing_profile.user = @user
+    billing_profile.name = "Private Person"
     billing_profile.street = "Baker Street 221B"
     billing_profile.city = "London"
     billing_profile.postal_code = "NW1 6XE"
@@ -27,18 +29,16 @@ class BillingProfileTest < ActiveSupport::TestCase
     assert(billing_profile.valid?)
   end
 
-  def test_name_is_required_when_a_profile_is_for_a_legal_person
-    billing_profile = BillingProfile.new
-    billing_profile.user = @user
-    billing_profile.street = "Baker Street 221B"
-    billing_profile.city = "London"
-    billing_profile.postal_code = "NW1 6XE"
-    billing_profile.country = "United Kingdom"
-    assert(billing_profile.valid?)
+  def test_vat_codes_must_be_unique_per_user
+    duplicate = @billing_profile.dup
 
-    billing_profile.legal_entity = true
-    refute(billing_profile.valid?)
-    assert_equal(["can't be blank"], billing_profile.errors[:vat_code])
+    refute(duplicate.valid?)
+    assert_equal(duplicate.errors[:vat_code], ['has already been taken'])
+
+    private_person_profile = billing_profiles(:private_person)
+
+    duplicate = private_person_profile.dup
+    assert(duplicate.valid?)
   end
 
   def test_address

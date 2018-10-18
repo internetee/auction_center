@@ -12,7 +12,6 @@
                         <th scope="col"><%= t('billing_profiles.user') %></th>
                         <th scope="col"><%= t('billing_profiles.name') %></th>
                         <th scope="col"><%= t('billing_profiles.vat_code') %></th>
-                        <th scope="col"><%= t('billing_profiles.legal_entity') %></th>
                         <th scope="col"><%= t('billing_profiles.address') %></th>
                     </tr>
                 </thead>
@@ -23,7 +22,6 @@
                             <td><%= billing_profile.user_name %></td>
                             <td class="billing-profile-name"><%= billing_profile.name %></td>
                             <td><%= billing_profile.vat_code %></td>
-                            <td><%= billing_profile.legal_entity %></td>
                             <td><%= billing_profile.address %></td>
                         </tr>
                     <% end %>

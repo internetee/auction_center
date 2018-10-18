@@ -5,6 +5,7 @@ class BillingProfilesController < ApplicationController
   # GET /billing_profiles
   def index
     @billing_profiles = BillingProfile.accessible_by(current_ability)
+                                      .where(user_id: current_user.id)
   end
 
   # GET /billing_profiles/new
@@ -71,7 +72,9 @@ class BillingProfilesController < ApplicationController
   end
 
   def set_billing_profile
-    @billing_profile = BillingProfile.accessible_by(current_ability).find(params[:id])
+    @billing_profile = BillingProfile.accessible_by(current_ability)
+                                     .where(user_id: current_user.id)
+                                     .find(params[:id])
   end
 
   def authorize_user

@@ -6,12 +6,20 @@ class BillingProfilesTest < ApplicationSystemTestCase
 
     @user = users(:participant)
     @billing_profile = billing_profiles(:private_person)
+    @company_billing_profile = billing_profiles(:company)
     sign_in(@user)
   end
 
   def test_user_details_contains_a_link_to_billing
     visit user_path(@user)
     assert(page.has_link?('Billing', href: billing_profiles_path))
+  end
+
+  def test_administrator_can_only_see_their_own_billing_profiles
+    sign_in users(:administrator)
+    visit billing_profiles_path
+
+    refute(page.has_link?('ACME Inc.'))
   end
 
   def test_index_contains_a_link_to_new_billing_profile
@@ -25,14 +33,12 @@ class BillingProfilesTest < ApplicationSystemTestCase
                           href: billing_profile_path(@billing_profile)))
   end
 
-  def test_a_user_can_create_billing_profile_for_a_company
+  def test_a_user_can_create_billing_profile_for_a_vat_liable_company
     visit new_billing_profile_path
     fill_in_address
 
     fill_in('billing_profile[name]', with: 'ACME corporation')
     fill_in('billing_profile[vat_code]', with: '1234567890')
-    check('billing_profile[legal_entity]')
-
 
     assert_changes('BillingProfile.count') do
       click_link_or_button('Submit')
@@ -41,12 +47,25 @@ class BillingProfilesTest < ApplicationSystemTestCase
     assert(page.has_css?('div.alert', text: 'Created successfully.'))
   end
 
-  def test_a_user_can_create_private_billing_profile_for_someone_else
+  def test_billing_profile_vat_code_needs_to_be_unique_for_user
     visit new_billing_profile_path
     fill_in_address
 
-    fill_in('billing_profile[name]', with: 'Private Person')
-    uncheck('billing_profile[legal_entity]')
+    fill_in('billing_profile[name]', with: @company_billing_profile.name)
+    fill_in('billing_profile[vat_code]', with: @company_billing_profile.vat_code)
+
+    assert_no_changes('BillingProfile.count') do
+      click_link_or_button('Submit')
+    end
+
+    assert(page.has_text?('Vat code has already been taken'))
+  end
+
+  def test_a_user_can_create_company_billing_profile_witout_vat_code
+    visit new_billing_profile_path
+    fill_in_address
+
+    fill_in('billing_profile[name]', with: 'ACME corporation')
 
     assert_changes('BillingProfile.count') do
       click_link_or_button('Submit')
@@ -55,11 +74,10 @@ class BillingProfilesTest < ApplicationSystemTestCase
     assert(page.has_css?('div.alert', text: 'Created successfully.'))
   end
 
-  def test_a_user_can_create_private_billing_profile_for_themselves
+  def test_a_user_can_create_private_billing_profile
     visit new_billing_profile_path
     fill_in_address
-
-    uncheck('billing_profile[legal_entity]')
+     fill_in('billing_profile[name]', with: 'Private Person')
 
     assert_changes('BillingProfile.count') do
       click_link_or_button('Submit')
