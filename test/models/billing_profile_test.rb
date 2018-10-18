@@ -18,33 +18,15 @@ class BillingProfileTest < ActiveSupport::TestCase
     assert_equal(["can't be blank"], billing_profile.errors[:city])
     assert_equal(["can't be blank"], billing_profile.errors[:postal_code])
     assert_equal(["can't be blank"], billing_profile.errors[:country])
-
-    billing_profile.user = @user
-    billing_profile.street = "Baker Street 221B"
-    billing_profile.city = "London"
-    billing_profile.postal_code = "NW1 6XE"
-    billing_profile.country = "United Kingdom"
-    assert(billing_profile.valid?)
-  end
-
-  def test_name_is_required_when_a_profile_is_for_a_legal_person
-    billing_profile = BillingProfile.new
-    billing_profile.user = @user
-    billing_profile.street = "Baker Street 221B"
-    billing_profile.city = "London"
-    billing_profile.postal_code = "NW1 6XE"
-    billing_profile.country = "United Kingdom"
-    assert(billing_profile.valid?)
-
-    billing_profile.legal_entity = true
-    refute(billing_profile.valid?)
     assert_equal(["can't be blank"], billing_profile.errors[:name])
-  end
 
-  def test_address
-    expected_address = 'Baker Street 221B, NW1 6XE London, United Kingdom'
-
-    assert_equal(expected_address, @billing_profile.address)
+    billing_profile.user = @user
+    billing_profile.name = "Private Person"
+    billing_profile.street = "Baker Street 221B"
+    billing_profile.city = "London"
+    billing_profile.postal_code = "NW1 6XE"
+    billing_profile.country = "United Kingdom"
+    assert(billing_profile.valid?)
   end
 
   def test_vat_codes_must_be_unique_per_user
@@ -57,6 +39,12 @@ class BillingProfileTest < ActiveSupport::TestCase
 
     duplicate = private_person_profile.dup
     assert(duplicate.valid?)
+  end
+
+  def test_address
+    expected_address = 'Baker Street 221B, NW1 6XE London, United Kingdom'
+
+    assert_equal(expected_address, @billing_profile.address)
   end
 
   def test_user_name

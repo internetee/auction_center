@@ -1,7 +1,6 @@
 private_person:
   user: participant
   name: "Joe John Participant"
-  legal_entity: false
   street: "Baker Street 221B"
   city: "London"
   postal_code: "NW1 6XE"
@@ -10,7 +9,6 @@ private_person:
 company:
   user: participant
   name: "ACME Inc."
-  legal_entity: false
   vat_code: "12234567890"
   street: "Baker Street 221B"
   city: "London"

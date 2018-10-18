@@ -6,7 +6,7 @@ class BillingProfile < ApplicationRecord
   validates :postal_code, presence: true
   validates :country, presence: true
 
-  validates :name, presence: true, if: -> { legal_entity? }
+  validates :name, presence: true
   validates :vat_code, uniqueness: { scope: :user_id }, allow_blank: true
 
   def address
@@ -16,9 +16,5 @@ class BillingProfile < ApplicationRecord
 
   def user_name
     user.display_name
-  end
-
-  def legal_entity?
-    legal_entity
   end
 end

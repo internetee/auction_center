@@ -241,7 +241,6 @@ CREATE TABLE public.billing_profiles (
     user_id integer NOT NULL,
     name character varying,
     vat_code character varying,
-    legal_entity boolean DEFAULT false,
     street character varying NOT NULL,
     city character varying NOT NULL,
     state character varying,
@@ -601,6 +600,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181008133152'),
 ('20181009104026'),
 ('20181017114957'),
-('20181017122905');
+('20181017122905'),
+('20181018064054');
 
 
