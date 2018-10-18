@@ -15,6 +15,13 @@ class BillingProfilesTest < ApplicationSystemTestCase
     assert(page.has_link?('Billing', href: billing_profiles_path))
   end
 
+  def test_administrator_can_only_see_their_own_billing_profiles
+    sign_in users(:administrator)
+    visit billing_profiles_path
+
+    refute(page.has_link?('ACME Inc.'))
+  end
+
   def test_index_contains_a_link_to_new_billing_profile
     visit billing_profiles_path
     assert(page.has_link?('New', href: new_billing_profile_path))
