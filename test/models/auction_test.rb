@@ -73,6 +73,14 @@ class AuctionTest < ActiveSupport::TestCase
     assert_equal([@persisted_auction, @expired_auction].to_set, Auction.all.to_set)
   end
 
+  def test_time_related_method_return_false_for_invalid_auctions
+    auction = Auction.new
+
+    refute(auction.in_progress?)
+    refute(auction.can_be_deleted?)
+    refute(auction.finished?)
+  end
+
   def test_auction_must_end_later_than_it_starts
     auction = Auction.new(domain_name: 'some-domain-name.test',
                           ends_at: Time.parse('2010-07-04 19:30 +0000'),
