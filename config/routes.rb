@@ -15,7 +15,10 @@ Rails.application.routes.draw do
     resources :users, concerns: [:auditable]
   end
 
-  resources :auctions, only: %i[index show]
+  resources :auctions, only: %i[index show] do
+    resources :offers, only: %i[new show], shallow: true
+  end
+
   resources :billing_profiles
   resources :users, except: :destroy
 end

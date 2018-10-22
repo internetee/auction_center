@@ -5,6 +5,8 @@ en:
     ends_at: 'Ends at'
     finished: "This auction has finished"
 
+    submit_offer: "Submit offer"
+
     index:
       title: "Current auctions"
 

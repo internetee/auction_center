@@ -11,6 +11,11 @@
                 <h2><%= @auction.domain_name %></h2>
                 <%- if @auction.finished? %>
                     <h3><%= t('auctions.finished') %></h3>
+                <% else %>
+                    <h3>
+                        <%= link_to t('auctions.submit_offer'),
+                                    new_auction_offer_path(auction_id: @auction.id) %>
+                    </h3>
                 <% end %>
 
                 <dl class="mb-6 no-bullets billing-profile-card">
