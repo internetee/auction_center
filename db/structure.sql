@@ -382,6 +382,36 @@ ALTER SEQUENCE public.billing_profiles_id_seq OWNED BY public.billing_profiles.i
 
 
 --
+-- Name: offers; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE public.offers (
+    id bigint NOT NULL,
+    auction_id integer NOT NULL,
+    user_id integer NOT NULL
+);
+
+
+--
+-- Name: offers_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.offers_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: offers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.offers_id_seq OWNED BY public.offers.id;
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -514,6 +544,13 @@ ALTER TABLE ONLY public.billing_profiles ALTER COLUMN id SET DEFAULT nextval('pu
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY public.offers ALTER COLUMN id SET DEFAULT nextval('public.offers_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY public.settings ALTER COLUMN id SET DEFAULT nextval('public.settings_id_seq'::regclass);
 
 
@@ -578,6 +615,14 @@ ALTER TABLE ONLY public.auctions
 
 ALTER TABLE ONLY public.billing_profiles
     ADD CONSTRAINT billing_profiles_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: offers_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY public.offers
+    ADD CONSTRAINT offers_pkey PRIMARY KEY (id);
 
 
 --
@@ -768,6 +813,22 @@ ALTER TABLE ONLY public.billing_profiles
 
 
 --
+-- Name: fk_rails_bb5f3f4ecb; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.offers
+    ADD CONSTRAINT fk_rails_bb5f3f4ecb FOREIGN KEY (auction_id) REFERENCES public.auctions(id);
+
+
+--
+-- Name: fk_rails_e6095d6211; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.offers
+    ADD CONSTRAINT fk_rails_e6095d6211 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
 -- PostgreSQL database dump complete
 --
 
@@ -788,6 +849,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181016124017'),
 ('20181017114957'),
 ('20181017122905'),
-('20181018064054');
+('20181018064054'),
+('20181022095409');
 
 
