@@ -71,6 +71,10 @@ class AuctionTest < ActiveSupport::TestCase
   def test_active_scope_returns_only_active_auction
     assert_equal([@persisted_auction], Auction.active)
     assert_equal([@persisted_auction, @expired_auction].to_set, Auction.all.to_set)
+
+    travel_to Time.parse('2010-07-04 10:30 +0000')
+    assert_equal([], Auction.active)
+    travel_back
   end
 
   def test_time_related_method_return_false_for_invalid_auctions
