@@ -1,4 +1,4 @@
-<%= form_with(model: offer, local: true, url: auction_offers_path) do |f| %>
+<%= form_with(model: offer, local: true, url: auction_offers_path(offer.auction_id)) do |f| %>
     <div class="row">
         <div class="col-12 col-lg-6">
             <div class="form-group">
@@ -7,6 +7,11 @@
 
             <div class="form-group">
                 <%= f.hidden_field :auction_id, value: offer.auction_id %>
+            </div>
+
+            <div class="form-group">
+                <%= f.label :price %>
+                <%= f.number_field :price, class: "form-control", min: 0 %>
             </div>
         </div>
 

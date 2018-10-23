@@ -16,7 +16,7 @@ Rails.application.routes.draw do
   end
 
   resources :auctions, only: %i[index show] do
-    resources :offers, only: %i[new show], shallow: true
+    resources :offers, only: %i[new show create edit update destroy], shallow: true
   end
 
   resources :billing_profiles
