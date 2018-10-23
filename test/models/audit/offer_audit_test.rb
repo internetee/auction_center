@@ -16,7 +16,8 @@ class OfferAuditTest < ActiveSupport::TestCase
 
   def test_creating_a_offer_creates_a_history_record
     offer = Offer.new(auction: auctions(:id_test),
-                      user: users(:participant))
+                      user: users(:participant),
+                      cents: 1121)
 
     offer.save
 

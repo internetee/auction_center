@@ -452,6 +452,7 @@ CREATE TABLE public.offers (
     id bigint NOT NULL,
     auction_id integer NOT NULL,
     user_id integer NOT NULL,
+    cents integer NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -540,7 +541,8 @@ CREATE TABLE public.users (
     given_names character varying NOT NULL,
     surname character varying NOT NULL,
     mobile_phone character varying NOT NULL,
-    roles character varying[] DEFAULT '{participant}'::character varying[]
+    roles character varying[] DEFAULT '{participant}'::character varying[],
+    CONSTRAINT users_roles_are_known CHECK ((roles <@ ARRAY['participant'::character varying, 'administrator'::character varying]))
 );
 
 
@@ -952,6 +954,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181017122905'),
 ('20181018064054'),
 ('20181022095409'),
-('20181023103316');
+('20181023103316'),
+('20181023121607');
 
 
