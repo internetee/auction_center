@@ -454,7 +454,8 @@ CREATE TABLE public.offers (
     user_id integer NOT NULL,
     cents integer NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    CONSTRAINT offers_cents_are_positive CHECK ((cents > 0))
 );
 
 
@@ -955,6 +956,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181018064054'),
 ('20181022095409'),
 ('20181023103316'),
-('20181023121607');
+('20181023121607'),
+('20181023125230');
 
 
