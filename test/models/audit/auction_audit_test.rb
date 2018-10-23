@@ -34,7 +34,7 @@ class AuctionAuditTest < ActiveSupport::TestCase
   end
 
   def test_deleting_a_auction_creates_a_history_record
-    @auction.delete
+    @auction.destroy
 
     assert_equal(1, Audit::Auction.where(object_id: @auction.id, action: 'DELETE').count)
     assert(audit_record = Audit::Auction.find_by(object_id: @auction.id, action: 'DELETE'))

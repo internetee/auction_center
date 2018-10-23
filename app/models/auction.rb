@@ -7,6 +7,8 @@ class Auction < ApplicationRecord
   validate :ends_at_later_than_starts_at
   validate :starts_at_cannot_be_in_the_past, on: :create
 
+  has_many :offers, dependent: :delete_all
+
   scope :active, -> { where('starts_at <= ? AND ends_at >= ?', Time.now.utc , Time.now.utc) }
 
   def does_not_overlap

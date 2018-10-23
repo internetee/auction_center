@@ -1,5 +1,5 @@
 module Audit
-  class BillingProfile < Base
+  class Offer < Base
     self.table_name = 'audit.offers'
   end
 end

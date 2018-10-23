@@ -451,7 +451,9 @@ ALTER SEQUENCE public.billing_profiles_id_seq OWNED BY public.billing_profiles.i
 CREATE TABLE public.offers (
     id bigint NOT NULL,
     auction_id integer NOT NULL,
-    user_id integer NOT NULL
+    user_id integer NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
 );
 
 
