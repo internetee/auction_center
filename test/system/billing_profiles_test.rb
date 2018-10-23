@@ -105,10 +105,8 @@ class BillingProfilesTest < ApplicationSystemTestCase
   def test_a_user_can_delete_their_billing_profile
     visit billing_profile_path(@billing_profile)
 
-    assert_changes('BillingProfile.count') do
-      accept_confirm do
-        click_link_or_button('Delete')
-      end
+    accept_confirm do
+      click_link_or_button('Delete')
     end
 
     assert_text('Deleted successfully.')
