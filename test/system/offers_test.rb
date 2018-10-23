@@ -15,6 +15,13 @@ class OffersTest < ApplicationSystemTestCase
     travel_back
   end
 
+  def test_needs_to_be_signed_in_to_submit_an_offer
+    visit auction_path(@valid_auction)
+    click_link('Submit offer')
+
+    assert_text('You need to sign in or sign up before continuing')
+  end
+
   def test_can_submit_an_offer_for_pending_auction
     visit auction_path(@valid_auction)
 
