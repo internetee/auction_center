@@ -100,6 +100,35 @@ $$;
 
 
 --
+-- Name: process_offer_audit(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.process_offer_audit() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+  BEGIN
+    IF (TG_OP = 'INSERT') THEN
+      INSERT INTO audit.offers
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
+      RETURN NEW;
+    ELSEIF (TG_OP = 'UPDATE') THEN
+      INSERT INTO audit.offers
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
+      RETURN NEW;
+    ELSEIF (TG_OP = 'DELETE') THEN
+      INSERT INTO audit.offers
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
+      RETURN OLD;
+    END IF;
+    RETURN NULL;
+  END
+$$;
+
+
+--
 -- Name: process_setting_audit(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -227,6 +256,40 @@ CREATE SEQUENCE audit.billing_profiles_id_seq
 --
 
 ALTER SEQUENCE audit.billing_profiles_id_seq OWNED BY audit.billing_profiles.id;
+
+
+--
+-- Name: offers; Type: TABLE; Schema: audit; Owner: -; Tablespace: 
+--
+
+CREATE TABLE audit.offers (
+    id integer NOT NULL,
+    object_id bigint,
+    action text NOT NULL,
+    recorded_at timestamp without time zone,
+    old_value jsonb,
+    new_value jsonb,
+    CONSTRAINT offers_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
+);
+
+
+--
+-- Name: offers_id_seq; Type: SEQUENCE; Schema: audit; Owner: -
+--
+
+CREATE SEQUENCE audit.offers_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: offers_id_seq; Type: SEQUENCE OWNED BY; Schema: audit; Owner: -
+--
+
+ALTER SEQUENCE audit.offers_id_seq OWNED BY audit.offers.id;
 
 
 --
@@ -516,6 +579,13 @@ ALTER TABLE ONLY audit.billing_profiles ALTER COLUMN id SET DEFAULT nextval('aud
 -- Name: id; Type: DEFAULT; Schema: audit; Owner: -
 --
 
+ALTER TABLE ONLY audit.offers ALTER COLUMN id SET DEFAULT nextval('audit.offers_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: audit; Owner: -
+--
+
 ALTER TABLE ONLY audit.settings ALTER COLUMN id SET DEFAULT nextval('audit.settings_id_seq'::regclass);
 
 
@@ -575,6 +645,14 @@ ALTER TABLE ONLY audit.auctions
 
 ALTER TABLE ONLY audit.billing_profiles
     ADD CONSTRAINT billing_profiles_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: offers_pkey; Type: CONSTRAINT; Schema: audit; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY audit.offers
+    ADD CONSTRAINT offers_pkey PRIMARY KEY (id);
 
 
 --
@@ -686,6 +764,20 @@ CREATE INDEX billing_profiles_recorded_at_idx ON audit.billing_profiles USING bt
 
 
 --
+-- Name: offers_object_id_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
+--
+
+CREATE INDEX offers_object_id_idx ON audit.offers USING btree (object_id);
+
+
+--
+-- Name: offers_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
+--
+
+CREATE INDEX offers_recorded_at_idx ON audit.offers USING btree (recorded_at);
+
+
+--
 -- Name: settings_object_id_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
 --
 
@@ -791,6 +883,13 @@ CREATE TRIGGER process_billing_profile_audit AFTER INSERT OR DELETE OR UPDATE ON
 
 
 --
+-- Name: process_offer_audit; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER process_offer_audit AFTER INSERT OR DELETE OR UPDATE ON public.offers FOR EACH ROW EXECUTE PROCEDURE public.process_offer_audit();
+
+
+--
 -- Name: process_setting_audit; Type: TRIGGER; Schema: public; Owner: -
 --
 
@@ -850,6 +949,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181017114957'),
 ('20181017122905'),
 ('20181018064054'),
-('20181022095409');
+('20181022095409'),
+('20181023103316');
 
 
