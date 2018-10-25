@@ -6,6 +6,9 @@ class OffersTest < ApplicationSystemTestCase
 
     @expired_auction = auctions(:expired)
     @valid_auction = auctions(:id_test)
+    @user = users(:participant)
+    @offer = offers(:minimum_id_test_offer)
+
     travel_to Time.parse('2010-07-05 10:30 +0000')
   end
 
@@ -22,10 +25,29 @@ class OffersTest < ApplicationSystemTestCase
     assert_text('You need to sign in or sign up before continuing')
   end
 
-  def test_can_submit_an_offer_for_pending_auction
+  def test_participant_can_submit_an_offer_for_pending_auction
+    sign_in(@user)
     visit auction_path(@valid_auction)
 
     assert(page.has_link?('Submit offer'))
+    click_link('Submit offer')
+
+    fill_in('offer[price]', with: '5.00')
+    click_link_or_button('Submit')
+
+    assert(page.has_text?('Created successfully'))
+  end
+
+  def test_participant_can_update_an_offer
+    sign_in(@user)
+    visit offer_path(@offer)
+
+    click_link_or_button('Edit')
+
+    fill_in('offer[price]', with: '5.00')
+    click_link_or_button('Submit')
+
+    assert(page.has_text?('Updated successfully'))
   end
 
   def test_cannot_submit_an_offer_for_old_auction

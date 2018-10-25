@@ -1,0 +1,31 @@
+<div class="row">
+    <div class="col-12">
+        <h1 class="mb-3 mt-4"><%= t('.title') %></h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <dl class="mb-6 no-bullets offer-card">
+                    <dt><%= t('auctions.domain_name') %></dt>
+                    <dd><%= @offer.auction.domain_name %></dd>
+
+                    <dt><%= t('auctions.ends_at') %></dt>
+                    <dd><%= @offer.auction.ends_at %></dd>
+
+                    <dt><%= t('offers.price') %></dt>
+                    <dd><%= t('offers.price_in_currency', price: @offer.price) %></dd>
+                </dl>
+
+                <p><%= t('.price_is_without_vat') %></p>
+
+                <%= link_to t(:edit), edit_offer_path(@offer), class: "card-link mt" %>
+                <%= link_to t(:delete), offer_path(@offer),
+                            method: :delete, data: { confirm: t(:are_you_sure) },
+                            remote: true, class: "card-link mt" %>
+            </div>
+        </div>
+    </div>
+</div>
