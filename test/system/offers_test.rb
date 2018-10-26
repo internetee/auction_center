@@ -51,8 +51,28 @@ class OffersTest < ApplicationSystemTestCase
   end
 
   def test_cannot_submit_an_offer_for_old_auction
+    sign_in(@user)
     visit auction_path(@expired_auction)
 
     refute(page.has_link?('Submit offer'))
+
+    visit new_auction_offer_path(@expired_auction)
+
+    fill_in('offer[price]', with: '5.00')
+    click_link_or_button('Submit')
+
+    assert(page.has_text?('Auction must be active'))
+  end
+
+  def test_cannot_update_an_offer_for_an_inactive_auction
+    travel_to Time.parse('2010-08-05 10:30 +0000')
+    sign_in(@user)
+
+    visit edit_offer_path(@offer)
+
+    fill_in('offer[price]', with: '5.00')
+    click_link_or_button('Submit')
+
+    assert(page.has_text?('Auction must be active'))
   end
 end

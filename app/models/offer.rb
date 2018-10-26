@@ -2,7 +2,7 @@ class Offer < ApplicationRecord
   belongs_to :user, required: true
   belongs_to :auction, required: true
 
-  validate :auction_must_be_active, on: :create
+  validate :auction_must_be_active
   validates :cents, numericality: { only_integer: true, greater_than: 0 }
 
   def auction_must_be_active
