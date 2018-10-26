@@ -12,6 +12,8 @@
                         <th scope="col"><%= t('auctions.domain_name') %></th>
                         <th scope="col"><%= t('auctions.starts_at') %></th>
                         <th scope="col"><%= t('auctions.ends_at') %></th>
+                        <th scope="col"><%= t('auctions.highest_offer') %></th>
+                        <th scope="col"><%= t('auctions.offers') %></th>
                     </tr>
                 </thead>
 
@@ -23,6 +25,8 @@
                             </td>
                             <td><%= I18n.l(auction.starts_at) %></td>
                             <td><%= I18n.l(auction.ends_at) %></td>
+                            <td class="auction-highest-offer"><%= auction.highest_offer %></td>
+                            <td class="auction-offers-count"><%= auction.offers_count %></td>
                         </tr>
                     <% end %>
                 </tbody>

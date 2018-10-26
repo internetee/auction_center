@@ -12,6 +12,7 @@ Rails.application.routes.draw do
     resources :auctions, except: [:edit, :update], concerns: [:auditable]
     resources :billing_profiles, only: :index, concerns: [:auditable]
     resources :settings, except: %i[create destroy], concerns: [:auditable]
+    resources :offers, only: [:show], concerns: [:auditable]
     resources :users, concerns: [:auditable]
   end
 

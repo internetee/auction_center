@@ -26,6 +26,15 @@ class Auction < ApplicationRecord
     errors.add(:starts_at, 'cannot be in the past')
   end
 
+  def highest_offer
+    return unless offers.any?
+    offers.order(cents: :desc).limit(1).first.price
+  end
+
+  def offers_count
+    offers.count
+  end
+
   def ends_at_later_than_starts_at
     return unless starts_at && ends_at
     return if ends_at > starts_at

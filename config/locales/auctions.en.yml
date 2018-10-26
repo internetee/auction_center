@@ -4,6 +4,8 @@ en:
     starts_at: 'Starts at'
     ends_at: 'Ends at'
     finished: "This auction has finished"
+    highest_offer: "Highest offer"
+    offers: "offers"
 
     submit_offer: "Submit offer"
 

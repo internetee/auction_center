@@ -55,6 +55,16 @@ class AuctionTest < ActiveSupport::TestCase
     refute(auction.in_progress?)
   end
 
+  def test_highest_offer_returns_money_object_or_nil
+    refute(@expired_auction.highest_offer)
+    assert_equal(Money.new(1201, 'EUR'), @persisted_auction.highest_offer)
+  end
+
+  def test_offers_count_returns_integer
+    assert_equal(1, @persisted_auction.offers_count)
+    assert_equal(0, @expired_auction.offers_count)
+  end
+
   def test_can_be_deleted_returns_a_boolean
     auction = Auction.new(domain_name: 'some-domain.test')
     auction.starts_at = Time.now - 2.days

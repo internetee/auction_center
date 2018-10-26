@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require 'application_system_test_case'
 
 class AdminAuctionsTest < ApplicationSystemTestCase
@@ -61,6 +63,12 @@ class AdminAuctionsTest < ApplicationSystemTestCase
     assert(page.has_table?('auctions-table'))
     assert(page.has_link?('id.test', href: admin_auction_path(@auction.id)))
     assert(page.has_link?('expired.test', href: admin_auction_path(@expired_auction.id)))
+
+    prices = page.find_all('.auction-highest-offer').map(&:text)
+    assert_equal(['12.01', ''].to_set, prices.to_set)
+
+    offers_count = page.find_all('.auction-offers-count').map(&:text)
+    assert_equal(['1', '0'].to_set, offers_count.to_set)
   end
 
   def test_auctions_for_domain_names_need_to_be_unique_for_its_duration
@@ -89,6 +97,17 @@ class AdminAuctionsTest < ApplicationSystemTestCase
     end
 
     assert(page.has_text?('Deleted successfully'))
+  end
+
+  def test_auction_details_contain_a_list_of_offers
+    visit(admin_auction_path(@auction))
+
+    assert(page.has_table?('auctions-offers-table'))
+
+    within('tbody#offers-table-body') do
+      assert_text('12.01 €')
+      assert_text('Joe John Participant')
+    end
   end
 
   def test_administrator_cannot_remove_auction_if_it_has_started

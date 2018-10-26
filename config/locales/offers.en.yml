@@ -1,7 +1,7 @@
 en:
   offers:
-    auction: "auction"
-    price: "price"
+    auction: "Auction"
+    price: "Price"
     i_accept_terms_and_conditions: "I accept terms and conditions"
     price_in_currency: "%{price} €"
 
