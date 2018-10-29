@@ -2,3 +2,15 @@ application_name:
   code: application_name
   description: Application name, as displayed in the header
   value: EIS Auction Center
+
+auction_currency:
+  code: auction_currency
+  description: |
+    Currency in which all invoices and offers are to be made. Allowed values are
+    EUR, USD, CAD, AUD, GBP, PLN, SEK. Default is: EUR
+  value: EUR
+
+auction_minimum_offer:
+  code: auction_minimum_offer
+  description: 'Minimum amount in cents that a user can offer for a domain. Default is: 500 (5.00 EUR)'
+  value: '500'

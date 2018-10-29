@@ -15,7 +15,7 @@ class OfferAuditTest < ActiveSupport::TestCase
   end
 
   def test_creating_a_offer_creates_a_history_record
-    offer = Offer.new(auction: auctions(:id_test),
+    offer = Offer.new(auction: auctions(:valid_with_offers),
                       user: users(:participant),
                       cents: 1121)
 
@@ -26,7 +26,7 @@ class OfferAuditTest < ActiveSupport::TestCase
   end
 
   def test_updating_a_offer_creates_a_history_record
-    @offer.update!(cents: 450)
+    @offer.update!(cents: 4500)
 
     assert_equal(1, Audit::Offer.where(object_id: @offer.id, action: 'UPDATE').count)
     assert(audit_record = Audit::Offer.find_by(object_id: @offer.id, action: 'UPDATE'))
@@ -42,7 +42,7 @@ class OfferAuditTest < ActiveSupport::TestCase
   end
 
   def test_diff_method_returns_only_fields_that_are_different
-    @offer.update!(cents: 450)
+    @offer.update!(cents: 4500)
     audit_record = Audit::Offer.find_by(object_id: @offer.id, action: 'UPDATE')
 
     %w[updated_at cents].each do |item|

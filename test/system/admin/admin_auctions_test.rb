@@ -7,7 +7,8 @@ class AdminAuctionsTest < ApplicationSystemTestCase
     super
 
     @user = users(:administrator)
-    @auction = auctions(:id_test)
+    @auction = auctions(:valid_with_offers)
+    @auction_without_offers = auctions(:valid_without_offers)
     @expired_auction = auctions(:expired)
 
     sign_in(@user)
@@ -61,11 +62,12 @@ class AdminAuctionsTest < ApplicationSystemTestCase
     visit(admin_auctions_path)
 
     assert(page.has_table?('auctions-table'))
-    assert(page.has_link?('id.test', href: admin_auction_path(@auction.id)))
+    assert(page.has_link?('with-offers.test', href: admin_auction_path(@auction.id)))
+    assert(page.has_link?('no-offers.test', href: admin_auction_path(@auction_without_offers.id)))
     assert(page.has_link?('expired.test', href: admin_auction_path(@expired_auction.id)))
 
     prices = page.find_all('.auction-highest-offer').map(&:text)
-    assert_equal(['12.01', ''].to_set, prices.to_set)
+    assert_equal(['12.01', '10.00', ''].to_set, prices.to_set)
 
     offers_count = page.find_all('.auction-offers-count').map(&:text)
     assert_equal(['1', '0'].to_set, offers_count.to_set)

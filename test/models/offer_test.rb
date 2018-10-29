@@ -5,7 +5,7 @@ class OfferTest < ActiveSupport::TestCase
     super
 
     @expired_auction = auctions(:expired)
-    @valid_auction = auctions(:id_test)
+    @valid_auction = auctions(:valid_with_offers)
     @user = users(:participant)
 
     travel_to Time.parse('2010-07-05 10:30 +0000')
@@ -46,7 +46,7 @@ class OfferTest < ActiveSupport::TestCase
     offer = Offer.new
     offer.auction = @valid_auction
     offer.user = @user
-    offer.cents = 12.000
+    offer.cents = 12.00
 
     refute(offer.valid?)
 
@@ -61,5 +61,18 @@ class OfferTest < ActiveSupport::TestCase
 
     refute(offer.valid?)
     assert_equal(["must be greater than 0"], offer.errors[:cents])
+  end
+
+  def test_offer_must_be_higher_than_minimum_value_allowed_in_settings
+    offer = Offer.new
+    offer.auction = @valid_auction
+    offer.user = @user
+    offer.cents = 1
+
+    refute(offer.valid?)
+    assert_equal(["must be higher than 5.00"], offer.errors[:price])
+
+    offer.cents = 500
+    assert(offer.valid?)
   end
 end

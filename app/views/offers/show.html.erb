@@ -21,10 +21,14 @@
 
                 <p><%= t('.price_is_without_vat') %></p>
 
-                <%= link_to t(:edit), edit_offer_path(@offer), class: "card-link mt" %>
-                <%= link_to t(:delete), offer_path(@offer),
-                            method: :delete, data: { confirm: t(:are_you_sure) },
-                            remote: true, class: "card-link mt" %>
+                <%- if @offer.can_be_modified?  %>
+                    <%= link_to t(:edit), edit_offer_path(@offer), class: "card-link mt" %>
+                    <%= link_to t(:delete), offer_path(@offer),
+                                method: :delete,
+                                data: { confirm: t(:are_you_sure) },
+                                remote: true, class: "card-link mt" %>
+
+                <% end %>
             </div>
         </div>
     </div>

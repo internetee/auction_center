@@ -46,13 +46,14 @@ class OffersController < ApplicationController
 
   # DELETE /offers/1
   def destroy
-    @offer.destroy
+    return unless @offer.can_be_modified? && @offer.destroy
 
     respond_to do |format|
       format.html { redirect_to auction_path(@offer.auction_id), notice: t(:deleted) }
       format.json { head :no_content }
     end
   end
+
 
   private
 
@@ -66,8 +67,8 @@ class OffersController < ApplicationController
 
   def set_offer
     @offer = Offer.accessible_by(current_ability)
-                  .where(user_id: current_user.id)
-                  .find(params[:id])
+      .where(user_id: current_user.id)
+      .find(params[:id])
   end
 
   def authorize_user

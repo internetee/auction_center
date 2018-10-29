@@ -35,6 +35,17 @@ class Auction < ApplicationRecord
     offers.count
   end
 
+  def current_price_from_user(user_id)
+    offers_query = offers.where(user_id: user_id)
+    return unless offers_query.any?
+
+    offers_query.order(cents: :desc).first.price
+  end
+
+  def offer_from_user(user_id)
+    offers.where(user_id: user_id).order(cents: :desc).first
+  end
+
   def ends_at_later_than_starts_at
     return unless starts_at && ends_at
     return if ends_at > starts_at

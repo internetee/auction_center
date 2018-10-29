@@ -1,4 +1,9 @@
 minimum_id_test_offer:
-  auction: id_test
+  auction: valid_with_offers
   user: participant
   cents: 1201
+
+expired_offer:
+  auction: expired
+  user: participant
+  cents: 1000

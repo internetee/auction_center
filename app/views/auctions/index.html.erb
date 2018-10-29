@@ -27,7 +27,8 @@
                     <tr>
                         <th scope="col"><%= t('auctions.domain_name') %></th>
                         <th scope="col"><%= t('auctions.ends_at') %></th>
-                        <th scope="col"><%= t('auctions.submit_offer') %></th>
+                        <th scope="col"><%= t('auctions.your_current_price') %></th>
+                        <th scope="col"><%= t('auctions.offer_actions') %></th>
                     </tr>
                 </thead>
 
@@ -38,9 +39,15 @@
                                 <%= link_to auction.domain_name, auction_path(auction) %>
                             </td>
                             <td><%= I18n.l(auction.ends_at) %></td>
-                            <td class="auction-domain-name">
-                                <%= link_to t('auctions.submit_offer'),
-                                            new_auction_offer_path(auction_id: auction.id) %>
+                            <td><%= auction.current_price_from_user(current_user) %></td>
+                            <td>
+                                <%- if auction.offer_from_user(current_user).present? %>
+                                    <%= link_to t('auctions.edit_your_offer'),
+                                    edit_offer_path(auction.offer_from_user(current_user)) %>
+                                <% else %>
+                                    <%= link_to t('auctions.submit_offer'),
+                                    new_auction_offer_path(auction_id: auction.id) %>
+                                <% end %>
                             </td>
                         </tr>
                     <% end %>

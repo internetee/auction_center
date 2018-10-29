@@ -5,11 +5,13 @@ class OffersTest < ApplicationSystemTestCase
     super
 
     @expired_auction = auctions(:expired)
-    @valid_auction = auctions(:id_test)
+    @valid_auction = auctions(:valid_with_offers)
+    @valid_auction_with_no_offers = auctions(:valid_without_offers)
     @user = users(:participant)
     @offer = offers(:minimum_id_test_offer)
+    @expired_offer = offers(:expired_offer)
 
-    travel_to Time.parse('2010-07-05 10:30 +0000')
+    travel_to Time.parse('2010-07-05 10:31 +0000')
   end
 
   def teardown
@@ -27,7 +29,7 @@ class OffersTest < ApplicationSystemTestCase
 
   def test_participant_can_submit_an_offer_for_pending_auction
     sign_in(@user)
-    visit auction_path(@valid_auction)
+    visit auction_path(@valid_auction_with_no_offers)
 
     assert(page.has_link?('Submit offer'))
     click_link('Submit offer')
@@ -59,6 +61,13 @@ class OffersTest < ApplicationSystemTestCase
     end
 
     assert(page.has_text?('Deleted successfully'))
+  end
+
+  def test_participant_cannot_delete_an_offer_for_old_auction
+    sign_in(@user)
+    visit offer_path(@expired_offer)
+
+    refute(page.has_link?('Delete'))
   end
 
   def test_participant_cannot_submit_an_offer_for_old_auction

@@ -5,7 +5,7 @@ class AuctionAuditTest < ActiveSupport::TestCase
     super
 
     travel_to Time.parse('2010-07-05 10:30 +0000')
-    @auction = auctions(:id_test)
+    @auction = auctions(:valid_with_offers)
   end
 
   def teardown
