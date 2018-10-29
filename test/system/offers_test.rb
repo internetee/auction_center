@@ -8,7 +8,7 @@ class OffersTest < ApplicationSystemTestCase
     @valid_auction = auctions(:valid_with_offers)
     @valid_auction_with_no_offers = auctions(:valid_without_offers)
     @user = users(:participant)
-    @offer = offers(:minimum_id_test_offer)
+    @offer = offers(:minimum_offer)
     @expired_offer = offers(:expired_offer)
 
     travel_to Time.parse('2010-07-05 10:31 +0000')

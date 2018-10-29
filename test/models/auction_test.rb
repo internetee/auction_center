@@ -62,7 +62,21 @@ class AuctionTest < ActiveSupport::TestCase
     auction.ends_at = Time.now + 3.days
 
     refute(auction.highest_offer)
-    assert_equal(Money.new(1201, 'EUR'), @persisted_auction.highest_offer)
+    assert_equal(Money.new(500, 'EUR'), @persisted_auction.highest_offer)
+  end
+
+  def test_offer_from_user_returns_highest_offer_from_user_or_nil
+    offer = offers(:minimum_offer)
+    user = users(:participant)
+
+    assert_equal(@persisted_auction.offer_from_user(user), offer)
+    refute(@persisted_auction.offer_from_user(User.new))
+  end
+
+  def test_current_price_from_user_returns_a_money_object_or_nil
+    user = users(:participant)
+    assert_equal(Money.new(500, 'EUR'), @persisted_auction.current_price_from_user(user))
+    refute(@persisted_auction.current_price_from_user(User.new))
   end
 
   def test_offers_count_returns_integer

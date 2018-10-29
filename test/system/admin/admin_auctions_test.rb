@@ -67,7 +67,7 @@ class AdminAuctionsTest < ApplicationSystemTestCase
     assert(page.has_link?('expired.test', href: admin_auction_path(@expired_auction.id)))
 
     prices = page.find_all('.auction-highest-offer').map(&:text)
-    assert_equal(['12.01', '10.00', ''].to_set, prices.to_set)
+    assert_equal(['5.00', '10.00', ''].to_set, prices.to_set)
 
     offers_count = page.find_all('.auction-offers-count').map(&:text)
     assert_equal(['1', '0'].to_set, offers_count.to_set)
@@ -107,7 +107,7 @@ class AdminAuctionsTest < ApplicationSystemTestCase
     assert(page.has_table?('auctions-offers-table'))
 
     within('tbody#offers-table-body') do
-      assert_text('12.01 €')
+      assert_text('5.00 €')
       assert_text('Joe John Participant')
     end
   end

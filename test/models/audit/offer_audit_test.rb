@@ -5,7 +5,7 @@ class OfferAuditTest < ActiveSupport::TestCase
     super
 
     travel_to Time.parse('2010-07-05 10:30 +0000')
-    @offer = offers(:minimum_id_test_offer)
+    @offer = offers(:minimum_offer)
   end
 
   def teardown
