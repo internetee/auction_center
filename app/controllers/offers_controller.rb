@@ -54,7 +54,6 @@ class OffersController < ApplicationController
     end
   end
 
-
   private
 
   def create_params
@@ -67,8 +66,8 @@ class OffersController < ApplicationController
 
   def set_offer
     @offer = Offer.accessible_by(current_ability)
-      .where(user_id: current_user.id)
-      .find(params[:id])
+                  .where(user_id: current_user.id)
+                  .find(params[:id])
   end
 
   def authorize_user

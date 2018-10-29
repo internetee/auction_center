@@ -9,7 +9,7 @@ class Auction < ApplicationRecord
 
   has_many :offers, dependent: :delete_all
 
-  scope :active, -> { where('starts_at <= ? AND ends_at >= ?', Time.now.utc , Time.now.utc) }
+  scope :active, -> { where('starts_at <= ? AND ends_at >= ?', Time.now.utc, Time.now.utc) }
 
   def does_not_overlap
     return unless starts_at && ends_at
@@ -28,12 +28,11 @@ class Auction < ApplicationRecord
 
   def highest_offer
     return unless offers.any?
+
     offers.order(cents: :desc).limit(1).first.price
   end
 
-  def offers_count
-    offers.count
-  end
+  delegate :count, to: :offers, prefix: true
 
   def current_price_from_user(user_id)
     offers_query = offers.where(user_id: user_id)
