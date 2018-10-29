@@ -49,7 +49,7 @@ class OffersController < ApplicationController
     @offer.destroy
 
     respond_to do |format|
-      format.html { redirect_to offers_path, notice: t(:deleted) }
+      format.html { redirect_to auction_path(@offer.auction_id), notice: t(:deleted) }
       format.json { head :no_content }
     end
   end

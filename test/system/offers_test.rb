@@ -50,7 +50,18 @@ class OffersTest < ApplicationSystemTestCase
     assert(page.has_text?('Updated successfully'))
   end
 
-  def test_cannot_submit_an_offer_for_old_auction
+  def test_participant_can_delete_an_offer
+    sign_in(@user)
+    visit offer_path(@offer)
+
+    accept_confirm do
+      click_link_or_button('Delete')
+    end
+
+    assert(page.has_text?('Deleted successfully'))
+  end
+
+  def test_participant_cannot_submit_an_offer_for_old_auction
     sign_in(@user)
     visit auction_path(@expired_auction)
 
@@ -64,7 +75,7 @@ class OffersTest < ApplicationSystemTestCase
     assert(page.has_text?('Auction must be active'))
   end
 
-  def test_cannot_update_an_offer_for_an_inactive_auction
+  def test_participant_cannot_update_an_offer_for_an_inactive_auction
     travel_to Time.parse('2010-08-05 10:30 +0000')
     sign_in(@user)
 
