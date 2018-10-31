@@ -16,11 +16,13 @@ class BillingProfileAuditTest < ActiveSupport::TestCase
   end
 
   def test_creating_a_billing_profile_creates_a_history_record
-    billing_profile = BillingProfile.new(user: @user, name: "New Billing Profile",
+    billing_profile = BillingProfile.new(user: @user,
+                                         name: "New Billing Profile",
                                          vat_code: "1234567890",
                                          street: "New Street 11",
-                                         city: "London", postal_code: "NW1 6XE",
-                                         country: "United Kingdom")
+                                         city: "London",
+                                         postal_code: "NW1 6XE",
+                                         country_code: "GB")
     billing_profile.save
 
     assert(audit_record = Audit::BillingProfile.find_by(object_id: billing_profile.id, action: 'INSERT'))

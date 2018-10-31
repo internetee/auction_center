@@ -119,6 +119,6 @@ class BillingProfilesTest < ApplicationSystemTestCase
     fill_in('billing_profile[street]', with: 'Baker Street 221B')
     fill_in('billing_profile[city]', with: 'London')
     fill_in('billing_profile[postal_code]', with: 'NW1 6XE')
-    fill_in('billing_profile[country]', with: 'United Kingdom')
+    select('United Kingdom', from: 'billing_profile[country_code]')
   end
 end
