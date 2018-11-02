@@ -33,6 +33,13 @@ default: &default
     # 'none', 'peer', 'client_once','fail_if_no_peer_cert'
     openssl_verify_mode: ''
 
+  airbrake:
+    host: ''
+    project_id: ''
+    project_key: ''
+    # environment can be left blank, defaults to Rails.env
+    # environment: ''
+
 development:
   <<: *default
 test:
