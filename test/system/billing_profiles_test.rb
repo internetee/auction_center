@@ -15,6 +15,13 @@ class BillingProfilesTest < ApplicationSystemTestCase
     assert(page.has_link?('Billing', href: billing_profiles_path))
   end
 
+  def test_needs_to_be_signed_in_to_create_billing_profile
+    sign_out(@user)
+
+    visit new_billing_profile_path
+    assert(page.has_text?('You need to sign in or sign up before continuing'))
+  end
+
   def test_administrator_can_only_see_their_own_billing_profiles
     sign_in users(:administrator)
     visit billing_profiles_path
