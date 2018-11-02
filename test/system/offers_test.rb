@@ -65,7 +65,7 @@ class OffersTest < ApplicationSystemTestCase
 
     click_link_or_button('Edit')
 
-    fill_in('offer[price]', with: '5.00')
+    fill_in('offer[price]', with: '5')
     click_link_or_button('Submit')
 
     assert(page.has_text?('Updated successfully'))
