@@ -7,6 +7,7 @@ en:
     roles: "Roles"
     country_code: "Country code"
     identity_code: "Identity code"
+    must_accept_terms_and_conditions: "must be accepted"
 
     edit:
       title: "Edit your user profile"

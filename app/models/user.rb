@@ -14,6 +14,7 @@ class User < ApplicationRecord
   validates :mobile_phone, presence: true
 
   validate :identity_code_must_be_valid_for_estonia
+  validate :participant_must_accept_terms_and_conditions
 
   has_many :billing_profiles, dependent: :delete_all
 
@@ -21,6 +22,25 @@ class User < ApplicationRecord
     return if IdentityCode.new(country_code, identity_code).valid?
 
     errors.add(:identity_code, I18n.t(:is_invalid))
+  end
+
+  def participant_must_accept_terms_and_conditions
+    return unless self.role?(PARTICIPANT_ROLE)
+    return if self.terms_and_conditions_accepted_at.present?
+
+    errors.add(:terms_and_conditions, I18n.t('users.must_accept_terms_and_conditions'))
+  end
+
+  def accepts_terms_and_conditions=(acceptance)
+    if acceptance
+      self.terms_and_conditions_accepted_at = Time.now.utc
+    else
+      self.terms_and_conditions_accepted_at = nil
+    end
+  end
+
+  def accepts_terms_and_conditions
+    terms_and_conditions_accepted_at.present?
   end
 
   def display_name

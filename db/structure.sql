@@ -445,7 +445,8 @@ CREATE TABLE public.users (
     given_names character varying NOT NULL,
     surname character varying NOT NULL,
     mobile_phone character varying NOT NULL,
-    roles character varying[] DEFAULT '{participant}'::character varying[]
+    roles character varying[] DEFAULT '{participant}'::character varying[],
+    terms_and_conditions_accepted_at timestamp without time zone
 );
 
 
@@ -788,6 +789,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181016124017'),
 ('20181017114957'),
 ('20181017122905'),
-('20181018064054');
+('20181018064054'),
+('20181102080251');
 
 

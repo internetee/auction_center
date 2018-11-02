@@ -11,6 +11,8 @@ class CreateUserTest < ApplicationSystemTestCase
     fill_in('user[identity_code]', with: '81060885963')
     fill_in('user[mobile_phone]', with: '+48600100200')
     select('Poland', from: 'user[country_code]')
+    check('user[accepts_terms_and_conditions]')
+
     fill_in('user[surname]', with: 'Last Name')
     click_link_or_button('Sign up')
 
@@ -37,7 +39,7 @@ class CreateUserTest < ApplicationSystemTestCase
 
     expected_errors = ["Email can't be blank", "Password can't be blank",
                        "Identity code can't be blank", "Mobile phone can't be blank",
-                       "Identity code is invalid"]
+                       "Identity code is invalid", "You need to accept terms and conditions"]
 
     assert_equal(errors_array.to_set, expected_errors.to_set)
   end

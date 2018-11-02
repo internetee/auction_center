@@ -18,7 +18,7 @@ class UserAuditTest < ActiveSupport::TestCase
     user = User.new(given_names: 'New user', surname: 'Surname', password: 'password',
                     password_confirmation: 'password', mobile_phone: '+372500100300',
                     email: 'user-email@auction.test', country_code: 'EE',
-                    identity_code: '51007050077')
+                    identity_code: '51007050077', accepts_terms_and_conditions: true)
     user.save
 
     assert(audit_record = Audit::User.find_by(object_id: user.id, action: 'INSERT'))

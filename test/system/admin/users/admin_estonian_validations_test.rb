@@ -54,6 +54,7 @@ class AdminEstonianValidationsTest < ApplicationSystemTestCase
     fill_in('user[password_confirmation]', with: 'password')
     fill_in('user[given_names]', with: 'User with Multiple Names')
     fill_in('user[surname]', with: 'Last Name')
+    check('user[accepts_terms_and_conditions]')
     select('Estonia', from: 'user[country_code]')
   end
 end

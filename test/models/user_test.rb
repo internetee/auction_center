@@ -14,6 +14,7 @@ class UserTest < ActiveSupport::TestCase
     assert_equal(["can't be blank"], user.errors[:password])
     assert_equal(["can't be blank"], user.errors[:email])
     assert_equal(["can't be blank"], user.errors[:mobile_phone])
+    assert_equal(["must be accepted"], user.errors[:terms_and_conditions])
 
     user.email = 'email@example.com'
     user.password = 'email@example.com'
@@ -21,6 +22,7 @@ class UserTest < ActiveSupport::TestCase
     user.mobile_phone = '+372500100300'
     user.identity_code = '51007050687'
     user.country_code = 'EE'
+    user.accepts_terms_and_conditions = true
 
     assert(user.valid?)
   end
@@ -33,6 +35,18 @@ class UserTest < ActiveSupport::TestCase
     user.password_confirmation = 'email@example.com'
     user.mobile_phone = '+372500100300'
     user.country_code = 'PL'
+    user.accepts_terms_and_conditions = true
+
+    assert(user.valid?)
+  end
+
+  def test_administrator_does_not_need_to_accept_terms_and_conditions
+    user = boilerplate_user
+    user.mobile_phone = '+372500100300'
+
+    user.accepts_terms_and_conditions = false
+    user.roles = [User::ADMINISTATOR_ROLE]
+
     assert(user.valid?)
   end
 
@@ -109,6 +123,7 @@ class UserTest < ActiveSupport::TestCase
     user.identity_code = '05071020395'
     user.country_code = 'LV'
 
+
     assert(user.valid?)
   end
 
@@ -117,6 +132,7 @@ class UserTest < ActiveSupport::TestCase
     user.email = 'email@example.com'
     user.password = 'email@example.com'
     user.password_confirmation = 'email@example.com'
+    user.accepts_terms_and_conditions = true
     user
   end
 end
