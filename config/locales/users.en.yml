@@ -24,10 +24,16 @@ en:
 
     new:
       title: "Create a user account"
-      password_requirements: "(at least %{minimum} characters)"
-      sign_up: "Sign up"
       already_signed_in: "You are already signed in"
       errors: "prohibited this user from being saved"
+
+    form:
+      password_requirements: "at least %{minimum} characters"
+      sign_up: "Sign up"
+      contact_data: "Contact data"
+      new_password: "New password"
+      you_can_leave_blank: "leave blank if you don't want to change it"
+      we_need_your_password: "we need your current password to confirm your changes)"
 
     update:
       incorrect_password: 'Incorrect current password'
