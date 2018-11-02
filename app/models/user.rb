@@ -17,6 +17,7 @@ class User < ApplicationRecord
   validate :participant_must_accept_terms_and_conditions
 
   has_many :billing_profiles, dependent: :delete_all
+  has_many :offers, dependent: :delete_all
 
   def identity_code_must_be_valid_for_estonia
     return if IdentityCode.new(country_code, identity_code).valid?

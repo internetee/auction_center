@@ -13,7 +13,7 @@
                     <h3><%= t('auctions.finished') %></h3>
                 <% end %>
 
-                <dl class="mb-6 no-bullets billing-profile-card">
+                <dl class="mb-6 no-bullets auction-card">
                     <dt><%= t('auctions.starts_at') %></dt>
                     <dd><%= @auction.starts_at %></dd>
 
@@ -30,5 +30,33 @@
                             class: "card-link mt" %>
             </div>
         </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+        <h2><%= t(:offers_name) %></h2>
+        <table class="table" id="auctions-offers-table">
+            <thead>
+                <tr>
+                    <th scope="col"><%= t('offers.price') %></th>
+                    <th scope="col"><%= t('users.display_name') %></th>
+                    <th scope="col"><%= t(:created_at) %></th>
+                    <th scope="col"><%= t(:updated_at) %></th>
+                    <th scope="col"><%= t(:versions_name)%> </th>
+                </tr>
+
+                <tbody id="offers-table-body">
+                    <% @offers.each do |offer| %>
+                        <tr class="offers-table-row">
+                            <td><%= t('offers.price_in_currency', price: offer.price) %></td>
+                            <td><%= offer.user.display_name %></td>
+                            <td><%= I18n.l(offer.user.created_at) %></td>
+                            <td><%= I18n.l(offer.user.updated_at) %></td>
+                            <td><%= link_to t(:versions_name), admin_offer_versions_path(offer) %></td>
+                        </tr>
+                    <% end %>
+                </tbody>
+        </table>
     </div>
 </div>

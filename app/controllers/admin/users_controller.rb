@@ -5,6 +5,7 @@ module Admin
     before_action :authorize_user
     before_action :set_user, except: %i[index new create]
 
+    # GET /admin/users/new
     def new
       @user = User.new
     end

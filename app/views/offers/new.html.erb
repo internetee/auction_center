@@ -1,0 +1,19 @@
+<div class="text-center">
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <h1 class="mb-3 mt-4"><%= t('.title') %></h1>
+            <% if @offer.errors.any? %>
+                <h3 id="error-explanation">
+                    <%= pluralize(@offer.errors.count, "error") %> <%= t('.errors') %>
+                </h3>
+                <ul id="errors">
+                    <% @offer.errors.full_messages.each do |message| %>
+                        <li><%= message %></li>
+                    <% end %>
+                </ul>
+            <% end %>
+        </div>
+    </div>
+
+    <%= render 'form', offer: @offer, url: auction_offers_path(params[:auction_id]) %>
+</div>

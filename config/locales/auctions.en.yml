@@ -4,6 +4,13 @@ en:
     starts_at: 'Starts at'
     ends_at: 'Ends at'
     finished: "This auction has finished"
+    highest_offer: "Highest offer"
+    offers: "Offers"
+    offer_actions: "Offer actions"
+    your_current_price: "Your current offer"
+
+    submit_offer: "Submit offer"
+    edit_your_offer: "Edit your offer"
 
     index:
       title: "Current auctions"

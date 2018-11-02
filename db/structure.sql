@@ -100,6 +100,35 @@ $$;
 
 
 --
+-- Name: process_offer_audit(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.process_offer_audit() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+  BEGIN
+    IF (TG_OP = 'INSERT') THEN
+      INSERT INTO audit.offers
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
+      RETURN NEW;
+    ELSEIF (TG_OP = 'UPDATE') THEN
+      INSERT INTO audit.offers
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
+      RETURN NEW;
+    ELSEIF (TG_OP = 'DELETE') THEN
+      INSERT INTO audit.offers
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
+      RETURN OLD;
+    END IF;
+    RETURN NULL;
+  END
+$$;
+
+
+--
 -- Name: process_setting_audit(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -227,6 +256,40 @@ CREATE SEQUENCE audit.billing_profiles_id_seq
 --
 
 ALTER SEQUENCE audit.billing_profiles_id_seq OWNED BY audit.billing_profiles.id;
+
+
+--
+-- Name: offers; Type: TABLE; Schema: audit; Owner: -; Tablespace: 
+--
+
+CREATE TABLE audit.offers (
+    id integer NOT NULL,
+    object_id bigint,
+    action text NOT NULL,
+    recorded_at timestamp without time zone,
+    old_value jsonb,
+    new_value jsonb,
+    CONSTRAINT offers_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
+);
+
+
+--
+-- Name: offers_id_seq; Type: SEQUENCE; Schema: audit; Owner: -
+--
+
+CREATE SEQUENCE audit.offers_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: offers_id_seq; Type: SEQUENCE OWNED BY; Schema: audit; Owner: -
+--
+
+ALTER SEQUENCE audit.offers_id_seq OWNED BY audit.offers.id;
 
 
 --
@@ -382,6 +445,40 @@ ALTER SEQUENCE public.billing_profiles_id_seq OWNED BY public.billing_profiles.i
 
 
 --
+-- Name: offers; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE public.offers (
+    id bigint NOT NULL,
+    auction_id integer NOT NULL,
+    user_id integer NOT NULL,
+    cents integer NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    CONSTRAINT offers_cents_are_positive CHECK ((cents > 0))
+);
+
+
+--
+-- Name: offers_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.offers_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: offers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.offers_id_seq OWNED BY public.offers.id;
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -446,7 +543,8 @@ CREATE TABLE public.users (
     surname character varying NOT NULL,
     mobile_phone character varying NOT NULL,
     roles character varying[] DEFAULT '{participant}'::character varying[],
-    terms_and_conditions_accepted_at timestamp without time zone
+    terms_and_conditions_accepted_at timestamp without time zone,
+    CONSTRAINT users_roles_are_known CHECK ((roles <@ ARRAY['participant'::character varying, 'administrator'::character varying]))
 );
 
 
@@ -487,6 +585,13 @@ ALTER TABLE ONLY audit.billing_profiles ALTER COLUMN id SET DEFAULT nextval('aud
 -- Name: id; Type: DEFAULT; Schema: audit; Owner: -
 --
 
+ALTER TABLE ONLY audit.offers ALTER COLUMN id SET DEFAULT nextval('audit.offers_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: audit; Owner: -
+--
+
 ALTER TABLE ONLY audit.settings ALTER COLUMN id SET DEFAULT nextval('audit.settings_id_seq'::regclass);
 
 
@@ -509,6 +614,13 @@ ALTER TABLE ONLY public.auctions ALTER COLUMN id SET DEFAULT nextval('public.auc
 --
 
 ALTER TABLE ONLY public.billing_profiles ALTER COLUMN id SET DEFAULT nextval('public.billing_profiles_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.offers ALTER COLUMN id SET DEFAULT nextval('public.offers_id_seq'::regclass);
 
 
 --
@@ -539,6 +651,14 @@ ALTER TABLE ONLY audit.auctions
 
 ALTER TABLE ONLY audit.billing_profiles
     ADD CONSTRAINT billing_profiles_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: offers_pkey; Type: CONSTRAINT; Schema: audit; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY audit.offers
+    ADD CONSTRAINT offers_pkey PRIMARY KEY (id);
 
 
 --
@@ -579,6 +699,14 @@ ALTER TABLE ONLY public.auctions
 
 ALTER TABLE ONLY public.billing_profiles
     ADD CONSTRAINT billing_profiles_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: offers_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY public.offers
+    ADD CONSTRAINT offers_pkey PRIMARY KEY (id);
 
 
 --
@@ -639,6 +767,20 @@ CREATE INDEX billing_profiles_object_id_idx ON audit.billing_profiles USING btre
 --
 
 CREATE INDEX billing_profiles_recorded_at_idx ON audit.billing_profiles USING btree (recorded_at);
+
+
+--
+-- Name: offers_object_id_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
+--
+
+CREATE INDEX offers_object_id_idx ON audit.offers USING btree (object_id);
+
+
+--
+-- Name: offers_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
+--
+
+CREATE INDEX offers_recorded_at_idx ON audit.offers USING btree (recorded_at);
 
 
 --
@@ -747,6 +889,13 @@ CREATE TRIGGER process_billing_profile_audit AFTER INSERT OR DELETE OR UPDATE ON
 
 
 --
+-- Name: process_offer_audit; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER process_offer_audit AFTER INSERT OR DELETE OR UPDATE ON public.offers FOR EACH ROW EXECUTE PROCEDURE public.process_offer_audit();
+
+
+--
 -- Name: process_setting_audit; Type: TRIGGER; Schema: public; Owner: -
 --
 
@@ -766,6 +915,22 @@ CREATE TRIGGER process_user_audit AFTER INSERT OR DELETE OR UPDATE ON public.use
 
 ALTER TABLE ONLY public.billing_profiles
     ADD CONSTRAINT fk_rails_8fda547d9d FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: fk_rails_bb5f3f4ecb; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.offers
+    ADD CONSTRAINT fk_rails_bb5f3f4ecb FOREIGN KEY (auction_id) REFERENCES public.auctions(id);
+
+
+--
+-- Name: fk_rails_e6095d6211; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.offers
+    ADD CONSTRAINT fk_rails_e6095d6211 FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
 --
@@ -790,6 +955,11 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181017114957'),
 ('20181017122905'),
 ('20181018064054'),
+('20181022095409'),
+('20181023103316'),
+('20181023121607'),
+('20181023125230'),
+('20181029121254'),
 ('20181102080251');
 
 

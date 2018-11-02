@@ -1,0 +1,20 @@
+en:
+  offers:
+    auction: "Auction"
+    price: "Price"
+    i_accept_terms_and_conditions: "I accept terms and conditions"
+    price_in_currency: "%{price} €"
+
+    new:
+      title: "New offer"
+      errors: "prohibited this offer from being saved"
+
+    show:
+      title: "Your offer"
+      price_is_without_vat: >
+        Your offer does not include VAT. Once the auction time has ended, we will send an email to
+        the auction winner.
+
+    edit:
+      title: "Edit offer"
+      errors: "prohibited this offer from being saved"

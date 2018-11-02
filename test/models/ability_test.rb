@@ -3,6 +3,8 @@ require 'test_helper'
 class AbilityTest < ActiveSupport::TestCase
   def setup
     anonymous_user = User.new
+    anonymous_user.roles = []
+
     @participant = users(:participant)
     @administrator = users(:administrator)
 
@@ -69,5 +71,25 @@ class AbilityTest < ActiveSupport::TestCase
     refute(@anonymous_ability.can?(:manage, Auction))
     refute(@participant_ability.can?(:manage, Auction))
     assert(@administrator_ability.can?(:manage, Auction))
+  end
+
+  def test_participant_can_manage_their_own_offers
+    assert(@participant_ability.can?(:edit?, Offer.new(user_id: @participant.id)))
+    assert(@participant_ability.can?(:read?, Offer.new(user_id: @participant.id)))
+    assert(@participant_ability.can?(:update?, Offer.new(user_id: @participant.id)))
+    assert(@participant_ability.can?(:delete?, Offer.new(user_id: @participant.id)))
+
+    refute(@participant_ability.can?(:destroy, Offer.new()))
+    refute(@participant_ability.can?(:edit, Offer.new()))
+  end
+
+  def test_administrator_cannot_manage_offers
+    refute(@administrator_ability.can?(:manage, Offer))
+    assert(@administrator_ability.can?(:read, Offer))
+  end
+
+  def test_anonymous_user_cannot_manage_offers
+    refute(@anonymous_ability.can?(:read, Offer))
+    refute(@anonymous_ability.can?(:create, Offer))
   end
 end
