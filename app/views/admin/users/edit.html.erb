@@ -54,7 +54,10 @@
                 <div class="form-group">
                     <%= f.label :country %><br />
                     <%= f.select :country_code,
-                                 options_for_select(Countries::ALPHA_2_SELECTION, ['Estonia', 'EE']),
+                                 options_for_select(
+                                   Countries::ALPHA_2_SELECTION,
+                                   @user.country_code || Setting.default_country
+                                 ),
                                  {}, class: "form-control form-control" %>
                 </div>
             </div>

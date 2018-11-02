@@ -1,11 +1,18 @@
 require 'application_system_test_case'
 
-class EditAccountTest < ApplicationSystemTestCase
+class EditUserTest < ApplicationSystemTestCase
   def setup
     super
 
     @user = users(:participant)
     sign_in(@user)
+  end
+
+  def test_edit_form_contains_existing_values
+    visit edit_user_path(@user)
+
+    country_code_field = page.find_field('user[country_code]')
+    assert_equal(@user.country_code, country_code_field.value)
   end
 
   def test_update_of_email_requires_confirmation

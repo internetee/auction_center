@@ -109,6 +109,13 @@ class BillingProfilesTest < ApplicationSystemTestCase
     assert(BillingProfile.find_by(street: 'New Street 12', name: 'Joe John Participant-New'))
   end
 
+  def test_edit_form_contains_existing_values
+    visit edit_billing_profile_path(@billing_profile)
+
+    country_code_field = page.find_field('billing_profile[country_code]')
+    assert_equal(@billing_profile.country_code, country_code_field.value)
+  end
+
   def test_a_user_can_delete_their_billing_profile
     visit billing_profile_path(@billing_profile)
 
