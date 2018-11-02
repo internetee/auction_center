@@ -13,13 +13,24 @@
                     <h3><%= t('auctions.finished') %></h3>
                 <% end %>
 
-                <dl class="mb-6 no-bullets billing-profile-card">
+                <dl class="mb-6 no-bullets auction-card">
                     <dt><%= t('auctions.starts_at') %></dt>
-                    <dd><%= @auction.starts_at %></dd>
+                    <dd><%= I18n.l(@auction.starts_at) %></dd>
 
                     <dt><%= t('auctions.ends_at') %></dt>
-                    <dd><%= @auction.ends_at %></dd>
+                    <dd><%= I18n.l(@auction.ends_at) %></dd>
+
+                    <dt><%= t('auctions.your_current_price') %></dt>
+                    <dd><%= @auction.current_price_from_user(current_user) %></dd>
                 </dl>
+
+                <%- if @auction.offer_from_user(current_user).present? %>
+                    <%= link_to t('auctions.edit_your_offer'),
+                    edit_offer_path(@auction.offer_from_user(current_user)), class: "card-link mt" %>
+                <% else %>
+                    <%= link_to t('auctions.submit_offer'),
+                    new_auction_offer_path(auction_id: @auction.id), class: "card-link mt" %>
+                <% end %>
             </div>
         </div>
     </div>

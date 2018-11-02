@@ -5,7 +5,8 @@ class AuctionsTest < ApplicationSystemTestCase
     super
 
     travel_to Time.parse('2010-07-05 10:30 +0000')
-    @auction = auctions(:id_test)
+    @auction = auctions(:valid_with_offers)
+    @other_auction = auctions(:valid_without_offers)
     @expired_auction = auctions(:expired)
   end
 
@@ -19,7 +20,8 @@ class AuctionsTest < ApplicationSystemTestCase
     visit('/')
 
     assert(page.has_table?('auctions-table'))
-    assert(page.has_link?('id.test', href: auction_path(@auction.id)))
+    assert(page.has_link?('with-offers.test', href: auction_path(@auction.id)))
+    assert(page.has_link?('no-offers.test', href: auction_path(@other_auction.id)))
   end
 
   def test_auctions_index_does_not_contain_auctions_that_are_finished
@@ -37,7 +39,7 @@ class AuctionsTest < ApplicationSystemTestCase
   def test_show_page_contains_the_details_of_the_auction
     visit(auction_path(@auction))
 
-    assert(page.has_content?('dd', 'id.test'))
+    assert(page.has_content?('dd', 'with-offers.test'))
     assert(page.has_content?('dd', '2010-07-06 10:30'))
   end
 end

@@ -12,10 +12,14 @@ Rails.application.routes.draw do
     resources :auctions, except: [:edit, :update], concerns: [:auditable]
     resources :billing_profiles, only: :index, concerns: [:auditable]
     resources :settings, except: %i[create destroy], concerns: [:auditable]
+    resources :offers, only: [:show], concerns: [:auditable]
     resources :users, concerns: [:auditable]
   end
 
-  resources :auctions, only: %i[index show]
+  resources :auctions, only: %i[index show] do
+    resources :offers, only: %i[new show create edit update destroy], shallow: true
+  end
+
   resources :billing_profiles
   resources :users, except: :destroy
 end
