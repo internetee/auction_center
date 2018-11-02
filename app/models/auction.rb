@@ -7,7 +7,9 @@ class Auction < ApplicationRecord
   validate :ends_at_later_than_starts_at
   validate :starts_at_cannot_be_in_the_past, on: :create
 
-  scope :active, -> { where('ends_at >= ?', Time.now.utc) }
+  has_many :offers, dependent: :delete_all
+
+  scope :active, -> { where('starts_at <= ? AND ends_at >= ?', Time.now.utc, Time.now.utc) }
 
   def does_not_overlap
     return unless starts_at && ends_at
@@ -22,6 +24,25 @@ class Auction < ApplicationRecord
     return if starts_at >= Time.now.utc
 
     errors.add(:starts_at, 'cannot be in the past')
+  end
+
+  def highest_offer
+    return unless offers.any?
+
+    offers.order(cents: :desc).limit(1).first.price
+  end
+
+  delegate :count, to: :offers, prefix: true
+
+  def current_price_from_user(user_id)
+    offers_query = offers.where(user_id: user_id)
+    return unless offers_query.any?
+
+    offers_query.order(cents: :desc).first.price
+  end
+
+  def offer_from_user(user_id)
+    offers.where(user_id: user_id).order(cents: :desc).first
   end
 
   def ends_at_later_than_starts_at

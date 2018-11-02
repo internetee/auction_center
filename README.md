@@ -21,6 +21,10 @@ email: administrator@auction.test
 password: password
 ```
 
+## Settings
+
+There are certain settings stored in the database that are used for the application logic. For example, the currency in which all auctions are conducted. An administrator can change these settings in /admin/settings page.
+
 ## Audits
 
 Due to various regulatory requirements, all database tables are audited according to the following procedure:

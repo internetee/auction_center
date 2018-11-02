@@ -22,6 +22,7 @@ en:
   settings_name: "Settings"
   users_name: "Users"
   versions_name: "Versions"
+  offers_name: "Offers"
 
   users:
     display_name: "Display name"

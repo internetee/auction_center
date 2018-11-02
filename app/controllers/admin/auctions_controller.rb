@@ -25,11 +25,13 @@ module Admin
 
     # GET /admin/auctions
     def index
-      @auctions = Auction.accessible_by(current_ability)
+      @auctions = Auction.accessible_by(current_ability).order(ends_at: :desc)
     end
 
     # GET /admin/auctions/1
-    def show; end
+    def show
+      @offers = @auction.offers.order(cents: :desc)
+    end
 
     # DELETE /admin/auctions/1
     def destroy

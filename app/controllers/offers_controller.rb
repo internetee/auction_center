@@ -1,0 +1,76 @@
+class OffersController < ApplicationController
+  before_action :authenticate_user!
+  before_action :set_offer, only: %i[show edit update destroy]
+  before_action :authorize_user, except: :new
+
+  # GET /auctions/1/offers/new
+  def new
+    @offer = Offer.new(
+      auction_id: params[:auction_id], user_id: current_user.id
+    )
+  end
+
+  # POST /auctions/1/offers
+  def create
+    @offer = Offer.new(create_params)
+
+    respond_to do |format|
+      if @offer.save
+        format.html { redirect_to offer_path(@offer), notice: t(:created) }
+        format.json { render :show, status: :created, location: @offer }
+      else
+        format.html { render :new }
+        format.json { render json: @offer.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # GET /offers/1
+  def show; end
+
+  # GET /offers/1/edit
+  def edit; end
+
+  # PUT /offers/1
+  def update
+    respond_to do |format|
+      if @offer.update(update_params)
+        format.html { redirect_to offer_path(@offer), notice: t(:updated) }
+        format.json { render :show, status: :ok, location: @offer }
+      else
+        format.html { render :edit }
+        format.json { render json: @offer.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # DELETE /offers/1
+  def destroy
+    return unless @offer.can_be_modified? && @offer.destroy
+
+    respond_to do |format|
+      format.html { redirect_to auction_path(@offer.auction_id), notice: t(:deleted) }
+      format.json { head :no_content }
+    end
+  end
+
+  private
+
+  def create_params
+    params.require(:offer).permit(:auction_id, :user_id, :price)
+  end
+
+  def update_params
+    params.require(:offer).permit(:price)
+  end
+
+  def set_offer
+    @offer = Offer.accessible_by(current_ability)
+                  .where(user_id: current_user.id)
+                  .find(params[:id])
+  end
+
+  def authorize_user
+    authorize! :manage, Offer
+  end
+end

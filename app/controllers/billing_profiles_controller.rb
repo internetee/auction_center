@@ -1,4 +1,5 @@
 class BillingProfilesController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_billing_profile, only: %i[show edit update destroy]
   before_action :authorize_user, except: :new
 
