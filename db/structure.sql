@@ -421,7 +421,7 @@ CREATE TABLE public.billing_profiles (
     postal_code character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    alpha_two_country_code character varying(2) NOT NULL
+    alpha_two_country_code character varying(2)
 );
 
 
