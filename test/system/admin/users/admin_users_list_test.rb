@@ -37,6 +37,7 @@ class AdminUsersListTest < ApplicationSystemTestCase
     fill_in('user[mobile_phone]', with: '+48600100200')
     select('Poland', from: 'user[country_code]')
     fill_in('user[surname]', with: 'Last Name')
+    check('user[accepts_terms_and_conditions]')
     check('user_roles_administrator')
 
     click_link_or_button('Submit')
@@ -52,12 +53,12 @@ class AdminUsersListTest < ApplicationSystemTestCase
     click_link_or_button('Submit')
 
     errors_list = page.find('#errors').all('li')
-    assert_equal(5, errors_list.size)
+    assert_equal(6, errors_list.size)
     errors_array = errors_list.collect { |i| i.text }
 
     expected_errors = ["Email can't be blank", "Password can't be blank",
                        "Identity code can't be blank", "Mobile phone can't be blank",
-                       "Identity code is invalid"]
+                       "Identity code is invalid", "Terms and conditions must be accepted"]
 
     assert_equal(errors_array.to_set, expected_errors.to_set)
   end

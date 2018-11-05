@@ -5,11 +5,16 @@ class User < ApplicationRecord
   ADMINISTATOR_ROLE = 'administrator'.freeze
   ROLES = %w[administrator participant].freeze
 
+  ESTONIAN_COUNTRY_CODE = 'EE'.freeze
+
   devise :database_authenticatable, :recoverable, :rememberable, :validatable, :confirmable
 
   alias_attribute :country_code, :alpha_two_country_code
 
-  validates :identity_code, presence: true, if: proc { |user| user.country_code == 'EE' }
+  validates :identity_code, presence: true, if: proc { |user|
+    user.country_code == ESTONIAN_COUNTRY_CODE
+  }
+
   validates :identity_code, uniqueness: { scope: :alpha_two_country_code }
   validates :mobile_phone, presence: true
 
@@ -26,14 +31,15 @@ class User < ApplicationRecord
   end
 
   def participant_must_accept_terms_and_conditions
-    return unless self.role?(PARTICIPANT_ROLE)
-    return if self.terms_and_conditions_accepted_at.present?
+    return unless role?(PARTICIPANT_ROLE)
+    return if terms_and_conditions_accepted_at.present?
 
     errors.add(:terms_and_conditions, I18n.t('users.must_accept_terms_and_conditions'))
   end
 
   def accepts_terms_and_conditions=(acceptance)
-    if acceptance
+    acceptance_as_bool = ActiveRecord::Type::Boolean.new.cast(acceptance)
+    if acceptance_as_bool
       self.terms_and_conditions_accepted_at = Time.now.utc
     else
       self.terms_and_conditions_accepted_at = nil

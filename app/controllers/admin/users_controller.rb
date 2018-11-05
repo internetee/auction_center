@@ -69,12 +69,13 @@ module Admin
     def create_params
       params.require(:user)
             .permit(:email, :password, :password_confirmation, :identity_code, :country_code,
-                    :given_names, :surname, :mobile_phone, roles: [])
+                    :given_names, :surname, :mobile_phone, :accepts_terms_and_conditions, roles: [])
     end
 
     def update_params
       update_params = params.require(:user)
-                            .permit(:email, :given_names, :surname, :mobile_phone, roles: [])
+                            .permit(:email, :given_names, :surname, :mobile_phone,
+                                    :accepts_terms_and_conditions ,roles: [])
       update_params.reject! { |_k, v| v.blank? }
     end
 

@@ -22,6 +22,22 @@ class CreateUserTest < ApplicationSystemTestCase
     assert_equal(['new-user@auction.test'], last_email.to)
   end
 
+  def test_needs_to_accept_terms_and_conditions
+    visit new_user_path
+
+    fill_in('user[email]', with: 'new-user@auction.test')
+    fill_in('user[password]', with: 'password')
+    fill_in('user[password_confirmation]', with: 'password')
+    fill_in('user[given_names]', with: 'User with Multiple Names')
+    fill_in('user[identity_code]', with: '81060885963')
+    fill_in('user[mobile_phone]', with: '+48600100200')
+    select('Poland', from: 'user[country_code]')
+    fill_in('user[surname]', with: 'Last Name')
+    click_link_or_button('Sign up')
+
+    assert(page.has_text?('Terms and conditions must be accepted'))
+  end
+
   def test_cannot_create_new_user_if_already_signed_in
     sign_in(users(:participant))
     visit new_user_path
@@ -34,12 +50,12 @@ class CreateUserTest < ApplicationSystemTestCase
     click_link_or_button('Sign up')
 
     errors_list = page.find('#errors').all('li')
-    assert_equal(5, errors_list.size)
+    assert_equal(6, errors_list.size)
     errors_array = errors_list.collect { |i| i.text }
 
     expected_errors = ["Email can't be blank", "Password can't be blank",
                        "Identity code can't be blank", "Mobile phone can't be blank",
-                       "Identity code is invalid", "You need to accept terms and conditions"]
+                       "Identity code is invalid", "Terms and conditions must be accepted"]
 
     assert_equal(errors_array.to_set, expected_errors.to_set)
   end

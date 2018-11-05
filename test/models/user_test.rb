@@ -35,7 +35,7 @@ class UserTest < ActiveSupport::TestCase
     user.password_confirmation = 'email@example.com'
     user.mobile_phone = '+372500100300'
     user.country_code = 'PL'
-    user.accepts_terms_and_conditions = true
+    user.accepts_terms_and_conditions = "true"
 
     assert(user.valid?)
   end
@@ -122,7 +122,6 @@ class UserTest < ActiveSupport::TestCase
     user.mobile_phone = '+3727271000'
     user.identity_code = '05071020395'
     user.country_code = 'LV'
-
 
     assert(user.valid?)
   end

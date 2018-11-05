@@ -15,69 +15,7 @@
         </div>
     </div>
 
-<<<<<<< HEAD
-    <%= form_with(model: @user, url: users_path(@user), local: true, method: :post, id: 'user_form') do |f| %>
-        <div class="row justify-content-center">
-            <div class="col-12 col-lg-6">
-                <div class="form-group">
-                    <%= f.label :identity_code %> <span class="small text-info">
-                    <%= f.text_field :identity_code, class: "form-control",
-                                     placeholder: t('users.can_be_left_blank_if_not_estonian')%>
-                </div>
-
-                <div class="form-group">
-                    <%= f.label :country %><br />
-                    <%= f.select :country_code,
-                    options_for_select(Countries::ALPHA_2_SELECTION, ['Estonia', 'EE']),
-                    {},
-                    class: "form-control form-control" %>
-                </div>
-
-                <div class="form-group">
-                    <%= f.label :given_names %><br />
-                    <%= f.text_field :given_names, class: "form-control" %>
-                </div>
-
-                <div class="form-group">
-                    <%= f.label :surname %><br />
-                    <%= f.text_field :surname, class: "form-control" %>
-                </div>
-            </div>
-
-            <div class="col-12 col-lg-6">
-                <div class="form-group">
-                    <%= f.label :email %><br />
-                    <%= f.email_field :email, autofocus: true, class: "form-control" %>
-                </div>
-
-                <div class="form-group">
-                    <%= f.label :mobile_phone %><br />
-                    <%= f.telephone_field :mobile_phone, autofocus: true, class: "form-control" %>
-                </div>
-
-                <div class="form-group">
-                    <%= f.label :password %>
-                    <% if @minimum_password_length %>
-                        <em><%= t('.password_requirements', minimum: @minimum_password_length) %></em>
-                    <% end %><br />
-                    <%= f.password_field :password, class: "form-control" %>
-                </div>
-
-                <div class="form-group">
-                    <%= f.label :password_confirmation %><br />
-                    <%= f.password_field :password_confirmation, class: "form-control" %>
-                </div>
-            </div>
-            <div class="col-12 col-lg-6">
-                <div class="mt-4">
-                    <%= f.submit t('.sign_up'), class: "btn btn-primary form-control", id: "user_form_commit" %>
-                </div>
-            </div>
-        </div>
-    <% end %>
-=======
     <%= render 'form', user: @user, url: users_path %>
->>>>>>> 664b73c... Simplify user forms to a partial
 </div>
 
 <%= javascript_pack_tag 'users', 'data-turbolinks-track': 'reload' %>
