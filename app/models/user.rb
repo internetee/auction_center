@@ -31,7 +31,6 @@ class User < ApplicationRecord
   end
 
   def participant_must_accept_terms_and_conditions
-    return unless role?(PARTICIPANT_ROLE)
     return if terms_and_conditions_accepted_at.present?
 
     errors.add(:terms_and_conditions, I18n.t('users.must_accept_terms_and_conditions'))

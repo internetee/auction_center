@@ -40,16 +40,6 @@ class UserTest < ActiveSupport::TestCase
     assert(user.valid?)
   end
 
-  def test_administrator_does_not_need_to_accept_terms_and_conditions
-    user = boilerplate_user
-    user.mobile_phone = '+372500100300'
-
-    user.accepts_terms_and_conditions = false
-    user.roles = [User::ADMINISTATOR_ROLE]
-
-    assert(user.valid?)
-  end
-
   def test_password_needs_a_confirmation
     @administrator.password = 'password'
     @administrator.password_confirmation = 'not matching'
