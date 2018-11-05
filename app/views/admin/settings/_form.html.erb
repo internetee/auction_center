@@ -2,19 +2,19 @@
     <div class="row">
         <div class="col-12 col-lg-6">
             <div class="form-group">
-                <%= f.label :code %><br />
+                <%= f.label t('settings.code') %><br />
                 <%= f.text_field :code, class: "form-control", value: setting.code, disabled: true %>
             </div>
         </div>
         <div class="col-12 col-lg-6">
             <div class="form-group">
-                <%= f.label :description %><br />
+                <%= f.label t('settings.description') %><br />
                 <%= f.text_field :description, class: "form-control", value: setting.description %>
             </div>
         </div>
         <div class="col-12 col-lg-6">
             <div class="form-group">
-                <%= f.label :value %><br />
+                <%= f.label t('settings.value') %><br />
                 <%= f.text_field :value, class: "form-control", value: setting.value %>
             </div>
         </div>

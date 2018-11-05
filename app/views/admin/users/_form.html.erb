@@ -3,7 +3,7 @@
         <div class="col-12 col-lg-6">
             <h3 class="p3"><%= t('.contact_data') %></h3>
             <div class="form-group">
-                <%= f.label :email %><br />
+                <%= f.label t('users.email') %><br />
                 <%= f.email_field :email, autofocus: true, autocomplete: "email",
                 class: "form-control" %>
                 <% if user.pending_reconfirmation? %>
@@ -11,17 +11,17 @@
                 <% end %>
             </div>
             <div class="form-group">
-                <%= f.label :mobile_phone %><br />
+                <%= f.label t('users.mobile_phone') %><br />
                 <%= f.telephone_field :mobile_phone, autofocus: true, autocomplete: "off",
                 class: "form-control" %>
             </div>
             <div class="form-group">
-                <%= f.label :given_names %><br />
+                <%= f.label t('users.given_names') %><br />
                 <%= f.text_field :given_names, autofocus: true, autocomplete: "off",
                 class: "form-control" %>
             </div>
             <div class="form-group">
-                <%= f.label :surname %><br />
+                <%= f.label t('users.surname') %><br />
                 <%= f.text_field :surname, autofocus: true, autocomplete: "off",
                 class: "form-control" %>
             </div>
@@ -30,12 +30,12 @@
         <div class="col-12 col-lg-6">
             <h3 class="p3"><%= t('.personal_data') %></h3>
             <div class="form-group">
-                <%= f.label :identity_code %>
+                <%= f.label t('users.identity_code') %>
                 <%= f.text_field :identity_code, class: "form-control",
                 placeholder: t('users.can_be_left_blank_if_not_estonian'), disabled: user.persisted? %>
             </div>
             <div class="form-group">
-                <%= f.label :country %><br />
+                <%= f.label t('users.country') %><br />
                 <%= f.select :country_code,
                 options_for_select(
                     Countries::ALPHA_2_SELECTION,
@@ -47,14 +47,14 @@
 
             <div class="form-check text-left">
                 <%= f.check_box :accepts_terms_and_conditions, { class: "form-check-input", value: user.accepts_terms_and_conditions }, "true", "false" %>
-                <%= f.label :terms_and_conditions %>
+                <%= f.label t('users.terms_and_conditions') %>
             </div>
         </div>
         <%- unless user.persisted? %>
             <div class="col-12 col-lg-6">
                 <h3 class="p3"><%= t('.new_password') %></h3>
                 <div class="form-group">
-                    <%= f.label :password %>
+                    <%= f.label t('users.password') %>
                     <%= f.password_field :password, autocomplete: "new-password",
                     class: "form-control" %>
                     <% if user.persisted? %>
@@ -66,7 +66,7 @@
                     <br />
                 </div>
                 <div class="form-group">
-                    <%= f.label :password_confirmation %><br />
+                    <%= f.label t('users.password_confirmation') %><br />
                     <%= f.password_field :password_confirmation, autocomplete: "off", class: "form-control" %>
                 </div>
             </div>
