@@ -100,13 +100,15 @@ class BillingProfilesTest < ApplicationSystemTestCase
 
     fill_in('billing_profile[street]', with: 'New Street 12')
     fill_in('billing_profile[name]', with: 'Joe John Participant-New')
+    select('Poland', from: 'billing_profile[country_code]')
 
     assert_no_changes('BillingProfile.count') do
       click_link_or_button('Submit')
     end
 
     assert(page.has_css?('div.alert', text: 'Updated successfully.'))
-    assert(BillingProfile.find_by(street: 'New Street 12', name: 'Joe John Participant-New'))
+    assert(BillingProfile.find_by(street: 'New Street 12', name: 'Joe John Participant-New',
+                                  country_code: 'PL'))
   end
 
   def test_edit_form_contains_existing_values
