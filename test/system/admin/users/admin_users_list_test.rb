@@ -48,6 +48,11 @@ class AdminUsersListTest < ApplicationSystemTestCase
     assert_equal(['new-user@auction.test'], last_email.to)
   end
 
+  def test_form_has_terms_and_conditions_link
+    visit new_admin_user_path
+    assert(page.has_link?('Terms and conditions', href: Setting.terms_and_conditions_link))
+  end
+
   def test_certain_fields_are_required
     click_link('New user')
     click_link_or_button('Submit')

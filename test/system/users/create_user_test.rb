@@ -60,6 +60,11 @@ class CreateUserTest < ApplicationSystemTestCase
     assert_equal(errors_array.to_set, expected_errors.to_set)
   end
 
+  def test_form_has_terms_and_conditions_link
+    visit new_user_path
+    assert(page.has_link?('Terms and conditions', href: Setting.terms_and_conditions_link))
+  end
+
   def test_can_create_an_estonian_user_via_id_card
     skip('Not implemented yet')
   end

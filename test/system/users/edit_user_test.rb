@@ -91,4 +91,9 @@ class EditUserTest < ApplicationSystemTestCase
     assert(page.has_css?('div.alert', text: 'Updated successfully.'))
     assert_text('New Given Name')
   end
+
+  def test_profile_page_has_a_link_to_terms_and_conditions
+    visit user_path(@user)
+    assert(page.has_link?("Review terms and condition", href: Setting.terms_and_conditions_link))
+  end
 end
