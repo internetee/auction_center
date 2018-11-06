@@ -14,7 +14,13 @@
                         <tr class="offers-table-row">
                             <td><%= link_to offer.auction.domain_name, offer_path(offer) %></td>
                             <td><%= t('offers.price_in_currency', price: offer.price) %></td>
-                            <td><%= I18n.l(offer.auction.ends_at) %></td>
+                            <td>
+                                <%- if offer.auction.finished? %>
+                                    <%= t('auctions.finished') %>
+                                <% else %>
+                                    <%= I18n.l(offer.auction.ends_at) %>
+                                <% end %>
+                            </td>
                         </tr>
                     <% end %>
                 </tbody>
