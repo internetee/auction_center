@@ -11,7 +11,7 @@
 
             <div class="form-group">
                 <%= f.label :price, t('offers.price') %>
-                <%= f.number_field :price, class: "form-control", min: 0 %>
+                <%= f.number_field :price, class: "form-control", min: 0, step: "0.01" %>
             </div>
         </div>
 

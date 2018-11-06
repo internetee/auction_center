@@ -34,10 +34,29 @@ class OffersTest < ApplicationSystemTestCase
     assert(page.has_link?('Submit offer'))
     click_link('Submit offer')
 
-    fill_in('offer[price]', with: '5.00')
+    fill_in('offer[price]', with: '5.12')
     click_link_or_button('Submit')
 
     assert(page.has_text?('Created successfully'))
+  end
+
+  def test_participant_cannot_submit_an_offer_with_3_or_more_decimal_places
+    sign_in(@user)
+    visit auction_path(@valid_auction_with_no_offers)
+
+    assert(page.has_link?('Submit offer'))
+    click_link('Submit offer')
+
+    fill_in('offer[price]', with: '5.121')
+
+    # Check in-browser validation
+    validation_message = find("#offer_price").native.attribute("validationMessage")
+    assert_equal("Please enter a valid value. The two nearest valid values are 5.12 and 5.13.",
+                 validation_message)
+
+    assert_no_changes('Offer.count') do
+      click_link_or_button('Submit')
+    end
   end
 
   def test_participant_can_update_an_offer
@@ -46,7 +65,7 @@ class OffersTest < ApplicationSystemTestCase
 
     click_link_or_button('Edit')
 
-    fill_in('offer[price]', with: '5.00')
+    fill_in('offer[price]', with: '5')
     click_link_or_button('Submit')
 
     assert(page.has_text?('Updated successfully'))
