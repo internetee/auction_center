@@ -38,11 +38,7 @@ class User < ApplicationRecord
 
   def accepts_terms_and_conditions=(acceptance)
     acceptance_as_bool = ActiveRecord::Type::Boolean.new.cast(acceptance)
-    if acceptance_as_bool
-      self.terms_and_conditions_accepted_at = Time.now.utc
-    else
-      self.terms_and_conditions_accepted_at = nil
-    end
+    self.terms_and_conditions_accepted_at = (Time.now.utc if acceptance_as_bool)
   end
 
   def accepts_terms_and_conditions

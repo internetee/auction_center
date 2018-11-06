@@ -75,7 +75,7 @@ module Admin
     def update_params
       update_params = params.require(:user)
                             .permit(:email, :given_names, :surname, :mobile_phone,
-                                    :accepts_terms_and_conditions ,roles: [])
+                                    :accepts_terms_and_conditions, roles: [])
       update_params.reject! { |_k, v| v.blank? }
     end
 
