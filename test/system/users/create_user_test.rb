@@ -65,6 +65,13 @@ class CreateUserTest < ApplicationSystemTestCase
     assert(page.has_link?('Terms and conditions', href: Setting.terms_and_conditions_link))
   end
 
+  def test_terms_and_conditions_link_can_also_be_relative
+    setting = Setting.find_by(code: :terms_and_conditions_link)
+    setting.update!(value: '/terms_and_conditions.pdf')
+    visit new_user_path
+    assert(page.has_link?('Terms and conditions', href: '/terms_and_conditions.pdf'))
+  end
+
   def test_can_create_an_estonian_user_via_id_card
     skip('Not implemented yet')
   end

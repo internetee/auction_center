@@ -2,7 +2,8 @@ class AddTermsAndConditionsSettingLink < ActiveRecord::Migration[5.2]
   def up
     terms_and_conditions_description = <<~TEXT.squish
       Link to terms and conditions document. Can be relative ('/public/terms_and_conditions.pdf')
-      or absolute ('https://example.com/terms_and_conditions.pdf'). Default is: https://example.com
+      or absolute ('https://example.com/terms_and_conditions.pdf'). Relative link must start with a
+      forward slash. Default is: https://example.com
     TEXT
 
     terms_and_conditions_setting = Setting.new(code: :terms_and_conditions_link,
