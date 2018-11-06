@@ -20,11 +20,16 @@ module ApplicationHelper
   def navigation_links(current_user)
     content_tag(:ul, class: 'navbar-nav mt-2 my-lg-0') do
       if current_user
-        concat(
-          content_tag(:li, class: 'nav-item') do
-            link_to(t(:profile), user_path(current_user), class: 'nav-link')
-          end
-        )
+        links = [{ name: t(:profile), path: user_path(current_user) },
+                 { name: t(:my_offers), path: offers_path }]
+
+        links.each do |item|
+          concat(
+            content_tag(:li, class: 'nav-item') do
+              link_to(item[:name], item[:path], class: 'nav-link')
+            end
+          )
+        end
       end
 
       if current_user&.role?(User::ADMINISTATOR_ROLE)

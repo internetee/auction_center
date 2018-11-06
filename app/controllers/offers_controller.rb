@@ -25,6 +25,12 @@ class OffersController < ApplicationController
     end
   end
 
+  # GET /offers
+  def index
+    @offers = Offer.includes(:auction).accessible_by(current_ability)
+      .where(user_id: current_user).order('auctions.ends_at DESC')
+  end
+
   # GET /offers/1
   def show; end
 

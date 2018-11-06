@@ -23,6 +23,8 @@ en:
   users_name: "Users"
   versions_name: "Versions"
   offers_name: "Offers"
+  my_offers: "My offers"
+  actions: "Actions"
 
   users:
     display_name: "Display name"
