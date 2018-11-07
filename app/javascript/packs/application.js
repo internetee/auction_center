@@ -13,9 +13,6 @@ import Turbolinks from 'turbolinks';
 Rails.start();
 Turbolinks.start();
 
-// Stylesheets
-import '../stylesheets/application';
-
 // Bootstrap configuration
 import 'jquery/dist/jquery';
 import 'popper.js/dist/popper.js';
