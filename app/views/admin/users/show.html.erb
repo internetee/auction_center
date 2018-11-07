@@ -7,7 +7,12 @@
 <div class="col-12">
     <div class="card">
         <div class="card-body">
-            <h2><%= @user.display_name %></h2>
+            <h2>
+                <%= @user.display_name %>
+                <%- if @user.invalid? %>
+                    <span class="badge badge-pill badge-warning"><%= t(:invalid) %></span>
+                <% end %>
+            </h2>
 
             <dl id="user-details-list" class="mb-4 no-bullets">
                 <dt><%= t('users.email') %></dt>
@@ -24,6 +29,15 @@
 
                 <dt><%= t('users.identity_code') %></dt>
                 <dd><%= @user.identity_code %></dd>
+
+                <dt><%= t('users.terms_and_conditions_accepted_at') %></dt>
+                <dd>
+                    <%- if @user.terms_and_conditions_accepted_at %>
+                        <%= I18n.l(@user.terms_and_conditions_accepted_at) %>
+                    <% else %>
+                        <%= t(:not_accepted) %>
+                    <% end %>
+                </dd>
 
                 <dt><%= t('created_at') %></dt>
                 <dd><%= I18n.l(@user.created_at) %></dd>
