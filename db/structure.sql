@@ -479,6 +479,40 @@ ALTER SEQUENCE public.offers_id_seq OWNED BY public.offers.id;
 
 
 --
+-- Name: results; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE public.results (
+    id bigint NOT NULL,
+    auction_id integer NOT NULL,
+    user_id integer,
+    final_price_in_cents integer,
+    sold boolean NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: results_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.results_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: results_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.results_id_seq OWNED BY public.results.id;
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -626,6 +660,13 @@ ALTER TABLE ONLY public.offers ALTER COLUMN id SET DEFAULT nextval('public.offer
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY public.results ALTER COLUMN id SET DEFAULT nextval('public.results_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY public.settings ALTER COLUMN id SET DEFAULT nextval('public.settings_id_seq'::regclass);
 
 
@@ -706,6 +747,14 @@ ALTER TABLE ONLY public.billing_profiles
 
 ALTER TABLE ONLY public.offers
     ADD CONSTRAINT offers_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: results_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY public.results
+    ADD CONSTRAINT results_pkey PRIMARY KEY (id);
 
 
 --
@@ -917,6 +966,14 @@ ALTER TABLE ONLY public.billing_profiles
 
 
 --
+-- Name: fk_rails_9f5d06cf95; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.results
+    ADD CONSTRAINT fk_rails_9f5d06cf95 FOREIGN KEY (auction_id) REFERENCES public.auctions(id);
+
+
+--
 -- Name: fk_rails_bb5f3f4ecb; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -958,6 +1015,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181023103316'),
 ('20181023121607'),
 ('20181023125230'),
-('20181029121254');
+('20181029121254'),
+('20181107084751');
 
 
