@@ -46,6 +46,19 @@ class EditUserTest < ApplicationSystemTestCase
     assert_equal('New Surname', @user.surname)
   end
 
+  def test_terms_and_conditions_are_not_updated_if_already_accepted
+    original_terms_and_conditions_accepted_at = @user.terms_and_conditions_accepted_at
+    visit edit_user_path(@user)
+
+    fill_in('user[current_password]', with: 'password123')
+    click_link_or_button('Update')
+
+    assert(page.has_css?('div.alert', text: 'Updated successfully.'))
+
+    @user.reload
+    assert_equal(original_terms_and_conditions_accepted_at, @user.terms_and_conditions_accepted_at)
+  end
+
   def test_identity_code_cannot_be_changed_once_set
     visit edit_user_path(@user)
     assert(page.has_field?('user[identity_code]', disabled: true))

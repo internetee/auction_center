@@ -87,6 +87,20 @@ class UserTest < ActiveSupport::TestCase
     assert_equal('New Given Name Administrator', @administrator.display_name)
   end
 
+  def test_accepts_terms_and_conditions_are_only_updated_when_needed
+    original_terms_and_conditions_accepted_at = @administrator.terms_and_conditions_accepted_at
+    @administrator.update(accepts_terms_and_conditions: true)
+
+    assert_equal(original_terms_and_conditions_accepted_at,
+                 @administrator.terms_and_conditions_accepted_at)
+
+    @administrator.update(accepts_terms_and_conditions: false)
+    @administrator.update(accepts_terms_and_conditions: true)
+
+    refute_equal(original_terms_and_conditions_accepted_at,
+                 @administrator.terms_and_conditions_accepted_at)
+  end
+
   def test_has_default_role
     user = User.new
 
