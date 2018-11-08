@@ -16,4 +16,8 @@ class AnonymousUserAbilityTest < ActiveSupport::TestCase
     refute(@anonymous_ability.can?(:read, Offer))
     refute(@anonymous_ability.can?(:create, Offer))
   end
+
+  def test_anonymous_user_cannot_read_results
+    refute(@anonymous_ability.can?(:read, Result.new))
+  end
 end

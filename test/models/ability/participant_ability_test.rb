@@ -34,4 +34,9 @@ class ParticipantAbilityTest < ActiveSupport::TestCase
     refute(@participant_ability.can?(:destroy, Offer.new()))
     refute(@participant_ability.can?(:edit, Offer.new()))
   end
+
+  def test_participant_can_read_their_own_results
+    assert(@participant_ability.can?(:read, Result.new(user_id: @participant.id)))
+    refute(@participant_ability.can?(:read, Result.new))
+  end
 end

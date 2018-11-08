@@ -44,4 +44,8 @@ class AdministratorAbilityTest < ActiveSupport::TestCase
     refute(@administrator_ability.can?(:manage, Offer))
     assert(@administrator_ability.can?(:read, Offer))
   end
+
+  def test_administrator_can_read_results
+    assert(@administrator_ability.can?(:read, Result))
+  end
 end
