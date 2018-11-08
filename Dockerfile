@@ -1,4 +1,4 @@
-FROM internetee/ruby:2.4
+FROM internetee/ruby:2.5-stretch
 MAINTAINER maciej.szlosarczyk@internet.ee
 
 RUN npm install -g yarn
