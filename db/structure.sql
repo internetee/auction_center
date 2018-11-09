@@ -525,7 +525,7 @@ CREATE TABLE public.results (
     id bigint NOT NULL,
     auction_id integer NOT NULL,
     user_id integer,
-    final_price_in_cents integer,
+    offer_in_cents integer,
     sold boolean NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL

@@ -8,6 +8,7 @@ class Auction < ApplicationRecord
   validate :starts_at_cannot_be_in_the_past, on: :create
 
   has_many :offers, dependent: :delete_all
+  has_one :result, required: false, dependent: :delete
 
   scope :active, -> { where('starts_at <= ? AND ends_at >= ?', Time.now.utc, Time.now.utc) }
 

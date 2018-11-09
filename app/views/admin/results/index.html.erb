@@ -1,0 +1,37 @@
+<div class="text-center">
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <h1 class="mb-3 mt-4"><%= t('.title') %></h1>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <table class="table" id="results-table">
+                <thead>
+                    <tr>
+                        <th scope="col"><%= t('auctions.domain_name') %></th>
+                        <th scope="col"><%= t('auctions.ends_at') %></th>
+                        <th scope="col"><%= t('results.final_price') %></th>
+                        <th scope="col"><%= t('results.sold') %></th>
+                        <th scope="col"><%= t('users.display_name') %></th>
+                    </tr>
+                </thead>
+
+                <tbody id="results-table-body">
+                    <% @results.each do |result| %>
+                        <tr class="results-table-row">
+                            <td class="result-domain-name">
+                                <%= link_to result.domain_name, admin_result_path(result) %>
+                            </td>
+                            <td><%= I18n.l(result.starts_at) %></td>
+                            <td><%= I18n.l(result.ends_at) %></td>
+                            <td class="result-highest-offer"><%= result.highest_offer %></td>
+                            <td class="result-offers-count"><%= result.offers_count %></td>
+                        </tr>
+                    <% end %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

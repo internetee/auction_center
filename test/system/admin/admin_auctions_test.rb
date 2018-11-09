@@ -15,6 +15,8 @@ class AdminAuctionsTest < ApplicationSystemTestCase
   end
 
   def teardown
+    super
+
     travel_back
   end
 

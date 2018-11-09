@@ -1,6 +1,6 @@
 en:
   auctions:
-    domain_name: 'Domain Name'
+    domain_name: 'Domain name'
     starts_at: 'Starts at'
     ends_at: 'Ends at'
     finished: "This auction has finished"
