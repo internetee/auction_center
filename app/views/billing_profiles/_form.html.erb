@@ -34,7 +34,13 @@
 
             <div class="form-group">
                 <%= f.label :country %><br />
-                <%= f.text_field :country, class: "form-control" %>
+                <%= f.select :country_code,
+                             options_for_select(
+                               Countries::ALPHA_2_SELECTION,
+                               billing_profile.country_code || Setting.default_country
+                             ),
+                             {},
+                class: "form-control form-control" %>
             </div>
         </div>
 

@@ -27,7 +27,7 @@
                     <dd><%= @billing_profile.postal_code %></dd>
 
                     <dt><%= t('billing_profiles.country') %></dt>
-                    <dd><%= @billing_profile.country %></dd>
+                    <dd><%= Countries.name_from_alpha2_code(@billing_profile.country_code) %></dd>
 
                     <dt><%= t('created_at') %></dt>
                     <dd><%= I18n.l(@billing_profile.created_at) %></dd>

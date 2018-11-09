@@ -4,7 +4,7 @@ private_person:
   street: "Baker Street 221B"
   city: "London"
   postal_code: "NW1 6XE"
-  country: "United Kingdom"
+  alpha_two_country_code: 'GB'
 
 company:
   user: participant
@@ -13,4 +13,4 @@ company:
   street: "Baker Street 221B"
   city: "London"
   postal_code: "NW1 6XE"
-  country: "United Kingdom"
+  alpha_two_country_code: "GB"
