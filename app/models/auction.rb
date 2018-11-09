@@ -12,6 +12,8 @@ class Auction < ApplicationRecord
 
   scope :active, -> { where('starts_at <= ? AND ends_at >= ?', Time.now.utc, Time.now.utc) }
 
+  delegate :count, to: :offers, prefix: true
+
   def does_not_overlap
     return unless starts_at && ends_at
     return unless overlaping_auctions&.exists?
@@ -33,7 +35,9 @@ class Auction < ApplicationRecord
     offers.order(cents: :desc).limit(1).first.price
   end
 
-  delegate :count, to: :offers, prefix: true
+  def winning_offer
+    offers.order(cents: :desc, created_at: :desc).first
+  end
 
   def current_price_from_user(user_id)
     offers_query = offers.where(user_id: user_id)

@@ -21,13 +21,11 @@
                 <tbody id="results-table-body">
                     <% @results.each do |result| %>
                         <tr class="results-table-row">
-                            <td class="result-domain-name">
-                                <%= link_to result.domain_name, admin_result_path(result) %>
-                            </td>
-                            <td><%= I18n.l(result.starts_at) %></td>
-                            <td><%= I18n.l(result.ends_at) %></td>
-                            <td class="result-highest-offer"><%= result.highest_offer %></td>
-                            <td class="result-offers-count"><%= result.offers_count %></td>
+                            <td><%= result.auction.domain_name %></td>
+                            <td><%= I18n.l(result.auction.ends_at) %></td>
+                            <td><%= result.cents %></td>
+                            <td><%= result.sold %></td>
+                            <td><%= result.user.display_name %></td>
                         </tr>
                     <% end %>
                 </tbody>
