@@ -46,6 +46,14 @@ class EstonianValidationsTest < ApplicationSystemTestCase
     end
   end
 
+  def test_estonian_identity_code_validations_are_used_for_update
+    fill_in('user[identity_code]', with: '1234-5678')
+    select('Estonia', from: 'user[country_code]')
+
+    page.find('body').click # blur
+    refute(page.has_button?('Update'))
+  end
+
   def prefill_the_form
     visit new_user_path
     fill_in('user[email]', with: 'new-user@auction.test')

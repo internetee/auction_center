@@ -22,3 +22,10 @@ terms_and_conditions_link:
     or absolute ('https://example.com/terms_and_conditions.pdf'). Relative link must start with a
     forward slash. Default is: https://example.com
   value: 'https://example.com'
+
+default_country:
+  code: default_country
+  description: |
+    Alpha two code for default country, used for example in user and billing profile dropdowns.
+    Example values: "EE", "GB", "US", "CA"
+  value: EE

@@ -100,13 +100,22 @@ class BillingProfilesTest < ApplicationSystemTestCase
 
     fill_in('billing_profile[street]', with: 'New Street 12')
     fill_in('billing_profile[name]', with: 'Joe John Participant-New')
+    select('Poland', from: 'billing_profile[country_code]')
 
     assert_no_changes('BillingProfile.count') do
       click_link_or_button('Submit')
     end
 
     assert(page.has_css?('div.alert', text: 'Updated successfully.'))
-    assert(BillingProfile.find_by(street: 'New Street 12', name: 'Joe John Participant-New'))
+    assert(BillingProfile.find_by(street: 'New Street 12', name: 'Joe John Participant-New',
+                                  country_code: 'PL'))
+  end
+
+  def test_edit_form_contains_existing_values
+    visit edit_billing_profile_path(@billing_profile)
+
+    country_code_field = page.find_field('billing_profile[country_code]')
+    assert_equal(@billing_profile.country_code, country_code_field.value)
   end
 
   def test_a_user_can_delete_their_billing_profile
@@ -124,6 +133,6 @@ class BillingProfilesTest < ApplicationSystemTestCase
     fill_in('billing_profile[street]', with: 'Baker Street 221B')
     fill_in('billing_profile[city]', with: 'London')
     fill_in('billing_profile[postal_code]', with: 'NW1 6XE')
-    fill_in('billing_profile[country]', with: 'United Kingdom')
+    select('United Kingdom', from: 'billing_profile[country_code]')
   end
 end

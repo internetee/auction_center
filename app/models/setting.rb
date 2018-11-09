@@ -15,4 +15,8 @@ class Setting < ApplicationRecord
   def self.terms_and_conditions_link
     Setting.find_by(code: :terms_and_conditions_link).value
   end
+
+  def self.default_country
+    Setting.find_by(code: :default_country).value
+  end
 end
