@@ -1,6 +1,6 @@
 require 'application_system_test_case'
 
-class CreateAccountTest < ApplicationSystemTestCase
+class CreateUserTest < ApplicationSystemTestCase
   def test_can_create_a_foreign_user_and_get_an_confirmation_email
     visit new_user_path
 
