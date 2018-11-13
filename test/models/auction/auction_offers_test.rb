@@ -21,13 +21,13 @@ class AuctionOffersTest < ActiveSupport::TestCase
     assert_nil(@other_persisted_auction.winning_offer)
   end
 
-  def test_highest_offer_returns_money_object_or_nil
+  def test_highest_price_returns_money_object_or_nil
     auction = Auction.new(domain_name: 'some-domain.test')
     auction.starts_at = Time.now + 2.days
     auction.ends_at = Time.now + 3.days
 
-    refute(auction.highest_offer)
-    assert_equal(Money.new(500, 'EUR'), @persisted_auction.highest_offer)
+    refute(auction.highest_price)
+    assert_equal(Money.new(500, 'EUR'), @persisted_auction.highest_price)
   end
 
   def test_offer_from_user_returns_highest_offer_from_user_or_nil

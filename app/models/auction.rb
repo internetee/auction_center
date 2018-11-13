@@ -32,7 +32,7 @@ class Auction < ApplicationRecord
     errors.add(:starts_at, 'cannot be in the past')
   end
 
-  def highest_offer
+  def highest_price
     return unless offers.any?
 
     offers.order(cents: :desc).limit(1).first.price
