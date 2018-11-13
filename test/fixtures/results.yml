@@ -1,0 +1,5 @@
+expired_participant:
+  auction: expired
+  user: participant
+  sold: true
+  cents: 1000

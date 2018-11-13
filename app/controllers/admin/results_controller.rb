@@ -6,8 +6,6 @@ module Admin
     end
 
     # POST /admin/results
-    def create
-
-    end
+    def create; end
   end
 end

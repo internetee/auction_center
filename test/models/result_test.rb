@@ -33,4 +33,13 @@ class ResultTest < ActiveSupport::TestCase
       Result.create_from_auction("foo")
     end
   end
+
+  def test_price_is_a_money_object
+    result = Result.new(cents: 1000)
+
+    assert_equal(Money.new(1000, Setting.auction_currency), result.price)
+
+    result.cents = nil
+    assert_equal(Money.new(0, Setting.auction_currency), result.price)
+  end
 end

@@ -21,4 +21,8 @@ class Result < ApplicationRecord
       raise(Errors::AuctionNotFound, auction_id)
     end
   end
+
+  def price
+    Money.new(cents, Setting.auction_currency)
+  end
 end

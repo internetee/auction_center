@@ -23,7 +23,7 @@
                         <tr class="results-table-row">
                             <td><%= result.auction.domain_name %></td>
                             <td><%= I18n.l(result.auction.ends_at) %></td>
-                            <td><%= result.cents %></td>
+                            <td><%= t('offers.price_in_currency', price: result.price) %></td>
                             <td><%= result.sold %></td>
                             <td><%= result.user.display_name %></td>
                         </tr>
