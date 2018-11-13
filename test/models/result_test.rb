@@ -21,7 +21,7 @@ class ResultTest < ActiveSupport::TestCase
     refute(result.valid?)
 
     assert_equal(["must exist"], result.errors[:auction])
-    assert_equal(["can't be blank"], result.errors[:sold])
+    assert_equal(["is not included in the list"], result.errors[:sold])
   end
 
   def test_create_result_from_an_auction_only_works_if_the_auction_has_finished
