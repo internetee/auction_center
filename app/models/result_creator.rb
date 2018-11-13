@@ -1,6 +1,7 @@
 class ResultCreator
   attr_reader :auction_id
   attr_reader :auction
+  attr_reader :result
 
   def initialize(auction_id)
     @auction_id = auction_id
@@ -14,6 +15,8 @@ class ResultCreator
     return auction.result if result_already_present?
 
     create_result
+    send_email_to_winner
+    result
   end
 
   private
@@ -28,8 +31,14 @@ class ResultCreator
     auction.result.present?
   end
 
+  def send_email_to_winner
+    return unless result.user
+
+    AuctionResultMailer.winner_email(user: result.user, auction: result.auction)
+  end
+
   def create_result
-    result = Result.new
+    @result = Result.new
     winning_offer = auction.winning_offer || NullOffer.new
 
     result.auction = auction

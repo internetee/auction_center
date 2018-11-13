@@ -1,0 +1,17 @@
+en:
+  auction_result_mailer:
+    winner_email:
+      title: "You won an auction!"
+      salutation: "Hello, %{display_name}"
+      introduction: |
+        Dear domain auction participant. You have won a domain auction for %{domain_name}.
+      details: |
+        The final price is %{final_price}. You can pay via Bank Link, a credit or a debit card.
+
+      link_description: |
+        You have until %{payment_date} to complete the payment.
+        Follow the link below to fill in the data required for an invoice:
+      link_title: "Set up invoice"
+      footer: |
+        Best regards, <br>
+        EIS
