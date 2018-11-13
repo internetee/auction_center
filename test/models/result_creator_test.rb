@@ -1,0 +1,47 @@
+require 'test_helper'
+
+class ResultCreatorTest < ActiveSupport::TestCase
+  def setup
+    super
+
+    @auction_with_result = auctions(:expired)
+    @auction_with_offers = auctions(:valid_with_offers)
+    @auction_without_offers = auctions(:valid_without_offers)
+  end
+
+  def test_a_result_is_created_for_auction_with_offers
+    result_creator = ResultCreator.new(@auction_with_offers.id)
+    result = result_creator.call
+
+    assert(result.is_a?(Result))
+    assert_equal(true, result.sold)
+    assert_equal(@auction_with_offers, result.auction)
+  end
+
+  def test_a_result_is_created_for_auction_without_offers
+    result_creator = ResultCreator.new(@auction_without_offers.id)
+    result = result_creator.call
+
+    assert(result.is_a?(Result))
+    assert_equal(false, result.sold)
+    assert_equal(@auction_without_offers, result.auction)
+    refute(result.user)
+    refute(result.cents)
+
+    assert_equal(Money.new(0, Setting.auction_currency), result.price)
+  end
+
+  def test_returns_an_existing_result_if_found
+    expected_result = results(:expired_participant)
+
+    result_creator = ResultCreator.new(@auction_with_result.id)
+    result = result_creator.call
+
+    assert_equal(expected_result, result)
+  end
+
+  def test_return_silently_if_no_auction_was_found
+    result_creator = ResultCreator.new(:foo)
+    assert_nil(result_creator.call)
+  end
+end

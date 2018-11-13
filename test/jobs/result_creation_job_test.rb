@@ -20,6 +20,7 @@ class ResultCreationJobTest < ActiveJob::TestCase
     @auction_without_result.reload
 
     assert_equal(original_result, @auction_with_result.result)
+
     assert(result = @auction_without_result.result)
     assert_equal(500, result.cents)
     assert_equal(true, result.sold)

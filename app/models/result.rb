@@ -10,18 +10,10 @@ class Result < ApplicationRecord
   def self.create_from_auction(auction_id)
     auction = Auction.find_by(id: auction_id)
 
-    if auction
-      if auction.finished?
-        Result.create!(auction: auction,
-                       user: auction&.winning_offer&.user,
-                       cents: auction&.winning_offer&.cents,
-                       sold: (auction&.winning_offer&.user || false))
-      else
-        raise(Errors::AuctionNotFinished, auction_id)
-      end
-    else
-      raise(Errors::AuctionNotFound, auction_id)
-    end
+    raise(Errors::AuctionNotFound, auction_id) unless auction
+    raise(Errors::AuctionNotFinished, auction_id) unless auction.finished?
+
+    ResultCreator.new(auction_id).call
   end
 
   def price
