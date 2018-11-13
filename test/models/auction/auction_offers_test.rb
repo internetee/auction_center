@@ -48,4 +48,17 @@ class AuctionOffersTest < ActiveSupport::TestCase
     assert_equal(1, @persisted_auction.offers_count)
     assert_equal(1, @expired_auction.offers_count)
   end
+
+  def test_without_result_scope_does_not_return_active_auctions
+    assert_equal([].to_set, Auction.without_result.to_set)
+    assert_equal([@persisted_auction, @other_persisted_auction].to_set, Auction.active.to_set)
+  end
+
+  def test_without_result_scope_returns_auctions_that_do_not_have_results
+    travel_back
+    assert_equal([@persisted_auction, @other_persisted_auction].to_set,
+                 Auction.without_result.to_set)
+    assert_equal([@persisted_auction, @other_persisted_auction, @expired_auction].to_set,
+                 Auction.all.to_set)
+  end
 end

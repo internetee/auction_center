@@ -11,6 +11,9 @@ class Auction < ApplicationRecord
   has_one :result, required: false, dependent: :delete
 
   scope :active, -> { where('starts_at <= ? AND ends_at >= ?', Time.now.utc, Time.now.utc) }
+  scope :without_result, -> {
+    where('ends_at < ? and id NOT IN (SELECT results.auction_id FROM results)', Time.now.utc)
+  }
 
   delegate :count, to: :offers, prefix: true
 

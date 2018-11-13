@@ -3,3 +3,5 @@ en:
     results:
       index:
         title: "Auction results"
+        auctions_needing_result: "These auctions have finished, but don't have a result yet:"
+        create_result: "Create result"

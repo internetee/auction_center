@@ -7,6 +7,27 @@
 
     <div class="row justify-content-center">
         <div class="col-12">
+            <h3 class="mb-3 mt-4"><%= t('.auctions_needing_result') %></h3>
+            <table class="table" id="auctions-needing-results-table">
+                <thead>
+                    <tr>
+                        <th scope="col"><%= t('auctions.domain_name') %></th>
+                        <th scope="col"><%= t('auctions.ends_at') %></th>
+                    </tr>
+                </thead>
+
+                <tbody id="auctions-needing-results-table">
+                    <% @auctions_needing_results.each do |auction| %>
+                        <tr class="auctions-needing-results-table-row">
+                            <td><%= auction.domain_name %></td>
+                            <td><%= I18n.l(auction.ends_at) %></td>
+                        </tr>
+                    <% end %>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-12">
             <table class="table" id="results-table">
                 <thead>
                     <tr>
