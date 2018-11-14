@@ -7,6 +7,14 @@ module Admin
     end
 
     # POST /admin/results
-    def create; end
+    def create
+      job = ResultCreationJob.perform_later
+
+      if job
+        redirect_to admin_results_path, notice: t(:job_enqueued)
+      else
+        render :index
+      end
+    end
   end
 end

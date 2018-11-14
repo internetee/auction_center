@@ -2,6 +2,8 @@
 require 'application_system_test_case'
 
 class AdminResultsTest < ApplicationSystemTestCase
+  include ActiveJob::TestHelper
+
   def setup
     super
 
@@ -26,11 +28,13 @@ class AdminResultsTest < ApplicationSystemTestCase
   end
 
   def test_administrator_can_schedule_a_job_to_create_auction_result
-    skip
     visit(admin_results_path)
+    assert(page.has_button?('Create results'))
 
-    assert(page.has_text?('Auctions that need a result:'))
-    assert(page.has_link?('Create results', href: admin_auctions_path))
+    assert_enqueued_with(job: ResultCreationJob) do
+      click_button('Create results')
+      assert(page.has_text?('Job enqueued. Check in a few minutes for results.'))
+    end
   end
 
   def test_administrator_can_see_all_created_results

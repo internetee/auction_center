@@ -3,6 +3,8 @@
 require 'application_system_test_case'
 
 class AdminAuctionsTest < ApplicationSystemTestCase
+  include ActiveJob::TestHelper
+
   def setup
     super
 
@@ -29,6 +31,12 @@ class AdminAuctionsTest < ApplicationSystemTestCase
 
     assert_changes('Auction.count') do
       click_link_or_button('Submit')
+    end
+  end
+
+  def test_result_creation_job_is_scheduled_automatically
+    assert_enqueued_with(job: ResultCreationJob) do
+      visit(admin_auctions_path)
     end
   end
 

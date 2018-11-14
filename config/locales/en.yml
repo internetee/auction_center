@@ -21,10 +21,12 @@ en:
   billing_profiles_name: "Billing Profiles"
   settings_name: "Settings"
   users_name: "Users"
+  results_name: "Results"
   versions_name: "Versions"
   offers_name: "Offers"
   my_offers: "My offers"
   actions: "Actions"
+  job_enqueued: "Job enqueued. Check in a few minutes for results."
 
   users:
     display_name: "Display name"
