@@ -27,6 +27,6 @@ class Result < ApplicationRecord
   def send_email_to_winner
     return unless sold?
 
-    AuctionResultMailer.winner_email(self).deliver_later
+    ResultMailer.winner_email(self).deliver_later
   end
 end

@@ -1,4 +1,4 @@
-class AuctionResultMailer < ApplicationMailer
+class ResultMailer < ApplicationMailer
   def winner_email(result)
     @user = result.user
     @auction = result.auction
