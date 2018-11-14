@@ -26,7 +26,11 @@
                             method: :delete,
                             data: { confirm: t(:are_you_sure) } ,
                             remote: true, class: "card-link" %>
-                <%= link_to t(:versions_name), admin_auction_versions_url(@auction),
+                <%- if @auction.result %>
+                    <%= link_to t(:result_name), admin_result_path(@auction.result),
+                                class: "card-link mt" %>
+                <% end %>
+                <%= link_to t(:versions_name), admin_auction_versions_path(@auction),
                             class: "card-link mt" %>
             </div>
         </div>

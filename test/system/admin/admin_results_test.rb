@@ -8,6 +8,7 @@ class AdminResultsTest < ApplicationSystemTestCase
     super
 
     @administrator = users(:administrator)
+    @result = results(:expired_participant)
     sign_in(@administrator)
   end
 
@@ -34,6 +35,18 @@ class AdminResultsTest < ApplicationSystemTestCase
     assert_enqueued_with(job: ResultCreationJob) do
       click_button('Create results')
       assert(page.has_text?('Job enqueued. Check in a few minutes for results.'))
+    end
+  end
+
+  def test_administrator_can_see_details_of_a_result
+    visit(admin_results_path)
+    assert(page.has_link?('expired.test', href: admin_result_path(@result)))
+
+    click_link('expired.test')
+
+    assert(page.has_table?('result-offers-table'))
+    within('table#result-offers-table') do
+      assert(page.has_link?('Versions'))
     end
   end
 

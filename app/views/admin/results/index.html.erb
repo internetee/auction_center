@@ -2,35 +2,37 @@
     <div class="col-12 text-center">
         <h1 class="mb-3 mt-4"><%= t('.title') %></h1>
     </div>
-
-    <div class="col-12">
-        <%= form_with(url: admin_results_path) do |f| %>
-            <%= f.submit t('.create_results'), class: "btn btn-primary text-right" %>
-        <% end %>
-    </div>
 </div>
 
 <div class="row justify-content-center text-center">
-    <div class="col-12">
-        <h3 class="mb-3 mt-4"><%= t('.auctions_needing_result') %></h3>
-        <table class="table mb-4 mt-4" id="auctions-needing-results-table">
-            <thead>
-                <tr>
-                    <th scope="col"><%= t('auctions.domain_name') %></th>
-                    <th scope="col"><%= t('auctions.ends_at') %></th>
-                </tr>
-            </thead>
+    <% unless @auctions_needing_results.empty? %>
+        <div class="col-12">
+            <%= form_with(url: admin_results_path) do |f| %>
+                <%= f.submit t('.create_results'), class: "btn btn-primary text-right" %>
+            <% end %>
+        </div>
 
-            <tbody id="auctions-needing-results-table">
-                <% @auctions_needing_results.each do |auction| %>
-                    <tr class="auctions-needing-results-table-row">
-                        <td><%= auction.domain_name %></td>
-                        <td><%= I18n.l(auction.ends_at) %></td>
+        <div class="col-12">
+            <h3 class="mb-3 mt-4"><%= t('.auctions_needing_result') %></h3>
+            <table class="table mb-4 mt-4" id="auctions-needing-results-table">
+                <thead>
+                    <tr>
+                        <th scope="col"><%= t('auctions.domain_name') %></th>
+                        <th scope="col"><%= t('auctions.ends_at') %></th>
                     </tr>
-                <% end %>
-            </tbody>
-        </table>
-    </div>
+                </thead>
+
+                <tbody id="auctions-needing-results-table">
+                    <% @auctions_needing_results.each do |auction| %>
+                        <tr class="auctions-needing-results-table-row">
+                            <td><%= auction.domain_name %></td>
+                            <td><%= I18n.l(auction.ends_at) %></td>
+                        </tr>
+                    <% end %>
+                </tbody>
+            </table>
+        </div>
+    <% end %>
 
     <div class="col-12">
         <table class="table mb-4 mt-4" id="results-table">
@@ -47,10 +49,16 @@
             <tbody id="results-table-body">
                 <% @results.each do |result| %>
                     <tr class="results-table-row">
-                        <td><%= result.auction.domain_name %></td>
+                        <td><%= link_to result.auction.domain_name, admin_result_path(result) %></td>
                         <td><%= I18n.l(result.auction.ends_at) %></td>
                         <td><%= t('offers.price_in_currency', price: result.price) %></td>
-                        <td><%= result.sold %></td>
+                        <td>
+                            <%- if result.sold? %>
+                                <%= t('yes') %>
+                            <% else %>
+                                <%= t('no') %>
+                            <% end %>
+                        </td>
                         <td><%= result.user&.display_name %></td>
                     </tr>
                 <% end %>

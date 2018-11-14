@@ -40,6 +40,14 @@ class AdminAuctionsTest < ApplicationSystemTestCase
     end
   end
 
+  def test_page_has_result_link
+    visit(admin_auction_path(@expired_auction))
+    assert(page.has_link?('Result', href: admin_result_path(@expired_auction.result)))
+
+    visit(admin_auction_path(@auction))
+    refute(page.has_link?('Result', href: /admin\/results\//))
+  end
+
   def test_creating_auction_with_ends_at_time_in_the_past_fails
    visit(new_admin_auction_path)
 

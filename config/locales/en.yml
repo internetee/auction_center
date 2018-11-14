@@ -17,11 +17,15 @@ en:
   sign_in: "Sign in"
   sign_out: "Sign out"
 
+  'yes': "Yes"
+  'no': "No"
+
   auctions_name: "Auctions"
   billing_profiles_name: "Billing Profiles"
   settings_name: "Settings"
   users_name: "Users"
   results_name: "Results"
+  result_name: "Result"
   versions_name: "Versions"
   offers_name: "Offers"
   my_offers: "My offers"

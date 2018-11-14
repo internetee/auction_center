@@ -16,5 +16,10 @@ module Admin
         render :index
       end
     end
+
+    def show
+      @result = Result.includes(:auction).find_by(id: params[:id])
+      @offers = Offer.where(auction_id: @result.auction_id)
+    end
   end
 end
