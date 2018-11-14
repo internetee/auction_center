@@ -12,7 +12,7 @@ class ResultTest < ActiveSupport::TestCase
   def teardown
     super
 
-    ActionMailer::Base.deliveries.clear
+    clear_email_deliveries
     travel_back
   end
 

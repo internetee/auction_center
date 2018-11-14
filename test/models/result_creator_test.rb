@@ -12,7 +12,7 @@ class ResultCreatorTest < ActiveSupport::TestCase
   def teardown
     super
 
-    ActionMailer::Base.deliveries.clear
+    clear_email_deliveries
   end
 
   def test_a_result_is_created_for_auction_with_offers

@@ -9,6 +9,11 @@ class AdminEstonianValidationsTest < ApplicationSystemTestCase
     prefill_the_form
   end
 
+  def teardown
+    super
+
+    clear_email_deliveries
+  end
 
   def test_requires_valid_identity_code_for_user_creation
     fill_in('user[identity_code]', with: @valid_identity_code)
