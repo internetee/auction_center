@@ -12,6 +12,7 @@ class ResultTest < ActiveSupport::TestCase
   def teardown
     super
 
+    ActionMailer::Base.deliveries.clear
     travel_back
   end
 
@@ -22,6 +23,12 @@ class ResultTest < ActiveSupport::TestCase
 
     assert_equal(["must exist"], result.errors[:auction])
     assert_equal(["is not included in the list"], result.errors[:sold])
+  end
+
+  def test_sold_returns_boolean
+    result = Result.new
+
+    assert_equal(false, result.sold?)
   end
 
   def test_create_result_from_an_auction_only_works_if_the_auction_has_finished
@@ -41,5 +48,23 @@ class ResultTest < ActiveSupport::TestCase
 
     result.cents = nil
     assert_equal(Money.new(0, Setting.auction_currency), result.price)
+  end
+
+  def test_send_email_to_winner_does_nothing_if_there_is_no_winner
+    result = Result.new(sold: false)
+
+    result.send_email_to_winner
+    assert(ActionMailer::Base.deliveries.empty?)
+  end
+
+  def test_send_email_to_winner_sends_an_email_if_winner_exists
+    result = results(:expired_participant)
+    result.send_email_to_winner
+
+    refute(ActionMailer::Base.deliveries.empty?)
+    email = ActionMailer::Base.deliveries.last
+
+    assert_equal(['user@auction.test'], email.to)
+    assert_equal('You won an auction!', email.subject)
   end
 end

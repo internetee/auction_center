@@ -1,7 +1,7 @@
 en:
   auction_result_mailer:
     winner_email:
-      title: "You won an auction!"
+      subject: "You won an auction!"
       salutation: "Hello, %{display_name}"
       introduction: |
         Dear domain auction participant. You have won a domain auction for %{domain_name}.

@@ -32,9 +32,7 @@ class ResultCreator
   end
 
   def send_email_to_winner
-    return unless result.user
-
-    AuctionResultMailer.winner_email(user: result.user, auction: result.auction)
+    result.send_email_to_winner
   end
 
   def create_result

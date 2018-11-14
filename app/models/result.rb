@@ -19,4 +19,14 @@ class Result < ApplicationRecord
   def price
     Money.new(cents, Setting.auction_currency)
   end
+
+  def sold?
+    sold || false
+  end
+
+  def send_email_to_winner
+    return unless sold?
+
+    AuctionResultMailer.winner_email(self).deliver_later
+  end
 end

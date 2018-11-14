@@ -11,6 +11,7 @@ class UserAuditTest < ActiveSupport::TestCase
   def teardown
     super
 
+    ActionMailer::Base.deliveries.clear
     travel_back
   end
 
