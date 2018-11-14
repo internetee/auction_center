@@ -17,6 +17,7 @@ module Admin
       end
     end
 
+    # GET /admin/results/1
     def show
       @result = Result.includes(:auction).find_by(id: params[:id])
       @offers = Offer.where(auction_id: @result.auction_id)
