@@ -9,6 +9,12 @@ class ResultCreatorTest < ActiveSupport::TestCase
     @auction_without_offers = auctions(:valid_without_offers)
   end
 
+  def teardown
+    super
+
+    ActionMailer::Base.deliveries.clear
+  end
+
   def test_a_result_is_created_for_auction_with_offers
     result_creator = ResultCreator.new(@auction_with_offers.id)
     result = result_creator.call
@@ -43,5 +49,30 @@ class ResultCreatorTest < ActiveSupport::TestCase
   def test_return_silently_if_no_auction_was_found
     result_creator = ResultCreator.new(:foo)
     assert_nil(result_creator.call)
+  end
+
+  def test_creator_does_not_email_winner_for_auction_without_offers
+    result_creator = ResultCreator.new(@auction_without_offers.id)
+    result_creator.call
+
+    assert(ActionMailer::Base.deliveries.empty?)
+  end
+
+  def test_creator_does_not_email_winner_for_existing_result
+    result_creator = ResultCreator.new(@auction_with_result.id)
+    result_creator.call
+
+    assert(ActionMailer::Base.deliveries.empty?)
+  end
+
+  def test_creator_emails_winner_for_auction_with_offers
+    result_creator = ResultCreator.new(@auction_with_offers.id)
+    result_creator.call
+
+    refute(ActionMailer::Base.deliveries.empty?)
+    last_email = ActionMailer::Base.deliveries.last
+
+    assert_equal('You won an auction!', last_email.subject)
+    assert_equal(['user@auction.test'], last_email.to)
   end
 end
