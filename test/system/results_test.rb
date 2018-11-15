@@ -21,7 +21,7 @@ class ResultsTest < ApplicationSystemTestCase
     assert(page.has_link?('Claim your domain'), href: result_path(@result))
   end
 
-  def result_page_contains_result_info
+  def test_result_page_contains_result_info
     visit(result_path(@result))
     assert(page.has_text?("You won"))
     assert(page.has_text?("10.00 €"))
