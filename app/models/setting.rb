@@ -15,4 +15,8 @@ class Setting < ApplicationRecord
   def self.default_country
     Setting.find_by(code: :default_country).value
   end
+
+  def self.payment_term
+    Setting.find_by(code: :payment_term).value.to_i
+  end
 end

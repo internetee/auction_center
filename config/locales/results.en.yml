@@ -3,3 +3,6 @@ en:
     buyer: "Buyer"
     sold: "Sold"
     final_price: "Final price"
+
+    show:
+      title: "You won an auction"

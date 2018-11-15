@@ -23,5 +23,6 @@ Rails.application.routes.draw do
 
   resources :billing_profiles
   resources :offers, only: :index
+  resources :results, only: :show
   resources :users, except: :destroy
 end

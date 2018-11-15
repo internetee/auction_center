@@ -7,6 +7,8 @@
                     <th scope="col"><%= t('auctions.domain_name') %></th>
                     <th scope="col"><%= t('.your_last_offer') %></th>
                     <th scope="col"><%= t('auctions.ends_at') %></th>
+                    <th scope="col"><%= t('result_name') %></th>
+                    <th scope="col"></th>
                 </tr>
 
                 <tbody id="offers-table-body">
@@ -19,6 +21,18 @@
                                     <%= t('auctions.finished') %>
                                 <% else %>
                                     <%= I18n.l(offer.auction.ends_at) %>
+                                <% end %>
+                            </td>
+                            <td>
+                                <%- if offer.result %>
+                                    <%= t('.you_won') %>
+                                <% else %>
+                                    <%= t('.you_lost') %>
+                                <% end %>
+                            </td>
+                            <td>
+                                <%- if offer.result %>
+                                    <%= link_to t('.claim_your_domain'), result_path(offer.result) %>
                                 <% end %>
                             </td>
                         </tr>

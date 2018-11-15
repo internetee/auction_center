@@ -1,5 +1,6 @@
 class ResultMailer < ApplicationMailer
   def winner_email(result)
+    @result = result
     @user = result.user
     @auction = result.auction
     @price = result.price

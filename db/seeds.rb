@@ -43,3 +43,13 @@ default_country_description = <<~TEXT.squish
 default_country_setting = Setting.new(code: :default_country, value: 'EE',
                                       description: default_country_description)
 default_country_setting.save
+
+# Default payment term
+payment_term_description = <<~TEXT.squish
+      Number of days before which an invoice for auction must be paid. Default: 7
+    TEXT
+
+payment_term_setting = Setting.new(code: :payment_term, value: '7',
+                                   description: payment_term_description)
+
+payment_term_setting.save
