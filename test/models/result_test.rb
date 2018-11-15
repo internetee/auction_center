@@ -50,6 +50,12 @@ class ResultTest < ActiveSupport::TestCase
     assert_equal(Money.new(0, Setting.auction_currency), result.price)
   end
 
+  def test_winning_offer_is_an_alias_on_offer
+    result = results(:expired_participant)
+
+    assert_equal(result.offer, result.winning_offer)
+  end
+
   def test_send_email_to_winner_does_nothing_if_there_is_no_winner
     result = Result.new(sold: false)
 

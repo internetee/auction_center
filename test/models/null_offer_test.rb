@@ -10,6 +10,7 @@ class NullOfferTest < ActiveSupport::TestCase
 
   def test_responds_to_known_methods_with_nil
     assert_nil(@null_offer.user)
+    assert_nil(@null_offer.user_id)
     assert_nil(@null_offer.cents)
   end
 

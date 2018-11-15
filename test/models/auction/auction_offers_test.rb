@@ -1,3 +1,5 @@
+require 'test_helper'
+
 class AuctionOffersTest < ActiveSupport::TestCase
   # Test method related to getting offers out of auction
   def setup
@@ -56,7 +58,7 @@ class AuctionOffersTest < ActiveSupport::TestCase
 
   def test_without_result_scope_returns_auctions_that_do_not_have_results
     travel_back
-    assert_equal([@persisted_auction, @other_persisted_auction].to_set,
+    assert_equal([@persisted_auction].to_set,
                  Auction.without_result.to_set)
     assert_equal([@persisted_auction, @other_persisted_auction, @expired_auction].to_set,
                  Auction.all.to_set)

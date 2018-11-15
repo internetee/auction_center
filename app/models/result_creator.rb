@@ -35,14 +35,18 @@ class ResultCreator
     result.send_email_to_winner
   end
 
+  def assign_attributes_from_winning_offer(winning_offer)
+    result.offer_id = winning_offer.id
+    result.user_id = winning_offer.user_id
+    result.cents = winning_offer.cents
+    result.sold = (winning_offer.cents && winning_offer.user_id) || false
+  end
+
   def create_result
     @result = Result.new
     winning_offer = auction.winning_offer || NullOffer.new
-
     result.auction = auction
-    result.user = winning_offer.user
-    result.cents = winning_offer.cents
-    result.sold = (winning_offer.cents && winning_offer.user) || false
+    assign_attributes_from_winning_offer(winning_offer)
 
     result.save!
 

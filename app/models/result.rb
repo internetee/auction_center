@@ -4,6 +4,7 @@ require 'auction_not_found'
 class Result < ApplicationRecord
   belongs_to :auction, required: true, inverse_of: :result
   belongs_to :user, required: false
+  belongs_to :offer, required: false
 
   validates :sold, inclusion: { in: [true, false] }
 
@@ -22,6 +23,10 @@ class Result < ApplicationRecord
 
   def sold?
     sold || false
+  end
+
+  def winning_offer
+    offer
   end
 
   def send_email_to_winner

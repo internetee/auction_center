@@ -21,6 +21,7 @@ class ResultCreatorTest < ActiveSupport::TestCase
 
     assert(result.is_a?(Result))
     assert_equal(true, result.sold)
+    assert_equal(@auction_with_offers.winning_offer, result.offer)
     assert_equal(@auction_with_offers, result.auction)
   end
 
