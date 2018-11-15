@@ -588,6 +588,7 @@ CREATE TABLE public.results (
     id bigint NOT NULL,
     auction_id integer NOT NULL,
     user_id integer,
+    offer_id integer,
     cents integer,
     sold boolean NOT NULL,
     created_at timestamp without time zone NOT NULL,
@@ -1041,6 +1042,41 @@ CREATE UNIQUE INDEX index_billing_profiles_on_vat_code_and_user_id ON public.bil
 
 
 --
+-- Name: index_offers_on_auction_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_offers_on_auction_id ON public.offers USING btree (auction_id);
+
+
+--
+-- Name: index_offers_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_offers_on_user_id ON public.offers USING btree (user_id);
+
+
+--
+-- Name: index_results_on_auction_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_results_on_auction_id ON public.results USING btree (auction_id);
+
+
+--
+-- Name: index_results_on_offer_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_results_on_offer_id ON public.results USING btree (offer_id);
+
+
+--
+-- Name: index_results_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_results_on_user_id ON public.results USING btree (user_id);
+
+
+--
 -- Name: index_settings_on_code; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1180,6 +1216,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181102132927'),
 ('20181107084751'),
 ('20181107113525'),
-('20181114142500');
+('20181114142500'),
+('20181115083934');
 
 
