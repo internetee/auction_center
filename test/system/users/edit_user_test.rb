@@ -66,7 +66,7 @@ class EditUserTest < ApplicationSystemTestCase
     fill_in('user[current_password]', with: 'password123')
     click_link_or_button('Update')
 
-    assert(page.has_text?('Poland'))
+    assert(page.has_text?('PL'))
     assert(page.has_text?('1234-5678'))
   end
 
