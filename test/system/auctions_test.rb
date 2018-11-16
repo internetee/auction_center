@@ -27,8 +27,6 @@ class AuctionsTest < ApplicationSystemTestCase
   end
 
   def test_result_creation_job_is_not_scheduled_when_there_are_no_ended_auctions
-    travel_back
-
     assert_no_enqueued_jobs(only: ResultCreationJob) do
       visit('/')
     end
