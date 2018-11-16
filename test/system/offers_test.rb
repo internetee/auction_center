@@ -2,8 +2,6 @@
 require 'application_system_test_case'
 
 class OffersTest < ApplicationSystemTestCase
-  include ActiveJob::TestHelper
-
   def setup
     super
 
@@ -21,13 +19,6 @@ class OffersTest < ApplicationSystemTestCase
     super
 
     travel_back
-  end
-
-  def test_result_creation_job_is_scheduled_automatically
-    sign_in(@user)
-    assert_enqueued_with(job: ResultCreationJob) do
-      visit(offers_path)
-    end
   end
 
   def test_root_has_a_link_to_offers_page
