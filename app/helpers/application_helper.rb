@@ -36,14 +36,6 @@ module ApplicationHelper
     end
   end
 
-  def administrator_links
-    administrator_links_list.each do |item|
-      concat(content_tag(:li, class: 'nav-item') do
-               link_to(item[:name], item[:path], class: 'nav-link')
-             end)
-    end
-  end
-
   def user_link_list
     [{ name: t(:profile), path: user_path(current_user) },
      { name: t(:my_offers), path: offers_path }]
