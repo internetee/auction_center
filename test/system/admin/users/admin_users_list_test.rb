@@ -9,6 +9,12 @@ class AdminUsersListTest < ApplicationSystemTestCase
     visit admin_users_path
   end
 
+  def teardown
+    super
+
+    clear_email_deliveries
+  end
+
   def test_users_are_ordered_by_descending_created_at_date
     display_name_cells = page.find('#users-table-body').find_all('th')
     # First is users(:user)

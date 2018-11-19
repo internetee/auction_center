@@ -8,6 +8,12 @@ class EditUserTest < ApplicationSystemTestCase
     sign_in(@user)
   end
 
+  def teardown
+    super
+
+    clear_email_deliveries
+  end
+
   def test_edit_form_contains_existing_values
     visit edit_user_path(@user)
 

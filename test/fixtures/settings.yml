@@ -29,3 +29,9 @@ default_country:
     Alpha two code for default country, used for example in user and billing profile dropdowns.
     Example values: "EE", "GB", "US", "CA"
   value: EE
+
+payment_term:
+  code: payment_term
+  description: |
+    Number of days before which an invoice for auction must be paid. Default: 7
+  value: 7

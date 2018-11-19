@@ -3,6 +3,8 @@
 require 'application_system_test_case'
 
 class AdminAuctionsTest < ApplicationSystemTestCase
+  include ActiveJob::TestHelper
+
   def setup
     super
 
@@ -15,6 +17,8 @@ class AdminAuctionsTest < ApplicationSystemTestCase
   end
 
   def teardown
+    super
+
     travel_back
   end
 
@@ -28,6 +32,20 @@ class AdminAuctionsTest < ApplicationSystemTestCase
     assert_changes('Auction.count') do
       click_link_or_button('Submit')
     end
+  end
+
+  def test_result_creation_job_is_scheduled_automatically
+    assert_enqueued_with(job: ResultCreationJob) do
+      visit(admin_auctions_path)
+    end
+  end
+
+  def test_page_has_result_link
+    visit(admin_auction_path(@expired_auction))
+    assert(page.has_link?('Result', href: admin_result_path(@expired_auction.result)))
+
+    visit(admin_auction_path(@auction))
+    refute(page.has_link?('Result', href: /admin\/results\//))
   end
 
   def test_creating_auction_with_ends_at_time_in_the_past_fails

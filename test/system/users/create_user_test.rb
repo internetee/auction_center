@@ -1,6 +1,12 @@
 require 'application_system_test_case'
 
 class CreateUserTest < ApplicationSystemTestCase
+  def teardown
+    super
+
+    clear_email_deliveries
+  end
+
   def test_can_create_a_foreign_user_and_get_an_confirmation_email
     visit new_user_path
 
