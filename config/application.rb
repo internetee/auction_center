@@ -22,6 +22,9 @@ module AuctionCenter
     # Schema.rb does not retain information about triggers and schemas that are not public.
     config.active_record.schema_format = :sql
 
+    # Use delayed_job for background processing
+    config.active_job.queue_adapter = :delayed_job
+
     # Load customization from special file
     config.customization = config_for(:customization)
 

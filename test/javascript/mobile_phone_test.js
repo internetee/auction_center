@@ -1,4 +1,4 @@
-import MobilePhone from '../../app/javascript/packs/mobile_phone';
+import MobilePhone from '../../app/javascript/src/mobile_phone';
 
 QUnit.module('MobilePhone validation');
 

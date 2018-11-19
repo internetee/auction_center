@@ -1,10 +1,10 @@
 en:
   auctions:
-    domain_name: 'Domain Name'
+    domain_name: 'Domain name'
     starts_at: 'Starts at'
     ends_at: 'Ends at'
     finished: "This auction has finished"
-    highest_offer: "Highest offer"
+    highest_price: "Highest price"
     offers: "Offers"
     offer_actions: "Offer actions"
     your_current_price: "Your current offer"

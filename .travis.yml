@@ -30,8 +30,7 @@ before_script:
 
 script:
   - "bundle exec rails assets:precompile"
-  - "bundle exec rails test"
-  - "bundle exec rails test:system"
+  - "bundle exec rails test test/*"
   - "yarn test"
 
 after_script:

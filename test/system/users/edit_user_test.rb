@@ -8,6 +8,12 @@ class EditUserTest < ApplicationSystemTestCase
     sign_in(@user)
   end
 
+  def teardown
+    super
+
+    clear_email_deliveries
+  end
+
   def test_edit_form_contains_existing_values
     visit edit_user_path(@user)
 
@@ -60,7 +66,7 @@ class EditUserTest < ApplicationSystemTestCase
     fill_in('user[current_password]', with: 'password123')
     click_link_or_button('Update')
 
-    assert(page.has_text?('Poland'))
+    assert(page.has_text?('PL'))
     assert(page.has_text?('1234-5678'))
   end
 

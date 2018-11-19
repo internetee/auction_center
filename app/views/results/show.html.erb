@@ -1,0 +1,24 @@
+<div class="row">
+    <div class="col-12">
+        <h1 class="mb-3 mt-4"><%= t('.title') %></h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <dl>
+                    <dt><%= t('auctions.domain_name') %></dt>
+                    <dd><%= @result.auction.domain_name %></dd>
+
+                    <dt><%= t('auctions.ends_at') %></dt>
+                    <dd><%= I18n.l(@result.auction.ends_at) %></dd>
+
+                    <dt><%= t('results.final_price') %></dt>
+                    <td><%= t('offers.price_in_currency', price: @result.price) %></td>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>

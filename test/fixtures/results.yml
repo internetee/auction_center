@@ -1,0 +1,10 @@
+expired_participant:
+  auction: expired
+  user: participant
+  sold: true
+  cents: 1000
+  offer: expired_offer
+
+without_offers_nobody:
+  auction: valid_without_offers
+  sold: false
