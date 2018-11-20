@@ -1,6 +1,8 @@
 class Offer < ApplicationRecord
   belongs_to :user, required: true
   belongs_to :auction, required: true
+  belongs_to :billing_profile, required: true
+
   has_one :result, required: false, dependent: :nullify
 
   validates :cents, numericality: { only_integer: true, greater_than: 0 }

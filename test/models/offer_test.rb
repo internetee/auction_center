@@ -6,6 +6,7 @@ class OfferTest < ActiveSupport::TestCase
 
     @expired_auction = auctions(:expired)
     @valid_auction = auctions(:valid_with_offers)
+    @billing_profile = billing_profiles(:company)
     @user = users(:participant)
 
     travel_to Time.parse('2010-07-05 10:30 +0000')
@@ -24,9 +25,11 @@ class OfferTest < ActiveSupport::TestCase
     assert_equal(["must exist", "must be active"], offer.errors[:auction])
     assert_equal(["must exist"], offer.errors[:user])
     assert_equal(["is not a number"], offer.errors[:cents])
+    assert_equal(["must exist"], offer.errors[:billing_profile])
 
     offer.auction = @valid_auction
     offer.user = @user
+    offer.billing_profile = @billing_profile
     offer.cents = 1201
 
     assert(offer.valid?)
@@ -68,6 +71,7 @@ class OfferTest < ActiveSupport::TestCase
     offer.auction = @valid_auction
     offer.user = @user
     offer.cents = 1
+    offer.billing_profile = @billing_profile
 
     refute(offer.valid?)
     assert_equal(["must be higher than 5.00"], offer.errors[:price])

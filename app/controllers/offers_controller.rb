@@ -66,11 +66,11 @@ class OffersController < ApplicationController
   private
 
   def create_params
-    params.require(:offer).permit(:auction_id, :user_id, :price)
+    params.require(:offer).permit(:auction_id, :user_id, :price, :billing_profile_id)
   end
 
   def update_params
-    params.require(:offer).permit(:price)
+    params.require(:offer).permit(:price, :billing_profile_id)
   end
 
   def set_offer

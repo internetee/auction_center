@@ -17,6 +17,7 @@ class OfferAuditTest < ActiveSupport::TestCase
   def test_creating_a_offer_creates_a_history_record
     offer = Offer.new(auction: auctions(:valid_with_offers),
                       user: users(:participant),
+                      billing_profile: billing_profiles(:company),
                       cents: 1121)
 
     offer.save

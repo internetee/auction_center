@@ -547,6 +547,39 @@ ALTER SEQUENCE public.delayed_jobs_id_seq OWNED BY public.delayed_jobs.id;
 
 
 --
+-- Name: invoices; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE public.invoices (
+    id bigint NOT NULL,
+    result_id integer NOT NULL,
+    user_id integer,
+    billing_profile_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: invoices_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.invoices_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: invoices_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.invoices_id_seq OWNED BY public.invoices.id;
+
+
+--
 -- Name: offers; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -557,6 +590,7 @@ CREATE TABLE public.offers (
     cents integer NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
+    billing_profile_id integer NOT NULL,
     CONSTRAINT offers_cents_are_positive CHECK ((cents > 0))
 );
 
@@ -770,6 +804,13 @@ ALTER TABLE ONLY public.delayed_jobs ALTER COLUMN id SET DEFAULT nextval('public
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY public.invoices ALTER COLUMN id SET DEFAULT nextval('public.invoices_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY public.offers ALTER COLUMN id SET DEFAULT nextval('public.offers_id_seq'::regclass);
 
 
@@ -872,6 +913,14 @@ ALTER TABLE ONLY public.billing_profiles
 
 ALTER TABLE ONLY public.delayed_jobs
     ADD CONSTRAINT delayed_jobs_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: invoices_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY public.invoices
+    ADD CONSTRAINT invoices_pkey PRIMARY KEY (id);
 
 
 --
@@ -1218,6 +1267,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181107113525'),
 ('20181114142500'),
 ('20181115083934'),
-('20181115122806');
+('20181115122806'),
+('20181119091242'),
+('20181119114425');
 
 

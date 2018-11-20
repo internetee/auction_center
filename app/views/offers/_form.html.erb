@@ -13,6 +13,15 @@
                 <%= f.label :price %>
                 <%= f.number_field :price, class: "form-control", min: 0, step: "0.01" %>
             </div>
+
+            <div class="form-group">
+                <%= f.label :billing_profile %><br />
+                <%= f.select :billing_profile_id,
+                    BillingProfile.where(user_id: offer.user_id).collect { |b| [b.name, b.id] },
+                    class: "form-control form-control" %><br>
+
+                <%= link_to t(:new_billing_profile),  new_billing_profile_path %>
+            </div>
         </div>
 
         <div class="col-12 col-lg-6">

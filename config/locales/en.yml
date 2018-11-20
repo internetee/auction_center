@@ -12,6 +12,7 @@ en:
   are_you_sure: "Are you sure?"
 
   billing: "Billing"
+  new_billing_profile: "New billing profile"
 
   profile: "Profile"
   sign_in: "Sign in"

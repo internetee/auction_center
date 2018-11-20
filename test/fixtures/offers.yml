@@ -2,8 +2,10 @@ minimum_offer:
   auction: valid_with_offers
   user: participant
   cents: 500
+  billing_profile: private_person
 
 expired_offer:
   auction: expired
   user: participant
   cents: 1000
+  billing_profile: company
