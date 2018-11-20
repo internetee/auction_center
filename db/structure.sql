@@ -100,6 +100,35 @@ $$;
 
 
 --
+-- Name: process_invoice_audit(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.process_invoice_audit() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+  BEGIN
+    IF (TG_OP = 'INSERT') THEN
+      INSERT INTO audit.invoices
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
+      RETURN NEW;
+    ELSEIF (TG_OP = 'UPDATE') THEN
+      INSERT INTO audit.invoices
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
+      RETURN NEW;
+    ELSEIF (TG_OP = 'DELETE') THEN
+      INSERT INTO audit.invoices
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
+      RETURN OLD;
+    END IF;
+    RETURN NULL;
+  END
+$$;
+
+
+--
 -- Name: process_offer_audit(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -285,6 +314,40 @@ CREATE SEQUENCE audit.billing_profiles_id_seq
 --
 
 ALTER SEQUENCE audit.billing_profiles_id_seq OWNED BY audit.billing_profiles.id;
+
+
+--
+-- Name: invoices; Type: TABLE; Schema: audit; Owner: -; Tablespace: 
+--
+
+CREATE TABLE audit.invoices (
+    id integer NOT NULL,
+    object_id bigint,
+    action text NOT NULL,
+    recorded_at timestamp without time zone,
+    old_value jsonb,
+    new_value jsonb,
+    CONSTRAINT invoices_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
+);
+
+
+--
+-- Name: invoices_id_seq; Type: SEQUENCE; Schema: audit; Owner: -
+--
+
+CREATE SEQUENCE audit.invoices_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: invoices_id_seq; Type: SEQUENCE OWNED BY; Schema: audit; Owner: -
+--
+
+ALTER SEQUENCE audit.invoices_id_seq OWNED BY audit.invoices.id;
 
 
 --
@@ -755,6 +818,13 @@ ALTER TABLE ONLY audit.billing_profiles ALTER COLUMN id SET DEFAULT nextval('aud
 -- Name: id; Type: DEFAULT; Schema: audit; Owner: -
 --
 
+ALTER TABLE ONLY audit.invoices ALTER COLUMN id SET DEFAULT nextval('audit.invoices_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: audit; Owner: -
+--
+
 ALTER TABLE ONLY audit.offers ALTER COLUMN id SET DEFAULT nextval('audit.offers_id_seq'::regclass);
 
 
@@ -849,6 +919,14 @@ ALTER TABLE ONLY audit.auctions
 
 ALTER TABLE ONLY audit.billing_profiles
     ADD CONSTRAINT billing_profiles_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: invoices_pkey; Type: CONSTRAINT; Schema: audit; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY audit.invoices
+    ADD CONSTRAINT invoices_pkey PRIMARY KEY (id);
 
 
 --
@@ -1000,6 +1078,20 @@ CREATE INDEX billing_profiles_recorded_at_idx ON audit.billing_profiles USING bt
 
 
 --
+-- Name: invoices_object_id_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
+--
+
+CREATE INDEX invoices_object_id_idx ON audit.invoices USING btree (object_id);
+
+
+--
+-- Name: invoices_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
+--
+
+CREATE INDEX invoices_recorded_at_idx ON audit.invoices USING btree (recorded_at);
+
+
+--
 -- Name: offers_object_id_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
 --
 
@@ -1091,6 +1183,27 @@ CREATE UNIQUE INDEX index_billing_profiles_on_vat_code_and_user_id ON public.bil
 
 
 --
+-- Name: index_invoices_on_billing_profile_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_invoices_on_billing_profile_id ON public.invoices USING btree (billing_profile_id);
+
+
+--
+-- Name: index_invoices_on_result_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_invoices_on_result_id ON public.invoices USING btree (result_id);
+
+
+--
+-- Name: index_invoices_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_invoices_on_user_id ON public.invoices USING btree (user_id);
+
+
+--
 -- Name: index_offers_on_auction_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1175,6 +1288,13 @@ CREATE TRIGGER process_billing_profile_audit AFTER INSERT OR DELETE OR UPDATE ON
 
 
 --
+-- Name: process_invoice_audit; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER process_invoice_audit AFTER INSERT OR DELETE OR UPDATE ON public.invoices FOR EACH ROW EXECUTE PROCEDURE public.process_invoice_audit();
+
+
+--
 -- Name: process_offer_audit; Type: TRIGGER; Schema: public; Owner: -
 --
 
@@ -1203,6 +1323,22 @@ CREATE TRIGGER process_user_audit AFTER INSERT OR DELETE OR UPDATE ON public.use
 
 
 --
+-- Name: fk_rails_3d1522a0d8; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.invoices
+    ADD CONSTRAINT fk_rails_3d1522a0d8 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: fk_rails_7f0d5a2cd6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.results
+    ADD CONSTRAINT fk_rails_7f0d5a2cd6 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
 -- Name: fk_rails_8fda547d9d; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1227,11 +1363,27 @@ ALTER TABLE ONLY public.offers
 
 
 --
+-- Name: fk_rails_d44c2f8d29; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.invoices
+    ADD CONSTRAINT fk_rails_d44c2f8d29 FOREIGN KEY (result_id) REFERENCES public.results(id);
+
+
+--
 -- Name: fk_rails_e6095d6211; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.offers
     ADD CONSTRAINT fk_rails_e6095d6211 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: fk_rails_ff50c5defa; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.invoices
+    ADD CONSTRAINT fk_rails_ff50c5defa FOREIGN KEY (billing_profile_id) REFERENCES public.billing_profiles(id);
 
 
 --
@@ -1270,6 +1422,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181115122806'),
 ('20181119091242'),
 ('20181119114425'),
-('20181120093105');
+('20181120093105'),
+('20181120120117'),
+('20181120121027');
 
 

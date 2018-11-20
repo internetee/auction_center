@@ -7,5 +7,13 @@ class AddInvoices < ActiveRecord::Migration[5.2]
 
       t.timestamps
     end
+
+    add_foreign_key :invoices, :results
+    add_foreign_key :invoices, :users
+    add_foreign_key :invoices, :billing_profiles
+
+    add_index :invoices, :result_id
+    add_index :invoices, :user_id
+    add_index :invoices, :billing_profile_id
   end
 end
