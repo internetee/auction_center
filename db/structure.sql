@@ -484,7 +484,7 @@ CREATE TABLE public.billing_profiles (
     postal_code character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    alpha_two_country_code character varying(2)
+    alpha_two_country_code character varying(2) NOT NULL
 );
 
 
@@ -1218,6 +1218,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181107113525'),
 ('20181114142500'),
 ('20181115083934'),
-('20181115122806');
+('20181115122806'),
+('20181120093105');
 
 
