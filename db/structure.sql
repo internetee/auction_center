@@ -129,6 +129,35 @@ $$;
 
 
 --
+-- Name: process_result_audit(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.process_result_audit() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+  BEGIN
+    IF (TG_OP = 'INSERT') THEN
+      INSERT INTO audit.results
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
+      RETURN NEW;
+    ELSEIF (TG_OP = 'UPDATE') THEN
+      INSERT INTO audit.results
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
+      RETURN NEW;
+    ELSEIF (TG_OP = 'DELETE') THEN
+      INSERT INTO audit.results
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
+      RETURN OLD;
+    END IF;
+    RETURN NULL;
+  END
+$$;
+
+
+--
 -- Name: process_setting_audit(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -293,6 +322,40 @@ ALTER SEQUENCE audit.offers_id_seq OWNED BY audit.offers.id;
 
 
 --
+-- Name: results; Type: TABLE; Schema: audit; Owner: -; Tablespace: 
+--
+
+CREATE TABLE audit.results (
+    id integer NOT NULL,
+    object_id bigint,
+    action text NOT NULL,
+    recorded_at timestamp without time zone,
+    old_value jsonb,
+    new_value jsonb,
+    CONSTRAINT results_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
+);
+
+
+--
+-- Name: results_id_seq; Type: SEQUENCE; Schema: audit; Owner: -
+--
+
+CREATE SEQUENCE audit.results_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: results_id_seq; Type: SEQUENCE OWNED BY; Schema: audit; Owner: -
+--
+
+ALTER SEQUENCE audit.results_id_seq OWNED BY audit.results.id;
+
+
+--
 -- Name: settings; Type: TABLE; Schema: audit; Owner: -; Tablespace: 
 --
 
@@ -419,9 +482,9 @@ CREATE TABLE public.billing_profiles (
     city character varying NOT NULL,
     state character varying,
     postal_code character varying NOT NULL,
-    country character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    alpha_two_country_code character varying(2)
 );
 
 
@@ -442,6 +505,45 @@ CREATE SEQUENCE public.billing_profiles_id_seq
 --
 
 ALTER SEQUENCE public.billing_profiles_id_seq OWNED BY public.billing_profiles.id;
+
+
+--
+-- Name: delayed_jobs; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE public.delayed_jobs (
+    id bigint NOT NULL,
+    priority integer DEFAULT 0 NOT NULL,
+    attempts integer DEFAULT 0 NOT NULL,
+    handler text NOT NULL,
+    last_error text,
+    run_at timestamp without time zone,
+    locked_at timestamp without time zone,
+    failed_at timestamp without time zone,
+    locked_by character varying,
+    queue character varying,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+--
+-- Name: delayed_jobs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.delayed_jobs_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: delayed_jobs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.delayed_jobs_id_seq OWNED BY public.delayed_jobs.id;
 
 
 --
@@ -476,6 +578,41 @@ CREATE SEQUENCE public.offers_id_seq
 --
 
 ALTER SEQUENCE public.offers_id_seq OWNED BY public.offers.id;
+
+
+--
+-- Name: results; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE public.results (
+    id bigint NOT NULL,
+    auction_id integer NOT NULL,
+    user_id integer,
+    offer_id integer,
+    cents integer,
+    sold boolean NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: results_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.results_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: results_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.results_id_seq OWNED BY public.results.id;
 
 
 --
@@ -591,6 +728,13 @@ ALTER TABLE ONLY audit.offers ALTER COLUMN id SET DEFAULT nextval('audit.offers_
 -- Name: id; Type: DEFAULT; Schema: audit; Owner: -
 --
 
+ALTER TABLE ONLY audit.results ALTER COLUMN id SET DEFAULT nextval('audit.results_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: audit; Owner: -
+--
+
 ALTER TABLE ONLY audit.settings ALTER COLUMN id SET DEFAULT nextval('audit.settings_id_seq'::regclass);
 
 
@@ -619,7 +763,21 @@ ALTER TABLE ONLY public.billing_profiles ALTER COLUMN id SET DEFAULT nextval('pu
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY public.delayed_jobs ALTER COLUMN id SET DEFAULT nextval('public.delayed_jobs_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY public.offers ALTER COLUMN id SET DEFAULT nextval('public.offers_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.results ALTER COLUMN id SET DEFAULT nextval('public.results_id_seq'::regclass);
 
 
 --
@@ -658,6 +816,14 @@ ALTER TABLE ONLY audit.billing_profiles
 
 ALTER TABLE ONLY audit.offers
     ADD CONSTRAINT offers_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: results_pkey; Type: CONSTRAINT; Schema: audit; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY audit.results
+    ADD CONSTRAINT results_pkey PRIMARY KEY (id);
 
 
 --
@@ -701,11 +867,27 @@ ALTER TABLE ONLY public.billing_profiles
 
 
 --
+-- Name: delayed_jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY public.delayed_jobs
+    ADD CONSTRAINT delayed_jobs_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: offers_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY public.offers
     ADD CONSTRAINT offers_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: results_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY public.results
+    ADD CONSTRAINT results_pkey PRIMARY KEY (id);
 
 
 --
@@ -783,6 +965,20 @@ CREATE INDEX offers_recorded_at_idx ON audit.offers USING btree (recorded_at);
 
 
 --
+-- Name: results_object_id_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
+--
+
+CREATE INDEX results_object_id_idx ON audit.results USING btree (object_id);
+
+
+--
+-- Name: results_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
+--
+
+CREATE INDEX results_recorded_at_idx ON audit.results USING btree (recorded_at);
+
+
+--
 -- Name: settings_object_id_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
 --
 
@@ -811,6 +1007,13 @@ CREATE INDEX users_recorded_at_idx ON audit.users USING btree (recorded_at);
 
 
 --
+-- Name: delayed_jobs_priority; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX delayed_jobs_priority ON public.delayed_jobs USING btree (priority, run_at);
+
+
+--
 -- Name: index_auctions_on_domain_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -836,6 +1039,41 @@ CREATE INDEX index_billing_profiles_on_user_id ON public.billing_profiles USING 
 --
 
 CREATE UNIQUE INDEX index_billing_profiles_on_vat_code_and_user_id ON public.billing_profiles USING btree (vat_code, user_id);
+
+
+--
+-- Name: index_offers_on_auction_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_offers_on_auction_id ON public.offers USING btree (auction_id);
+
+
+--
+-- Name: index_offers_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_offers_on_user_id ON public.offers USING btree (user_id);
+
+
+--
+-- Name: index_results_on_auction_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_results_on_auction_id ON public.results USING btree (auction_id);
+
+
+--
+-- Name: index_results_on_offer_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_results_on_offer_id ON public.results USING btree (offer_id);
+
+
+--
+-- Name: index_results_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_results_on_user_id ON public.results USING btree (user_id);
 
 
 --
@@ -895,6 +1133,13 @@ CREATE TRIGGER process_offer_audit AFTER INSERT OR DELETE OR UPDATE ON public.of
 
 
 --
+-- Name: process_result_audit; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER process_result_audit AFTER INSERT OR DELETE OR UPDATE ON public.results FOR EACH ROW EXECUTE PROCEDURE public.process_result_audit();
+
+
+--
 -- Name: process_setting_audit; Type: TRIGGER; Schema: public; Owner: -
 --
 
@@ -914,6 +1159,14 @@ CREATE TRIGGER process_user_audit AFTER INSERT OR DELETE OR UPDATE ON public.use
 
 ALTER TABLE ONLY public.billing_profiles
     ADD CONSTRAINT fk_rails_8fda547d9d FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: fk_rails_9f5d06cf95; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.results
+    ADD CONSTRAINT fk_rails_9f5d06cf95 FOREIGN KEY (auction_id) REFERENCES public.auctions(id);
 
 
 --
@@ -958,6 +1211,13 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181023103316'),
 ('20181023121607'),
 ('20181023125230'),
-('20181029121254');
+('20181029121254'),
+('20181030075851'),
+('20181102132927'),
+('20181107084751'),
+('20181107113525'),
+('20181114142500'),
+('20181115083934'),
+('20181115122806');
 
 

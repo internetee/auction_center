@@ -1,3 +1,4 @@
+# encoding: utf-8
 module Countries
   ALPHA_2_SELECTION = [%w[Afghanistan AF],
                        ['Åland Islands', 'AX'],
@@ -248,4 +249,14 @@ module Countries
                        %w[Yemen YE],
                        %w[Zambia ZM],
                        %w[Zimbabwe ZW]].freeze
+
+  def self.name_from_alpha2_code(code_to_search)
+    name, _code = ALPHA_2_SELECTION.select { |_a, b| b == code_to_search }.flatten
+    name
+  end
+
+  def self.alpha2_code_from_name(country_name_to_search)
+    _name, code = ALPHA_2_SELECTION.select { |a, _b| a == country_name_to_search }.flatten
+    code
+  end
 end

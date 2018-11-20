@@ -17,6 +17,7 @@ class Ability
     can :manage, User, id: user.id
     can :manage, BillingProfile, user_id: user.id
     can :manage, Offer, user_id: user.id
+    can :read, Result, user_id: user.id
   end
 
   def administrator
@@ -25,6 +26,7 @@ class Ability
     can :manage, User
     can %i[read update], Setting
     can :read, Offer
+    can :read, Result
 
     can :read, Audit::Auction
     can :read, Audit::BillingProfile

@@ -1,6 +1,8 @@
 require 'application_system_test_case'
 
 class AuctionsTest < ApplicationSystemTestCase
+  include ActiveJob::TestHelper
+
   def setup
     super
 
@@ -14,6 +16,20 @@ class AuctionsTest < ApplicationSystemTestCase
     super
 
     travel_back
+  end
+
+  def test_result_creation_job_is_scheduled_automatically_if_there_ended_are_auctions
+    travel_back
+
+    assert_enqueued_with(job: ResultCreationJob) do
+      visit('/')
+    end
+  end
+
+  def test_result_creation_job_is_not_scheduled_when_there_are_no_ended_auctions
+    assert_no_enqueued_jobs(only: ResultCreationJob) do
+      visit('/')
+    end
   end
 
   def test_auctions_index_contains_a_list

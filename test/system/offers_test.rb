@@ -1,3 +1,4 @@
+# encoding: UTF-8
 require 'application_system_test_case'
 
 class OffersTest < ApplicationSystemTestCase
@@ -18,6 +19,21 @@ class OffersTest < ApplicationSystemTestCase
     super
 
     travel_back
+  end
+
+  def test_root_has_a_link_to_offers_page
+    sign_in(@user)
+    visit root_path
+
+    assert(page.has_link?('My offers', href: offers_path))
+    click_link('My offers')
+
+    within('tbody#offers-table-body') do
+      assert_text('with-offers.test')
+      assert_text('5.00 €')
+
+      assert(page.has_link?('with-offers.test', href: offer_path(@offer)))
+    end
   end
 
   def test_needs_to_be_signed_in_to_submit_an_offer

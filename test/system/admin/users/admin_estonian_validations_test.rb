@@ -9,6 +9,11 @@ class AdminEstonianValidationsTest < ApplicationSystemTestCase
     prefill_the_form
   end
 
+  def teardown
+    super
+
+    clear_email_deliveries
+  end
 
   def test_requires_valid_identity_code_for_user_creation
     fill_in('user[identity_code]', with: @valid_identity_code)
@@ -44,6 +49,16 @@ class AdminEstonianValidationsTest < ApplicationSystemTestCase
     assert_difference 'User.count' do
       click_link_or_button('Submit')
     end
+  end
+
+  def test_estonian_identity_code_validations_are_used_for_update
+    sign_in users(:administrator)
+    visit edit_admin_user_path(users(:participant))
+    fill_in('user[identity_code]', with: '1234-5678')
+    select('Estonia', from: 'user[country_code]')
+
+    page.find('body').click # blur
+    refute(page.has_button?('Update'))
   end
 
   def prefill_the_form

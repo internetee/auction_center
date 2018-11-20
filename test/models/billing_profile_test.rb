@@ -17,7 +17,7 @@ class BillingProfileTest < ActiveSupport::TestCase
     assert_equal(["can't be blank"], billing_profile.errors[:street])
     assert_equal(["can't be blank"], billing_profile.errors[:city])
     assert_equal(["can't be blank"], billing_profile.errors[:postal_code])
-    assert_equal(["can't be blank"], billing_profile.errors[:country])
+    assert_equal(["can't be blank"], billing_profile.errors[:country_code])
     assert_equal(["can't be blank"], billing_profile.errors[:name])
 
     billing_profile.user = @user
@@ -25,7 +25,7 @@ class BillingProfileTest < ActiveSupport::TestCase
     billing_profile.street = "Baker Street 221B"
     billing_profile.city = "London"
     billing_profile.postal_code = "NW1 6XE"
-    billing_profile.country = "United Kingdom"
+    billing_profile.country_code = "GB"
     assert(billing_profile.valid?)
   end
 

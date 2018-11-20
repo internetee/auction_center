@@ -1,5 +1,5 @@
-import IdentityCode from './identity_code';
-import MobilePhone from './mobile_phone';
+import IdentityCode from '../src/identity_code';
+import MobilePhone from '../src/mobile_phone';
 
 function setMobilePhoneInvalid() {
     let mobilePhoneField = document.getElementById('user_mobile_phone');

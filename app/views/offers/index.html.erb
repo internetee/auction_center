@@ -1,0 +1,43 @@
+<div class="row mt-4">
+    <div class="col-12">
+        <h2><%= t(:my_offers) %></h2>
+        <table class="table" id="my-offers-table">
+            <thead>
+                <tr>
+                    <th scope="col"><%= t('auctions.domain_name') %></th>
+                    <th scope="col"><%= t('.your_last_offer') %></th>
+                    <th scope="col"><%= t('auctions.ends_at') %></th>
+                    <th scope="col"><%= t('result_name') %></th>
+                    <th scope="col"></th>
+                </tr>
+
+                <tbody id="offers-table-body">
+                    <% @offers.each do |offer| %>
+                        <tr class="offers-table-row">
+                            <td><%= link_to offer.auction.domain_name, offer_path(offer) %></td>
+                            <td><%= t('offers.price_in_currency', price: offer.price) %></td>
+                            <td>
+                                <%- if offer.auction.finished? %>
+                                    <%= t('auctions.finished') %>
+                                <% else %>
+                                    <%= I18n.l(offer.auction.ends_at) %>
+                                <% end %>
+                            </td>
+                            <td>
+                                <%- if offer.result %>
+                                    <%= t('.you_won') %>
+                                <% else %>
+                                    <%= t('.you_lost') %>
+                                <% end %>
+                            </td>
+                            <td>
+                                <%- if offer.result %>
+                                    <%= link_to t('.claim_your_domain'), result_path(offer.result) %>
+                                <% end %>
+                            </td>
+                        </tr>
+                    <% end %>
+                </tbody>
+        </table>
+    </div>
+</div>

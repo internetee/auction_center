@@ -18,3 +18,9 @@ en:
     edit:
       title: "Edit offer"
       errors: "prohibited this offer from being saved"
+
+    index:
+      your_last_offer: "Your last offer"
+      claim_your_domain: "Claim your domain"
+      you_won: "You won"
+      you_lost: "Someone else won 🥺"

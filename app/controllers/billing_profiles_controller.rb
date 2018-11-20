@@ -62,13 +62,13 @@ class BillingProfilesController < ApplicationController
 
   def create_params
     params.require(:billing_profile).permit(
-      :user_id, :name, :vat_code, :legal_entity, :street, :city, :postal_code, :country
+      :user_id, :name, :vat_code, :legal_entity, :street, :city, :postal_code, :country_code
     )
   end
 
   def update_params
     params.require(:billing_profile).permit(
-      :name, :vat_code, :legal_entity, :street, :city, :postal_code, :country
+      :name, :vat_code, :legal_entity, :street, :city, :postal_code, :country_code
     )
   end
 

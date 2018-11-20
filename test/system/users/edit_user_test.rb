@@ -1,11 +1,24 @@
 require 'application_system_test_case'
 
-class EditAccountTest < ApplicationSystemTestCase
+class EditUserTest < ApplicationSystemTestCase
   def setup
     super
 
     @user = users(:participant)
     sign_in(@user)
+  end
+
+  def teardown
+    super
+
+    clear_email_deliveries
+  end
+
+  def test_edit_form_contains_existing_values
+    visit edit_user_path(@user)
+
+    country_code_field = page.find_field('user[country_code]')
+    assert_equal(@user.country_code, country_code_field.value)
   end
 
   def test_update_of_email_requires_confirmation
@@ -46,9 +59,15 @@ class EditAccountTest < ApplicationSystemTestCase
     assert_equal('New Surname', @user.surname)
   end
 
-  def test_identity_code_cannot_be_changed_once_set
+  def test_identity_code_and_country_can_also_be_changed
     visit edit_user_path(@user)
-    assert(page.has_field?('user[identity_code]', disabled: true))
+    fill_in('user[identity_code]', with: '1234-5678')
+    select('Poland', from: 'user[country_code]')
+    fill_in('user[current_password]', with: 'password123')
+    click_link_or_button('Update')
+
+    assert(page.has_text?('PL'))
+    assert(page.has_text?('1234-5678'))
   end
 
   def test_mobile_phone_needs_to_be_valid

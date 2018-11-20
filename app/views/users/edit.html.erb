@@ -44,15 +44,18 @@
                 <div class="form-group">
                     <%= f.label :identity_code %> <span class="small text-info">
                     <%= f.text_field :identity_code, class: "form-control",
-                    placeholder: t('users.can_be_left_blank_if_not_estonian'), disabled: true %>
+                    placeholder: t('users.can_be_left_blank_if_not_estonian') %>
                 </div>
 
                 <div class="form-group">
                     <%= f.label :country %><br />
                     <%= f.select :country_code,
-                    options_for_select(Countries::ALPHA_2_SELECTION, ['Estonia', 'EE']),
-                    {},
-                    class: "form-control form-control" %>
+                                 options_for_select(
+                                   Countries::ALPHA_2_SELECTION,
+                                   @user.country_code || Setting.default_country
+                                 ),
+                                 {},
+                                 class: "form-control form-control" %>
                 </div>
             </div>
             <div class="col-12 col-lg-6">

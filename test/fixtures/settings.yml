@@ -14,3 +14,16 @@ auction_minimum_offer:
   code: auction_minimum_offer
   description: 'Minimum amount in cents that a user can offer for a domain. Default is: 500 (5.00 EUR)'
   value: '500'
+
+default_country:
+  code: default_country
+  description: |
+    Alpha two code for default country, used for example in user and billing profile dropdowns.
+    Example values: "EE", "GB", "US", "CA"
+  value: EE
+
+payment_term:
+  code: payment_term
+  description: |
+    Number of days before which an invoice for auction must be paid. Default: 7
+  value: 7
