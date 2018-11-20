@@ -1,7 +1,6 @@
-FROM internetee/ruby:2.5-stretch
-MAINTAINER maciej.szlosarczyk@internet.ee
+FROM internetee/ruby:2.5
 
-RUN npm install -g yarn
+RUN npm install -g yarn@latest
 RUN mkdir -p /opt/webapps/current/tmp/pids
 WORKDIR /opt/webapps/app
 COPY Gemfile Gemfile.lock ./
