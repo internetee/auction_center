@@ -28,6 +28,9 @@ module AuctionCenter
     # Load customization from special file
     config.customization = config_for(:customization)
 
+    # Default to UTC if not set
+    config.time_zone = config.customization['time_zone'] || 'UTC'
+
     config.action_mailer.smtp_settings = {
       address:              config.customization.dig('mailer', 'address'),
       port:                 config.customization.dig('mailer', 'port'),
