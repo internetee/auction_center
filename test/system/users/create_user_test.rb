@@ -38,12 +38,13 @@ class CreateUserTest < ApplicationSystemTestCase
     click_link_or_button('Sign up')
 
     errors_list = page.find('#errors').all('li')
-    assert_equal(5, errors_list.size)
+    assert_equal(7, errors_list.size)
     errors_array = errors_list.collect { |i| i.text }
 
     expected_errors = ["Email can't be blank", "Password can't be blank",
                        "Identity code can't be blank", "Mobile phone can't be blank",
-                       "Identity code is invalid"]
+                       "Identity code is invalid", "Given names can't be blank",
+                       "Surname can't be blank"]
 
     assert_equal(errors_array.to_set, expected_errors.to_set)
   end

@@ -12,6 +12,8 @@ class User < ApplicationRecord
   validates :identity_code, presence: true, if: proc { |user| user.country_code == 'EE' }
   validates :identity_code, uniqueness: { scope: :alpha_two_country_code }
   validates :mobile_phone, presence: true
+  validates :given_names, presence: true
+  validates :surname, presence: true
 
   validate :identity_code_must_be_valid_for_estonia
 
