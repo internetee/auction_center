@@ -12,6 +12,15 @@ class AdminBillingProfilesTest < ApplicationSystemTestCase
     visit admin_billing_profiles_path
 
     names = page.find_all('.billing-profile-name').map(&:text)
-    assert_equal(['Joe John Participant', 'ACME Inc.'].to_set, names.to_set)
+    assert_equal(['Joe John Participant', 'ACME Inc.', 'Orphan Profile'].to_set, names.to_set)
+  end
+
+  def test_billing_profiles_orphans_are_marked_in_table
+    visit admin_billing_profiles_path
+
+    within('tbody#billing-profiles-table-body') do
+      assert_text('Orphaned')
+      assert_text('Orphan Profile')
+    end
   end
 end

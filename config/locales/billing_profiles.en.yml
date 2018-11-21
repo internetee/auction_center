@@ -10,6 +10,7 @@ en:
     state: "State"
     postal_code: "Postal Code"
     country: "Country"
+    orphaned: 'Orphaned'
 
     edit:
       title: "Edit billing profile"

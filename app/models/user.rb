@@ -17,7 +17,7 @@ class User < ApplicationRecord
 
   validate :identity_code_must_be_valid_for_estonia
 
-  has_many :billing_profiles, dependent: :delete_all
+  has_many :billing_profiles, dependent: :nullify
   has_many :offers, dependent: :delete_all
   has_many :results, dependent: :nullify
 

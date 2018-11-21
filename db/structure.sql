@@ -538,7 +538,7 @@ ALTER SEQUENCE public.auctions_id_seq OWNED BY public.auctions.id;
 
 CREATE TABLE public.billing_profiles (
     id bigint NOT NULL,
-    user_id integer NOT NULL,
+    user_id integer,
     name character varying,
     vat_code character varying,
     street character varying NOT NULL,
@@ -1424,6 +1424,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181119114425'),
 ('20181120093105'),
 ('20181120120117'),
-('20181120121027');
+('20181120121027'),
+('20181121091758');
 
 
