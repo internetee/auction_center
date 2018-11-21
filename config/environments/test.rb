@@ -34,6 +34,9 @@ Rails.application.configure do
   # Store uploaded files on the local file system in a temporary directory
   config.active_storage.service = :test
 
+  # Always use UTC timezone in test
+  config.time_zone = 'UTC'
+
   config.action_mailer.perform_caching = false
 
   # Tell Action Mailer not to deliver emails to the real world.
