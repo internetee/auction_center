@@ -8,6 +8,7 @@ class OfferTest < ActiveSupport::TestCase
     @valid_auction = auctions(:valid_with_offers)
     @billing_profile = billing_profiles(:company)
     @user = users(:participant)
+    @offer = offers(:expired_offer)
 
     travel_to Time.parse('2010-07-05 10:30 +0000')
   end
@@ -23,12 +24,10 @@ class OfferTest < ActiveSupport::TestCase
 
     refute(offer.valid?)
     assert_equal(["must exist", "must be active"], offer.errors[:auction])
-    assert_equal(["must exist"], offer.errors[:user])
     assert_equal(["is not a number"], offer.errors[:cents])
     assert_equal(["must exist"], offer.errors[:billing_profile])
 
     offer.auction = @valid_auction
-    offer.user = @user
     offer.billing_profile = @billing_profile
     offer.cents = 1201
 
@@ -78,5 +77,14 @@ class OfferTest < ActiveSupport::TestCase
 
     offer.cents = 500
     assert(offer.valid?)
+  end
+
+  def test_can_be_orphaned_by_a_user
+    @user.destroy
+    @offer.reload
+
+
+    assert_nil(@offer.user)
+    assert_nil(@offer.user_id)
   end
 end

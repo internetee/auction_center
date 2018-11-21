@@ -8,3 +8,9 @@ expired_participant:
 without_offers_nobody:
   auction: valid_without_offers
   sold: false
+
+orphaned:
+  auction: orphaned
+  sold: true
+  cents: 1000
+  offer: expired_offer

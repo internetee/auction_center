@@ -649,7 +649,7 @@ ALTER SEQUENCE public.invoices_id_seq OWNED BY public.invoices.id;
 CREATE TABLE public.offers (
     id bigint NOT NULL,
     auction_id integer NOT NULL,
-    user_id integer NOT NULL,
+    user_id integer,
     cents integer NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
@@ -1425,6 +1425,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181120093105'),
 ('20181120120117'),
 ('20181120121027'),
-('20181121091758');
+('20181121091758'),
+('20181121120238');
 
 

@@ -44,7 +44,7 @@ class ResultCreator
 
   def create_result
     @result = Result.new
-    winning_offer = auction.winning_offer || NullOffer.new
+    winning_offer = auction.currently_winning_offer || NullOffer.new
     result.auction = auction
     assign_attributes_from_winning_offer(winning_offer)
 

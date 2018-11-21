@@ -7,6 +7,7 @@ class AuctionTest < ActiveSupport::TestCase
     @expired_auction = auctions(:expired)
     @persisted_auction = auctions(:valid_with_offers)
     @other_persisted_auction = auctions(:valid_without_offers)
+    @orphaned_auction = auctions(:orphaned)
     travel_to Time.parse('2010-07-05 10:30 +0000')
   end
 
@@ -70,8 +71,9 @@ class AuctionTest < ActiveSupport::TestCase
   end
 
   def test_active_scope_returns_only_active_auction
-    assert_equal([@persisted_auction, @other_persisted_auction].to_set, Auction.active.to_set)
-    assert_equal([@persisted_auction, @other_persisted_auction, @expired_auction].to_set,
+    assert_equal([@persisted_auction, @other_persisted_auction, @orphaned_auction].to_set, Auction.active.to_set)
+    assert_equal([@persisted_auction, @other_persisted_auction,
+                  @expired_auction, @orphaned_auction].to_set,
                  Auction.all.to_set)
 
     travel_to Time.parse('2010-07-04 10:30 +0000')

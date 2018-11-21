@@ -1,11 +1,22 @@
-minimum_offer:
+high_offer:
   auction: valid_with_offers
   user: participant
+  cents: 5000
+  billing_profile: private_person
+
+minimum_offer:
+  auction: valid_with_offers
+  user: second_place_participant
   cents: 500
   billing_profile: private_person
 
 expired_offer:
   auction: expired
   user: participant
+  cents: 1000
+  billing_profile: company
+
+orphaned:
+  auction: orphaned
   cents: 1000
   billing_profile: company

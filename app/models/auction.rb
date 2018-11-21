@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class Auction < ApplicationRecord
   validates :domain_name, presence: true
   validates :ends_at, presence: true
@@ -38,8 +39,17 @@ class Auction < ApplicationRecord
     offers.order(cents: :desc).limit(1).first.price
   end
 
-  def winning_offer
-    offers.order(cents: :desc, created_at: :desc).first
+  # As the name suggests, this method return the offer that is currently the highest.
+  # The following case might occur:
+  # Auction `auction` has two offers, A (50.00 €) and B (5.00 €). When an auction expires, offer A
+  # is the winner.
+  # auction.currently_winning_offer -> Offer A
+
+  # After a few month, user who made offer A decides that he no longer
+  # needs an account in the auction center, so he deletes it. Now, offer B is the winner,
+  # even if the domain was already registered to the user A.
+  def currently_winning_offer
+    offers.where('user_id IS NOT NULL').order(cents: :desc, created_at: :desc).first
   end
 
   def current_price_from_user(user_id)

@@ -7,6 +7,7 @@ class ResultCreatorTest < ActiveSupport::TestCase
     @auction_with_result = auctions(:expired)
     @auction_with_offers = auctions(:valid_with_offers)
     @auction_without_offers = auctions(:valid_without_offers)
+
   end
 
   def teardown
@@ -19,9 +20,11 @@ class ResultCreatorTest < ActiveSupport::TestCase
     result_creator = ResultCreator.new(@auction_with_offers.id)
     result = result_creator.call
 
+    expected_winning_offer = offers(:high_offer)
+
     assert(result.is_a?(Result))
     assert_equal(true, result.sold)
-    assert_equal(@auction_with_offers.winning_offer, result.offer)
+    assert_equal(expected_winning_offer, result.offer)
     assert_equal(@auction_with_offers, result.auction)
   end
 
@@ -36,6 +39,21 @@ class ResultCreatorTest < ActiveSupport::TestCase
     refute(result.cents)
 
     assert_equal(Money.new(0, Setting.auction_currency), result.price)
+  end
+
+  def test_result_is_created_even_after_a_user_is_deleted
+    participant = users(:participant)
+    participant.destroy
+
+    result_creator = ResultCreator.new(@auction_with_offers.id)
+    result = result_creator.call
+
+    expected_winning_offer = offers(:minimum_offer)
+
+    assert(result.is_a?(Result))
+    assert_equal(true, result.sold)
+    assert_equal(expected_winning_offer, result.offer)
+    assert_equal(@auction_with_offers, result.auction)
   end
 
   def test_returns_an_existing_result_if_found

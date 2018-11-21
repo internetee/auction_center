@@ -9,7 +9,7 @@ class OffersTest < ApplicationSystemTestCase
     @valid_auction = auctions(:valid_with_offers)
     @valid_auction_with_no_offers = auctions(:valid_without_offers)
     @user = users(:participant)
-    @offer = offers(:minimum_offer)
+    @offer = offers(:high_offer)
     @expired_offer = offers(:expired_offer)
 
     travel_to Time.parse('2010-07-05 10:31 +0000')
@@ -30,7 +30,7 @@ class OffersTest < ApplicationSystemTestCase
 
     within('tbody#offers-table-body') do
       assert_text('with-offers.test')
-      assert_text('5.00 €')
+      assert_text('50.00 €')
 
       assert(page.has_link?('with-offers.test', href: offer_path(@offer)))
     end

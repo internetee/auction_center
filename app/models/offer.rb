@@ -1,5 +1,5 @@
 class Offer < ApplicationRecord
-  belongs_to :user, required: true
+  belongs_to :user, required: false
   belongs_to :auction, required: true
   belongs_to :billing_profile, required: true
 

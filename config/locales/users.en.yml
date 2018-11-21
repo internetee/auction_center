@@ -33,3 +33,7 @@ en:
 
     show:
       title: "User profile"
+      delete: "Delete account"
+
+    destroy:
+      deleted: "You have been logged out and your account has been deleted."

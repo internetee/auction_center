@@ -17,11 +17,13 @@ class AdminUsersListTest < ApplicationSystemTestCase
 
   def test_users_are_ordered_by_descending_created_at_date
     display_name_cells = page.find('#users-table-body').find_all('th')
-    # First is users(:user)
-    assert_equal('Joe John Participant', display_name_cells[0].text)
 
-    # Second is users(:administrator) (self)
-    assert_equal('John Joe Administrator', display_name_cells[1].text)
+    # First is users(:second_place_participant)
+    assert_equal('Second Place', display_name_cells[0].text)
+    # Next is users(:user)
+    assert_equal('Joe John Participant', display_name_cells[1].text)
+    # Finally, is users(:administrator) (self)
+    assert_equal('John Joe Administrator', display_name_cells[2].text)
   end
 
   def test_user_display_names_are_links
