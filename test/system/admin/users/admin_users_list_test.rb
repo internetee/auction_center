@@ -64,12 +64,13 @@ class AdminUsersListTest < ApplicationSystemTestCase
     click_link_or_button('Submit')
 
     errors_list = page.find('#errors').all('li')
-    assert_equal(6, errors_list.size)
+    assert_equal(8, errors_list.size)
     errors_array = errors_list.collect { |i| i.text }
 
     expected_errors = ["Email can't be blank", "Password can't be blank",
                        "Identity code can't be blank", "Mobile phone can't be blank",
-                       "Identity code is invalid", "Terms and conditions must be accepted"]
+                       "Identity code is invalid", "Terms and conditions must be accepted",
+                       "Given names can't be blank", "Surname can't be blank"]
 
     assert_equal(errors_array.to_set, expected_errors.to_set)
   end

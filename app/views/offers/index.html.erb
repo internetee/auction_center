@@ -24,10 +24,14 @@
                                 <% end %>
                             </td>
                             <td>
-                                <%- if offer.result %>
-                                    <%= t('.you_won') %>
+                                <%- if offer.auction.finished? %>
+                                    <%- if offer.result %>
+                                        <%= t('.you_won') %>
+                                    <% else %>
+                                        <%= t('.you_lost') %>
+                                    <% end %>
                                 <% else %>
-                                    <%= t('.you_lost') %>
+                                    <%= t('auctions.still_in_progress') %>
                                 <% end %>
                             </td>
                             <td>

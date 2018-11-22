@@ -17,6 +17,8 @@ class User < ApplicationRecord
 
   validates :identity_code, uniqueness: { scope: :alpha_two_country_code }
   validates :mobile_phone, presence: true
+  validates :given_names, presence: true
+  validates :surname, presence: true
 
   validate :identity_code_must_be_valid_for_estonia
   validate :participant_must_accept_terms_and_conditions
