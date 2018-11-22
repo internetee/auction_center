@@ -5,6 +5,7 @@ class Result < ApplicationRecord
   belongs_to :auction, required: true, inverse_of: :result
   belongs_to :user, required: false
   belongs_to :offer, required: false
+  belongs_to :billing_profile, required: false
 
   validates :sold, inclusion: { in: [true, false] }
 

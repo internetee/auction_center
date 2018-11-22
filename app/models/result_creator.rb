@@ -38,8 +38,13 @@ class ResultCreator
   def assign_attributes_from_winning_offer(winning_offer)
     result.offer_id = winning_offer.id
     result.user_id = winning_offer.user_id
+    result.billing_profile_id = winning_offer.billing_profile_id
     result.cents = winning_offer.cents
-    result.sold = (winning_offer.cents && winning_offer.user_id) || false
+    result.sold = begin
+                    (winning_offer.cents &&
+                     winning_offer.user_id &&
+                     winning_offer.billing_profile_id) || false
+                  end
   end
 
   def create_result

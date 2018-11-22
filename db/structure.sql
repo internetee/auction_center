@@ -689,7 +689,8 @@ CREATE TABLE public.results (
     cents integer,
     sold boolean NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    billing_profile_id integer
 );
 
 
@@ -1429,6 +1430,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181120120117'),
 ('20181120121027'),
 ('20181121091758'),
-('20181121120238');
+('20181121120238'),
+('20181122134301');
 
 
