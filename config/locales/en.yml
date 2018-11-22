@@ -52,6 +52,8 @@ en:
   updated_at: "Updated at"
 
   is_invalid: "is invalid"
+  invalid: "invalid"
+  not_accepted: "Not accepted"
 
   time:
     formats:

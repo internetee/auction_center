@@ -1,12 +1,21 @@
 en:
   users:
     display_name: "Display name"
+    given_names: "Given names"
+    surname: "Surname"
+    country: "Country"
     email: "Email"
     mobile_phone: "Mobile phone"
     role: "Role"
     roles: "Roles"
     country_code: "Country code"
     identity_code: "Identity code"
+    terms_and_conditions: "Terms and conditions"
+    must_accept_terms_and_conditions: "must be accepted"
+    terms_and_conditions_accepted_at: "Terms and conditions accepted at"
+    password: "Password"
+    password_confirmation: "Password confirmation"
+    current_password: "Current password"
 
     edit:
       title: "Edit your user profile"
@@ -23,10 +32,17 @@ en:
 
     new:
       title: "Create a user account"
-      password_requirements: "(at least %{minimum} characters)"
-      sign_up: "Sign up"
       already_signed_in: "You are already signed in"
       errors: "prohibited this user from being saved"
+
+    form:
+      password_requirements: "at least %{minimum} characters"
+      sign_up: "Sign up"
+      contact_data: "Contact data"
+      personal_data: "Personal data"
+      new_password: "New password"
+      you_can_leave_blank: "leave blank if you don't want to change it"
+      we_need_your_password: "we need your current password to confirm your changes)"
 
     update:
       incorrect_password: 'Incorrect current password'
@@ -34,6 +50,7 @@ en:
     show:
       title: "User profile"
       delete: "Delete account"
+      review_terms_and_conditions: "Review terms and conditions"
 
     destroy:
       deleted: "You have been logged out and your account has been deleted."

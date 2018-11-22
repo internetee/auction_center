@@ -15,6 +15,16 @@ en:
       show:
         title: User
 
+      form:
+        password_requirements: "at least %{minimum} characters"
+        sign_up: "Sign up"
+        contact_data: "Contact data"
+        personal_data: "Personal data"
+        new_password: "New password"
+        you_can_leave_blank: "leave blank if you don't want to change it"
+        we_need_your_password: "we need your current password to confirm your changes)"
+        roles: 'Roles'
+
       edit:
         title: "Edit user"
         contact_data: "Contact data"

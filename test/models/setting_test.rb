@@ -31,4 +31,10 @@ class SettingTest < ActiveSupport::TestCase
     refute(new_subject.valid?)
     assert_equal(['has already been taken'], new_subject.errors[:code])
   end
+
+  def test_class_methods_are_shorthand_for_values
+    assert_equal('EUR', Setting.auction_currency)
+    assert_equal(500, Setting.auction_minimum_offer)
+    assert_equal('https://example.com', Setting.terms_and_conditions_link)
+  end
 end

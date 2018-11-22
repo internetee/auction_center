@@ -28,6 +28,9 @@
 
                     <dt><%= t('created_at') %></dt>
                     <dd><%= I18n.l(@user.created_at) %></dd>
+
+                    <dt><%= t('users.terms_and_conditions') %></dt>
+                    <dd><%= link_to t('.review_terms_and_conditions'), Setting.terms_and_conditions_link, class: "card-link mt" %></dd>
                 </dl>
 
                 <%= link_to t(:edit), edit_user_path(@user), class: "card-link mt" %>

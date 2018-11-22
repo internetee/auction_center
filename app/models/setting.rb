@@ -12,6 +12,10 @@ class Setting < ApplicationRecord
     Setting.find_by(code: :auction_minimum_offer).value.to_i
   end
 
+  def self.terms_and_conditions_link
+    Setting.find_by(code: :terms_and_conditions_link).value
+  end
+
   def self.default_country
     Setting.find_by(code: :default_country).value
   end

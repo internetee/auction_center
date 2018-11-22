@@ -9,6 +9,7 @@ administrator:
   created_at: <%= Time.parse("2010-07-05 00:15:00 UTC") %>
   mobile_phone: '+37255000001'
   roles: ['administrator']
+  terms_and_conditions_accepted_at: <%= Time.parse("2010-07-05 00:16:00 UTC") %>
 
 participant:
   email: 'user@auction.test'
@@ -21,6 +22,7 @@ participant:
   created_at: <%= Time.parse("2010-07-05 00:16:00 UTC") %>
   mobile_phone: '+37255000002'
   roles: ['participant']
+  terms_and_conditions_accepted_at: <%= Time.parse("2010-07-05 00:16:00 UTC") %>
 
 second_place_participant:
   email: 'second_place@auction.test'
@@ -33,3 +35,4 @@ second_place_participant:
   created_at: <%= Time.parse("2010-07-05 00:17:00 UTC") %>
   mobile_phone: '+37255000002'
   roles: ['participant']
+  terms_and_conditions_accepted_at: <%= Time.parse("2010-07-05 00:16:00 UTC") %>

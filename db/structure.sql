@@ -777,6 +777,7 @@ CREATE TABLE public.users (
     surname character varying NOT NULL,
     mobile_phone character varying NOT NULL,
     roles character varying[] DEFAULT '{participant}'::character varying[],
+    terms_and_conditions_accepted_at timestamp without time zone,
     CONSTRAINT users_roles_are_known CHECK ((roles <@ ARRAY['participant'::character varying, 'administrator'::character varying]))
 );
 
@@ -1414,7 +1415,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181023125230'),
 ('20181029121254'),
 ('20181030075851'),
+('20181102080251'),
 ('20181102132927'),
+('20181106075840'),
 ('20181107084751'),
 ('20181107113525'),
 ('20181114142500'),
