@@ -4,6 +4,8 @@ class AddInvoices < ActiveRecord::Migration[5.2]
       t.integer :result_id, null: false
       t.integer :user_id, null: true
       t.integer :billing_profile_id, null: true
+      t.date :issued_at, null: false
+      t.date :payment_at, null: false
 
       t.timestamps
     end

@@ -618,8 +618,11 @@ CREATE TABLE public.invoices (
     result_id integer NOT NULL,
     user_id integer,
     billing_profile_id integer,
+    issued_at date NOT NULL,
+    payment_at date NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    CONSTRAINT issued_at_earlier_than_payment_at CHECK ((issued_at <= payment_at))
 );
 
 
@@ -1431,6 +1434,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181120121027'),
 ('20181121091758'),
 ('20181121120238'),
-('20181122134301');
+('20181122134301'),
+('20181122135839');
 
 
