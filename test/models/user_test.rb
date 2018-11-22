@@ -14,6 +14,7 @@ class UserTest < ActiveSupport::TestCase
     assert_equal(["can't be blank"], user.errors[:password])
     assert_equal(["can't be blank"], user.errors[:email])
     assert_equal(["can't be blank"], user.errors[:mobile_phone])
+    assert_equal(["must be accepted"], user.errors[:terms_and_conditions])
     assert_equal(["can't be blank"], user.errors[:given_names])
     assert_equal(["can't be blank"], user.errors[:surname])
 
@@ -25,6 +26,7 @@ class UserTest < ActiveSupport::TestCase
     user.mobile_phone = '+372500100300'
     user.identity_code = '51007050687'
     user.country_code = 'EE'
+    user.accepts_terms_and_conditions = true
 
     assert(user.valid?)
   end
@@ -39,6 +41,8 @@ class UserTest < ActiveSupport::TestCase
     user.password_confirmation = 'email@example.com'
     user.mobile_phone = '+372500100300'
     user.country_code = 'PL'
+    user.accepts_terms_and_conditions = "true"
+
     assert(user.valid?)
   end
 
@@ -89,6 +93,20 @@ class UserTest < ActiveSupport::TestCase
     assert_equal('New Given Name Administrator', @administrator.display_name)
   end
 
+  def test_accepts_terms_and_conditions_are_only_updated_when_needed
+    original_terms_and_conditions_accepted_at = @administrator.terms_and_conditions_accepted_at
+    @administrator.update(accepts_terms_and_conditions: true)
+
+    assert_equal(original_terms_and_conditions_accepted_at,
+                 @administrator.terms_and_conditions_accepted_at)
+
+    @administrator.update(accepts_terms_and_conditions: false)
+    @administrator.update(accepts_terms_and_conditions: true)
+
+    refute_equal(original_terms_and_conditions_accepted_at,
+                 @administrator.terms_and_conditions_accepted_at)
+  end
+
   def test_has_default_role
     user = User.new
 
@@ -123,6 +141,7 @@ class UserTest < ActiveSupport::TestCase
     user.email = 'email@example.com'
     user.password = 'email@example.com'
     user.password_confirmation = 'email@example.com'
+    user.accepts_terms_and_conditions = true
     user.surname = 'Surname'
     user.given_names = 'Given Names'
     user

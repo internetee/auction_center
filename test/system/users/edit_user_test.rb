@@ -59,6 +59,30 @@ class EditUserTest < ApplicationSystemTestCase
     assert_equal('New Surname', @user.surname)
   end
 
+  def test_terms_and_conditions_are_not_updated_if_already_accepted
+    original_terms_and_conditions_accepted_at = @user.terms_and_conditions_accepted_at
+    visit edit_user_path(@user)
+
+    fill_in('user[current_password]', with: 'password123')
+    click_link_or_button('Update')
+
+    assert(page.has_css?('div.alert', text: 'Updated successfully.'))
+
+    @user.reload
+    assert_equal(original_terms_and_conditions_accepted_at, @user.terms_and_conditions_accepted_at)
+  end
+
+  def test_user_cannot_remove_terms_and_conditions_opt_in
+    visit edit_user_path(@user)
+
+    fill_in('user[current_password]', with: 'password123')
+    uncheck('user[accepts_terms_and_conditions]')
+    click_link_or_button('Update')
+
+    refute((page.has_css?('div.alert', text: 'Updated successfully.')))
+    assert(page.has_text?('Terms and conditions must be accepted'))
+  end
+
   def test_identity_code_and_country_can_also_be_changed
     visit edit_user_path(@user)
     fill_in('user[identity_code]', with: '1234-5678')
@@ -109,5 +133,10 @@ class EditUserTest < ApplicationSystemTestCase
 
     assert(page.has_css?('div.alert', text: 'Updated successfully.'))
     assert_text('New Given Name')
+  end
+
+  def test_profile_page_has_a_link_to_terms_and_conditions
+    visit user_path(@user)
+    assert(page.has_link?("Review terms and condition", href: Setting.terms_and_conditions_link))
   end
 end
