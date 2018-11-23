@@ -10,12 +10,12 @@
             </div>
 
             <div class="form-group">
-                <%= f.label :price, t('offers.price') %>
+                <%= f.label :price, t('.offer') %>
                 <%= f.number_field :price, class: "form-control", min: 0, step: "0.01" %>
             </div>
 
             <div class="form-group">
-                <%= f.label :billing_profile %><br />
+                <%= f.label :billing_profile, t('.bidder') %><br />
                 <%= f.select :billing_profile_id,
                     BillingProfile.where(user_id: offer.user_id).collect { |b| [b.name, b.id] },
                     class: "form-control form-control" %><br>

@@ -24,3 +24,7 @@ en:
       claim_your_domain: "Claim your domain"
       you_won: "You won"
       you_lost: "Someone else won 🥺"
+
+    form:
+      bidder: "Bidder"
+      offer: "Offer"

@@ -1,0 +1,3 @@
+en:
+  invoices:
+    billing_profile_must_belong_to_user: "must belong to the same user as invoice"
