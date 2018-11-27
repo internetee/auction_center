@@ -17,8 +17,7 @@ before_install:
 
 install:
   - bundle install
-  - nvm install node
-  - node -v
+  - nvm install v8.13.0
   - npm i -g yarn
 
 before_script:
