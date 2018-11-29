@@ -2,7 +2,6 @@ expired_participant:
   auction: expired
   user: participant
   sold: true
-  cents: 1000
   offer: expired_offer
 
 without_offers_nobody:
@@ -12,5 +11,4 @@ without_offers_nobody:
 orphaned:
   auction: orphaned
   sold: true
-  cents: 1000
   offer: expired_offer

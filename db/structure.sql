@@ -622,6 +622,7 @@ CREATE TABLE public.invoices (
     payment_at date NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
+    cents integer NOT NULL,
     CONSTRAINT issued_at_earlier_than_payment_at CHECK ((issued_at <= payment_at))
 );
 
@@ -689,11 +690,9 @@ CREATE TABLE public.results (
     auction_id integer NOT NULL,
     user_id integer,
     offer_id integer,
-    cents integer,
     sold boolean NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    billing_profile_id integer
+    updated_at timestamp without time zone NOT NULL
 );
 
 
@@ -1435,6 +1434,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181121091758'),
 ('20181121120238'),
 ('20181122134301'),
-('20181122135839');
+('20181122135839'),
+('20181129113446');
 
 

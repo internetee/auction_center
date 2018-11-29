@@ -6,6 +6,7 @@ class Result < ApplicationRecord
   belongs_to :user, required: false
   belongs_to :offer, required: false
   belongs_to :billing_profile, required: false
+  has_one :invoice, required: false
 
   validates :sold, inclusion: { in: [true, false] }
 
@@ -16,10 +17,6 @@ class Result < ApplicationRecord
     raise(Errors::AuctionNotFinished, auction_id) unless auction.finished?
 
     ResultCreator.new(auction_id).call
-  end
-
-  def price
-    Money.new(cents, Setting.auction_currency)
   end
 
   def sold?

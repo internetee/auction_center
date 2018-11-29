@@ -41,15 +41,6 @@ class ResultTest < ActiveSupport::TestCase
     end
   end
 
-  def test_price_is_a_money_object
-    result = Result.new(cents: 1000)
-
-    assert_equal(Money.new(1000, Setting.auction_currency), result.price)
-
-    result.cents = nil
-    assert_equal(Money.new(0, Setting.auction_currency), result.price)
-  end
-
   def test_winning_offer_is_an_alias_on_offer
     result = results(:expired_participant)
 

@@ -12,8 +12,4 @@ class NullOffer
   def user
     nil
   end
-
-  def cents
-    nil
-  end
 end

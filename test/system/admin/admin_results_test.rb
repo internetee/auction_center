@@ -68,7 +68,6 @@ class AdminResultsTest < ApplicationSystemTestCase
     within('tbody#results-table-body') do
       assert_text('expired.test')
       assert_text('Joe John Participant')
-      assert_text('10.00 €')
       assert_text('no-offers.test')
     end
   end

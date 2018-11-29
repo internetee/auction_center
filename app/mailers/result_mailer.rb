@@ -3,7 +3,6 @@ class ResultMailer < ApplicationMailer
     @result = result
     @user = result.user
     @auction = result.auction
-    @price = result.price
 
     mail(to: @user.email, subject: t('.subject'))
   end

@@ -24,9 +24,6 @@
                     <dt><%= t('auctions.ends_at') %></dt>
                     <dd><%= I18n.l(@result.auction.ends_at) %></dd>
 
-                    <dt><%= t('results.final_price') %></dt>
-                    <td><%= t('offers.price_in_currency', price: @result.price) %></td>
-
                     <%- if @result.sold? %>
                         <dt><%= t('results.buyer') %></dt>
                         <td><%= @result %></td>

@@ -10,6 +10,15 @@ class InvoiceTest < ActiveSupport::TestCase
     @company_billing_profile = billing_profiles(:company)
   end
 
+  def test_price_is_a_money_object
+    invoice = Invoice.new(cents: 1000)
+
+    assert_equal(Money.new(1000, Setting.auction_currency), invoice.price)
+
+    invoice.cents = nil
+    assert_equal(Money.new(0, Setting.auction_currency), invoice.price)
+  end
+
   def test_required_fields
     invoice = Invoice.new
     refute(invoice.valid?)

@@ -24,6 +24,5 @@ class ResultsTest < ApplicationSystemTestCase
   def test_result_page_contains_result_info
     visit(result_path(@result))
     assert(page.has_text?("You won"))
-    assert(page.has_text?("10.00 €"))
   end
 end

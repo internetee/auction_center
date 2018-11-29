@@ -12,4 +12,8 @@ class Invoice < ApplicationRecord
 
     errors.add(:billing_profile, I18n.t('invoices.billing_profile_must_belong_to_user'))
   end
+
+  def price
+    Money.new(cents, Setting.auction_currency)
+  end
 end
