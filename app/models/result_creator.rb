@@ -2,7 +2,6 @@ class ResultCreator
   attr_reader :auction_id
   attr_reader :auction
   attr_reader :result
-  attr_reader :invoice
   attr_reader :winning_offer
 
   def initialize(auction_id)
