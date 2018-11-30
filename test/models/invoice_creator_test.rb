@@ -6,6 +6,7 @@ class InvoiceCreatorTest < ActiveSupport::TestCase
 
     @result = results(:expired_participant)
     @result_without_offer = results(:without_offers_nobody)
+    @offer = offers(:expired_offer)
   end
 
   def test_an_invoice_is_prefilled_with_data_from_winning_offer
@@ -15,6 +16,7 @@ class InvoiceCreatorTest < ActiveSupport::TestCase
     assert(invoice.is_a?(Invoice))
     assert_equal(@result, invoice.result)
     assert_equal(@result.user, invoice.user)
+    assert_equal(@offer.price, invoice.price)
   end
 
   def test_return_early_if_result_does_not_exist

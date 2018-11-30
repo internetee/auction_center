@@ -26,6 +26,7 @@ class User < ApplicationRecord
   has_many :billing_profiles, dependent: :nullify
   has_many :offers, dependent: :nullify
   has_many :results, dependent: :nullify
+  has_many :invoices, dependent: :nullify
 
   def identity_code_must_be_valid_for_estonia
     return if IdentityCode.new(country_code, identity_code).valid?
