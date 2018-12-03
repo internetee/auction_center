@@ -11,4 +11,4 @@ without_offers_nobody:
 orphaned:
   auction: orphaned
   sold: true
-  offer: expired_offer
+  offer: orphaned
