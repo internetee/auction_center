@@ -7,6 +7,10 @@ class ResultTest < ActiveSupport::TestCase
     travel_to Time.parse('2010-07-05 10:30 +0000')
     @valid_auction = auctions(:valid_with_offers)
     @expired_auction = auctions(:expired)
+
+    @invoiceable_result = results(:expired_participant)
+    @noninvoiceable_result = results(:without_offers_nobody)
+    @orphaned_result = results(:orphaned)
   end
 
   def teardown
@@ -63,5 +67,10 @@ class ResultTest < ActiveSupport::TestCase
 
     assert_equal(['user@auction.test'], email.to)
     assert_equal('You won an auction!', email.subject)
+  end
+
+  def test_pending_invoice_scope_does_not_return_results_that_are_not_sold
+    skip("WIP")
+    assert_equal([@invoiceable_result, @orphaned_result].to_set, Result.pending_invoice.to_set)
   end
 end

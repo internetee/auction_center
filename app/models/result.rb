@@ -10,6 +10,10 @@ class Result < ApplicationRecord
 
   validates :sold, inclusion: { in: [true, false] }
 
+  scope :pending_invoice, lambda {
+    where('sold = true AND id NOT IN (SELECT result_id FROM invoices)')
+  }
+
   def self.create_from_auction(auction_id)
     auction = Auction.find_by(id: auction_id)
 

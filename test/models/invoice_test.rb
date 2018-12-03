@@ -24,13 +24,38 @@ class InvoiceTest < ActiveSupport::TestCase
     invoice = Invoice.new
     refute(invoice.valid?)
 
-    assert_equal(['must exist'], invoice.errors[:result])
-    assert_equal(['must exist'], invoice.errors[:billing_profile])
+    assert_equal(['must exist'], invoice.errors[:result], invoice.errors.full_messages)
+    assert_equal(['must exist'], invoice.errors[:billing_profile], invoice.errors.full_messages)
+    assert_equal(["can't be blank"], invoice.errors[:user_id], invoice.errors.full_messages)
+    assert_equal(["can't be blank"], invoice.errors[:issued_at], invoice.errors.full_messages)
+    assert_equal(["can't be blank"], invoice.errors[:payment_at], invoice.errors.full_messages)
 
     invoice.result = @result
-    invoice.billing_profile = @orphan_billing_profile
+    invoice.billing_profile = @company_billing_profile
+    invoice.user = @user
+    invoice.issued_at = Time.zone.today
+    invoice.payment_at = Time.zone.today + Setting.payment_term
+    invoice.cents = 1000
 
     assert(invoice.valid?)
+  end
+
+  def test_cents_must_be_an_integer
+    invoice = prefill_invoice
+    invoice.cents = 10.00
+
+    refute(invoice.valid?)
+
+    assert_equal(["must be an integer"], invoice.errors[:cents])
+  end
+
+  def test_cents_must_be_positive
+    invoice = prefill_invoice
+    invoice.cents = -1000
+
+    refute(invoice.valid?)
+
+    assert_equal(["must be greater than 0"], invoice.errors[:cents])
   end
 
   def test_user_must_be_the_same_as_the_one_on_billing_or_nil
@@ -41,8 +66,15 @@ class InvoiceTest < ActiveSupport::TestCase
 
     refute(invoice.valid?)
     assert_equal(['must belong to the same user as invoice'], invoice.errors[:billing_profile])
+  end
 
+  def test_user_id_must_be_present_on_creation
+    invoice = prefill_invoice
+    assert(invoice.valid?(:create))
+
+    invoice.save
     invoice.user = nil
+
     assert(invoice.valid?)
   end
 
@@ -54,5 +86,17 @@ class InvoiceTest < ActiveSupport::TestCase
     assert_raises(Errors::ResultNotSold) do
       Invoice.create_from_result(@not_sold_result.id)
     end
+  end
+
+  def prefill_invoice
+    invoice = Invoice.new
+    invoice.result = @result
+    invoice.billing_profile = @company_billing_profile
+    invoice.user = @user
+    invoice.issued_at = Time.zone.today
+    invoice.payment_at = Time.zone.today + Setting.payment_term
+    invoice.cents = 1000
+
+    invoice
   end
 end
