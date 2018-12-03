@@ -5,6 +5,7 @@ class InvoiceTest < ActiveSupport::TestCase
     super
 
     @result = results(:expired_participant)
+    @not_sold_result = results(:without_offers_nobody)
     @user = users(:participant)
     @orphan_billing_profile = billing_profiles(:orphan)
     @company_billing_profile = billing_profiles(:company)
@@ -43,5 +44,15 @@ class InvoiceTest < ActiveSupport::TestCase
 
     invoice.user = nil
     assert(invoice.valid?)
+  end
+
+  def test_create_from_result_only_works_when_result_exists_and_is_sold
+    assert_raises(Errors::ResultNotFound) do
+      Invoice.create_from_result("foo")
+    end
+
+    assert_raises(Errors::ResultNotSold) do
+      Invoice.create_from_result(@not_sold_result.id)
+    end
   end
 end

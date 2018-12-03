@@ -6,7 +6,7 @@ class Result < ApplicationRecord
   belongs_to :user, required: false
   belongs_to :offer, required: false
   belongs_to :billing_profile, required: false
-  has_one :invoice, required: false
+  has_one :invoice, required: false, dependent: :nullify
 
   validates :sold, inclusion: { in: [true, false] }
 

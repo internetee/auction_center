@@ -32,12 +32,16 @@ class InvoiceCreator
   def create_invoice
     @invoice = Invoice.new
 
-    invoice.result = result
-    invoice.user = result.user
-    invoice.cents = result_offer.cents
-    invoice.billing_profile = result_offer.billing_profile
+    ActiveRecord::Base.transaction do
+      invoice.result = result
+      invoice.user = result.user
+      invoice.cents = result_offer.cents
+      invoice.billing_profile = result_offer.billing_profile
 
-    invoice.issued_at = Time.zone.today
-    invoice.payment_at = Time.zone.today + Setting.payment_term
+      invoice.issued_at = Time.zone.today
+      invoice.payment_at = Time.zone.today + Setting.payment_term
+
+      invoice.save!
+    end
   end
 end

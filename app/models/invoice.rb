@@ -1,9 +1,21 @@
+require 'result_not_found'
+require 'result_not_sold'
+
 class Invoice < ApplicationRecord
   belongs_to :result, required: true
   belongs_to :user, required: false
   belongs_to :billing_profile, required: true
 
   validate :user_id_must_be_the_same_as_on_billing_profile_or_nil
+
+  def self.create_from_result(result_id)
+    result = Result.find_by(id: result_id)
+
+    raise(Errors::ResultNotFound, result_id) unless result
+    raise(Errors::ResultNotSold, result_id) unless result.sold?
+
+    InvoiceCreator.new(result_id).call
+  end
 
   def user_id_must_be_the_same_as_on_billing_profile_or_nil
     return unless billing_profile
