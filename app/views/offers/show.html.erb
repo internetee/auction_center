@@ -19,7 +19,8 @@
                     <dd><%= t('offers.price_in_currency', price: @offer.price) %></dd>
                 </dl>
 
-                <p><%= t('.price_is_without_vat') %></p>
+                <p><%= t('offers.price_is_without_vat') %></p>
+                <p><%= t('.we_will_contact_winner') %></p>
 
                 <%- if @offer.can_be_modified?  %>
                     <%= link_to t(:edit), edit_offer_path(@offer), class: "card-link mt" %>
