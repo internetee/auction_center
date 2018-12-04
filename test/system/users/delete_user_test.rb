@@ -15,7 +15,6 @@ class DeleteUserTest < ApplicationSystemTestCase
   end
 
   def test_a_user_can_delete_their_own_account
-
     visit user_path(@user)
 
     assert(page.has_link?('Delete account'))

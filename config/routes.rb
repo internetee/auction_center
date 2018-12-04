@@ -22,6 +22,7 @@ Rails.application.routes.draw do
   end
 
   resources :billing_profiles
+  resources :invoices, only: :show
   resources :offers, only: :index
   resources :results, only: :show
   resources :users

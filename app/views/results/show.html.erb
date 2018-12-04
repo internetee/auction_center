@@ -16,7 +16,14 @@
                     <dd><%= I18n.l(@result.auction.ends_at) %></dd>
 
                     <dt><%= t('results.invoice') %></dt>
-                    <dd><%= I18n.l(@result.auction.ends_at) %></dd>
+
+                    <dd>
+                        <% if @result.invoice %>
+                            <%= link_to t('results.invoice'), invoice_path(@result.invoice) %>
+                        <% else %>
+                            <%= t('invoices.is_being_generated') %>
+                        <% end %>
+                    </dd>
                 </dl>
             </div>
         </div>

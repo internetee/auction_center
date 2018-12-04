@@ -2,6 +2,8 @@
 require 'application_system_test_case'
 
 class ResultsTest < ApplicationSystemTestCase
+  include ActiveJob::TestHelper
+
   def setup
     super
 
@@ -24,5 +26,13 @@ class ResultsTest < ApplicationSystemTestCase
   def test_result_page_contains_result_info
     visit(result_path(@result))
     assert(page.has_text?("You won"))
+  end
+
+  def test_visiting_results_path_triggers_invoice_creation_job
+    assert_enqueued_with(job: InvoiceCreationJob) do
+      visit(result_path(@result))
+
+      assert_text('We are generating the invoice, please check back in a few minutes.')
+    end
   end
 end

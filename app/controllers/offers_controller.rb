@@ -2,7 +2,6 @@ class OffersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_offer, only: %i[show edit update destroy]
   before_action :authorize_user, except: :new
-  before_action :enqueue_create_invoices_job, only: :index
 
   # GET /auctions/1/offers/new
   def new
@@ -82,9 +81,5 @@ class OffersController < ApplicationController
 
   def authorize_user
     authorize! :manage, Offer
-  end
-
-  def enqueue_create_invoices_job
-    InvoiceCreationJob.perform_later if Result.pending_invoice.any?
   end
 end

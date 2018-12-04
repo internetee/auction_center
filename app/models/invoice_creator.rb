@@ -1,6 +1,5 @@
 class InvoiceCreator
   attr_reader :result_id
-
   attr_reader :result
   attr_reader :invoice
 
@@ -12,6 +11,7 @@ class InvoiceCreator
     @result = Result.find_by(id: result_id)
     return unless result_present?
     return unless result_sold?
+    return unless result_user
 
     return result.invoice if invoice_already_present?
 
@@ -24,6 +24,7 @@ class InvoiceCreator
   delegate :present?, to: :result, prefix: true
   delegate :sold?, to: :result, prefix: true
   delegate :offer, to: :result, prefix: true
+  delegate :user, to: :result, prefix: true
 
   def invoice_already_present?
     result.invoice.present?
@@ -41,7 +42,7 @@ class InvoiceCreator
       invoice.issued_at = Time.zone.today
       invoice.payment_at = Time.zone.today + Setting.payment_term
 
-      invoice.save!
+      invoice.save
     end
   end
 end
