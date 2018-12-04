@@ -6,7 +6,7 @@ class BillingProfileTest < ActiveSupport::TestCase
 
     @user = users(:participant)
     @billing_profile = billing_profiles(:company)
-    @orphaned_profile = billing_profiles(:orphan)
+    @orphaned_profile = billing_profiles(:orphaned)
   end
 
   def test_required_fields

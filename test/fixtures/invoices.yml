@@ -1,0 +1,7 @@
+orphaned:
+  result: orphaned
+  billing_profile: orphaned
+  cents: 1000
+  status: "issued"
+  issued_at: <%= Time.parse('2010-07-06 10:30 +0000') %>
+  payment_at: <%= Time.parse('2010-07-13 10:30 +0000') %>

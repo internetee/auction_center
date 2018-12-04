@@ -7,7 +7,7 @@ class InvoiceTest < ActiveSupport::TestCase
     @result = results(:expired_participant)
     @not_sold_result = results(:without_offers_nobody)
     @user = users(:participant)
-    @orphan_billing_profile = billing_profiles(:orphan)
+    @orphan_billing_profile = billing_profiles(:orphaned)
     @company_billing_profile = billing_profiles(:company)
   end
 
