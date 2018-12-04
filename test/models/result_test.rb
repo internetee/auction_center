@@ -70,7 +70,8 @@ class ResultTest < ActiveSupport::TestCase
   end
 
   def test_pending_invoice_scope_does_not_return_results_that_are_not_sold
-    skip("WIP")
-    assert_equal([@invoiceable_result, @orphaned_result].to_set, Result.pending_invoice.to_set)
+    assert_equal([@invoiceable_result].to_set, Result.pending_invoice.to_set)
+    assert_equal([@invoiceable_result, @noninvoiceable_result, @orphaned_result].to_set,
+                 Result.all.to_set)
   end
 end
