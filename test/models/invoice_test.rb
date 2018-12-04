@@ -78,6 +78,12 @@ class InvoiceTest < ActiveSupport::TestCase
     assert(invoice.valid?)
   end
 
+  def test_default_status_is_isssued
+    invoice = prefill_invoice
+
+    assert_equal('issued', invoice.status)
+  end
+
   def test_create_from_result_only_works_when_result_exists_and_is_sold
     assert_raises(Errors::ResultNotFound) do
       Invoice.create_from_result("foo")

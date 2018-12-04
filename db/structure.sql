@@ -623,6 +623,7 @@ CREATE TABLE public.invoices (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     cents integer NOT NULL,
+    status integer DEFAULT 0 NOT NULL,
     CONSTRAINT invoices_cents_are_positive CHECK ((cents > 0)),
     CONSTRAINT issued_at_earlier_than_payment_at CHECK ((issued_at <= payment_at))
 );
@@ -1437,6 +1438,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181122134301'),
 ('20181122135839'),
 ('20181129113446'),
-('20181204094329');
+('20181204094329'),
+('20181204114134');
 
 

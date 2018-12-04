@@ -2,6 +2,8 @@ require 'result_not_found'
 require 'result_not_sold'
 
 class Invoice < ApplicationRecord
+  enum status: { issued: 0, paid: 1, cancelled: 2 }
+
   belongs_to :result, required: true
   belongs_to :user, required: false
   belongs_to :billing_profile, required: true
