@@ -9,13 +9,13 @@ class Invoice < ApplicationRecord
   belongs_to :billing_profile, required: true
 
   validates :user_id, presence: true, on: :create
-  validates :issued_at, presence: true
-  validates :payment_at, presence: true
+  validates :issue_date, presence: true
+  validates :due_date, presence: true
   validates :cents, numericality: { only_integer: true, greater_than: 0 }
 
   validate :user_id_must_be_the_same_as_on_billing_profile_or_nil
 
-  scope :overdue, -> { where('payment_at < ?', Time.zone.today) }
+  scope :overdue, -> { where('due_date < ?', Time.zone.today) }
 
   def self.create_from_result(result_id)
     result = Result.find_by(id: result_id)

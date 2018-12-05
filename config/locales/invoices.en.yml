@@ -2,3 +2,6 @@ en:
   invoices:
     billing_profile_must_belong_to_user: "must belong to the same user as invoice"
     is_being_generated: "We are generating the invoice, please check back in a few minutes."
+
+    show:
+      title: "Your invoice"

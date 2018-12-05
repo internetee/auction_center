@@ -20,8 +20,8 @@ class InvoiceAuditTest < ActiveSupport::TestCase
     invoice = Invoice.new(result: @result,
                           billing_profile: @billing_profile,
                           user: @user,
-                          issued_at: Time.zone.today,
-                          payment_at: Time.zone.today + Setting.payment_term,
+                          issue_date: Time.zone.today,
+                          due_date: Time.zone.today + Setting.payment_term,
                           cents: 1000)
 
     invoice.save!

@@ -3,5 +3,5 @@ orphaned:
   billing_profile: orphaned
   cents: 1000
   status: <%= Invoice.statuses[:issued] %>
-  issued_at: <%= Time.parse('2010-07-06 10:30 +0000') %>
-  payment_at: <%= Time.parse('2010-07-13 10:30 +0000') %>
+  issue_date: <%= Time.parse('2010-07-06 10:30 +0000') %>
+  due_date: <%= Time.parse('2010-07-13 10:30 +0000') %>

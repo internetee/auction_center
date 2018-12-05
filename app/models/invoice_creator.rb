@@ -39,8 +39,8 @@ class InvoiceCreator
       invoice.cents = result_offer.cents
       invoice.billing_profile = result_offer.billing_profile
 
-      invoice.issued_at = Time.zone.today
-      invoice.payment_at = Time.zone.today + Setting.payment_term
+      invoice.issue_date = Time.zone.today
+      invoice.due_date = Time.zone.today + Setting.payment_term
 
       invoice.save
     end

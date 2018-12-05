@@ -27,14 +27,14 @@ class InvoiceTest < ActiveSupport::TestCase
     assert_equal(['must exist'], invoice.errors[:result], invoice.errors.full_messages)
     assert_equal(['must exist'], invoice.errors[:billing_profile], invoice.errors.full_messages)
     assert_equal(["can't be blank"], invoice.errors[:user_id], invoice.errors.full_messages)
-    assert_equal(["can't be blank"], invoice.errors[:issued_at], invoice.errors.full_messages)
-    assert_equal(["can't be blank"], invoice.errors[:payment_at], invoice.errors.full_messages)
+    assert_equal(["can't be blank"], invoice.errors[:issue_date], invoice.errors.full_messages)
+    assert_equal(["can't be blank"], invoice.errors[:due_date], invoice.errors.full_messages)
 
     invoice.result = @result
     invoice.billing_profile = @company_billing_profile
     invoice.user = @user
-    invoice.issued_at = Time.zone.today
-    invoice.payment_at = Time.zone.today + Setting.payment_term
+    invoice.issue_date = Time.zone.today
+    invoice.due_date = Time.zone.today + Setting.payment_term
     invoice.cents = 1000
 
     assert(invoice.valid?)
@@ -103,8 +103,8 @@ class InvoiceTest < ActiveSupport::TestCase
     invoice.result = @result
     invoice.billing_profile = @company_billing_profile
     invoice.user = @user
-    invoice.issued_at = Time.zone.today
-    invoice.payment_at = Time.zone.today + Setting.payment_term
+    invoice.issue_date = Time.zone.today
+    invoice.due_date = Time.zone.today + Setting.payment_term
     invoice.cents = 1000
 
     invoice
