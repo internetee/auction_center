@@ -16,6 +16,12 @@ expired_offer:
   cents: 1000
   billing_profile: company
 
+with_invoice:
+  auction: with_invoice
+  user: participant
+  cents: 10000
+  billing_profile: private_person
+
 orphaned:
   auction: orphaned
   cents: 1000

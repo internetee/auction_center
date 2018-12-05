@@ -11,6 +11,7 @@ class ResultTest < ActiveSupport::TestCase
     @invoiceable_result = results(:expired_participant)
     @noninvoiceable_result = results(:without_offers_nobody)
     @orphaned_result = results(:orphaned)
+    @with_invoice_result = results(:with_invoice)
   end
 
   def teardown
@@ -71,7 +72,8 @@ class ResultTest < ActiveSupport::TestCase
 
   def test_pending_invoice_scope_does_not_return_results_that_are_not_sold
     assert_equal([@invoiceable_result].to_set, Result.pending_invoice.to_set)
-    assert_equal([@invoiceable_result, @noninvoiceable_result, @orphaned_result].to_set,
+    assert_equal([@invoiceable_result, @noninvoiceable_result,
+                  @orphaned_result, @with_invoice_result].to_set,
                  Result.all.to_set)
   end
 end

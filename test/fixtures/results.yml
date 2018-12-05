@@ -4,6 +4,12 @@ expired_participant:
   sold: true
   offer: expired_offer
 
+with_invoice:
+  auction: with_invoice
+  user: participant
+  sold: true
+  offer: with_invoice
+
 without_offers_nobody:
   auction: valid_without_offers
   sold: false
