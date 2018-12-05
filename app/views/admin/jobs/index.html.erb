@@ -1,0 +1,31 @@
+<div class="row justify-content">
+    <div class="col-12 text-center">
+        <h1 class="mb-3 mt-4"><%= t('.title')%></h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <table class="table" class="jobs-table">
+            <thead>
+                <th scope="col"><%= t('jobs.name') %></th>
+                <th scope="col"><%= t('actions') %></th>
+            </thead>
+            <tbody class="jobs-table-body">
+                <% @jobs.each do |job| %>
+                    <tr class="jobs-table-row <%= job.name %>">
+                        <td><%= job.name %></td>
+                        <td>
+                            <%= form_with(model: job, local: true, url: admin_jobs_path) do |f| %>
+                                <%= f.hidden_field :job_class %>
+                                <%= f.submit t('jobs.run'),
+                                             class: "btn btn-primary form-control mb-2",
+                                             disabled: !job.needs_to_run? %>
+                            <% end %>
+                        </td>
+                    </tr>
+                <% end %>
+            </tbody>
+        </table>
+    </div>
+</div>

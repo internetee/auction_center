@@ -15,7 +15,7 @@ class AuctionsController < ApplicationController
   end
 
   def enqueue_create_results_jobs
-    ResultCreationJob.perform_later if Auction.without_result.any?
-    InvoiceCreationJob.perform_later if Result.pending_invoice.any?
+    ResultCreationJob.perform_later if ResultCreationJob.needs_to_run?
+    InvoiceCreationJob.perform_later if InvoiceCreationJob.needs_to_run?
   end
 end

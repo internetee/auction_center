@@ -4,4 +4,8 @@ class InvoiceCreationJob < ApplicationJob
       Invoice.create_from_result(result.id)
     end
   end
+
+  def self.needs_to_run?
+    Result.pending_invoice.any?
+  end
 end

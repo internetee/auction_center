@@ -27,6 +27,7 @@ class Ability
     can %i[read update], Setting
     can :read, Offer
     can :read, Result
+    can :create, Job
 
     can :read, Audit::Auction
     can :read, Audit::BillingProfile

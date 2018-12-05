@@ -4,4 +4,8 @@ class InvoiceCancellationJob < ApplicationJob
       invoice.cancelled!
     end
   end
+
+  def self.needs_to_run?
+    Invoice.overdue.any?
+  end
 end
