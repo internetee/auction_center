@@ -4,7 +4,8 @@ class ResultsController < ApplicationController
   before_action :create_invoice_if_needed
 
   def show
-    @result = Result.where(user_id: current_user.id)
+    @result = Result.includes(:invoice)
+                    .where(user_id: current_user.id)
                     .accessible_by(current_ability)
                     .find(params[:id])
   end
@@ -16,6 +17,6 @@ class ResultsController < ApplicationController
   end
 
   def create_invoice_if_needed
-    InvoiceCreationJob.perform_later if Result.pending_invoice.any?
+    InvoiceCreationJob.perform_later if InvoiceCreationJob.needs_to_run?
   end
 end
