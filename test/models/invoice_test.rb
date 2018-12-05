@@ -70,6 +70,10 @@ class InvoiceTest < ActiveSupport::TestCase
 
   def test_user_id_must_be_present_on_creation
     invoice = prefill_invoice
+    invoice.user = nil
+    refute(invoice.valid?(:create))
+
+    invoice.user = @user
     assert(invoice.valid?(:create))
 
     invoice.save
@@ -78,7 +82,7 @@ class InvoiceTest < ActiveSupport::TestCase
     assert(invoice.valid?)
   end
 
-  def test_default_status_is_isssued
+  def test_default_status_is_issued
     invoice = prefill_invoice
 
     assert_equal('issued', invoice.status)
