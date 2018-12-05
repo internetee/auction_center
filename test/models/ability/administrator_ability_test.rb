@@ -8,7 +8,6 @@ class AdministratorAbilityTest < ActiveSupport::TestCase
   end
 
   def test_administrator_can_edit_any_user
-    assert(@administrator_ability.can?(:edit?, @participant))
     assert(@administrator_ability.can?(:read?, @participant))
     assert(@administrator_ability.can?(:update?, @participant))
     assert(@administrator_ability.can?(:destroy, User.new))
@@ -30,9 +29,8 @@ class AdministratorAbilityTest < ActiveSupport::TestCase
   def test_administrator_can_edit_settings
     assert(@administrator_ability.can?(:read, Setting))
     assert(@administrator_ability.can?(:update, Setting))
-    assert(@administrator_ability.can?(:edit, Setting))
 
-    refute(@administrator_ability.can?(:created, Setting))
+    refute(@administrator_ability.can?(:create, Setting))
     refute(@administrator_ability.can?(:destroy, Setting))
   end
 
