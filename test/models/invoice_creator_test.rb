@@ -32,4 +32,14 @@ class InvoiceCreatorTest < ActiveSupport::TestCase
 
     assert_nil(invoice)
   end
+
+  def test_invoice_creator_also_creates_invoice_items
+    invoice_creator = InvoiceCreator.new(@result.id)
+    invoice = invoice_creator.call
+
+    assert(invoice.is_a?(Invoice))
+    assert(invoice.items)
+
+    assert_equal("Domain transfer code for expired.test (auction 1999-07-05)", invoice.items.first.name)
+  end
 end

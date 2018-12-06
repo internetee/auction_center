@@ -610,6 +610,39 @@ ALTER SEQUENCE public.delayed_jobs_id_seq OWNED BY public.delayed_jobs.id;
 
 
 --
+-- Name: invoice_items; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE public.invoice_items (
+    id bigint NOT NULL,
+    invoice_id integer,
+    name character varying NOT NULL,
+    cents integer NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: invoice_items_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.invoice_items_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: invoice_items_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.invoice_items_id_seq OWNED BY public.invoice_items.id;
+
+
+--
 -- Name: invoices; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -880,6 +913,13 @@ ALTER TABLE ONLY public.delayed_jobs ALTER COLUMN id SET DEFAULT nextval('public
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY public.invoice_items ALTER COLUMN id SET DEFAULT nextval('public.invoice_items_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY public.invoices ALTER COLUMN id SET DEFAULT nextval('public.invoices_id_seq'::regclass);
 
 
@@ -997,6 +1037,14 @@ ALTER TABLE ONLY public.billing_profiles
 
 ALTER TABLE ONLY public.delayed_jobs
     ADD CONSTRAINT delayed_jobs_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: invoice_items_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY public.invoice_items
+    ADD CONSTRAINT invoice_items_pkey PRIMARY KEY (id);
 
 
 --
@@ -1189,6 +1237,13 @@ CREATE UNIQUE INDEX index_billing_profiles_on_vat_code_and_user_id ON public.bil
 
 
 --
+-- Name: index_invoice_items_on_invoice_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_invoice_items_on_invoice_id ON public.invoice_items USING btree (invoice_id);
+
+
+--
 -- Name: index_invoices_on_billing_profile_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1329,6 +1384,14 @@ CREATE TRIGGER process_user_audit AFTER INSERT OR DELETE OR UPDATE ON public.use
 
 
 --
+-- Name: fk_rails_25bf3d2c5e; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.invoice_items
+    ADD CONSTRAINT fk_rails_25bf3d2c5e FOREIGN KEY (invoice_id) REFERENCES public.invoices(id);
+
+
+--
 -- Name: fk_rails_3d1522a0d8; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1440,6 +1503,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181129113446'),
 ('20181204094329'),
 ('20181204114134'),
-('20181205134446');
+('20181205134446'),
+('20181206134245');
 
 

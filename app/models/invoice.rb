@@ -7,6 +7,7 @@ class Invoice < ApplicationRecord
   belongs_to :result, required: true
   belongs_to :user, required: false
   belongs_to :billing_profile, required: true
+  has_many :invoice_items, dependent: :destroy
 
   validates :user_id, presence: true, on: :create
   validates :issue_date, presence: true
@@ -24,6 +25,14 @@ class Invoice < ApplicationRecord
     raise(Errors::ResultNotSold, result_id) unless result.sold?
 
     InvoiceCreator.new(result_id).call
+  end
+
+  def items
+    invoice_items
+  end
+
+  def items=(items)
+    self.invoice_items = items
   end
 
   def user_id_must_be_the_same_as_on_billing_profile_or_nil

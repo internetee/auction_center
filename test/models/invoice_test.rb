@@ -9,6 +9,7 @@ class InvoiceTest < ActiveSupport::TestCase
     @user = users(:participant)
     @orphan_billing_profile = billing_profiles(:orphaned)
     @company_billing_profile = billing_profiles(:company)
+    @invoice = invoices(:payable)
   end
 
   def test_price_is_a_money_object
@@ -108,5 +109,9 @@ class InvoiceTest < ActiveSupport::TestCase
     invoice.cents = 1000
 
     invoice
+  end
+
+  def test_a_persisted_invoice_has_items
+    assert_equal(1, @invoice.items.count)
   end
 end

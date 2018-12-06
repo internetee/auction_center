@@ -1,0 +1,4 @@
+payable:
+  invoice: payable
+  cents: 1000
+  name: "Domain transfer code for with-invoice.test."
