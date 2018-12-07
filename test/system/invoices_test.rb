@@ -1,3 +1,4 @@
+# encoding: UTF-8
 require 'application_system_test_case'
 
 class InvoicesTest < ApplicationSystemTestCase
@@ -19,13 +20,23 @@ class InvoicesTest < ApplicationSystemTestCase
   def test_user_can_update_billing_profile_on_issued_invoice
     visit invoice_path(@invoice)
 
-    assert(page.has_link?('Edit', href: edit_invoice_path(@invoice)))
+    assert(page.has_link?('Change billing profile', href: edit_invoice_path(@invoice)))
 
-    click_link_or_button('Edit')
+    click_link_or_button('Change billing profile')
     select('Joe John Participant', from: 'invoice[billing_profile_id]')
     click_link_or_button('Submit')
 
     assert_text('Updated successfully')
     assert_text('Joe John Participant')
+  end
+
+  def test_invoice_contains_items_and_prices_without_vat
+    visit invoice_path(@invoice)
+
+    assert_text("Domain transfer code for with-invoice.test")
+    assert_text('VAT exclusive 10.00 €')
+    assert_text('VAT rate 0%')
+    assert_text('VAT 0.00 €')
+    assert_text('Total 10.00 €')
   end
 end

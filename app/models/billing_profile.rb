@@ -26,4 +26,12 @@ class BillingProfile < ApplicationRecord
       I18n.t('billing_profiles.orphaned')
     end
   end
+
+  def vat_rate
+    if vat_code
+      BigDecimal.new('0')
+    else
+      BigDecimal.new('0.2')
+    end
+  end
 end

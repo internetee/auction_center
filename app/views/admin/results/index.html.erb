@@ -49,6 +49,7 @@
                 <% @results.each do |result| %>
                     <tr class="results-table-row">
                         <td><%= link_to result.auction.domain_name, admin_result_path(result) %></td>
+                        <td><%= I18n.l(result.auction.ends_at) %></td>
                         <td>
                             <%- if result.sold? %>
                                 <%= t('yes') %>
@@ -56,7 +57,11 @@
                                 <%= t('no') %>
                             <% end %>
                         </td>
-                        <td><%= result.user&.display_name %></td>
+                        <td>
+                            <%- if result.sold? %>
+                                <%= result.offer.billing_profile&.name %>
+                            <% end %>
+                        </td>
                     </tr>
                 <% end %>
             </tbody>

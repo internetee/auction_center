@@ -47,4 +47,12 @@ class Invoice < ApplicationRecord
   def price
     Money.new(cents, Setting.auction_currency)
   end
+
+  def total
+    price * (1 + billing_profile.vat_rate)
+  end
+
+  def vat
+    price * billing_profile.vat_rate
+  end
 end

@@ -29,6 +29,8 @@ en:
   result_name: "Result"
   versions_name: "Versions"
   offers_name: "Offers"
+  jobs_name: "Jobs"
+
   my_offers: "My offers"
   actions: "Actions"
   job_enqueued: "Job enqueued. Check in a few minutes for results."

@@ -9,7 +9,8 @@ class InvoiceTest < ActiveSupport::TestCase
     @user = users(:participant)
     @orphan_billing_profile = billing_profiles(:orphaned)
     @company_billing_profile = billing_profiles(:company)
-    @invoice = invoices(:payable)
+    @payable_invoice = invoices(:payable)
+    @orphaned_invoice = invoices(:orphaned)
   end
 
   def test_price_is_a_money_object
@@ -99,6 +100,20 @@ class InvoiceTest < ActiveSupport::TestCase
     end
   end
 
+  def test_a_persisted_invoice_has_items
+    assert_equal(1, @payable_invoice.items.count)
+  end
+
+  def test_vat_returns_payable_vat
+    assert_equal(Money.new('0', 'EUR'), @payable_invoice.vat)
+    assert_equal(Money.new('200', 'EUR'), @orphaned_invoice.vat)
+  end
+
+  def test_total_returns_price_plus_vat
+    assert_equal(Money.new('1000', 'EUR'), @payable_invoice.total)
+    assert_equal(Money.new('1200', 'EUR'), @orphaned_invoice.total)
+  end
+
   def prefill_invoice
     invoice = Invoice.new
     invoice.result = @result
@@ -109,9 +124,5 @@ class InvoiceTest < ActiveSupport::TestCase
     invoice.cents = 1000
 
     invoice
-  end
-
-  def test_a_persisted_invoice_has_items
-    assert_equal(1, @invoice.items.count)
   end
 end

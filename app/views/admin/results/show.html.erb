@@ -26,7 +26,7 @@
 
                     <%- if @result.sold? %>
                         <dt><%= t('results.buyer') %></dt>
-                        <td><%= @result %></td>
+                        <td><%= @result.offer.billing_profile.name %></td>
                     <% end %>
                 </dl>
 

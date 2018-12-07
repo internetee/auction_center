@@ -36,7 +36,6 @@ class ResultCreatorTest < ActiveSupport::TestCase
     assert_equal(false, result.sold)
     assert_equal(@auction_without_offers, result.auction)
     refute(result.user)
-    refute(result.billing_profile)
     refute(result.invoice)
   end
 
