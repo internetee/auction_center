@@ -38,7 +38,7 @@
                 <%= f.label :country, t('users.country') %><br />
                 <%= f.select :country_code,
                 options_for_select(
-                    Countries::ALPHA_2_SELECTION,
+                    Countries.for_selection,
                     user.country_code || Setting.default_country
                 ),
                 {},

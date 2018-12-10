@@ -36,7 +36,7 @@
                 <%= f.label :country %><br />
                 <%= f.select :country_code,
                              options_for_select(
-                               Countries::ALPHA_2_SELECTION,
+                               Countries.for_selection,
                                billing_profile.country_code || Setting.default_country
                              ),
                              {},
