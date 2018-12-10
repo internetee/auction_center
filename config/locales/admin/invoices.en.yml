@@ -1,0 +1,8 @@
+en:
+  admin:
+    invoices:
+      index:
+        title: "Invoices"
+
+      show:
+        title: "Invoice no. %{invoice_number}"

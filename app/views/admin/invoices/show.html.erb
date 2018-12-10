@@ -1,18 +1,23 @@
 <div class="row">
     <div class="col-12">
-        <h1 class="mb-3 mt-4"><%= t('.title', invoice_number: @invoice.id) %></h1>
+        <h1 class="mb-3 mt-4">
+            <%= t('.title', invoice_number: @invoice.id) %>
+        </h1>
+        <%= link_to t(:versions_name), admin_invoice_versions_path(@invoice), class: "card-link mt" %>
     </div>
 </div>
 
 <div class="row">
     <div class="col-lg-6 col-12">
         <dl class="mb-6 no-bullets invoice-card">
+            <dt><%= t('invoices.status') %></dt>
+            <dd><%= @invoice.status %></dd>
+
             <dt><%= t('invoices.issued_for') %></dt>
             <dd>
                 <%= @invoice.billing_profile.name %><br>
                 <%= @invoice.billing_profile.address %>
             </dd>
-        <%= link_to t('.change_billing_profile'), edit_invoice_path(@invoice), class: "card-link mt" %>
         </dl>
     </div>
 

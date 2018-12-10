@@ -24,11 +24,12 @@ class Ability
   def administrator
     can :manage, Auction
     can :manage, BillingProfile
+    can %i[read], Invoice
+    can %i[read create], Job
     can :manage, User
     can %i[read update], Setting
     can :read, Offer
     can :read, Result
-    can :create, Job
 
     can :read, Audit::Auction
     can :read, Audit::BillingProfile

@@ -34,6 +34,7 @@ module Admin
     end
 
     def authorize_user
+      authorize! :read, Job
       authorize! :create, Job
     end
   end

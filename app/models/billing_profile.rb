@@ -28,7 +28,7 @@ class BillingProfile < ApplicationRecord
   end
 
   def vat_rate
-    if vat_code
+    if vat_code.present?
       BigDecimal.new('0')
     else
       BigDecimal.new('0.2')

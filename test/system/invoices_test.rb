@@ -15,6 +15,8 @@ class InvoicesTest < ApplicationSystemTestCase
 
   def teardown
     super
+
+    travel_back
   end
 
   def test_user_can_update_billing_profile_on_issued_invoice
@@ -38,5 +40,14 @@ class InvoicesTest < ApplicationSystemTestCase
     assert_text('VAT rate 0%')
     assert_text('VAT 0.00 €')
     assert_text('Total 10.00 €')
+  end
+
+  def test_invoice_list_contains_issued_invoices
+    visit invoices_path
+
+    within('tbody.invoices-table-body') do
+      assert_text("Domain transfer code for with-invoice.test")
+      assert_text("10.00 €")
+    end
   end
 end

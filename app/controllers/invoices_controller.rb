@@ -1,7 +1,7 @@
 class InvoicesController < ApplicationController
   before_action :authenticate_user!
   before_action :authorize_user
-  before_action :set_invoice
+  before_action :set_invoice, except: :index
 
   # GET /invoices/1/edit
   def edit; end
@@ -22,7 +22,20 @@ class InvoicesController < ApplicationController
   # GET /invoices/1
   def show; end
 
+  # GET /invoices
+  def index
+    @issued_invoices = get_invoices_list_by_status(Invoice.statuses[:issued])
+    @paid_invoices = get_invoices_list_by_status(Invoice.statuses[:paid])
+  end
+
   private
+
+  def get_invoices_list_by_status(status)
+    Invoice.accessible_by(current_ability)
+           .where(user_id: current_user.id)
+           .where(status: status)
+           .order(due_date: :desc)
+  end
 
   def update_params
     params.require(:invoice).permit(:billing_profile_id)

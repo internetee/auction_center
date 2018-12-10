@@ -32,6 +32,7 @@ en:
   jobs_name: "Jobs"
 
   my_offers: "My offers"
+  my_invoices: "My invoices"
   actions: "Actions"
   job_enqueued: "Job enqueued. Check in a few minutes for results."
 
