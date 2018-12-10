@@ -263,7 +263,7 @@ module Countries
                { code: 'FI', rate: BigDecimal('0.24') },
                { code: 'FR', rate: BigDecimal('0.2') },
                { code: 'DE', rate: BigDecimal('0.19') },
-               { code: 'EL', rate: BigDecimal('0.24') },
+               { code: 'GR', rate: BigDecimal('0.24') },
                { code: 'HU', rate: BigDecimal('0.27') },
                { code: 'IE', rate: BigDecimal('0.23') },
                { code: 'IT', rate: BigDecimal('0.22') },
@@ -279,7 +279,7 @@ module Countries
                { code: 'SI', rate: BigDecimal('0.22') },
                { code: 'ES', rate: BigDecimal('0.21') },
                { code: 'SE', rate: BigDecimal('0.25') },
-               { code: 'UK', rate: BigDecimal('0.2') }].freeze
+               { code: 'GB', rate: BigDecimal('0.2') }].freeze
 
   def self.for_selection
     ALPHA_2_SELECTION.collect { |i| [i[:name], i[:code]] }

@@ -31,7 +31,7 @@ class BillingProfile < ApplicationRecord
     if vat_code.present?
       BigDecimal.new('0')
     else
-      BigDecimal.new('0.2')
+      Countries.vat_rate_from_alpha2_code(country_code)
     end
   end
 end

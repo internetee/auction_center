@@ -12,7 +12,7 @@ class CountriesTest < ActiveSupport::TestCase
   end
 
   def test_vat_rate_from_country_code
-    assert_equal(BigDecimal('0.2'), Countries.vat_rate_from_alpha2_code('UK'))
+    assert_equal(BigDecimal('0.2'), Countries.vat_rate_from_alpha2_code('GB'))
     assert_equal(BigDecimal('0.2'), Countries.vat_rate_from_alpha2_code('EE'))
     assert_equal(BigDecimal('0.25'), Countries.vat_rate_from_alpha2_code('SE'))
 

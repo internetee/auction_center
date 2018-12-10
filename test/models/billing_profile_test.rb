@@ -52,6 +52,21 @@ class BillingProfileTest < ActiveSupport::TestCase
     assert_equal('Orphaned', @orphaned_profile.user_name)
   end
 
+  def test_vat_rate_is_taken_from_country
+    assert_equal(BigDecimal('0'), @billing_profile.vat_rate)
+
+    @billing_profile.update(vat_code: nil, country_code: 'LU')
+    assert_equal(BigDecimal('0.17'), @billing_profile.vat_rate)
+  end
+
+  def test_vat_rate_is_zero_if_vat_code_is_present
+    @billing_profile.update(vat_code: nil, country_code: 'LU')
+    assert_equal(BigDecimal('0.17'), @billing_profile.vat_rate)
+
+    @billing_profile.update(vat_code: '12345')
+    assert_equal(BigDecimal('0'), @billing_profile.vat_rate)
+  end
+
   def test_can_be_orphaned_by_a_user
     @user.destroy
 
