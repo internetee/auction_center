@@ -3,11 +3,11 @@ class AddInvoicePaidAtConstraint < ActiveRecord::Migration[5.2]
     sql = <<~SQL
       ALTER TABLE public.invoices
       ADD CONSTRAINT paid_at_is_filled_when_status_is_paid
-      CHECK (NOT (status = 2 AND paid_at IS NULL));
+      CHECK (NOT (status = 'paid' AND paid_at IS NULL));
 
       ALTER TABLE public.invoices
       ADD CONSTRAINT paid_at_is_not_filled_when_status_is_not_paid
-      CHECK (NOT (status <> 2 AND paid_at IS NOT NULL));
+      CHECK (NOT (status <> 'paid' AND paid_at IS NOT NULL));
     SQL
 
     execute(sql)

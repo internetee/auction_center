@@ -42,6 +42,30 @@ COMMENT ON EXTENSION btree_gist IS 'support for indexing common datatypes in GiS
 
 
 --
+-- Name: invoice_status; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.invoice_status AS ENUM (
+    'issued',
+    'in_progress',
+    'paid',
+    'cancelled'
+);
+
+
+--
+-- Name: payment_order_status; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.payment_order_status AS ENUM (
+    'issued',
+    'in_progress',
+    'paid',
+    'cancelled'
+);
+
+
+--
 -- Name: process_auction_audit(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -656,12 +680,12 @@ CREATE TABLE public.invoices (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     cents integer NOT NULL,
-    status integer DEFAULT 0 NOT NULL,
     paid_at timestamp without time zone,
+    status public.invoice_status DEFAULT 'issued'::public.invoice_status,
     CONSTRAINT invoices_cents_are_positive CHECK ((cents > 0)),
     CONSTRAINT issued_at_earlier_than_payment_at CHECK ((issue_date <= due_date)),
-    CONSTRAINT paid_at_is_filled_when_status_is_paid CHECK ((NOT ((status = 2) AND (paid_at IS NULL)))),
-    CONSTRAINT paid_at_is_not_filled_when_status_is_not_paid CHECK ((NOT ((status <> 2) AND (paid_at IS NOT NULL))))
+    CONSTRAINT paid_at_is_filled_when_status_is_paid CHECK ((NOT ((status = 'paid'::public.invoice_status) AND (paid_at IS NULL)))),
+    CONSTRAINT paid_at_is_not_filled_when_status_is_not_paid CHECK ((NOT ((status <> 'paid'::public.invoice_status) AND (paid_at IS NOT NULL))))
 );
 
 
@@ -727,11 +751,11 @@ CREATE TABLE public.payment_orders (
     id bigint NOT NULL,
     type character varying NOT NULL,
     invoice_id integer NOT NULL,
-    status integer DEFAULT 0 NOT NULL,
     user_id integer,
     response jsonb,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    status public.payment_order_status DEFAULT 'issued'::public.payment_order_status
 );
 
 
@@ -1589,7 +1613,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181205134446'),
 ('20181206134245'),
 ('20181211081031'),
-('20181211081329'),
-('20181211085640');
+('20181211085640'),
+('20181211175012'),
+('20181211175329');
 
 
