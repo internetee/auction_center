@@ -719,6 +719,40 @@ ALTER SEQUENCE public.offers_id_seq OWNED BY public.offers.id;
 
 
 --
+-- Name: payment_orders; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE public.payment_orders (
+    id bigint NOT NULL,
+    type character varying NOT NULL,
+    invoice_id integer NOT NULL,
+    status integer NOT NULL,
+    user_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: payment_orders_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.payment_orders_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: payment_orders_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.payment_orders_id_seq OWNED BY public.payment_orders.id;
+
+
+--
 -- Name: results; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -936,6 +970,13 @@ ALTER TABLE ONLY public.offers ALTER COLUMN id SET DEFAULT nextval('public.offer
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY public.payment_orders ALTER COLUMN id SET DEFAULT nextval('public.payment_orders_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY public.results ALTER COLUMN id SET DEFAULT nextval('public.results_id_seq'::regclass);
 
 
@@ -1063,6 +1104,14 @@ ALTER TABLE ONLY public.invoices
 
 ALTER TABLE ONLY public.offers
     ADD CONSTRAINT offers_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: payment_orders_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY public.payment_orders
+    ADD CONSTRAINT payment_orders_pkey PRIMARY KEY (id);
 
 
 --
@@ -1281,6 +1330,20 @@ CREATE INDEX index_offers_on_user_id ON public.offers USING btree (user_id);
 
 
 --
+-- Name: index_payment_orders_on_invoice_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_payment_orders_on_invoice_id ON public.payment_orders USING btree (invoice_id);
+
+
+--
+-- Name: index_payment_orders_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_payment_orders_on_user_id ON public.payment_orders USING btree (user_id);
+
+
+--
 -- Name: index_results_on_auction_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1402,6 +1465,14 @@ ALTER TABLE ONLY public.invoices
 
 
 --
+-- Name: fk_rails_79beebc2e9; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.payment_orders
+    ADD CONSTRAINT fk_rails_79beebc2e9 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
 -- Name: fk_rails_7f0d5a2cd6; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1447,6 +1518,14 @@ ALTER TABLE ONLY public.invoices
 
 ALTER TABLE ONLY public.offers
     ADD CONSTRAINT fk_rails_e6095d6211 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: fk_rails_f9dc5857c3; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.payment_orders
+    ADD CONSTRAINT fk_rails_f9dc5857c3 FOREIGN KEY (invoice_id) REFERENCES public.invoices(id);
 
 
 --
@@ -1508,6 +1587,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181205134446'),
 ('20181206134245'),
 ('20181211081031'),
-('20181211081329');
+('20181211081329'),
+('20181211085640');
 
 
