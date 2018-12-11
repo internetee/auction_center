@@ -726,7 +726,7 @@ CREATE TABLE public.payment_orders (
     id bigint NOT NULL,
     type character varying NOT NULL,
     invoice_id integer NOT NULL,
-    status integer NOT NULL,
+    status integer DEFAULT 0 NOT NULL,
     user_id integer,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL

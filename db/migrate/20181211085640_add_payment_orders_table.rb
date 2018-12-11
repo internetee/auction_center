@@ -3,7 +3,7 @@ class AddPaymentOrdersTable < ActiveRecord::Migration[5.2]
     create_table :payment_orders do |t|
       t.string :type, null: false
       t.integer :invoice_id, null: false
-      t.integer :status, null: false
+      t.integer :status, default: 0, null: false
       t.integer :user_id, null: true
 
       t.timestamps

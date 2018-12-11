@@ -43,10 +43,25 @@ default: &default
     # environment can be left blank, defaults to Rails.env
     # environment: ''
 
+  payment_methods:
+    every_pay:
+      url: ''
+      user: ''
+      key: ''
+      account_id: ''
+
 development:
   <<: *default
 test:
   <<: *default
+
+  payment_methods:
+    every_pay:
+      url: 'https://igw-demo.every-pay.com/transactions/'
+      user: 'api_user'
+      key: 'api_key'
+      account_id: 'EUR3D1'
+
 staging:
   <<: *default
 production:
