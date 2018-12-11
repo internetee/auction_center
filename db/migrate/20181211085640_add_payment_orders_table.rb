@@ -5,6 +5,7 @@ class AddPaymentOrdersTable < ActiveRecord::Migration[5.2]
       t.integer :invoice_id, null: false
       t.integer :status, default: 0, null: false
       t.integer :user_id, null: true
+      t.jsonb :response, null: true
 
       t.timestamps
     end

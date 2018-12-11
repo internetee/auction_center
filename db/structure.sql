@@ -660,7 +660,8 @@ CREATE TABLE public.invoices (
     paid_at timestamp without time zone,
     CONSTRAINT invoices_cents_are_positive CHECK ((cents > 0)),
     CONSTRAINT issued_at_earlier_than_payment_at CHECK ((issue_date <= due_date)),
-    CONSTRAINT paid_at_is_filled_when_status_is_paid CHECK ((NOT ((status = 2) AND (paid_at IS NULL))))
+    CONSTRAINT paid_at_is_filled_when_status_is_paid CHECK ((NOT ((status = 2) AND (paid_at IS NULL)))),
+    CONSTRAINT paid_at_is_not_filled_when_status_is_not_paid CHECK ((NOT ((status <> 2) AND (paid_at IS NOT NULL))))
 );
 
 
@@ -728,6 +729,7 @@ CREATE TABLE public.payment_orders (
     invoice_id integer NOT NULL,
     status integer DEFAULT 0 NOT NULL,
     user_id integer,
+    response jsonb,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
