@@ -90,6 +90,13 @@ class InvoiceTest < ActiveSupport::TestCase
     assert_equal('issued', invoice.status)
   end
 
+  def test_paid_at_must_be_present_when_status_is_paid
+    @payable_invoice.status = :paid
+
+    refute(@payable_invoice.valid?)
+    assert_equal(["can't be blank"], @payable_invoice.errors[:paid_at])
+  end
+
   def test_create_from_result_only_works_when_result_exists_and_is_sold
     assert_raises(Errors::ResultNotFound) do
       Invoice.create_from_result("foo")
