@@ -73,5 +73,23 @@
                 </tr>
             </tfoot>
         </table>
+
+        <%= form_with(model: PaymentOrder, local: true, url: invoice_payment_orders_path(@invoice)) do |f| %>
+            <div class="row">
+                <div class="form-group">
+                    <%= f.hidden_field :user_id, value: @invoice.user_id %>
+                </div>
+                <div class="form-group">
+                    <%= f.hidden_field :invoice_id, value: @invoice.id %>
+                </div>
+                <div class="form-group">
+                    <%= f.hidden_field :type, value: PaymentOrders::EveryPay %>
+                </div>
+
+                <div class="col-12">
+                    <%= f.submit t(:submit), class: "btn btn-primary form-control mb-2" %>
+                </div>
+            </div>
+        <% end %>
     </div>
 </div>

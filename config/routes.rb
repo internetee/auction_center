@@ -24,7 +24,19 @@ Rails.application.routes.draw do
   end
 
   resources :billing_profiles
-  resources :invoices, only: %i[show edit update index]
+
+  resources :invoices, only: %i[show edit update index] do
+    resources :payment_orders, only: %i[new show create] do
+      member do
+        get "return"
+        put "return"
+        post "return"
+
+        post "callback"
+      end
+    end
+  end
+
   resources :offers, only: :index
   resources :results, only: :show
   resources :users

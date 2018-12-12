@@ -1,0 +1,8 @@
+<div class="row">
+    <%= form_with(url: @payment_order.form_url, local: true) do |f| %>
+        <%- @payment_order.form_fields.each do |k, v| %>
+            <%= f.hidden_field k, value: v %>
+        <% end %>
+        <%= f.submit t(:submit), class: "btn btn-primary form-control mb-2" %>
+    <% end %>
+</div>
