@@ -2,7 +2,10 @@ require 'result_not_found'
 require 'result_not_sold'
 
 class Invoice < ApplicationRecord
-  enum status: { issued: 0, in_progress: 1, paid: 2, cancelled: 3 }
+  enum status: { issued: 'issued',
+                 in_progress: 'in_progress',
+                 paid: 'paid',
+                 cancelled: 'cancelled' }
 
   belongs_to :result, required: true
   belongs_to :user, required: false
@@ -12,7 +15,7 @@ class Invoice < ApplicationRecord
   validates :user_id, presence: true, on: :create
   validates :issue_date, presence: true
   validates :due_date, presence: true
-  validates :paid_at, presence: true, if: Proc.new { |invoice| invoice.paid? }
+  validates :paid_at, presence: true, if: proc { |invoice| invoice.paid? }
   validates :cents, numericality: { only_integer: true, greater_than: 0 }
 
   validate :user_id_must_be_the_same_as_on_billing_profile_or_nil
