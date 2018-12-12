@@ -50,4 +50,8 @@ class InvoicesTest < ApplicationSystemTestCase
       assert_text("10.00 €")
     end
   end
+
+  def test_a_user_can_pay_invoice_via_every_pay
+    visit invoice_path(@invoice)
+  end
 end

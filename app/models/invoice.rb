@@ -3,7 +3,6 @@ require 'result_not_sold'
 
 class Invoice < ApplicationRecord
   enum status: { issued: 'issued',
-                 in_progress: 'in_progress',
                  paid: 'paid',
                  cancelled: 'cancelled' }
 

@@ -22,6 +22,7 @@ en:
     show:
       title: "Invoice no. %{invoice_number}"
       change_billing_profile: "Change billing profile"
+      pay: "Pay"
 
     edit:
       title: "Edit your invoice"

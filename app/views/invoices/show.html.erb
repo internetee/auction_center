@@ -73,23 +73,30 @@
                 </tr>
             </tfoot>
         </table>
+    </div>
 
-        <%= form_with(model: PaymentOrder, local: true, url: invoice_payment_orders_path(@invoice)) do |f| %>
-            <div class="row">
-                <div class="form-group">
-                    <%= f.hidden_field :user_id, value: @invoice.user_id %>
-                </div>
-                <div class="form-group">
-                    <%= f.hidden_field :invoice_id, value: @invoice.id %>
-                </div>
-                <div class="form-group">
-                    <%= f.hidden_field :type, value: PaymentOrders::EveryPay %>
-                </div>
+    <div class="col-12">
+        <h3><%= t('.pay') %></h3>
 
-                <div class="col-12">
-                    <%= f.submit t(:submit), type: :image, src: PaymentOrders::EveryPay::ICON %>
+        <div class="row">
+            <%= form_with(model: PaymentOrder, local: true,
+                          url: invoice_payment_orders_path(@invoice, id: "every-pay-form")) do |f| %>
+                <div class="row">
+                    <div class="form-group">
+                        <%= f.hidden_field :user_id, value: @invoice.user_id %>
+                    </div>
+                    <div class="form-group">
+                        <%= f.hidden_field :invoice_id, value: @invoice.id %>
+                    </div>
+                    <div class="form-group">
+                        <%= f.hidden_field :type, value: PaymentOrders::EveryPay %>
+                    </div>
+
+                    <div class="col-12">
+                        <%= f.submit t(:submit), type: :image, src: PaymentOrders::EveryPay::ICON %>
+                    </div>
                 </div>
-            </div>
-        <% end %>
+            <% end %>
+        </div>
     </div>
 </div>
