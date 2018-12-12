@@ -66,6 +66,17 @@ CREATE TYPE public.payment_order_status AS ENUM (
 
 
 --
+-- Name: result_status; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.result_status AS ENUM (
+    'expired',
+    'sold',
+    'paid'
+);
+
+
+--
 -- Name: process_auction_audit(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -787,9 +798,9 @@ CREATE TABLE public.results (
     auction_id integer NOT NULL,
     user_id integer,
     offer_id integer,
-    sold boolean NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    status public.result_status NOT NULL
 );
 
 
@@ -1613,8 +1624,10 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181205134446'),
 ('20181206134245'),
 ('20181211081031'),
+('20181211081329'),
 ('20181211085640'),
 ('20181211175012'),
-('20181211175329');
+('20181211175329'),
+('20181212075049');
 
 

@@ -17,7 +17,7 @@ class ResultAuditTest < ActiveSupport::TestCase
   end
 
   def test_creating_a_result_creates_a_history_record
-    result = Result.new(auction: @auction, sold: true)
+    result = Result.new(auction: @auction, status: Result.statuses[:sold])
     result.save
 
     assert(audit_record = Audit::Result.find_by(object_id: result.id, action: 'INSERT'))

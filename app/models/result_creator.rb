@@ -41,13 +41,18 @@ class ResultCreator
   def assign_attributes_from_winning_offer
     result.offer_id = winning_offer.id
     result.user_id = winning_offer.user_id
-    result.sold = begin
-                    (winning_offer.cents &&
-                     winning_offer.user_id &&
-                     winning_offer.billing_profile_id) || false
-                  end
+  end
 
+  def assign_status
+    sold = winning_offer.cents &&
+           winning_offer.user_id &&
+           winning_offer.billing_profile_id
 
+    if sold
+      result.status = Result.statuses[:sold]
+    else
+      result.status = Result.statuses[:expired]
+    end
   end
 
   def assign_invoice_attributes
@@ -60,6 +65,7 @@ class ResultCreator
   def create_result
     @result = Result.new
     result.auction = auction
+    assign_status
     assign_attributes_from_winning_offer
     result.save!
 
