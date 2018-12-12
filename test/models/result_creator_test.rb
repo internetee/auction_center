@@ -17,6 +17,8 @@ class ResultCreatorTest < ActiveSupport::TestCase
   end
 
   def test_a_result_is_created_for_auction_with_offers
+    Result.destroy_all
+
     result_creator = ResultCreator.new(@auction_with_offers.id)
     result = result_creator.call
 
@@ -29,6 +31,8 @@ class ResultCreatorTest < ActiveSupport::TestCase
   end
 
   def test_a_result_is_created_for_auction_without_offers
+    Result.destroy_all
+
     result_creator = ResultCreator.new(@auction_without_offers.id)
     result = result_creator.call
 
@@ -40,6 +44,8 @@ class ResultCreatorTest < ActiveSupport::TestCase
   end
 
   def test_result_is_created_even_after_a_user_is_deleted
+    Result.destroy_all
+
     participant = users(:participant)
     participant.destroy
 
