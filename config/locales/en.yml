@@ -29,6 +29,7 @@ en:
   result_name: "Result"
   versions_name: "Versions"
   offers_name: "Offers"
+  invoices_name: "Invoices"
   jobs_name: "Jobs"
 
   my_offers: "My offers"

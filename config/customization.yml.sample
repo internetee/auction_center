@@ -61,6 +61,7 @@ test:
       user: 'api_user'
       key: 'api_key'
       account_id: 'EUR3D1'
+      icon: '/icons/every_pay.png'
 
 staging:
   <<: *default

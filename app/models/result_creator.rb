@@ -48,11 +48,11 @@ class ResultCreator
            winning_offer.user_id &&
            winning_offer.billing_profile_id
 
-    if sold
-      result.status = Result.statuses[:sold]
-    else
-      result.status = Result.statuses[:expired]
-    end
+    result.status = if sold
+                      Result.statuses[:sold]
+                    else
+                      Result.statuses[:expired]
+                    end
   end
 
   def assign_invoice_attributes

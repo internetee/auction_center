@@ -3,8 +3,8 @@ require 'auction_not_found'
 
 class Result < ApplicationRecord
   enum status: { expired: 'expired',
-                sold: 'sold',
-                paid: 'paid' }
+                 sold: 'sold',
+                 paid: 'paid' }
 
   belongs_to :auction, required: true, inverse_of: :result
   belongs_to :user, required: false
