@@ -47,7 +47,6 @@ COMMENT ON EXTENSION btree_gist IS 'support for indexing common datatypes in GiS
 
 CREATE TYPE public.invoice_status AS ENUM (
     'issued',
-    'in_progress',
     'paid',
     'cancelled'
 );
@@ -1624,7 +1623,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181205134446'),
 ('20181206134245'),
 ('20181211081031'),
-('20181211081329'),
 ('20181211085640'),
 ('20181211175012'),
 ('20181211175329'),

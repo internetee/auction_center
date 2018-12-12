@@ -1,7 +1,7 @@
 class ConvertIntegersToEnumTypes < ActiveRecord::Migration[5.2]
   def up
     sql = <<~SQL
-      CREATE TYPE invoice_status AS ENUM('issued', 'in_progress', 'paid', 'cancelled');
+      CREATE TYPE invoice_status AS ENUM('issued', 'paid', 'cancelled');
       CREATE TYPE payment_order_status AS ENUM('issued', 'in_progress', 'paid', 'cancelled');
     SQL
 
