@@ -60,6 +60,6 @@ class InvoicesTest < ApplicationSystemTestCase
       click_link_or_button('Submit')
     end
 
-    assert(page.has_text?('You are being redirected to the payment gateway.'))
+    assert(page.has_text?('You are being redirected to the payment gateway'))
   end
 end

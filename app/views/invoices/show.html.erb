@@ -1,6 +1,7 @@
 <div class="row">
     <div class="col-12">
         <h1 class="mb-3 mt-4"><%= t('.title', invoice_number: @invoice.id) %></h1>
+        <%= link_to t(:result_name), result_path(@invoice.result), class: "card-link mt" %>
     </div>
 </div>
 
