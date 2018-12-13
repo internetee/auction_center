@@ -47,4 +47,9 @@ class ParticipantAbilityTest < ActiveSupport::TestCase
     refute(@participant_ability.can?(:create, Invoice.new(user_id: @participant.id)))
     refute(@participant_ability.can?(:manage, Invoice.new))
   end
+
+  def test_participant_can_create_and_read_payment_orders
+    assert(@participant_ability.can?(:read, PaymentOrder.new(user_id: @participant.id)))
+    assert(@participant_ability.can?(:create, PaymentOrder.new(user_id: @participant.id)))
+  end
 end

@@ -1,5 +1,6 @@
 class PaymentOrdersController < ApplicationController
   skip_before_action :verify_authenticity_token, only: %i[return callback]
+  before_action :authorize_user, only: [:create, :show]
 
   # POST /invoices/1/payment_orders
   def create
@@ -49,6 +50,11 @@ class PaymentOrdersController < ApplicationController
   end
 
   private
+
+  def authorize_user
+    authorize! :read, PaymentOrder
+    authorize! :create, PaymentOrder
+  end
 
   def create_params
     params.require(:payment_order).permit(:user_id, :invoice_id, :type)

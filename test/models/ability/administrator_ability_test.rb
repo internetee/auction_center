@@ -19,11 +19,19 @@ class AdministratorAbilityTest < ActiveSupport::TestCase
     assert(@administrator_ability.can?(:read, Audit::BillingProfile))
     assert(@administrator_ability.can?(:read, Audit::User))
     assert(@administrator_ability.can?(:read, Audit::Setting))
+    assert(@administrator_ability.can?(:read, Audit::Invoice))
+    assert(@administrator_ability.can?(:read, Audit::InvoiceItem))
+    assert(@administrator_ability.can?(:read, Audit::Result))
+    assert(@administrator_ability.can?(:read, Audit::PaymentOrder))
 
     refute(@administrator_ability.can?(:create, Audit::Auction))
     refute(@administrator_ability.can?(:create, Audit::BillingProfile))
     refute(@administrator_ability.can?(:create, Audit::User))
     refute(@administrator_ability.can?(:create, Audit::Setting))
+    refute(@administrator_ability.can?(:create, Audit::Invoice))
+    refute(@administrator_ability.can?(:create, Audit::InvoiceItem))
+    refute(@administrator_ability.can?(:create, Audit::Result))
+    refute(@administrator_ability.can?(:create, Audit::PaymentOrder))
   end
 
   def test_administrator_can_edit_settings
@@ -49,6 +57,8 @@ class AdministratorAbilityTest < ActiveSupport::TestCase
 
   def test_administrator_can_read_invoices
     assert(@administrator_ability.can?(:read, Invoice))
+    assert(@administrator_ability.can?(:read, InvoiceItem))
+    assert(@administrator_ability.can?(:read, PaymentOrder))
   end
 
   def test_administrator_can_create_job_runs
