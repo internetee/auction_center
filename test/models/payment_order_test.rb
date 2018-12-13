@@ -53,4 +53,18 @@ class PaymentOrderTest < ActiveSupport::TestCase
     payment_order.type = "PaymentOrders::Manual"
     refute(payment_order.valid?)
   end
+
+  def test_invoice_cannot_be_already_paid
+    payment_order = PaymentOrder.new
+
+    payment_order.invoice = @payable_invoice
+    payment_order.user = @user
+    payment_order.type = "PaymentOrders::EveryPay"
+
+    assert(payment_order.valid?)
+
+    @payable_invoice.mark_as_paid_at(Time.zone.now)
+
+    refute(payment_order.valid?)
+  end
 end

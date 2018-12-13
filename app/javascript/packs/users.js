@@ -35,7 +35,6 @@ document.addEventListener("DOMContentLoaded", function() {
     let button = document.getElementById('user_form_commit');
 
     let form = document.getElementById('user_form');
-    console.log(form);
 
     form.addEventListener('change', function(event) {
         resetFields();

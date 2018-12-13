@@ -12,7 +12,10 @@
                 <%= @invoice.billing_profile.name %><br>
                 <%= @invoice.billing_profile.address %>
             </dd>
-        <%= link_to t('.change_billing_profile'), edit_invoice_path(@invoice), class: "card-link mt" %>
+
+        <% if @invoice.issued? %>
+            <%= link_to t('.change_billing_profile'), edit_invoice_path(@invoice), class: "card-link mt" %>
+        <% end %>
         </dl>
     </div>
 
@@ -23,6 +26,11 @@
 
             <dt><%= t('invoices.due_date') %></dt>
             <dd><%= @invoice.due_date %></dd>
+
+            <% if @invoice.paid? %>
+                <dt><%= t('invoices.paid_at') %></dt>
+                <dd><%= I18n.l(@invoice.paid_at) %></dd>
+            <% end %>
         </dl>
     </div>
 
@@ -75,28 +83,31 @@
         </table>
     </div>
 
-    <div class="col-12">
-        <h3><%= t('.pay') %></h3>
+    <% unless @invoice.paid? %>
+        <div class="col-12">
+            <h3><%= t('.pay') %></h3>
 
-        <div class="row">
-            <%= form_with(model: PaymentOrder, local: true,
-                          url: invoice_payment_orders_path(@invoice, id: "every-pay-form")) do |f| %>
-                <div class="row">
-                    <div class="form-group">
-                        <%= f.hidden_field :user_id, value: @invoice.user_id %>
-                    </div>
-                    <div class="form-group">
-                        <%= f.hidden_field :invoice_id, value: @invoice.id %>
-                    </div>
-                    <div class="form-group">
-                        <%= f.hidden_field :type, value: PaymentOrders::EveryPay %>
-                    </div>
+            <div class="row">
+                <%= form_with(model: PaymentOrder, local: true,
+                              url: invoice_payment_orders_path(@invoice),
+                              id: "every-pay-form") do |f| %>
+                    <div class="row">
+                        <div class="form-group">
+                            <%= f.hidden_field :user_id, value: @invoice.user_id %>
+                        </div>
+                        <div class="form-group">
+                            <%= f.hidden_field :invoice_id, value: @invoice.id %>
+                        </div>
+                        <div class="form-group">
+                            <%= f.hidden_field :type, value: PaymentOrders::EveryPay %>
+                        </div>
 
-                    <div class="col-12">
-                        <%= f.submit t(:submit), type: :image, src: PaymentOrders::EveryPay::ICON %>
+                        <div class="col-12">
+                            <%= f.submit t(:submit), type: :image, src: PaymentOrders::EveryPay::ICON %>
+                        </div>
                     </div>
-                </div>
-            <% end %>
+                <% end %>
+            </div>
         </div>
-    </div>
+    <% end %>
 </div>

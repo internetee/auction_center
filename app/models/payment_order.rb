@@ -7,15 +7,22 @@ class PaymentOrder < ApplicationRecord
 
 
   enum status: { issued: 'issued',
-                 in_progress: 'in_progress',
                  paid: 'paid',
                  cancelled: 'cancelled' }
+
+  validates :user_id, presence: true, on: :create
+  validates :type, inclusion: { in: ENABLED_METHODS }
+
+  validate :invoice_cannot_be_already_paid, on: :create
 
   belongs_to :invoice, required: true
   belongs_to :user, required: false
 
-  validates :user_id, presence: true, on: :create
-  validates :type, inclusion: { in: ENABLED_METHODS }
+  def invoice_cannot_be_already_paid
+    return unless invoice&.paid?
+
+    errors.add(:invoice, 'is already paid')
+  end
 
   def self.supported_method?(some_class)
     raise(Errors::ExpectedPaymentOrder, some_class) unless some_class < PaymentOrder

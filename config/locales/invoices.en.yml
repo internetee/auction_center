@@ -15,6 +15,7 @@ en:
     vat_rate: "VAT rate"
     vat_amount: "VAT"
     vat_exclusive: "VAT exclusive"
+    paid_at: "Paid at"
 
     outstanding: "Outstanding invoices"
     paid: "Paid invoices"

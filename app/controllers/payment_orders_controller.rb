@@ -8,8 +8,7 @@ class PaymentOrdersController < ApplicationController
     respond_to do |format|
       if @payment_order.save
         format.html do
-          redirect_to invoice_payment_order_path(@payment_order.invoice_id, @payment_order),
-                      notice: t(:created)
+          redirect_to invoice_payment_order_path(@payment_order.invoice_id, @payment_order)
         end
         format.json { render :show, status: :created, location: @payment_order }
       else

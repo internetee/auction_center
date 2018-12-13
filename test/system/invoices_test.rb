@@ -53,5 +53,13 @@ class InvoicesTest < ApplicationSystemTestCase
 
   def test_a_user_can_pay_invoice_via_every_pay
     visit invoice_path(@invoice)
+
+    assert(page.has_css?('form#every-pay-form'))
+
+    within('form#every-pay-form') do
+      click_link_or_button('Submit')
+    end
+
+    assert(page.has_text?('You are being redirected to the payment gateway.'))
   end
 end
