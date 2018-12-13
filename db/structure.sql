@@ -163,6 +163,35 @@ $$;
 
 
 --
+-- Name: process_invoice_item_audit(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.process_invoice_item_audit() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+  BEGIN
+    IF (TG_OP = 'INSERT') THEN
+      INSERT INTO audit.invoice_items
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
+      RETURN NEW;
+    ELSEIF (TG_OP = 'UPDATE') THEN
+      INSERT INTO audit.invoice_items
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
+      RETURN NEW;
+    ELSEIF (TG_OP = 'DELETE') THEN
+      INSERT INTO audit.invoice_items
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
+      RETURN OLD;
+    END IF;
+    RETURN NULL;
+  END
+$$;
+
+
+--
 -- Name: process_offer_audit(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -182,6 +211,35 @@ CREATE FUNCTION public.process_offer_audit() RETURNS trigger
       RETURN NEW;
     ELSEIF (TG_OP = 'DELETE') THEN
       INSERT INTO audit.offers
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
+      RETURN OLD;
+    END IF;
+    RETURN NULL;
+  END
+$$;
+
+
+--
+-- Name: process_payment_order_audit(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.process_payment_order_audit() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+  BEGIN
+    IF (TG_OP = 'INSERT') THEN
+      INSERT INTO audit.payment_orders
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
+      RETURN NEW;
+    ELSEIF (TG_OP = 'UPDATE') THEN
+      INSERT INTO audit.payment_orders
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
+      RETURN NEW;
+    ELSEIF (TG_OP = 'DELETE') THEN
+      INSERT INTO audit.payment_orders
       (object_id, action, recorded_at, old_value, new_value)
       VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
       RETURN OLD;
@@ -351,6 +409,40 @@ ALTER SEQUENCE audit.billing_profiles_id_seq OWNED BY audit.billing_profiles.id;
 
 
 --
+-- Name: invoice_items; Type: TABLE; Schema: audit; Owner: -; Tablespace: 
+--
+
+CREATE TABLE audit.invoice_items (
+    id integer NOT NULL,
+    object_id bigint,
+    action text NOT NULL,
+    recorded_at timestamp without time zone,
+    old_value jsonb,
+    new_value jsonb,
+    CONSTRAINT invoice_items_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
+);
+
+
+--
+-- Name: invoice_items_id_seq; Type: SEQUENCE; Schema: audit; Owner: -
+--
+
+CREATE SEQUENCE audit.invoice_items_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: invoice_items_id_seq; Type: SEQUENCE OWNED BY; Schema: audit; Owner: -
+--
+
+ALTER SEQUENCE audit.invoice_items_id_seq OWNED BY audit.invoice_items.id;
+
+
+--
 -- Name: invoices; Type: TABLE; Schema: audit; Owner: -; Tablespace: 
 --
 
@@ -416,6 +508,40 @@ CREATE SEQUENCE audit.offers_id_seq
 --
 
 ALTER SEQUENCE audit.offers_id_seq OWNED BY audit.offers.id;
+
+
+--
+-- Name: payment_orders; Type: TABLE; Schema: audit; Owner: -; Tablespace: 
+--
+
+CREATE TABLE audit.payment_orders (
+    id integer NOT NULL,
+    object_id bigint,
+    action text NOT NULL,
+    recorded_at timestamp without time zone,
+    old_value jsonb,
+    new_value jsonb,
+    CONSTRAINT payment_orders_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
+);
+
+
+--
+-- Name: payment_orders_id_seq; Type: SEQUENCE; Schema: audit; Owner: -
+--
+
+CREATE SEQUENCE audit.payment_orders_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: payment_orders_id_seq; Type: SEQUENCE OWNED BY; Schema: audit; Owner: -
+--
+
+ALTER SEQUENCE audit.payment_orders_id_seq OWNED BY audit.payment_orders.id;
 
 
 --
@@ -929,6 +1055,13 @@ ALTER TABLE ONLY audit.billing_profiles ALTER COLUMN id SET DEFAULT nextval('aud
 -- Name: id; Type: DEFAULT; Schema: audit; Owner: -
 --
 
+ALTER TABLE ONLY audit.invoice_items ALTER COLUMN id SET DEFAULT nextval('audit.invoice_items_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: audit; Owner: -
+--
+
 ALTER TABLE ONLY audit.invoices ALTER COLUMN id SET DEFAULT nextval('audit.invoices_id_seq'::regclass);
 
 
@@ -937,6 +1070,13 @@ ALTER TABLE ONLY audit.invoices ALTER COLUMN id SET DEFAULT nextval('audit.invoi
 --
 
 ALTER TABLE ONLY audit.offers ALTER COLUMN id SET DEFAULT nextval('audit.offers_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: audit; Owner: -
+--
+
+ALTER TABLE ONLY audit.payment_orders ALTER COLUMN id SET DEFAULT nextval('audit.payment_orders_id_seq'::regclass);
 
 
 --
@@ -1047,6 +1187,14 @@ ALTER TABLE ONLY audit.billing_profiles
 
 
 --
+-- Name: invoice_items_pkey; Type: CONSTRAINT; Schema: audit; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY audit.invoice_items
+    ADD CONSTRAINT invoice_items_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: invoices_pkey; Type: CONSTRAINT; Schema: audit; Owner: -; Tablespace: 
 --
 
@@ -1060,6 +1208,14 @@ ALTER TABLE ONLY audit.invoices
 
 ALTER TABLE ONLY audit.offers
     ADD CONSTRAINT offers_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: payment_orders_pkey; Type: CONSTRAINT; Schema: audit; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY audit.payment_orders
+    ADD CONSTRAINT payment_orders_pkey PRIMARY KEY (id);
 
 
 --
@@ -1219,6 +1375,20 @@ CREATE INDEX billing_profiles_recorded_at_idx ON audit.billing_profiles USING bt
 
 
 --
+-- Name: invoice_items_object_id_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
+--
+
+CREATE INDEX invoice_items_object_id_idx ON audit.invoice_items USING btree (object_id);
+
+
+--
+-- Name: invoice_items_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
+--
+
+CREATE INDEX invoice_items_recorded_at_idx ON audit.invoice_items USING btree (recorded_at);
+
+
+--
 -- Name: invoices_object_id_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
 --
 
@@ -1244,6 +1414,20 @@ CREATE INDEX offers_object_id_idx ON audit.offers USING btree (object_id);
 --
 
 CREATE INDEX offers_recorded_at_idx ON audit.offers USING btree (recorded_at);
+
+
+--
+-- Name: payment_orders_object_id_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
+--
+
+CREATE INDEX payment_orders_object_id_idx ON audit.payment_orders USING btree (object_id);
+
+
+--
+-- Name: payment_orders_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
+--
+
+CREATE INDEX payment_orders_recorded_at_idx ON audit.payment_orders USING btree (recorded_at);
 
 
 --
@@ -1457,10 +1641,24 @@ CREATE TRIGGER process_invoice_audit AFTER INSERT OR DELETE OR UPDATE ON public.
 
 
 --
+-- Name: process_invoice_item_audit; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER process_invoice_item_audit AFTER INSERT OR DELETE OR UPDATE ON public.invoice_items FOR EACH ROW EXECUTE PROCEDURE public.process_invoice_item_audit();
+
+
+--
 -- Name: process_offer_audit; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER process_offer_audit AFTER INSERT OR DELETE OR UPDATE ON public.offers FOR EACH ROW EXECUTE PROCEDURE public.process_offer_audit();
+
+
+--
+-- Name: process_payment_order_audit; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER process_payment_order_audit AFTER INSERT OR DELETE OR UPDATE ON public.payment_orders FOR EACH ROW EXECUTE PROCEDURE public.process_payment_order_audit();
 
 
 --
@@ -1626,6 +1824,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181211085640'),
 ('20181211175012'),
 ('20181211175329'),
-('20181212075049');
+('20181212075049'),
+('20181213100723'),
+('20181213100947');
 
 
