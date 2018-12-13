@@ -142,4 +142,12 @@ class InvoiceTest < ActiveSupport::TestCase
 
     invoice
   end
+
+  def test_invoice_title
+    expected_number = @payable_invoice.number
+    assert_equal("Invoice no. #{expected_number}", @payable_invoice.title)
+
+    new_invoice = Invoice.new
+    refute(new_invoice.title)
+  end
 end

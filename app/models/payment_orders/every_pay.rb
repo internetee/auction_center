@@ -32,6 +32,10 @@ module PaymentOrders
       base_json
     end
 
+    def self.icon
+      ICON
+    end
+
     # Where to send the POST request with payment creation.
     def form_url
       URL

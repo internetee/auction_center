@@ -16,12 +16,12 @@ en:
     vat_amount: "VAT"
     vat_exclusive: "VAT exclusive"
     paid_at: "Paid at"
+    title: "Invoice no. %{number}"
 
     outstanding: "Outstanding invoices"
     paid: "Paid invoices"
 
     show:
-      title: "Invoice no. %{invoice_number}"
       change_billing_profile: "Change billing profile"
       pay: "Pay"
 

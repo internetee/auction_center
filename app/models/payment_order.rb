@@ -18,6 +18,12 @@ class PaymentOrder < ApplicationRecord
   belongs_to :invoice, required: true
   belongs_to :user, required: false
 
+  attr_writer :callback_url
+  attr_reader :callback_url
+
+  attr_writer :return_url
+  attr_reader :return_url
+
   def invoice_cannot_be_already_paid
     return unless invoice&.paid?
 
@@ -34,9 +40,15 @@ class PaymentOrder < ApplicationRecord
     end
   end
 
-  attr_writer :callback_url
-  attr_reader :callback_url
+  def self.supported_methods
+    enabled = []
 
-  attr_writer :return_url
-  attr_reader :return_url
+    ENABLED_METHODS.each do |method|
+      class_name = method.constantize
+      raise(Errors::ExpectedPaymentOrder, class_name) unless class_name < PaymentOrder
+      enabled << class_name
+    end
+
+    enabled
+  end
 end
