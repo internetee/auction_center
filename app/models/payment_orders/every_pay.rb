@@ -1,20 +1,22 @@
 module PaymentOrders
   class EveryPay < PaymentOrder
+    CONFIG_NAMESPACE = 'every_pay'
+
     USER = AuctionCenter::Application.config
                                      .customization
-                                     .dig('payment_methods', 'every_pay', 'user')
+                                     .dig('payment_methods', CONFIG_NAMESPACE, 'user')
     KEY = AuctionCenter::Application.config
                                     .customization
-                                    .dig('payment_methods', 'every_pay', 'key')
+                                    .dig('payment_methods', CONFIG_NAMESPACE, 'key')
     ACCOUNT_ID = AuctionCenter::Application.config
                                            .customization
-                                           .dig('payment_methods', 'every_pay', 'account_id')
+                                           .dig('payment_methods', CONFIG_NAMESPACE, 'account_id')
     URL = AuctionCenter::Application.config
                                     .customization
-                                    .dig('payment_methods', 'every_pay', 'url')
+                                    .dig('payment_methods', CONFIG_NAMESPACE, 'url')
     ICON = AuctionCenter::Application.config
                                      .customization
-                                     .dig('payment_methods', 'every_pay', 'icon')
+                                     .dig('payment_methods', CONFIG_NAMESPACE, 'icon')
 
     SUCCESSFUL_PAYMENT = %w[settled authorized].freeze
 
@@ -32,8 +34,14 @@ module PaymentOrders
       base_json
     end
 
+    def self.config_namespace_name
+      CONFIG_NAMESPACE
+    end
+
     def self.icon
-      ICON
+      AuctionCenter::Application.config
+                                .customization
+                                .dig('payment_methods', config_namespace_name, 'icon')
     end
 
     # Where to send the POST request with payment creation.

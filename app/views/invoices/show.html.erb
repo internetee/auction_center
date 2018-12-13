@@ -92,7 +92,7 @@
                 <% PaymentOrder.supported_methods.each do |method| %>
                     <%= form_with(model: PaymentOrder, local: true,
                                   url: invoice_payment_orders_path(@invoice),
-                                  id: method.to_s) do |f| %>
+                                  id: method.config_namespace_name) do |f| %>
                         <div class="row">
                             <div class="form-group">
                                 <%= f.hidden_field :user_id, value: @invoice.user_id %>

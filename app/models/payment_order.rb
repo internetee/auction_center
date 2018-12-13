@@ -24,6 +24,9 @@ class PaymentOrder < ApplicationRecord
   attr_writer :return_url
   attr_reader :return_url
 
+  # Name of configuration namespace
+  def self.config_namespace_name; end
+
   def invoice_cannot_be_already_paid
     return unless invoice&.paid?
 

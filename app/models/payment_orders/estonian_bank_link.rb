@@ -16,9 +16,6 @@ module PaymentOrders
     CANCEL_MESSAGE_KEYS  = %w(VK_SERVICE VK_VERSION VK_SND_ID VK_REC_ID VK_STAMP
                             VK_REF VK_MSG).freeze
 
-    # Name of configuration namespace
-    def self.config_namespace_name; end
-
     def self.icon
       AuctionCenter::Application.config
                                 .customization
