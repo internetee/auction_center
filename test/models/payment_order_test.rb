@@ -17,6 +17,7 @@ class PaymentOrderTest < ActiveSupport::TestCase
 
     payment_order.invoice = @payable_invoice
     payment_order.user = @user
+    payment_order.type = "PaymentOrders::EveryPay"
 
     assert(payment_order.valid?, payment_order.errors.full_messages)
   end
@@ -38,5 +39,18 @@ class PaymentOrderTest < ActiveSupport::TestCase
 
   def test_supported_method_returns_true_or_false
     assert(PaymentOrder.supported_method?(PaymentOrders::EveryPay))
+  end
+
+  def test_payment_method_must_be_supported_for_the_object_to_be_valid
+    payment_order = PaymentOrder.new
+
+    payment_order.invoice = @payable_invoice
+    payment_order.user = @user
+    payment_order.type = "PaymentOrders::EveryPay"
+
+    assert(payment_order.valid?)
+
+    payment_order.type = "PaymentOrders::Manual"
+    refute(payment_order.valid?)
   end
 end

@@ -28,6 +28,14 @@ class ResultsTest < ApplicationSystemTestCase
     assert(page.has_text?("You won"))
   end
 
+  def test_results_page_contains_transfer_code_if_result_is_paid
+    @result.paid!
+    assert(@result.paid?)
+
+    visit(result_path(@result))
+    assert(page.has_text?("332c70cdd0791d185778e0cc2a4eddea"))
+  end
+
   def test_visiting_results_path_triggers_invoice_creation_job
     assert_enqueued_with(job: InvoiceCreationJob) do
       visit(result_path(@result))

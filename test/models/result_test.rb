@@ -77,4 +77,9 @@ class ResultTest < ActiveSupport::TestCase
                   @orphaned_result, @with_invoice_result].to_set,
                  Result.all.to_set)
   end
+
+  def test_registration_password_returns_placeholder_value
+    assert_equal('332c70cdd0791d185778e0cc2a4eddea', @invoiceable_result.registration_password)
+    assert_equal('332c70cdd0791d185778e0cc2a4eddea', @orphaned_result.registration_password)
+  end
 end

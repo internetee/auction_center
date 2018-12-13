@@ -59,4 +59,12 @@ class Invoice < ApplicationRecord
   def vat
     price * billing_profile.vat_rate
   end
+
+  def mark_as_paid_at(time)
+    ActiveRecord::Base.transaction do
+      self.paid_at = time
+      self.paid!
+      result.paid!
+    end
+  end
 end

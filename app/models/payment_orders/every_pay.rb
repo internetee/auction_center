@@ -41,10 +41,8 @@ module PaymentOrders
     def mark_invoice_as_paid
       return unless valid_response? && settled_payment?
 
-      ActiveRecord::Base.transaction do
-        invoice.paid_at = Date.strptime(response['timestamp'], '%s')
-        invoice.paid!
-      end
+      time = Time.strptime(response['timestamp'], '%s')
+      invoice.mark_as_paid_at(time)
     end
 
     # Check if response is there and if basic security methods are fullfilled.

@@ -3,6 +3,7 @@ en:
     buyer: "Buyer"
     sold: "Sold"
     invoice: "Invoice"
+    registration_password: "Registration password"
 
     show:
       title: "You won an auction"

@@ -121,6 +121,16 @@ class InvoiceTest < ActiveSupport::TestCase
     assert_equal(Money.new('1200', 'EUR'), @orphaned_invoice.total)
   end
 
+  def test_mark_as_paid_at
+    travel_to Time.parse('2010-07-05 10:30 +0000')
+
+    @payable_invoice.mark_as_paid_at(Time.zone.now)
+
+    assert(@payable_invoice.paid?)
+    assert(@payable_invoice.result.paid?)
+    assert_equal(Time.zone.now, @payable_invoice.paid_at)
+  end
+
   def prefill_invoice
     invoice = Invoice.new
     invoice.result = @result

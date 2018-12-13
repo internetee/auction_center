@@ -15,6 +15,7 @@ class PaymentOrder < ApplicationRecord
   belongs_to :user, required: false
 
   validates :user_id, presence: true, on: :create
+  validates :type, inclusion: { in: ENABLED_METHODS }
 
   def self.supported_method?(some_class)
     raise(Errors::ExpectedPaymentOrder, some_class) unless some_class < PaymentOrder
