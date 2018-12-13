@@ -818,6 +818,7 @@ CREATE TABLE public.invoices (
     cents integer NOT NULL,
     paid_at timestamp without time zone,
     status public.invoice_status DEFAULT 'issued'::public.invoice_status,
+    number integer NOT NULL,
     CONSTRAINT invoices_cents_are_positive CHECK ((cents > 0)),
     CONSTRAINT issued_at_earlier_than_payment_at CHECK ((issue_date <= due_date)),
     CONSTRAINT paid_at_is_filled_when_status_is_paid CHECK ((NOT ((status = 'paid'::public.invoice_status) AND (paid_at IS NULL)))),
@@ -842,6 +843,25 @@ CREATE SEQUENCE public.invoices_id_seq
 --
 
 ALTER SEQUENCE public.invoices_id_seq OWNED BY public.invoices.id;
+
+
+--
+-- Name: invoices_number_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.invoices_number_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: invoices_number_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.invoices_number_seq OWNED BY public.invoices.number;
 
 
 --
@@ -1133,6 +1153,13 @@ ALTER TABLE ONLY public.invoice_items ALTER COLUMN id SET DEFAULT nextval('publi
 --
 
 ALTER TABLE ONLY public.invoices ALTER COLUMN id SET DEFAULT nextval('public.invoices_id_seq'::regclass);
+
+
+--
+-- Name: number; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.invoices ALTER COLUMN number SET DEFAULT nextval('public.invoices_number_seq'::regclass);
 
 
 --
@@ -1826,6 +1853,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181211175329'),
 ('20181212075049'),
 ('20181213100723'),
-('20181213100947');
+('20181213100947'),
+('20181213125519');
 
 
