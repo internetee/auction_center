@@ -38,17 +38,6 @@ class SessionsTest < ApplicationSystemTestCase
     assert_equal('Joe John Participant', page.find('h2').text)
   end
 
-  def test_administrator_can_see_a_link_to_their_profile
-    user = users(:administrator)
-    sign_in(user)
-
-    visit(users_path)
-    assert(page.has_link?('Profile', href: user_path(user)))
-    click_link_or_button('Profile')
-
-    assert_equal('John Joe Administrator', page.find('h2').text)
-  end
-
   def test_link_to_profile_is_invisible_for_anonymous_users
     visit(users_path)
     refute(page.has_link?('Profile'))

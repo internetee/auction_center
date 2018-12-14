@@ -1,0 +1,16 @@
+<div class="row invisible">
+    <%= form_with(url: @payment_order.form_url, local: true, id: 'payment-order-form') do |f| %>
+        <%- @payment_order.form_fields.each do |k, v| %>
+            <%= f.hidden_field k, value: v %>
+        <% end %>
+        <%= f.submit t(:submit) %>
+    <% end %>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <h3><%= t('.you_are_being_redirected') %>
+    </div>
+</div>
+
+<%= javascript_pack_tag 'payment_orders', 'data-turbolinks-track': 'reload' %>

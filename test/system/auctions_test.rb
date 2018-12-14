@@ -32,6 +32,12 @@ class AuctionsTest < ApplicationSystemTestCase
     end
   end
 
+  def test_result_creation_job_is_scheduled_automatically_if_there_ended_are_auctions
+    assert_enqueued_with(job: InvoiceCreationJob) do
+      visit('/')
+    end
+  end
+
   def test_auctions_index_contains_a_list
     visit('/')
 

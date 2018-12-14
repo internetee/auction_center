@@ -1,0 +1,5 @@
+issued:
+  invoice: payable
+  type: PaymentOrders::EveryPay
+  user: second_place_participant
+  status: <%= PaymentOrder.statuses[:issued] %>

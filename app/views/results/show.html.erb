@@ -15,8 +15,18 @@
                     <dt><%= t('auctions.ends_at') %></dt>
                     <dd><%= I18n.l(@result.auction.ends_at) %></dd>
 
-                    <dt><%= t('results.final_price') %></dt>
-                    <td><%= t('offers.price_in_currency', price: @result.price) %></td>
+                    <dt><%= t('results.registration_password') %></dt>
+                    <dd><%= @result.registration_password %></dd>
+
+                    <dt><%= t('results.invoice') %></dt>
+
+                    <dd>
+                        <% if @result.invoice %>
+                            <%= link_to t('results.invoice'), invoice_path(@result.invoice) %>
+                        <% else %>
+                            <%= t('invoices.is_being_generated') %>
+                        <% end %>
+                    </dd>
                 </dl>
             </div>
         </div>

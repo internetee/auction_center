@@ -49,4 +49,8 @@ en:
 
     show:
       title: "User profile"
+      delete: "Delete account"
       review_terms_and_conditions: "Review terms and conditions"
+
+    destroy:
+      deleted: "You have been logged out and your account has been deleted."

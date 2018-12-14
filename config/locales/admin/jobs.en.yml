@@ -1,0 +1,8 @@
+en:
+  admin:
+    jobs:
+      index:
+        title: "Periodic jobs"
+
+      create:
+        enqueued: "Job enqueued."

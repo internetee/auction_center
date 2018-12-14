@@ -11,7 +11,7 @@ class BillingProfile < ApplicationRecord
   validates :name, presence: true
   validates :vat_code, uniqueness: { scope: :user_id }, allow_blank: true
 
-  belongs_to :user, required: true
+  belongs_to :user, required: false
 
   def address
     country_name = Countries.name_from_alpha2_code(country_code)
@@ -20,6 +20,18 @@ class BillingProfile < ApplicationRecord
   end
 
   def user_name
-    user.display_name
+    if user
+      user.display_name
+    else
+      I18n.t('billing_profiles.orphaned')
+    end
+  end
+
+  def vat_rate
+    if vat_code.present?
+      BigDecimal('0')
+    else
+      Countries.vat_rate_from_alpha2_code(country_code)
+    end
   end
 end

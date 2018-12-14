@@ -40,9 +40,8 @@
                 <tr>
                     <th scope="col"><%= t('auctions.domain_name') %></th>
                     <th scope="col"><%= t('auctions.ends_at') %></th>
-                    <th scope="col"><%= t('results.final_price') %></th>
                     <th scope="col"><%= t('results.sold') %></th>
-                    <th scope="col"><%= t('users.display_name') %></th>
+                    <th scope="col"><%= t('billing_profiles.name') %></th>
                 </tr>
             </thead>
 
@@ -51,7 +50,6 @@
                     <tr class="results-table-row">
                         <td><%= link_to result.auction.domain_name, admin_result_path(result) %></td>
                         <td><%= I18n.l(result.auction.ends_at) %></td>
-                        <td><%= t('offers.price_in_currency', price: result.price) %></td>
                         <td>
                             <%- if result.sold? %>
                                 <%= t('yes') %>
@@ -59,7 +57,11 @@
                                 <%= t('no') %>
                             <% end %>
                         </td>
-                        <td><%= result.user&.display_name %></td>
+                        <td>
+                            <%- if result.sold? %>
+                                <%= result.offer.billing_profile&.name %>
+                            <% end %>
+                        </td>
                     </tr>
                 <% end %>
             </tbody>

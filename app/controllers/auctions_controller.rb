@@ -1,6 +1,6 @@
 class AuctionsController < ApplicationController
   before_action :authorize_user
-  before_action :enqueue_create_results_job, only: :index
+  before_action :enqueue_create_results_jobs, only: :index
 
   def index
     @auctions = Auction.active.accessible_by(current_ability)
@@ -14,7 +14,8 @@ class AuctionsController < ApplicationController
     authorize! :read, Auction
   end
 
-  def enqueue_create_results_job
-    ResultCreationJob.perform_later if Auction.without_result.any?
+  def enqueue_create_results_jobs
+    ResultCreationJob.perform_later if ResultCreationJob.needs_to_run?
+    InvoiceCreationJob.perform_later if InvoiceCreationJob.needs_to_run?
   end
 end

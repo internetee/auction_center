@@ -2,11 +2,19 @@ require 'auction_not_finished'
 require 'auction_not_found'
 
 class Result < ApplicationRecord
+  enum status: { expired: 'expired',
+                 sold: 'sold',
+                 paid: 'paid' }
+
   belongs_to :auction, required: true, inverse_of: :result
   belongs_to :user, required: false
   belongs_to :offer, required: false
+  has_one :invoice, required: false, dependent: :destroy
 
-  validates :sold, inclusion: { in: [true, false] }
+  scope :pending_invoice, lambda {
+    where('user_id IS NOT NULL AND status = ? AND id NOT IN (SELECT result_id FROM invoices)',
+          statuses[:sold])
+  }
 
   def self.create_from_auction(auction_id)
     auction = Auction.find_by(id: auction_id)
@@ -17,16 +25,12 @@ class Result < ApplicationRecord
     ResultCreator.new(auction_id).call
   end
 
-  def price
-    Money.new(cents, Setting.auction_currency)
-  end
-
-  def sold?
-    sold || false
-  end
-
   def winning_offer
     offer
+  end
+
+  def registration_password
+    '332c70cdd0791d185778e0cc2a4eddea'
   end
 
   def send_email_to_winner

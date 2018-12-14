@@ -1,0 +1,3 @@
+en:
+  invoice_items:
+    name: "Domain transfer code for %{domain_name} (auction %{auction_end})"

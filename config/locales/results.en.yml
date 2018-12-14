@@ -2,7 +2,8 @@ en:
   results:
     buyer: "Buyer"
     sold: "Sold"
-    final_price: "Final price"
+    invoice: "Invoice"
+    registration_password: "Registration password"
 
     show:
       title: "You won an auction"

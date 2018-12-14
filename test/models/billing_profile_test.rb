@@ -6,21 +6,19 @@ class BillingProfileTest < ActiveSupport::TestCase
 
     @user = users(:participant)
     @billing_profile = billing_profiles(:company)
+    @orphaned_profile = billing_profiles(:orphaned)
   end
 
   def test_required_fields
     billing_profile = BillingProfile.new
 
     refute(billing_profile.valid?)
-    assert_equal(["must exist"], billing_profile.errors[:user])
-
     assert_equal(["can't be blank"], billing_profile.errors[:street])
     assert_equal(["can't be blank"], billing_profile.errors[:city])
     assert_equal(["can't be blank"], billing_profile.errors[:postal_code])
     assert_equal(["can't be blank"], billing_profile.errors[:country_code])
     assert_equal(["can't be blank"], billing_profile.errors[:name])
 
-    billing_profile.user = @user
     billing_profile.name = "Private Person"
     billing_profile.street = "Baker Street 221B"
     billing_profile.city = "London"
@@ -51,5 +49,28 @@ class BillingProfileTest < ActiveSupport::TestCase
     expected_username = 'Joe John Participant'
 
     assert_equal(expected_username, @billing_profile.user_name)
+    assert_equal('Orphaned', @orphaned_profile.user_name)
+  end
+
+  def test_vat_rate_is_taken_from_country
+    assert_equal(BigDecimal('0'), @billing_profile.vat_rate)
+
+    @billing_profile.update(vat_code: nil, country_code: 'LU')
+    assert_equal(BigDecimal('0.17'), @billing_profile.vat_rate)
+  end
+
+  def test_vat_rate_is_zero_if_vat_code_is_present
+    @billing_profile.update(vat_code: nil, country_code: 'LU')
+    assert_equal(BigDecimal('0.17'), @billing_profile.vat_rate)
+
+    @billing_profile.update(vat_code: '12345')
+    assert_equal(BigDecimal('0'), @billing_profile.vat_rate)
+  end
+
+  def test_can_be_orphaned_by_a_user
+    @user.destroy
+
+    assert_nil(@billing_profile.user)
+    assert_equal('Orphaned', @billing_profile.user_name)
   end
 end

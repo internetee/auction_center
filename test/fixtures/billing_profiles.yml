@@ -14,3 +14,10 @@ company:
   city: "London"
   postal_code: "NW1 6XE"
   alpha_two_country_code: "GB"
+
+orphaned:
+  name: "Orphan Profile"
+  street: "Baker Street 221B"
+  city: "London"
+  postal_code: "NW1 6XE"
+  alpha_two_country_code: "GB"

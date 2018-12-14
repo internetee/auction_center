@@ -128,7 +128,6 @@ class BillingProfilesTest < ApplicationSystemTestCase
     assert_text('Deleted successfully.')
   end
 
-
   def fill_in_address
     fill_in('billing_profile[street]', with: 'Baker Street 221B')
     fill_in('billing_profile[city]', with: 'London')

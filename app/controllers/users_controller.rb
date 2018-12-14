@@ -1,7 +1,7 @@
 require 'countries'
 
 class UsersController < ApplicationController
-  before_action :set_user, only: %i[show edit update]
+  before_action :set_user, only: %i[show edit update destroy]
   before_action :set_minimum_password_length, only: %i[new edit]
   before_action :authorize_user, except: %i[new index create]
 
@@ -56,6 +56,15 @@ class UsersController < ApplicationController
       end
     else
       redirect_to edit_user_path(@user), notice: t('.incorrect_password')
+    end
+  end
+
+  def destroy
+    @user.destroy
+
+    respond_to do |format|
+      format.html { redirect_to :root, notice: t('.deleted') }
+      format.json { head :no_content }
     end
   end
 

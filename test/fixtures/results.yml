@@ -1,10 +1,20 @@
 expired_participant:
   auction: expired
   user: participant
-  sold: true
-  cents: 1000
+  status: <%= Result.statuses[:sold] %>
   offer: expired_offer
+
+with_invoice:
+  auction: with_invoice
+  user: participant
+  status: <%= Result.statuses[:sold] %>
+  offer: with_invoice
 
 without_offers_nobody:
   auction: valid_without_offers
-  sold: false
+  status: <%= Result.statuses[:expired] %>
+
+orphaned:
+  auction: orphaned
+  status: <%= Result.statuses[:sold] %>
+  offer: orphaned

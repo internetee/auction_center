@@ -12,6 +12,7 @@ en:
   are_you_sure: "Are you sure?"
 
   billing: "Billing"
+  new_billing_profile: "New billing profile"
 
   profile: "Profile"
   sign_in: "Sign in"
@@ -28,7 +29,11 @@ en:
   result_name: "Result"
   versions_name: "Versions"
   offers_name: "Offers"
+  invoices_name: "Invoices"
+  jobs_name: "Jobs"
+
   my_offers: "My offers"
+  my_invoices: "My invoices"
   actions: "Actions"
   job_enqueued: "Job enqueued. Check in a few minutes for results."
 

@@ -23,3 +23,16 @@ participant:
   mobile_phone: '+37255000002'
   roles: ['participant']
   terms_and_conditions_accepted_at: <%= Time.parse("2010-07-05 00:16:00 UTC") %>
+
+second_place_participant:
+  email: 'second_place@auction.test'
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
+  alpha_two_country_code: 'EE'
+  identity_code: '51007050458'
+  given_names: 'Second'
+  surname: 'Place'
+  confirmed_at: <%= Time.parse("2010-07-05 00:17:00 UTC") %>
+  created_at: <%= Time.parse("2010-07-05 00:17:00 UTC") %>
+  mobile_phone: '+37255000002'
+  roles: ['participant']
+  terms_and_conditions_accepted_at: <%= Time.parse("2010-07-05 00:16:00 UTC") %>

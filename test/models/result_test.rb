@@ -7,6 +7,11 @@ class ResultTest < ActiveSupport::TestCase
     travel_to Time.parse('2010-07-05 10:30 +0000')
     @valid_auction = auctions(:valid_with_offers)
     @expired_auction = auctions(:expired)
+
+    @invoiceable_result = results(:expired_participant)
+    @noninvoiceable_result = results(:without_offers_nobody)
+    @orphaned_result = results(:orphaned)
+    @with_invoice_result = results(:with_invoice)
   end
 
   def teardown
@@ -21,14 +26,15 @@ class ResultTest < ActiveSupport::TestCase
 
     refute(result.valid?)
 
-    assert_equal(["must exist"], result.errors[:auction])
-    assert_equal(["is not included in the list"], result.errors[:sold])
+    assert_equal(["must exist"], result.errors[:auction], result.errors.full_messages)
   end
 
-  def test_sold_returns_boolean
+  def test_status_predicates
     result = Result.new
 
     assert_equal(false, result.sold?)
+    assert_equal(false, result.expired?)
+    assert_equal(false, result.paid?)
   end
 
   def test_create_result_from_an_auction_only_works_if_the_auction_has_finished
@@ -41,15 +47,6 @@ class ResultTest < ActiveSupport::TestCase
     end
   end
 
-  def test_price_is_a_money_object
-    result = Result.new(cents: 1000)
-
-    assert_equal(Money.new(1000, Setting.auction_currency), result.price)
-
-    result.cents = nil
-    assert_equal(Money.new(0, Setting.auction_currency), result.price)
-  end
-
   def test_winning_offer_is_an_alias_on_offer
     result = results(:expired_participant)
 
@@ -57,7 +54,7 @@ class ResultTest < ActiveSupport::TestCase
   end
 
   def test_send_email_to_winner_does_nothing_if_there_is_no_winner
-    result = Result.new(sold: false)
+    result = Result.new(status: :expired)
 
     result.send_email_to_winner
     assert(ActionMailer::Base.deliveries.empty?)
@@ -72,5 +69,17 @@ class ResultTest < ActiveSupport::TestCase
 
     assert_equal(['user@auction.test'], email.to)
     assert_equal('You won an auction!', email.subject)
+  end
+
+  def test_pending_invoice_scope_does_not_return_results_that_are_not_sold
+    assert_equal([@invoiceable_result].to_set, Result.pending_invoice.to_set)
+    assert_equal([@invoiceable_result, @noninvoiceable_result,
+                  @orphaned_result, @with_invoice_result].to_set,
+                 Result.all.to_set)
+  end
+
+  def test_registration_password_returns_placeholder_value
+    assert_equal('332c70cdd0791d185778e0cc2a4eddea', @invoiceable_result.registration_password)
+    assert_equal('332c70cdd0791d185778e0cc2a4eddea', @orphaned_result.registration_password)
   end
 end
