@@ -1,6 +1,6 @@
 class PaymentOrdersController < ApplicationController
   skip_before_action :verify_authenticity_token, only: %i[return callback]
-  before_action :authorize_user, only: [:create, :show]
+  before_action :authorize_user, only: %i[create show]
 
   # POST /invoices/1/payment_orders
   def create
@@ -44,7 +44,7 @@ class PaymentOrdersController < ApplicationController
     end
   end
 
-  # ANY /invoices/1/payment_orders/1/callback
+  # POST /invoices/1/payment_orders/1/callback
   def callback
     render status: :ok, json: { status: 'ok' }
   end

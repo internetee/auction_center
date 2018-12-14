@@ -143,6 +143,13 @@ class InvoiceTest < ActiveSupport::TestCase
     invoice
   end
 
+  def test_invoice_items
+    item = InvoiceItem.new(cents: 1200, name: :test_item)
+    @payable_invoice.items =[item]
+
+    assert_equal([item], @payable_invoice.items)
+  end
+
   def test_invoice_title
     expected_number = @payable_invoice.number
     assert_equal("Invoice no. #{expected_number}", @payable_invoice.title)

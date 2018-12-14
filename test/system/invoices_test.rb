@@ -2,6 +2,8 @@
 require 'application_system_test_case'
 
 class InvoicesTest < ApplicationSystemTestCase
+  include ActiveJob::TestHelper
+
   def setup
     super
 

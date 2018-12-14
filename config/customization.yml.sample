@@ -46,12 +46,20 @@ default: &default
   payment_methods:
     enabled_methods:
       - "PaymentOrders::EveryPay"
+      - "PaymentOrders::SEB"
 
     every_pay:
       url: ''
       user: ''
       key: ''
       account_id: ''
+
+    seb:
+      url: ''
+      seller_account: ''
+      seller_private_key: ''
+      bank_certificate: ''
+      icon: '/icons/seb.png'
 
 development:
   <<: *default
@@ -61,6 +69,7 @@ test:
   payment_methods:
     enabled_methods:
       - "PaymentOrders::EveryPay"
+      - "PaymentOrders::SEB"
 
     every_pay:
       url: 'https://igw-demo.every-pay.com/transactions/'
@@ -68,6 +77,13 @@ test:
       key: 'api_key'
       account_id: 'EUR3D1'
       icon: '/icons/every_pay.png'
+
+    seb:
+      url: 'https://www.seb.ee/cgi-bin/dv.sh/ipank.r'
+      seller_account: 'testvpos'
+      seller_private_key: 'test/fixtures/files/seb_seller_key.pem'
+      bank_certificate: 'test/fixtures/files/seb_bank_cert.pem'
+      icon: '/icons/seb.png'
 
 staging:
   <<: *default

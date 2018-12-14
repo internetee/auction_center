@@ -1,6 +1,6 @@
 module PaymentOrders
   class EveryPay < PaymentOrder
-    CONFIG_NAMESPACE = 'every_pay'
+    CONFIG_NAMESPACE = 'every_pay'.freeze
 
     USER = AuctionCenter::Application.config
                                      .customization
@@ -53,6 +53,7 @@ module PaymentOrders
     def mark_invoice_as_paid
       return unless valid_response? && settled_payment?
 
+      paid!
       time = Time.strptime(response['timestamp'], '%s')
       invoice.mark_as_paid_at(time)
     end

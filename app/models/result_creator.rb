@@ -55,13 +55,6 @@ class ResultCreator
                     end
   end
 
-  def assign_invoice_attributes
-    invoice.result = result
-    invoice.billing_profile_id = winning_offer.billing_profile_id
-    invoice.user_id = winning_offer.user_id
-    invoice.cents = winning_offer.cents
-  end
-
   def create_result
     @result = Result.new
     result.auction = auction

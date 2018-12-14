@@ -5,7 +5,6 @@ class PaymentOrder < ApplicationRecord
                                               .customization
                                               .dig('payment_methods', 'enabled_methods')
 
-
   enum status: { issued: 'issued',
                  paid: 'paid',
                  cancelled: 'cancelled' }
@@ -49,6 +48,7 @@ class PaymentOrder < ApplicationRecord
     ENABLED_METHODS.each do |method|
       class_name = method.constantize
       raise(Errors::ExpectedPaymentOrder, class_name) unless class_name < PaymentOrder
+
       enabled << class_name
     end
 
