@@ -40,7 +40,7 @@ class Auction < ApplicationRecord
 
   # As the name suggests, this method return the offer that is currently the highest.
   # The following case might occur:
-  # Auction `auction` has two offers, A (50.00 €) and B (5.00 €). When an auction expires, offer A
+  # Auction `auction` has two offers, A (50.00) and B (5.00). When an auction expires, offer A
   # is the winner.
   # auction.currently_winning_offer -> Offer A
 

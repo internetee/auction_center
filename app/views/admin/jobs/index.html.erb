@@ -13,8 +13,8 @@
             </thead>
             <tbody class="jobs-table-body">
                 <% @jobs.each do |job| %>
-                    <tr class="jobs-table-row <%= job.name %>">
-                        <td><%= job.name %></td>
+                    <tr class="jobs-table-row <%= job.job_name %>">
+                        <td><%= job.job_name %></td>
                         <td>
                             <%= form_with(model: job, local: true, url: admin_jobs_path) do |f| %>
                                 <%= f.hidden_field :job_class %>

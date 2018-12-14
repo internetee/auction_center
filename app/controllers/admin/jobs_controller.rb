@@ -25,12 +25,12 @@ module Admin
 
     def set_job_class
       job_name = params.require(:job).require(:job_class)
-      job_name.constantize
+      Job.new(job_name).job_class
     end
 
     def set_jobs
-      @jobs = [Job.new(ResultCreationJob), Job.new(InvoiceCancellationJob),
-               Job.new(InvoiceCreationJob)]
+      @jobs = [Job.new('ResultCreationJob'), Job.new('InvoiceCancellationJob'),
+               Job.new('InvoiceCreationJob')]
     end
 
     def authorize_user

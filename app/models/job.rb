@@ -1,18 +1,14 @@
-require 'expected_application_job'
-
 class Job
   include ActiveModel::Model
 
-  attr_reader :job_class
+  attr_reader :job_name
 
-  def initialize(job_class)
-    raise(Errors::ExpectedApplicationJob.new, job_class) unless job_class < ApplicationJob
-
-    @job_class = job_class
+  def initialize(job_name)
+    @job_name = job_name
   end
 
-  def name
-    job_class.to_s
+  def job_class
+    job_name.constantize
   end
 
   delegate :needs_to_run?, to: :job_class, prefix: false

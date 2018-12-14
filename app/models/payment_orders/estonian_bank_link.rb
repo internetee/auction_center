@@ -77,7 +77,7 @@ module PaymentOrders
 
     def mark_invoice_as_paid
       if valid_response? && valid_success_notice?
-        time = Time.parse(response['VK_T_DATETIME'])
+        time = Time.zone.parse(response['VK_T_DATETIME'])
         paid!
         invoice.mark_as_paid_at(time)
       elsif valid_response? && valid_cancel_notice?
@@ -89,7 +89,7 @@ module PaymentOrders
     def valid_response?
       return false unless response
 
-      case response["VK_SERVICE"]
+      case response['VK_SERVICE']
       when SUCCESSFUL_PAYMENT_SERVICE_NUMBER
         valid_successful_transaction?
       when CANCELLED_PAYMENT_SERVICE_NUMBER
@@ -115,18 +115,18 @@ module PaymentOrders
 
     def valid_mac?(hash, keys)
       data = keys.map { |element| prepend_size(hash[element]) }.join
-      verify_mac(data, hash["VK_MAC"])
+      verify_mac(data, hash['VK_MAC'])
     end
 
     def valid_amount?
-      source = BigDecimal(response["VK_AMOUNT"])
+      source = BigDecimal(response['VK_AMOUNT'])
       target = invoice.total.to_d
 
       source == target
     end
 
     def valid_currency?
-      Setting.auction_currency == response["VK_CURR"]
+      Setting.auction_currency == response['VK_CURR']
     end
 
     def verify_mac(data, mac)
@@ -141,9 +141,9 @@ module PaymentOrders
     end
 
     def prepend_size(value)
-      value = (value || "").to_s.strip
-      string = ""
-      string << format("%03i", value.size)
+      value = (value || '').to_s.strip
+      string = ''
+      string << format('%03i', value.size)
       string << value
     end
 
