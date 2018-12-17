@@ -11,7 +11,7 @@ class BillingProfilesTest < ApplicationSystemTestCase
   end
 
   def test_user_details_contains_a_link_to_billing
-    visit user_path(@user)
+    visit user_path(@user.uuid)
     assert(page.has_link?('Billing', href: billing_profiles_path))
   end
 

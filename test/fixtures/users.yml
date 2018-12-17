@@ -10,6 +10,7 @@ administrator:
   mobile_phone: '+37255000001'
   roles: ['administrator']
   terms_and_conditions_accepted_at: <%= Time.parse("2010-07-05 00:16:00 UTC") %>
+  uuid: '6848ef9e-c3c7-406e-b300-6f8c7b7f41d9'
 
 participant:
   email: 'user@auction.test'
@@ -23,6 +24,7 @@ participant:
   mobile_phone: '+37255000002'
   roles: ['participant']
   terms_and_conditions_accepted_at: <%= Time.parse("2010-07-05 00:16:00 UTC") %>
+  uuid: 'dec265a9-4b4b-4165-83fd-9283700eae9c'
 
 second_place_participant:
   email: 'second_place@auction.test'
@@ -36,3 +38,4 @@ second_place_participant:
   mobile_phone: '+37255000002'
   roles: ['participant']
   terms_and_conditions_accepted_at: <%= Time.parse("2010-07-05 00:16:00 UTC") %>
+  uuid: '7869501d-4de6-499e-b0d1-dfb63e6e2a66'

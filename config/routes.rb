@@ -39,5 +39,5 @@ Rails.application.routes.draw do
 
   resources :offers, only: :index
   resources :results, only: :show
-  resources :users
+  resources :users, param: :uuid
 end
