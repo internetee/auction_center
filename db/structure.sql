@@ -42,6 +42,20 @@ COMMENT ON EXTENSION btree_gist IS 'support for indexing common datatypes in GiS
 
 
 --
+-- Name: pgcrypto; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION pgcrypto; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
+
+
+--
 -- Name: invoice_status; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -1854,6 +1868,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181212075049'),
 ('20181213100723'),
 ('20181213100947'),
-('20181213125519');
+('20181213125519'),
+('20181217105817');
 
 
