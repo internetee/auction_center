@@ -17,7 +17,7 @@ class OffersController < ApplicationController
     @offer = Offer.new(create_params)
 
     respond_to do |format|
-      if @offer.save && @offer.reload
+      if create_predicate
         format.html { redirect_to offer_path(@offer.uuid), notice: t(:created) }
         format.json { render :show, status: :created, location: @offer }
       else
@@ -45,7 +45,7 @@ class OffersController < ApplicationController
   # PUT /offers/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
   def update
     respond_to do |format|
-      if @offer.update(update_params)
+      if update_predicate
         format.html { redirect_to offer_path(@offer.uuid), notice: t(:updated) }
         format.json { render :show, status: :ok, location: @offer }
       else
@@ -67,8 +67,16 @@ class OffersController < ApplicationController
 
   private
 
+  def create_predicate
+    verify_recaptcha(model: @offer) && @offer.save && @offer.reload
+  end
+
   def create_params
     params.require(:offer).permit(:auction_id, :user_id, :price, :billing_profile_id)
+  end
+
+  def update_predicate
+    verify_recaptcha(model: @offer) && @offer.update(update_params)
   end
 
   def update_params
