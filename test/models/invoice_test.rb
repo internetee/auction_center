@@ -111,16 +111,6 @@ class InvoiceTest < ActiveSupport::TestCase
     assert_equal(1, @payable_invoice.items.count)
   end
 
-  def test_vat_returns_payable_vat
-    assert_equal(Money.new('0', 'EUR'), @payable_invoice.vat)
-    assert_equal(Money.new('200', 'EUR'), @orphaned_invoice.vat)
-  end
-
-  def test_total_returns_price_plus_vat
-    assert_equal(Money.new('1000', 'EUR'), @payable_invoice.total)
-    assert_equal(Money.new('1200', 'EUR'), @orphaned_invoice.total)
-  end
-
   def test_mark_as_paid_at
     travel_to Time.parse('2010-07-05 10:30 +0000')
 
