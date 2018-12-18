@@ -9,7 +9,7 @@ class InvoicesController < ApplicationController
   # PUT /invoices/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
   def update
     respond_to do |format|
-      if @invoice.update(update_params)
+      if update_predicate
         format.html { redirect_to invoice_path(@invoice.uuid), notice: t(:updated) }
         format.json { render :show, status: :ok, location: @invoice }
       else
@@ -35,6 +35,10 @@ class InvoicesController < ApplicationController
            .where(user_id: current_user.id)
            .where(status: status)
            .order(due_date: :desc)
+  end
+
+  def update_predicate
+    @invoice.update(update_params)
   end
 
   def update_params

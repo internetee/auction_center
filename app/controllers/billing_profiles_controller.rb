@@ -19,7 +19,7 @@ class BillingProfilesController < ApplicationController
     @billing_profile = BillingProfile.new(create_params)
 
     respond_to do |format|
-      if @billing_profile.save && @billing_profile.reload
+      if create_predicate
         format.html { redirect_to billing_profile_path(@billing_profile.uuid), notice: t(:created) }
         format.json { render :show, status: :created, location: @billing_profile }
       else
@@ -38,7 +38,7 @@ class BillingProfilesController < ApplicationController
   # PUT /billing_profiles/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
   def update
     respond_to do |format|
-      if @billing_profile.update(update_params)
+      if update_predicate
         format.html { redirect_to billing_profile_path(@billing_profile.uuid), notice: t(:updated) }
         format.json { render :show, status: :ok, location: @billing_profile }
       else
@@ -60,10 +60,18 @@ class BillingProfilesController < ApplicationController
 
   private
 
+  def create_predicate
+    @billing_profile.save && @billing_profile.reload
+  end
+
   def create_params
     params.require(:billing_profile).permit(
       :user_id, :name, :vat_code, :legal_entity, :street, :city, :postal_code, :country_code
     )
+  end
+
+  def update_predicate
+    @billing_profile.update(update_params)
   end
 
   def update_params

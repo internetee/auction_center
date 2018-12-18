@@ -29,6 +29,7 @@ class RecaptchaOffersTest < ApplicationSystemTestCase
 
       fill_in('offer[price]', with: '5.12')
       select('ACME Inc.', from: 'offer[billing_profile_id]')
+
       click_link_or_button('Submit')
 
       assert_text('reCAPTCHA verification failed, please try again.')

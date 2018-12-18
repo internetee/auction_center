@@ -7,10 +7,8 @@ class PaymentOrdersController < ApplicationController
     @payment_order = PaymentOrder.new(create_params)
 
     respond_to do |format|
-      if @payment_order.save && @payment_order.reload
-        format.html do
-          redirect_to payment_order_path(@payment_order.uuid)
-        end
+      if create_predicate
+        format.html { redirect_to payment_order_path(@payment_order.uuid) }
         format.json { render :show, status: :created, location: @payment_order }
       else
         format.html { redirect_to invoice_path(@payment_order.invoice), notice: t(:error) }
@@ -49,12 +47,16 @@ class PaymentOrdersController < ApplicationController
 
   private
 
-  def authorize_user
-    authorize! :read, PaymentOrder
-    authorize! :create, PaymentOrder
+  def create_predicate
+    @payment_order.save && @payment_order.reload
   end
 
   def create_params
     params.require(:payment_order).permit(:user_id, :invoice_id, :type)
+  end
+
+  def authorize_user
+    authorize! :read, PaymentOrder
+    authorize! :create, PaymentOrder
   end
 end
