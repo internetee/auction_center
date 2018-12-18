@@ -20,11 +20,11 @@ class ResultsTest < ApplicationSystemTestCase
     visit(offers_path)
 
     assert(page.has_text?("You won"))
-    assert(page.has_link?('Claim your domain'), href: result_path(@result))
+    assert(page.has_link?('Claim your domain'), href: result_path(@result.uuid))
   end
 
   def test_result_page_contains_result_info
-    visit(result_path(@result))
+    visit(result_path(@result.uuid))
     assert(page.has_text?("You won"))
   end
 
@@ -32,13 +32,13 @@ class ResultsTest < ApplicationSystemTestCase
     @result.paid!
     assert(@result.paid?)
 
-    visit(result_path(@result))
+    visit(result_path(@result.uuid))
     assert(page.has_text?("332c70cdd0791d185778e0cc2a4eddea"))
   end
 
   def test_visiting_results_path_triggers_invoice_creation_job
     assert_enqueued_with(job: InvoiceCreationJob) do
-      visit(result_path(@result))
+      visit(result_path(@result.uuid))
 
       assert_text('We are generating the invoice, please check back in a few minutes.')
     end

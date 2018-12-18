@@ -7,7 +7,7 @@ class ResultsController < ApplicationController
     @result = Result.includes(:invoice)
                     .where(user_id: current_user.id)
                     .accessible_by(current_ability)
-                    .find(params[:id])
+                    .find_by!(uuid: params[:uuid])
   end
 
   private

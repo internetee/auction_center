@@ -38,6 +38,6 @@ Rails.application.routes.draw do
   end
 
   resources :offers, only: :index
-  resources :results, only: :show
+  resources :results, only: :show, param: :uuid
   resources :users, param: :uuid
 end
