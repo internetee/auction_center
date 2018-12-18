@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-12">
         <h1 class="mb-3 mt-4"><%= @invoice.title %></h1>
-        <%= link_to t(:result_name), result_path(@invoice.result), class: "card-link mt" %>
+        <%= link_to t(:result_name), result_path(@invoice.result.uuid), class: "card-link mt" %>
     </div>
 </div>
 
@@ -15,7 +15,7 @@
             </dd>
 
         <% if @invoice.issued? %>
-            <%= link_to t('.change_billing_profile'), edit_invoice_path(@invoice), class: "card-link mt" %>
+            <%= link_to t('.change_billing_profile'), edit_invoice_path(@invoice.uuid), class: "card-link mt" %>
         <% end %>
         </dl>
     </div>
@@ -91,7 +91,7 @@
             <div class="row">
                 <% PaymentOrder.supported_methods.each do |method| %>
                     <%= form_with(model: PaymentOrder, local: true,
-                                  url: invoice_payment_orders_path(@invoice),
+                                  url: invoice_payment_orders_path(@invoice.uuid),
                                   id: method.config_namespace_name) do |f| %>
                         <div class="row">
                             <div class="form-group">

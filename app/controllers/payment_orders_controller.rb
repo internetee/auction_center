@@ -2,14 +2,14 @@ class PaymentOrdersController < ApplicationController
   skip_before_action :verify_authenticity_token, only: %i[return callback]
   before_action :authorize_user, only: %i[create show]
 
-  # POST /invoices/1/payment_orders
+  # POST /invoices/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/payment_orders
   def create
     @payment_order = PaymentOrder.new(create_params)
 
     respond_to do |format|
-      if @payment_order.save
+      if @payment_order.save && @payment_order.reload
         format.html do
-          redirect_to invoice_payment_order_path(@payment_order.invoice_id, @payment_order)
+          redirect_to payment_order_path(@payment_order.uuid)
         end
         format.json { render :show, status: :created, location: @payment_order }
       else
@@ -19,32 +19,30 @@ class PaymentOrdersController < ApplicationController
     end
   end
 
-  # GET /invoices/1/payment_orders/1
+  # GET /payment_orders/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
   def show
-    @payment_order = PaymentOrder.find_by!(id: params[:id], invoice_id: params[:invoice_id])
-    @payment_order.return_url = return_invoice_payment_order_url(@payment_order.invoice,
-                                                                 @payment_order)
-    @payment_order.callback_url = callback_invoice_payment_order_url(@payment_order.invoice,
-                                                                     @payment_order)
+    @payment_order = PaymentOrder.find_by!(uuid: params[:uuid])
+    @payment_order.return_url = return_payment_order_url(@payment_order.uuid)
+    @payment_order.callback_url = callback_payment_order_url(@payment_order.uuid)
   end
 
-  # ANY /invoices/1/payment_orders/1/return
+  # ANY /payment_orders/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/return
   def return
-    @payment_order = PaymentOrder.find_by!(id: params[:id], invoice_id: params[:invoice_id])
+    @payment_order = PaymentOrder.find_by!(uuid: params[:uuid])
     @payment_order.update!(response: params.to_unsafe_h)
 
     respond_to do |format|
       if @payment_order.mark_invoice_as_paid
-        format.html { redirect_to invoice_path(@payment_order.invoice), notice: t(:updated) }
-        format.json { redirect_to invoice_path(@payment_order.invoice), notice: t(:updated) }
+        format.html { redirect_to invoice_path(@payment_order.invoice.uuid), notice: t(:updated) }
+        format.json { redirect_to invoice_path(@payment_order.invoice.uuid), notice: t(:updated) }
       else
-        format.html { redirect_to invoice_path(@payment_order.invoice), notice: t(:error) }
+        format.html { redirect_to invoice_path(@payment_order.invoice.uuid), notice: t(:error) }
         format.json { render json: @payment_order.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # POST /invoices/1/payment_orders/1/callback
+  # POST /payment_orders/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/callback
   def callback
     render status: :ok, json: { status: 'ok' }
   end

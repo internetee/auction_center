@@ -36,13 +36,13 @@ class UsersController < ApplicationController
     end
   end
 
-  # GET /users/1
+  # GET /users/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
   def show; end
 
-  # GET /users/1/edit
+  # GET /users/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/edit
   def edit; end
 
-  # PUT /users/1
+  # PUT /users/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
   def update
     if @user.valid_password?(params.dig(:user, :current_password))
       respond_to do |format|

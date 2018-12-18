@@ -3,7 +3,7 @@ class OffersController < ApplicationController
   before_action :set_offer, only: %i[show edit update destroy]
   before_action :authorize_user, except: :new
 
-  # GET /auctions/1/offers/new
+  # GET /auctions/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/offers/new
   def new
     auction = Auction.find_by!(uuid: params[:auction_uuid])
 
@@ -12,7 +12,7 @@ class OffersController < ApplicationController
     )
   end
 
-  # POST /auctions/1/offers
+  # POST /auctions/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/offers
   def create
     @offer = Offer.new(create_params)
 
@@ -36,13 +36,13 @@ class OffersController < ApplicationController
                    .order('auctions.ends_at DESC')
   end
 
-  # GET /offers/1
+  # GET /offers/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
   def show; end
 
-  # GET /offers/1/edit
+  # GET /offers/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/edit
   def edit; end
 
-  # PUT /offers/1
+  # PUT /offers/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
   def update
     respond_to do |format|
       if @offer.update(update_params)
@@ -55,7 +55,7 @@ class OffersController < ApplicationController
     end
   end
 
-  # DELETE /offers/1
+  # DELETE /offers/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
   def destroy
     return unless @offer.can_be_modified? && @offer.destroy
 

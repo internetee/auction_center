@@ -29,13 +29,13 @@ class BillingProfilesController < ApplicationController
     end
   end
 
-  # GET /billing_profiles/1
+  # GET /billing_profiles/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
   def show; end
 
-  # GET /billing_profiles/1/edit
+  # GET /billing_profiles/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/edit
   def edit; end
 
-  # PUT /billing_profiles/1
+  # PUT /billing_profiles/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
   def update
     respond_to do |format|
       if @billing_profile.update(update_params)
@@ -48,7 +48,7 @@ class BillingProfilesController < ApplicationController
     end
   end
 
-  # DELETE /billing_profiles/1
+  # DELETE /billing_profiles/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
   def destroy
     @billing_profile.destroy
 

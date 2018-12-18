@@ -7,7 +7,7 @@ class PaymentOrdersTest < ActionDispatch::IntegrationTest
   end
 
   def test_response_from_callback_endpoint
-    post callback_invoice_payment_order_path(@payment_order.invoice_id, @payment_order.id), {}
+    post callback_payment_order_path(@payment_order.uuid), {}
     response_json = JSON.parse(response.body)
 
     assert_equal({ "status" => "ok" }, response_json)
@@ -15,7 +15,7 @@ class PaymentOrdersTest < ActionDispatch::IntegrationTest
   end
 
   def test_response_from_return_payment_redirects_to_invoice
-    post return_invoice_payment_order_path(@payment_order.invoice_id, @payment_order.id),
+    post return_payment_order_path(@payment_order.uuid),
       { params: request_params }
 
     assert_equal(302, response.status)

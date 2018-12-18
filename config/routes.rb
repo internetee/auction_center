@@ -25,8 +25,8 @@ Rails.application.routes.draw do
 
   resources :billing_profiles, param: :uuid
 
-  resources :invoices, only: %i[show edit update index] do
-    resources :payment_orders, only: %i[new show create] do
+  resources :invoices, only: %i[show edit update index], param: :uuid do
+    resources :payment_orders, only: %i[new show create], shallow: true, param: :uuid do
       member do
         get "return"
         put "return"
