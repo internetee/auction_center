@@ -894,6 +894,7 @@ CREATE TABLE public.offers (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     billing_profile_id integer NOT NULL,
+    uuid uuid DEFAULT public.gen_random_uuid(),
     CONSTRAINT offers_cents_are_positive CHECK ((cents > 0))
 );
 
@@ -1623,6 +1624,13 @@ CREATE INDEX index_offers_on_auction_id ON public.offers USING btree (auction_id
 --
 
 CREATE INDEX index_offers_on_user_id ON public.offers USING btree (user_id);
+
+
+--
+-- Name: index_offers_on_uuid; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_offers_on_uuid ON public.offers USING btree (uuid);
 
 
 --
