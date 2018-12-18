@@ -5,8 +5,10 @@ class OffersController < ApplicationController
 
   # GET /auctions/1/offers/new
   def new
+    auction = Auction.find_by!(uuid: params[:auction_uuid])
+
     @offer = Offer.new(
-      auction_id: params[:auction_id], user_id: current_user.id
+      auction_id: auction.id, user_id: current_user.id
     )
   end
 
@@ -15,8 +17,8 @@ class OffersController < ApplicationController
     @offer = Offer.new(create_params)
 
     respond_to do |format|
-      if @offer.save
-        format.html { redirect_to offer_path(@offer), notice: t(:created) }
+      if @offer.save && @offer.reload
+        format.html { redirect_to offer_path(@offer.uuid), notice: t(:created) }
         format.json { render :show, status: :created, location: @offer }
       else
         format.html { render :new }
@@ -44,7 +46,7 @@ class OffersController < ApplicationController
   def update
     respond_to do |format|
       if @offer.update(update_params)
-        format.html { redirect_to offer_path(@offer), notice: t(:updated) }
+        format.html { redirect_to offer_path(@offer.uuid), notice: t(:updated) }
         format.json { render :show, status: :ok, location: @offer }
       else
         format.html { render :edit }
@@ -58,7 +60,7 @@ class OffersController < ApplicationController
     return unless @offer.can_be_modified? && @offer.destroy
 
     respond_to do |format|
-      format.html { redirect_to auction_path(@offer.auction_id), notice: t(:deleted) }
+      format.html { redirect_to auction_path(@offer.auction.uuid), notice: t(:deleted) }
       format.json { head :no_content }
     end
   end
@@ -76,7 +78,7 @@ class OffersController < ApplicationController
   def set_offer
     @offer = Offer.accessible_by(current_ability)
                   .where(user_id: current_user.id)
-                  .find(params[:id])
+                  .find_by!(uuid: params[:uuid])
   end
 
   def authorize_user

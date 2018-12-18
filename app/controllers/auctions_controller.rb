@@ -7,7 +7,7 @@ class AuctionsController < ApplicationController
   end
 
   def show
-    @auction = Auction.accessible_by(current_ability).find(params[:id])
+    @auction = Auction.accessible_by(current_ability).find_by!(uuid: params[:uuid])
   end
 
   def authorize_user

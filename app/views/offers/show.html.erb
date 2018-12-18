@@ -23,8 +23,8 @@
                 <p><%= t('.we_will_contact_winner') %></p>
 
                 <%- if @offer.can_be_modified?  %>
-                    <%= link_to t(:edit), edit_offer_path(@offer), class: "card-link mt" %>
-                    <%= link_to t(:delete), offer_path(@offer),
+                    <%= link_to t(:edit), edit_offer_path(@offer.uuid), class: "card-link mt" %>
+                    <%= link_to t(:delete), offer_path(@offer.uuid),
                                 method: :delete,
                                 data: { confirm: t(:are_you_sure) },
                                 remote: true, class: "card-link mt" %>

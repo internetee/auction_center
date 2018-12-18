@@ -19,8 +19,8 @@ Rails.application.routes.draw do
     resources :users, concerns: [:auditable]
   end
 
-  resources :auctions, only: %i[index show] do
-    resources :offers, only: %i[new show create edit update destroy], shallow: true
+  resources :auctions, only: %i[index show], param: :uuid do
+    resources :offers, only: %i[new show create edit update destroy], shallow: true, param: :uuid
   end
 
   resources :billing_profiles, param: :uuid

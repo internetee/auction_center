@@ -42,8 +42,8 @@ class AuctionsTest < ApplicationSystemTestCase
     visit('/')
 
     assert(page.has_table?('auctions-table'))
-    assert(page.has_link?('with-offers.test', href: auction_path(@auction.id)))
-    assert(page.has_link?('no-offers.test', href: auction_path(@other_auction.id)))
+    assert(page.has_link?('with-offers.test', href: auction_path(@auction.uuid)))
+    assert(page.has_link?('no-offers.test', href: auction_path(@other_auction.uuid)))
   end
 
   def test_auctions_index_does_not_contain_auctions_that_are_finished
@@ -53,13 +53,13 @@ class AuctionsTest < ApplicationSystemTestCase
   end
 
   def test_show_page_for_finished_auctions_still_exists
-    visit(auction_path(@expired_auction))
+    visit(auction_path(@expired_auction.uuid))
     assert(page.has_content?('h3', 'This auction has finished'))
     assert(page.has_content?('dd', 'expired.test'))
   end
 
   def test_show_page_contains_the_details_of_the_auction
-    visit(auction_path(@auction))
+    visit(auction_path(@auction.uuid))
 
     assert(page.has_content?('dd', 'with-offers.test'))
     assert(page.has_content?('dd', '2010-07-06 10:30'))

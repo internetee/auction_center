@@ -29,7 +29,7 @@
                     edit_offer_path(@auction.offer_from_user(current_user)), class: "card-link mt" %>
                 <% else %>
                     <%= link_to t('auctions.submit_offer'),
-                    new_auction_offer_path(auction_id: @auction.id), class: "card-link mt" %>
+                    new_auction_offer_path(auction_uuid: @auction.uuid), class: "card-link mt" %>
                 <% end %>
             </div>
         </div>
