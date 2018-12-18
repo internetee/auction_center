@@ -19,8 +19,8 @@ class BillingProfilesController < ApplicationController
     @billing_profile = BillingProfile.new(create_params)
 
     respond_to do |format|
-      if @billing_profile.save
-        format.html { redirect_to billing_profile_path(@billing_profile), notice: t(:created) }
+      if @billing_profile.save && @billing_profile.reload
+        format.html { redirect_to billing_profile_path(@billing_profile.uuid), notice: t(:created) }
         format.json { render :show, status: :created, location: @billing_profile }
       else
         format.html { render :new }
@@ -39,7 +39,7 @@ class BillingProfilesController < ApplicationController
   def update
     respond_to do |format|
       if @billing_profile.update(update_params)
-        format.html { redirect_to billing_profile_path(@billing_profile), notice: t(:updated) }
+        format.html { redirect_to billing_profile_path(@billing_profile.uuid), notice: t(:updated) }
         format.json { render :show, status: :ok, location: @billing_profile }
       else
         format.html { render :edit }
@@ -75,7 +75,7 @@ class BillingProfilesController < ApplicationController
   def set_billing_profile
     @billing_profile = BillingProfile.accessible_by(current_ability)
                                      .where(user_id: current_user.id)
-                                     .find(params[:id])
+                                     .find_by!(uuid: params[:uuid])
   end
 
   def authorize_user

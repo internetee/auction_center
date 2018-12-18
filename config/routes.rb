@@ -23,7 +23,7 @@ Rails.application.routes.draw do
     resources :offers, only: %i[new show create edit update destroy], shallow: true
   end
 
-  resources :billing_profiles
+  resources :billing_profiles, param: :uuid
 
   resources :invoices, only: %i[show edit update index] do
     resources :payment_orders, only: %i[new show create] do
