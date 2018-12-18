@@ -1542,10 +1542,24 @@ CREATE INDEX index_auctions_on_ends_at ON public.auctions USING btree (ends_at);
 
 
 --
+-- Name: index_auctions_on_uuid; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_auctions_on_uuid ON public.auctions USING btree (uuid);
+
+
+--
 -- Name: index_billing_profiles_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_billing_profiles_on_user_id ON public.billing_profiles USING btree (user_id);
+
+
+--
+-- Name: index_billing_profiles_on_uuid; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_billing_profiles_on_uuid ON public.billing_profiles USING btree (uuid);
 
 
 --
@@ -1560,6 +1574,13 @@ CREATE UNIQUE INDEX index_billing_profiles_on_vat_code_and_user_id ON public.bil
 --
 
 CREATE INDEX index_invoice_items_on_invoice_id ON public.invoice_items USING btree (invoice_id);
+
+
+--
+-- Name: index_invoice_items_on_uuid; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_invoice_items_on_uuid ON public.invoice_items USING btree (uuid);
 
 
 --
@@ -1581,6 +1602,13 @@ CREATE INDEX index_invoices_on_result_id ON public.invoices USING btree (result_
 --
 
 CREATE INDEX index_invoices_on_user_id ON public.invoices USING btree (user_id);
+
+
+--
+-- Name: index_invoices_on_uuid; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_invoices_on_uuid ON public.invoices USING btree (uuid);
 
 
 --
@@ -1612,6 +1640,13 @@ CREATE INDEX index_payment_orders_on_user_id ON public.payment_orders USING btre
 
 
 --
+-- Name: index_payment_orders_on_uuid; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_payment_orders_on_uuid ON public.payment_orders USING btree (uuid);
+
+
+--
 -- Name: index_results_on_auction_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1630,6 +1665,13 @@ CREATE INDEX index_results_on_offer_id ON public.results USING btree (offer_id);
 --
 
 CREATE INDEX index_results_on_user_id ON public.results USING btree (user_id);
+
+
+--
+-- Name: index_results_on_uuid; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_results_on_uuid ON public.results USING btree (uuid);
 
 
 --
@@ -1658,6 +1700,13 @@ CREATE UNIQUE INDEX index_users_on_email ON public.users USING btree (email);
 --
 
 CREATE UNIQUE INDEX index_users_on_reset_password_token ON public.users USING btree (reset_password_token);
+
+
+--
+-- Name: index_users_on_uuid; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_users_on_uuid ON public.users USING btree (uuid);
 
 
 --
