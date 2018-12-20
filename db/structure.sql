@@ -42,6 +42,20 @@ COMMENT ON EXTENSION btree_gist IS 'support for indexing common datatypes in GiS
 
 
 --
+-- Name: pgcrypto; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION pgcrypto; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
+
+
+--
 -- Name: invoice_status; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -669,6 +683,7 @@ CREATE TABLE public.auctions (
     domain_name character varying NOT NULL,
     ends_at timestamp without time zone NOT NULL,
     starts_at timestamp without time zone DEFAULT now() NOT NULL,
+    uuid uuid DEFAULT public.gen_random_uuid(),
     CONSTRAINT starts_at_earlier_than_ends_at CHECK ((starts_at < ends_at))
 );
 
@@ -707,7 +722,8 @@ CREATE TABLE public.billing_profiles (
     postal_code character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    alpha_two_country_code character varying(2) NOT NULL
+    alpha_two_country_code character varying(2) NOT NULL,
+    uuid uuid DEFAULT public.gen_random_uuid()
 );
 
 
@@ -779,7 +795,8 @@ CREATE TABLE public.invoice_items (
     name character varying NOT NULL,
     cents integer NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    uuid uuid DEFAULT public.gen_random_uuid()
 );
 
 
@@ -819,6 +836,7 @@ CREATE TABLE public.invoices (
     paid_at timestamp without time zone,
     status public.invoice_status DEFAULT 'issued'::public.invoice_status,
     number integer NOT NULL,
+    uuid uuid DEFAULT public.gen_random_uuid(),
     CONSTRAINT invoices_cents_are_positive CHECK ((cents > 0)),
     CONSTRAINT issued_at_earlier_than_payment_at CHECK ((issue_date <= due_date)),
     CONSTRAINT paid_at_is_filled_when_status_is_paid CHECK ((NOT ((status = 'paid'::public.invoice_status) AND (paid_at IS NULL)))),
@@ -876,6 +894,7 @@ CREATE TABLE public.offers (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     billing_profile_id integer NOT NULL,
+    uuid uuid DEFAULT public.gen_random_uuid(),
     CONSTRAINT offers_cents_are_positive CHECK ((cents > 0))
 );
 
@@ -911,7 +930,8 @@ CREATE TABLE public.payment_orders (
     response jsonb,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    status public.payment_order_status DEFAULT 'issued'::public.payment_order_status
+    status public.payment_order_status DEFAULT 'issued'::public.payment_order_status,
+    uuid uuid DEFAULT public.gen_random_uuid()
 );
 
 
@@ -945,7 +965,8 @@ CREATE TABLE public.results (
     offer_id integer,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    status public.result_status NOT NULL
+    status public.result_status NOT NULL,
+    uuid uuid DEFAULT public.gen_random_uuid()
 );
 
 
@@ -1034,6 +1055,7 @@ CREATE TABLE public.users (
     mobile_phone character varying NOT NULL,
     roles character varying[] DEFAULT '{participant}'::character varying[],
     terms_and_conditions_accepted_at timestamp without time zone,
+    uuid uuid DEFAULT public.gen_random_uuid(),
     CONSTRAINT users_roles_are_known CHECK ((roles <@ ARRAY['participant'::character varying, 'administrator'::character varying]))
 );
 
@@ -1521,10 +1543,24 @@ CREATE INDEX index_auctions_on_ends_at ON public.auctions USING btree (ends_at);
 
 
 --
+-- Name: index_auctions_on_uuid; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_auctions_on_uuid ON public.auctions USING btree (uuid);
+
+
+--
 -- Name: index_billing_profiles_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_billing_profiles_on_user_id ON public.billing_profiles USING btree (user_id);
+
+
+--
+-- Name: index_billing_profiles_on_uuid; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_billing_profiles_on_uuid ON public.billing_profiles USING btree (uuid);
 
 
 --
@@ -1539,6 +1575,13 @@ CREATE UNIQUE INDEX index_billing_profiles_on_vat_code_and_user_id ON public.bil
 --
 
 CREATE INDEX index_invoice_items_on_invoice_id ON public.invoice_items USING btree (invoice_id);
+
+
+--
+-- Name: index_invoice_items_on_uuid; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_invoice_items_on_uuid ON public.invoice_items USING btree (uuid);
 
 
 --
@@ -1563,6 +1606,13 @@ CREATE INDEX index_invoices_on_user_id ON public.invoices USING btree (user_id);
 
 
 --
+-- Name: index_invoices_on_uuid; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_invoices_on_uuid ON public.invoices USING btree (uuid);
+
+
+--
 -- Name: index_offers_on_auction_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1577,6 +1627,13 @@ CREATE INDEX index_offers_on_user_id ON public.offers USING btree (user_id);
 
 
 --
+-- Name: index_offers_on_uuid; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_offers_on_uuid ON public.offers USING btree (uuid);
+
+
+--
 -- Name: index_payment_orders_on_invoice_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1588,6 +1645,13 @@ CREATE INDEX index_payment_orders_on_invoice_id ON public.payment_orders USING b
 --
 
 CREATE INDEX index_payment_orders_on_user_id ON public.payment_orders USING btree (user_id);
+
+
+--
+-- Name: index_payment_orders_on_uuid; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_payment_orders_on_uuid ON public.payment_orders USING btree (uuid);
 
 
 --
@@ -1609,6 +1673,13 @@ CREATE INDEX index_results_on_offer_id ON public.results USING btree (offer_id);
 --
 
 CREATE INDEX index_results_on_user_id ON public.results USING btree (user_id);
+
+
+--
+-- Name: index_results_on_uuid; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_results_on_uuid ON public.results USING btree (uuid);
 
 
 --
@@ -1637,6 +1708,13 @@ CREATE UNIQUE INDEX index_users_on_email ON public.users USING btree (email);
 --
 
 CREATE UNIQUE INDEX index_users_on_reset_password_token ON public.users USING btree (reset_password_token);
+
+
+--
+-- Name: index_users_on_uuid; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_users_on_uuid ON public.users USING btree (uuid);
 
 
 --
@@ -1854,6 +1932,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181212075049'),
 ('20181213100723'),
 ('20181213100947'),
-('20181213125519');
+('20181213125519'),
+('20181217105817'),
+('20181217134832');
 
 

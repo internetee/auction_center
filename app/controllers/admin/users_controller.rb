@@ -26,7 +26,6 @@ module Admin
           end
 
           format.json do
-            sign_in(User, @user)
             render :show, status: :created, location: @user
           end
         else

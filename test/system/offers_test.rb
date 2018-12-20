@@ -32,12 +32,12 @@ class OffersTest < ApplicationSystemTestCase
       assert_text('with-offers.test')
       assert_text('50.00 €')
 
-      assert(page.has_link?('with-offers.test', href: offer_path(@offer)))
+      assert(page.has_link?('with-offers.test', href: offer_path(@offer.uuid)))
     end
   end
 
   def test_needs_to_be_signed_in_to_submit_an_offer
-    visit auction_path(@valid_auction)
+    visit auction_path(@valid_auction.uuid)
     click_link('Submit offer')
 
     assert_text('You need to sign in or sign up before continuing')
@@ -45,7 +45,7 @@ class OffersTest < ApplicationSystemTestCase
 
   def test_participant_can_submit_an_offer_for_pending_auction
     sign_in(@user)
-    visit auction_path(@valid_auction_with_no_offers)
+    visit auction_path(@valid_auction_with_no_offers.uuid)
 
     assert(page.has_link?('Submit offer'))
     click_link('Submit offer')
@@ -58,7 +58,7 @@ class OffersTest < ApplicationSystemTestCase
 
   def test_participant_cannot_submit_an_offer_with_3_or_more_decimal_places
     sign_in(@user)
-    visit auction_path(@valid_auction_with_no_offers)
+    visit auction_path(@valid_auction_with_no_offers.uuid)
 
     assert(page.has_link?('Submit offer'))
     click_link('Submit offer')
@@ -77,7 +77,7 @@ class OffersTest < ApplicationSystemTestCase
 
   def test_participant_can_update_an_offer
     sign_in(@user)
-    visit offer_path(@offer)
+    visit offer_path(@offer.uuid)
 
     click_link_or_button('Edit')
 
@@ -89,7 +89,7 @@ class OffersTest < ApplicationSystemTestCase
 
   def test_participant_can_delete_an_offer
     sign_in(@user)
-    visit offer_path(@offer)
+    visit offer_path(@offer.uuid)
 
     accept_confirm do
       click_link_or_button('Delete')
@@ -100,18 +100,18 @@ class OffersTest < ApplicationSystemTestCase
 
   def test_participant_cannot_delete_an_offer_for_old_auction
     sign_in(@user)
-    visit offer_path(@expired_offer)
+    visit offer_path(@expired_offer.uuid)
 
     refute(page.has_link?('Delete'))
   end
 
   def test_participant_cannot_submit_an_offer_for_old_auction
     sign_in(@user)
-    visit auction_path(@expired_auction)
+    visit auction_path(@expired_auction.uuid)
 
     refute(page.has_link?('Submit offer'))
 
-    visit new_auction_offer_path(@expired_auction)
+    visit new_auction_offer_path(@expired_auction.uuid)
 
     fill_in('offer[price]', with: '5.00')
     click_link_or_button('Submit')
@@ -123,7 +123,7 @@ class OffersTest < ApplicationSystemTestCase
     travel_to Time.parse('2010-08-05 10:30 +0000')
     sign_in(@user)
 
-    visit edit_offer_path(@offer)
+    visit edit_offer_path(@offer.uuid)
 
     fill_in('offer[price]', with: '5.00')
     click_link_or_button('Submit')

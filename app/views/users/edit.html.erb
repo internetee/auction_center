@@ -15,6 +15,6 @@
     </div>
 </div>
 
-<%= render 'form', user: @user, url: user_path(@user) %>
+<%= render 'form', user: @user, url: user_path(@user.uuid) %>
 
 <%= javascript_pack_tag 'users', 'data-turbolinks-track': 'reload' %>

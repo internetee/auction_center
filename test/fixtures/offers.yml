@@ -3,26 +3,31 @@ high_offer:
   user: participant
   cents: 5000
   billing_profile: private_person
+  uuid: "92f2d552-4270-4d08-8687-b332432c872f"
 
 minimum_offer:
   auction: valid_with_offers
   user: second_place_participant
   cents: 500
   billing_profile: private_person
+  uuid: "cec1de76-164f-4c9a-922d-dacde5e99f99"
 
 expired_offer:
   auction: expired
   user: participant
   cents: 1000
   billing_profile: company
+  uuid: "8ac98271-26f8-48d4-9fc7-e82baf0627a6"
 
 with_invoice:
   auction: with_invoice
   user: participant
   cents: 10000
   billing_profile: private_person
+  uuid: "53fc2a5d-fce2-46a5-a50b-107591a0e9ba"
 
 orphaned:
   auction: orphaned
   cents: 1000
   billing_profile: company
+  uuid: "0bab159c-fb70-4ef6-8f29-49080feaf6f8"

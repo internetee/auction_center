@@ -10,7 +10,7 @@ class UsersController < ApplicationController
 
   # GET /users/new
   def new
-    redirect_to user_path(current_user), notice: t('.already_signed_in') if current_user
+    redirect_to user_path(current_user.uuid), notice: t('.already_signed_in') if current_user
     @user = User.new
   end
 
@@ -22,7 +22,7 @@ class UsersController < ApplicationController
       if @user.save
         format.html do
           sign_in(User, @user)
-          redirect_to user_path(@user), notice: t(:created)
+          redirect_to user_path(@user.uuid), notice: t(:created)
         end
 
         format.json do
@@ -36,18 +36,18 @@ class UsersController < ApplicationController
     end
   end
 
-  # GET /users/1
+  # GET /users/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
   def show; end
 
-  # GET /users/1/edit
+  # GET /users/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/edit
   def edit; end
 
-  # PUT /users/1
+  # PUT /users/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
   def update
     if @user.valid_password?(params.dig(:user, :current_password))
       respond_to do |format|
         if @user.update(update_params)
-          format.html { redirect_to @user, notice: t(:updated) }
+          format.html { redirect_to user_path(@user.uuid), notice: t(:updated) }
           format.json { render :show, status: :ok, location: @user }
         else
           format.html { render :edit }
@@ -55,7 +55,7 @@ class UsersController < ApplicationController
         end
       end
     else
-      redirect_to edit_user_path(@user), notice: t('.incorrect_password')
+      redirect_to edit_user_path(@user.uuid), notice: t('.incorrect_password')
     end
   end
 
@@ -89,7 +89,7 @@ class UsersController < ApplicationController
   end
 
   def set_user
-    @user = User.accessible_by(current_ability).find(params[:id])
+    @user = User.accessible_by(current_ability).find_by!(uuid: params[:uuid])
   end
 
   def authorize_user

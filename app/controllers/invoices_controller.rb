@@ -3,14 +3,14 @@ class InvoicesController < ApplicationController
   before_action :authorize_user
   before_action :set_invoice, except: :index
 
-  # GET /invoices/1/edit
+  # GET /invoices/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/edit
   def edit; end
 
-  # PUT /invoices/1
+  # PUT /invoices/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
   def update
     respond_to do |format|
-      if @invoice.update(update_params)
-        format.html { redirect_to invoice_path(@invoice), notice: t(:updated) }
+      if update_predicate
+        format.html { redirect_to invoice_path(@invoice.uuid), notice: t(:updated) }
         format.json { render :show, status: :ok, location: @invoice }
       else
         format.html { render :edit }
@@ -19,7 +19,7 @@ class InvoicesController < ApplicationController
     end
   end
 
-  # GET /invoices/1
+  # GET /invoices/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
   def show; end
 
   # GET /invoices
@@ -37,12 +37,16 @@ class InvoicesController < ApplicationController
            .order(due_date: :desc)
   end
 
+  def update_predicate
+    @invoice.update(update_params)
+  end
+
   def update_params
     params.require(:invoice).permit(:billing_profile_id)
   end
 
   def set_invoice
-    @invoice = Invoice.accessible_by(current_ability).find(params[:id])
+    @invoice = Invoice.accessible_by(current_ability).find_by!(uuid: params[:uuid])
   end
 
   def authorize_user

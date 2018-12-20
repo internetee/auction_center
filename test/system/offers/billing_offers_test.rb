@@ -20,7 +20,7 @@ class BillingOffersTest < ApplicationSystemTestCase
 
   def test_user_needs_to_select_a_billing_profile_when_creating_offer
     sign_in(@user)
-    visit auction_path(@valid_auction_with_no_offers)
+    visit auction_path(@valid_auction_with_no_offers.uuid)
 
     assert(page.has_link?('Submit offer'))
     click_link('Submit offer')

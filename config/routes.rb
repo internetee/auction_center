@@ -19,14 +19,14 @@ Rails.application.routes.draw do
     resources :users, concerns: [:auditable]
   end
 
-  resources :auctions, only: %i[index show] do
-    resources :offers, only: %i[new show create edit update destroy], shallow: true
+  resources :auctions, only: %i[index show], param: :uuid do
+    resources :offers, only: %i[new show create edit update destroy], shallow: true, param: :uuid
   end
 
-  resources :billing_profiles
+  resources :billing_profiles, param: :uuid
 
-  resources :invoices, only: %i[show edit update index] do
-    resources :payment_orders, only: %i[new show create] do
+  resources :invoices, only: %i[show edit update index], param: :uuid do
+    resources :payment_orders, only: %i[new show create], shallow: true, param: :uuid do
       member do
         get "return"
         put "return"
@@ -38,6 +38,6 @@ Rails.application.routes.draw do
   end
 
   resources :offers, only: :index
-  resources :results, only: :show
-  resources :users
+  resources :results, only: :show, param: :uuid
+  resources :users, param: :uuid
 end

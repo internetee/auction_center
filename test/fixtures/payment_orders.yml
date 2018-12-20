@@ -3,3 +3,4 @@ issued:
   type: PaymentOrders::EveryPay
   user: second_place_participant
   status: <%= PaymentOrder.statuses[:issued] %>
+  uuid: "cec1de76-164f-4c9a-922d-dacde5e99f99"
