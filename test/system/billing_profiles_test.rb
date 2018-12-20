@@ -37,7 +37,7 @@ class BillingProfilesTest < ApplicationSystemTestCase
   def test_billing_profiles_list_contains_links_to_profiles
     visit billing_profiles_path
     assert(page.has_link?('Joe John Participant',
-                          href: billing_profile_path(@billing_profile)))
+                          href: billing_profile_path(@billing_profile.uuid)))
   end
 
   def test_a_user_can_create_billing_profile_for_a_vat_liable_company
