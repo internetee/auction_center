@@ -22,9 +22,9 @@ class InvoicesTest < ApplicationSystemTestCase
   end
 
   def test_user_can_update_billing_profile_on_issued_invoice
-    visit invoice_path(@invoice)
+    visit invoice_path(@invoice.uuid)
 
-    assert(page.has_link?('Change billing profile', href: edit_invoice_path(@invoice)))
+    assert(page.has_link?('Change billing profile', href: edit_invoice_path(@invoice.uuid)))
 
     click_link_or_button('Change billing profile')
     select('Joe John Participant', from: 'invoice[billing_profile_id]')
@@ -35,7 +35,7 @@ class InvoicesTest < ApplicationSystemTestCase
   end
 
   def test_invoice_contains_items_and_prices_without_vat
-    visit invoice_path(@invoice)
+    visit invoice_path(@invoice.uuid)
 
     assert_text("Domain transfer code for with-invoice.test")
     assert_text('VAT exclusive 10.00 €')
@@ -54,7 +54,7 @@ class InvoicesTest < ApplicationSystemTestCase
   end
 
   def test_a_user_can_pay_invoice_via_every_pay
-    visit invoice_path(@invoice)
+    visit invoice_path(@invoice.uuid)
 
     assert(page.has_css?("form#every_pay"))
 

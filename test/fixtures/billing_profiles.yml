@@ -4,7 +4,8 @@ private_person:
   street: "Baker Street 221B"
   city: "London"
   postal_code: "NW1 6XE"
-  alpha_two_country_code: 'GB'
+  alpha_two_country_code: "GB"
+  uuid: "762b09cb-bf40-4cf7-bdab-09cf677d0d0f"
 
 company:
   user: participant
@@ -14,6 +15,7 @@ company:
   city: "London"
   postal_code: "NW1 6XE"
   alpha_two_country_code: "GB"
+  uuid: "bcd3fc08-8f50-42ca-b69d-ccf7fe735b03"
 
 orphaned:
   name: "Orphan Profile"
@@ -21,3 +23,4 @@ orphaned:
   city: "London"
   postal_code: "NW1 6XE"
   alpha_two_country_code: "GB"
+  uuid: "700707da-b638-4357-ae1e-34edf832654b"

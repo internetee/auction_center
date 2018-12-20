@@ -2,23 +2,28 @@ valid_with_offers:
   domain_name: 'with-offers.test'
   starts_at: <%= Time.parse('2010-07-05 10:30 +0000') %>
   ends_at: <%= Time.parse('2010-07-06 10:30 +0000') %>
+  uuid: "821a6f51-caa6-4bb8-bfd6-4a13278a0167"
 
 valid_without_offers:
   domain_name: 'no-offers.test'
   starts_at: <%= Time.parse('2010-07-05 10:30 +0000') %>
   ends_at: <%= Time.parse('2010-07-06 10:30 +0000') %>
+  uuid: "96cc419b-97ee-46e9-95d8-2b8405f8d6a4"
 
 expired:
   domain_name: 'expired.test'
   starts_at: <%= Time.parse('1999-07-05 10:30 +0000') %>
   ends_at: <%= Time.parse('1999-07-05 11:30 +0000') %>
+  uuid: "509f9dcc-25e5-41ff-af73-1b0c27118a66"
 
 with_invoice:
   domain_name: 'with-invoice.test'
   starts_at: <%= Time.parse('2010-07-05 10:29 +0000') %>
   ends_at: <%= Time.parse('2010-07-05 10:30 +0000') %>
+  uuid: "12af3158-4c15-4d16-a605-2915e9f98d69"
 
 orphaned:
   domain_name: 'orphaned.test'
   starts_at: <%= Time.parse('2010-07-05 10:30 +0000') %>
   ends_at: <%= Time.parse('2010-07-06 10:30 +0000') %>
+  uuid: "29dffa2b-ba9e-4648-8155-9de23dadf99c"

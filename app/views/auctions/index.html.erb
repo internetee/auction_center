@@ -36,7 +36,7 @@
                     <% @auctions.each do |auction| %>
                         <tr class="auctions-table-row">
                             <td class="auction-domain-name">
-                                <%= link_to auction.domain_name, auction_path(auction) %>
+                                <%= link_to auction.domain_name, auction_path(auction.uuid) %>
                             </td>
                             <td><%= I18n.l(auction.ends_at) %></td>
                             <td><%= auction.current_price_from_user(current_user) %></td>
@@ -46,7 +46,7 @@
                                     edit_offer_path(auction.offer_from_user(current_user)) %>
                                 <% else %>
                                     <%= link_to t('auctions.submit_offer'),
-                                    new_auction_offer_path(auction_id: auction.id) %>
+                                    new_auction_offer_path(auction_uuid: auction.uuid) %>
                                 <% end %>
                             </td>
                         </tr>

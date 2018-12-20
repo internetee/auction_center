@@ -3,18 +3,22 @@ expired_participant:
   user: participant
   status: <%= Result.statuses[:sold] %>
   offer: expired_offer
+  uuid: "92f2d552-4270-4d08-8687-b332432c872f"
 
 with_invoice:
   auction: with_invoice
   user: participant
   status: <%= Result.statuses[:sold] %>
   offer: with_invoice
+  uuid: "cec1de76-164f-4c9a-922d-dacde5e99f99"
 
 without_offers_nobody:
   auction: valid_without_offers
   status: <%= Result.statuses[:expired] %>
+  uuid: "8ac98271-26f8-48d4-9fc7-e82baf0627a6"
 
 orphaned:
   auction: orphaned
   status: <%= Result.statuses[:sold] %>
   offer: orphaned
+  uuid: "53fc2a5d-fce2-46a5-a50b-107591a0e9ba"

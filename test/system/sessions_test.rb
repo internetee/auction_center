@@ -22,7 +22,7 @@ class SessionsTest < ApplicationSystemTestCase
     user = users(:participant)
     sign_in(user)
 
-    visit(user_path(user))
+    visit(user_path(user.uuid))
     click_link('Sign out')
     assert_text('Signed out successfully.')
   end
@@ -32,7 +32,7 @@ class SessionsTest < ApplicationSystemTestCase
     sign_in(user)
 
     visit(users_path)
-    assert(page.has_link?('Profile', href: user_path(user)))
+    assert(page.has_link?('Profile', href: user_path(user.uuid)))
     click_link_or_button('Profile')
 
     assert_equal('Joe John Participant', page.find('h2').text)

@@ -38,8 +38,8 @@
                         <dd><%= I18n.l(billing_profile.created_at) %></dd>
                     </dl>
 
-                    <%= link_to t(:edit), edit_billing_profile_path(billing_profile), class: "card-link mt" %>
-                    <%= link_to t(:delete), billing_profile_path(billing_profile),
+                    <%= link_to t(:edit), edit_billing_profile_path(billing_profile.uuid), class: "card-link mt" %>
+                    <%= link_to t(:delete), billing_profile_path(billing_profile.uuid),
                                 method: :delete, data: { confirm: t(:are_you_sure) },
                                 remote: true, class: "card-link mt" %>
                 </div>

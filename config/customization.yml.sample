@@ -43,6 +43,10 @@ default: &default
     # environment can be left blank, defaults to Rails.env
     # environment: ''
 
+  recaptcha:
+    site_key: ''
+    secret_key: ''
+
   payment_methods:
     enabled_methods:
       - "PaymentOrders::EveryPay"

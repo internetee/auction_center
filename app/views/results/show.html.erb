@@ -22,7 +22,7 @@
 
                     <dd>
                         <% if @result.invoice %>
-                            <%= link_to t('results.invoice'), invoice_path(@result.invoice) %>
+                            <%= link_to t('results.invoice'), invoice_path(@result.invoice.uuid) %>
                         <% else %>
                             <%= t('invoices.is_being_generated') %>
                         <% end %>
