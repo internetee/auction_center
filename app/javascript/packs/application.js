@@ -14,6 +14,4 @@ Rails.start();
 Turbolinks.start();
 
 // Bootstrap configuration
-import 'jquery/dist/jquery';
-import 'popper.js/dist/popper.js';
-import 'bootstrap/dist/js/bootstrap';
+import '../src/semantic-ui/semantic';
