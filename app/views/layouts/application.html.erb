@@ -10,10 +10,13 @@
     </head>
 
     <body>
-        <div class="container-fluid">
-            <header class="site-header">
+        <div class="ui container">
+            <header class="main-header">
+                <div class="main-header-top">
+
+                </div>
                 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-toggler">
+                    <button class="btn btn-menu" type="button" data-toggle="collapse" data-target="#navbar-toggler">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="collapse navbar-collapse" id="navbar-toggler">
@@ -23,19 +26,24 @@
                     </div>
                 </nav>
             </header>
-            <div class="container">
-                <div class="row mt-2">
-                    <div class="col-12">
-                        <div id="flash">
-                            <% flash.each do |key, value| -%>
-                                <div class="alert alert-primary"><%=h value %></div>
-                            <% end %>
+            <main class="main-layout" role="main">
+                <div class="ui container">
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            <div id="flash">
+                                <% flash.each do |key, value| -%>
+                                    <div class="alert alert-primary"><%=h value %></div>
+                                <% end %>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <%= yield %>
-            </div>
+                    <%= yield %>
+                </div>
+            </main>
         </div>
+
+        <br><br><br>
+        <%= render 'common/footer' %>
     </body>
 </html>

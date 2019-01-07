@@ -1,1 +1,10 @@
 @import '../../src/semantic-ui/semantic';
+
+@import '../../src/global/_vars';
+@import '../../src/global/_mixins';
+@import "../../src/global/_common.scss";
+@import "../../src/global/_page.scss";
+@import "../../src/global/_forms.scss";
+@import "../../src/global/_flatpickr.scss";
+
+@import '../../src/common/footer';

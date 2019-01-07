@@ -1,0 +1,301 @@
+.site-footer {
+  position: relative;
+  z-index: 10;
+  .footer-top {
+    position: relative;
+    z-index: 2;
+    padding: 20px;
+    color: #fff;
+    font-size: 16px;
+    text-align: center;
+    background: linear-gradient(to right, #0085CA, #009DE1 100%);
+    box-shadow: 0 0 40px rgba(0,0,0,.2);
+    .footer-logo {
+      display: block;
+      width: 62px;
+      margin: 0 auto 20px;
+      transition: all .3s ease-in-out;
+      &:hover {
+        transform: scale(1.1);
+      }
+      img {
+        display: block;
+        max-width: 100%;
+      }
+    }
+    h3 {
+      font-size: 16px;
+      line-height: 20px;
+      margin-bottom: 20px;
+      font-weight: 900;
+    }
+    a {
+      color: #fff;
+    }
+    p {
+      margin-bottom: 10px;
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+    .quickinfo {
+      margin-top: 20px;
+      padding: 0;
+      li {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 10px;
+        &:first-child {
+          margin-top: 0;
+        }
+        i {
+          flex: 0 0 20px;
+          width: 20px;
+          margin-right: 10px;
+          text-align: center;
+        }
+      }
+    }
+  }
+  .footer-bottom {
+    background: linear-gradient(to bottom, #003D63, #064F7C 100%);
+  }
+  @include min-screen(768px) {
+    .footer-top {
+      .footer-logo {
+        width: 100px;
+        margin: 0 40px 0 0;
+      }
+      .quickinfo {
+        li {
+          justify-content: flex-start;
+        }
+      }
+    }
+    .footer-bottom {
+      display: flex;
+      align-items: flex-start;
+    }
+  }
+  @include screen(768px,1024px) {
+    margin: 0 20px;
+    .footer-top {
+      margin: -20px 40px;
+      display: flex;
+      align-items: center;
+      text-align: left;
+      padding: 20px 0 20px 40px;
+      .footer-contacts {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        .address {
+          margin-right: 40px;
+        }
+        .quickinfo {
+          margin-top: 0;
+        }
+      }
+    }
+  }
+  @include min-screen(1025px) {
+    display: flex;
+    align-items: stretch;
+    padding: 0 40px;
+    margin: 0 50px;
+
+    background-image: linear-gradient(90deg, $darkblue 1%, $darkblue3 99%);
+    box-shadow: 0 0 40px 0 rgba($true-black,0.20);
+
+    .footer-top {
+      flex: 0 0 380px;
+      width: 380px;
+      margin: -40px 0 0 0;
+      padding: 40px;
+      color: #fff;
+      font-size: 16px;
+      text-align: center;
+      background: linear-gradient(to right, #0085CA, #009DE1 100%);
+      box-shadow: 0 0 40px rgba(0,0,0,.2);
+      .footer-logo {
+        display: block;
+        width: 104px;
+        margin: 0 auto 20px;
+        transition: all .3s ease-in-out;
+        &:hover {
+          transform: scale(1.1);
+        }
+      }
+      h3 {
+        margin-bottom: 20px;
+        font-weight: 900;
+      }
+      a {
+        color: #fff;
+      }
+      p {
+        margin-bottom: 10px;
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+      .quickinfo {
+        margin-top: 20px;
+        li {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-top: 10px;
+          &:first-child {
+            margin-top: 0;
+          }
+          i {
+            flex: 0 0 20px;
+            width: 20px;
+            margin-right: 10px;
+            text-align: center;
+          }
+        }
+      }
+    }
+    .footer-bottom {
+      flex: 1 1 auto;
+      padding: 0 20px 20px;
+      background: none;
+    }
+  }
+}
+.menu-footer {
+  .column {
+    padding: 20px 20px 0;
+  }
+  h3 {
+    margin-bottom: 20px;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 900;
+  }
+  ul {
+    list-style: none;
+    padding: 0;
+    li {
+      margin-top: 10px;
+      line-height: 15px;
+      &:first-child {
+        margin-top: 0;
+      }
+      a {
+        display: inline-block;
+        vertical-align: top;
+        font-size: 13px;
+        font-weight: 500;
+        color: #B5BCCB;
+        &:hover {
+          color: #fff;
+        }
+      }
+    }
+  }
+  @include min-screen(500px) {
+    display: flex;
+    align-items: flex-start;
+    flex: 1 1 auto;
+    padding: 0 10px;
+    .column {
+      flex: 0 0 33.3333%;
+      width: 33.3333%;
+      padding: 20px 10px 0;
+    }
+  }
+  @include min-screen(768px) {
+    padding-top: 20px;
+  }
+}
+.menu-social {
+  padding: 20px;
+  h3 {
+    margin-bottom: 20px;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 900;
+  }
+  ul {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    padding: 0;
+    li {
+      margin-right: 20px;
+      &:last-child {
+        margin-right: 0;
+      }
+      a:not(.btn) {
+        display: block;
+        width: 40px;
+        height: 40px;
+        font-size: 28px;
+        line-height: 40px;
+        text-align: center;
+        color: #fff;
+        transition: all .3s ease-in-out;
+        &:hover {
+          transform: scale(1.1);
+        }
+      }
+      .btn {
+        display: flex;
+        justify-content: center;
+        height: 20px;
+        color: #fff;
+        i {
+          margin: auto;
+        }
+        span {
+          display: none;
+        }
+      }
+    }
+  }
+  @include min-screen(768px) {
+    padding: 40px 20px 0 10px;
+  }
+  .site-header & {
+    position: absolute;
+    top: 20px;
+    right: 40px;
+    padding: 0;
+    ul {
+      li {
+        margin-right: 10px;
+        a:not(.btn) {
+          width: 30px;
+          height: 30px;
+          line-height: 30px;
+          font-size: 20px;
+          color: $white;
+        }
+      }
+    }
+    @include max-screen(1024px) {
+      display: none;
+    }
+  }
+  .menu-mobile & {
+    padding: 15px;
+    margin-top: 5px;
+    border-top: 1px solid #EAEBED;
+    ul {
+      li {
+        margin-right: 10px;
+        a:not(.btn) {
+          width: 30px;
+          height: 30px;
+          line-height: 30px;
+          font-size: 20px;
+          color: $black;
+        }
+      }
+    }
+  }
+}
