@@ -3,22 +3,8 @@ module ApplicationHelper
     Rails.configuration.customization['application_name']
   end
 
-  def sign_in_links(current_user)
-    content_tag(:ul, class: 'navbar-nav mt-2 my-lg-0') do
-      if current_user
-        content_tag(:li, class: 'nav-item') do
-          link_to(t(:sign_out), destroy_user_session_path, class: 'nav-link', method: :delete)
-        end
-      else
-        content_tag(:li, class: 'nav-item') do
-          link_to(t(:sign_in), new_user_session_path, class: 'nav-link')
-        end
-      end
-    end
-  end
-
   def navigation_links(current_user)
-    content_tag(:ul, class: 'navbar-nav mt-2 my-lg-0') do
+    content_tag(:ul) do
       links(user_link_list) if current_user&.role?(User::PARTICIPANT_ROLE)
       links(administrator_link_list) if current_user&.role?(User::ADMINISTATOR_ROLE)
     end

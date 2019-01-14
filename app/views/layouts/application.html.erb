@@ -10,23 +10,13 @@
     </head>
 
     <body>
-        <div class="ui container">
-            <header class="main-header">
-                <div class="main-header-top">
+        <div class="app-wrapper">
+            <%= render 'common/header' %>
 
-                </div>
-                <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                    <button class="btn btn-menu" type="button" data-toggle="collapse" data-target="#navbar-toggler">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbar-toggler">
-                        <%= link_to application_name, :root, class: "navbar-brand" %>
-                        <%= sign_in_links(current_user) %>
-                        <%= navigation_links(current_user) %>
-                    </div>
-                </nav>
-            </header>
             <main class="main-layout" role="main">
+                <div class="main-hero">
+                </div>
+
                 <div class="ui container">
                     <div class="row mt-2">
                         <div class="col-12">

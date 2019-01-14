@@ -4,7 +4,7 @@ class SessionsTest < ApplicationSystemTestCase
   def test_can_sign_in_with_password
     visit(users_path)
 
-    within('nav.navbar') do
+    within('nav.menu-user') do
       click_link_or_button('Sign in')
     end
 
