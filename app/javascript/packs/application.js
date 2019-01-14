@@ -13,5 +13,5 @@ import Turbolinks from 'turbolinks';
 Rails.start();
 Turbolinks.start();
 
-// Bootstrap configuration
+// Semantic UI
 import '../src/semantic-ui/semantic';

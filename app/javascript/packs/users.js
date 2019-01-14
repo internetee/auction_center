@@ -2,13 +2,13 @@ import IdentityCode from '../src/identity_code';
 import MobilePhone from '../src/mobile_phone';
 
 function setMobilePhoneInvalid() {
-    let mobilePhoneField = document.getElementById('user_mobile_phone');
-    mobilePhoneField.classList.add('is-invalid');
+    let mobilePhoneField = document.getElementById('user_mobile_phone').parentElement;
+    mobilePhoneField.classList.add('error');
 }
 
 function setIdentityCodeFieldInvalid() {
-    let identityCodeField = document.getElementById('user_identity_code');
-    identityCodeField.classList.add('is-invalid');
+    let identityCodeField = document.getElementById('user_identity_code').parentElement;
+    identityCodeField.classList.add('error');
 }
 
 function disableSubmitButton() {
@@ -22,10 +22,10 @@ function enableSubmitButton() {
 }
 
 function resetFields() {
-    let mobilePhoneField = document.getElementById('user_mobile_phone');
-    mobilePhoneField.classList.remove('is-invalid');
-    let identityCodeField = document.getElementById('user_identity_code');
-    identityCodeField.classList.remove('is-invalid');
+    let mobilePhoneField = document.getElementById('user_mobile_phone').parentElement;
+    mobilePhoneField.classList.remove('error');
+    let identityCodeField = document.getElementById('user_identity_code').parentElement;
+    identityCodeField.classList.remove('error');
 }
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", function() {
             mobilePhoneField.value = mobilePhone.format();
         }
 
-        if (document.querySelector('.is-invalid')) {
+        if (document.querySelector('.error')) {
             disableSubmitButton();
         }
     });
