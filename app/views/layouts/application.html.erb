@@ -14,8 +14,7 @@
             <%= render 'common/header' %>
 
             <main class="main-layout" role="main">
-                <div class="main-hero">
-                </div>
+                <%= yield :hero %>
 
                 <div class="ui container">
                     <div class="row mt-2">
@@ -28,12 +27,13 @@
                         </div>
                     </div>
 
-                    <%= yield %>
+                    <div class="ui container">
+                        <%= yield %>
+                    </div>
                 </div>
             </main>
-        </div>
 
-        <br><br><br>
-        <%= render 'common/footer' %>
+            <%= render 'common/footer' %>
+        </div>
     </body>
 </html>

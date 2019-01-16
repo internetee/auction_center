@@ -1,8 +1,9 @@
-<div class="row">
-    <div class="col-12">
-        <h1 class="display-4"><%= application_name %></h1>
+<% content_for :hero do %>
+    <div class="main-hero">
+        <h1><%= application_name %></h1>
     </div>
-</div>
+<% end %>
+
 <div class="row">
     <%- if signed_in? %>
         <div class="col-12 col-lg-6">

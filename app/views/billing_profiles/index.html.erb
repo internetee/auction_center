@@ -1,11 +1,15 @@
-<div class="row">
-    <div class="col-12">
-        <h1 class="mb-3 mt-4"><%= t('.title') %></h1>
+<% content_for :hero do %>
+    <div class="main-hero main-hero--green">
+        <h1><%= t('.title') %></h1>
+
         <%=link_to t(:new), new_billing_profile_path, class: "btn btn-primary mb-3" %>
     </div>
-</div>
+<% end %>
 
-<div class="row">
+<div class="u-container">
+    <div class="ui grid">
+
+    </div>
     <% @billing_profiles.each do |billing_profile|  %>
         <div class="col-12 col-lg-6">
             <div class="card">

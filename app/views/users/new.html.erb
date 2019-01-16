@@ -1,21 +1,27 @@
-<div class="text-center">
-    <div class="row justify-content-center">
-        <div class="col-12">
-            <h1 class="mb-3 mt-4"><%= t('.title') %></h1>
-            <% if @user.errors.any? %>
-                <h3 id="error-explanation">
+<% content_for :hero do %>
+    <div class="main-hero main-hero--green">
+        <h1><%= t('.title') %></h1>
+    </div>
+<% end %>
+
+<div class="u-container">
+    <div class="u-container ui segment padded-block">
+        <% if @user.errors.any? %>
+            <div class="ui message">
+                <div class="header">
                     <%= pluralize(@user.errors.count, "error") %> <%= t('.errors') %>
-                </h3>
+                </div>
                 <ul id="errors">
                     <% @user.errors.full_messages.each do |message| %>
                         <li><%= message %></li>
                     <% end %>
                 </ul>
-            <% end %>
-        </div>
-    </div>
+            </div>
+        <% end %>
 
-    <%= render 'form', user: @user, url: users_path %>
+        <%= render 'form', user: @user, url: users_path %>
+    </div>
 </div>
 
+<%= stylesheet_pack_tag 'stylesheets/users', media: 'all', 'data-turbolinks-track': 'reload' %>
 <%= javascript_pack_tag 'users', 'data-turbolinks-track': 'reload' %>

@@ -1,18 +1,24 @@
-<div class="text-center">
-    <div class="row justify-content-center">
-        <div class="col-4">
-            <h2 class="mb-3 mt-4">Forgot your password?</h2>
+<% content_for :hero do %>
+    <div class="main-hero">
+        <h1><%= t(:forgot_your_password) %></h1>
+    </div>
+<% end %>
 
-            <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
+<div class="u-container">
+    <div class="u-container ui segment padded-block">
+            <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post, class: 'ui form big' }) do |f| %>
                 <%= devise_error_messages! %>
 
-                <div class="form-group">
+                <div class="field">
                     <%= f.label :email %><br />
-                    <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control" %>
+                    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
                 </div>
 
-                <%= f.submit "Send me reset password instructions", class: "btn btn-primary mb-4 form-control" %>
+                <%= f.submit "Send me reset password instructions", class: "ui button primary" %>
             <% end %>
+
+            <br>
+
             <%= render "devise/shared/links" %>
         </div>
     </div>

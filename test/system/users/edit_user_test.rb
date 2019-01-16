@@ -17,7 +17,7 @@ class EditUserTest < ApplicationSystemTestCase
   def test_edit_form_contains_existing_values
     visit edit_user_path(@user.uuid)
 
-    country_code_field = page.find_field('user[country_code]')
+    country_code_field = page.find_field('user[country_code]', visible: false)
     assert_equal(@user.country_code, country_code_field.value)
   end
 
@@ -76,7 +76,7 @@ class EditUserTest < ApplicationSystemTestCase
     visit edit_user_path(@user.uuid)
 
     fill_in('user[current_password]', with: 'password123')
-    uncheck('user[accepts_terms_and_conditions]')
+    uncheck_checkbox('user[accepts_terms_and_conditions]')
     click_link_or_button('Update')
 
     refute((page.has_css?('div.alert', text: 'Updated successfully.')))
@@ -86,7 +86,7 @@ class EditUserTest < ApplicationSystemTestCase
   def test_identity_code_and_country_can_also_be_changed
     visit edit_user_path(@user.uuid)
     fill_in('user[identity_code]', with: '1234-5678')
-    select('Poland', from: 'user[country_code]')
+    select_from_dropdown('Poland', from: 'user[country_code]')
     fill_in('user[current_password]', with: 'password123')
     click_link_or_button('Update')
 

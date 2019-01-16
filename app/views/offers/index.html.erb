@@ -1,7 +1,12 @@
+<% content_for :hero do %>
+    <div class="main-hero">
+        <h1><%= t(:my_offers) %></h1>
+    </div>
+<% end %>
+
 <div class="row mt-4">
     <div class="col-12">
-        <h2><%= t(:my_offers) %></h2>
-        <table class="table" id="my-offers-table">
+        <table class="table ui stackable" id="my-offers-table">
             <thead>
                 <tr>
                     <th scope="col"><%= t('auctions.domain_name') %></th>

@@ -1,39 +1,44 @@
-<div class="text-center">
-    <div class="row justify-content-center">
-        <div class="col-12">
-            <h1 class="mb-3 mt-4"><%= t('.title') %></h1>
-        </div>
+<% content_for :hero do %>
+    <div class="main-hero main-hero--orange">
+        <h1><%= t('.title') %></h1>
     </div>
-    <div class="row justify-content-center">
-        <div class="col-12">
-            <table class="table" id="auctions-table">
-                <thead>
-                    <tr>
-                        <th scope="col"><%= t('auctions.domain_name') %></th>
-                        <th scope="col"><%= t('auctions.starts_at') %></th>
-                        <th scope="col"><%= t('auctions.ends_at') %></th>
-                        <th scope="col"><%= t('auctions.highest_price') %></th>
-                        <th scope="col"><%= t('auctions.offers') %></th>
-                    </tr>
-                </thead>
+<% end %>
 
-                <tbody id="auctions-table-body">
-                    <% @auctions.each do |auction| %>
-                        <tr class="auctions-table-row">
-                            <td class="auction-domain-name">
-                                <%= link_to auction.domain_name, admin_auction_path(auction) %>
-                            </td>
-                            <td><%= I18n.l(auction.starts_at) %></td>
-                            <td><%= I18n.l(auction.ends_at) %></td>
-                            <td class="auction-highest-offer"><%= auction.highest_price %></td>
-                            <td class="auction-offers-count"><%= auction.offers_count %></td>
+<div class="u-container">
+    <div class="ui segment padded-block">
+        <div class="grid one column">
+            <div class="column">
+                <table class="ui table selectable unstackable" id="auctions-table">
+                    <thead>
+                        <tr>
+                            <th scope="col"><%= t('auctions.domain_name') %></th>
+                            <th scope="col"><%= t('auctions.starts_at') %></th>
+                            <th scope="col"><%= t('auctions.ends_at') %></th>
+                            <th scope="col"><%= t('auctions.highest_price') %></th>
+                            <th scope="col"><%= t('auctions.offers') %></th>
                         </tr>
-                    <% end %>
-                </tbody>
-            </table>
-        </div>
-        <div class="col-12">
-            <p><%= link_to t('.new_auction'), new_admin_auction_path %></p>
+                    </thead>
+
+                    <tbody id="auctions-table-body">
+                        <% @auctions.each do |auction| %>
+                            <tr class="auctions-table-row">
+                                <td class="auction-domain-name">
+                                    <%= link_to auction.domain_name, admin_auction_path(auction) %>
+                                </td>
+                                <td><%= I18n.l(auction.starts_at) %></td>
+                                <td><%= I18n.l(auction.ends_at) %></td>
+                                <td class="auction-highest-offer"><%= auction.highest_price %></td>
+                                <td class="auction-offers-count"><%= auction.offers_count %></td>
+                            </tr>
+                        <% end %>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="column">
+                <br>
+                <p><%= link_to t('.new_auction'), new_admin_auction_path, class: "ui button primary" %></p>
+            </div>
         </div>
     </div>
 </div>

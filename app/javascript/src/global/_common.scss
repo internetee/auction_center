@@ -279,3 +279,9 @@ strong {
     box-shadow: none;
   }
 }
+
+.padded-block {
+  &.ui.segment {
+    margin: 40px auto 60px auto;
+  }
+}
