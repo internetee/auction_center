@@ -1,5 +1,11 @@
-<div class="text-center">
-    <div class="row justify-content-center">
+<% content_for :hero do %>
+    <div class="main-hero main-hero--orange">
+        <h1><%= t('.title') %></h1>
+    </div>
+<% end %>
+
+<div class="u-container">
+    <div class="ui segment padded-block">
         <div class="col-12">
             <h1 class="mb-3 mt-4"><%= t('.title')%></h1>
             <% if @user.errors.any? %>
@@ -13,9 +19,9 @@
                 </ul>
             <% end %>
         </div>
+
+        <%= render 'form', user: @user, url: admin_users_path %>
     </div>
 </div>
-
-<%= render 'form', user: @user, url: admin_users_path %>
 
 <%= javascript_pack_tag 'users', 'data-turbolinks-track': 'reload' %>

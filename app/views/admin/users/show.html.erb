@@ -1,11 +1,12 @@
-<div class="row text-center">
-    <div class="col-12">
-        <h1 class="mb-3 mt-4"><%= t('.title') %></h1>
+<% content_for :hero do %>
+    <div class="main-hero main-hero--orange">
+        <h1><%= @user.display_name %></h1>
+        <%= t('.title') %>
     </div>
-</div>
+<% end %>
 
-<div class="row">
-    <div class="card">
+<div class="u-container">
+    <div class="ui segment padded-block">
         <div class="card-body">
             <h2>
                 <%= @user.display_name %>
@@ -45,8 +46,8 @@
 
             <%= link_to t(:edit), edit_admin_user_path(@user), class: "card-link mt" %>
             <%= link_to t(:delete), admin_user_path(@user),
-                        method: :delete, data: { confirm: t(:are_you_sure) } ,
-                        remote: true, class: "card-link" %>
+            method: :delete, data: { confirm: t(:are_you_sure) } ,
+            remote: true, class: "card-link" %>
 
             <%= link_to t(:versions_name), admin_user_versions_path(@user), class: "card-link mt" %>
         </div>

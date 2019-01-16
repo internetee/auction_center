@@ -3,7 +3,7 @@
         <div class="column eight wide">
             <h3 class="p3"><%= t('.contact_data') %></h3>
             <div class="field">
-                <%= f.label :email, t('users.email') %><br />
+                <%= f.label :email, t('users.email') %>
                 <%= f.email_field :email, autofocus: true, autocomplete: "email",
                 class: "form-control" %>
                 <% if user.pending_reconfirmation? %>
@@ -11,17 +11,17 @@
                 <% end %>
             </div>
             <div class="field">
-                <%= f.label :mobile_phone, t('users.mobile_phone') %><br />
+                <%= f.label :mobile_phone, t('users.mobile_phone') %>
                 <%= f.telephone_field :mobile_phone, autofocus: true, autocomplete: "off",
                 class: "form-control" %>
             </div>
             <div class="field">
-                <%= f.label :given_names, t('users.given_names') %><br />
+                <%= f.label :given_names, t('users.given_names') %>
                 <%= f.text_field :given_names, autofocus: true, autocomplete: "off",
                 class: "form-control" %>
             </div>
             <div class="field">
-                <%= f.label :surname, t('users.surname') %><br />
+                <%= f.label :surname, t('users.surname') %>
                 <%= f.text_field :surname, autofocus: true, autocomplete: "off",
                 class: "form-control" %>
             </div>
@@ -35,7 +35,7 @@
                 placeholder: t('users.can_be_left_blank_if_not_estonian') %>
             </div>
             <div class="field">
-                <%= f.label :country, t('users.country') %><br />
+                <%= f.label :country, t('users.country') %>
                 <%= f.select :country_code,
                 options_for_select(
                     Countries.for_selection,
@@ -46,10 +46,12 @@
             </div>
 
             <div class="field">
-                <%= f.check_box :accepts_terms_and_conditions, { class: "ui checkbox", value: user.accepts_terms_and_conditions }, "true", "false" %>
+                <div class="ui checkbox">
+                    <%= f.check_box :accepts_terms_and_conditions, { class: "ui checkbox", value: user.accepts_terms_and_conditions }, "true", "false" %>
                 <%= f.label :accepts_terms_and_conditions do %>
                     <%= link_to t('users.terms_and_conditions'), Setting.terms_and_conditions_link %>
                 <% end %>
+                </div>
             </div>
         </div>
         <%- unless user.persisted? %>
@@ -67,7 +69,7 @@
                     <br />
                 </div>
                 <div class="field">
-                    <%= f.label :password_confirmation, t('users.password_confirmation') %><br />
+                    <%= f.label :password_confirmation, t('users.password_confirmation') %>
                     <%= f.password_field :password_confirmation, autocomplete: "off", class: "form-control" %>
                 </div>
             </div>
@@ -76,8 +78,10 @@
             <h3 class="p3"><%= t('.roles') %></h3>
             <%- User::ROLES.each do |role| %>
                 <div class="field">
-                    <%= f.check_box :roles, { multiple: true, class: "ui checkbox" }, role, nil %>
-                    <%= f.label role, class: "form-check-label" %>
+                    <div class="ui checkbox">
+                        <%= f.check_box :roles, { multiple: true }, role, nil %>
+                        <%= f.label role, class: "form-check-label" %>
+                    </div>
                 </div>
             <% end %>
         </div>
@@ -86,9 +90,9 @@
             <div class="">
                 <% if user.persisted? %>
                     <%= f.submit t(:update), class: "ui button big primary", id: "user_form_commit" %>
-                    <%= link_to t(:back), :back, class: "mt-4" %>
+                    <%= link_to t(:back), :back, class: "ui button big secondary" %>
                 <% else %>
-                    <%= f.submit t(:submit), class: "btn btn-primary form-control", id: "user_form_commit" %>
+                    <%= f.submit t(:submit), class: "ui button big primary", id: "user_form_commit" %>
                 <% end %>
             </div>
         </div>
