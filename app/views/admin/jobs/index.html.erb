@@ -19,8 +19,8 @@
                             <%= form_with(model: job, local: true, url: admin_jobs_path) do |f| %>
                                 <%= f.hidden_field :job_class %>
                                 <%= f.submit t('jobs.run'),
-                                class: "ui button secondary",
-                                    disabled: !job.needs_to_run? %>
+                                             class: "ui button secondary",
+                                             disabled: !job.needs_to_run? %>
                             <% end %>
                         </td>
                     </tr>

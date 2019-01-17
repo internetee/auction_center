@@ -100,7 +100,7 @@ class BillingProfilesTest < ApplicationSystemTestCase
 
     fill_in('billing_profile[street]', with: 'New Street 12')
     fill_in('billing_profile[name]', with: 'Joe John Participant-New')
-    select('Poland', from: 'billing_profile[country_code]')
+    select_from_dropdown('Poland', from: 'billing_profile[country_code]')
 
     assert_no_changes('BillingProfile.count') do
       click_link_or_button('Submit')
@@ -114,7 +114,7 @@ class BillingProfilesTest < ApplicationSystemTestCase
   def test_edit_form_contains_existing_values
     visit edit_billing_profile_path(@billing_profile.uuid)
 
-    country_code_field = page.find_field('billing_profile[country_code]')
+    country_code_field = page.find_field('billing_profile[country_code]', visible: false)
     assert_equal(@billing_profile.country_code, country_code_field.value)
   end
 
@@ -132,6 +132,6 @@ class BillingProfilesTest < ApplicationSystemTestCase
     fill_in('billing_profile[street]', with: 'Baker Street 221B')
     fill_in('billing_profile[city]', with: 'London')
     fill_in('billing_profile[postal_code]', with: 'NW1 6XE')
-    select('United Kingdom', from: 'billing_profile[country_code]')
+    select_from_dropdown('United Kingdom', from: 'billing_profile[country_code]')
   end
 end

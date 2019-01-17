@@ -39,6 +39,7 @@ class Ability
     can :read, Audit::Invoice
     can :read, Audit::InvoiceItem
     can :read, Audit::User
+    can :read, Audit::Offer
     can :read, Audit::Setting
     can :read, Audit::Result
     can :read, Audit::PaymentOrder

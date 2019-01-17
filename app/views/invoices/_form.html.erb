@@ -6,7 +6,7 @@
                 <%= f.select :billing_profile_id,
                              BillingProfile.where(user_id: invoice.user_id).collect { |b| [b.name, b.id] },
                              {},
-                             class: "ui search selection dropdown" %>
+                             class: "ui dropdown" %>
             </div>
 
             <%= link_to t(:new_billing_profile), new_billing_profile_path, class: "ui button primary" %>

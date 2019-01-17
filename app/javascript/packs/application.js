@@ -16,7 +16,7 @@ Turbolinks.start();
 // Semantic UI
 import '../src/semantic-ui/semantic';
 
-document.addEventListener("DOMContentLoaded", function() {
+$(document).on('turbolinks:load', function() {
     $('.ui.dropdown').dropdown();
 
     $(window).scroll(function () {

@@ -42,7 +42,7 @@
                     user.country_code || Setting.default_country
                 ),
                 {},
-                class: "ui select dropdown" %>
+                class: "ui dropdown" %>
             </div>
 
             <div class="field">
@@ -80,7 +80,7 @@
                 <div class="field">
                     <div class="ui checkbox">
                         <%= f.check_box :roles, { multiple: true }, role, nil %>
-                        <%= f.label role, class: "form-check-label" %>
+                        <%= f.label role %>
                     </div>
                 </div>
             <% end %>

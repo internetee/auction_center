@@ -18,6 +18,7 @@ en:
   sign_in: "Sign in"
   sign_out: "Sign out"
   forgot_your_password: "Forgot your password?"
+  change_your_password: "Change your password"
 
   'yes': "Yes"
   'no': "No"

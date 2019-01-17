@@ -1,27 +1,30 @@
-<div class="row text-center">
-    <div class="col-12">
-        <h1 class="mb-3 mt-4"><%= t('.title') %></h1>
+<% content_for :hero do %>
+    <div class="main-hero main-hero--orange">
+        <h1><%= t('.title') %></h1>
+        <%= @setting.code %>
     </div>
-</div>
+<% end %>
 
-<div class="col-12">
-    <div class="card">
-        <div class="card-body">
-            <h2><%= @setting.code %></h2>
+<div class="u-container">
+    <div class="ui segment padded-block">
+        <div class="ui list">
+            <div class="item">
+                <div class="header"><%= t('settings.description') %></div>
+                <%= @setting.description %>
+            </div>
 
-            <dl id="setting-details-list" class="mb-4 no-bullets">
-                <dt><%= t('settings.description') %></dt>
-                <dd><%= @setting.description %></dd>
+            <div class="item">
+                <div class="header"><%= t('settings.value') %></div>
+                <%= @setting.value %>
+            </div>
 
-                <dt><%= t('settings.value') %></dt>
-                <dd><%= @setting.value %></dd>
-
-                <dt><%= t('created_at') %></dt>
-                <dd><%= I18n.l(@setting.created_at) %></dd>
-            </dl>
-
-            <%= link_to t(:edit), edit_admin_setting_path(@setting), class: "card-link mt" %>
-            <%= link_to t(:versions_name), admin_setting_versions_path(@setting), class: "card-link mt" %>
+            <div class="item">
+                <div class="header"><%= t(:updated_at) %></div>
+                <%= @setting.updated_at %>
+            </div>
         </div>
+
+        <%= link_to t(:edit), edit_admin_setting_path(@setting), class: "ui button primary" %>
+        <%= link_to t(:versions_name), admin_setting_versions_path(@setting), class: "ui button primary" %>
     </div>
 </div>

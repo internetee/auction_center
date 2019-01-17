@@ -4,37 +4,33 @@
     </div>
 <% end %>
 
-<div class="u-container">
+<div class="ui container">
     <div class="ui segment padded-block">
-        <div class="grid one column">
-            <div class="column">
-                <table class="ui table selectable unstackable" id="users-table">
-                    <thead>
-                        <tr>
-                            <th scope="col"><%= t('users.display_name') %></th>
-                            <th scope="col"><%= t('users.mobile_phone') %></th>
-                            <th scope="col"><%= t('users.email') %></th>
-                            <th scope="col"><%= t('users.roles') %></th>
-                        </tr>
-                    </thead>
+        <table class="ui table fixed" id="users-table">
+            <thead>
+                <tr>
+                    <th scope="col"><%= t('users.display_name') %></th>
+                    <th scope="col"><%= t('users.mobile_phone') %></th>
+                    <th scope="col" class="six wide"><%= t('users.email') %></th>
+                    <th scope="col"><%= t('users.roles') %></th>
+                </tr>
+            </thead>
 
-                    <tbody id="users-table-body">
-                        <% @users.each do |user| %>
-                            <tr class="users-table-row">
-                                <th scope="row"><%= link_to user.display_name, admin_user_path(user) %></th>
-                                <td><%= user.mobile_phone %></td>
-                                <td><%= user.email %></td>
-                                <td><%= user.roles.join(', ') %></td>
-                            </tr>
-                        <% end %>
-                    </tbody>
-                </table>
-            </div>
+            <tbody id="users-table-body">
+                <% @users.each do |user| %>
+                    <tr class="users-table-row">
+                        <td><%= link_to user.display_name, admin_user_path(user) %></td>
+                        <td><%= user.mobile_phone %></td>
+                        <td><%= user.email %></td>
+                        <td><%= user.roles.join(', ') %></td>
+                    </tr>
+                <% end %>
+            </tbody>
+        </table>
 
-            <div class="column">
-                <br>
-                <p><%= link_to t('.new_user'), new_admin_user_path, class: "ui button primary" %></p>
-            </div>
-        </div>
+        <br>
+        <p><%= link_to t('.new_user'), new_admin_user_path, class: "ui button primary" %></p>
     </div>
+
+    <br>
 </div>

@@ -4,7 +4,6 @@
     </div>
 <% end %>
 
-
 <div class="u-container">
     <div class="ui segment padded-block">
         <div class="grid one column">
@@ -40,7 +39,7 @@
                                 <td>
                                     <%- if auction.offer_from_user(current_user).present? %>
                                         <%= link_to t('auctions.edit_your_offer'),
-                                        edit_offer_path(auction.offer_from_user(current_user)) %>
+                                        edit_offer_path(auction.offer_from_user(current_user).uuid) %>
                                     <% else %>
                                         <%= link_to t('auctions.submit_offer'),
                                         new_auction_offer_path(auction_uuid: auction.uuid) %>

@@ -1,26 +1,29 @@
-<div class="text-center">
-    <div class="row justify-content-center">
-        <div class="col-4">
-            <h1 class="mb-3 mt-4">Change your password</h1>
+<% content_for :hero do %>
+    <div class="main-hero">
+        <h1><%= t(:change_your_password) %></h1>
+    </div>
+<% end %>
 
-            <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
+<div class="u-container">
+    <div class="u-container ui segment padded-block">
+            <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put, class: "ui form big" }) do |f| %>
                 <%= devise_error_messages! %>
                 <%= f.hidden_field :reset_password_token %>
 
-                <div class="form-group">
+                <div class="field">
                     <%= f.label :password, "New password" %><br />
                     <% if @minimum_password_length %>
-                        <em>(<%= @minimum_password_length %> characters minimum)</em><br />
+                        <em>(<%= @minimum_password_length %> characters minimum)</em>
                     <% end %>
-                    <%= f.password_field :password, autofocus: true, autocomplete: "new-password", class: "form-control" %>
+                    <%= f.password_field :password, autofocus: true, autocomplete: "new-password" %>
                 </div>
 
-                <div class="form-group">
+                <div class="field">
                     <%= f.label :password_confirmation, "Confirm new password" %><br />
-                    <%= f.password_field :password_confirmation, autocomplete: "off", class: "form-control" %>
+                    <%= f.password_field :password_confirmation, autocomplete: "off" %>
                 </div>
 
-                <%= f.submit "Change my password", class: "btn btn-primary mb-4 form-control" %>
+                <%= f.submit "Change my password", class: "ui button primary" %>
             <% end %>
 
             <%= render "devise/shared/links" %>
