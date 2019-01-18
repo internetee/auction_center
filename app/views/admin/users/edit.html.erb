@@ -6,8 +6,6 @@
 
 <div class="u-container">
     <div class="ui segment padded-block">
-        <div class="col-12">
-            <h1 class="mb-3 mt-4"><%= t('.title')%></h1>
             <% if @user.errors.any? %>
                 <h3 id="error-explanation">
                     <%= pluralize(@user.errors.count, "error") %> <%= t('.errors') %>

@@ -1,19 +1,25 @@
-<div class="text-center">
-    <div class="row justify-content-center">
-        <div class="col-12">
-            <h1 class="mb-3 mt-4"><%= t('.title') %></h1>
-            <% if @setting.errors.any? %>
-                <h3 id="error-explanation">
+<% content_for :hero do %>
+    <div class="main-hero main-hero--orange">
+        <h1><%= t('.title') %></h1>
+        <%= @setting.code %>
+    </div>
+<% end %>
+
+<div class="u-container">
+    <div class="ui segment padded-block">
+        <% if @setting.errors.any? %>
+            <div class="ui message">
+                <div class="header">
                     <%= pluralize(@setting.errors.count, "error") %> <%= t('.errors') %>
-                </h3>
+                </div>
                 <ul id="errors">
                     <% @setting.errors.full_messages.each do |message| %>
                         <li><%= message %></li>
                     <% end %>
                 </ul>
-            <% end %>
-        </div>
-    </div>
+            </div>
+        <% end %>
 
-    <%= render 'form', setting: @setting, url: admin_setting_path(@setting) %>
+        <%= render 'form', setting: @setting, url: admin_setting_path(@setting) %>
+    </div>
 </div>

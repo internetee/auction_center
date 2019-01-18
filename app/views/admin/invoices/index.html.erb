@@ -1,10 +1,12 @@
 <% content_for :hero do %>
-    <h1><%= t('.title') %></h1>
+    <div class="main-hero main-hero--orange">
+        <h1><%= t('.title') %></h1>
+    </div>
 <% end %>
 
-<div class="row mt-4">
-    <div class="col-12">
-        <table class="table" id="my-outstanding-invoices-table">
+<div class="ui container">
+    <div class="ui segment padded-block">
+        <table class="ui table fixed" id="my-outstanding-invoices-table">
             <thead>
                 <tr>
                     <th scope="col"><%= t('invoices.billing_profile') %></th>
@@ -12,17 +14,18 @@
                     <th scope="col"><%= t('invoices.status') %></th>
                     <th scope="col"><%= t('invoices.total') %></th>
                 </tr>
+            </thead>
 
-                <tbody class="invoices-table-body">
-                    <% @invoices.each do |invoice| %>
-                        <tr class="invoices-table-row">
-                            <td><%= link_to invoice.billing_profile.name, admin_invoice_path(invoice) %></td>
-                            <td><%= I18n.l(invoice.due_date) %></td>
-                            <td><%= invoice.status %></td>
-                            <td><%= t('offers.price_in_currency', price: invoice.total) %></td>
-                        </tr>
-                    <% end %>
-                </tbody>
+            <tbody class="invoices-table-body">
+                <% @invoices.each do |invoice| %>
+                    <tr class="invoices-table-row">
+                        <td><%= link_to invoice.billing_profile.name, admin_invoice_path(invoice) %></td>
+                        <td><%= I18n.l(invoice.due_date) %></td>
+                        <td><%= invoice.status %></td>
+                        <td><%= t('offers.price_in_currency', price: invoice.total) %></td>
+                    </tr>
+                <% end %>
+            </tbody>
         </table>
     </div>
 </div>
