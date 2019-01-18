@@ -7,47 +7,54 @@
 
 <div class="u-container">
     <div class="ui segment padded-block">
-        <h2>
-            <%= @user.display_name %>
-            <%- if @user.invalid? %>
-                <span class="badge badge-pill badge-warning"><%= t(:invalid) %></span>
-            <% end %>
-        </h2>
 
-        <dl id="user-details-list" class="mb-4 no-bullets">
-            <dt><%= t('users.email') %></dt>
-            <dd><%= @user.email %></dd>
+        <div class="ui list">
+            <div class="item">
+                <div class="header"><%= t('users.email') %></div>
+                <%= @user.email %>
+            </div>
 
-            <dt><%= t('users.mobile_phone') %></dt>
-            <dd><%= @user.mobile_phone %></dd>
+            <div class="item">
+                <div class="header"><%= t('users.mobile_phone') %></div>
+                <%= @user.mobile_phone %>
+            </div>
 
-            <dt><%= t('users.roles') %></dt>
-            <dd><%= @user.roles.join(', ') %></dd>
+            <div class="item">
+                <div class="header"><%= t('users.roles') %></div>
+                <%= @user.roles.join(', ') %>
+            </div>
 
-            <dt><%= t('users.country_code') %></dt>
-            <dd><%= @user.country_code %></dd>
+            <div class="item">
+                <div class="header"><%= t('users.country_code') %></div>
+                <%= @user.country_code %>
+            </div>
 
-            <dt><%= t('users.identity_code') %></dt>
-            <dd><%= @user.identity_code %></dd>
+            <div class="item">
+                <div class="header"><%= t('users.identity_code') %></div>
+                <%= @user.identity_code %>
+            </div>
 
-            <dt><%= t('users.terms_and_conditions_accepted_at') %></dt>
-            <dd>
+            <div class="item">
+                <div class="header"><%= t('users.terms_and_conditions_accepted_at') %></div>
+
                 <%- if @user.terms_and_conditions_accepted_at %>
                     <%= I18n.l(@user.terms_and_conditions_accepted_at) %>
                 <% else %>
                     <%= t(:not_accepted) %>
                 <% end %>
-            </dd>
+            </div>
 
-            <dt><%= t('created_at') %></dt>
-            <dd><%= I18n.l(@user.created_at) %></dd>
-        </dl>
+            <div class="item">
+                <div class="header"><%= t('created_at') %></div>
+                <%= I18n.l(@user.created_at) %>
+            </div>
+        </div>
 
-        <%= link_to t(:edit), edit_admin_user_path(@user), class: "card-link mt" %>
+        <%= link_to t(:edit), edit_admin_user_path(@user), class: "ui button primary" %>
         <%= link_to t(:delete), admin_user_path(@user),
         method: :delete, data: { confirm: t(:are_you_sure) } ,
-        remote: true, class: "card-link" %>
+        remote: true, class: "ui button secondary" %>
 
-        <%= link_to t(:versions_name), admin_user_versions_path(@user), class: "card-link mt" %>
+        <%= link_to t(:versions_name), admin_user_versions_path(@user), class: "ui button primary" %>
     </div>
 </div>
