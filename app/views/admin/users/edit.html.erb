@@ -6,17 +6,16 @@
 
 <div class="u-container">
     <div class="ui segment padded-block">
-            <% if @user.errors.any? %>
-                <h3 id="error-explanation">
-                    <%= pluralize(@user.errors.count, "error") %> <%= t('.errors') %>
-                </h3>
-                <ul id="errors">
-                    <% @user.errors.full_messages.each do |message| %>
-                        <li><%= message %></li>
-                    <% end %>
-                </ul>
-            <% end %>
-        </div>
+        <% if @user.errors.any? %>
+            <h3 id="error-explanation">
+                <%= pluralize(@user.errors.count, "error") %> <%= t('.errors') %>
+            </h3>
+            <ul id="errors">
+                <% @user.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                <% end %>
+            </ul>
+        <% end %>
 
         <%= render 'form', user: @user, url: admin_user_path(@user) %>
     </div>

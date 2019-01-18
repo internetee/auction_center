@@ -27,7 +27,7 @@ class EditUserTest < ApplicationSystemTestCase
     fill_in('user[email]', with: 'updated-email@auction.test')
     fill_in('user[current_password]', with: 'password123')
     click_link_or_button('Update')
-    assert(page.has_css?('div.alert', text: 'Updated successfully.'))
+    assert(page.has_css?('div.notice', text: 'Updated successfully.'))
 
     last_email = ActionMailer::Base.deliveries.last
     assert_equal('Confirmation instructions', last_email.subject)
@@ -40,7 +40,7 @@ class EditUserTest < ApplicationSystemTestCase
     fill_in('user[email]', with: 'updated-email@auction.test')
     fill_in('user[current_password]', with: 'not-correct-password')
     click_link_or_button('Update')
-    assert(page.has_css?('div.alert', text: 'Incorrect current password'))
+    assert(page.has_css?('div.notice', text: 'Incorrect current password'))
     assert(ActionMailer::Base.deliveries.empty?)
   end
 
@@ -53,7 +53,7 @@ class EditUserTest < ApplicationSystemTestCase
     fill_in('user[current_password]', with: 'password123')
     click_link_or_button('Update')
 
-    assert(page.has_css?('div.alert', text: 'Updated successfully.'))
+    assert(page.has_css?('div.notice', text: 'Updated successfully.'))
 
     @user.reload
     assert_equal('New Surname', @user.surname)
@@ -66,7 +66,7 @@ class EditUserTest < ApplicationSystemTestCase
     fill_in('user[current_password]', with: 'password123')
     click_link_or_button('Update')
 
-    assert(page.has_css?('div.alert', text: 'Updated successfully.'))
+    assert(page.has_css?('div.notice', text: 'Updated successfully.'))
 
     @user.reload
     assert_equal(original_terms_and_conditions_accepted_at, @user.terms_and_conditions_accepted_at)
@@ -79,7 +79,7 @@ class EditUserTest < ApplicationSystemTestCase
     uncheck_checkbox('user[accepts_terms_and_conditions]')
     click_link_or_button('Update')
 
-    refute((page.has_css?('div.alert', text: 'Updated successfully.')))
+    refute((page.has_css?('div.notice', text: 'Updated successfully.')))
     assert(page.has_text?('Terms and conditions must be accepted'))
   end
 
@@ -105,7 +105,7 @@ class EditUserTest < ApplicationSystemTestCase
     assert(page.has_button?('Update'))
     click_link_or_button('Update')
 
-    assert(page.has_css?('div.alert', text: 'Updated successfully.'))
+    assert(page.has_css?('div.notice', text: 'Updated successfully.'))
     assert(page.has_text?('+37250006000'))
   end
 
@@ -116,7 +116,7 @@ class EditUserTest < ApplicationSystemTestCase
     fill_in('user[current_password]', with: 'password123')
     click_link_or_button('Update')
 
-    assert(page.has_css?('div.alert', text: 'Updated successfully.'))
+    assert(page.has_css?('div.notice', text: 'Updated successfully.'))
 
     @user.reload
     assert_equal('Participant', @user.surname)
@@ -131,7 +131,7 @@ class EditUserTest < ApplicationSystemTestCase
     fill_in('user[current_password]', with: 'password123')
     click_link_or_button('Update')
 
-    assert(page.has_css?('div.alert', text: 'Updated successfully.'))
+    assert(page.has_css?('div.notice', text: 'Updated successfully.'))
     assert_text('New Given Name')
   end
 

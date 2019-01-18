@@ -48,7 +48,7 @@ class CreateUserTest < ApplicationSystemTestCase
     sign_in(users(:participant))
     visit new_user_path
 
-    assert(page.has_css?('div.alert', text: 'You are already signed in'))
+    assert(page.has_css?('div.notice', text: 'You are already signed in'))
   end
 
   def test_certain_fields_are_required

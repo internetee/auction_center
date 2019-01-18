@@ -51,7 +51,7 @@ class BillingProfilesTest < ApplicationSystemTestCase
       click_link_or_button('Submit')
     end
 
-    assert(page.has_css?('div.alert', text: 'Created successfully.'))
+    assert(page.has_css?('div.notice', text: 'Created successfully.'))
   end
 
   def test_billing_profile_vat_code_needs_to_be_unique_for_user
@@ -78,7 +78,7 @@ class BillingProfilesTest < ApplicationSystemTestCase
       click_link_or_button('Submit')
     end
 
-    assert(page.has_css?('div.alert', text: 'Created successfully.'))
+    assert(page.has_css?('div.notice', text: 'Created successfully.'))
   end
 
   def test_a_user_can_create_private_billing_profile
@@ -90,7 +90,7 @@ class BillingProfilesTest < ApplicationSystemTestCase
       click_link_or_button('Submit')
     end
 
-    assert(page.has_css?('div.alert', text: 'Created successfully.'))
+    assert(page.has_css?('div.notice', text: 'Created successfully.'))
     assert(BillingProfile.find_by(name: @user.display_name))
   end
 
@@ -106,7 +106,7 @@ class BillingProfilesTest < ApplicationSystemTestCase
       click_link_or_button('Submit')
     end
 
-    assert(page.has_css?('div.alert', text: 'Updated successfully.'))
+    assert(page.has_css?('div.notice', text: 'Updated successfully.'))
     assert(BillingProfile.find_by(street: 'New Street 12', name: 'Joe John Participant-New',
                                   country_code: 'PL'))
   end

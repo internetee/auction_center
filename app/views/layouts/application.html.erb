@@ -17,15 +17,11 @@
                 <%= yield :hero %>
 
                 <div class="ui container">
-                    <div class="row mt-2">
-                        <div class="col-12">
-                            <div id="flash">
-                                <% flash.each do |key, value| -%>
-                                    <div class="alert alert-primary"><%=h value %></div>
-                                <% end %>
-                            </div>
+                    <% flash.each do |key, value| -%>
+                        <div class="ui message">
+                            <div class="header <%= key %>" id="flash"><%= h value %></div>
                         </div>
-                    </div>
+                    <% end %>
 
                     <div class="ui container">
                         <%= yield %>

@@ -35,7 +35,7 @@ class SessionsTest < ApplicationSystemTestCase
     assert(page.has_link?('Profile', href: user_path(user.uuid)))
     click_link_or_button('Profile')
 
-    assert_equal('Joe John Participant', page.find('div', class: 'header').text)
+    assert_text('Joe John Participant')
   end
 
   def test_link_to_profile_is_invisible_for_anonymous_users

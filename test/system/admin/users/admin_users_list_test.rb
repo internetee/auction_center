@@ -16,7 +16,7 @@ class AdminUsersListTest < ApplicationSystemTestCase
   end
 
   def test_users_are_ordered_by_descending_created_at_date
-    display_name_cells = page.find('#users-table-body').find_all('th')
+    display_name_cells = page.find_all('.user-table-user-name')
 
     # First is users(:second_place_participant)
     assert_equal('Second Place', display_name_cells[0].text)
