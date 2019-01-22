@@ -1,11 +1,11 @@
 <% content_for :hero do %>
-    <div class="main-hero main-hero--green">
+    <div class="hero green">
         <h1><%= @invoice.title %></h1>
     </div>
 <% end %>
 
 <div class="u-container">
-    <div class="ui segment padded-block">
+    <div class="margin-block">
         <div class="ui two column doubling stackable grid">
             <div class="column sixteen wide">
                 <%= link_to t(:result_name), result_path(@invoice.result.uuid), class: 'ui button primary' %>

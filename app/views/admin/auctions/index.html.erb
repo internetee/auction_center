@@ -1,11 +1,11 @@
 <% content_for :hero do %>
-    <div class="main-hero main-hero--orange">
+    <div class="hero orange">
         <h1><%= t('.title') %></h1>
     </div>
 <% end %>
 
 <div class="u-container">
-    <div class="ui segment padded-block">
+    <div class="margin-block">
         <div class="grid one column">
             <div class="column">
                 <table class="ui table selectable unstackable" id="auctions-table">
@@ -35,8 +35,7 @@
                 </table>
             </div>
 
-            <div class="column">
-                <br>
+            <div class="buttons">
                 <p><%= link_to t('.new_auction'), new_admin_auction_path, class: "ui button primary" %></p>
             </div>
         </div>

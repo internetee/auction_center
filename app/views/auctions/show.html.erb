@@ -1,5 +1,5 @@
 <% content_for :hero do %>
-    <div class="main-hero">
+    <div class="hero">
         <h1><%= t('.title') %></h1>
 
         <%= @auction.domain_name %>
@@ -10,7 +10,7 @@
 <% end %>
 
 <div class="u-container">
-    <div class="ui segment padded-block">
+    <div class="margin-block">
         <div class="content">
             <div class="ui list">
                 <div class="item">
@@ -39,3 +39,5 @@
         </div>
     </div>
 </div>
+
+<%= render 'bottom_grid' %>

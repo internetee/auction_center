@@ -1,11 +1,11 @@
 <% content_for :hero do %>
-    <div class="main-hero main-hero--green">
+    <div class="hero green">
         <h1><%= t('.title') %></h1>
     </div>
 <% end %>
 
 <div class="u-container">
-    <div class="u-container ui segment padded-block">
+    <div class="u-container margin-block">
         <% if @invoice.errors.any? %>
             <div class="ui message">
                 <div class="header">

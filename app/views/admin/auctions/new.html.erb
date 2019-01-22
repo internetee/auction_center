@@ -1,11 +1,11 @@
 <% content_for :hero do %>
-    <div class="main-hero main-hero--orange">
+    <div class="hero orange">
         <h1><%= t('.title') %></h1>
     </div>
 <% end %>
 
 <div class="u-container">
-    <div class="u-container ui segment padded-block">
+    <div class="u-container margin-block">
         <% if @auction.errors.any? %>
             <div class="ui message">
                 <div class="header">

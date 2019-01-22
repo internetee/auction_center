@@ -1,11 +1,11 @@
 <% content_for :hero do %>
-    <div class="main-hero">
+    <div class="hero">
         <h1><%= t(:sign_in) %></h1>
     </div>
 <% end %>
 
 <div class="u-container">
-    <div class="u-container ui segment padded-block">
+    <div class="u-container margin-block">
         <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: 'ui form big' }) do |f| %>
             <div class="field">
                 <%= f.label :email %><br />

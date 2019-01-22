@@ -1,0 +1,220 @@
+.features-grid {
+    &.blue {
+        background: $blue;
+        background: $blue url("../../src/images/html-pattern.png") no-repeat calc(((100% + 720px) - 1340px) / 2 + 110px) -86px / 720px auto;
+
+        .overview {
+            background: $blue;
+        }
+    }
+
+    &.green {
+        background: $green;
+        background: $green url("../../src/images/html-pattern.png") no-repeat calc(((100% + 720px) - 1340px) / 2 + 110px) -86px / 720px auto;
+
+        .overview {
+            background: $green;
+        }
+    }
+
+    &.grey {
+        background: $grey2;
+    }
+
+    &.top {
+        margin-top: -40px;
+        padding-top: 20px;
+        padding-bottom: 80px;
+        color: $true-white;
+        text-align: center;
+        .overview {
+            padding: 25px 0;
+            box-shadow: 0 0 40px 0 rgba($true-black, 0.20);
+            text-align: center;
+            margin: 0 90px 40px 90px;
+            position: relative;
+            z-index: 20;
+            .title {
+                display: block;
+                font-weight: 500;
+                font-size: 24px;
+                color: $grey7;
+                line-height: 30px;
+                strong {
+                    color: $true-white;
+                }
+            }
+        }
+
+        .items {
+            display: flex;
+            flex-wrap: wrap;
+            margin-left: -40px;
+            margin-bottom: -40px;
+            .item {
+                flex: 0 0 33.33%;
+                max-width: 33.33%;
+                padding-left: 40px;
+                margin-bottom: 40px;
+
+                .ui {
+                    &.icon {
+                        &.header {
+                            margin: 0;
+                            line-height: 30px;
+                            color: $true-white;
+                            .icon {
+                                font-size: 40px;
+                                line-height: 40px;
+                                margin-bottom: 20px;
+                            }
+                            .sub {
+                                &.header {
+                                    margin-top: 10px;
+                                    line-height: 20px;
+                                    color: $true-white;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .text {
+            font-weight: 500;
+            margin-top: 20px;
+            font-size: 18px;
+            p {
+                line-height: 30px;
+            }
+            a {
+                color: $true-white;
+                text-decoration: underline;
+                &:hover {
+                    text-decoration: none;
+                }
+            }
+        }
+    }
+
+    &.bottom {
+        background: $grey2;
+        padding: 80px 0 160px 0;
+        margin-bottom: -40px;
+        h2 {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        .items {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: -40px;
+            margin-left: -40px;
+            .item {
+                flex: 0 0 25%;
+                max-width: 25%;
+                padding-left: 40px;
+                margin-bottom: 40px;
+                text-align: left;
+
+                .ui {
+                    &.icon {
+                        .header {
+                            margin: 0;
+                            line-height: 20px;
+                            text-align: left;
+                            .icon {
+                                font-size: 50px;
+                                line-height: 60px;
+                                margin-bottom: 20px;
+                            }
+                            .sub {
+                                &.header {
+                                    color: $black;
+                                    margin-top: 10px;
+                                    line-height: 25px;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @include max-screen(991px) {
+        &.top {
+            padding-bottom: 40px;
+            .items {
+                .item {
+                    flex: 0 0 50%;
+                    max-width: 50%;
+                }
+            }
+            .overview {
+                margin-left: 60px;
+                margin-right: 60px;
+            }
+        }
+        &.bottom {
+            padding-top: 40px;
+            padding-bottom: 80px;
+            .items {
+                .item {
+                    max-width: 50%;
+                    flex: 0 0 50%;
+                }
+            }
+        }
+    }
+
+    @include max-screen(767px) {
+        &.top {
+            .overview {
+                margin-left: 20px;
+                margin-right: 20px;
+                padding-top: 20px;
+                padding-bottom: 20px;
+                .title {
+                    font-size: 18px;
+                    line-height: 25px;
+                }
+            }
+            .items {
+                display: block;
+                margin: 0;
+                .item {
+                    max-width: 100%;
+                    margin: 0;
+                    padding: 0;
+                    margin-top: 40px;
+                }
+            }
+        }
+
+        &.bottom {
+            .items {
+                margin-left: -20px;
+                margin-bottom: -20px;
+                .item {
+                    padding-left: 20px;
+                    margin-bottom: 20px;
+                }
+            }
+        }
+    }
+    @include max-screen(479px) {
+        &.bottom {
+            .items {
+                display: block;
+                margin: 0;
+                .item {
+                    padding: 0;
+                    margin: 0;
+                    max-width: 100%;
+                    margin-top: 20px;
+                }
+            }
+        }
+    }
+}

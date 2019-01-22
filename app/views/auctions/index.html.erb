@@ -1,11 +1,13 @@
 <% content_for :hero do %>
-    <div class="main-hero">
+    <div class="hero">
         <h1><%= t('.title') %></h1>
     </div>
 <% end %>
 
+<%= render 'top_grid' %>
+
 <div class="u-container">
-    <div class="ui segment padded-block">
+    <div class="margin-block">
         <div class="grid one column">
             <div class="column">
                 <%- unless signed_in? %>
@@ -18,7 +20,7 @@
             </div>
 
             <div class="column">
-                <table class="ui table selectable unstackable" id="auctions-table">
+                <table class="ui table selectable unstackable fixed" id="auctions-table">
                     <thead>
                         <tr>
                             <th scope="col"><%= t('auctions.domain_name') %></th>

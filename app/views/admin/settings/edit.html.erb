@@ -1,12 +1,12 @@
 <% content_for :hero do %>
-    <div class="main-hero main-hero--orange">
+    <div class="hero orange">
         <h1><%= t('.title') %></h1>
         <%= @setting.code %>
     </div>
 <% end %>
 
 <div class="u-container">
-    <div class="ui segment padded-block">
+    <div class="margin-block">
         <% if @setting.errors.any? %>
             <div class="ui message">
                 <div class="header">

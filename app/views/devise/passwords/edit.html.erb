@@ -1,11 +1,11 @@
 <% content_for :hero do %>
-    <div class="main-hero">
+    <div class="hero">
         <h1><%= t(:change_your_password) %></h1>
     </div>
 <% end %>
 
 <div class="u-container">
-    <div class="u-container ui segment padded-block">
+    <div class="u-container margin-block">
             <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put, class: "ui form big" }) do |f| %>
                 <%= devise_error_messages! %>
                 <%= f.hidden_field :reset_password_token %>

@@ -1,12 +1,12 @@
 <% content_for :hero do %>
-    <div class="main-hero main-hero--orange">
+    <div class="hero orange">
         <h1><%= t('.title') %></h1>
         <%= @auction.domain_name %>
     </div>
 <% end %>
 
 <div class="u-container">
-    <div class="ui segment padded-block">
+    <div class="margin-block">
         <div class="content">
             <%- if @auction.finished? %>
                 <div class="ui centered aligned header"><%= t('auctions.finished') %></div>
@@ -26,7 +26,7 @@
                 </div>
             </div>
 
-            <p>
+            <div class="buttons">
                 <%= link_to t(:delete), admin_auction_path(@auction),
                 method: :delete,
                 data: { confirm: t(:are_you_sure) } ,
@@ -38,11 +38,11 @@
                 <% end %>
 
                 <%= link_to t(:versions_name), admin_auction_versions_path(@auction),
-                    class: "ui button primary" %>
-            </p>
+                class: "ui button primary" %>
+            </div>
         </div>
     </div>
-    <div class="ui segment padded-block">
+    <div class="margin-block">
         <h2><%= t(:offers_name) %></h2>
         <table class="ui table" id="auctions-offers-table">
             <thead>

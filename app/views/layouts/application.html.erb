@@ -11,22 +11,17 @@
 
     <body>
         <div class="app-wrapper">
+            <% flash.each do |key, value| -%>
+                <div class="ui message">
+                    <div class="header <%= key %>" id="flash"><%= h value %></div>
+                </div>
+            <% end %>
+
             <%= render 'common/header' %>
 
             <main class="main-layout" role="main">
                 <%= yield :hero %>
-
-                <div class="ui container">
-                    <% flash.each do |key, value| -%>
-                        <div class="ui message">
-                            <div class="header <%= key %>" id="flash"><%= h value %></div>
-                        </div>
-                    <% end %>
-
-                    <div class="ui container">
-                        <%= yield %>
-                    </div>
-                </div>
+                <%= yield %>
             </main>
 
             <%= render 'common/footer' %>

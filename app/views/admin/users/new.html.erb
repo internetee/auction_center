@@ -1,11 +1,11 @@
 <% content_for :hero do %>
-    <div class="main-hero main-hero--orange">
+    <div class="hero orange">
         <h1><%= t('.title') %></h1>
     </div>
 <% end %>
 
 <div class="u-container">
-    <div class="ui segment padded-block">
+    <div class="margin-block">
         <div class="col-12">
             <h1 class="mb-3 mt-4"><%= t('.title')%></h1>
             <% if @user.errors.any? %>
