@@ -7,27 +7,36 @@
 
 <div class="u-container">
     <div class="margin-block">
-        <div class="ui list">
-            <div class="item">
-                <div class="header"><%= t('auctions.ends_at') %></div>
-                <%= @offer.auction.ends_at %>
-            </div>
+        <div class="body">
+            <div class="details-list centered-list">
+                <ul>
+                    <li>
+                        <span class="label"><%= t('auctions.domain_name') %></span>
+                        <span class="value"><%= @offer.auction.domain_name %></span>
+                    </li>
 
-            <div class="item">
-                <div class="header"><%= t('offers.price') %></div>
-                <%= t('offers.price_in_currency', price: @offer.price) %>
+                    <li>
+                        <span class="label"><%= t('auctions.ends_at') %></span>
+                        <span class="value"><%= I18n.l(@offer.auction.ends_at) %></span>
+                    </li>
+                    <li>
+                        <span class="label"><%= t('offers.price') %></span>
+                        <span class="value"><%= t('offers.price_in_currency', price: @offer.price) %></span>
+                    </li>
+                </ul>
+
+                <div class="buttons">
+
+                    <%- if @offer.can_be_modified?  %>
+                        <%= link_to t(:edit), edit_offer_path(@offer.uuid), class: "ui button primary" %>
+                        <%= link_to t(:delete), offer_path(@offer.uuid),
+                        method: :delete, data: { confirm: t(:are_you_sure) },
+                        remote: true, class: "ui button secondary" %>
+                    <% end %>
+                </div>
             </div>
         </div>
-
-        <p><%= t('offers.price_is_without_vat') %></p>
-        <p><%= t('.we_will_contact_winner') %></p>
-
-        <%- if @offer.can_be_modified?  %>
-            <%= link_to t(:edit), edit_offer_path(@offer.uuid), class: "ui button primary" %>
-            <%= link_to t(:delete), offer_path(@offer.uuid),
-            method: :delete, data: { confirm: t(:are_you_sure) },
-            remote: true, class: "ui button primary" %>
-
-        <% end %>
     </div>
 </div>
+
+<%= render 'auctions/bottom_grid' %>

@@ -15,8 +15,8 @@ module ApplicationHelper
   def links(links_list)
     links_list.each do |item|
       concat(
-        content_tag(:li, class: 'nav-item') do
-          link_to(item[:name], item[:path], class: 'nav-link')
+        content_tag(:li) do
+          link_to(item[:name], item[:path])
         end
       )
     end

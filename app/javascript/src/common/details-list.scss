@@ -1,0 +1,115 @@
+.details-list {
+  &.centered-list {
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      li {
+        display: flex;
+        align-items: flex-start;
+        border-top: 1px solid $grey3;
+        padding: 19px 0 20px;
+        font-size: 18px;
+        line-height: 20px;
+        &:last-child {
+          border-bottom: 1px solid $grey3;
+          padding-bottom: 19px;
+        }
+      }
+    }
+    .label {
+      font-weight: 900;
+      flex: 0 0 190px;
+      margin-right: 40px;
+    }
+    .value {
+      flex: 1;
+    }
+    .narrow-label {
+      .details-list {
+        .label {
+          flex: 0 0 110px;
+        }
+      }
+    }
+  }
+
+
+  &-02 {
+    &__title {
+      display: block;
+      font-weight: 900;
+      font-size: 30px;
+      line-height: 30px;
+      margin-bottom: 20px;
+    }
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      li {
+        display: flex;
+        font-weight: 500;
+        font-size: 18px;
+        line-height: 30px;
+      }
+    }
+    &__label {
+      flex: 0 0 200px;
+      margin-right: 20px;
+    }
+    &__value {
+      i {
+        min-width: 30px;
+        text-align: center;
+        &:first-child {
+          margin-right: 5px;
+        }
+        &:last-child {
+          margin-left: 5px;
+        }
+      }
+    }
+    & + .details-list-02 {
+      margin-top: 40px;
+    }
+  }
+  @include max-screen(479px) {
+    &-01 {
+      ul {
+        li {
+          display: block;
+          padding: 9px 0 10px;
+          &:last-child {
+            padding-bottom: 9px;
+          }
+        }
+      }
+      &__label {
+        margin-right: 0;
+        margin-bottom: 10px;
+      }
+      &__label,
+      &__value {
+        display: block;
+      }
+    }
+    &-02 {
+      ul {
+        li {
+          display: block;
+          & + li {
+            margin-top: 10px;
+          }
+        }
+      }
+      &__label {
+        margin-right: 0;
+      }
+      &__label,
+      &__value {
+        display: block;
+      }
+    }
+  }
+}

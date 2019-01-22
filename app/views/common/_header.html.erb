@@ -10,9 +10,6 @@
             <%= link_to application_name, :root, class: "u-active" %>
         </nav>
         <nav class="menu-language">
-            <ul>
-                <%= navigation_links(current_user) %>
-            </ul>
         </nav>
         <nav class="menu-user">
             <% if current_user %>
@@ -36,6 +33,7 @@
         </g>
     </svg></a>
     <nav class="menu-main">
+        <%= navigation_links(current_user) %>
     </nav>
     <div class="actions">
         <button type="button" class="btn btn-menu" data-menu-toggle=""><i aria-hidden="true" class="bars icon"></i></button>

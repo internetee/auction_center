@@ -7,46 +7,50 @@
 <div class="u-container">
     <div class="margin-block">
         <div class="content">
-            <div class="ui centered aligned header"><%= @user.display_name %></div>
+            <h2><%= @user.display_name %></h2>
+            <div class="body">
+                <div class="details-list centered-list">
+                    <ul>
+                        <li>
+                            <span class="label"><%= t('users.email') %></span>
+                            <span class="value"><%= (@user.email) %></span>
+                        </li>
 
-            <div class="ui list">
-                <div class="item">
-                    <div class="header"><%= t('users.email') %></div>
-                    <%= @user.email %>
+                        <li>
+                            <span class="label"><%= t('users.mobile_phone') %></span>
+                            <span class="value"><%= (@user.mobile_phone) %></span>
+                        </li>
+
+                        <li>
+                            <span class="label"><%= t('users.country_code') %></span>
+                            <span class="value"><%= (@user.country_code) %></span>
+                        </li>
+
+                        <li>
+                            <span class="label"><%= t('users.identity_code') %></span>
+                            <span class="value"><%= (@user.identity_code) %></span>
+                        </li>
+
+                        <li>
+                            <span class="label"><%= t('created_at') %></span>
+                            <span class="value"><%= I18n.l(@user.created_at) %></span>
+                        </li>
+
+                        <li>
+                            <span class="label"><%= t('users.terms_and_conditions') %></span>
+                            <span class="value"><%= link_to t('.review_terms_and_conditions'), Setting.terms_and_conditions_link %></span>
+                        </li>
+                    </ul>
                 </div>
 
-                <div class="item">
-                    <div class="header"><%= t('users.mobile_phone') %></div>
-                    <%= @user.mobile_phone %>
-                </div>
-
-                <div class="item">
-                    <div class="header"><%= t('users.country_code') %></div>
-                    <%= @user.country_code %>
-                </div>
-
-                <div class="item">
-                    <div class="header"><%= t('users.identity_code') %></div>
-                    <%= @user.identity_code %>
-                </div>
-
-
-                <div class="item">
-                    <div class="header"><%= t('created_at') %></div>
-                    <%= I18n.l(@user.created_at) %>
-                </div>
-
-                <div class="item">
-                    <div class="header"><%= t('users.terms_and_conditions') %></div>
-                    <%= link_to t('.review_terms_and_conditions'), Setting.terms_and_conditions_link %>
+                <div class="buttons">
+                    <%= link_to t(:edit), edit_user_path(@user.uuid), class: "ui button primary" %>
+                    <%= link_to t(:billing), billing_profiles_path, class: "ui button primary" %>
+                    <%= link_to t('.delete'), user_path(@user.uuid),
+                    method: :delete, data: { confirm: t(:are_you_sure) },
+                    remote: true, class: "ui button secondary" %>
                 </div>
             </div>
-
-            <%= link_to t(:edit), edit_user_path(@user.uuid), class: "ui button primary" %>
-            <%= link_to t(:billing), billing_profiles_path, class: "ui button primary" %>
-            <%= link_to t('.delete'), user_path(@user.uuid),
-            method: :delete, data: { confirm: t(:are_you_sure) },
-            remote: true, class: "ui button secondary" %>
         </div>
     </div>
 </div>

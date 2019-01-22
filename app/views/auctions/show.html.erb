@@ -11,30 +11,36 @@
 
 <div class="u-container">
     <div class="margin-block">
-        <div class="content">
-            <div class="ui list">
-                <div class="item">
-                    <div class="header"><%= t('auctions.starts_at') %></div>
-                    <%= I18n.l(@auction.starts_at) %>
+            <h2><%= t('.title') %></h2>
+            <div class="body">
+                <div class="details-list centered-list">
+                    <ul>
+                        <li>
+                            <span class="label"><%= t('auctions.starts_at') %></span>
+                            <span class="value"><%= I18n.l(@auction.starts_at) %></span>
+                        </li>
+                        <li>
+                            <span class="label"><%= t('auctions.ends_at') %></span>
+                            <span class="value"><%= I18n.l(@auction.ends_at) %></span>
+                        </li>
+                        <%- if @auction.offer_from_user(current_user).present? %>
+                            <li>
+                                <span class="label"><%= t('auctions.your_current_price') %></span>
+                                <span class="value"><%= @auction.current_price_from_user(current_user) %></span>
+                            </li>
+                        <% end %>
+                    </ul>
                 </div>
 
-                <div class="item">
-                    <div class="header"><%= t('auctions.ends_at') %></div>
-                    <%= I18n.l(@auction.ends_at) %>
+                <div class="buttons">
+                    <%- if @auction.offer_from_user(current_user).present? %>
+                        <%= link_to t('auctions.edit_your_offer'),
+                        edit_offer_path(@auction.offer_from_user(current_user).uuid), class: "ui button primary" %>
+                    <% else %>
+                        <%= link_to t('auctions.submit_offer'),
+                        new_auction_offer_path(auction_uuid: @auction.uuid), class: "ui button primary" %>
+                    <% end %>
                 </div>
-
-                <div class="item">
-                    <div class="header"><%= t('auctions.your_current_price') %></div>
-                    <%= @auction.current_price_from_user(current_user) %>
-                </div>
-
-                <%- if @auction.offer_from_user(current_user).present? %>
-                    <%= link_to t('auctions.edit_your_offer'),
-                    edit_offer_path(@auction.offer_from_user(current_user).uuid), class: "ui button primary" %>
-                <% else %>
-                    <%= link_to t('auctions.submit_offer'),
-                    new_auction_offer_path(auction_uuid: @auction.uuid), class: "ui button primary" %>
-                <% end %>
             </div>
         </div>
     </div>
