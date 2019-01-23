@@ -1,16 +1,21 @@
-<div class="row invisible">
-    <%= form_with(url: @payment_order.form_url, local: true, id: 'payment-order-form') do |f| %>
-        <%- @payment_order.form_fields.each do |k, v| %>
-            <%= f.hidden_field k, value: v %>
-        <% end %>
-        <%= f.submit t(:submit) %>
-    <% end %>
-</div>
+<% content_for :hero do %>
+    <div class="hero green">
+        <h1><%= t('.you_are_being_redirected') %></h1>
+    </div>
+<% end %>
 
-<div class="row">
-    <div class="col-12">
-        <h3><%= t('.you_are_being_redirected') %>
+<div class="u-container">
+    <div class="margin-block">
+        <div class="hidden form">
+            <%= form_with(url: @payment_order.form_url, local: true, id: 'payment-order-form') do |f| %>
+                <%- @payment_order.form_fields.each do |k, v| %>
+                    <%= f.hidden_field k, value: v %>
+                <% end %>
+                <%= f.submit t(:submit) %>
+            <% end %>
+        </div>
     </div>
 </div>
 
+<%= stylesheet_pack_tag 'stylesheets/payment_orders', media: 'all', 'data-turbolinks-track': 'reload' %>
 <%= javascript_pack_tag 'payment_orders', 'data-turbolinks-track': 'reload' %>
