@@ -1,58 +1,57 @@
-<div class="text-center">
-    <div class="row">
-        <div class="col-12">
-            <h1 class="display-4"><%= application_name %></h1>
-        </div>
+<% content_for :hero do %>
+    <div class="hero">
+        <h1><%= t('.title') %></h1>
     </div>
-    <div class="row">
-        <%- unless signed_in? %>
-            <div class="col-12 col-lg-6">
-                <p><%= link_to t(:sign_in), new_user_session_path, class: "btn btn-secondary" %></p>
-            </div>
-            <div class="col-12 col-lg-6">
-                <p><%= link_to t('users.index.create_an_account'), new_user_path, class: "btn btn-primary" %></p>
-            </div>
-        <%- end %>
-    </div>
+<% end %>
 
-    <div class="row justify-content-center">
-        <div class="col-12">
-            <h1 class="mb-3 mt-4"><%= t('.title') %></h1>
-        </div>
-    </div>
-    <div class="row justify-content-center">
-        <div class="col-12">
-            <table class="table" id="auctions-table">
-                <thead>
-                    <tr>
-                        <th scope="col"><%= t('auctions.domain_name') %></th>
-                        <th scope="col"><%= t('auctions.ends_at') %></th>
-                        <th scope="col"><%= t('auctions.your_current_price') %></th>
-                        <th scope="col"><%= t('auctions.offer_actions') %></th>
-                    </tr>
-                </thead>
+<%= render 'top_grid' %>
 
-                <tbody id="auctions-table-body">
-                    <% @auctions.each do |auction| %>
-                        <tr class="auctions-table-row">
-                            <td class="auction-domain-name">
-                                <%= link_to auction.domain_name, auction_path(auction.uuid) %>
-                            </td>
-                            <td><%= I18n.l(auction.ends_at) %></td>
-                            <td><%= auction.current_price_from_user(current_user) %></td>
-                            <td>
-                                <%- if auction.offer_from_user(current_user).present? %>
-                                    <%= link_to t('auctions.edit_your_offer'),
-                                    edit_offer_path(auction.offer_from_user(current_user)) %>
-                                <% else %>
-                                    <%= link_to t('auctions.submit_offer'),
-                                    new_auction_offer_path(auction_uuid: auction.uuid) %>
-                                <% end %>
-                            </td>
+<div class="u-container">
+    <div class="margin-block">
+        <div class="grid one column">
+            <div class="column">
+                <%- unless signed_in? %>
+                    <p>
+                        <%= link_to t(:sign_in), new_user_session_path, class: "ui button primary" %>
+                        <%= link_to t('users.index.create_an_account'), new_user_path, class: "ui button secondary" %>
+                    </p>
+                <%- end %>
+                <br>
+            </div>
+
+            <div class="column">
+                <table class="ui table selectable unstackable fixed" id="auctions-table">
+                    <thead>
+                        <tr>
+                            <th scope="col"><%= t('auctions.domain_name') %></th>
+                            <th scope="col"><%= t('auctions.ends_at') %></th>
+                            <th scope="col"><%= t('auctions.your_current_price') %></th>
+                            <th scope="col"><%= t('auctions.offer_actions') %></th>
                         </tr>
-                    <% end %>
-                </tbody>
-            </table>
+                    </thead>
+
+                    <tbody id="auctions-table-body">
+                        <% @auctions.each do |auction| %>
+                            <tr class="auctions-table-row">
+                                <td class="auction-domain-name">
+                                    <%= link_to auction.domain_name, auction_path(auction.uuid) %>
+                                </td>
+                                <td><%= I18n.l(auction.ends_at) %></td>
+                                <td><%= auction.current_price_from_user(current_user) %></td>
+                                <td>
+                                    <%- if auction.offer_from_user(current_user).present? %>
+                                        <%= link_to t('auctions.edit_your_offer'),
+                                        edit_offer_path(auction.offer_from_user(current_user).uuid) %>
+                                    <% else %>
+                                        <%= link_to t('auctions.submit_offer'),
+                                        new_auction_offer_path(auction_uuid: auction.uuid) %>
+                                    <% end %>
+                                </td>
+                            </tr>
+                        <% end %>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

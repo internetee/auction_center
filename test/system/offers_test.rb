@@ -91,6 +91,8 @@ class OffersTest < ApplicationSystemTestCase
     sign_in(@user)
     visit offer_path(@offer.uuid)
 
+    assert(page.has_link?('Delete'))
+
     accept_confirm do
       click_link_or_button('Delete')
     end

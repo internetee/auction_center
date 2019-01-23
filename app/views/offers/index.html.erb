@@ -1,15 +1,22 @@
-<div class="row mt-4">
-    <div class="col-12">
-        <h2><%= t(:my_offers) %></h2>
-        <table class="table" id="my-offers-table">
-            <thead>
-                <tr>
-                    <th scope="col"><%= t('auctions.domain_name') %></th>
-                    <th scope="col"><%= t('.your_last_offer') %></th>
-                    <th scope="col"><%= t('auctions.ends_at') %></th>
-                    <th scope="col"><%= t('result_name') %></th>
-                    <th scope="col"></th>
-                </tr>
+<% content_for :hero do %>
+    <div class="hero green">
+        <h1><%= t(:my_offers) %></h1>
+    </div>
+<% end %>
+
+<div class="u-container">
+    <div class="margin-block">
+        <div class="grid one column">
+            <table class="table ui stackable" id="my-offers-table">
+                <thead>
+                    <tr>
+                        <th scope="col"><%= t('auctions.domain_name') %></th>
+                        <th scope="col"><%= t('.your_last_offer') %></th>
+                        <th scope="col"><%= t('auctions.ends_at') %></th>
+                        <th scope="col"><%= t('result_name') %></th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
 
                 <tbody id="offers-table-body">
                     <% @offers.each do |offer| %>
@@ -42,6 +49,7 @@
                         </tr>
                     <% end %>
                 </tbody>
-        </table>
+            </table>
+        </div>
     </div>
 </div>

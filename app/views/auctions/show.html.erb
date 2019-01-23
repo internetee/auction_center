@@ -1,37 +1,49 @@
-<div class="row">
-    <div class="col-12">
-        <h1 class="mb-3 mt-4"><%= t('.title') %></h1>
+<% content_for :hero do %>
+    <div class="hero">
+        <h1><%= t('.title') %></h1>
+
+        <%= @auction.domain_name %>
+        <%- if @auction.finished? %>
+            <%= t('auctions.finished') %>
+        <% end %>
     </div>
-</div>
+<% end %>
 
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body">
-                <h2><%= @auction.domain_name %></h2>
-                <%- if @auction.finished? %>
-                    <h3><%= t('auctions.finished') %></h3>
-                <% end %>
+<div class="u-container">
+    <div class="margin-block">
+            <h2><%= t('.title') %></h2>
+            <div class="body">
+                <div class="details-list centered-list">
+                    <ul>
+                        <li>
+                            <span class="label"><%= t('auctions.starts_at') %></span>
+                            <span class="value"><%= I18n.l(@auction.starts_at) %></span>
+                        </li>
+                        <li>
+                            <span class="label"><%= t('auctions.ends_at') %></span>
+                            <span class="value"><%= I18n.l(@auction.ends_at) %></span>
+                        </li>
+                        <%- if @auction.offer_from_user(current_user).present? %>
+                            <li>
+                                <span class="label"><%= t('auctions.your_current_price') %></span>
+                                <span class="value"><%= @auction.current_price_from_user(current_user) %></span>
+                            </li>
+                        <% end %>
+                    </ul>
+                </div>
 
-                <dl class="mb-6 no-bullets auction-card">
-                    <dt><%= t('auctions.starts_at') %></dt>
-                    <dd><%= I18n.l(@auction.starts_at) %></dd>
-
-                    <dt><%= t('auctions.ends_at') %></dt>
-                    <dd><%= I18n.l(@auction.ends_at) %></dd>
-
-                    <dt><%= t('auctions.your_current_price') %></dt>
-                    <dd><%= @auction.current_price_from_user(current_user) %></dd>
-                </dl>
-
-                <%- if @auction.offer_from_user(current_user).present? %>
-                    <%= link_to t('auctions.edit_your_offer'),
-                    edit_offer_path(@auction.offer_from_user(current_user)), class: "card-link mt" %>
-                <% else %>
-                    <%= link_to t('auctions.submit_offer'),
-                    new_auction_offer_path(auction_uuid: @auction.uuid), class: "card-link mt" %>
-                <% end %>
+                <div class="buttons">
+                    <%- if @auction.offer_from_user(current_user).present? %>
+                        <%= link_to t('auctions.edit_your_offer'),
+                        edit_offer_path(@auction.offer_from_user(current_user).uuid), class: "ui button primary" %>
+                    <% else %>
+                        <%= link_to t('auctions.submit_offer'),
+                        new_auction_offer_path(auction_uuid: @auction.uuid), class: "ui button primary" %>
+                    <% end %>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<%= render 'bottom_grid' %>

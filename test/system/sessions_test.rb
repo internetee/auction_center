@@ -4,7 +4,7 @@ class SessionsTest < ApplicationSystemTestCase
   def test_can_sign_in_with_password
     visit(users_path)
 
-    within('nav') do
+    within('nav.menu-user') do
       click_link_or_button('Sign in')
     end
 
@@ -35,7 +35,7 @@ class SessionsTest < ApplicationSystemTestCase
     assert(page.has_link?('Profile', href: user_path(user.uuid)))
     click_link_or_button('Profile')
 
-    assert_equal('Joe John Participant', page.find('h2').text)
+    assert_text('Joe John Participant')
   end
 
   def test_link_to_profile_is_invisible_for_anonymous_users

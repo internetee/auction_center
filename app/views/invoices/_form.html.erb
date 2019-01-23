@@ -1,19 +1,20 @@
-<%= form_with(model: invoice, local: true, url: url) do |f| %>
-    <div class="row">
-        <div class="col-12 col-lg-6">
-            <div class="form-group">
-                <%= f.label :billing_profile, t('invoices.billing_profile') %><br />
+<%= form_with(model: invoice, local: true, url: url, class: 'ui form big') do |f| %>
+    <div class="ui one column grid">
+        <div class="column">
+            <div class="field">
+                <%= f.label :billing_profile, t('invoices.billing_profile') %>
                 <%= f.select :billing_profile_id,
-                BillingProfile.where(user_id: invoice.user_id).collect { |b| [b.name, b.id] },
-                class: "form-control form-control" %><br>
-
-                <%= link_to t(:new_billing_profile),  new_billing_profile_path %>
+                             BillingProfile.where(user_id: invoice.user_id).collect { |b| [b.name, b.id] },
+                             {},
+                             class: "ui dropdown" %>
             </div>
+
+            <%= link_to t(:new_billing_profile), new_billing_profile_path, class: "ui button primary" %>
         </div>
 
-        <div class="col-12">
-            <%= f.submit t(:submit), class: "btn btn-primary form-control mb-2" %>
-            <%= link_to t(:back), :back, class: "btn btn-secondary form-control" %>
+        <div class="column">
+            <%= f.submit t(:submit), class: "ui button primary" %>
+            <%= link_to t(:back), :back, class: "ui button secondary" %>
         </div>
     </div>
 <% end %>

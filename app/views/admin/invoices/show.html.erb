@@ -1,82 +1,93 @@
-<div class="row">
-    <div class="col-12">
-        <h1 class="mb-3 mt-4">
-            <%= t('.title', invoice_number: @invoice.id) %>
-        </h1>
-        <%= link_to t(:versions_name), admin_invoice_versions_path(@invoice), class: "card-link mt" %>
+<% content_for :hero do %>
+    <div class="hero orange">
+        <h1><%= t('.title', invoice_number: @invoice.id) %></h1>
     </div>
-</div>
+<% end %>
 
-<div class="row">
-    <div class="col-lg-6 col-12">
-        <dl class="mb-6 no-bullets invoice-card">
-            <dt><%= t('invoices.status') %></dt>
-            <dd><%= @invoice.status %></dd>
+<div class="u-container">
+    <div class="margin-block">
+        <div class="ui two column doubling stackable grid">
+            <div class="column sixteen wide">
+                <%= link_to t(:versions_name), admin_invoice_versions_path(@invoice), class: "ui button primary" %>
+            </div>
 
-            <dt><%= t('invoices.issued_for') %></dt>
-            <dd>
-                <%= @invoice.billing_profile.name %><br>
-                <%= @invoice.billing_profile.address %>
-            </dd>
-        </dl>
-    </div>
+            <div class="column">
+                <div class="ui list">
+                    <div class="item">
+                        <div class="header"><%= t('invoices.status') %></div>
+                        <%= @invoice.status %>
+                    </div>
 
-    <div class="col-lg-6 col-12 text-right">
-        <dl class="mb-6 no-bullets invoice-card">
-            <dt><%= t('invoices.issue_date') %></dt>
-            <dd><%= @invoice.issue_date %></dd>
+                    <div class="item">
+                        <div class="header"><%= t('invoices.issued_for') %></div>
+                        <%= @invoice.billing_profile.name %><br>
+                        <%= @invoice.billing_profile.address %>
+                    </div>
+                </div>
+            </div>
 
-            <dt><%= t('invoices.due_date') %></dt>
-            <dd><%= @invoice.due_date %></dd>
-        </dl>
-    </div>
+            <div class="column right aligned">
+                <div class="ui list">
+                    <div class="item">
+                        <div class="header"><%= t('invoices.issue_date') %></div>
+                        <%= @invoice.issue_date %>
+                    </div>
 
-    <div class="col-12 mt-3">
-        <h2><%= t('invoices.items') %></h2>
-        <table class="table mb-4 mt-4" id="invoice-items-table">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col"><%= t('invoices.item') %></th>
-                    <th scope="col"><%= t('invoices.price') %></th>
-                </tr>
-            </thead>
+                    <div class="item">
+                        <div class="header"><%= t('invoices.due_date') %></div>
+                        <%= @invoice.due_date %>
+                    </div>
+                </div>
+            </div>
 
-            <tbody id="invoice-items-table-body">
-                <% @invoice.items.each_with_index do |item, index| %>
-                    <tr>
-                        <td><%= index + 1 %></td>
-                        <td><%= item.name %></td>
-                        <td><%= item.price %></td>
-                    </tr>
-                <% end %>
-            </tbody class="mb-2">
+            <div class="column sixteen wide">
+                <h2><%= t('invoices.items') %></h2>
+                <table class="ui table" id="invoice-items-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col"><%= t('invoices.item') %></th>
+                            <th scope="col"><%= t('invoices.price') %></th>
+                        </tr>
+                    </thead>
 
-            <tfoot>
-                <tr>
-                    <td scope="col"></td>
-                    <td scope="col"><%= t('invoices.vat_exclusive', price: @invoice.price) %></td>
-                    <td scope="col"><%= t('offers.price_in_currency', price: @invoice.price) %></td>
-                </tr>
+                    <tbody id="invoice-items-table-body">
+                        <% @invoice.items.each_with_index do |item, index| %>
+                            <tr>
+                                <td><%= index + 1 %></td>
+                                <td><%= item.name %></td>
+                                <td><%= item.price %></td>
+                            </tr>
+                        <% end %>
+                    </tbody class="mb-2">
 
-                <tr>
-                    <td scope="col"></td>
-                    <td scope="col"><%= t('invoices.vat_rate', price: @invoice.price) %></td>
-                    <td scope="col">
-                        <%= number_to_percentage(@invoice.billing_profile.vat_rate * 100, precision: 0) %>
-                    </td>
-                </tr>
-                <tr>
-                    <td scope="col"></td>
-                    <td scope="col"><%= t('invoices.vat_amount') %></td>
-                    <td scope="col"><%= t('offers.price_in_currency', price: @invoice.vat) %></td>
-                </tr>
-                <tr>
-                    <th scope="col"></th>
-                    <th scope="col"><%= t('invoices.total') %></th>
-                    <th scope="col"><%= t('offers.price_in_currency', price: @invoice.total) %></th>
-                </tr>
-            </tfoot>
-        </table>
+                    <tfoot>
+                        <tr>
+                            <td scope="col"></td>
+                            <td scope="col"><%= t('invoices.vat_exclusive', price: @invoice.price) %></td>
+                            <td scope="col"><%= t('offers.price_in_currency', price: @invoice.price) %></td>
+                        </tr>
+
+                        <tr>
+                            <td scope="col"></td>
+                            <td scope="col"><%= t('invoices.vat_rate', price: @invoice.price) %></td>
+                            <td scope="col">
+                                <%= number_to_percentage(@invoice.billing_profile.vat_rate * 100, precision: 0) %>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td scope="col"></td>
+                            <td scope="col"><%= t('invoices.vat_amount') %></td>
+                            <td scope="col"><%= t('offers.price_in_currency', price: @invoice.vat) %></td>
+                        </tr>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col"><%= t('invoices.total') %></th>
+                            <th scope="col"><%= t('offers.price_in_currency', price: @invoice.total) %></th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
     </div>
 </div>

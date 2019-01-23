@@ -1,46 +1,50 @@
-<div class="row">
-    <div class="col-12">
-        <h1 class="mb-3 mt-4"><%= t('.title') %></h1>
+<% content_for :hero do %>
+    <div class="hero orange">
+        <h1><%= t('.title') %></h1>
+        <%= @auction.domain_name %>
     </div>
-</div>
+<% end %>
 
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body">
-                <h2><%= @auction.domain_name %></h2>
-                <%- if @auction.finished? %>
-                    <h3><%= t('auctions.finished') %></h3>
-                <% end %>
+<div class="u-container">
+    <div class="margin-block">
+        <div class="content">
+            <%- if @auction.finished? %>
+                <div class="ui centered aligned header"><%= t('auctions.finished') %></div>
+            <% end %>
 
-                <dl class="mb-6 no-bullets auction-card">
-                    <dt><%= t('auctions.starts_at') %></dt>
-                    <dd><%= @auction.starts_at %></dd>
+            <div class="ui list">
+                <div class="item">
+                    <div class="header"><%= t('auctions.starts_at') %></div>
+                    <%= @auction.starts_at %>
+                </div>
+            </div>
 
-                    <dt><%= t('auctions.ends_at') %></dt>
-                    <dd><%= @auction.ends_at %></dd>
-                </dl>
+            <div class="ui list">
+                <div class="item">
+                    <div class="header"><%= t('auctions.ends_at') %></div>
+                    <%= @auction.ends_at %>
+                </div>
+            </div>
 
-
+            <div class="buttons">
                 <%= link_to t(:delete), admin_auction_path(@auction),
-                            method: :delete,
-                            data: { confirm: t(:are_you_sure) } ,
-                            remote: true, class: "card-link" %>
+                method: :delete,
+                data: { confirm: t(:are_you_sure) } ,
+                remote: true, class: "ui button secondary" %>
+
                 <%- if @auction.result %>
                     <%= link_to t(:result_name), admin_result_path(@auction.result),
-                                class: "card-link mt" %>
+                    class: "ui button primary" %>
                 <% end %>
+
                 <%= link_to t(:versions_name), admin_auction_versions_path(@auction),
-                            class: "card-link mt" %>
+                class: "ui button primary" %>
             </div>
         </div>
     </div>
-</div>
-
-<div class="row mt-4">
-    <div class="col-12">
+    <div class="margin-block">
         <h2><%= t(:offers_name) %></h2>
-        <table class="table" id="auctions-offers-table">
+        <table class="ui table" id="auctions-offers-table">
             <thead>
                 <tr>
                     <th scope="col"><%= t('offers.price') %></th>
@@ -57,7 +61,7 @@
                             <td><%= offer.user.display_name %></td>
                             <td><%= I18n.l(offer.user.created_at) %></td>
                             <td><%= I18n.l(offer.user.updated_at) %></td>
-                            <td><%= link_to t(:versions_name), admin_offer_versions_path(offer) %></td>
+                            <td><%= link_to t(:versions_name), admin_offer_versions_path(offer), class: "ui button primary" %></td>
                         </tr>
                     <% end %>
                 </tbody>

@@ -1,0 +1,36 @@
+.top-message {
+  padding-top: 80px;
+  padding-bottom: 40px;
+  margin-top: -40px;
+  text-align: center;
+  margin-bottom: 80px;
+  .title {
+    display: block;
+    font-weight: 900;
+    font-size: 30px;
+    line-height: 30px;
+  }
+  .large {
+    padding-top: 120px;
+    padding-bottom: 80px;
+    margin-bottom: -40px;
+  }
+
+  &.success {
+    background: $green;
+    color: $white;
+  }
+
+  &.notice {
+      background: $orange;
+      color: $black;
+  }
+
+  @include max-screen(991px) {
+    margin-bottom: 40px;
+  }
+  @include max-screen(767px) {
+    padding-top: 60px;
+    padding-bottom: 20px;
+  }
+}

@@ -1,27 +1,26 @@
-<%= form_with(model: auction, local: true, url: url) do |f| %>
-    <div class="row">
-        <div class="col-12 col-lg-6">
-            <div class="form-group">
-                <%= f.label :domain_name, t('auctions.domain_name') %><br />
-                <%= f.text_field :domain_name, class: "form-control",
-                     value: auction.domain_name %>
+<%= form_with(model: auction, local: true, url: url, class: "ui form big") do |f| %>
+    <div class="ui two column doubling stackable grid">
+        <div class="column">
+            <div class="field">
+                <%= f.label :domain_name, t('auctions.domain_name') %>
+                <%= f.text_field :domain_name, value: auction.domain_name %>
             </div>
         </div>
 
-        <div class="col-12 col-lg-6">
-            <div class="form-group">
-                <%= f.label :starts_at, t('auctions.starts_at') %><br />
+        <div class="column">
+            <div class="field">
+                <%= f.label :starts_at, t('auctions.starts_at') %>
                 <%= f.datetime_field :starts_at, class: "form-control", min: Time.zone.today %>
             </div>
-            <div class="form-group">
-                <%= f.label :ends_at, t('auctions.ends_at') %><br />
+            <div class="field">
+                <%= f.label :ends_at, t('auctions.ends_at') %>
                 <%= f.datetime_field :ends_at, class: "form-control", min: Time.zone.today %>
             </div>
         </div>
 
-        <div class="col-12">
-            <%= f.submit t(:submit), class: "btn btn-primary form-control mb-2" %>
-            <%= link_to t(:back), :back, class: "btn btn-secondary form-control" %>
+        <div class="column wide sixteen">
+            <%= f.submit t(:submit), class: "ui button primary" %>
+            <%= link_to t(:back), :back, class: "ui button secondary" %>
         </div>
     </div>
 <% end %>

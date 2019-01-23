@@ -1,0 +1,12 @@
+.ui {
+  &.segment {
+    background: $true-white;
+    box-shadow: 0 0 20px 0 rgba($true-black, 0.10);
+    padding: 40px;
+    border-radius: 0;
+    border: 0;
+    @include max-screen(767px) {
+      padding: 20px;
+    }
+  }
+}

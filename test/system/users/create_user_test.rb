@@ -16,8 +16,8 @@ class CreateUserTest < ApplicationSystemTestCase
     fill_in('user[given_names]', with: 'User with Multiple Names')
     fill_in('user[identity_code]', with: '81060885963')
     fill_in('user[mobile_phone]', with: '+48600100200')
-    select('Poland', from: 'user[country_code]')
-    check('user[accepts_terms_and_conditions]')
+    select_from_dropdown('Poland', from: 'user[country_code]')
+    check_checkbox('user[accepts_terms_and_conditions]')
 
     fill_in('user[surname]', with: 'Last Name')
     click_link_or_button('Sign up')
@@ -37,7 +37,7 @@ class CreateUserTest < ApplicationSystemTestCase
     fill_in('user[given_names]', with: 'User with Multiple Names')
     fill_in('user[identity_code]', with: '81060885963')
     fill_in('user[mobile_phone]', with: '+48600100200')
-    select('Poland', from: 'user[country_code]')
+    select_from_dropdown('Poland', from: 'user[country_code]')
     fill_in('user[surname]', with: 'Last Name')
     click_link_or_button('Sign up')
 
@@ -48,7 +48,7 @@ class CreateUserTest < ApplicationSystemTestCase
     sign_in(users(:participant))
     visit new_user_path
 
-    assert(page.has_css?('div.alert', text: 'You are already signed in'))
+    assert(page.has_css?('div.notice', text: 'You are already signed in'))
   end
 
   def test_certain_fields_are_required

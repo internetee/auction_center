@@ -1,0 +1,45 @@
+<div class="features-grid top blue">
+    <div class="overview">
+        <div class="u-container">
+            <span class="title"><%= t('.title')%> <strong><%= Auction.active.count %></strong>.</span>
+        </div>
+    </div>
+    <div class="u-container">
+        <div class="items">
+            <div class="item">
+                <h3 class="ui icon header">
+                    <i class="gift icon"></i>
+                    <div class="content">
+                        <%= t('.1_step_header') %>
+                        <div class="sub header"><%= t('.1_step_explanation') %></div>
+                    </div>
+                </h3>
+            </div>
+            <div class="item">
+                <h3 class="ui icon header">
+                    <i class="stopwatch icon"></i>
+                    <div class="content">
+                        <%= t('.2_step_header') %>
+                        <div class="sub header"><%= t('.2_step_explanation') %></div>
+                    </div>
+                </h3>
+            </div>
+            <div class="item">
+                <h3 class="ui icon header">
+                    <i class="credit card outline icon"></i>
+                    <div class="content">
+                        <div class="content">
+                            <%= t('.3_step_header') %>
+                            <div class="sub header"><%= t('.3_step_explanation') %></div>
+                        </div>
+                    </div>
+                </h3>
+            </div>
+        </div>
+        <div class="text">
+            <p><%= t(".footer_html",
+                     link: link_to(t(".footer_link"),
+                                   Setting.terms_and_conditions_link)) %>
+        </div>
+    </div>
+</div>

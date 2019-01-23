@@ -12,8 +12,8 @@ class AdminUsersProfileTest < ApplicationSystemTestCase
   def test_administrator_can_update_users_role
     visit edit_admin_user_path(@participant)
 
-    check('user_roles_administrator')
-    uncheck('user_roles_participant')
+    check_checkbox('user_roles_administrator')
+    uncheck_checkbox('user_roles_participant')
     click_link_or_button('Update')
   end
 
@@ -41,7 +41,7 @@ class AdminUsersProfileTest < ApplicationSystemTestCase
   def test_identity_code_and_country_can_also_be_changed
     visit edit_admin_user_path(@participant)
     fill_in('user[identity_code]', with: '1234-5678')
-    select('Poland', from: 'user[country_code]')
+    select_from_dropdown('Poland', from: 'user[country_code]')
     click_link_or_button('Update')
 
     assert(page.has_text?('PL'))

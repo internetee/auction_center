@@ -26,7 +26,7 @@ class BillingOffersTest < ApplicationSystemTestCase
     click_link('Submit offer')
 
     fill_in('offer[price]', with: '5.12')
-    select('ACME Inc.', from: 'offer[billing_profile_id]')
+    select_from_dropdown('ACME Inc.', from: 'offer[billing_profile_id]')
     click_link_or_button('Submit')
   end
 end

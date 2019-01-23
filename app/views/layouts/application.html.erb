@@ -5,37 +5,28 @@
         <%= csrf_meta_tags %>
         <%= csp_meta_tag %>
 
-        <%= stylesheet_pack_tag 'stylesheets/application', media: 'all', 'data-turbolinks-track': 'reload' %>
-        <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+        <%= stylesheet_pack_tag 'stylesheets/application', media: 'all' %>
+
+        <%= javascript_pack_tag 'application' %>
+        <%= stylesheet_pack_tag 'application', media: 'all' %>
     </head>
 
     <body>
-        <div class="container-fluid">
-            <header class="site-header">
-                <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-toggler">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbar-toggler">
-                        <%= link_to application_name, :root, class: "navbar-brand" %>
-                        <%= sign_in_links(current_user) %>
-                        <%= navigation_links(current_user) %>
-                    </div>
-                </nav>
-            </header>
-            <div class="container">
-                <div class="row mt-2">
-                    <div class="col-12">
-                        <div id="flash">
-                            <% flash.each do |key, value| -%>
-                                <div class="alert alert-primary"><%=h value %></div>
-                            <% end %>
-                        </div>
-                    </div>
+        <div class="app-wrapper">
+            <% flash.each do |key, value| -%>
+                <div class="ui message">
+                    <div class="header <%= key %>" id="flash"><%= h value %></div>
                 </div>
+            <% end %>
 
+            <%= render 'common/header' %>
+
+            <main class="main-layout" role="main">
+                <%= yield :hero %>
                 <%= yield %>
-            </div>
+            </main>
+
+            <%= render 'common/footer' %>
         </div>
     </body>
 </html>

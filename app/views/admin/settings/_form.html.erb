@@ -1,26 +1,19 @@
-<%= form_with(model: setting, local: true, url: url) do |f| %>
-    <div class="row">
-        <div class="col-12 col-lg-6">
-            <div class="form-group">
-                <%= f.label :code, t('settings.code') %><br />
-                <%= f.text_field :code, class: "form-control", value: setting.code, disabled: true %>
-            </div>
-        </div>
-        <div class="col-12 col-lg-6">
-            <div class="form-group">
-                <%= f.label :description, t('settings.description') %><br />
-                <%= f.text_field :description, class: "form-control", value: setting.description %>
-            </div>
-        </div>
-        <div class="col-12 col-lg-6">
-            <div class="form-group">
-                <%= f.label :value, t('settings.value') %><br />
-                <%= f.text_field :value, class: "form-control", value: setting.value %>
-            </div>
-        </div>
-        <div class="col-12">
-            <%= f.submit t(:submit), class: "btn btn-primary form-control mb-2" %>
-            <%= link_to t(:back), :back, class: "btn btn-secondary form-control" %>
-        </div>
+<%= form_with(model: setting, local: true, url: url, class: "ui form big") do |f| %>
+    <div class="field">
+        <%= f.label :code, t('settings.code') %>
+        <%= f.text_field :code, class: "form-control", value: setting.code, disabled: true %>
+    </div>
+    <div class="field">
+        <%= f.label :description, t('settings.description') %>
+        <%= f.text_field :description, class: "form-control", value: setting.description %>
+    </div>
+    <div class="field">
+        <%= f.label :value, t('settings.value') %>
+        <%= f.text_field :value, class: "form-control", value: setting.value %>
+    </div>
+
+    <br>
+    <%= f.submit t(:submit), class: "ui button primary" %>
+    <%= link_to t(:back), :back, class: "ui button secondary" %>
     </div>
 <% end %>

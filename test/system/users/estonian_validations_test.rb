@@ -39,7 +39,7 @@ class EstonianValidationsTest < ApplicationSystemTestCase
   def test_identity_code_validations_are_ignored_for_different_countries
     fill_in('user[identity_code]', with: '05071020395')
     fill_in('user[mobile_phone]', with: '+371 2 63 12345')
-    select('Latvia', from: 'user[country_code]')
+    select_from_dropdown('Latvia', from: 'user[country_code]')
 
     assert_difference 'User.count' do
       click_link_or_button('Sign up')
@@ -48,7 +48,7 @@ class EstonianValidationsTest < ApplicationSystemTestCase
 
   def test_estonian_identity_code_validations_are_used_for_update
     fill_in('user[identity_code]', with: '1234-5678')
-    select('Estonia', from: 'user[country_code]')
+    select_from_dropdown('Estonia', from: 'user[country_code]')
 
     page.find('body').click # blur
     refute(page.has_button?('Update'))
@@ -61,7 +61,7 @@ class EstonianValidationsTest < ApplicationSystemTestCase
     fill_in('user[password_confirmation]', with: 'password')
     fill_in('user[given_names]', with: 'User with Multiple Names')
     fill_in('user[surname]', with: 'Last Name')
-    check('user[accepts_terms_and_conditions]')
-    select('Estonia', from: 'user[country_code]')
+    check_checkbox('user[accepts_terms_and_conditions]')
+    select_from_dropdown('Estonia', from: 'user[country_code]')
   end
 end

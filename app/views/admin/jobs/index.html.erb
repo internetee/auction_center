@@ -1,12 +1,12 @@
-<div class="row justify-content">
-    <div class="col-12 text-center">
-        <h1 class="mb-3 mt-4"><%= t('.title')%></h1>
+<% content_for :hero do %>
+    <div class="hero orange">
+        <h1><%= t('.title') %></h1>
     </div>
-</div>
+<% end %>
 
-<div class="row">
-    <div class="col-12">
-        <table class="table" class="jobs-table">
+<div class="u-container">
+    <div class="margin-block">
+        <table class="ui table unstackable" class="jobs-table">
             <thead>
                 <th scope="col"><%= t('jobs.name') %></th>
                 <th scope="col"><%= t('actions') %></th>
@@ -19,7 +19,7 @@
                             <%= form_with(model: job, local: true, url: admin_jobs_path) do |f| %>
                                 <%= f.hidden_field :job_class %>
                                 <%= f.submit t('jobs.run'),
-                                             class: "btn btn-primary form-control mb-2",
+                                             class: "ui button secondary",
                                              disabled: !job.needs_to_run? %>
                             <% end %>
                         </td>

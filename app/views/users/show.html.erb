@@ -1,40 +1,55 @@
-<div class="row text-center">
-    <div class="col-12">
-        <h1 class="mb-3 mt-4"><%= t('.title') %></h1>
+<% content_for :hero do %>
+    <div class="hero green">
+        <h1><%= t('.title') %></h1>
     </div>
-</div>
+<% end %>
 
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body">
-                <h2><%= @user.display_name %></h2>
+<div class="u-container">
+    <div class="margin-block">
+        <div class="content">
+            <h2><%= @user.display_name %></h2>
+            <div class="body">
+                <div class="details-list centered-list">
+                    <ul>
+                        <li>
+                            <span class="label"><%= t('users.email') %></span>
+                            <span class="value"><%= (@user.email) %></span>
+                        </li>
 
-                <dl id="user-details-list" class="mb-4 no-bullets">
-                    <dt><%= t('users.email') %></dt>
-                    <dd><%= @user.email %></dd>
+                        <li>
+                            <span class="label"><%= t('users.mobile_phone') %></span>
+                            <span class="value"><%= (@user.mobile_phone) %></span>
+                        </li>
 
-                    <dt><%= t('users.mobile_phone') %></dt>
-                    <dd><%= @user.mobile_phone %></dd>
+                        <li>
+                            <span class="label"><%= t('users.country_code') %></span>
+                            <span class="value"><%= (@user.country_code) %></span>
+                        </li>
 
-                    <dt><%= t('users.country_code') %></dt>
-                    <dd><%= @user.country_code %></dd>
+                        <li>
+                            <span class="label"><%= t('users.identity_code') %></span>
+                            <span class="value"><%= (@user.identity_code) %></span>
+                        </li>
 
-                    <dt><%= t('users.identity_code') %></dt>
-                    <dd><%= @user.identity_code %></dd>
+                        <li>
+                            <span class="label"><%= t('created_at') %></span>
+                            <span class="value"><%= I18n.l(@user.created_at) %></span>
+                        </li>
 
-                    <dt><%= t('created_at') %></dt>
-                    <dd><%= I18n.l(@user.created_at) %></dd>
+                        <li>
+                            <span class="label"><%= t('users.terms_and_conditions') %></span>
+                            <span class="value"><%= link_to t('.review_terms_and_conditions'), Setting.terms_and_conditions_link %></span>
+                        </li>
+                    </ul>
+                </div>
 
-                    <dt><%= t('users.terms_and_conditions') %></dt>
-                    <dd><%= link_to t('.review_terms_and_conditions'), Setting.terms_and_conditions_link, class: "card-link mt" %></dd>
-                </dl>
-
-                <%= link_to t(:edit), edit_user_path(@user.uuid), class: "card-link mt" %>
-                <%= link_to t(:billing), billing_profiles_path, class: "card-link mt" %>
-                <%= link_to t('.delete'), user_path(@user.uuid),
-                            method: :delete, data: { confirm: t(:are_you_sure) },
-                            remote: true, class: "card-link mt" %>
+                <div class="buttons">
+                    <%= link_to t(:edit), edit_user_path(@user.uuid), class: "ui button primary" %>
+                    <%= link_to t(:billing), billing_profiles_path, class: "ui button primary" %>
+                    <%= link_to t('.delete'), user_path(@user.uuid),
+                    method: :delete, data: { confirm: t(:are_you_sure) },
+                    remote: true, class: "ui button secondary" %>
+                </div>
             </div>
         </div>
     </div>

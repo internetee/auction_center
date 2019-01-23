@@ -1,13 +1,13 @@
-<div class="row justify-content-center">
-    <div class="col-12 text-center">
-        <h1 class="mb-3 mt-4"><%= t('.title') %></h1>
+<% content_for :hero do %>
+    <div class="hero orange">
+        <h1><%= t('.title') %></h1>
     </div>
-</div>
+<% end %>
 
-<div class="row">
-    <div class="col-12">
-        <%= link_to t(:back), :back %>
-        <table class="table" class="items-table">
+<div class="u-container">
+    <div class="margin-block">
+        <%= link_to t(:back), :back, class: "ui button primary" %>
+        <table class="ui table" class="items-table">
             <thead>
                 <th scope="col"><%= t('versions.recorded_at') %></th>
                 <th scope="col"><%= t('versions.action') %></th>
@@ -19,8 +19,8 @@
                         <td><%= I18n.l(item.recorded_at) %></td>
                         <td><%= item.action %></td>
                         <td><% item.diff.each do |key, value| %>
-                            <dt><%= key.humanize %></dt>
-                            <dd><%= value %></dd>
+                            <h3 class="header"><%= key.humanize %></h3>
+                            <p><%= value %></p>
                         <% end %>
                         </td>
                     </tr>

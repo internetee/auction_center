@@ -1,29 +1,35 @@
-<div class="text-center">
-    <div class="row justify-content-center">
-        <div class="col-12 col-lg-6">
-            <h1 class="mb-3 mt-4"><%= t(:sign_in) %></h1>
-            <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-                <div class="form-group">
-                    <%= f.label :email %><br />
-                    <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control" %>
-                </div>
+<% content_for :hero do %>
+    <div class="hero">
+        <h1><%= t(:sign_in) %></h1>
+    </div>
+<% end %>
 
-                <div class="form-group">
-                    <%= f.label :password %><br />
-                    <%= f.password_field :password, autocomplete: "current-password", class: "form-control" %>
-                </div>
+<div class="u-container">
+    <div class="u-container margin-block">
+        <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: 'ui form big' }) do |f| %>
+            <div class="field">
+                <%= f.label :email %><br />
+                <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+            </div>
 
+            <div class="field">
+                <%= f.label :password %><br />
+                <%= f.password_field :password, autocomplete: "current-password" %>
+            </div>
+
+            <div class="field">
                 <% if devise_mapping.rememberable? -%>
-                    <div class="form-check">
-                        <%= f.check_box :remember_me, class: "form-check-input" %>
-                        <%= f.label :remember_me, class: "mb-3" %>
+                    <div class="ui checkbox">
+                        <%= f.check_box :remember_me %>
+                        <%= f.label :remember_me %>
                     </div>
                 <% end -%>
+            </div>
 
-                <%= f.submit t(:sign_in), class: "btn btn-primary form-control mb-4" %>
-            <% end %>
+            <%= f.submit t(:sign_in), class: "ui button big primary" %>
+        <% end %>
 
-            <%= render "devise/shared/links" %>
-        </div>
+        <br>
+        <%= render "devise/shared/links" %>
     </div>
 </div>

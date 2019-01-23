@@ -1,49 +1,67 @@
-<div class="row">
-    <div class="col-12">
-        <h1 class="mb-3 mt-4"><%= t('.title') %></h1>
-        <%=link_to t(:new), new_billing_profile_path, class: "btn btn-primary mb-3" %>
+<% content_for :hero do %>
+    <div class="hero green">
+        <h1><%= t('.title') %></h1>
     </div>
-</div>
+<% end %>
 
-<div class="row">
-    <% @billing_profiles.each do |billing_profile|  %>
-        <div class="col-12 col-lg-6">
-            <div class="card">
-                <div class="card-body">
-                    <h2>
-                        <%= link_to billing_profile.name,
-                                    billing_profile_path(billing_profile.uuid) %>
-                    </h2>
-
-                    <dl class="mb-6 no-bullets billing-profile-card">
-                        <dt><%= t('billing_profiles.vat_code') %></dt>
-                        <dd><%= billing_profile.vat_code %></dd>
-
-                        <dt><%= t('billing_profiles.street') %></dt>
-                        <dd><%= billing_profile.street %></dd>
-
-                        <dt><%= t('billing_profiles.city') %></dt>
-                        <dd><%= billing_profile.city %></dd>
-
-                        <dt><%= t('billing_profiles.state') %></dt>
-                        <dd><%= billing_profile.state %></dd>
-
-                        <dt><%= t('billing_profiles.postal_code') %></dt>
-                        <dd><%= billing_profile.postal_code %></dd>
-
-                        <dt><%= t('billing_profiles.country') %></dt>
-                        <dd><%= billing_profile.country_code %></dd>
-
-                        <dt><%= t('created_at') %></dt>
-                        <dd><%= I18n.l(billing_profile.created_at) %></dd>
-                    </dl>
-
-                    <%= link_to t(:edit), edit_billing_profile_path(billing_profile.uuid), class: "card-link mt" %>
-                    <%= link_to t(:delete), billing_profile_path(billing_profile.uuid),
-                                method: :delete, data: { confirm: t(:are_you_sure) },
-                                remote: true, class: "card-link mt" %>
-                </div>
-            </div>
+<div class="u-container">
+    <div class="margin-block">
+        <div class="buttons">
+            <%= link_to t(:new), new_billing_profile_path, class: "ui button primary" %>
         </div>
-    <% end %>
+
+        <div class="ui two column grid doubling stackable">
+            <% @billing_profiles.each do |billing_profile|  %>
+                <div class="column">
+                    <div class="details-list centered-list">
+                        <h2>
+                            <%= link_to billing_profile.name,
+                            billing_profile_path(billing_profile.uuid) %>
+                        </h2>
+
+                        <div class="details-list centered-list">
+                            <ul>
+                                <li>
+                                    <span class="label"><%= t('billing_profiles.vat_code') %></span>
+                                    <span class="value"><%= billing_profile.vat_code %></span>
+                                </li>
+
+                                <li>
+                                    <span class="label"><%= t('billing_profiles.street') %></span>
+                                    <span class="value"><%= billing_profile.street %></span>
+                                </li>
+
+                                <li>
+                                    <span class="label"><%= t('billing_profiles.city') %></span>
+                                    <span class="value"><%= billing_profile.city %></span>
+                                </li>
+
+                                <li>
+                                    <span class="label"><%= t('billing_profiles.state') %></span>
+                                    <span class="value"><%= billing_profile.state %></span>
+                                </li>
+
+                                <li>
+                                    <span class="label"><%= t('billing_profiles.postal_code') %></span>
+                                    <span class="value"><%= billing_profile.postal_code %></span>
+                                </li>
+
+                                <li>
+                                    <span class="label"><%= t('billing_profiles.country') %></span>
+                                    <span class="value"><%= billing_profile.country_code %></span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="buttons">
+                        <%= link_to t(:edit), edit_billing_profile_path(billing_profile.uuid), class: "ui button primary" %>
+                        <%= link_to t(:delete), billing_profile_path(billing_profile.uuid),
+                        method: :delete, data: { confirm: t(:are_you_sure) },
+                        remote: true, class: "ui button secondary" %>
+                    </div>
+                </div>
+            <% end %>
+        </div>
+    </div>
 </div>

@@ -1,95 +1,92 @@
-<%= form_with(model: user, url: url, local: true, id: 'user_form') do |f| %>
-    <div class="row">
-        <div class="col-12 col-lg-6">
+<%= form_with(model: user, url: url, local: true, id: 'user_form', class: 'ui form big') do |f| %>
+    <div class="ui two column doubling stackable grid">
+        <div class="column">
             <h3 class="p3"><%= t('.contact_data') %></h3>
-            <div class="form-group">
-                <%= f.label :email, t('users.email') %><br />
-                <%= f.email_field :email, autofocus: true, autocomplete: "email",
-                class: "form-control" %>
+
+            <div class="field">
+                <%= f.label :email, t('users.email') %>
+                <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
                 <% if user.pending_reconfirmation? %>
                     <div>Currently waiting confirmation for: <%= user.unconfirmed_email %></div>
                 <% end %>
             </div>
-            <div class="form-group">
-                <%= f.label :mobile_phone, t('users.mobile_phone') %><br />
-                <%= f.telephone_field :mobile_phone, autofocus: true, autocomplete: "off",
-                class: "form-control" %>
+            <div class="field">
+                <%= f.label :mobile_phone, t('users.mobile_phone') %>
+                <%= f.telephone_field :mobile_phone, autofocus: true, autocomplete: "off" %>
             </div>
-            <div class="form-group">
-                <%= f.label :given_names, t('users.given_names') %><br />
-                <%= f.text_field :given_names, autofocus: true, autocomplete: "off",
-                class: "form-control" %>
+            <div class="field">
+                <%= f.label :given_names, t('users.given_names') %>
+                <%= f.text_field :given_names, autofocus: true, autocomplete: "off" %>
             </div>
-            <div class="form-group">
-                <%= f.label :surname, t('users.surname') %><br />
-                <%= f.text_field :surname, autofocus: true, autocomplete: "off",
-                class: "form-control" %>
+            <div class="field">
+                <%= f.label :surname, t('users.surname') %>
+                <%= f.text_field :surname, autofocus: true, autocomplete: "off" %>
             </div>
         </div>
 
-        <div class="col-12 col-lg-6">
+        <div class="column">
             <h3 class="p3"><%= t('.personal_data') %></h3>
-            <div class="form-group">
+            <div class="field">
                 <%= f.label :identity_code, t('users.identity_code') %>
-                <%= f.text_field :identity_code, class: "form-control",
-                placeholder: t('users.can_be_left_blank_if_not_estonian') %>
+                <%= f.text_field :identity_code, placeholder: t('users.can_be_left_blank_if_not_estonian') %>
             </div>
-            <div class="form-group">
-                <%= f.label :country, t('users.country') %><br />
+            <div class="field">
+                <%= f.label :country, t('users.country') %>
                 <%= f.select :country_code,
                 options_for_select(
                     Countries.for_selection,
                     user.country_code || Setting.default_country
                 ),
                 {},
-                class: "form-control form-control" %>
+                class: "ui dropdown" %>
             </div>
 
-            <div class="form-check text-left">
-                <%= f.check_box :accepts_terms_and_conditions, { class: "form-check-input", value: user.accepts_terms_and_conditions }, "true", "false" %>
-                <%= f.label :accepts_terms_and_conditions do %>
-                    <%= link_to t('users.terms_and_conditions'), Setting.terms_and_conditions_link %>
-                <% end %>
+            <div class="field">
+                <div class="ui checkbox">
+                    <%= f.check_box :accepts_terms_and_conditions, { value: user.accepts_terms_and_conditions }, "true", "false" %>
+                    <%= f.label :accepts_terms_and_conditions do %>
+                        <%= link_to t('users.terms_and_conditions'), Setting.terms_and_conditions_link %>
+                    <% end %>
+                </div>
             </div>
         </div>
 
-        <div class="col-12 col-lg-6">
+        <div class="column">
             <h3 class="p3"><%= t('.new_password') %></h3>
-            <div class="form-group">
+            <div class="field">
                 <%= f.label :password, t('users.password') %>
-                <%= f.password_field :password, autocomplete: "new-password",
-                class: "form-control" %>
+                <%= f.password_field :password, autocomplete: "new-password" %>
                 <% if user.persisted? %>
                     <br><em><%= t('.you_can_leave_blank') %></em><br>
                 <% end %>
                 <% if @minimum_password_length %>
                     <em><%= t('.password_requirements', minimum: @minimum_password_length) %></em>
-                <% end %><br />
+                <% end %>
                 <br />
             </div>
-            <div class="form-group">
+            <div class="field">
                 <%= f.label :password_confirmation, t('users.password_confirmation') %><br />
-                <%= f.password_field :password_confirmation, autocomplete: "off", class: "form-control" %>
+                <%= f.password_field :password_confirmation, autocomplete: "off" %>
             </div>
         </div>
+
         <% if user.persisted? %>
-            <div class="col-12">
+            <div class="column sixteen wide">
                 <hr>
-                <div class="form-group">
-                    <%= f.label :current_password, t('users.current_password') %> <i><%= t('.we_need_your_password') %></i><br />
-                    <%= f.password_field :current_password, autocomplete: "off", class: "form-control" %>
+                <div class="field">
+                    <%= f.label :current_password, t('users.current_password') %>
+                    <i><%= t('.we_need_your_password') %></i><br />
+                    <%= f.password_field :current_password, autocomplete: "off" %>
                 </div>
             </div>
         <% end %>
-        <div class="col-12">
-            <div class="mt-4">
-                <% if user.persisted? %>
-                    <%= f.submit t(:update), class: "btn btn-primary form-control mb-4", id: "user_form_commit" %>
-                    <%= link_to t(:back), :back, class: "mt-4" %>
-                <% else %>
-                    <%= f.submit t('.sign_up'), class: "btn btn-primary form-control", id: "user_form_commit" %>
-                <% end %>
-            </div>
+        <div class="column sixteen wide">
+            <% if user.persisted? %>
+                <%= f.submit t(:update), class: "ui button big primary", id: "user_form_commit" %>
+                <%= link_to t(:back), :back, class: "ui button big secondary" %>
+            <% else %>
+                <%= f.submit t('.sign_up'), class: "ui button big primary", id: "user_form_commit" %>
+            <% end %>
         </div>
     </div>
 <% end %>
