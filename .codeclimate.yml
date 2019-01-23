@@ -28,3 +28,4 @@ exclude_patterns:
   - "vendor/"
   - "test/"
   - "karma.conf.js"
+  - "app/javascript/src/semantic-ui/"
