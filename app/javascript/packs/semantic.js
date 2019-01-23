@@ -1,5 +1,6 @@
 // Semantic UI
-import '../src/semantic-ui//dist/semantic.js';
+import '../src/semantic-ui/src/definitions/modules/checkbox.js';
+import '../src/semantic-ui/src/definitions/modules/dropdown.js';
 import '../src/semantic-ui/src/semantic.less';
 
 $(document).on('turbolinks:load', function() {
