@@ -20,7 +20,9 @@ class Invoice < ApplicationRecord
 
   validate :user_id_must_be_the_same_as_on_billing_profile_or_nil
 
-  scope :overdue, -> { where('due_date < ?', Time.zone.today) }
+  scope :overdue, lambda {
+    where('due_date < ? AND status = ?', Time.zone.today, statuses[:issued])
+  }
 
   def self.create_from_result(result_id)
     result = Result.find_by(id: result_id)
