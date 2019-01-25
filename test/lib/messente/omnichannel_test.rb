@@ -20,11 +20,17 @@ class OmnichannelTest < ActiveSupport::TestCase
   end
 
   def test_server_url_is_a_constant
-    assert_equal('https://api.messente.com', Messente::Omnichannel::URI)
+    assert_equal('api.messente.com', Messente::Omnichannel::BASE_URI)
+    assert_equal(443, Messente::Omnichannel::SSL_PORT)
   end
 
   def test_username_and_password_are_constants
     assert_equal('messente_user', Messente::Omnichannel::USERNAME)
     assert_equal('messente_password', Messente::Omnichannel::PASSWORD)
+  end
+
+  def test_request_is_an_https_request
+    instance = Messente::Omnichannel.new(@channel, @recipient, @text)
+    assert(instance.request.is_a?(Net::HTTP))
   end
 end
