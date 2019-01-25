@@ -68,7 +68,6 @@ default: &default
   messente:
     username: 'messente_user'
     password: 'messente_password'
-    uri: 'api.messente.com'
 
 development:
   <<: *default
@@ -97,7 +96,6 @@ test:
   messente:
     username: 'messente_user'
     password: 'messente_password'
-    uri: 'api.messente.com'
 
 staging:
   <<: *default
