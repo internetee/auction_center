@@ -60,6 +60,10 @@ class User < ApplicationRecord
     roles.include?(role)
   end
 
+  def phone_number_confirmed?
+    phone_number_confirmed_at.present?
+  end
+
   # Make sure that notifications are send asynchronously
   def send_devise_notification(notification, *args)
     devise_mailer.send(notification, self, *args).deliver_later

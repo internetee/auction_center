@@ -10,6 +10,7 @@ en:
   updated: "Updated successfully."
   deleted: "Deleted successfully."
   are_you_sure: "Are you sure?"
+  confirm: "Confirm"
 
   billing: "Billing"
   new_billing_profile: "New billing profile"

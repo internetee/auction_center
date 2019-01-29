@@ -18,7 +18,15 @@
 
                         <li>
                             <span class="label"><%= t('users.mobile_phone') %></span>
-                            <span class="value"><%= (@user.mobile_phone) %></span>
+                            <span class="value">
+                                <% if @user.phone_number_confirmed? %>
+                                    <i class="ui icon check circle outline"></i>
+                                    <%= (@user.mobile_phone) %>
+                                <% else %>
+                                    <%= (@user.mobile_phone) %>
+                                    <%= link_to t('confirm'), new_user_phone_confirmation_path(@user.uuid) %>
+                                <% end %>
+                            </span>
                         </li>
 
                         <li>

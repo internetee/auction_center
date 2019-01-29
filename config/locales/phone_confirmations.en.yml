@@ -1,4 +1,6 @@
 en:
   phone_confirmations:
+    invalid_code: "Invalid code"
+
     new:
       title: "Confirm your phone number"

@@ -12,4 +12,14 @@ class PhoneConfirmation
   def confirmed?
     @user.phone_number_confirmed_at.present?
   end
+
+  def valid_code?(input_code)
+    input_code == code
+  end
+
+  def confirm
+    return if confirmed?
+
+    @user.update!(phone_number_confirmed_at: Time.zone.now)
+  end
 end
