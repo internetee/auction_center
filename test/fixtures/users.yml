@@ -24,6 +24,7 @@ participant:
   mobile_phone: '+37255000002'
   roles: ['participant']
   terms_and_conditions_accepted_at: <%= Time.parse("2010-07-05 00:16:00 UTC") %>
+  phone_number_confirmation_code: "0000"
   uuid: 'dec265a9-4b4b-4165-83fd-9283700eae9c'
 
 second_place_participant:
@@ -38,4 +39,5 @@ second_place_participant:
   mobile_phone: '+37255000002'
   roles: ['participant']
   terms_and_conditions_accepted_at: <%= Time.parse("2010-07-05 00:16:00 UTC") %>
+  phone_number_confirmation_code: "0001"
   uuid: '7869501d-4de6-499e-b0d1-dfb63e6e2a66'

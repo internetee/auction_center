@@ -1,0 +1,24 @@
+<% content_for :hero do %>
+    <div class="hero green">
+        <h1><%= t('.title') %></h1>
+    </div>
+<% end %>
+
+<div class="u-container">
+    <div class="u-container margin-block">
+        <% if @phone_confirmation.errors.any? %>
+            <div class="ui message">
+                <div class="header">
+                    <%= pluralize(@phone_confirmation.errors.count, "error") %> <%= t('.errors') %>
+                </div>
+                <ul id="errors">
+                    <% @phone_confirmation.errors.full_messages.each do |message| %>
+                        <li><%= message %></li>
+                    <% end %>
+                </ul>
+            </div>
+        <% end %>
+
+        <%= render 'form', phone_confirmation: @phone_confirmation, url: user_phone_confirmations_path %>
+    </div>
+</div>

@@ -1,0 +1,11 @@
+<%= form_with(model: phone_confirmation, url: url, local: true, id: "phone_confirmation_form", class: "ui form big") do |f| %>
+
+    <div class="ui two column doubling stackable grid">
+        <div class="column">
+            <div class="field">
+                <%= f.label :confirmation_code %>
+                <%= f.text_field :confirmation_code %>
+            </div>
+        </div>
+    </div>
+<% end %>

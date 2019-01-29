@@ -39,5 +39,7 @@ Rails.application.routes.draw do
 
   resources :offers, only: :index
   resources :results, only: :show, param: :uuid
-  resources :users, param: :uuid
+  resources :users, param: :uuid do
+    resources :phone_confirmations, only: %i[new create]
+  end
 end
