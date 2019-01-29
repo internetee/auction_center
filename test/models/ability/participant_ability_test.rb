@@ -52,4 +52,9 @@ class ParticipantAbilityTest < ActiveSupport::TestCase
     assert(@participant_ability.can?(:read, PaymentOrder.new(user_id: @participant.id)))
     assert(@participant_ability.can?(:create, PaymentOrder.new(user_id: @participant.id)))
   end
+
+  def test_participant_can_manage_phone_number_confirmations
+    assert(@participant_ability.can?(:manage, PhoneConfirmation.new(@participant)))
+    refute(@participant_ability.can?(:manage, PhoneConfirmation.new(User.new)))
+  end
 end

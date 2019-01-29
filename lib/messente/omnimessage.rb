@@ -1,6 +1,6 @@
 module Messente
   class Omnimessage
-    BASE_URI = 'https://api.messente.com/v1/omnimessage'
+    BASE_URL = URI('https://api.messente.com/v1/omnimessage')
 
     USERNAME = AuctionCenter::Application.config.customization.dig('messente', 'username')
     PASSWORD = AuctionCenter::Application.config.customization.dig('messente', 'password')
@@ -15,31 +15,27 @@ module Messente
       @text = text
     end
 
-    def uri
-      @uri ||= URI('https://api.messente.com/v1/omnimessage')
-    end
-
     def request
       @request ||= Net::HTTP::Post.new(
-        uri.path,
+        BASE_URL.path,
         {'Accept': 'application/json',
          'Content-Type': 'application/json'}
       )
     end
 
     def body
-      { to: recipient, messages: [channel: channel, text: text] }
+      { to: recipient, messages: [channel: channel, text: text] }.to_json
     end
 
     def send_message
-      request.body = body.to_json
+      request.body = body
       request.basic_auth(USERNAME, PASSWORD)
 
-      response = Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
+      response = Net::HTTP.start(BASE_URL.host, BASE_URL.port, use_ssl: true) do |http|
         http.request(request)
       end
 
-      [response.code, JSON.parse(response.body)]
+      [response.code, JSON.parse(response.body, symbolize_names: true)]
     end
   end
 end
