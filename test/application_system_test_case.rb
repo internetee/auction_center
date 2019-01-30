@@ -1,9 +1,12 @@
-require "test_helper"
+require 'test_helper'
 require 'devise'
 require 'socket'
+require 'support/semantic_ui_helper'
 
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   include Devise::Test::IntegrationHelpers
+
+  include SemanticUiHelper
 
   Capybara.register_driver(:headless_chrome) do |app|
     options = ::Selenium::WebDriver::Chrome::Options.new

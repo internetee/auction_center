@@ -26,7 +26,11 @@ class OffersTest < ApplicationSystemTestCase
     visit root_path
 
     assert(page.has_link?('My offers', href: offers_path))
-    click_link('My offers')
+  end
+
+  def test_offers_table_rows_have_links_to_each_offer
+    sign_in(@user)
+    visit offers_path
 
     within('tbody#offers-table-body') do
       assert_text('with-offers.test')
