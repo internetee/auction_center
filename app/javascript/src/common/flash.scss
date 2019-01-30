@@ -1,0 +1,16 @@
+.ui.message.flash {
+    margin-top: 0;
+    color: #fff;
+    text-align: center;
+    background: $orange;
+
+    @include min-screen(768px) {
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+
+    @include min-screen(1224px) {
+        margin-left: 50px;
+        margin-right: 50px;
+    }
+}
