@@ -2,7 +2,7 @@ require 'constraints/administrator'
 
 Rails.application.routes.draw do
   root to: 'auctions#index'
-  devise_for :users, path: 'sessions'
+  devise_for :users, path: 'sessions', controllers: { confirmations: 'email_confirmations' }
 
   concern :auditable do
     resources :versions, only: :index

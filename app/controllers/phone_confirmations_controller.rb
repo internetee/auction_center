@@ -20,8 +20,6 @@ class PhoneConfirmationsController < ApplicationController
     end
   end
 
-
-
   private
 
   def create_predicate
