@@ -5,24 +5,27 @@
         <%= csrf_meta_tags %>
         <%= csp_meta_tag %>
 
-        <%= stylesheet_pack_tag 'stylesheets/application', media: 'all' %>
-
         <%= javascript_pack_tag 'application' %>
         <%= stylesheet_pack_tag 'application', media: 'all' %>
+
+        <%= stylesheet_pack_tag 'stylesheets/application', media: 'all' %>
     </head>
 
     <body>
         <div class="app-wrapper">
-            <% flash.each do |key, value| -%>
-                <div class="ui message">
-                    <div class="header <%= key %>" id="flash"><%= h value %></div>
-                </div>
-            <% end %>
-
             <%= render 'common/header' %>
 
             <main class="main-layout" role="main">
                 <%= yield :hero %>
+
+                <% unless flash.empty? %>
+                    <div class="ui message flash">
+                        <% flash.each do |key, value| -%>
+                            <div class="header <%= key %>" id="flash"><%= h value %></div>
+                        <% end %>
+                    </div>
+                <% end %>
+
                 <%= yield %>
             </main>
 
