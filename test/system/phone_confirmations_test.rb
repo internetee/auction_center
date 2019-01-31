@@ -22,6 +22,8 @@ class PhoneConfirmationsTest < ApplicationSystemTestCase
     PhoneConfirmationJob.stub(:perform_later, nil, @user.id) do
       @user.reload
       visit new_user_phone_confirmation_path(@user.uuid)
+      assert(page.has_text?('We sent a four digit code to +37255000002'))
+
       fill_in('phone_confirmation[confirmation_code]', with: @user.mobile_phone_confirmation_code)
       click_link_or_button('Submit')
       assert(

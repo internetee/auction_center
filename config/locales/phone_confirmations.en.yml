@@ -6,6 +6,10 @@ en:
 
     new:
       title: "Confirm your phone number"
+      subheader: "We sent a four digit code to %{number}"
+      instructions: |
+        Enter it below and click submit to confirm your mobile phone.
+        It can take up to a few minutes for the code to be delivered.
       already_confirmed: "Your phone number has already been confirmed."
 
     create:

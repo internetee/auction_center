@@ -6,6 +6,9 @@
 
 <div class="u-container">
     <div class="u-container margin-block">
+        <h3><%= t('.subheader' , number: @phone_confirmation.user.mobile_phone )%></h3>
+        <p><%= t('.instructions', number: @phone_confirmation.user.mobile_phone )%></p>
+
         <%= render 'form', phone_confirmation: @phone_confirmation, url: user_phone_confirmations_path %>
     </div>
 </div>
