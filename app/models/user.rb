@@ -61,7 +61,7 @@ class User < ApplicationRecord
   end
 
   def phone_number_confirmed?
-    phone_number_confirmed_at.present?
+    mobile_phone_confirmed_at.present?
   end
 
   # Make sure that notifications are send asynchronously

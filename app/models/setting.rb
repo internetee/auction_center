@@ -23,4 +23,14 @@ class Setting < ApplicationRecord
   def self.payment_term
     Setting.find_by(code: :payment_term).value.to_i
   end
+
+  def self.require_phone_confirmation
+    value = Setting.find_by(code: :require_phone_confirmation).value
+
+    if value == 'true'
+      true
+    elsif value == 'false'
+      false
+    end
+  end
 end

@@ -3,16 +3,24 @@ class PhoneConfirmationsController < ApplicationController
   before_action :set_phone_confirmation
   before_action :authorize_user
 
-  def new; end
+  def new
+    if @phone_confirmation.confirmed?
+      redirect_to user_path(@phone_confirmation.user.uuid), notice: t('.already_confirmed')
+    else
+      PhoneConfirmationJob.perform_later(@phone_confirmation.user.id)
+    end
+  end
 
   def create
+    user_uuid = @phone_confirmation.user.uuid
+
     respond_to do |format|
       if create_predicate
-        format.html { redirect_to user_path(@phone_confirmation.user.uuid), notice: t(:created) }
-        format.json { redirect_to user_path(@phone_confirmation.user.uuid), status: :created, location: @user }
+        format.html { redirect_to user_path(user_uuid), notice: t('.confirmed') }
+        format.json { redirect_to user_path(user_uuid), status: :created, location: @user }
       else
         format.html do
-          redirect_to new_user_phone_confirmation_path(@phone_confirmation.user.uuid),
+          redirect_to new_user_phone_confirmation_path(user_uuid),
                       notice: t('phone_confirmations.invalid_code')
         end
         format.json { render :new }

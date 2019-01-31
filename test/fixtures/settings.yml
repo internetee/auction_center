@@ -35,3 +35,10 @@ payment_term:
   description: |
     Number of days before which an invoice for auction must be paid. Default: 7
   value: 7
+
+require_phone_confirmation:
+  code: require_phone_confirmation
+  description: |
+    Require mobile numbers to be confirmed by SMS before user can place offers. Can be either 'true'
+    or 'false'
+  value: "false"
