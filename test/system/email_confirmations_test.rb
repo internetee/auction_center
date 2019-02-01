@@ -34,8 +34,10 @@ class EmailConfirmationsTest < ApplicationSystemTestCase
     assert_equal('Confirmation instructions', last_email.subject)
     assert_equal(['new-user@auction.test'], last_email.to)
 
-    url = last_email.body.match(/sessions\/confirmation\?confirmation_token=[A-z0-9]+/)
+    url = last_email.body.match(/sessions\/confirmation\?confirmation_token=[A-z0-9\-]+/)
+
     visit(url)
+
     assert(page.has_css?('div.notice', text: 'Your email address has been successfully confirmed.'))
     assert_current_path(/users\/[A-z0-9-]+/)
   end
