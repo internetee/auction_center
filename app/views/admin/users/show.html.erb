@@ -20,7 +20,7 @@
                         <li>
                             <span class="label"><%= t('users.mobile_phone') %></span>
                             <span class="value">
-                                <% if @user.phone_number_confirmed? %>
+                                <% if @user.phone_number_confirmed? && @phone_confirmation_toggle %>
                                     <i class="ui icon check circle outline"></i>
                                 <% end %>
                                 <%= (@user.mobile_phone) %>
