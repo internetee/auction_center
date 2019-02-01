@@ -36,7 +36,7 @@ class Ability
     can :read, Offer
     can :read, Result
     can :read, PaymentOrder
-        can :manage, PhoneConfirmation do |phone_confirmation|
+    can :manage, PhoneConfirmation do |phone_confirmation|
       user.id == phone_confirmation.user.id
     end
 
