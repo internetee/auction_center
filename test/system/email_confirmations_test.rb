@@ -1,6 +1,19 @@
 require 'application_system_test_case'
 
 class EmailConfirmationsTest < ApplicationSystemTestCase
+  def setup
+    super
+
+    @original_wait_time = Capybara.default_max_wait_time
+    Capybara.default_max_wait_time = 10
+  end
+
+  def teardown
+    super
+
+    Capybara.default_max_wait_time = @original_wait_time
+  end
+
   def test_you_are_redirected_to_user_profile_after_confirmation
     visit new_user_path
 
