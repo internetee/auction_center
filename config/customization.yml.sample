@@ -65,6 +65,10 @@ default: &default
       bank_certificate: ''
       icon: '/icons/seb.png'
 
+  messente:
+    username: 'messente_user'
+    password: 'messente_password'
+
 development:
   <<: *default
 test:
@@ -88,6 +92,10 @@ test:
       seller_private_key: 'test/fixtures/files/seb_seller_key.pem'
       bank_certificate: 'test/fixtures/files/seb_bank_cert.pem'
       icon: '/icons/seb.png'
+
+  messente:
+    username: 'messente_user'
+    password: 'messente_password'
 
 staging:
   <<: *default

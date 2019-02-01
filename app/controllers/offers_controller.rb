@@ -1,6 +1,7 @@
 class OffersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_offer, only: %i[show edit update destroy]
+  before_action :authorize_phone_confirmation
   before_action :authorize_user, except: :new
 
   # GET /auctions/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/offers/new
@@ -87,6 +88,14 @@ class OffersController < ApplicationController
     @offer = Offer.accessible_by(current_ability)
                   .where(user_id: current_user.id)
                   .find_by!(uuid: params[:uuid])
+  end
+
+  def authorize_phone_confirmation
+    return if current_user.phone_number_confirmed?
+    return unless Setting.require_phone_confirmation
+
+    redirect_to new_user_phone_confirmation_path(current_user.uuid),
+                notice: t('phone_confirmations.confirmation_required')
   end
 
   def authorize_user

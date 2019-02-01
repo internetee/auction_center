@@ -36,5 +36,8 @@ class SettingTest < ActiveSupport::TestCase
     assert_equal('EUR', Setting.auction_currency)
     assert_equal(500, Setting.auction_minimum_offer)
     assert_equal('https://example.com', Setting.terms_and_conditions_link)
+    assert_equal('EE', Setting.default_country)
+    assert_equal(7, Setting.payment_term)
+    assert_equal(false, Setting.require_phone_confirmation)
   end
 end

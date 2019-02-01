@@ -18,12 +18,20 @@
 
                         <li>
                             <span class="label"><%= t('users.mobile_phone') %></span>
-                            <span class="value"><%= (@user.mobile_phone) %></span>
+                            <span class="value">
+                                <% if @user.phone_number_confirmed? %>
+                                    <i class="ui icon check circle outline"></i>
+                                <% end %>
+                                <%= (@user.mobile_phone) %>
+                            </span>
                         </li>
 
                         <li>
                             <span class="label"><%= t('users.country_code') %></span>
-                            <span class="value"><%= (@user.country_code) %></span>
+                            <span class="value">
+                                <i class="flag <%= @user.country_code.downcase %>"></i>
+                                <%= (@user.country_code) %>
+                            </span>
                         </li>
 
                         <li>

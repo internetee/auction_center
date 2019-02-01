@@ -22,6 +22,8 @@ participant:
   confirmed_at: <%= Time.parse("2010-07-05 00:16:00 UTC") %>
   created_at: <%= Time.parse("2010-07-05 00:16:00 UTC") %>
   mobile_phone: '+37255000002'
+  mobile_phone_confirmation_code: "0000"
+  mobile_phone_confirmed_at: <%= Time.parse("2010-07-05 00:17:00 UTC") %>
   roles: ['participant']
   terms_and_conditions_accepted_at: <%= Time.parse("2010-07-05 00:16:00 UTC") %>
   uuid: 'dec265a9-4b4b-4165-83fd-9283700eae9c'

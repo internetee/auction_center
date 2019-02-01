@@ -7,54 +7,69 @@
 
 <div class="u-container">
     <div class="margin-block">
+        <div class="content">
+            <h2><%= @user.display_name %></h2>
+            <div class="body">
+                <div class="details-list centered-list">
+                    <ul>
+                        <li>
+                            <span class="label"><%= t('users.email') %></span>
+                            <span class="value"><%= (@user.email) %></span>
+                        </li>
 
-        <div class="ui list">
-            <div class="item">
-                <div class="header"><%= t('users.email') %></div>
-                <%= @user.email %>
+                        <li>
+                            <span class="label"><%= t('users.mobile_phone') %></span>
+                            <span class="value">
+                                <% if @user.phone_number_confirmed? && @phone_confirmation_toggle %>
+                                    <i class="ui icon check circle outline"></i>
+                                <% end %>
+                                <%= (@user.mobile_phone) %>
+                            </span>
+                        </li>
+
+                        <li>
+                            <span class="label"><%= t('users.roles') %></span>
+                            <span class="value"><%= @user.roles.join(', ') %></span>
+                        </li>
+
+                        <li>
+                            <span class="label"><%= t('users.country_code') %></span>
+                            <span class="value">
+                                <i class="flag <%= @user.country_code.downcase %>"></i>
+                                <%= (@user.country_code) %>
+                            </span>
+                        </li>
+
+                        <li>
+                            <span class="label"><%= t('users.identity_code') %></span>
+                            <span class="value"><%= (@user.identity_code) %></span>
+                        </li>
+
+                        <li>
+                            <span class="label"><%= t('users.terms_and_conditions_accepted_at') %></span>
+                            <span class="value">
+                                <%- if @user.terms_and_conditions_accepted_at %>
+                                    <%= I18n.l(@user.terms_and_conditions_accepted_at) %>
+                                <% else %>
+                                    <%= t(:not_accepted) %>
+                                <% end %>
+                            </span>
+                        </li>
+
+                        <li>
+                            <span class="label"><%= t('created_at') %></span>
+                            <span class="value"><%= I18n.l(@user.created_at) %></span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="buttons">
+                    <%= link_to t(:edit), edit_admin_user_path(@user), class: "ui button primary" %>
+                    <%= link_to t(:delete), admin_user_path(@user),
+                    method: :delete, data: { confirm: t(:are_you_sure) } ,
+                    remote: true, class: "ui button secondary" %>
+
+                    <%= link_to t(:versions_name), admin_user_versions_path(@user), class: "ui button primary" %>
+                </div>
             </div>
-
-            <div class="item">
-                <div class="header"><%= t('users.mobile_phone') %></div>
-                <%= @user.mobile_phone %>
-            </div>
-
-            <div class="item">
-                <div class="header"><%= t('users.roles') %></div>
-                <%= @user.roles.join(', ') %>
-            </div>
-
-            <div class="item">
-                <div class="header"><%= t('users.country_code') %></div>
-                <%= @user.country_code %>
-            </div>
-
-            <div class="item">
-                <div class="header"><%= t('users.identity_code') %></div>
-                <%= @user.identity_code %>
-            </div>
-
-            <div class="item">
-                <div class="header"><%= t('users.terms_and_conditions_accepted_at') %></div>
-
-                <%- if @user.terms_and_conditions_accepted_at %>
-                    <%= I18n.l(@user.terms_and_conditions_accepted_at) %>
-                <% else %>
-                    <%= t(:not_accepted) %>
-                <% end %>
-            </div>
-
-            <div class="item">
-                <div class="header"><%= t('created_at') %></div>
-                <%= I18n.l(@user.created_at) %>
-            </div>
-        </div>
-
-        <%= link_to t(:edit), edit_admin_user_path(@user), class: "ui button primary" %>
-        <%= link_to t(:delete), admin_user_path(@user),
-        method: :delete, data: { confirm: t(:are_you_sure) } ,
-        remote: true, class: "ui button secondary" %>
-
-        <%= link_to t(:versions_name), admin_user_versions_path(@user), class: "ui button primary" %>
     </div>
 </div>

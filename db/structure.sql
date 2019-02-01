@@ -1056,6 +1056,8 @@ CREATE TABLE public.users (
     roles character varying[] DEFAULT '{participant}'::character varying[],
     terms_and_conditions_accepted_at timestamp without time zone,
     uuid uuid DEFAULT public.gen_random_uuid(),
+    mobile_phone_confirmed_at timestamp without time zone,
+    mobile_phone_confirmation_code character varying,
     CONSTRAINT users_roles_are_known CHECK ((roles <@ ARRAY['participant'::character varying, 'administrator'::character varying]))
 );
 
@@ -1934,6 +1936,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181213100947'),
 ('20181213125519'),
 ('20181217105817'),
-('20181217134832');
+('20181217134832'),
+('20190129085543'),
+('20190131133558');
 
 
