@@ -4,6 +4,7 @@ module Admin
   class UsersController < BaseController
     before_action :authorize_user
     before_action :set_user, except: %i[index new create]
+    before_action :set_phone_confirmation_toggle, only: %i[index show]
 
     # GET /admin/users/new
     def new
@@ -85,6 +86,10 @@ module Admin
 
     def set_user
       @user = User.find(params[:id])
+    end
+
+    def set_phone_confirmation_toggle
+      @phone_confirmation_toggle = Setting.require_phone_confirmation
     end
   end
 end

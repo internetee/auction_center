@@ -55,6 +55,18 @@ class PhoneConfirmationsTest < ApplicationSystemTestCase
     end
   end
 
+  def test_admin_sees_checkmark_icon_next_to_verified_phone_numbers
+    administrator = users(:administrator)
+    sign_in(administrator)
+    @user.update(mobile_phone_confirmed_at: Time.zone.now)
+
+    visit admin_users_path
+    assert(page.has_css?('i.check.circle'))
+
+    visit admin_user_path(@user)
+    assert(page.has_css?('i.check.circle'))
+  end
+
   def enable_phone_confirmation
     setting = settings(:require_phone_confirmation)
     setting.update!(value: "true")

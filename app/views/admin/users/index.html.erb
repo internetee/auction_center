@@ -20,7 +20,13 @@
                 <% @users.each do |user| %>
                     <tr class="users-table-row">
                         <td class="user-table-user-name"><%= link_to user.display_name, admin_user_path(user) %></td>
-                        <td><%= user.mobile_phone %></td>
+                        <td>
+                            <% if user.phone_number_confirmed? && @phone_confirmation_toggle %>
+                                <i class="ui icon check circle outline"></i>
+                            <% end %>
+
+                            <%= user.mobile_phone %>
+                        </td>
                         <td><%= user.email %></td>
                         <td><%= user.roles.join(', ') %></td>
                     </tr>
