@@ -28,31 +28,35 @@ function resetFields() {
     identityCodeField.classList.remove('error');
 }
 
-document.addEventListener("DOMContentLoaded", function() {
+function formHandler() {
     let mobilePhoneField = document.getElementById('user_mobile_phone');
     let identityCodeField = document.getElementById('user_identity_code');
     let countryCodeField = document.getElementById('user_country_code');
     let button = document.getElementById('user_form_commit');
 
+    resetFields();
+    enableSubmitButton();
+    let identityCode = new IdentityCode(countryCodeField.value, identityCodeField.value);
+    if (!identityCode.validate()) {
+        setIdentityCodeFieldInvalid();
+    }
+
+    let mobilePhone = new MobilePhone(countryCodeField.value, mobilePhoneField.value);
+    if (!mobilePhone.validate()) {
+        setMobilePhoneInvalid();
+    } else {
+        mobilePhoneField.value = mobilePhone.format();
+    }
+
+    if (document.querySelector('.error')) {
+        disableSubmitButton();
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function() {
     let form = document.getElementById('user_form');
+    let button = document.getElementById('user_form_commit');
 
-    form.addEventListener('change', function(event) {
-        resetFields();
-        enableSubmitButton();
-        let identityCode = new IdentityCode(countryCodeField.value, identityCodeField.value);
-        if (!identityCode.validate()) {
-            setIdentityCodeFieldInvalid();
-        }
-
-        let mobilePhone = new MobilePhone(countryCodeField.value, mobilePhoneField.value);
-        if (!mobilePhone.validate()) {
-            setMobilePhoneInvalid();
-        } else {
-            mobilePhoneField.value = mobilePhone.format();
-        }
-
-        if (document.querySelector('.error')) {
-            disableSubmitButton();
-        }
-    });
+    form.addEventListener('change', formHandler);
+    button.addEventListener('click', formHandler);
 });
