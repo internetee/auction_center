@@ -51,22 +51,6 @@ class CreateUserTest < ApplicationSystemTestCase
     assert(page.has_css?('div.notice', text: 'You are already signed in'))
   end
 
-  def test_certain_fields_are_required
-    visit new_user_path
-    click_link_or_button('Sign up')
-
-    errors_list = page.find('#errors').all('li')
-    assert_equal(8, errors_list.size)
-    errors_array = errors_list.collect { |i| i.text }
-
-    expected_errors = ["Email can't be blank", "Password can't be blank",
-                       "Identity code can't be blank", "Mobile phone can't be blank",
-                       "Terms and conditions must be accepted","Identity code is invalid",
-                       "Given names can't be blank", "Surname can't be blank"]
-
-    assert_equal(errors_array.to_set, expected_errors.to_set)
-  end
-
   def test_form_has_terms_and_conditions_link
     visit new_user_path
     assert(page.has_link?('Terms and conditions', href: Setting.terms_and_conditions_link))
