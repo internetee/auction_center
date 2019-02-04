@@ -109,6 +109,18 @@ class EditUserTest < ApplicationSystemTestCase
     assert(page.has_text?('+37250006000'))
   end
 
+  def test_mobile_phone_is_formatted_according_to_country
+    visit edit_user_path(@user.uuid)
+    fill_in('user[mobile_phone]', with: '50006000')
+
+    fill_in('user[current_password]', with: 'password123')
+    assert(page.has_button?('Update'))
+    click_link_or_button('Update')
+
+    assert(page.has_css?('div.notice', text: 'Updated successfully.'))
+    assert(page.has_text?('+37250006000'))
+  end
+
   def test_blank_values_are_ommited
     visit edit_user_path(@user.uuid)
 
