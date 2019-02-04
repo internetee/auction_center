@@ -16,6 +16,8 @@ class UserLocaleTest < ApplicationSystemTestCase
   end
 
   def test_logged_in_user_can_change_locale
+    visit root_path
 
+    assert(page.has_link?)
   end
 end

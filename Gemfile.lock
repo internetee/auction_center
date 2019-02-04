@@ -228,7 +228,6 @@ DEPENDENCIES
   selenium-webdriver
   simplecov
   turbolinks (~> 5)
-  tzinfo-data
   web-console (>= 3.3.0)
   webpacker (~> 3.0)
 
