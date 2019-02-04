@@ -2,8 +2,9 @@ default: &default
   # This is your application name, as displayed in the UI
   application_name: "EIS Auction Center"
 
-  # Timezone
+  # Timezone and locale
   time_zone: "Tallinn"
+  #  locale: "en"
 
   # Generate your own with rails secret
   devise_secret_key: "Your very secret key used for devise tokens"

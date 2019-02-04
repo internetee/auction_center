@@ -1,0 +1,27 @@
+en:
+  billing_profiles:
+    user: "User"
+    name: "Name"
+    vat_code: "VAT code"
+    legal_entity: "Legal entity"
+    address: "Address"
+    street: "Street"
+    city: "City"
+    state: "State"
+    postal_code: "Postal Code"
+    country: "Country"
+    orphaned: 'Orphaned'
+
+    edit:
+      title: "Edit billing profile"
+      errors: "prohibited this billing profile from being saved"
+
+    index:
+      title: "Billing Profiles"
+
+    new:
+      title: "Create a billing profile"
+      errors: "prohibited this billing profile from being saved"
+
+    show:
+      title: "Billing profile"

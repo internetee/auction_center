@@ -1,4 +1,4 @@
-en:
+et:
   new: "New"
   back: "Back"
   update: "Update"
@@ -6,7 +6,7 @@ en:
   submit: "Submit"
   delete: "Delete"
 
-  in_local_language: "English"
+  in_local_language: "Eesti keeles"
 
   created: "Created successfully."
   updated: "Updated successfully."

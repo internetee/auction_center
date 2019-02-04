@@ -10,16 +10,33 @@ module ApplicationHelper
     end
   end
 
+  def locale_links
+    content_tag(:ul) do
+      links(locale_link_list)
+    end
+  end
+
   private
 
   def links(links_list)
     links_list.each do |item|
       concat(
         content_tag(:li) do
-          link_to(item[:name], item[:path])
+          link_to(item[:name], item[:path], method: item[:method] || :get)
         end
       )
     end
+  end
+
+  def locale_link_list
+    locales = I18n.available_locales.reject { |item| item == I18n.locale }
+
+    items = locales.map do |item|
+      { name: I18n.t(:in_local_language, locale: item), path: locale_path(locale: item),
+        method: :put }
+    end
+
+    items
   end
 
   def user_link_list

@@ -4,6 +4,9 @@
             <%= link_to application_name, :root, class: "u-active" %>
         </nav>
         <nav class="menu-language">
+            <ul>
+                <%= locale_links %>
+            </ul>
         </nav>
         <nav class="menu-user">
             <% if current_user %>

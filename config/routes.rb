@@ -2,7 +2,6 @@ require 'constraints/administrator'
 
 Rails.application.routes.draw do
   root to: 'auctions#index'
-  devise_for :users, path: 'sessions', controllers: { confirmations: 'email_confirmations' }
 
   concern :auditable do
     resources :versions, only: :index
@@ -18,6 +17,8 @@ Rails.application.routes.draw do
     resources :settings, except: %i[create destroy], concerns: [:auditable]
     resources :users, concerns: [:auditable]
   end
+
+  devise_for :users, path: 'sessions', controllers: { confirmations: 'email_confirmations' }
 
   resources :auctions, only: %i[index show], param: :uuid do
     resources :offers, only: %i[new show create edit update destroy], shallow: true, param: :uuid
@@ -36,6 +37,8 @@ Rails.application.routes.draw do
       end
     end
   end
+
+  resource :locale, only: :update
 
   resources :offers, only: :index
   resources :results, only: :show, param: :uuid

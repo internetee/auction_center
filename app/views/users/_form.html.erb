@@ -4,6 +4,7 @@
             <h3 class="p3"><%= t('.contact_data') %></h3>
 
             <div class="field">
+                <%= f.hidden_field :locale, value: user.persisted? ? user.locale : I18n.locale %>
                 <%= f.label :email, t('users.email') %>
                 <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
                 <% if user.pending_reconfirmation? %>
