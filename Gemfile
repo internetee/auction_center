@@ -39,6 +39,8 @@ gem 'delayed_job'
 gem 'delayed_job_active_record'
 gem 'devise'
 gem 'money'
+gem 'omniauth-tara',
+  github: 'internetee/omniauth-tara'
 gem 'recaptcha'
 
 group :development, :test do

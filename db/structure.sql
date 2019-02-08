@@ -1059,6 +1059,8 @@ CREATE TABLE public.users (
     mobile_phone_confirmed_at timestamp without time zone,
     mobile_phone_confirmation_code character varying,
     locale character varying DEFAULT 'en'::character varying NOT NULL,
+    provider character varying,
+    uid character varying,
     CONSTRAINT users_roles_are_known CHECK ((roles <@ ARRAY['participant'::character varying, 'administrator'::character varying]))
 );
 
@@ -1940,6 +1942,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181217134832'),
 ('20190129085543'),
 ('20190131133558'),
-('20190204093252');
+('20190204093252'),
+('20190208130148');
 
 
