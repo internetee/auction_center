@@ -1,7 +1,7 @@
 # encoding: utf-8
 require 'application_system_test_case'
 
-class UserLocaleTest < ApplicationSystemTestCase
+class LocaleTest < ApplicationSystemTestCase
   def setup
     super
   end
