@@ -14,7 +14,6 @@ class CreateUserTest < ApplicationSystemTestCase
     fill_in('user[password]', with: 'password')
     fill_in('user[password_confirmation]', with: 'password')
     fill_in('user[given_names]', with: 'User with Multiple Names')
-    fill_in('user[identity_code]', with: '81060885963')
     fill_in('user[mobile_phone]', with: '+48600100200')
     select_from_dropdown('Poland', from: 'user[country_code]')
     check_checkbox('user[accepts_terms_and_conditions]')
@@ -35,7 +34,6 @@ class CreateUserTest < ApplicationSystemTestCase
     fill_in('user[password]', with: 'password')
     fill_in('user[password_confirmation]', with: 'password')
     fill_in('user[given_names]', with: 'User with Multiple Names')
-    fill_in('user[identity_code]', with: '81060885963')
     fill_in('user[mobile_phone]', with: '+48600100200')
     select_from_dropdown('Poland', from: 'user[country_code]')
     fill_in('user[surname]', with: 'Last Name')
@@ -61,13 +59,5 @@ class CreateUserTest < ApplicationSystemTestCase
     setting.update!(value: '/terms_and_conditions.pdf')
     visit new_user_path
     assert(page.has_link?('Terms and conditions', href: '/terms_and_conditions.pdf'))
-  end
-
-  def test_can_create_an_estonian_user_via_id_card
-    skip('Not implemented yet')
-  end
-
-  def test_can_create_an_estonian_user_via_mobile_id
-    skip('Not implemented yet')
   end
 end

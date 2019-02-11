@@ -79,6 +79,48 @@ class UserTest < ActiveSupport::TestCase
     assert_equal('EE', user.country_code)
   end
 
+  def test_signed_in_with_identity_document
+    user = User.new
+
+    refute(user.signed_in_with_identity_document?)
+
+    user.provider = 'github'
+    refute(user.signed_in_with_identity_document?)
+
+    user.provider = User::TARA_PROVIDER
+    refute(user.signed_in_with_identity_document?)
+
+    user.uid = 'EE1234'
+    assert(user.signed_in_with_identity_document?)
+  end
+
+  def test_requires_captcha
+    user = User.new
+
+    assert(user.requires_captcha?)
+
+    user.provider = User::TARA_PROVIDER
+    user.uid = 'EE1234'
+
+    refute(user.requires_captcha?)
+  end
+
+  def test_requires_phone_number_confirmation
+    user = User.new
+    refute(user.requires_phone_number_confirmation?)
+
+    Setting.find_by(code: :require_phone_confirmation).update!(value: 'true')
+    assert(user.requires_phone_number_confirmation?)
+
+    user.mobile_phone_confirmed_at = Time.now
+    refute(user.requires_phone_number_confirmation?)
+
+    user.mobile_phone_confirmed_at = nil
+    user.provider = User::TARA_PROVIDER
+    user.uid = 'EE1234'
+    refute(user.requires_phone_number_confirmation?)
+  end
+
   def test_country_code_must_be_two_letters_long
     @administrator.country_code = 'EST'
     assert_raise ActiveRecord::ValueTooLong do
@@ -113,17 +155,6 @@ class UserTest < ActiveSupport::TestCase
     assert_equal([User::PARTICIPANT_ROLE], user.roles)
     assert(user.role?(User::PARTICIPANT_ROLE))
     refute(user.role?(User::ADMINISTATOR_ROLE))
-  end
-
-  def test_identity_code_validation_in_estonia
-    user = boilerplate_user
-    user.mobile_phone = '+372500100300'
-    user.identity_code = '05071020395'
-    user.country_code = 'EE'
-    refute(user.valid?)
-
-    user.identity_code = '51007050360'
-    assert(user.valid?)
   end
 
   def test_localized_validations_are_ignored_for_different_countries

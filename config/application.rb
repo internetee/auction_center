@@ -28,6 +28,10 @@ module AuctionCenter
     # Load customization from special file
     config.customization = config_for(:customization)
 
+    # Available locales
+    config.i18n.available_locales = [:en, :et, :ru]
+    config.i18n.default_locale = config.customization['locale'] || 'en'
+
     # Default to UTC if not set
     config.time_zone = config.customization['time_zone'] || 'UTC'
 

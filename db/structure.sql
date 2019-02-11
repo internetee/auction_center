@@ -1049,15 +1049,18 @@ CREATE TABLE public.users (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     alpha_two_country_code character varying(2) NOT NULL,
-    identity_code character varying NOT NULL,
+    identity_code character varying,
     given_names character varying NOT NULL,
     surname character varying NOT NULL,
-    mobile_phone character varying NOT NULL,
+    mobile_phone character varying,
     roles character varying[] DEFAULT '{participant}'::character varying[],
     terms_and_conditions_accepted_at timestamp without time zone,
     uuid uuid DEFAULT public.gen_random_uuid(),
     mobile_phone_confirmed_at timestamp without time zone,
     mobile_phone_confirmation_code character varying,
+    locale character varying DEFAULT 'en'::character varying NOT NULL,
+    provider character varying,
+    uid character varying,
     CONSTRAINT users_roles_are_known CHECK ((roles <@ ARRAY['participant'::character varying, 'administrator'::character varying]))
 );
 
@@ -1938,6 +1941,10 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181217105817'),
 ('20181217134832'),
 ('20190129085543'),
-('20190131133558');
+('20190131133558'),
+('20190204093252'),
+('20190208130148'),
+('20190208132025'),
+('20190211105123');
 
 

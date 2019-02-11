@@ -38,14 +38,21 @@ class AdminUsersProfileTest < ApplicationSystemTestCase
     assert(page.has_text?('+37250006000'))
   end
 
-  def test_identity_code_and_country_can_also_be_changed
+  def test_country_can_also_be_changed
     visit edit_admin_user_path(@participant)
-    fill_in('user[identity_code]', with: '1234-5678')
     select_from_dropdown('Poland', from: 'user[country_code]')
     click_link_or_button('Update')
 
     assert(page.has_text?('PL'))
-    assert(page.has_text?('1234-5678'))
+  end
+
+  def test_invalid_phone_number_disables_submit_button
+    visit edit_admin_user_path(@participant)
+
+    fill_in('user[mobile_phone]', with: '+372 11111111111111111111111117 1000')
+    page.find('body').click # blur
+
+    refute(page.has_button?('Submit'))
   end
 
   def test_administrator_can_delete_user

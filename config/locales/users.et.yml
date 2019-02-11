@@ -1,4 +1,4 @@
-en:
+et:
   users:
     display_name: "Display name"
     given_names: "Given names"
@@ -43,16 +43,6 @@ en:
       new_password: "New password"
       you_can_leave_blank: "leave blank if you don't want to change it"
       we_need_your_password: "we need your current password to confirm your changes)"
-
-    tara_form:
-      password_requirements: "at least %{minimum} characters"
-      sign_up: "Sign up"
-      contact_data: "Contact data"
-      personal_data: "Personal data"
-      new_password: "New password"
-      you_can_leave_blank: "leave blank if you don't want to change it"
-      we_need_your_password: "we need your current password to confirm your changes)"
-      data_from_identity_document: "Data from identity document"
 
     update:
       incorrect_password: 'Incorrect current password'

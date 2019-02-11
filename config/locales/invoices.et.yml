@@ -1,0 +1,32 @@
+en:
+  invoices:
+    billing_profile_must_belong_to_user: "must belong to the same user as invoice"
+    is_being_generated: "We are generating the invoice, please check back in a few minutes."
+
+    issue_date: "Issue date"
+    issued_for: "Issued for"
+    due_date: "Due date"
+    status: "Status"
+    price: "Price"
+    billing_profile: "Billing Profile"
+    item: "Item"
+    items: "Items"
+    total: "Total"
+    vat_rate: "VAT rate"
+    vat_amount: "VAT"
+    vat_exclusive: "VAT exclusive"
+    paid_at: "Paid at"
+    title: "Invoice no. %{number}"
+
+    outstanding: "Outstanding invoices"
+    paid: "Paid invoices"
+
+    show:
+      change_billing_profile: "Change billing profile"
+      pay: "Pay"
+
+    edit:
+      title: "Edit your invoice"
+
+    index:
+      title: "Your invoices"

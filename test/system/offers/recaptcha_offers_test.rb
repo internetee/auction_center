@@ -8,6 +8,7 @@ class RecaptchaOffersTest < ApplicationSystemTestCase
     @valid_auction = auctions(:valid_with_offers)
     @valid_auction_with_no_offers = auctions(:valid_without_offers)
     @user = users(:participant)
+    @omniauth_user = users(:signed_in_with_omniauth)
     @offer = offers(:minimum_offer)
     @expired_offer = offers(:expired_offer)
 
@@ -38,6 +39,26 @@ class RecaptchaOffersTest < ApplicationSystemTestCase
     disable_recaptcha
   end
 
+  def test_tara_user_does_not_need_captcha
+    enable_recaptcha
+    sign_in(@omniauth_user)
+
+    visit auction_path(@valid_auction_with_no_offers.uuid)
+
+    with_recaptcha_test_keys do
+      click_link('Submit offer')
+
+      fill_in('offer[price]', with: '5.12')
+      select_from_dropdown('ACME Inc.', from: 'offer[billing_profile_id]')
+
+      click_link_or_button('Submit')
+
+      assert_text('Created successfully.')
+    end
+
+    disable_recaptcha
+  end
+
   def test_recaptcha_skips_in_test_environment
     sign_in(@user)
     visit auction_path(@valid_auction_with_no_offers.uuid)
@@ -48,10 +69,6 @@ class RecaptchaOffersTest < ApplicationSystemTestCase
     click_link_or_button('Submit')
 
     assert_text('Created successfully.')
-  end
-
-  def test_recaptcha_skips_when_user_is_identified_by_eidas
-    skip('Not implemented yet')
   end
 
   def with_recaptcha_test_keys

@@ -2,8 +2,9 @@ default: &default
   # This is your application name, as displayed in the UI
   application_name: "EIS Auction Center"
 
-  # Timezone
+  # Timezone and locale
   time_zone: "Tallinn"
+  #  locale: "en"
 
   # Generate your own with rails secret
   devise_secret_key: "Your very secret key used for devise tokens"
@@ -68,6 +69,18 @@ default: &default
   messente:
     username: 'messente_user'
     password: 'messente_password'
+
+  tara:
+    host: 'tara-test.ria.ee'
+    issuer: 'https://tara-test.ria.ee'
+    identifier: 'identifier'
+    secret: 'secret'
+    redirect_uri: 'redirect_url'
+    keys:
+      kty: RSA
+      kid: de6cc4
+      n: jWwAjT_03ypme9ZWeSe7c-jY26NO50Wo5I1LBnPW2JLc0dPMj8v7y4ehiRpClYNTaSWcLd4DJmlKXDXXudEUWwXa7TtjBFJfzlZ-1u0tDvJ-H9zv9MzO7UhUFytztUEMTrtStdhGbzkzdEZZCgFYeo2i33eXxzIR1nGvI05d9Y-e_LHnNE2ZKTa89BC7ZiCXq5nfAaCgQna_knh4kFAX-KgiPRAtsiDHcAWKcBY3qUVcb-5XAX8p668MlGLukzsh5tFkQCbJVyNtmlbIHdbGvVHPb8C0H3oLYciv1Fjy_tS1lO7OT_cb3GVp6Ql-CG0uED_8pkpVtfsGRviub4_ElQ
+      e: AQAB
 
 development:
   <<: *default

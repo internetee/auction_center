@@ -1,0 +1,62 @@
+et:
+  auctions:
+    domain_name: 'Domain name'
+    starts_at: 'Starts at'
+    ends_at: 'Ends at'
+    finished: "This auction has finished"
+    highest_price: "Highest price"
+    offers: "Offers"
+    offer_actions: "Offer actions"
+    your_current_price: "Your current offer"
+
+    still_in_progress: "Still in progress"
+
+    submit_offer: "Submit offer"
+    edit_your_offer: "Edit your offer"
+
+    show:
+      title: "Auction details"
+
+    index:
+      title: "Oksjonid"
+
+    top_grid:
+      title: "Domeene oksjonil:"
+      1_step_header: "Submit an offer"
+      1_step_explanation: |
+        you can change or remove offers at any time during the auction.
+        Offers are confidential.
+
+      2_step_header: "Wait for auction to end"
+      2_step_explanation: |
+        If your offer was the biggest, we will let you know by email.
+
+      3_step_header: "Pay auction fee"
+      3_step_explanation: |
+        Once the fee is paid, you will receive a registration code that you
+        can use at any accredited registrar.
+
+      footer_html: "Read more from our %{link} page."
+      footer_link: "terms and conditions"
+
+    bottom_grid:
+      title: "Auction rules"
+      1_step_header: "Blind auction"
+      1_step_explanation: |
+        Offers are confidential, participants do not see how many offers have been made
+        and with what price.
+
+      2_step_header: "Winning an auction"
+      2_step_explanation: |
+        Once you have won an auction, you should pay the invoice within 7 calendar days.
+        After that, you have 14 days to register the domains with a registrar of your choice.
+
+      3_step_header: "Changing an offer"
+      3_step_explanation: |
+        During the auction, you can adjust your offer at any point.
+
+      4_step_header: "Withdrawing an offer"
+      4_step_explanation: |
+        If you no longer want to participate in an auction, you can withdraw your offer
+        at any point, as long as the auction is still in progress. Once the action has ended,
+        you cannot withdraw your offer.

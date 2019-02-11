@@ -37,6 +37,10 @@ Rails.application.configure do
   # Always use UTC timezone in test
   config.time_zone = 'UTC'
 
+  # Always use English and Estonian in test
+  config.i18n.available_locales = [:en, :et]
+  config.i18n.default_locale = 'en'
+
   config.action_mailer.perform_caching = false
 
   # Tell Action Mailer not to deliver emails to the real world.
