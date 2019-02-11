@@ -71,10 +71,6 @@ class RecaptchaOffersTest < ApplicationSystemTestCase
     assert_text('Created successfully.')
   end
 
-  def test_recaptcha_skips_when_user_is_identified_by_eidas
-    skip('Not implemented yet')
-  end
-
   def with_recaptcha_test_keys
     Recaptcha.with_configuration(site_key: '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI',
                                  secret_key: '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe') do
