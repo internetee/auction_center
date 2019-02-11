@@ -39,5 +39,7 @@ class SettingTest < ActiveSupport::TestCase
     assert_equal('EE', Setting.default_country)
     assert_equal(7, Setting.payment_term)
     assert_equal(false, Setting.require_phone_confirmation)
+    assert_equal(24, Setting.auction_duration)
+    assert_equal(14, Setting.registration_term)
   end
 end
