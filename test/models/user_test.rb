@@ -79,7 +79,7 @@ class UserTest < ActiveSupport::TestCase
     assert_equal('EE', user.country_code)
   end
 
-  def test_signed_in_with_identity_document?
+  def test_signed_in_with_identity_document
     user = User.new
 
     refute(user.signed_in_with_identity_document?)
@@ -92,6 +92,17 @@ class UserTest < ActiveSupport::TestCase
 
     user.uid = 'EE1234'
     assert(user.signed_in_with_identity_document?)
+  end
+
+  def test_requires_captcha
+    user = User.new
+
+    assert(user.requires_captcha?)
+
+    user.provider = User::TARA_PROVIDER
+    user.uid = 'EE1234'
+
+    refute(user.requires_captcha?)
   end
 
   def test_requires_phone_number_confirmation
