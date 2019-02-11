@@ -11,10 +11,11 @@ module Auth
       session[:omniauth_hash] = user_hash
 
       @user = User.from_omniauth(user_hash)
-      if @user.persisted?
-        sign_in(User, @user)
-        redirect_to user_path(@user.uuid), notice: t('devise.sessions.signed_in')
-      end
+
+      return unless @user.persisted?
+
+      sign_in(User, @user)
+      redirect_to user_path(@user.uuid), notice: t('devise.sessions.signed_in')
     end
 
     def create
@@ -47,10 +48,10 @@ module Auth
     end
 
     def check_for_tampering
-      if @user.tampered_with?(session[:omniauth_hash])
-        session.delete(:omniauth_hash)
-        raise Errors::TamperingDetected
-      end
+      return unless @user.tampered_with?(session[:omniauth_hash])
+
+      session.delete(:omniauth_hash)
+      raise Errors::TamperingDetected
     end
 
     def user_hash

@@ -70,7 +70,7 @@ class OffersController < ApplicationController
   private
 
   def set_captcha_required
-   @captcha_required = current_user.requires_captcha?
+    @captcha_required = current_user.requires_captcha?
   end
 
   def create_predicate
