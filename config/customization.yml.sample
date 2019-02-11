@@ -73,8 +73,8 @@ default: &default
   tara:
     host: 'tara-test.ria.ee'
     issuer: 'https://tara-test.ria.ee'
-    identifier: 'identifier',
-    secret: 'secret',
+    identifier: 'identifier'
+    secret: 'secret'
     redirect_uri: 'redirect_url'
     keys:
       kty: RSA
