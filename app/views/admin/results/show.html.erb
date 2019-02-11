@@ -11,10 +11,10 @@
             <div class="ui list">
                 <div class="item">
                     <div class="header"><%= t('results.sold') %></div>
-                    <%- if @result.sold? %>
-                        <%= t('yes') %>
-                    <% else %>
+                    <%- if @result.no_bids? %>
                         <%= t('no') %>
+                    <% else %>
+                        <%= t('yes') %>
                     <% end %>
                 </div>
 
@@ -25,7 +25,7 @@
 
 
 
-                <%- if @result.sold? %>
+                <%- unless @result.no_bids? %>
                     <div class="item">
                         <div class="header"><%= t('results.buyer') %></div>
                         <%= @result.offer.billing_profile.name %>

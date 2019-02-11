@@ -32,9 +32,11 @@ class ResultTest < ActiveSupport::TestCase
   def test_status_predicates
     result = Result.new
 
-    assert_equal(false, result.sold?)
-    assert_equal(false, result.expired?)
-    assert_equal(false, result.paid?)
+    assert_equal(false, result.no_bids?)
+    assert_equal(false, result.payment_received?)
+    assert_equal(false, result.payment_not_received?)
+    assert_equal(false, result.domain_registered?)
+    assert_equal(false, result.domain_not_registered?)
   end
 
   def test_create_result_from_an_auction_only_works_if_the_auction_has_finished
@@ -54,7 +56,7 @@ class ResultTest < ActiveSupport::TestCase
   end
 
   def test_send_email_to_winner_does_nothing_if_there_is_no_winner
-    result = Result.new(status: :expired)
+    result = Result.new(status: :no_bids)
 
     result.send_email_to_winner
     assert(ActionMailer::Base.deliveries.empty?)

@@ -10,7 +10,7 @@ class InvoiceCreator
   def call
     @result = Result.find_by(id: result_id)
     return unless result_present?
-    return unless result_sold?
+    return unless result_awaiting_payment?
     return unless result_user
 
     return result.invoice if invoice_already_present?
@@ -22,7 +22,7 @@ class InvoiceCreator
   private
 
   delegate :present?, to: :result, prefix: true
-  delegate :sold?, to: :result, prefix: true
+  delegate :awaiting_payment?, to: :result, prefix: true
   delegate :offer, to: :result, prefix: true
   delegate :user, to: :result, prefix: true
   delegate :auction, to: :result, prefix: true

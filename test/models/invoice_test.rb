@@ -117,7 +117,7 @@ class InvoiceTest < ActiveSupport::TestCase
     @payable_invoice.mark_as_paid_at(Time.zone.now)
 
     assert(@payable_invoice.paid?)
-    assert(@payable_invoice.result.paid?)
+    assert(@payable_invoice.result.payment_received?)
     assert_equal(Time.zone.now, @payable_invoice.paid_at)
   end
 

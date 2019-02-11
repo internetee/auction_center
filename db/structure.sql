@@ -83,9 +83,12 @@ CREATE TYPE public.payment_order_status AS ENUM (
 --
 
 CREATE TYPE public.result_status AS ENUM (
-    'expired',
-    'sold',
-    'paid'
+    'no_bids',
+    'awaiting_payment',
+    'payment_received',
+    'payment_not_received',
+    'domain_registered',
+    'domain_not_registered'
 );
 
 
@@ -966,8 +969,8 @@ CREATE TABLE public.results (
     offer_id integer,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    status public.result_status NOT NULL,
-    uuid uuid DEFAULT public.gen_random_uuid()
+    uuid uuid DEFAULT public.gen_random_uuid(),
+    status public.result_status
 );
 
 
@@ -1964,6 +1967,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190211173932'),
 ('20190211174035'),
 ('20190211175323'),
-('20190211181127');
+('20190211181127'),
+('20190211182633');
 
 

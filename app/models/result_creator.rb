@@ -49,9 +49,9 @@ class ResultCreator
            winning_offer.billing_profile_id
 
     result.status = if sold
-                      Result.statuses[:sold]
+                      Result.statuses[:awaiting_payment]
                     else
-                      Result.statuses[:expired]
+                      Result.statuses[:no_bids]
                     end
   end
 

@@ -25,7 +25,7 @@ class ResultCreatorTest < ActiveSupport::TestCase
     expected_winning_offer = offers(:high_offer)
 
     assert(result.is_a?(Result))
-    assert_equal(true, result.sold?)
+    assert_equal(true, result.awaiting_payment?)
     assert_equal(expected_winning_offer, result.offer)
     assert_equal(@auction_with_offers, result.auction)
   end
@@ -37,7 +37,8 @@ class ResultCreatorTest < ActiveSupport::TestCase
     result = result_creator.call
 
     assert(result.is_a?(Result))
-    assert_equal(false, result.sold?)
+    assert_equal(false, result.awaiting_payment?)
+    assert_equal(true, result.no_bids?)
     assert_equal(@auction_without_offers, result.auction)
     refute(result.user)
     refute(result.invoice)
@@ -55,7 +56,7 @@ class ResultCreatorTest < ActiveSupport::TestCase
     expected_winning_offer = offers(:minimum_offer)
 
     assert(result.is_a?(Result))
-    assert_equal(true, result.sold?)
+    assert_equal(true, result.awaiting_payment?)
     assert_equal(expected_winning_offer, result.offer)
     assert_equal(@auction_with_offers, result.auction)
   end

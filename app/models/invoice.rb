@@ -28,7 +28,7 @@ class Invoice < ApplicationRecord
     result = Result.find_by(id: result_id)
 
     raise(Errors::ResultNotFound, result_id) unless result
-    raise(Errors::ResultNotSold, result_id) unless result.sold?
+    raise(Errors::ResultNotSold, result_id) unless result.awaiting_payment?
 
     InvoiceCreator.new(result_id).call
   end
@@ -72,7 +72,7 @@ class Invoice < ApplicationRecord
     ActiveRecord::Base.transaction do
       self.paid_at = time
       paid!
-      result.paid!
+      result.payment_received!
     end
   end
 end

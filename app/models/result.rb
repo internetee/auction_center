@@ -2,9 +2,12 @@ require 'auction_not_finished'
 require 'auction_not_found'
 
 class Result < ApplicationRecord
-  enum status: { expired: 'expired',
-                 sold: 'sold',
-                 paid: 'paid' }
+  enum status: { no_bids: 'no_bids',
+                 awaiting_payment: 'awaiting_payment',
+                 payment_received: 'payment_received',
+                 payment_not_received: 'payment_not_received',
+                 domain_registered: 'domain_registered',
+                 domain_not_registered: 'domain_not_registered' }
 
   belongs_to :auction, required: true, inverse_of: :result
   belongs_to :user, required: false
@@ -13,7 +16,7 @@ class Result < ApplicationRecord
 
   scope :pending_invoice, lambda {
     where('user_id IS NOT NULL AND status = ? AND id NOT IN (SELECT result_id FROM invoices)',
-          statuses[:sold])
+          statuses[:awaiting_payment])
   }
 
   def self.create_from_auction(auction_id)
@@ -34,7 +37,7 @@ class Result < ApplicationRecord
   end
 
   def send_email_to_winner
-    return unless sold?
+    return unless awaiting_payment?
 
     ResultMailer.winner_email(self).deliver_later
   end
