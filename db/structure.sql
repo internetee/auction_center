@@ -684,6 +684,7 @@ CREATE TABLE public.auctions (
     ends_at timestamp without time zone NOT NULL,
     starts_at timestamp without time zone DEFAULT now() NOT NULL,
     uuid uuid DEFAULT public.gen_random_uuid(),
+    remote_id character varying,
     CONSTRAINT starts_at_earlier_than_ends_at CHECK ((starts_at < ends_at))
 );
 
@@ -1548,6 +1549,13 @@ CREATE INDEX index_auctions_on_ends_at ON public.auctions USING btree (ends_at);
 
 
 --
+-- Name: index_auctions_on_remote_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_auctions_on_remote_id ON public.auctions USING btree (remote_id);
+
+
+--
 -- Name: index_auctions_on_uuid; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1706,6 +1714,13 @@ CREATE UNIQUE INDEX index_users_on_confirmation_token ON public.users USING btre
 --
 
 CREATE UNIQUE INDEX index_users_on_email ON public.users USING btree (email);
+
+
+--
+-- Name: index_users_on_provider_and_uid; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_users_on_provider_and_uid ON public.users USING btree (provider, uid);
 
 
 --
@@ -1945,6 +1960,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190204093252'),
 ('20190208130148'),
 ('20190208132025'),
-('20190211105123');
+('20190211105123'),
+('20190211173932'),
+('20190211174035');
 
 
