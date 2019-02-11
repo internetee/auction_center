@@ -41,9 +41,9 @@ module Auth
 
     def create_params
       params.require(:user)
-        .permit(:email, :password, :password_confirmation, :identity_code, :country_code,
-                :given_names, :surname, :accepts_terms_and_conditions, :locale,
-                :uid, :provider)
+            .permit(:email, :password, :password_confirmation, :identity_code, :country_code,
+                    :given_names, :surname, :accepts_terms_and_conditions, :locale,
+                    :uid, :provider)
     end
 
     def check_for_tampering

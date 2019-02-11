@@ -6,7 +6,7 @@ class User < ApplicationRecord
   ROLES = %w[administrator participant].freeze
 
   ESTONIAN_COUNTRY_CODE = 'EE'.freeze
-  TARA_PROVIDER = 'tara'
+  TARA_PROVIDER = 'tara'.freeze
 
   devise :database_authenticatable, :recoverable, :rememberable, :validatable, :confirmable
 
@@ -65,7 +65,8 @@ class User < ApplicationRecord
     if Setting.require_phone_confirmation
       return false if signed_in_with_identity_document?
       return false if phone_number_confirmed?
-      return true
+
+      true
     else
       false
     end
@@ -96,7 +97,6 @@ class User < ApplicationRecord
         given_names != omniauth_hash.dig('info', 'first_name') ||
         surname != omniauth_hash.dig('info', 'last_name')
     end
-
   end
 
   def self.from_omniauth(omniauth_hash)
