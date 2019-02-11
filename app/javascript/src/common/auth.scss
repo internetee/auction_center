@@ -1,0 +1,42 @@
+.login-blocks {
+    margin-top: 80px;
+    margin-bottom: 120px;
+    .list {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 0 -20px -40px -20px;
+    }
+    .item {
+        padding: 0 20px;
+        flex: 0 0 50%;
+        max-width: 50%;
+
+        margin-bottom: 40px;
+    }
+
+    @include max-screen(1279px) {
+        .item {
+            flex: 0 0 50%;
+            max-width: 50%;
+        }
+    }
+
+    @include max-screen(1024px) {
+        margin-top: 40px;
+        margin-bottom: 100px;
+    }
+
+    @include max-screen(767px) {
+        margin-bottom: 40px;
+        .list {
+            display: block;
+            margin: 0;
+        }
+        .item {
+            max-width: 100%;
+            padding: 0;
+            margin: 0;
+            margin-top: 20px;
+        }
+    }
+}

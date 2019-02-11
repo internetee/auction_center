@@ -20,10 +20,14 @@ class AdminUsersListTest < ApplicationSystemTestCase
 
     # First is users(:second_place_participant)
     assert_equal('Second Place', display_name_cells[0].text)
-    # Next is users(:user)
-    assert_equal('Joe John Participant', display_name_cells[1].text)
+    # Next is users(:signed_in_with_omniauth)
+    assert_equal('TARA USER', display_name_cells[1].text)
+
+    # Next is users(:participant)
+    assert_equal('Joe John Participant', display_name_cells[2].text)
+
     # Finally, is users(:administrator) (self)
-    assert_equal('John Joe Administrator', display_name_cells[2].text)
+    assert_equal('John Joe Administrator', display_name_cells[3].text)
   end
 
   def test_user_display_names_are_links
@@ -41,7 +45,6 @@ class AdminUsersListTest < ApplicationSystemTestCase
     fill_in('user[password]', with: 'password123')
     fill_in('user[password_confirmation]', with: 'password123')
     fill_in('user[given_names]', with: 'User with Multiple Names')
-    fill_in('user[identity_code]', with: '81060885963')
     fill_in('user[mobile_phone]', with: '+48600100200')
     select_from_dropdown('Poland', from: 'user[country_code]')
     fill_in('user[surname]', with: 'Last Name')
@@ -66,12 +69,11 @@ class AdminUsersListTest < ApplicationSystemTestCase
     click_link_or_button('Submit')
 
     errors_list = page.find('#errors').all('li')
-    assert_equal(8, errors_list.size)
+    assert_equal(6, errors_list.size)
     errors_array = errors_list.collect { |i| i.text }
 
     expected_errors = ["Email can't be blank", "Password can't be blank",
-                       "Identity code can't be blank", "Mobile phone can't be blank",
-                       "Identity code is invalid", "Terms and conditions must be accepted",
+                       "Mobile phone can't be blank", "Terms and conditions must be accepted",
                        "Given names can't be blank", "Surname can't be blank"]
 
     assert_equal(errors_array.to_set, expected_errors.to_set)

@@ -22,10 +22,12 @@
         </div>
 
         <div class="column">
-            <div class="field">
-                <br>
-                <%= recaptcha_tags %>
-            </div>
+            <% if @captcha_required %>
+                <div class="field">
+                    <br>
+                    <%= recaptcha_tags %>
+                </div>
+            <% end %>
         </div>
 
         <div class="column wide sixteen">

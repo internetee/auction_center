@@ -44,3 +44,19 @@ second_place_participant:
   terms_and_conditions_accepted_at: <%= Time.parse("2010-07-05 00:16:00 UTC") %>
   uuid: '7869501d-4de6-499e-b0d1-dfb63e6e2a66'
   locale: 'en'
+
+signed_in_with_omniauth:
+  email: 'omniauth@auction.test'
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
+  alpha_two_country_code: 'EE'
+  identity_code: '51007050665'
+  given_names: 'TARA'
+  surname: 'USER'
+  confirmed_at: <%= Time.parse("2010-07-05 00:17:00 UTC") %>
+  created_at: <%= Time.parse("2010-07-05 00:17:00 UTC") %>
+  roles: ['participant']
+  terms_and_conditions_accepted_at: <%= Time.parse("2010-07-05 00:16:00 UTC") %>
+  uuid: "ea8de0ae-359c-4af3-8a6d-71edd08b9bd1"
+  locale: 'en'
+  uid: 'EE51007050665'
+  provider: 'tara'

@@ -1,39 +1,31 @@
 <%= form_with(model: user, url: url, local: true, id: 'user_form', class: 'ui form big') do |f| %>
-    <div class="ui grid">
-        <div class="column eight wide">
+    <div class="ui two column doubling stackable grid">
+        <div class="column">
             <h3 class="p3"><%= t('.contact_data') %></h3>
+
             <div class="field">
                 <%= f.label :email, t('users.email') %>
-                <%= f.email_field :email, autofocus: true, autocomplete: "email",
-                class: "form-control" %>
+                <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
                 <% if user.pending_reconfirmation? %>
                     <div>Currently waiting confirmation for: <%= user.unconfirmed_email %></div>
                 <% end %>
             </div>
             <div class="field">
                 <%= f.label :mobile_phone, t('users.mobile_phone') %>
-                <%= f.telephone_field :mobile_phone, autofocus: true, autocomplete: "off",
-                class: "form-control" %>
+                <%= f.telephone_field :mobile_phone, autofocus: true, autocomplete: "off" %>
             </div>
             <div class="field">
                 <%= f.label :given_names, t('users.given_names') %>
-                <%= f.text_field :given_names, autofocus: true, autocomplete: "off",
-                class: "form-control" %>
+                <%= f.text_field :given_names, autofocus: true, autocomplete: "off" %>
             </div>
             <div class="field">
                 <%= f.label :surname, t('users.surname') %>
-                <%= f.text_field :surname, autofocus: true, autocomplete: "off",
-                class: "form-control" %>
+                <%= f.text_field :surname, autofocus: true, autocomplete: "off" %>
             </div>
         </div>
 
-        <div class="column eight wide">
+        <div class="column">
             <h3 class="p3"><%= t('.personal_data') %></h3>
-            <div class="field">
-                <%= f.label :identity_code, t('users.identity_code') %>
-                <%= f.text_field :identity_code, class: "form-control",
-                placeholder: t('users.can_be_left_blank_if_not_estonian') %>
-            </div>
             <div class="field">
                 <%= f.label :country, t('users.country') %>
                 <%= f.select :country_code,
@@ -41,21 +33,32 @@
                     Countries.for_selection,
                     user.country_code || Setting.default_country
                 ),
-                {},
+                { readonly: user.signed_in_with_identity_document? },
                 class: "ui dropdown" %>
             </div>
 
             <div class="field">
                 <div class="ui checkbox">
-                    <%= f.check_box :accepts_terms_and_conditions, { class: "ui checkbox", value: user.accepts_terms_and_conditions }, "true", "false" %>
-                <%= f.label :accepts_terms_and_conditions do %>
-                    <%= link_to t('users.terms_and_conditions'), Setting.terms_and_conditions_link %>
-                <% end %>
+                    <%= f.check_box :accepts_terms_and_conditions, { value: user.accepts_terms_and_conditions }, "true", "false" %>
+                    <%= f.label :accepts_terms_and_conditions do %>
+                        <%= link_to t('users.terms_and_conditions'), Setting.terms_and_conditions_link %>
+                    <% end %>
                 </div>
             </div>
+
+            <h3 class="p3"><%= t('.roles') %></h3>
+            <%- User::ROLES.each do |role| %>
+                <div class="field">
+                    <div class="ui checkbox">
+                        <%= f.check_box :roles, { multiple: true }, role, nil %>
+                        <%= f.label role %>
+                    </div>
+                </div>
+            <% end %>
         </div>
+
         <%- unless user.persisted? %>
-            <div class="column eight wide">
+            <div class="column">
                 <h3 class="p3"><%= t('.new_password') %></h3>
                 <div class="field">
                     <%= f.label :password, t('users.password') %>
@@ -74,27 +77,14 @@
                 </div>
             </div>
         <% end %>
-        <div class="column eight wide">
-            <h3 class="p3"><%= t('.roles') %></h3>
-            <%- User::ROLES.each do |role| %>
-                <div class="field">
-                    <div class="ui checkbox">
-                        <%= f.check_box :roles, { multiple: true }, role, nil %>
-                        <%= f.label role %>
-                    </div>
-                </div>
-            <% end %>
-        </div>
 
         <div class="column sixteen wide">
-            <div class="">
-                <% if user.persisted? %>
-                    <%= f.submit t(:update), class: "ui button big primary", id: "user_form_commit" %>
-                    <%= link_to t(:back), :back, class: "ui button big secondary" %>
-                <% else %>
-                    <%= f.submit t(:submit), class: "ui button big primary", id: "user_form_commit" %>
-                <% end %>
-            </div>
+            <% if user.persisted? %>
+                <%= f.submit t(:update), class: "ui button big primary", id: "user_form_commit" %>
+                <%= link_to t(:back), :back, class: "ui button big secondary" %>
+            <% else %>
+                <%= f.submit t(:submit), class: "ui button big primary", id: "user_form_commit" %>
+            <% end %>
         </div>
     </div>
 <% end %>

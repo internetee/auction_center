@@ -19,6 +19,7 @@ en:
 
   profile: "Profile"
   sign_in: "Sign in"
+  sign_in_cancelled: "Sign in cancelled"
   sign_out: "Sign out"
   forgot_your_password: "Forgot your password?"
   change_your_password: "Change your password"

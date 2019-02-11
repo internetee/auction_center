@@ -6,11 +6,6 @@ function setMobilePhoneInvalid() {
     mobilePhoneField.classList.add('error');
 }
 
-function setIdentityCodeFieldInvalid() {
-    let identityCodeField = document.getElementById('user_identity_code').parentElement;
-    identityCodeField.classList.add('error');
-}
-
 function disableSubmitButton() {
     let button = document.getElementById('user_form_commit');
     button.disabled = true;
@@ -24,22 +19,15 @@ function enableSubmitButton() {
 function resetFields() {
     let mobilePhoneField = document.getElementById('user_mobile_phone').parentElement;
     mobilePhoneField.classList.remove('error');
-    let identityCodeField = document.getElementById('user_identity_code').parentElement;
-    identityCodeField.classList.remove('error');
 }
 
 function formHandler() {
     let mobilePhoneField = document.getElementById('user_mobile_phone');
-    let identityCodeField = document.getElementById('user_identity_code');
     let countryCodeField = document.getElementById('user_country_code');
     let button = document.getElementById('user_form_commit');
 
     resetFields();
     enableSubmitButton();
-    let identityCode = new IdentityCode(countryCodeField.value, identityCodeField.value);
-    if (!identityCode.validate()) {
-        setIdentityCodeFieldInvalid();
-    }
 
     let mobilePhone = new MobilePhone(countryCodeField.value, mobilePhoneField.value);
     if (!mobilePhone.validate()) {

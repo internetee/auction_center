@@ -6,30 +6,51 @@
 
 <div class="u-container">
     <div class="u-container margin-block">
-        <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: 'ui form big' }) do |f| %>
-            <div class="field">
-                <%= f.label :email %><br />
-                <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+    </div>
+</div>
+
+<div class="login-blocks">
+    <div class="u-container">
+        <div class="list">
+            <div class="item">
+                <div id="tara-sign-in" class="login-block ui segment">
+                    <h3><%= t('.sign_in_with_identity_document') %></h3>
+                    <p><%= t('.identity_document_text')%></p>
+                    <%= link_to t(:sign_in), "/auth/tara", class: "ui button big primary" %>
+                </div>
             </div>
 
-            <div class="field">
-                <%= f.label :password %><br />
-                <%= f.password_field :password, autocomplete: "current-password" %>
+            <div class="item">
+                <div id="password-sign-in" class="login-block ui segment">
+                    <h3><%= t('.sign_in_with_password') %></h3>
+                    <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: 'ui form big' }) do |f| %>
+                        <div class="field">
+                            <%= f.label :email %>
+                            <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+                        </div>
+
+                        <div class="field">
+                            <%= f.label :password %>
+                            <%= f.password_field :password, autocomplete: "current-password" %>
+                        </div>
+
+                        <div class="field">
+                            <% if devise_mapping.rememberable? -%>
+                                <div class="ui checkbox">
+                                    <%= f.check_box :remember_me %>
+                                    <%= f.label :remember_me %>
+                                </div>
+                            <% end -%>
+                        </div>
+
+                        <%= f.submit t(:sign_in), class: "ui button big primary" %>
+                        <%= link_to t('users.index.create_an_account'), new_user_path, class: "ui button big green" %>
+                    <% end %>
+
+                    <br>
+                    <%= render "devise/shared/links" %>
+                </div>
             </div>
-
-            <div class="field">
-                <% if devise_mapping.rememberable? -%>
-                    <div class="ui checkbox">
-                        <%= f.check_box :remember_me %>
-                        <%= f.label :remember_me %>
-                    </div>
-                <% end -%>
-            </div>
-
-            <%= f.submit t(:sign_in), class: "ui button big primary" %>
-        <% end %>
-
-        <br>
-        <%= render "devise/shared/links" %>
+        </div>
     </div>
 </div>

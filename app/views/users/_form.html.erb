@@ -28,17 +28,13 @@
         <div class="column">
             <h3 class="p3"><%= t('.personal_data') %></h3>
             <div class="field">
-                <%= f.label :identity_code, t('users.identity_code') %>
-                <%= f.text_field :identity_code, placeholder: t('users.can_be_left_blank_if_not_estonian') %>
-            </div>
-            <div class="field">
                 <%= f.label :country, t('users.country') %>
                 <%= f.select :country_code,
                 options_for_select(
                     Countries.for_selection,
                     user.country_code || Setting.default_country
                 ),
-                {},
+                { readonly: user.signed_in_with_identity_document? },
                 class: "ui dropdown" %>
             </div>
 

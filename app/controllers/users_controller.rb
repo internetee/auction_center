@@ -72,14 +72,14 @@ class UsersController < ApplicationController
 
   def create_params
     params.require(:user)
-          .permit(:email, :password, :password_confirmation, :identity_code, :country_code,
+          .permit(:email, :password, :password_confirmation, :country_code,
                   :given_names, :surname, :mobile_phone, :accepts_terms_and_conditions, :locale)
   end
 
   def update_params
     update_params = params.require(:user)
-                          .permit(:email, :password, :password_confirmation, :identity_code,
-                                  :country_code, :given_names, :surname, :mobile_phone,
+                          .permit(:email, :password, :password_confirmation, :country_code,
+                                  :given_names, :surname, :mobile_phone,
                                   :accepts_terms_and_conditions)
     update_params.reject! { |_k, v| v.blank? }
   end

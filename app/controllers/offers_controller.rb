@@ -3,6 +3,7 @@ class OffersController < ApplicationController
   before_action :set_offer, only: %i[show edit update destroy]
   before_action :authorize_phone_confirmation
   before_action :authorize_user, except: :new
+  before_action :set_captcha_required
 
   # GET /auctions/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/offers/new
   def new
@@ -68,8 +69,13 @@ class OffersController < ApplicationController
 
   private
 
+  def set_captcha_required
+   @captcha_required = current_user.requires_captcha?
+  end
+
   def create_predicate
-    verify_recaptcha(model: @offer) && @offer.save && @offer.reload
+    captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
+    captcha_predicate && @offer.save && @offer.reload
   end
 
   def create_params
@@ -77,7 +83,8 @@ class OffersController < ApplicationController
   end
 
   def update_predicate
-    verify_recaptcha(model: @offer) && @offer.update(update_params)
+    captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
+    captcha_predicate && @offer.update(update_params)
   end
 
   def update_params
@@ -91,8 +98,7 @@ class OffersController < ApplicationController
   end
 
   def authorize_phone_confirmation
-    return if current_user.phone_number_confirmed?
-    return unless Setting.require_phone_confirmation
+    return unless current_user.requires_phone_number_confirmation?
 
     redirect_to new_user_phone_confirmation_path(current_user.uuid),
                 notice: t('phone_confirmations.confirmation_required')

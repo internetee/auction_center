@@ -21,7 +21,6 @@ class EmailConfirmationsTest < ApplicationSystemTestCase
     fill_in('user[password]', with: 'password')
     fill_in('user[password_confirmation]', with: 'password')
     fill_in('user[given_names]', with: 'User with Multiple Names')
-    fill_in('user[identity_code]', with: '81060885963')
     fill_in('user[mobile_phone]', with: '+48600100200')
     select_from_dropdown('Poland', from: 'user[country_code]')
     check_checkbox('user[accepts_terms_and_conditions]')

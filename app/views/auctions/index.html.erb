@@ -10,16 +10,6 @@
     <div class="margin-block">
         <div class="grid one column">
             <div class="column">
-                <%- unless signed_in? %>
-                    <p>
-                        <%= link_to t(:sign_in), new_user_session_path, class: "ui button primary" %>
-                        <%= link_to t('users.index.create_an_account'), new_user_path, class: "ui button secondary" %>
-                    </p>
-                <%- end %>
-                <br>
-            </div>
-
-            <div class="column">
                 <table class="ui table selectable unstackable fixed" id="auctions-table">
                     <thead>
                         <tr>

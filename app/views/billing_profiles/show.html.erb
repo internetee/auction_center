@@ -1,42 +1,44 @@
-<div class="row">
-    <div class="col-12">
-        <h1 class="mb-3 mt-4"><%= t('.title') %></h1>
+<% content_for :hero do %>
+    <div class="hero green">
+        <h1><%= t('.title') %></h1>
     </div>
-</div>
+<% end %>
 
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body">
-                <h2><%= @billing_profile.name %></h2>
+<div class="u-container">
+    <div class="margin-block">
+        <div class="content">
+            <h2><%= @billing_profile.name %></h2>
 
-                <dl class="mb-6 no-bullets billing-profile-card">
-                    <dt><%= t('billing_profiles.vat_code') %></dt>
-                    <dd><%= @billing_profile.vat_code %></dd>
+            <div class="body">
+                <div class="details-list centered-list">
+                    <dl class="mb-6 no-bullets billing-profile-card">
+                        <dt><%= t('billing_profiles.vat_code') %></dt>
+                        <dd><%= @billing_profile.vat_code %></dd>
 
-                    <dt><%= t('billing_profiles.street') %></dt>
-                    <dd><%= @billing_profile.street %></dd>
+                        <dt><%= t('billing_profiles.street') %></dt>
+                        <dd><%= @billing_profile.street %></dd>
 
-                    <dt><%= t('billing_profiles.city') %></dt>
-                    <dd><%= @billing_profile.city %></dd>
+                        <dt><%= t('billing_profiles.city') %></dt>
+                        <dd><%= @billing_profile.city %></dd>
 
-                    <dt><%= t('billing_profiles.state') %></dt>
-                    <dd><%= @billing_profile.state %></dd>
+                        <dt><%= t('billing_profiles.state') %></dt>
+                        <dd><%= @billing_profile.state %></dd>
 
-                    <dt><%= t('billing_profiles.postal_code') %></dt>
-                    <dd><%= @billing_profile.postal_code %></dd>
+                        <dt><%= t('billing_profiles.postal_code') %></dt>
+                        <dd><%= @billing_profile.postal_code %></dd>
 
-                    <dt><%= t('billing_profiles.country') %></dt>
-                    <dd><%= Countries.name_from_alpha2_code(@billing_profile.country_code) %></dd>
+                        <dt><%= t('billing_profiles.country') %></dt>
+                        <dd><%= Countries.name_from_alpha2_code(@billing_profile.country_code) %></dd>
 
-                    <dt><%= t('created_at') %></dt>
-                    <dd><%= I18n.l(@billing_profile.created_at) %></dd>
-                </dl>
+                        <dt><%= t('created_at') %></dt>
+                        <dd><%= I18n.l(@billing_profile.created_at) %></dd>
+                    </dl>
 
-                <%= link_to t(:edit), edit_billing_profile_path(@billing_profile.uuid), class: "card-link mt" %>
-                <%= link_to t(:delete), billing_profile_path(@billing_profile.uuid),
-                            method: :delete, data: { confirm: t(:are_you_sure) },
-                            remote: true, class: "card-link mt" %>
+                    <%= link_to t(:edit), edit_billing_profile_path(@billing_profile.uuid), class: "card-link mt" %>
+                    <%= link_to t(:delete), billing_profile_path(@billing_profile.uuid),
+                    method: :delete, data: { confirm: t(:are_you_sure) },
+                    remote: true, class: "card-link mt" %>
+                </div>
             </div>
         </div>
     </div>

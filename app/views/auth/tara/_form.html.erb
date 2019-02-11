@@ -1,0 +1,83 @@
+<%= form_with(model: user, url: url, local: true, id: 'user_form', class: 'ui form big') do |f| %>
+    <%= f.hidden_field :provider, value: user.provider %>
+    <%= f.hidden_field :uid, value: user.uid %>
+    <%= f.hidden_field :locale, value: I18n.locale %>
+    <div class="ui two column doubling stackable grid">
+        <div class="column">
+            <h3 class="p3"><%= t('.data_from_identity_document') %></h3>
+            <div class="field">
+                <%= f.label :identity_code, t('users.identity_code') %>
+                <div class="ui disabled input">
+                    <%= f.text_field :identity_code, readonly: true, value: user.identity_code %>
+                </div>
+            </div>
+            <div class="field">
+                <%= f.label :country, t('users.country') %>
+                <div class="ui disabled input">
+                    <%= f.select :country_code,
+                    options_for_select(
+                        Countries.for_selection,
+                        user.country_code || Setting.default_country
+                    ),
+                    { readonly: user.signed_in_with_identity_document? },
+                    class: "ui dropdown" %>
+                </div>
+            </div>
+            <div class="field">
+                <%= f.label :given_names, t('users.given_names') %>
+                <div class="ui disabled input">
+                    <%= f.text_field :given_names, readonly: true, value: user.given_names %>
+                </div>
+            </div>
+            <div class="field">
+                <%= f.label :surname, t('users.surname') %>
+                <div class="ui disabled input">
+                    <%= f.text_field :surname, readonly: true, value: user.surname %>
+                </div>
+            </div>
+        </div>
+
+        <div class="column">
+            <h3 class="p3"><%= t('.contact_data') %></h3>
+
+            <div class="field">
+                <%= f.hidden_field :locale, value: I18n.locale %>
+                <%= f.label :email, t('users.email') %>
+                <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+            </div>
+            <div class="field">
+                <div class="ui checkbox">
+                    <%= f.check_box :accepts_terms_and_conditions, { value: false }, "true", "false" %>
+                    <%= f.label :accepts_terms_and_conditions do %>
+                        <%= link_to t('users.terms_and_conditions'), Setting.terms_and_conditions_link %>
+                    <% end %>
+                </div>
+            </div>
+
+            <div class="field">
+                <h3 id="password-label"><%= t('.new_password') %></h3>
+                <%= f.label :password, t('users.password') %>
+                <%= f.password_field :password, autocomplete: "new-password" %>
+            </div>
+            <div class="field">
+                <%= f.label :password_confirmation, t('users.password_confirmation') %>
+                <%= f.password_field :password_confirmation, autocomplete: "off" %>
+            </div>
+        </div>
+
+        <% if user.persisted? %>
+            <div class="column sixteen wide">
+                <hr>
+                <div class="field">
+                    <h3 class="p3"><%= t('users.current_password') %></h3>
+                    <%= f.label :current_password, t('.we_need_your_password') %>
+                    <%= f.password_field :current_password, autocomplete: "off" %>
+                </div>
+            </div>
+        <% end %>
+
+        <div class="column sixteen wide">
+            <%= f.submit t('.sign_up'), class: "ui button big primary", id: "user_form_commit" %>
+        </div>
+    </div>
+<% end %>

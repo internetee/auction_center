@@ -16,15 +16,17 @@
                             <span class="value"><%= (@user.email) %></span>
                         </li>
 
-                        <li>
-                            <span class="label"><%= t('users.mobile_phone') %></span>
-                            <span class="value">
-                                <% if @user.phone_number_confirmed? %>
-                                    <i class="ui icon check circle outline"></i>
-                                <% end %>
-                                <%= (@user.mobile_phone) %>
-                            </span>
-                        </li>
+                        <% if @user.mobile_phone.present? %>
+                            <li>
+                                <span class="label"><%= t('users.mobile_phone') %></span>
+                                <span class="value">
+                                    <% if @user.phone_number_confirmed? %>
+                                        <i class="ui icon check circle outline"></i>
+                                    <% end %>
+                                    <%= (@user.mobile_phone) %>
+                                </span>
+                            </li>
+                        <% end %>
 
                         <li>
                             <span class="label"><%= t('users.country_code') %></span>
@@ -34,10 +36,12 @@
                             </span>
                         </li>
 
-                        <li>
-                            <span class="label"><%= t('users.identity_code') %></span>
-                            <span class="value"><%= (@user.identity_code) %></span>
-                        </li>
+                        <% if @user.identity_code.present? %>
+                            <li>
+                                <span class="label"><%= t('users.identity_code') %></span>
+                                <span class="value"><%= (@user.identity_code) %></span>
+                            </li>
+                        <% end %>
 
                         <li>
                             <span class="label"><%= t('created_at') %></span>

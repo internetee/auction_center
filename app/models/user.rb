@@ -6,21 +6,18 @@ class User < ApplicationRecord
   ROLES = %w[administrator participant].freeze
 
   ESTONIAN_COUNTRY_CODE = 'EE'.freeze
+  TARA_PROVIDER = 'tara'
 
   devise :database_authenticatable, :recoverable, :rememberable, :validatable, :confirmable
 
   alias_attribute :country_code, :alpha_two_country_code
 
-  validates :identity_code, presence: true, if: proc { |user|
-    user.country_code == ESTONIAN_COUNTRY_CODE
-  }
-
   validates :identity_code, uniqueness: { scope: :alpha_two_country_code }
-  validates :mobile_phone, presence: true
+  validates :mobile_phone, presence: true, unless: proc { |user|
+    user.provider == TARA_PROVIDER
+  }
   validates :given_names, presence: true
   validates :surname, presence: true
-
-  validate :identity_code_must_be_valid_for_estonia
   validate :participant_must_accept_terms_and_conditions
 
   has_many :billing_profiles, dependent: :nullify
@@ -60,6 +57,24 @@ class User < ApplicationRecord
     roles.include?(role)
   end
 
+  def signed_in_with_identity_document?
+    provider == TARA_PROVIDER && uid.present?
+  end
+
+  def requires_phone_number_confirmation?
+    if Setting.require_phone_confirmation
+      return false if signed_in_with_identity_document?
+      return false if phone_number_confirmed?
+      return true
+    else
+      false
+    end
+  end
+
+  def requires_captcha?
+    !signed_in_with_identity_document?
+  end
+
   def phone_number_confirmed?
     mobile_phone_confirmed_at.present?
   end
@@ -67,5 +82,34 @@ class User < ApplicationRecord
   # Make sure that notifications are send asynchronously
   def send_devise_notification(notification, *args)
     devise_mailer.send(notification, self, *args).deliver_later
+  end
+
+  def tampered_with?(omniauth_hash)
+    uid_from_hash = omniauth_hash['uid']
+    provider_from_hash = omniauth_hash['provider']
+
+    begin
+      uid != uid_from_hash ||
+        provider != provider_from_hash ||
+        country_code != uid_from_hash.slice(0..1) ||
+        identity_code != uid_from_hash.slice(2..-1) ||
+        given_names != omniauth_hash.dig('info', 'first_name') ||
+        surname != omniauth_hash.dig('info', 'last_name')
+    end
+
+  end
+
+  def self.from_omniauth(omniauth_hash)
+    uid = omniauth_hash['uid']
+    provider = omniauth_hash['provider']
+
+    User.find_or_initialize_by(provider: provider, uid: uid) do |user|
+      user.given_names = omniauth_hash.dig('info', 'first_name')
+      user.surname = omniauth_hash.dig('info', 'last_name')
+      if provider == TARA_PROVIDER
+        user.country_code = uid.slice(0..1)
+        user.identity_code = uid.slice(2..-1)
+      end
+    end
   end
 end

@@ -83,15 +83,13 @@ class EditUserTest < ApplicationSystemTestCase
     assert(page.has_text?('Terms and conditions must be accepted'))
   end
 
-  def test_identity_code_and_country_can_also_be_changed
+  def test_country_can_also_be_changed
     visit edit_user_path(@user.uuid)
-    fill_in('user[identity_code]', with: '1234-5678')
     select_from_dropdown('Poland', from: 'user[country_code]')
     fill_in('user[current_password]', with: 'password123')
     click_link_or_button('Update')
 
     assert(page.has_text?('PL'))
-    assert(page.has_text?('1234-5678'))
   end
 
   def test_mobile_phone_needs_to_be_valid

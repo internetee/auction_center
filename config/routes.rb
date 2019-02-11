@@ -18,7 +18,15 @@ Rails.application.routes.draw do
     resources :users, concerns: [:auditable]
   end
 
+  devise_scope :user do
+    match "/auth/tara/callback", via: [:get, :post], to: "auth/tara#callback", as: :tara_callback
+    match "/auth/tara/cancel", via: [:get, :post, :delete], to: "auth/tara#cancel",
+                               as: :tara_cancel
+    match "/auth/tara/create", via: [:post], to: "auth/tara#create", as: :tara_create
+  end
+
   devise_for :users, path: 'sessions', controllers: { confirmations: 'email_confirmations' }
+
 
   resources :auctions, only: %i[index show], param: :uuid do
     resources :offers, only: %i[new show create edit update destroy], shallow: true, param: :uuid
@@ -39,9 +47,9 @@ Rails.application.routes.draw do
   end
 
   resource :locale, only: :update
-
   resources :offers, only: :index
   resources :results, only: :show, param: :uuid
+
   resources :users, param: :uuid do
     resources :phone_confirmations, only: %i[new create]
   end

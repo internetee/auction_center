@@ -45,6 +45,12 @@ en:
       update_needs_confirmation: "You updated your account successfully, but we need to verify your new email address. Please check your email and follow the confirm link to confirm your new email address."
       updated: "Your account has been updated successfully."
     sessions:
+      new:
+        sign_in_with_identity_document: "Sign in with identity document"
+        identity_document_text: |
+          Sign in with eIDAS, ID card, mobile ID or SmartID.
+          If an account does not exists, one will be created.
+        sign_in_with_password: "Sign with password"
       signed_in: "Signed in successfully."
       signed_out: "Signed out successfully."
       already_signed_out: "Signed out successfully."
