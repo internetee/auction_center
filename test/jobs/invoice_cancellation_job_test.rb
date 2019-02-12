@@ -12,6 +12,7 @@ class InvoiceCancellationJobTest < ActiveJob::TestCase
 
     @invoice.reload
     assert_equal('cancelled', @invoice.status)
+    assert_equal('payment_not_received', @invoice.result.status)
   end
 
   def test_paid_invoices_are_not_cancelled_automatically

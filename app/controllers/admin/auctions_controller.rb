@@ -55,7 +55,8 @@ module Admin
     end
 
     def enqueue_create_results_job
-      ResultCreationJob.perform_later
+      ResultCreationJob.perform_later if ResultCreationJob.needs_to_run?
+      ResultStatusUpdateJob.perform_later if ResultStatusUpdateJob.needs_to_run?
     end
 
     def authorize_user
