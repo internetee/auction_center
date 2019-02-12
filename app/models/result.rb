@@ -19,7 +19,7 @@ class Result < ApplicationRecord
           statuses[:awaiting_payment])
   }
 
-  scope :pending_remote_update, lambda {
+  scope :pending_status_report, lambda {
     where("status <> last_reported_status OR last_reported_status IS NULL")
   }
 

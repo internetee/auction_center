@@ -80,6 +80,10 @@ class ResultTest < ActiveSupport::TestCase
                  Result.all.to_set)
   end
 
+  def test_pending_status_report_does_not_return_results_that_reported_their_latest_status
+    assert_equal([@noninvoiceable_result].to_set, Result.pending_status_report.to_set)
+  end
+
   def test_registration_password_returns_placeholder_value
     assert_equal('332c70cdd0791d185778e0cc2a4eddea', @invoiceable_result.registration_password)
     assert_equal('332c70cdd0791d185778e0cc2a4eddea', @orphaned_result.registration_password)

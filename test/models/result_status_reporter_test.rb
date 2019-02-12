@@ -51,7 +51,7 @@ class ResultStatusReporterTest < ActiveSupport::TestCase
     response = Minitest::Mock.new
 
     response.expect(:code, '200')
-    response.expect(:code, '400')
+    response.expect(:code, '200')
     response.expect(:body, body.to_json)
 
     http = Minitest::Mock.new
