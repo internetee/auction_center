@@ -972,7 +972,8 @@ CREATE TABLE public.results (
     uuid uuid DEFAULT public.gen_random_uuid(),
     status public.result_status,
     last_reported_status public.result_status,
-    last_response jsonb
+    last_response jsonb,
+    registration_code character varying
 );
 
 

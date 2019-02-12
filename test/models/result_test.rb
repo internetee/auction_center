@@ -73,7 +73,7 @@ class ResultTest < ActiveSupport::TestCase
     assert_equal('You won an auction!', email.subject)
   end
 
-  def test_pending_invoice_scope_does_not_return_results_that_are_not_sold
+  def test_pending_invoice_scope_does_not_return_results_that_had_no_bids
     assert_equal([@invoiceable_result].to_set, Result.pending_invoice.to_set)
     assert_equal([@invoiceable_result, @noninvoiceable_result,
                   @orphaned_result, @with_invoice_result].to_set,

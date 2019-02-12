@@ -17,6 +17,17 @@ class Auction < ApplicationRecord
 
   delegate :count, to: :offers, prefix: true
 
+  def self.create_from_api(domain_name, remote_id)
+    auction_duration_in_minutes = Setting.auction_duration * 60
+    starts_at = Time.zone.now + 1.minute
+    ends_at = starts_at + auction_duration_in_minutes.minutes
+
+    create!(domain_name: domain_name,
+            remote_id: remote_id,
+            starts_at: starts_at,
+            ends_at: ends_at)
+  end
+
   def does_not_overlap
     return unless starts_at && ends_at
     return unless overlaping_auctions&.exists?

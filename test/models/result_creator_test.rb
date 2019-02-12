@@ -7,7 +7,6 @@ class ResultCreatorTest < ActiveSupport::TestCase
     @auction_with_result = auctions(:expired)
     @auction_with_offers = auctions(:valid_with_offers)
     @auction_without_offers = auctions(:valid_without_offers)
-
   end
 
   def teardown

@@ -9,6 +9,7 @@ valid_without_offers:
   starts_at: <%= Time.parse('2010-07-05 10:30 +0000') %>
   ends_at: <%= Time.parse('2010-07-06 10:30 +0000') %>
   uuid: "96cc419b-97ee-46e9-95d8-2b8405f8d6a4"
+  remote_id: "516298b5-addc-4618-a0ae-3f585383b9a9"
 
 expired:
   domain_name: 'expired.test'

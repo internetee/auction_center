@@ -19,6 +19,10 @@ class Result < ApplicationRecord
           statuses[:awaiting_payment])
   }
 
+  scope :pending_remote_update, lambda {
+    where("status <> last_reported_status OR last_reported_status IS NULL")
+  }
+
   def self.create_from_auction(auction_id)
     auction = Auction.find_by(id: auction_id)
 
