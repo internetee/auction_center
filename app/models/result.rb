@@ -36,10 +36,6 @@ class Result < ApplicationRecord
     offer
   end
 
-  def registration_password
-    '332c70cdd0791d185778e0cc2a4eddea'
-  end
-
   def send_email_to_winner
     return unless awaiting_payment?
 
