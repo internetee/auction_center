@@ -31,7 +31,7 @@ class ResultStatusUpdateJobTest < ActiveJob::TestCase
   end
 
   def test_needs_to_run_depends_on_a_scope
-    ResultStatusUpdateJob.stub(:registry_integration_enabled, true) do
+    ResultStatusUpdateJob.stub(:registry_integration_enabled?, true) do
       assert(ResultStatusUpdateJob.needs_to_run?)
 
       @result.update!(last_reported_status: @result.status)
