@@ -18,7 +18,7 @@ module ResultsHelper
     if result.payment_received?
       t('.paid')
     elsif result&.invoice
-      result.&invoice.due_date
+      result&.invoice.due_date
     else
       t('invoices.is_being_generated')
     end
