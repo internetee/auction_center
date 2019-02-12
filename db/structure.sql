@@ -970,7 +970,9 @@ CREATE TABLE public.results (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     uuid uuid DEFAULT public.gen_random_uuid(),
-    status public.result_status
+    status public.result_status,
+    last_reported_status public.result_status,
+    last_response jsonb
 );
 
 
@@ -1678,6 +1680,13 @@ CREATE INDEX index_results_on_auction_id ON public.results USING btree (auction_
 
 
 --
+-- Name: index_results_on_last_reported_status; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_results_on_last_reported_status ON public.results USING btree (last_reported_status);
+
+
+--
 -- Name: index_results_on_offer_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1969,6 +1978,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190211175323'),
 ('20190211181127'),
 ('20190211182633'),
-('20190212071303');
+('20190212071303'),
+('20190212075230');
 
 
