@@ -41,4 +41,14 @@ class Setting < ApplicationRecord
       false
     end
   end
+
+  def self.auctions_start_at
+    value = Setting.find_by(code: :auctions_start_at).value
+
+    if value == 'false'
+      false
+    else
+      value.to_i
+    end
+  end
 end
