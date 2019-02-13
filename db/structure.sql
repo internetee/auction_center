@@ -973,7 +973,8 @@ CREATE TABLE public.results (
     status public.result_status,
     last_remote_status public.result_status,
     last_response jsonb,
-    registration_code character varying
+    registration_code character varying,
+    registration_due_date date NOT NULL
 );
 
 
@@ -1981,6 +1982,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190211182633'),
 ('20190212071303'),
 ('20190212075230'),
-('20190213104841');
+('20190213104841'),
+('20190213115909');
 
 

@@ -26,6 +26,7 @@ class ResultCreatorTest < ActiveSupport::TestCase
     assert(result.is_a?(Result))
     assert_equal(true, result.awaiting_payment?)
     assert_equal(expected_winning_offer, result.offer)
+    assert_equal(Date.today + 14, result.registration_due_date)
     assert_equal(@auction_with_offers, result.auction)
   end
 

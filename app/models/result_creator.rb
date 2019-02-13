@@ -55,10 +55,15 @@ class ResultCreator
                     end
   end
 
+  def assign_registration_due_date
+    result.registration_due_date = Date.today + Setting.registration_term
+  end
+
   def create_result
     @result = Result.new
     result.auction = auction
     assign_status
+    assign_registration_due_date
     assign_attributes_from_winning_offer
     result.save!
 
