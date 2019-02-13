@@ -17,7 +17,7 @@ class ResultStatusReporterTest < ActiveSupport::TestCase
   end
 
   def test_does_nothing_if_status_has_already_been_reported
-    @no_bids.update!(last_reported_status: :no_bids)
+    @no_bids.update!(last_remote_status: :no_bids)
     instance = ResultStatusReporter.new(@no_bids)
     refute(instance.call)
   end
@@ -59,7 +59,31 @@ class ResultStatusReporterTest < ActiveSupport::TestCase
 
     Net::HTTP.stub(:start, response, http) do
       instance.call
-      assert_equal(@no_bids.last_reported_status, 'no_bids')
+      assert_equal(@no_bids.last_remote_status, 'no_bids')
+      assert_equal(@no_bids.last_response, body)
+    end
+  end
+
+  def test_call_updates_result_record_when_domain_is_not_registered_in_time
+    @no_bids.update(status: Result.statuses[:domain_not_registered])
+
+    instance = ResultStatusReporter.new(@no_bids)
+
+    body = { "id" => @no_bids.auction.remote_id, "domain" => 'no-offers.test',
+             "status" => "domain_not_registered" }
+
+    response = Minitest::Mock.new
+
+    response.expect(:code, '200')
+    response.expect(:code, '200')
+    response.expect(:body, body.to_json)
+
+    http = Minitest::Mock.new
+    http.expect(:request, nil, [instance.request])
+
+    Net::HTTP.stub(:start, response, http) do
+      instance.call
+      assert_equal(@no_bids.last_remote_status, 'domain_not_registered')
       assert_equal(@no_bids.last_response, body)
     end
   end

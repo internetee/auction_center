@@ -31,7 +31,7 @@ class ResultStatusReporter
 
     if code_as_string == HTTP_SUCCESS
       body_as_json = JSON.parse(body_as_string, symbolize_names: true)
-      result.update!(last_reported_status: result.status,
+      result.update!(last_remote_status: result.status,
                      last_response: body_as_json,
                      registration_code: body_as_json[:registration_code])
     else
@@ -42,7 +42,7 @@ class ResultStatusReporter
   private
 
   def result_already_reported?
-    result.last_reported_status == result.status
+    result.last_remote_status == result.status
   end
 
   def remote_id

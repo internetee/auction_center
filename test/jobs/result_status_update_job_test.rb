@@ -25,7 +25,7 @@ class ResultStatusUpdateJobTest < ActiveJob::TestCase
     Net::HTTP.stub(:start, response, http) do
       ResultStatusUpdateJob.perform_now
       @result.reload
-      assert_equal(@result.last_reported_status, 'no_bids')
+      assert_equal(@result.last_remote_status, 'no_bids')
       assert_equal(@result.last_response, body)
     end
   end
@@ -34,7 +34,7 @@ class ResultStatusUpdateJobTest < ActiveJob::TestCase
     ResultStatusUpdateJob.stub(:registry_integration_enabled?, true) do
       assert(ResultStatusUpdateJob.needs_to_run?)
 
-      @result.update!(last_reported_status: @result.status)
+      @result.update!(last_remote_status: @result.status)
       refute(ResultStatusUpdateJob.needs_to_run?)
     end
   end
