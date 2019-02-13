@@ -22,6 +22,12 @@ class ResultStatusReporterTest < ActiveSupport::TestCase
     refute(instance.call)
   end
 
+  def test_call_does_not_report_updates_when_domain_is_registered
+    @no_bids.update!(status: :domain_registered)
+    instance = ResultStatusReporter.new(@no_bids)
+    refute(instance.call)
+  end
+
   def test_call_raises_an_error_when_answer_is_not_200
     instance = ResultStatusReporter.new(@no_bids)
 

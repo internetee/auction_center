@@ -19,6 +19,7 @@ class ResultStatusReporter
 
   def call
     return if result_already_reported?
+    return if result_can_be_skipped?
 
     request.body = request_body
 
@@ -43,6 +44,10 @@ class ResultStatusReporter
 
   def result_already_reported?
     result.last_remote_status == result.status
+  end
+
+  def result_can_be_skipped?
+    result.status == Result.statuses[:domain_registered]
   end
 
   def remote_id
