@@ -17,7 +17,7 @@ module Registry
       @code_as_string = response.code.to_s
 
       if code_as_string != HTTP_SUCCESS
-        raise RegistryIntegrationError(request, body_as_string, code_as_string)
+        raise CommunicationError.new(request, body_as_string, code_as_string)
       end
     end
   end

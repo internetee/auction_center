@@ -1,7 +1,7 @@
 class ResultStatusUpdateJob < ApplicationJob
   def perform
     Result.pending_status_report.map do |result|
-      ResultStatusReporter.new(result).call
+      Registry::StatusReporter.new(result).call
     end
   end
 

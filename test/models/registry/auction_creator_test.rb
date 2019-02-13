@@ -16,7 +16,7 @@ class RegistryAuctionCreatorTest < ActiveSupport::TestCase
   def test_call_raises_an_error_when_answer_is_not_200
     instance = Registry::AuctionCreator.new
 
-    body = ''
+    body = ""
     response = Minitest::Mock.new
 
     response.expect(:code, '401')
@@ -27,7 +27,7 @@ class RegistryAuctionCreatorTest < ActiveSupport::TestCase
     http.expect(:request, nil, [instance.request])
 
     Net::HTTP.stub(:start, response, http) do
-      assert_raises(Errors::AuctionCreatorFailed) do
+      assert_raises(Registry::CommunicationError) do
         instance.call
       end
     end

@@ -1,7 +1,7 @@
 class DomainRegistrationCheckJob < ApplicationJob
   def perform
     Result.pending_registration.map do |result|
-      DomainRegistrationChecker.new(result).call
+      Registry::RegistrationChecker.new(result).call
     end
   end
 

@@ -16,7 +16,7 @@ class DomainRegistrationCheckerTest < ActiveSupport::TestCase
   end
 
   def test_call_raises_an_error_when_answer_is_not_200
-    instance = DomainRegistrationChecker.new(@result)
+    instance = Registry::RegistrationChecker.new(@result)
 
     body = ''
     response = Minitest::Mock.new
@@ -29,14 +29,14 @@ class DomainRegistrationCheckerTest < ActiveSupport::TestCase
     http.expect(:request, nil, [instance.request])
 
     Net::HTTP.stub(:start, response, http) do
-      assert_raises(Errors::StatusReportFailed) do
+      assert_raises(Registry::CommunicationError) do
         instance.call
       end
     end
   end
 
   def test_call_updates_result_record_to_domain_registered
-    instance = DomainRegistrationChecker.new(@result)
+    instance = Registry::RegistrationChecker.new(@result)
 
     body = { "id" => "f15f032d-2f6b-4b87-be29-5edb25e9e4d2",
              "domain" => "expired.test",
@@ -62,7 +62,7 @@ class DomainRegistrationCheckerTest < ActiveSupport::TestCase
     @result.update!(created_at: Time.now)
     travel_back
 
-    instance = DomainRegistrationChecker.new(@result)
+    instance = Registry::RegistrationChecker.new(@result)
 
     body = { "id" => "f15f032d-2f6b-4b87-be29-5edb25e9e4d2",
              "domain" => "expired.test",
