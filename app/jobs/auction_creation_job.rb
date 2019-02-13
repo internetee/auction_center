@@ -1,6 +1,6 @@
 class AuctionCreationJob < ApplicationJob
   def perform
-    AuctionCreator.new.call
+    Registry::AuctionCreator.new.call
   end
 
   def self.needs_to_run?

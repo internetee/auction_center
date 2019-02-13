@@ -84,7 +84,7 @@ default: &default
 
   registry_integration:
     enabled: false
-    registry_url: 'http://registry/api/v1/auctions/'
+    url: 'http://registry/api/v1/auctions/'
 
 development:
   <<: *default

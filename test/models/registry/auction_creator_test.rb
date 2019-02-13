@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class AuctionCreatorTest < ActiveSupport::TestCase
+class RegistryAuctionCreatorTest < ActiveSupport::TestCase
   def setup
     super
 
@@ -14,7 +14,7 @@ class AuctionCreatorTest < ActiveSupport::TestCase
   end
 
   def test_call_raises_an_error_when_answer_is_not_200
-    instance = AuctionCreator.new
+    instance = Registry::AuctionCreator.new
 
     body = ''
     response = Minitest::Mock.new
@@ -34,7 +34,7 @@ class AuctionCreatorTest < ActiveSupport::TestCase
   end
 
   def test_call_creates_auctions_that_start_at_midnight_in_2_days
-    instance = AuctionCreator.new
+    instance = Registry::AuctionCreator.new
 
     body = [{"id" => "cdf377a6-8797-40d8-90a1-b7aadfddc8e3", "domain" => "shop.test",
              "status" => "started"},
@@ -65,7 +65,7 @@ class AuctionCreatorTest < ActiveSupport::TestCase
     setting = settings(:auctions_start_at)
     setting.update!(value: 'false')
 
-    instance = AuctionCreator.new
+    instance = Registry::AuctionCreator.new
 
     body = [{"id" => "cdf377a6-8797-40d8-90a1-b7aadfddc8e3", "domain" => "shop.test",
              "status" => "started"},
