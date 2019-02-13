@@ -2,7 +2,7 @@ module Admin
   class AuctionsController < BaseController
     before_action :authorize_user
     before_action :set_auction, only: %i[show destroy]
-    before_action :enqueue_create_results_job, only: :index
+    before_action :enqueue_jobs, only: :index
 
     # GET /admin/auctions/new
     def new
@@ -54,9 +54,10 @@ module Admin
       params.require(:auction).permit(:domain_name, :starts_at, :ends_at)
     end
 
-    def enqueue_create_results_job
+    def enqueue_jobs
       ResultCreationJob.perform_later if ResultCreationJob.needs_to_run?
       ResultStatusUpdateJob.perform_later if ResultStatusUpdateJob.needs_to_run?
+      AuctionCreationJob.perform_later if AuctionCreationJob.needs_to_run?
     end
 
     def authorize_user
