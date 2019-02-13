@@ -6,20 +6,19 @@
 
 <div class="u-container">
     <div class="u-container margin-block">
-            <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post, class: 'ui form big' }) do |f| %>
-                <%= devise_error_messages! %>
+        <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post, class: 'ui form big' }) do |f| %>
+            <%= render "devise/shared/error_messages", resource: resource %>
 
-                <div class="field">
-                    <%= f.label :email %><br />
-                    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-                </div>
+            <div class="field">
+                <%= f.label :email %><br />
+                <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+            </div>
 
-                <%= f.submit "Send me reset password instructions", class: "ui button primary" %>
-            <% end %>
+            <%= f.submit "Send me reset password instructions", class: "ui button primary" %>
+        <% end %>
 
-            <br>
+        <br>
 
-            <%= render "devise/shared/links" %>
-        </div>
+        <%= render "devise/shared/links" %>
     </div>
 </div>
