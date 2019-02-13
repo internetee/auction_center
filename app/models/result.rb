@@ -23,6 +23,10 @@ class Result < ApplicationRecord
     where("status <> last_remote_status OR last_remote_status IS NULL")
   }
 
+  scope :pending_registration, lambda {
+    where("status = ?", statuses[:payment_received])
+  }
+
   def self.create_from_auction(auction_id)
     auction = Auction.find_by(id: auction_id)
 

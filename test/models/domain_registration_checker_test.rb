@@ -66,7 +66,7 @@ class DomainRegistrationCheckerTest < ActiveSupport::TestCase
 
     body = { "id" => "f15f032d-2f6b-4b87-be29-5edb25e9e4d2",
              "domain" => "expired.test",
-             "status" => "awaiting_payment" }
+             "status" => "payment_received" }
 
     response = Minitest::Mock.new
 

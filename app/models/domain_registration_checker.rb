@@ -8,6 +8,7 @@ class DomainRegistrationChecker
 
   def initialize(result)
     @result = result
+    @result.update!(status: Result.statuses[:payment_received])
   end
 
   def call
@@ -50,7 +51,7 @@ class DomainRegistrationChecker
 
   def domain_not_registered?(json)
     Date.today > (result.created_at.to_date + Setting.registration_term) &&
-    json[:status] == 'awaiting_payment'
+    json[:status] == 'payment_received'
   end
 
   def remote_id

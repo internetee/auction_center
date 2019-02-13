@@ -84,6 +84,11 @@ class ResultTest < ActiveSupport::TestCase
     assert_equal([@noninvoiceable_result].to_set, Result.pending_status_report.to_set)
   end
 
+  def test_pending_registration_returns_results_with_payment_received_status
+    @noninvoiceable_result.update!(status: :payment_received)
+    assert_equal([@noninvoiceable_result].to_set, Result.pending_registration.to_set)
+  end
+
   def test_registration_code_returns_the_stored_value
     assert_equal('332c70cdd0791d185778e0cc2a4eddea', @invoiceable_result.registration_code)
     assert_nil(@noninvoiceable_result.registration_code)
