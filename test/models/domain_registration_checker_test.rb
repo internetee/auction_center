@@ -29,21 +29,19 @@ class DomainRegistrationCheckerTest < ActiveSupport::TestCase
     http.expect(:request, nil, [instance.request])
 
     Net::HTTP.stub(:start, response, http) do
-      assert_raises(Errors::DomainRegistrationCheckerFailed) do
+      assert_raises(Errors::StatusReportFailed) do
         instance.call
       end
     end
   end
 
-  def test_call_creates_auctions_that_start_at_midnight_in_2_days
+  def test_call_updates_result_record_to_domain_registered
     instance = DomainRegistrationChecker.new(@result)
 
-    body = [{"id" => "cdf377a6-8797-40d8-90a1-b7aadfddc8e3", "domain" => "shop.test",
-             "status" => "started"},
-            {"id" => "e561ce42-9003-47b4-af73-8092fffe6591", "domain" => "foo.test",
-             "status" => "started"},
-            {"id" => "1c92c1a9-4b5b-466b-92bf-05bbc3bca5e8", "domain" => "fo.test",
-             "status" => "started"}]
+    body = { "id" => "f15f032d-2f6b-4b87-be29-5edb25e9e4d2",
+             "domain" => "expired.test",
+             "status" => "domain_registered" }
+
     response = Minitest::Mock.new
 
     response.expect(:code, '200')
@@ -54,27 +52,22 @@ class DomainRegistrationCheckerTest < ActiveSupport::TestCase
     http.expect(:request, nil, [instance.request])
 
     Net::HTTP.stub(:start, response, http) do
-      assert_changes('Auction.count', 3) do
-        instance.call
-        example_auction = Auction.find_by(remote_id: "cdf377a6-8797-40d8-90a1-b7aadfddc8e3")
-        assert_equal(Date.tomorrow.to_datetime, example_auction.starts_at)
-        assert_equal(Date.tomorrow.to_datetime + 1.day, example_auction.ends_at)
-      end
+      instance.call
+      assert_equal(@result.status, 'domain_registered')
+      assert_equal(@result.last_response, body)
     end
   end
 
-  def test_call_creates_auctions_that_start_in_1_minute
-    setting = settings(:auctions_start_at)
-    setting.update!(value: 'false')
+  def test_call_updates_result_record_to_domain_not_registered
+    @result.update!(created_at: Time.now)
+    travel_back
 
-    instance = AuctionCreator.new
+    instance = DomainRegistrationChecker.new(@result)
 
-    body = [{"id" => "cdf377a6-8797-40d8-90a1-b7aadfddc8e3", "domain" => "shop.test",
-             "status" => "started"},
-            {"id" => "e561ce42-9003-47b4-af73-8092fffe6591", "domain" => "foo.test",
-             "status" => "started"},
-            {"id" => "1c92c1a9-4b5b-466b-92bf-05bbc3bca5e8", "domain" => "fo.test",
-             "status" => "started"}]
+    body = { "id" => "f15f032d-2f6b-4b87-be29-5edb25e9e4d2",
+             "domain" => "expired.test",
+             "status" => "awaiting_payment" }
+
     response = Minitest::Mock.new
 
     response.expect(:code, '200')
@@ -85,12 +78,9 @@ class DomainRegistrationCheckerTest < ActiveSupport::TestCase
     http.expect(:request, nil, [instance.request])
 
     Net::HTTP.stub(:start, response, http) do
-      assert_changes('Auction.count', 3) do
-        instance.call
-        example_auction = Auction.find_by(remote_id: "cdf377a6-8797-40d8-90a1-b7aadfddc8e3")
-        assert_equal(Time.now + 1.minute, example_auction.starts_at)
-        assert_equal(Time.now + 1.minute + 1.day, example_auction.ends_at)
-      end
+      instance.call
+      assert_equal(@result.status, 'domain_not_registered')
+      assert_equal(@result.last_response, body)
     end
   end
 end
