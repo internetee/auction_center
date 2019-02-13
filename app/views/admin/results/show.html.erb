@@ -8,47 +8,68 @@
 <div class="u-container">
     <div class="margin-block">
         <div class="content">
-            <div class="ui list">
-                <div class="item">
-                    <div class="header"><%= t('results.sold') %></div>
-                    <%- if @result.no_bids? %>
-                        <%= t('no') %>
-                    <% else %>
-                        <%= t('yes') %>
-                    <% end %>
+            <div class="body">
+                <div class="details-list centered-list">
+                    <ul>
+                        <li>
+                            <span class="label"><%= t('results.status') %></span>
+                            <span class="value">
+                                <%= @result.status.humanize %>
+                            </span>
+                        </li>
+
+                        <li>
+                            <span class="label"><%= t('auctions.finished_at') %></span>
+                            <span class="value">
+                                <%= I18n.l(@result.auction.ends_at) %>
+                            </span>
+                        </li>
+
+                        <li>
+                            <span class="label"><%= t('results.register_before') %></span>
+                            <span class="value">
+                                <%= @result.registration_due_date %>
+                            </span>
+                        </li>
+
+                        <%- if @result.registration_code %>
+                            <li>
+                                <span class="label"><%= t('results.registration_code') %></span>
+                                <span class="value">
+                                    <%= @result.registration_code %>
+                                </span>
+                            </li>
+                        <% end %>
+
+                        <%- unless @result.no_bids? %>
+                            <li>
+                                <span class="label"><%= t('results.buyer') %></span>
+                                <span class="value">
+                                    <%= @result.offer.billing_profile.name %>
+                                </span>
+                            </li>
+                        <% end %>
+                    </ul>
                 </div>
 
-                <div class="item">
-                    <div class="header"><%= t('auctions.ends_at') %></div>
-                    <%= I18n.l(@result.auction.ends_at) %>
+                <div class="buttons">
+                    <%= link_to t(:versions_name), admin_result_versions_path(@result),
+                    class: "ui button primary" %>
                 </div>
-
-
-
-                <%- unless @result.no_bids? %>
-                    <div class="item">
-                        <div class="header"><%= t('results.buyer') %></div>
-                        <%= @result.offer.billing_profile.name %>
-                    </div>
-                <% end %>
-                </dl>
-
-                <%= link_to t(:versions_name), admin_result_versions_path(@result),
-                class: "ui button primary" %>
             </div>
-        </div>
 
-        <% if @offers.any? %>
-            <h2><%= t(:offers_name) %></h2>
-            <table class="ui table" id="result-offers-table">
-                <thead>
-                    <tr>
-                        <th scope="col"><%= t('offers.price') %></th>
-                        <th scope="col"><%= t('billing_profiles.name') %></th>
-                        <th scope="col"><%= t(:created_at) %></th>
-                        <th scope="col"><%= t(:updated_at) %></th>
-                        <th scope="col"><%= t(:versions_name)%> </th>
-                    </tr>
+            <% if @offers.any? %>
+                <h2><%= t(:offers_name) %></h2>
+                <table class="ui table" id="result-offers-table">
+                    <thead>
+                        <tr>
+                            <th scope="col"><%= t('offers.price') %></th>
+                            <th scope="col"><%= t('billing_profiles.name') %></th>
+                            <th scope="col"><%= t(:created_at) %></th>
+                            <th scope="col"><%= t(:updated_at) %></th>
+                            <th scope="col"><%= t(:versions_name)%> </th>
+                        </tr>
+                    </thead>
 
                     <tbody id="offers-table-body">
                         <% @offers.each do |offer| %>
@@ -61,7 +82,8 @@
                             </tr>
                         <% end %>
                     </tbody>
-            </table>
-        <% end %>
+                </table>
+            <% end %>
+        </div>
     </div>
 </div>

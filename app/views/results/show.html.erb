@@ -8,49 +8,45 @@
 <div class="u-container">
     <div class="margin-block">
         <div class="content">
-            <div class="content">
-                <div class="body">
-                    <div class="details-list centered-list">
-                        <ul>
-                            <li>
-                                <span class="label"><%= t('results.status') %></span>
-                                <span class="value">
-                                    <%= @result.status.humanize %>
-                                </span>
-                            </li>
+            <div class="body">
+                <div class="details-list centered-list">
+                    <ul>
+                        <li>
+                            <span class="label"><%= t('results.status') %></span>
+                            <span class="value">
+                                <%= @result.status.humanize %>
+                            </span>
+                        </li>
 
-                            <li>
-                                <span class="label"><%= t('results.registration_code') %></span>
-                                <span class="value">
-                                    <%= registration_code_or_information(@result) %>
-                                </span>
-                            </li>
+                        <li>
+                            <span class="label"><%= t('results.registration_code') %></span>
+                            <span class="value">
+                                <%= registration_code_or_information(@result) %>
+                            </span>
+                        </li>
 
-                            <li>
-                                <span class="label"><%= t('results.pay_invoice_before') %></span>
-                                <span class="value">
-                                    <%= pay_invoice_before(@result) %>
-                                </span>
-                            </li>
+                        <li>
+                            <span class="label"><%= t('results.pay_invoice_before') %></span>
+                            <span class="value">
+                                <%= pay_invoice_before(@result) %>
+                            </span>
+                        </li>
 
-                            <li>
-                                <span class="label"><%= t('results.register_before') %></span>
-                                <span class="value">
-                                    <%= register_before(@result) %>
-                                </span>
-                            </li>
-                        </ul>
-                        <div class="item">
-                        </div>
+                        <li>
+                            <span class="label"><%= t('results.register_before') %></span>
+                            <span class="value">
+                                <%= @result.registration_due_date %>
+                            </span>
+                        </li>
+                    </ul>
 
-                        <div class="buttons">
-                            <% if @result.invoice %>
-                                <%= link_to t('results.invoice'), invoice_path(@result.invoice.uuid),
-                                class: "ui button big primary" %>
-                            <% else %>
-                                <%= t('invoices.is_being_generated') %>
-                            <% end %>
-                        </div>
+                    <div class="buttons">
+                        <% if @result.invoice %>
+                            <%= link_to t('results.invoice'), invoice_path(@result.invoice.uuid),
+                            class: "ui button big primary" %>
+                        <% else %>
+                            <%= t('invoices.is_being_generated') %>
+                        <% end %>
                     </div>
                 </div>
             </div>

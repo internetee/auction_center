@@ -7,6 +7,7 @@ en:
     register_before: "Register before"
     pay_invoice_before: "Pay invoice before"
     status: "Status"
+    registration_due_date: "Registration due date"
 
     show:
       title: "You won an auction"
