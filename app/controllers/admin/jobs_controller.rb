@@ -30,7 +30,8 @@ module Admin
 
     def set_jobs
       @jobs = [Job.new('ResultCreationJob'), Job.new('InvoiceCancellationJob'),
-               Job.new('InvoiceCreationJob')]
+               Job.new('InvoiceCreationJob'), Job.new('AuctionCreationJob'),
+               Job.new('DomainRegistrationCheckJob'), Job.new('ResultStatusUpdateJob')]
     end
 
     def authorize_user
