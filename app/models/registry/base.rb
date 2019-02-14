@@ -16,7 +16,7 @@ module Registry
       @body_as_string = response.body
       @code_as_string = response.code.to_s
 
-      return unless code_as_string != HTTP_SUCCESS
+      return if code_as_string == HTTP_SUCCESS
 
       raise CommunicationError.new(request, body_as_string, code_as_string)
     end
