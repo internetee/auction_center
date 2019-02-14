@@ -1,3 +1,24 @@
+<div class="ui sidebar inverted vertical menu right mobile-menu">
+    <%= navigation_links(current_user) %>
+
+    <%= locale_links %>
+
+    <ul>
+        <li>
+            <% if current_user %>
+                <%= link_to(destroy_user_session_path, method: :delete, class: "item") do %>
+                    <i aria-hidden="true" class="user icon"></i><%= t(:sign_out) %>
+                <% end %>
+            <% else %>
+                <%= link_to(new_user_session_path, class: "item") do %>
+                    <i aria-hidden="true" class="user icon"></i><%= t(:sign_in) %>
+                <% end %>
+            <% end %>
+        </li>
+    </ul>
+</div>
+
+
 <header class="main-header">
     <div class="main-header-top">
         <nav class="menu-portal">
@@ -32,4 +53,9 @@
     <nav class="menu-main">
         <%= navigation_links(current_user) %>
     </nav>
+    <div class="actions">
+        <button type="button" class="btn btn-menu" data-menu-toggle="">
+            <i aria-hidden="true" class="bars icon"></i>
+        </button>
+    </div>
 </header>
