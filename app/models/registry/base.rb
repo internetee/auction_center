@@ -9,7 +9,8 @@ module Registry
     attr_reader :response
 
     def perform_request(request)
-      @response = Net::HTTP.start(BASE_URL.host, BASE_URL.port, use_ssl: BASE_URL.scheme == 'https') do |http|
+      @response = Net::HTTP.start(BASE_URL.host, BASE_URL.port,
+                                  use_ssl: BASE_URL.scheme == 'https') do |http|
         http.request(request)
       end
 
