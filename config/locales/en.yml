@@ -42,6 +42,7 @@ en:
   my_invoices: "My invoices"
   actions: "Actions"
   job_enqueued: "Job enqueued. Check in a few minutes for results."
+  status: "Status"
 
   users:
     display_name: "Display name"

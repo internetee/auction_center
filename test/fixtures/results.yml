@@ -1,24 +1,33 @@
 expired_participant:
   auction: expired
   user: participant
-  status: <%= Result.statuses[:sold] %>
+  status: <%= Result.statuses[:awaiting_payment] %>
+  last_remote_status: <%= Result.statuses[:awaiting_payment] %>
   offer: expired_offer
   uuid: "92f2d552-4270-4d08-8687-b332432c872f"
+  registration_code: "332c70cdd0791d185778e0cc2a4eddea"
+  registration_due_date: <%= Time.parse('2010-07-13 10:30 +0000') %>
 
 with_invoice:
   auction: with_invoice
   user: participant
-  status: <%= Result.statuses[:sold] %>
+  status: <%= Result.statuses[:awaiting_payment] %>
+  last_remote_status: <%= Result.statuses[:awaiting_payment] %>
   offer: with_invoice
   uuid: "cec1de76-164f-4c9a-922d-dacde5e99f99"
+  registration_due_date: <%= Time.parse('2010-07-13 10:30 +0000') %>
 
 without_offers_nobody:
   auction: valid_without_offers
-  status: <%= Result.statuses[:expired] %>
+  status: <%= Result.statuses[:no_bids] %>
   uuid: "8ac98271-26f8-48d4-9fc7-e82baf0627a6"
+  registration_due_date: <%= Time.parse('2010-07-13 10:30 +0000') %>
 
 orphaned:
   auction: orphaned
-  status: <%= Result.statuses[:sold] %>
+  status: <%= Result.statuses[:domain_registered] %>
+  last_remote_status: <%= Result.statuses[:domain_registered] %>
   offer: orphaned
   uuid: "53fc2a5d-fce2-46a5-a50b-107591a0e9ba"
+  registration_code: "517ff98f49fc534893628469b333c3e5"
+  registration_due_date: <%= Time.parse('2010-07-13 10:30 +0000') %>

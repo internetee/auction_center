@@ -29,8 +29,8 @@ class ResultsTest < ApplicationSystemTestCase
   end
 
   def test_results_page_contains_transfer_code_if_result_is_paid
-    @result.paid!
-    assert(@result.paid?)
+    @result.payment_received!
+    assert(@result.payment_received?)
 
     visit(result_path(@result.uuid))
     assert(page.has_text?("332c70cdd0791d185778e0cc2a4eddea"))

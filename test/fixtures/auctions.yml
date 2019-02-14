@@ -9,12 +9,14 @@ valid_without_offers:
   starts_at: <%= Time.parse('2010-07-05 10:30 +0000') %>
   ends_at: <%= Time.parse('2010-07-06 10:30 +0000') %>
   uuid: "96cc419b-97ee-46e9-95d8-2b8405f8d6a4"
+  remote_id: "516298b5-addc-4618-a0ae-3f585383b9a9"
 
 expired:
   domain_name: 'expired.test'
   starts_at: <%= Time.parse('1999-07-05 10:30 +0000') %>
   ends_at: <%= Time.parse('1999-07-05 11:30 +0000') %>
   uuid: "509f9dcc-25e5-41ff-af73-1b0c27118a66"
+  remote_id: "f15f032d-2f6b-4b87-be29-5edb25e9e4d2"
 
 with_invoice:
   domain_name: 'with-invoice.test'

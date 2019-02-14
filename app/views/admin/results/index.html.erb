@@ -20,7 +20,7 @@
                         <thead>
                             <tr>
                                 <th scope="col"><%= t('auctions.domain_name') %></th>
-                                <th scope="col"><%= t('auctions.ends_at') %></th>
+                                <th scope="col"><%= t('auctions.finished_at') %></th>
                             </tr>
                         </thead>
 
@@ -41,8 +41,9 @@
                     <thead>
                         <tr>
                             <th scope="col"><%= t('auctions.domain_name') %></th>
-                            <th scope="col"><%= t('auctions.ends_at') %></th>
-                            <th scope="col"><%= t('results.sold') %></th>
+                            <th scope="col"><%= t('auctions.finished_at') %></th>
+                            <th scope="col"><%= t('results.registration_due_date') %></th>
+                            <th scope="col"><%= t('status') %></th>
                             <th scope="col"><%= t('billing_profiles.name') %></th>
                         </tr>
                     </thead>
@@ -52,15 +53,10 @@
                             <tr class="results-table-row">
                                 <td><%= link_to result.auction.domain_name, admin_result_path(result) %></td>
                                 <td><%= I18n.l(result.auction.ends_at) %></td>
+                                <td><%= I18n.l(result.registration_due_date) %></td>
+                                <td><%= result.status.humanize %></td>
                                 <td>
-                                    <%- if result.sold? %>
-                                        <%= t('yes') %>
-                                    <% else %>
-                                        <%= t('no') %>
-                                    <% end %>
-                                </td>
-                                <td>
-                                    <%- if result.sold? %>
+                                    <%- unless result.no_bids? %>
                                         <%= result.offer.billing_profile&.name %>
                                     <% end %>
                                 </td>

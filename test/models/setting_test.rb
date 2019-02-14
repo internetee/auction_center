@@ -35,9 +35,19 @@ class SettingTest < ActiveSupport::TestCase
   def test_class_methods_are_shorthand_for_values
     assert_equal('EUR', Setting.auction_currency)
     assert_equal(500, Setting.auction_minimum_offer)
+
     assert_equal('https://example.com', Setting.terms_and_conditions_link)
     assert_equal('EE', Setting.default_country)
+
     assert_equal(7, Setting.payment_term)
+    assert_equal(14, Setting.registration_term)
+
     assert_equal(false, Setting.require_phone_confirmation)
+    assert_equal(24, Setting.auction_duration)
+
+    assert_equal(0, Setting.auctions_start_at)
+
+    Setting.find_by(code: :auctions_start_at).update(value: 'false')
+    assert_equal(false, Setting.auctions_start_at)
   end
 end

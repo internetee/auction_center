@@ -28,7 +28,7 @@ class Invoice < ApplicationRecord
     result = Result.find_by(id: result_id)
 
     raise(Errors::ResultNotFound, result_id) unless result
-    raise(Errors::ResultNotSold, result_id) unless result.sold?
+    raise(Errors::ResultNotSold, result_id) unless result.awaiting_payment?
 
     InvoiceCreator.new(result_id).call
   end
@@ -68,11 +68,24 @@ class Invoice < ApplicationRecord
     I18n.t('invoices.title', number: number)
   end
 
+  def cancel
+    return unless overdue?
+
+    ActiveRecord::Base.transaction do
+      result.payment_not_received!
+      cancelled!
+    end
+  end
+
   def mark_as_paid_at(time)
     ActiveRecord::Base.transaction do
       self.paid_at = time
       paid!
-      result.paid!
+      result.payment_received!
     end
+  end
+
+  def overdue?
+    due_date < Time.zone.today && issued?
   end
 end

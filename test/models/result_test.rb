@@ -32,9 +32,11 @@ class ResultTest < ActiveSupport::TestCase
   def test_status_predicates
     result = Result.new
 
-    assert_equal(false, result.sold?)
-    assert_equal(false, result.expired?)
-    assert_equal(false, result.paid?)
+    assert_equal(false, result.no_bids?)
+    assert_equal(false, result.payment_received?)
+    assert_equal(false, result.payment_not_received?)
+    assert_equal(false, result.domain_registered?)
+    assert_equal(false, result.domain_not_registered?)
   end
 
   def test_create_result_from_an_auction_only_works_if_the_auction_has_finished
@@ -54,7 +56,7 @@ class ResultTest < ActiveSupport::TestCase
   end
 
   def test_send_email_to_winner_does_nothing_if_there_is_no_winner
-    result = Result.new(status: :expired)
+    result = Result.new(status: :no_bids)
 
     result.send_email_to_winner
     assert(ActionMailer::Base.deliveries.empty?)
@@ -71,15 +73,24 @@ class ResultTest < ActiveSupport::TestCase
     assert_equal('You won an auction!', email.subject)
   end
 
-  def test_pending_invoice_scope_does_not_return_results_that_are_not_sold
+  def test_pending_invoice_scope_does_not_return_results_that_had_no_bids
     assert_equal([@invoiceable_result].to_set, Result.pending_invoice.to_set)
     assert_equal([@invoiceable_result, @noninvoiceable_result,
                   @orphaned_result, @with_invoice_result].to_set,
                  Result.all.to_set)
   end
 
-  def test_registration_password_returns_placeholder_value
-    assert_equal('332c70cdd0791d185778e0cc2a4eddea', @invoiceable_result.registration_password)
-    assert_equal('332c70cdd0791d185778e0cc2a4eddea', @orphaned_result.registration_password)
+  def test_pending_status_report_does_not_return_results_that_reported_their_latest_status
+    assert_equal([@noninvoiceable_result].to_set, Result.pending_status_report.to_set)
+  end
+
+  def test_pending_registration_returns_results_with_payment_received_status
+    @noninvoiceable_result.update!(status: :payment_received)
+    assert_equal([@noninvoiceable_result].to_set, Result.pending_registration.to_set)
+  end
+
+  def test_registration_code_returns_the_stored_value
+    assert_equal('332c70cdd0791d185778e0cc2a4eddea', @invoiceable_result.registration_code)
+    assert_nil(@noninvoiceable_result.registration_code)
   end
 end

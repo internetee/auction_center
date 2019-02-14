@@ -24,6 +24,14 @@ class Setting < ApplicationRecord
     Setting.find_by(code: :payment_term).value.to_i
   end
 
+  def self.registration_term
+    Setting.find_by(code: :registration_term).value.to_i
+  end
+
+  def self.auction_duration
+    Setting.find_by(code: :auction_duration).value.to_i
+  end
+
   def self.require_phone_confirmation
     value = Setting.find_by(code: :require_phone_confirmation).value
 
@@ -31,6 +39,16 @@ class Setting < ApplicationRecord
       true
     elsif value == 'false'
       false
+    end
+  end
+
+  def self.auctions_start_at
+    value = Setting.find_by(code: :auctions_start_at).value
+
+    if value == 'false'
+      false
+    else
+      value.to_i
     end
   end
 end

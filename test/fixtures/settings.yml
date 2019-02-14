@@ -42,3 +42,23 @@ require_phone_confirmation:
     Require mobile numbers to be confirmed by SMS before user can place offers. Can be either 'true'
     or 'false'
   value: "false"
+
+auction_duration:
+  code: auction_duration
+  description: |
+    Number of hours for which an auction is created. Default: 24
+  value: 24
+
+registration_term:
+  code: registration_term
+  description: |
+    Number of days before the auctioned domain must be registered, starting from
+    the auction start. Default: 14
+  value: 14
+
+auctions_start_at:
+  code: 'auctions_start_at'
+  description: |
+    Whole hour at which auctions should start. Allowed values are anything between 0 and 23 or
+    'false'. In case 'false' is used, auctions are started as soon as possible.
+  value: '0'

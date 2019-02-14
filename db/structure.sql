@@ -83,9 +83,12 @@ CREATE TYPE public.payment_order_status AS ENUM (
 --
 
 CREATE TYPE public.result_status AS ENUM (
-    'expired',
-    'sold',
-    'paid'
+    'no_bids',
+    'awaiting_payment',
+    'payment_received',
+    'payment_not_received',
+    'domain_registered',
+    'domain_not_registered'
 );
 
 
@@ -684,6 +687,7 @@ CREATE TABLE public.auctions (
     ends_at timestamp without time zone NOT NULL,
     starts_at timestamp without time zone DEFAULT now() NOT NULL,
     uuid uuid DEFAULT public.gen_random_uuid(),
+    remote_id character varying,
     CONSTRAINT starts_at_earlier_than_ends_at CHECK ((starts_at < ends_at))
 );
 
@@ -965,8 +969,12 @@ CREATE TABLE public.results (
     offer_id integer,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    status public.result_status NOT NULL,
-    uuid uuid DEFAULT public.gen_random_uuid()
+    uuid uuid DEFAULT public.gen_random_uuid(),
+    status public.result_status,
+    last_remote_status public.result_status,
+    last_response jsonb,
+    registration_code character varying,
+    registration_due_date date NOT NULL
 );
 
 
@@ -1548,6 +1556,13 @@ CREATE INDEX index_auctions_on_ends_at ON public.auctions USING btree (ends_at);
 
 
 --
+-- Name: index_auctions_on_remote_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_auctions_on_remote_id ON public.auctions USING btree (remote_id);
+
+
+--
 -- Name: index_auctions_on_uuid; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1667,6 +1682,13 @@ CREATE INDEX index_results_on_auction_id ON public.results USING btree (auction_
 
 
 --
+-- Name: index_results_on_last_remote_status; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_results_on_last_remote_status ON public.results USING btree (last_remote_status);
+
+
+--
 -- Name: index_results_on_offer_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1706,6 +1728,13 @@ CREATE UNIQUE INDEX index_users_on_confirmation_token ON public.users USING btre
 --
 
 CREATE UNIQUE INDEX index_users_on_email ON public.users USING btree (email);
+
+
+--
+-- Name: index_users_on_provider_and_uid; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_users_on_provider_and_uid ON public.users USING btree (provider, uid);
 
 
 --
@@ -1945,6 +1974,15 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190204093252'),
 ('20190208130148'),
 ('20190208132025'),
-('20190211105123');
+('20190211105123'),
+('20190211173932'),
+('20190211174035'),
+('20190211175323'),
+('20190211181127'),
+('20190211182633'),
+('20190212071303'),
+('20190212075230'),
+('20190213104841'),
+('20190213115909');
 
 

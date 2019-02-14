@@ -111,13 +111,28 @@ class InvoiceTest < ActiveSupport::TestCase
     assert_equal(1, @payable_invoice.items.count)
   end
 
+  def test_cancel_sets_the_status_on_results
+    assert(@payable_invoice.cancel)
+
+    assert_equal(Invoice.statuses[:cancelled], @payable_invoice.status)
+    assert_equal(Result.statuses[:payment_not_received], @payable_invoice.result.status)
+  end
+
+  def test_cancel_does_nothing_when_invoice_is_not_overdue
+    invoice = prefill_invoice
+
+    refute(invoice.cancel)
+
+    assert_equal(Invoice.statuses[:issued], invoice.status)
+  end
+
   def test_mark_as_paid_at
     travel_to Time.parse('2010-07-05 10:30 +0000')
 
     @payable_invoice.mark_as_paid_at(Time.zone.now)
 
     assert(@payable_invoice.paid?)
-    assert(@payable_invoice.result.paid?)
+    assert(@payable_invoice.result.payment_received?)
     assert_equal(Time.zone.now, @payable_invoice.paid_at)
   end
 

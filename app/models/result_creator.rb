@@ -49,16 +49,21 @@ class ResultCreator
            winning_offer.billing_profile_id
 
     result.status = if sold
-                      Result.statuses[:sold]
+                      Result.statuses[:awaiting_payment]
                     else
-                      Result.statuses[:expired]
+                      Result.statuses[:no_bids]
                     end
+  end
+
+  def assign_registration_due_date
+    result.registration_due_date = Time.zone.today + Setting.registration_term
   end
 
   def create_result
     @result = Result.new
     result.auction = auction
     assign_status
+    assign_registration_due_date
     assign_attributes_from_winning_offer
     result.save!
 
