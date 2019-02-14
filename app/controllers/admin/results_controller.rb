@@ -3,7 +3,6 @@ module Admin
     # GET /admin/results
     def index
       @results = Result.all.order(created_at: :desc)
-
       @auctions_needing_results = Auction.without_result
     end
 

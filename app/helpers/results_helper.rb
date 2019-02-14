@@ -10,10 +10,6 @@ module ResultsHelper
     end
   end
 
-  def register_before(result)
-    result.created_at.to_date + Setting.registration_term
-  end
-
   def pay_invoice_before(result)
     if result.payment_received?
       t('.paid')

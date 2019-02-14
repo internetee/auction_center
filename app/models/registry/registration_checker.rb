@@ -1,5 +1,3 @@
-require 'status_report_failed'
-
 module Registry
   class RegistrationChecker < Base
     attr_reader :result
@@ -25,7 +23,7 @@ module Registry
     def request
       @request ||= Net::HTTP::Get.new(
         URI.join(BASE_URL, remote_id),
-        { 'Content-Type': 'application/json' }
+        'Content-Type': 'application/json'
       )
     end
 
@@ -40,7 +38,7 @@ module Registry
     end
 
     def domain_not_registered?(json)
-      Date.today > (result.created_at.to_date + Setting.registration_term) &&
+      Time.zone.today > (result.created_at.to_date + Setting.registration_term) &&
         json[:status] == 'payment_received'
     end
 

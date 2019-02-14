@@ -20,11 +20,11 @@ class Result < ApplicationRecord
   }
 
   scope :pending_status_report, lambda {
-    where("status <> last_remote_status OR last_remote_status IS NULL")
+    where('status <> last_remote_status OR last_remote_status IS NULL')
   }
 
   scope :pending_registration, lambda {
-    where("status = ?", statuses[:payment_received])
+    where('status = ?', statuses[:payment_received])
   }
 
   def self.create_from_auction(auction_id)

@@ -1,8 +1,5 @@
 module Registry
   class StatusReporter < Base
-    BASE_URL = URI('http://registry:3000/api/v1/auctions/')
-    HTTP_SUCCESS = '200'
-
     attr_reader :result
 
     def initialize(result)
@@ -12,7 +9,7 @@ module Registry
     def request
       @request ||= Net::HTTP::Put.new(
         URI.join(BASE_URL, remote_id),
-        { 'Content-Type': 'application/json' }
+        'Content-Type': 'application/json'
       )
     end
 
