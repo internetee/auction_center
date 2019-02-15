@@ -1,5 +1,23 @@
 /* Sidebar */
-.ui.right.visible.sidebar {
+.ui.right.sidebar.visible {
+    background: $true-white;
+    color: $green;
+    font-size: 1.2rem;
+
+    a {
+        color: $green;
+
+        &:hover {
+            color: $green2;
+        }
+    }
+
+    ul {
+        list-style-type: none;
+    }
+}
+
+.ui.right.sidebar.animating {
     background: $true-white;
     color: $green;
     font-size: 1.2rem;
