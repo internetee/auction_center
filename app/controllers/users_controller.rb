@@ -81,7 +81,7 @@ class UsersController < ApplicationController
                           .permit(:email, :password, :password_confirmation, :country_code,
                                   :given_names, :surname, :mobile_phone,
                                   :accepts_terms_and_conditions)
-    update_params.reject! { |_k, v| v.blank? }
+    update_params.reject! { |_k, v| v.empty? }
   end
 
   def valid_password?

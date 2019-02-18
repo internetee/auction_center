@@ -13,7 +13,7 @@ module Admin
 
     # GET /admin/users
     def index
-      @users = User.all.order(created_at: :desc)
+      @users = User.all.order(created_at: :desc).page(params[:page])
     end
 
     # POST /admin/users
@@ -77,7 +77,7 @@ module Admin
                             .permit(:email, :password, :password_confirmation, :identity_code,
                                     :country_code, :given_names, :surname, :mobile_phone,
                                     :accepts_terms_and_conditions, roles: [])
-      update_params.reject! { |_k, v| v.blank? }
+      update_params.reject! { |_k, v| v.empty? }
     end
 
     def authorize_user

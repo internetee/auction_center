@@ -7,7 +7,7 @@ module Registry
     end
 
     def request
-      @request ||= Net::HTTP::Put.new(
+      @request ||= Net::HTTP::Patch.new(
         URI.join(BASE_URL, remote_id),
         'Content-Type': 'application/json'
       )

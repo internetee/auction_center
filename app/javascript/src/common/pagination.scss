@@ -1,0 +1,27 @@
+.ui {
+    &.pagination {
+        &.menu {
+            .item:not(.icon):not(.active) {
+                background: $grey5;
+                &:hover {
+                    background: transparent;
+                }
+            }
+            .item {
+                &.icon {
+                    i {
+                        &.icon {
+                            min-width: 20px;
+                            text-align: center;
+                        }
+                    }
+                }
+            }
+            @include max-screen(767px) {
+                width: 100%;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+    }
+}

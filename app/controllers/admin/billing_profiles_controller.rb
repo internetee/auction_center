@@ -4,7 +4,7 @@ module Admin
 
     # GET /admin/billing_profiles
     def index
-      @billing_profiles = BillingProfile.accessible_by(current_ability)
+      @billing_profiles = BillingProfile.accessible_by(current_ability).page(params[:page])
     end
 
     def authorize_user
