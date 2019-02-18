@@ -40,6 +40,12 @@ class Result < ApplicationRecord
     offer
   end
 
+  def mark_as_payment_received(time)
+    date = time.to_date + Setting.registration_term
+    update!(status: Result.statuses[:payment_received],
+            registration_due_date: date)
+  end
+
   def send_email_to_winner
     return unless awaiting_payment?
 

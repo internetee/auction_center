@@ -50,9 +50,7 @@ class ResultTest < ActiveSupport::TestCase
   end
 
   def test_winning_offer_is_an_alias_on_offer
-    result = results(:expired_participant)
-
-    assert_equal(result.offer, result.winning_offer)
+    assert_equal(@invoiceable_result.offer, @invoiceable_result.winning_offer)
   end
 
   def test_send_email_to_winner_does_nothing_if_there_is_no_winner
@@ -63,14 +61,20 @@ class ResultTest < ActiveSupport::TestCase
   end
 
   def test_send_email_to_winner_sends_an_email_if_winner_exists
-    result = results(:expired_participant)
-    result.send_email_to_winner
+    @invoiceable_result.send_email_to_winner
 
     refute(ActionMailer::Base.deliveries.empty?)
     email = ActionMailer::Base.deliveries.last
 
     assert_equal(['user@auction.test'], email.to)
     assert_equal('You won an auction!', email.subject)
+  end
+
+  def test_marking_as_payment_received_updates_registration_due_date
+    @invoiceable_result.mark_as_payment_received(Time.parse('2010-07-06 10:30 +0000'))
+
+    assert_equal(Date.parse('2010-07-20'), @invoiceable_result.registration_due_date)
+    assert_equal(Result.statuses[:payment_received], @invoiceable_result.status)
   end
 
   def test_pending_invoice_scope_does_not_return_results_that_had_no_bids

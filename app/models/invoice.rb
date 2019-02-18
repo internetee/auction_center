@@ -81,7 +81,7 @@ class Invoice < ApplicationRecord
     ActiveRecord::Base.transaction do
       self.paid_at = time
       paid!
-      result.payment_received!
+      result.mark_as_payment_received(time)
     end
   end
 
