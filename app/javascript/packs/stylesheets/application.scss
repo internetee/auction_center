@@ -1,7 +1,6 @@
 @import '../../src/global/_vars';
 @import '../../src/global/_mixins';
 @import "../../src/global/_common";
-@import "../../src/global/_page";
 @import "../../src/global/_forms";
 @import "../../src/global/_flatpickr";
 
@@ -13,3 +12,4 @@
 @import '../../src/common/features';
 @import '../../src/common/details-list';
 @import '../../src/common/flash';
+@import "../../src/common/pagination";
