@@ -127,13 +127,13 @@ class InvoiceTest < ActiveSupport::TestCase
   end
 
   def test_mark_as_paid_at
-    travel_to Time.parse('2010-07-05 10:30 +0000')
-
-    @payable_invoice.mark_as_paid_at(Time.zone.now)
+    time = Time.parse('2010-07-06 10:30 +0000')
+    @payable_invoice.mark_as_paid_at(time)
 
     assert(@payable_invoice.paid?)
     assert(@payable_invoice.result.payment_received?)
-    assert_equal(Time.zone.now, @payable_invoice.paid_at)
+    assert_equal(time.to_date + 14, @payable_invoice.result.registration_due_date)
+    assert_equal(time, @payable_invoice.paid_at)
   end
 
   def prefill_invoice
