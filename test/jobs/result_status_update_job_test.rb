@@ -20,7 +20,7 @@ class ResultStatusUpdateJobTest < ActiveJob::TestCase
     response.expect(:body, body.to_json)
 
     http = Minitest::Mock.new
-    http.expect(:request, nil, [Net::HTTP::Put])
+    http.expect(:request, nil, [Net::HTTP::Patch])
 
     Net::HTTP.stub(:start, response, http) do
       ResultStatusUpdateJob.perform_now
