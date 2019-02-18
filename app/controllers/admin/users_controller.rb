@@ -13,7 +13,7 @@ module Admin
 
     # GET /admin/users
     def index
-      @users = User.all.order(created_at: :desc)
+      @users = User.all.order(created_at: :desc).page(params[:page])
     end
 
     # POST /admin/users

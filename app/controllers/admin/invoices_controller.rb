@@ -8,7 +8,7 @@ module Admin
     end
 
     def index
-      @invoices = Invoice.accessible_by(current_ability).order(due_date: :desc)
+      @invoices = Invoice.accessible_by(current_ability).order(due_date: :desc).page(params[:page])
     end
 
     private

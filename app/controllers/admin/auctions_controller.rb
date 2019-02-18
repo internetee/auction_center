@@ -26,7 +26,7 @@ module Admin
 
     # GET /admin/auctions
     def index
-      @auctions = Auction.accessible_by(current_ability).order(ends_at: :desc)
+      @auctions = Auction.accessible_by(current_ability).order(ends_at: :desc).page(params[:page])
     end
 
     # GET /admin/auctions/1

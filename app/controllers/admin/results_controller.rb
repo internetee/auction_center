@@ -2,7 +2,7 @@ module Admin
   class ResultsController < BaseController
     # GET /admin/results
     def index
-      @results = Result.all.order(created_at: :desc)
+      @results = Result.all.order(created_at: :desc).page(params[:page])
       @auctions_needing_results = Auction.without_result
     end
 
