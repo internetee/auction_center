@@ -44,7 +44,7 @@ class UsersController < ApplicationController
 
   # PUT /users/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
   def update
-    if @user.valid_password?(params.dig(:user, :current_password))
+    if valid_password?
       respond_to do |format|
         if @user.update(update_params)
           format.html { redirect_to user_path(@user.uuid), notice: t(:updated) }
@@ -82,6 +82,11 @@ class UsersController < ApplicationController
                                   :given_names, :surname, :mobile_phone,
                                   :accepts_terms_and_conditions)
     update_params.reject! { |_k, v| v.blank? }
+  end
+
+  def valid_password?
+    @user.signed_in_with_identity_document? ||
+      @user.valid_password?(params.dig(:user, :current_password))
   end
 
   def set_minimum_password_length
