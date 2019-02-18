@@ -21,6 +21,7 @@ module Auth
     def create
       @user = User.new(create_params)
       check_for_tampering
+      create_password
 
       respond_to do |format|
         if @user.save
@@ -42,9 +43,8 @@ module Auth
 
     def create_params
       params.require(:user)
-            .permit(:email, :password, :password_confirmation, :identity_code, :country_code,
-                    :given_names, :surname, :accepts_terms_and_conditions, :locale,
-                    :uid, :provider)
+            .permit(:email, :identity_code, :country_code, :given_names, :surname,
+                    :accepts_terms_and_conditions, :locale, :uid, :provider)
     end
 
     def check_for_tampering
@@ -52,6 +52,10 @@ module Auth
 
       session.delete(:omniauth_hash)
       raise Errors::TamperingDetected
+    end
+
+    def create_password
+      @user.password = Devise.friendly_token[0..20]
     end
 
     def user_hash

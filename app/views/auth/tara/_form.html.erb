@@ -53,28 +53,7 @@
                     <% end %>
                 </div>
             </div>
-
-            <div class="field">
-                <h3 id="password-label"><%= t('.new_password') %></h3>
-                <%= f.label :password, t('users.password') %>
-                <%= f.password_field :password, autocomplete: "new-password" %>
-            </div>
-            <div class="field">
-                <%= f.label :password_confirmation, t('users.password_confirmation') %>
-                <%= f.password_field :password_confirmation, autocomplete: "off" %>
-            </div>
         </div>
-
-        <% if user.persisted? %>
-            <div class="column sixteen wide">
-                <hr>
-                <div class="field">
-                    <h3 class="p3"><%= t('users.current_password') %></h3>
-                    <%= f.label :current_password, t('.we_need_your_password') %>
-                    <%= f.password_field :current_password, autocomplete: "off" %>
-                </div>
-            </div>
-        <% end %>
 
         <div class="column sixteen wide">
             <%= f.submit t('.sign_up'), class: "ui button big primary", id: "user_form_commit" %>

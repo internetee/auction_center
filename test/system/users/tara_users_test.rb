@@ -48,8 +48,6 @@ class TaraUsersTest < ApplicationSystemTestCase
     end
 
     fill_in('user[email]', with: 'new-user@auction.test')
-    fill_in('user[password]', with: 'password')
-    fill_in('user[password_confirmation]', with: 'password')
     check_checkbox('user[accepts_terms_and_conditions]')
 
     click_link_or_button('Sign up')
@@ -69,11 +67,7 @@ class TaraUsersTest < ApplicationSystemTestCase
       click_link('Sign in')
     end
 
-    fill_in('user[password]', with: 'pass word')
-    fill_in('user[password_confirmation]', with: 'password')
-
     click_link_or_button('Sign up')
-
     assert(page.has_text?('Terms and conditions must be accepted'))
     assert(page.has_text?("Email can't be blank"))
   end
@@ -102,8 +96,6 @@ class TaraUsersTest < ApplicationSystemTestCase
     end
 
     fill_in('user[email]', with: 'new-user@auction.test')
-    fill_in('user[password]', with: 'password')
-    fill_in('user[password_confirmation]', with: 'password')
     page.evaluate_script("document.getElementById('user_given_names').value = 'FOO'")
     check_checkbox('user[accepts_terms_and_conditions]')
 
@@ -116,7 +108,6 @@ class TaraUsersTest < ApplicationSystemTestCase
 
     visit edit_user_path(@user.uuid)
     fill_in('user[email]', with: 'new-user@auction.test')
-    fill_in('user[current_password]', with: 'password123')
     click_link_or_button('Submit')
 
     assert(page.has_css?('div.notice', text: 'Updated successfully.'))
