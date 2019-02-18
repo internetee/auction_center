@@ -55,7 +55,7 @@ module Auth
     end
 
     def create_password
-      @user.password = Devise.friendly_token[0..20]
+      @user.password = Devise.friendly_token
     end
 
     def user_hash
