@@ -122,6 +122,35 @@ $$;
 
 
 --
+-- Name: process_ban_audit(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.process_ban_audit() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+  BEGIN
+    IF (TG_OP = 'INSERT') THEN
+      INSERT INTO audit.bans
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
+      RETURN NEW;
+    ELSEIF (TG_OP = 'UPDATE') THEN
+      INSERT INTO audit.bans
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
+      RETURN NEW;
+    ELSEIF (TG_OP = 'DELETE') THEN
+      INSERT INTO audit.bans
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
+      RETURN OLD;
+    END IF;
+    RETURN NULL;
+  END
+$$;
+
+
+--
 -- Name: process_billing_profile_audit(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -389,6 +418,40 @@ CREATE SEQUENCE audit.auctions_id_seq
 --
 
 ALTER SEQUENCE audit.auctions_id_seq OWNED BY audit.auctions.id;
+
+
+--
+-- Name: bans; Type: TABLE; Schema: audit; Owner: -; Tablespace: 
+--
+
+CREATE TABLE audit.bans (
+    id integer NOT NULL,
+    object_id bigint,
+    action text NOT NULL,
+    recorded_at timestamp without time zone,
+    old_value jsonb,
+    new_value jsonb,
+    CONSTRAINT bans_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
+);
+
+
+--
+-- Name: bans_id_seq; Type: SEQUENCE; Schema: audit; Owner: -
+--
+
+CREATE SEQUENCE audit.bans_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: bans_id_seq; Type: SEQUENCE OWNED BY; Schema: audit; Owner: -
+--
+
+ALTER SEQUENCE audit.bans_id_seq OWNED BY audit.bans.id;
 
 
 --
@@ -709,6 +772,39 @@ CREATE SEQUENCE public.auctions_id_seq
 --
 
 ALTER SEQUENCE public.auctions_id_seq OWNED BY public.auctions.id;
+
+
+--
+-- Name: bans; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE public.bans (
+    id bigint NOT NULL,
+    user_id integer NOT NULL,
+    valid_until timestamp without time zone,
+    domain_name character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: bans_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.bans_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: bans_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.bans_id_seq OWNED BY public.bans.id;
 
 
 --
@@ -1103,6 +1199,13 @@ ALTER TABLE ONLY audit.auctions ALTER COLUMN id SET DEFAULT nextval('audit.aucti
 -- Name: id; Type: DEFAULT; Schema: audit; Owner: -
 --
 
+ALTER TABLE ONLY audit.bans ALTER COLUMN id SET DEFAULT nextval('audit.bans_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: audit; Owner: -
+--
+
 ALTER TABLE ONLY audit.billing_profiles ALTER COLUMN id SET DEFAULT nextval('audit.billing_profiles_id_seq'::regclass);
 
 
@@ -1160,6 +1263,13 @@ ALTER TABLE ONLY audit.users ALTER COLUMN id SET DEFAULT nextval('audit.users_id
 --
 
 ALTER TABLE ONLY public.auctions ALTER COLUMN id SET DEFAULT nextval('public.auctions_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.bans ALTER COLUMN id SET DEFAULT nextval('public.bans_id_seq'::regclass);
 
 
 --
@@ -1241,6 +1351,14 @@ ALTER TABLE ONLY audit.auctions
 
 
 --
+-- Name: bans_pkey; Type: CONSTRAINT; Schema: audit; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY audit.bans
+    ADD CONSTRAINT bans_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: billing_profiles_pkey; Type: CONSTRAINT; Schema: audit; Owner: -; Tablespace: 
 --
 
@@ -1318,6 +1436,14 @@ ALTER TABLE ONLY public.ar_internal_metadata
 
 ALTER TABLE ONLY public.auctions
     ADD CONSTRAINT auctions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: bans_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY public.bans
+    ADD CONSTRAINT bans_pkey PRIMARY KEY (id);
 
 
 --
@@ -1420,6 +1546,20 @@ CREATE INDEX auctions_object_id_idx ON audit.auctions USING btree (object_id);
 --
 
 CREATE INDEX auctions_recorded_at_idx ON audit.auctions USING btree (recorded_at);
+
+
+--
+-- Name: bans_object_id_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
+--
+
+CREATE INDEX bans_object_id_idx ON audit.bans USING btree (object_id);
+
+
+--
+-- Name: bans_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
+--
+
+CREATE INDEX bans_recorded_at_idx ON audit.bans USING btree (recorded_at);
 
 
 --
@@ -1567,6 +1707,20 @@ CREATE UNIQUE INDEX index_auctions_on_remote_id ON public.auctions USING btree (
 --
 
 CREATE UNIQUE INDEX index_auctions_on_uuid ON public.auctions USING btree (uuid);
+
+
+--
+-- Name: index_bans_on_domain_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_bans_on_domain_name ON public.bans USING btree (domain_name);
+
+
+--
+-- Name: index_bans_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_bans_on_user_id ON public.bans USING btree (user_id);
 
 
 --
@@ -1766,6 +1920,13 @@ CREATE TRIGGER process_auction_audit AFTER INSERT OR DELETE OR UPDATE ON public.
 
 
 --
+-- Name: process_ban_audit; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER process_ban_audit AFTER INSERT OR DELETE OR UPDATE ON public.bans FOR EACH ROW EXECUTE PROCEDURE public.process_ban_audit();
+
+
+--
 -- Name: process_billing_profile_audit; Type: TRIGGER; Schema: public; Owner: -
 --
 
@@ -1819,6 +1980,14 @@ CREATE TRIGGER process_setting_audit AFTER INSERT OR DELETE OR UPDATE ON public.
 --
 
 CREATE TRIGGER process_user_audit AFTER INSERT OR DELETE OR UPDATE ON public.users FOR EACH ROW EXECUTE PROCEDURE public.process_user_audit();
+
+
+--
+-- Name: fk_rails_070022cd76; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.bans
+    ADD CONSTRAINT fk_rails_070022cd76 FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
 --
@@ -1983,6 +2152,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190212071303'),
 ('20190212075230'),
 ('20190213104841'),
-('20190213115909');
+('20190213115909'),
+('20190218144230'),
+('20190218144713');
 
 
