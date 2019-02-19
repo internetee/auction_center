@@ -63,3 +63,47 @@ payment_term_setting = Setting.new(code: :payment_term, value: '7',
                                    description: payment_term_description)
 
 payment_term_setting.save
+
+# Default registration term
+registration_term_description = <<~TEXT.squish
+      Number of days before the auctioned domain must be registered, starting from
+      the auction start. Default: 14
+    TEXT
+
+registration_term_setting = Setting.new(code: :registration_term, value: '14',
+                                        description: registration_term_description)
+
+registration_term_setting.save
+
+# Default auction duration
+auction_duration_description = <<~TEXT.squish
+      Number of hours for which an auction is created. Default: 24
+    TEXT
+
+auction_duration_setting = Setting.new(code: :auction_duration, value: '24',
+                                       description: auction_duration_description)
+
+auction_duration_setting.save
+
+# Default require phone confirmation
+phone_confirmation_description = <<~TEXT.squish
+      Require mobile numbers to be confirmed by SMS before user can place offers. Can be either 'true'
+      or 'false'
+    TEXT
+
+phone_confirmation_setting = Setting.new(code: :require_phone_confirmation,
+                                         value: 'false',
+                                         description: phone_confirmation_description)
+
+phone_confirmation_setting.save
+
+# Default auction starts at
+auctions_start_at_description = <<~TEXT.squish
+      Whole hour at which auctions should start. Allowed values are anything between 0 and 23 or
+      'false'. In case 'false' is used, auctions are started as soon as possible.
+    TEXT
+
+auctions_start_at_setting = Setting.new(code: :auctions_start_at, value: '0',
+                                        description: auctions_start_at_description)
+
+auctions_start_at_setting.save
