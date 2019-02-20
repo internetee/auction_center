@@ -27,14 +27,14 @@ module Registry
     def auction_starts_at
       setting = Setting.auctions_start_at
       if setting
-        Time.zone.today + Rational(24 + setting, 24)
+        (Date.current + Rational(24 + setting, 24)).in_time_zone
       else
-        Time.zone.now + 1.minute
+        Time.current + 1.minute
       end
     end
 
     def create_auction_from_api(domain_name, remote_id)
-      ends_at = Time.zone.at(auction_starts_at.to_time.to_i + auction_duration_in_seconds)
+      ends_at = Time.at(auction_starts_at.to_i + auction_duration_in_seconds).in_time_zone
 
       Auction.find_or_initialize_by(domain_name: domain_name, remote_id: remote_id) do |auction|
         auction.starts_at = auction_starts_at
