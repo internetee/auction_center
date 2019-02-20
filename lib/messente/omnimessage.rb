@@ -43,7 +43,7 @@ module Messente
       if code_as_string == HTTP_SUCCESS
         [code_as_string, body_as_json]
       else
-        raise Messente::SendingError.new(code_as_string, body_as_json)
+        raise Messente::SendingError.new(code_as_string, body_as_json, body)
       end
     end
   end

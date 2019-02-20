@@ -41,7 +41,7 @@ function formHandler() {
     }
 }
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener('turbolinks:load', function() {
     let form = document.getElementById('user_form');
     let button = document.getElementById('user_form_commit');
 
