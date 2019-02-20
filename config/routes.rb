@@ -9,6 +9,7 @@ Rails.application.routes.draw do
 
   namespace :admin, constraints: Constraints::Administrator.new do
     resources :auctions, except: %i[edit update], concerns: [:auditable]
+    resources :bans, except: %i[new edit update], concerns: [:auditable]
     resources :billing_profiles, only: :index, concerns: [:auditable]
     resources :invoices, only: %i[index show], concerns: [:auditable]
     resources :jobs, only: %i[index create]

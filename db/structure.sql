@@ -781,7 +781,8 @@ ALTER SEQUENCE public.auctions_id_seq OWNED BY public.auctions.id;
 CREATE TABLE public.bans (
     id bigint NOT NULL,
     user_id integer NOT NULL,
-    valid_until timestamp without time zone,
+    valid_from timestamp without time zone DEFAULT now() NOT NULL,
+    valid_until timestamp without time zone NOT NULL,
     domain_name character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
