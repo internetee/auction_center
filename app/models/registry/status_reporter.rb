@@ -17,6 +17,8 @@ module Registry
       return if result_already_reported?
       return if result_can_be_skipped?
 
+      request.body = request_body
+
       perform_request(request)
 
       body_as_json = JSON.parse(body_as_string, symbolize_names: true)
