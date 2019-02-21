@@ -22,9 +22,6 @@ module Admin
       @bans = Ban.all.order(valid_until: :desc).page(params[:page])
     end
 
-    # GET /admin/bans/1
-    def show; end
-
     # DELETE /admin/bans/1
     def destroy
       @ban.destroy
