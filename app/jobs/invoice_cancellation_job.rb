@@ -1,6 +1,8 @@
 class InvoiceCancellationJob < ApplicationJob
   def perform
-    Invoice.overdue.map(&:cancel)
+    Invoice.overdue.map do |invoice|
+      InvoiceCancellation.new(invoice).cancel
+    end
   end
 
   def self.needs_to_run?
