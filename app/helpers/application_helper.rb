@@ -50,6 +50,7 @@ module ApplicationHelper
      { name: t(:results_name), path: admin_results_path },
      { name: t(:billing_profiles_name), path: admin_billing_profiles_path },
      { name: t(:users_name), path: admin_users_path },
+     { name: t(:bans_name), path: admin_bans_path },
      { name: t(:invoices_name), path: admin_invoices_path },
      { name: t(:jobs_name), path: admin_jobs_path },
      { name: t(:settings_name), path: admin_settings_path }]

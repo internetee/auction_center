@@ -11,6 +11,7 @@ en:
   created: "Created successfully."
   updated: "Updated successfully."
   deleted: "Deleted successfully."
+  something_went_wrong: "Something went wrong."
   are_you_sure: "Are you sure?"
   confirm: "Confirm"
 
@@ -37,6 +38,9 @@ en:
   offers_name: "Offers"
   invoices_name: "Invoices"
   jobs_name: "Jobs"
+  bans_name: "Bans"
+
+  user: "User"
 
   my_offers: "My offers"
   my_invoices: "My invoices"
