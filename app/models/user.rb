@@ -83,11 +83,11 @@ class User < ApplicationRecord
   end
 
   def banned?
-    Ban.where(user_id: self.id).valid.any?
+    Ban.where(user_id: id).valid.any?
   end
 
   def longest_ban
-    Ban.valid.where(user_id: self.id).order(valid_until: :desc).first
+    Ban.valid.where(user_id: id).order(valid_until: :desc).first
   end
 
   # Make sure that notifications are send asynchronously

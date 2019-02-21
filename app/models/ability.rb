@@ -24,9 +24,7 @@ class Ability
     can :read, Result, user_id: user.id
     can :manage, User, id: user.id
 
-    if user.banned?
-      restrictions_from_bans
-    end
+    restrictions_from_bans if user.banned?
   end
 
   def restrictions_from_bans
@@ -36,7 +34,7 @@ class Ability
     cannot :manage, Offer do |offer|
       Ban.valid
          .where(user_id: user.id)
-         .where("domain_name IS NULL OR domain_name = ?", offer.auction.domain_name)
+         .where('domain_name IS NULL OR domain_name = ?', offer.auction.domain_name)
          .any?
     end
   end

@@ -19,13 +19,9 @@ class InvoiceCancellation
     end
   end
 
-  def result
-    invoice.result
-  end
+  delegate :result, to: :invoice
 
-  def user
-    invoice.user
-  end
+  delegate :user, to: :invoice
 
   def domain_name
     result.auction.domain_name
