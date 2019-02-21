@@ -21,10 +21,10 @@ module ApplicationHelper
 
     ban = current_user.longest_ban
 
-    content_tag(:div, class: "ui message ban") do
+    content_tag(:div, class: 'ui message ban') do
       content_tag(:div, t(:banned, valid_until: ban.valid_until.to_date,
-                          domain_name: ban.domain_name || t(:any)),
-                  class: "header")
+                                   domain_name: ban.domain_name || t(:any)),
+                  class: 'header')
     end
   end
 
