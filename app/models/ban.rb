@@ -4,9 +4,6 @@ class Ban < ApplicationRecord
   # immediate rounds of auctions for a domain name.
   SHORT_BAN_PERIOD_IN_MONTHS = 3
 
-  # To be changed to a setting.
-  LONG_BAN_PERIOD_IN_MONTHS = 100
-
   belongs_to :user, required: false
   validates :valid_until, presence: true
 
@@ -21,7 +18,7 @@ class Ban < ApplicationRecord
     end
 
     if ban.persisted?
-      valid_until = now >> LONG_BAN_PERIOD_IN_MONTHS
+      valid_until = now >> Setting.ban_length
       create!(user: user, valid_until: valid_until)
     else
       ban.save!

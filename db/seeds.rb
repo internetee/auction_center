@@ -107,3 +107,13 @@ auctions_start_at_setting = Setting.new(code: :auctions_start_at, value: '0',
                                         description: auctions_start_at_description)
 
 auctions_start_at_setting.save
+
+# Default long ban length
+ban_length_description = <<~TEXT.squish
+      Number of months for which a repeated offender is banned for. Default: 100
+    TEXT
+
+ban_length_setting = Setting.new(code: :ban_length, value: '100',
+                                 description: ban_length_description)
+
+ban_length_setting.save

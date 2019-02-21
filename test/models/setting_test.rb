@@ -49,5 +49,7 @@ class SettingTest < ActiveSupport::TestCase
 
     Setting.find_by(code: :auctions_start_at).update(value: 'false')
     assert_equal(false, Setting.auctions_start_at)
+
+    assert_equal(100, Setting.ban_length)
   end
 end
