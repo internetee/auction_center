@@ -23,6 +23,20 @@ class Ability
     end
     can :read, Result, user_id: user.id
     can :manage, User, id: user.id
+
+    restrictions_from_bans if user.banned?
+  end
+
+  def restrictions_from_bans
+    cannot :manage, User, id: user.id
+    can :read, User, id: user.id
+
+    cannot :manage, Offer do |offer|
+      Ban.valid
+         .where(user_id: user.id)
+         .where('domain_name IS NULL OR domain_name = ?', offer.auction.domain_name)
+         .any?
+    end
   end
 
   def administrator
@@ -42,6 +56,7 @@ class Ability
 
     can :read, Audit::Auction
     can :read, Audit::BillingProfile
+    can :read, Audit::Ban
     can :read, Audit::Invoice
     can :read, Audit::InvoiceItem
     can :read, Audit::User

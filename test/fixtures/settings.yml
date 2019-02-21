@@ -62,3 +62,9 @@ auctions_start_at:
     Whole hour at which auctions should start. Allowed values are anything between 0 and 23 or
     'false'. In case 'false' is used, auctions are started as soon as possible.
   value: '0'
+
+ban_length:
+  code: 'ban_length'
+  description: |
+    Number of months for which a repeated offender is banned for. Default: 100
+  value: '100'

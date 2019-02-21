@@ -68,15 +68,6 @@ class Invoice < ApplicationRecord
     I18n.t('invoices.title', number: number)
   end
 
-  def cancel
-    return unless overdue?
-
-    ActiveRecord::Base.transaction do
-      result.payment_not_received!
-      cancelled!
-    end
-  end
-
   def mark_as_paid_at(time)
     ActiveRecord::Base.transaction do
       self.paid_at = time

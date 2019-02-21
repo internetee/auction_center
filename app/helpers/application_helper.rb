@@ -16,6 +16,18 @@ module ApplicationHelper
     end
   end
 
+  def banned_banner
+    return unless current_user&.banned?
+
+    ban = current_user.longest_ban
+
+    content_tag(:div, class: 'ui message ban') do
+      content_tag(:div, t(:banned, valid_until: ban.valid_until.to_date,
+                                   domain_name: ban.domain_name || t(:any)),
+                  class: 'header')
+    end
+  end
+
   private
 
   def links(links_list)
@@ -50,6 +62,7 @@ module ApplicationHelper
      { name: t(:results_name), path: admin_results_path },
      { name: t(:billing_profiles_name), path: admin_billing_profiles_path },
      { name: t(:users_name), path: admin_users_path },
+     { name: t(:bans_name), path: admin_bans_path },
      { name: t(:invoices_name), path: admin_invoices_path },
      { name: t(:jobs_name), path: admin_jobs_path },
      { name: t(:settings_name), path: admin_settings_path }]

@@ -46,6 +46,18 @@ class UserTest < ActiveSupport::TestCase
     assert(user.valid?)
   end
 
+  def test_can_be_banned
+    Ban.create(user_id: @administrator.id, valid_until: Date.tomorrow)
+    longer_ban = Ban.create(user_id: @administrator.id, valid_until: Date.today + 6)
+
+    assert(@administrator.banned?)
+    assert_equal(longer_ban, @administrator.longest_ban)
+
+    user = User.new
+    refute(user.banned?)
+    refute(user.longest_ban)
+  end
+
   def test_password_needs_a_confirmation
     @administrator.password = 'password'
     @administrator.password_confirmation = 'not matching'

@@ -4,6 +4,8 @@ class ParticipantAbilityTest < ActiveSupport::TestCase
   def setup
     @participant = users(:participant)
     @participant_ability = Ability.new(@participant)
+
+    @auction = auctions(:valid_with_offers)
   end
 
   def test_user_can_edit_their_own_profile
@@ -12,6 +14,20 @@ class ParticipantAbilityTest < ActiveSupport::TestCase
 
     refute(@participant_ability.can?(:destroy, User.new))
     refute(@participant_ability.can?(:edit, User.new))
+  end
+
+  def test_banned_participant_cannot_destroy_their_account
+    Ban.create_automatic(user: @participant, domain_name: 'example.com')
+    # Needs override, as ability is computed only on ability creation
+    @participant_ability = Ability.new(@participant)
+
+    refute(@participant_ability.can?(:destroy, @participant))
+
+    Ban.delete_all
+    Ban.create!(user: @participant, valid_until: Date.tomorrow)
+
+    @participant_ability = Ability.new(@participant)
+    refute(@participant_ability.can?(:destroy, @participant))
   end
 
   def test_user_can_edit_their_own_billing_profiles
@@ -32,6 +48,24 @@ class ParticipantAbilityTest < ActiveSupport::TestCase
 
     refute(@participant_ability.can?(:destroy, Offer.new()))
     refute(@participant_ability.can?(:update, Offer.new()))
+  end
+
+  def test_participant_cannot_manage_offers_if_they_are_banned_from_that_domain
+    Ban.create_automatic(user: @participant, domain_name: @auction.domain_name)
+    @participant_ability = Ability.new(@participant)
+
+    refute(@participant_ability.can?(:manage,
+                                     Offer.new(user_id: @participant.id, auction_id: @auction.id)))
+  end
+
+  def test_participant_cannot_manage_offers_if_they_are_banned_in_general
+    Ban.create!(user: @participant, valid_until: Date.tomorrow)
+
+    # Needs override, as ability is computed only on ability creation
+    @participant_ability = Ability.new(@participant)
+
+    refute(@participant_ability.can?(:manage,
+                                     Offer.new(user_id: @participant.id, auction_id: @auction.id)))
   end
 
   def test_participant_can_read_their_own_results

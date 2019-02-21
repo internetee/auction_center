@@ -1,0 +1,5 @@
+en:
+  bans:
+    valid_until: "Valid until"
+    valid_from: "Valid from"
+    domain_name: "Domain name"

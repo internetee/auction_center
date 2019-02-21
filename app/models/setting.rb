@@ -51,4 +51,8 @@ class Setting < ApplicationRecord
       value.to_i
     end
   end
+
+  def self.ban_length
+    Setting.find_by(code: :ban_length).value.to_i
+  end
 end

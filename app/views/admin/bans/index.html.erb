@@ -1,0 +1,43 @@
+<% content_for :hero do %>
+    <div class="hero orange">
+        <h1><%= t('.title') %></h1>
+    </div>
+<% end %>
+
+<div class="ui container">
+    <div class="margin-block">
+        <table class="ui table unstackable fixed" id="bans-table">
+            <thead>
+                <tr>
+                    <th scope="col"><%= t('user') %></th>
+                    <th scope="col"><%= t('bans.valid_from') %></th>
+                    <th scope="col"><%= t('bans.valid_until') %></th>
+                    <th scope="col"><%= t('bans.domain_name') %></th>
+                    <th scope="col"><%= t('actions') %></th>
+                </tr>
+            </thead>
+
+            <tbody id="bans-table-body">
+                <% @bans.each do |ban| %>
+                    <tr class="bans-table-row">
+                        <td class="ban-table-ban-name">
+                            <%= link_to ban.user.display_name, admin_user_path(ban.user) %></td>
+                        <td><%= l(ban.valid_from) %></td>
+                        <td><%= l(ban.valid_until) %></td>
+                        <td><%= ban.domain_name %></td>
+                        <td>
+                            <%= link_to t(:delete), admin_ban_path(ban), method: :delete,
+                            data: { confirm: t(:are_you_sure) }, remote: true,
+                            class: "ui button secondary" %>
+                            <%= link_to t(:versions_name),
+                                admin_ban_versions_path(ban), class: "ui button primary" %>
+                        </td>
+                    </tr>
+                <% end %>
+            </tbody>
+        </table>
+
+        <%= paginate @bans %>
+        <br><br>
+    </div>
+</div>

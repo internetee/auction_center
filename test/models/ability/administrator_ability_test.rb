@@ -17,6 +17,7 @@ class AdministratorAbilityTest < ActiveSupport::TestCase
   def test_administrator_can_read_audit_records
     assert(@administrator_ability.can?(:read, Audit::Auction))
     assert(@administrator_ability.can?(:read, Audit::BillingProfile))
+    assert(@administrator_ability.can?(:read, Audit::Ban))
     assert(@administrator_ability.can?(:read, Audit::User))
     assert(@administrator_ability.can?(:read, Audit::Setting))
     assert(@administrator_ability.can?(:read, Audit::Invoice))
@@ -26,6 +27,7 @@ class AdministratorAbilityTest < ActiveSupport::TestCase
 
     refute(@administrator_ability.can?(:create, Audit::Auction))
     refute(@administrator_ability.can?(:create, Audit::BillingProfile))
+    refute(@administrator_ability.can?(:create, Audit::Ban))
     refute(@administrator_ability.can?(:create, Audit::User))
     refute(@administrator_ability.can?(:create, Audit::Setting))
     refute(@administrator_ability.can?(:create, Audit::Invoice))

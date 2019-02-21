@@ -37,7 +37,9 @@ module Admin
     end
 
     # GET /admin/users/1
-    def show; end
+    def show
+      @ban = Ban.new(user: @user)
+    end
 
     # GET /admin/users/1/edit
     def edit; end

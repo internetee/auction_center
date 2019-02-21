@@ -1,0 +1,5 @@
+en:
+  admin:
+    bans:
+      index:
+        title: "Bans"
