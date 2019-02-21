@@ -136,18 +136,6 @@ class InvoiceTest < ActiveSupport::TestCase
     assert_equal(time, @payable_invoice.paid_at)
   end
 
-  def prefill_invoice
-    invoice = Invoice.new
-    invoice.result = @result
-    invoice.billing_profile = @company_billing_profile
-    invoice.user = @user
-    invoice.issue_date = Time.zone.today
-    invoice.due_date = Time.zone.today + Setting.payment_term
-    invoice.cents = 1000
-
-    invoice
-  end
-
   def test_invoice_items
     item = InvoiceItem.new(cents: 1200, name: :test_item)
     @payable_invoice.items =[item]
@@ -161,5 +149,17 @@ class InvoiceTest < ActiveSupport::TestCase
 
     new_invoice = Invoice.new
     refute(new_invoice.title)
+  end
+
+  def prefill_invoice
+    invoice = Invoice.new
+    invoice.result = @result
+    invoice.billing_profile = @company_billing_profile
+    invoice.user = @user
+    invoice.issue_date = Time.zone.today
+    invoice.due_date = Time.zone.today + Setting.payment_term
+    invoice.cents = 1000
+
+    invoice
   end
 end

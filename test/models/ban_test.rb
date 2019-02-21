@@ -36,12 +36,4 @@ class BanTest < ActiveSupport::TestCase
   def test_valid_scope
     assert_equal([@ban].to_set, Ban.valid.to_set)
   end
-
-  def test_for_user_and_domain_name_scope
-    other_ban = Ban.create!(user: @user, valid_until: @time >> Ban::LONG_BAN_PERIOD_IN_MONTHS)
-    assert_equal([other_ban].to_set, Ban.for_user_and_domain_name(@user).to_set)
-    assert_equal([@ban, other_ban].to_set, Ban.for_user_and_domain_name(@user, @domain_name).to_set)
-
-    assert_equal([].to_set, Ban.for_user_and_domain_name(@other_user).to_set)
-  end
 end

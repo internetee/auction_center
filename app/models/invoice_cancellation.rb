@@ -12,8 +12,10 @@ class InvoiceCancellation
       result.payment_not_received!
       invoice.cancelled!
 
-      ban = Ban.create_automatic(user: user, domain_name: domain_name)
-      send_email_to_offender(ban)
+      if user
+        ban = Ban.create_automatic(user: user, domain_name: domain_name)
+        send_email_to_offender(ban)
+      end
     end
   end
 

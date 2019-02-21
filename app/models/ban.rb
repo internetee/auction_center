@@ -15,6 +15,7 @@ class Ban < ApplicationRecord
 
     ban = find_or_initialize_by(user: user) do |first_time_ban|
       first_time_ban.domain_name = domain_name
+      first_time_ban.valid_from = now
       valid_until = now >> SHORT_BAN_PERIOD_IN_MONTHS
       first_time_ban.valid_until = valid_until
     end
@@ -29,10 +30,6 @@ class Ban < ApplicationRecord
   end
 
   scope :valid, lambda {
-    where('valid_until >= ?', Time.now.utc)
-  }
-
-  scope :for_user_and_domain_name, lambda { |user, domain_name = nil|
-    where(user: user).where('domain_name = ? OR domain_name IS NULL', domain_name)
+    where('valid_until >= ? AND valid_from <= ?', Time.now.utc, Time.now.utc)
   }
 end
