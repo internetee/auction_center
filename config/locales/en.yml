@@ -41,6 +41,10 @@ en:
   bans_name: "Bans"
 
   user: "User"
+  banned: |
+    You are banned until %{valid_until}, you are not allowed to change your user data or
+    participate in auctions for %{domain_name} domain.
+  any: "any"
 
   my_offers: "My offers"
   my_invoices: "My invoices"

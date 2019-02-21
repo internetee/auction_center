@@ -21,9 +21,11 @@ class User < ApplicationRecord
   validate :participant_must_accept_terms_and_conditions
 
   has_many :billing_profiles, dependent: :nullify
+  has_many :payment_orders, dependent: :nullify
   has_many :offers, dependent: :nullify
   has_many :results, dependent: :nullify
   has_many :invoices, dependent: :nullify
+  has_many :bans, dependent: :destroy
 
   def identity_code_must_be_valid_for_estonia
     return if IdentityCode.new(country_code, identity_code).valid?
@@ -78,6 +80,14 @@ class User < ApplicationRecord
 
   def phone_number_confirmed?
     mobile_phone_confirmed_at.present?
+  end
+
+  def banned?
+    Ban.where(user_id: self.id).valid.any?
+  end
+
+  def longest_ban
+    Ban.valid.where(user_id: self.id).order(valid_until: :desc).first
   end
 
   # Make sure that notifications are send asynchronously

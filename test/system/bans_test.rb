@@ -4,6 +4,8 @@ class BansTest < ApplicationSystemTestCase
   def setup
     super
 
+    travel_to Time.parse('2010-07-05 10:31 +0000')
+
     @expired_auction = auctions(:expired)
     @valid_auction_with_no_offers = auctions(:valid_without_offers)
     @administrator = users(:administrator)
@@ -11,8 +13,6 @@ class BansTest < ApplicationSystemTestCase
     @other_participant = users(:second_place_participant)
     @ban = Ban.create_automatic(user: @participant,
                                 domain_name: @valid_auction_with_no_offers.domain_name)
-
-    travel_to Time.parse('2010-07-05 10:31 +0000')
   end
 
   def teardown
@@ -23,11 +23,33 @@ class BansTest < ApplicationSystemTestCase
 
   def test_banned_user_cannot_create_offers
     sign_in(@participant)
-    visit auction_path(@valid_auction_with_no_offers.uuid)
 
-    assert(page.has_link?('Submit offer'))
+    visit auction_path(@valid_auction_with_no_offers.uuid)
     click_link('Submit offer')
-    assert(page.has_text?('You are banned from participating in this auction.'))
+    fill_in('offer[price]', with: '5.12')
+
+    click_link_or_button('Submit')
+
+    assert(page.has_css?('div.alert', text: 'You are not authorized to access this page'))
+  end
+
+  def test_banned_user_cannot_delete_their_account
+    sign_in(@participant)
+
+    visit user_path(@participant.uuid)
+    assert(page.has_css?('div.alert', text: 'You are not authorized to access this page'))
+  end
+
+  def test_banned_user_can_see_a_red_banner
+    sign_in(@participant)
+
+    text = <<~TEXT.squish
+    You are banned until 2010-10-05, you are not allowed to change your user data or participate in
+    auctions for no-offers.test domain.
+    TEXT
+
+    visit auctions_path
+    assert(page.has_css?('div.ban', text: text))
   end
 
   def test_administrator_can_review_bans

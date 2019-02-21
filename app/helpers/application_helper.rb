@@ -16,6 +16,18 @@ module ApplicationHelper
     end
   end
 
+  def banned_banner
+    return unless current_user&.banned?
+
+    ban = current_user.longest_ban
+
+    content_tag(:div, class: "ui message ban") do
+      content_tag(:div, t(:banned, valid_until: ban.valid_until.to_date,
+                          domain_name: ban.domain_name || t(:any)),
+                  class: "header")
+    end
+  end
+
   private
 
   def links(links_list)
