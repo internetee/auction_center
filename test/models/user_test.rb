@@ -185,7 +185,7 @@ class UserTest < ActiveSupport::TestCase
     user.mobile_phone = '+3727271000'
     assert(user.valid?)
 
-    ['Foo', '112', '55965456'].each do |number|
+    ['Foo', '112', '55965456', 'Foo+3727271000'].each do |number|
       user.mobile_phone = number
       refute(user.valid? , "Expected #{number} to be invalid")
     end
