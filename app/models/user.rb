@@ -16,8 +16,8 @@ class User < ApplicationRecord
   validates :mobile_phone, presence: true, unless: proc { |user|
     user.provider == TARA_PROVIDER
   }
-  validates :mobile_phone, format: { with: /\+[1-9]{1}[0-9]{3,14}/ }, unless: proc {
-    |user| user.provider == TARA_PROVIDER
+  validates :mobile_phone, format: { with: /\+[1-9]{1}[0-9]{3,14}/ }, unless: proc { |user|
+    user.provider == TARA_PROVIDER
   }
 
   validates :given_names, presence: true
