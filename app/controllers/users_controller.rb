@@ -3,7 +3,7 @@ require 'countries'
 class UsersController < ApplicationController
   before_action :set_user, only: %i[show edit update destroy]
   before_action :set_minimum_password_length, only: %i[new edit]
-  before_action :authorize_user, except: %i[new index create]
+  before_action :authorize_user, except: %i[new index create show]
 
   # GET /users
   def index; end
@@ -37,7 +37,9 @@ class UsersController < ApplicationController
   end
 
   # GET /users/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
-  def show; end
+  def show
+    authorize! :read, @user
+  end
 
   # GET /users/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/edit
   def edit; end
