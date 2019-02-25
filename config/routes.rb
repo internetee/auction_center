@@ -1,10 +1,6 @@
 require 'constraints/administrator'
 
-registry_integration_enabled = AuctionCenter::Application.config
-                                                         .customization
-                                                         .dig('registry_integration', 'enabled')
-
-disallowed_auction_actions = if registry_integration_enabled
+disallowed_auction_actions = if Feature.registry_integration_enabled?
                                %i[new create edit update destroy]
                              else
                                %i[edit update]
