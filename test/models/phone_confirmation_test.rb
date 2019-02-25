@@ -25,6 +25,13 @@ class PhoneConfirmationTest < ActiveSupport::TestCase
     refute(@phone_confirmation.valid_code?('Anything else'))
   end
 
+  def test_when_user_is_invalid_code_is_not_sent
+    @user.mobile_phone = "foo"
+    @user.save(validate: false)
+
+    refute(@phone_confirmation.generate_and_send_code)
+  end
+
   def test_confirm_exits_early_if_already_confirmed
     @user.mobile_phone_confirmed_at = Time.zone.now
     @user.save
