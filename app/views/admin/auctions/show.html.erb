@@ -58,9 +58,9 @@
                     <% @offers.each do |offer| %>
                         <tr class="offers-table-row">
                             <td><%= t('offers.price_in_currency', price: offer.price) %></td>
-                            <td><%= offer.user.display_name %></td>
-                            <td><%= I18n.l(offer.user.created_at) %></td>
-                            <td><%= I18n.l(offer.user.updated_at) %></td>
+                            <td><%= offer.user&.display_name || t(:deleted_user) %></td>
+                            <td><%= I18n.l(offer.created_at) %></td>
+                            <td><%= I18n.l(offer.updated_at) %></td>
                             <td><%= link_to t(:versions_name), admin_offer_versions_path(offer), class: "ui button primary" %></td>
                         </tr>
                     <% end %>

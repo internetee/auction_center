@@ -6,7 +6,7 @@ module Admin
 
     rescue_from Errors::TamperingDetected do |e|
       redirect_to root_url, alert: t('admin.jobs.create.tampering')
-      Airbrake.notify(e)
+      notify_airbrake(e)
     end
 
     def index
