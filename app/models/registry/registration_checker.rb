@@ -9,6 +9,8 @@ module Registry
     end
 
     def call
+      return if remote_id_missing?
+
       perform_request(request)
 
       @body_as_json = JSON.parse(body_as_string, symbolize_names: true)
@@ -44,6 +46,10 @@ module Registry
 
     def remote_id
       result.auction.remote_id
+    end
+
+    def remote_id_missing?
+      remote_id.nil?
     end
   end
 end
