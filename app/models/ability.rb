@@ -16,27 +16,34 @@ class Ability
   def participant
     can :manage, BillingProfile, user_id: user.id
     can %i[read update], Invoice
-    can :manage, Offer, user_id: user.id
     can %i[read create], PaymentOrder, user_id: user.id
     can :manage, PhoneConfirmation do |phone_confirmation|
       user.id == phone_confirmation.user.id
     end
     can :read, Result, user_id: user.id
-    can :manage, User, id: user.id
 
-    restrictions_from_bans if user.banned?
+    if user.banned?
+      restrictions_from_bans
+    else
+      no_restrictions_on_offers_and_users
+    end
   end
 
   def restrictions_from_bans
-    cannot :manage, User, id: user.id
     can :read, User, id: user.id
 
+    can :manage, Offer, user_id: user.id
     cannot :manage, Offer do |offer|
       Ban.valid
          .where(user_id: user.id)
          .where('domain_name IS NULL OR domain_name = ?', offer.auction.domain_name)
          .any?
     end
+  end
+
+  def no_restrictions_on_offers_and_users
+    can :manage, Offer, user_id: user.id
+    can :manage, User, id: user.id
   end
 
   def administrator

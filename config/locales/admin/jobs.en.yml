@@ -6,3 +6,4 @@ en:
 
       create:
         enqueued: "Job enqueued."
+        tampering: "Tampering detected. You are signed out and the incident is reported."

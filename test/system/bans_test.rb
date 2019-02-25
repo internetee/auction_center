@@ -33,10 +33,25 @@ class BansTest < ApplicationSystemTestCase
     assert(page.has_css?('div.alert', text: 'You are not authorized to access this page'))
   end
 
+  def test_banned_user_can_view_their_information
+    sign_in(@participant)
+
+    visit user_path(@participant.uuid)
+    refute(page.has_css?('div.alert', text: 'You are not authorized to access this page'))
+
+    click_link_or_button('Edit')
+    assert(page.has_css?('div.alert', text: 'You are not authorized to access this page'))
+  end
+
   def test_banned_user_cannot_delete_their_account
     sign_in(@participant)
 
     visit user_path(@participant.uuid)
+
+    accept_confirm do
+      click_link_or_button('Delete')
+    end
+
     assert(page.has_css?('div.alert', text: 'You are not authorized to access this page'))
   end
 

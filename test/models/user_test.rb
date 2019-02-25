@@ -13,7 +13,7 @@ class UserTest < ActiveSupport::TestCase
     refute(user.valid?)
     assert_equal(["can't be blank"], user.errors[:password])
     assert_equal(["can't be blank"], user.errors[:email])
-    assert_equal(["can't be blank"], user.errors[:mobile_phone])
+    assert_equal(["can't be blank", "is invalid"], user.errors[:mobile_phone])
     assert_equal(["must be accepted"], user.errors[:terms_and_conditions])
     assert_equal(["can't be blank"], user.errors[:given_names])
     assert_equal(["can't be blank"], user.errors[:surname])
@@ -177,6 +177,18 @@ class UserTest < ActiveSupport::TestCase
     user.country_code = 'LV'
 
     assert(user.valid?)
+  end
+
+  def test_mobile_phone_needs_to_be_valid
+    user = boilerplate_user
+
+    user.mobile_phone = '+3727271000'
+    assert(user.valid?)
+
+    ['Foo', '112', '55965456', 'Foo+3727271000'].each do |number|
+      user.mobile_phone = number
+      refute(user.valid? , "Expected #{number} to be invalid")
+    end
   end
 
   def boilerplate_user

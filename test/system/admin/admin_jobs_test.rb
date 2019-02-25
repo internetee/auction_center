@@ -31,4 +31,17 @@ class AdminJobsTest < ApplicationSystemTestCase
 
     assert_text('Job enqueued.')
   end
+
+  def test_tampering_redirects_and_raises_an_error
+    visit(admin_jobs_path)
+
+    within("tr.ResultCreationJob") do
+      page.evaluate_script("document.getElementById('job_job_class').value = 'FOO'")
+      click_link_or_button('Run')
+    end
+
+    assert(page.has_css?(
+      'div.alert',
+      text: 'Tampering detected. You are signed out and the incident is reported.'))
+  end
 end

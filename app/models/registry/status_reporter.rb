@@ -16,6 +16,7 @@ module Registry
     def call
       return if result_already_reported?
       return if result_can_be_skipped?
+      return if remote_id_missing?
 
       request.body = request_body
 
@@ -39,6 +40,10 @@ module Registry
 
     def remote_id
       result.auction.remote_id
+    end
+
+    def remote_id_missing?
+      remote_id.nil?
     end
 
     def request_body

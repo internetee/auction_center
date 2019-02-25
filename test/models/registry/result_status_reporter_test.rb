@@ -28,6 +28,13 @@ class ResultStatusReporterTest < ActiveSupport::TestCase
     refute(instance.call)
   end
 
+  def test_call_does_not_report_updates_when_remote_id_is_missing
+    @no_bids.auction.update!(remote_id: nil)
+
+    instance = Registry::StatusReporter.new(@no_bids)
+    refute(instance.call)
+  end
+
   def test_call_raises_an_error_when_answer_is_not_200
     instance = Registry::StatusReporter.new(@no_bids)
 

@@ -8,6 +8,8 @@ class PhoneConfirmation
   end
 
   def generate_and_send_code
+    return unless user.valid?
+
     number = SecureRandom.random_number(10_000)
     padded_number = format('%04d', number)
 

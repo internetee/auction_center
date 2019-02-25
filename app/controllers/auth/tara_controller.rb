@@ -3,8 +3,9 @@ require 'countries'
 
 module Auth
   class TaraController < ApplicationController
-    rescue_from Errors::TamperingDetected do
+    rescue_from Errors::TamperingDetected do |e|
       redirect_to root_url, alert: t('auth.tara.tampering')
+      Airbrake.notify(e)
     end
 
     def callback
