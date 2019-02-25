@@ -1,6 +1,13 @@
+require 'tampering_detected'
+
 module Admin
   class JobsController < BaseController
     before_action :authorize_user
+
+    rescue_from Errors::TamperingDetected do |e|
+      redirect_to root_url, alert: t('admin.jobs.create.tampering')
+      Airbrake.notify(e)
+    end
 
     def index
       set_jobs
@@ -25,13 +32,19 @@ module Admin
 
     def set_job_class
       job_name = params.require(:job).require(:job_class)
-      Job.new(job_name).job_class
+      job = Job.new(job_name)
+
+      if job.valid?
+        job.job_class
+      else
+        raise Errors::TamperingDetected
+      end
     end
 
     def set_jobs
-      @jobs = [Job.new('ResultCreationJob'), Job.new('InvoiceCancellationJob'),
-               Job.new('InvoiceCreationJob'), Job.new('AuctionCreationJob'),
-               Job.new('DomainRegistrationCheckJob'), Job.new('ResultStatusUpdateJob')]
+      @jobs = Job::ALLOWED_JOB_NAMES.map do |name|
+        Job.new(name)
+      end
     end
 
     def authorize_user

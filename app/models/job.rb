@@ -1,7 +1,12 @@
 class Job
+  ALLOWED_JOB_NAMES = ['ResultCreationJob', 'InvoiceCancellationJob', 'InvoiceCreationJob',
+                       'AuctionCreationJob', 'DomainRegistrationCheckJob', 'ResultStatusUpdateJob']
+
   include ActiveModel::Model
 
   attr_reader :job_name
+
+  validates :job_name, inclusion: { in: ALLOWED_JOB_NAMES }
 
   def initialize(job_name)
     @job_name = job_name
