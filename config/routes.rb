@@ -1,5 +1,15 @@
 require 'constraints/administrator'
 
+registry_integration_enabled = AuctionCenter::Application.config
+                                                         .customization
+                                                         .dig('registry_integration', 'enabled')
+
+disallowed_auction_actions = if registry_integration_enabled
+                               %i[new create edit update destroy]
+                             else
+                               %i[edit update]
+                             end
+
 Rails.application.routes.draw do
   root to: 'auctions#index'
 
@@ -8,7 +18,7 @@ Rails.application.routes.draw do
   end
 
   namespace :admin, constraints: Constraints::Administrator.new do
-    resources :auctions, except: %i[edit update], concerns: [:auditable]
+    resources :auctions, except: disallowed_auction_actions, concerns: [:auditable]
     resources :bans, except: %i[new show edit update], concerns: [:auditable]
     resources :billing_profiles, only: :index, concerns: [:auditable]
     resources :invoices, only: %i[index show], concerns: [:auditable]
