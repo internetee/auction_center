@@ -10,8 +10,6 @@ class ResultStatusUpdateJob < ApplicationJob
   end
 
   def self.registry_integration_enabled?
-    AuctionCenter::Application.config
-                              .customization
-                              .dig('registry_integration', 'enabled')
+    Feature.registry_integration_enabled?
   end
 end
