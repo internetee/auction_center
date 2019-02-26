@@ -10,7 +10,9 @@ Software for managing TLD domain auctions
 
 1. Run `bin/setup`
 2. Configure database in `config/database.yml` according to your needs
-3. Run `bundle exec rake db:setup`
+3. Adjust configuration variables in `config/customization.yml`.
+4. Adjust schedule in `config/schedule.rb`, and then run `whenever --update-crontab` to write the schedule to crontab.
+5. Run `bundle exec rake db:setup`
 
 ## Default user account
 
