@@ -20,6 +20,7 @@
 # Configuration files
 /config/database.yml
 /config/customization.yml
+/config/schedule.rb
 /config/environments/development.rb
 /config/payment_methods/*
 !/config/payment_methods/.keep
