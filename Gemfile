@@ -42,6 +42,7 @@ gem 'kaminari'
 gem 'money'
 gem 'omniauth-tara', github: 'internetee/omniauth-tara'
 gem 'recaptcha'
+gem 'whenever', require: false
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
