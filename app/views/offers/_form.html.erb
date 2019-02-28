@@ -13,9 +13,9 @@
             <div class="field">
                 <%= f.label :billing_profile, t('.bidder') %>
                 <%= f.select :billing_profile_id,
-                BillingProfile.where(user_id: offer.user_id).collect { |b| [b.name, b.id] },
+                billing_profiles = BillingProfile.where(user_id: offer.user_id).collect { |b| [b.name, b.id] },
                 {},
-                class: "ui dropdown" %><br>
+                class: billing_profiles.count == 1 ? "ui dropdown disabled" : "ui dropdown" %><br>
             </div>
 
             <%= link_to t(:new_billing_profile),  new_billing_profile_path %>
