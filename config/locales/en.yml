@@ -16,7 +16,7 @@ en:
   confirm: "Confirm"
 
   billing: "Billing"
-  new_billing_profile: "New billing profile"
+  new_billing_profile: "Create new billing profile, i.e. for a company"
 
   profile: "Profile"
   sign_in: "Sign in"

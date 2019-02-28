@@ -817,10 +817,10 @@ CREATE TABLE public.billing_profiles (
     user_id integer,
     name character varying,
     vat_code character varying,
-    street character varying NOT NULL,
-    city character varying NOT NULL,
+    street character varying,
+    city character varying,
     state character varying,
-    postal_code character varying NOT NULL,
+    postal_code character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     alpha_two_country_code character varying(2) NOT NULL,
@@ -2156,6 +2156,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190213115909'),
 ('20190218144230'),
 ('20190218144713'),
-('20190221142432');
+('20190221142432'),
+('20190228125654');
 
 

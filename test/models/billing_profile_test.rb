@@ -13,9 +13,6 @@ class BillingProfileTest < ActiveSupport::TestCase
     billing_profile = BillingProfile.new
 
     refute(billing_profile.valid?)
-    assert_equal(["can't be blank"], billing_profile.errors[:street])
-    assert_equal(["can't be blank"], billing_profile.errors[:city])
-    assert_equal(["can't be blank"], billing_profile.errors[:postal_code])
     assert_equal(["can't be blank"], billing_profile.errors[:country_code])
     assert_equal(["can't be blank"], billing_profile.errors[:name])
 
@@ -72,5 +69,17 @@ class BillingProfileTest < ActiveSupport::TestCase
 
     assert_nil(@billing_profile.user)
     assert_equal('Orphaned', @billing_profile.user_name)
+  end
+
+  def test_create_default_for_user_returns_if_already_exists
+    refute(BillingProfile.create_default_for_user(@user.id))
+  end
+
+  def test_create_default_for_user_creates_a_billing_profile
+    user_without_billing_profile = users(:second_place_participant)
+    billing_profile = BillingProfile.create_default_for_user(user_without_billing_profile.id)
+
+    assert_equal(billing_profile.country_code, user_without_billing_profile.country_code)
+    assert_equal(billing_profile.name, user_without_billing_profile.display_name)
   end
 end

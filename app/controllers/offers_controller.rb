@@ -9,6 +9,8 @@ class OffersController < ApplicationController
   def new
     auction = Auction.find_by!(uuid: params[:auction_uuid])
 
+    BillingProfile.create_default_for_user(current_user.id)
+
     @offer = Offer.new(
       auction_id: auction.id, user_id: current_user.id
     )
