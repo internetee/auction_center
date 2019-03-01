@@ -48,6 +48,7 @@ class Ability
 
   def administrator
     can :manage, Auction
+    can :manage, Ban
     can :manage, BillingProfile
     can :read, Invoice
     can :read, InvoiceItem
