@@ -23,6 +23,29 @@ email: administrator@auction.test
 password: password
 ```
 
+## API
+
+Auction center exposes list of current auctions as JSON api. Time reported in `ends_at` and `starts_at` are always in UTC.
+
+```
+Request:
+GET /api/v1/auctions HTTP/1.1
+Accept: appliction/json
+
+Response:
+HTTP/1.1 200
+Content-Type: application/json
+
+[
+  {
+    "id": "1b3ee442-e8fe-4922-9492-8fcb9dccc69c",
+    "domain_name": "auction.test",
+    "starts_at": "2019-02-23T22:00:00.000Z"
+    "ends_at": "2019-02-24T22:00:00.000Z"
+}
+]
+```
+
 ## Settings
 
 There are certain settings stored in the database that are used for the application logic. For example, the currency in which all auctions are conducted. An administrator can change these settings in /admin/settings page.
