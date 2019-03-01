@@ -23,6 +23,7 @@ class ApiAuctionsListTest < ActionDispatch::IntegrationTest
       assert(item.has_key?('domain_name'))
       assert(item.has_key?('starts_at'))
       assert(item.has_key?('ends_at'))
+      assert(item.has_key?('id'))
     end
 
     expected_domains = ['with-offers.test', 'no-offers.test', 'with-invoice.test', 'orphaned.test']
