@@ -29,7 +29,7 @@ Auction center exposes list of current auctions as JSON api. Time reported in `e
 
 ```
 Request:
-GET /api/v1/auctions HTTP/1.1
+GET /auctions HTTP/1.1
 Accept: appliction/json
 
 Response:
