@@ -4,7 +4,12 @@ class AuctionsController < ApplicationController
 
   # GET /
   def index
-    @auctions = Auction.active.accessible_by(current_ability).page(params[:page])
+    unpaginated_auctions = Auction.active.accessible_by(current_ability)
+
+    respond_to do |format|
+      format.html { @auctions = unpaginated_auctions.page(params[:page]) }
+      format.json { @auctions = unpaginated_auctions }
+    end
   end
 
   # GET /auctions/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
