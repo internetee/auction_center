@@ -28,6 +28,23 @@ class OffersTest < ApplicationSystemTestCase
     assert(page.has_link?('My offers', href: offers_path))
   end
 
+  def test_user_cannot_create_offers_in_the_name_of_other_user
+    sign_in(@user)
+
+    other_user = users(:second_place_participant)
+
+    visit auction_path(@valid_auction_with_no_offers.uuid)
+
+    assert(page.has_link?('Submit offer'))
+    click_link('Submit offer')
+
+    fill_in('offer[price]', with: '5.12')
+    page.evaluate_script("document.getElementById('offer_user_id').value = '#{other_user.id}'")
+
+    click_link_or_button('Submit')
+    assert(page.has_css?('div.alert', text: 'You are not authorized to access this page'))
+  end
+
   def test_offers_table_rows_have_links_to_each_offer
     sign_in(@user)
     visit offers_path
