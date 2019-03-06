@@ -77,7 +77,8 @@ registration_term_setting.save
 
 # Default auction duration
 auction_duration_description = <<~TEXT.squish
-      Number of hours for which an auction is created. Default: 24
+      Number of hours for which an auction is created. You can also use 'end_of_day'
+      for auctions to end at the end of the same calendar day. Default: 24.
     TEXT
 
 auction_duration_setting = Setting.new(code: :auction_duration, value: '24',

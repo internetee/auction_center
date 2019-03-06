@@ -46,7 +46,8 @@ require_phone_confirmation:
 auction_duration:
   code: auction_duration
   description: |
-    Number of hours for which an auction is created. Default: 24
+    Number of hours for which an auction is created. You can also use 'end_of_day'
+    for auctions to end at the end of the same calendar day. Default: 24.
   value: 24
 
 registration_term:
