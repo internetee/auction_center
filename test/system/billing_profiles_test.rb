@@ -128,6 +128,18 @@ class BillingProfilesTest < ApplicationSystemTestCase
     assert_text('Deleted successfully.')
   end
 
+  def test_user_cannot_create_billing_profiles_in_the_name_of_other_user
+    other_user = users(:second_place_participant)
+
+    visit new_billing_profile_path
+    fill_in_address
+    fill_in('billing_profile[name]', with: 'Private Person')
+    page.evaluate_script("document.getElementById('billing_profile_user_id').value = '#{other_user.id}'")
+
+    click_link_or_button('Submit')
+    assert(page.has_css?('div.alert', text: 'You are not authorized to access this page'))
+  end
+
   def fill_in_address
     fill_in('billing_profile[street]', with: 'Baker Street 221B')
     fill_in('billing_profile[city]', with: 'London')

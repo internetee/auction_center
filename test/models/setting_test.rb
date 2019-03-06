@@ -43,7 +43,10 @@ class SettingTest < ActiveSupport::TestCase
     assert_equal(14, Setting.registration_term)
 
     assert_equal(false, Setting.require_phone_confirmation)
+
     assert_equal(24, Setting.auction_duration)
+    Setting.find_by(code: :auction_duration).update(value: 'end_of_day')
+    assert_equal(:end_of_day, Setting.auction_duration)
 
     assert_equal(0, Setting.auctions_start_at)
 

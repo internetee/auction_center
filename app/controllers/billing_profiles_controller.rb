@@ -1,7 +1,7 @@
 class BillingProfilesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_billing_profile, only: %i[show edit update destroy]
-  before_action :authorize_user, except: :new
+  before_action :authorize_billing_profile_for_user, except: %i[new index create]
 
   # GET /billing_profiles
   def index
@@ -17,6 +17,7 @@ class BillingProfilesController < ApplicationController
   # POST /billing_profiles
   def create
     @billing_profile = BillingProfile.new(create_params)
+    authorize! :manage, @billing_profile
 
     respond_to do |format|
       if create_predicate
@@ -86,7 +87,7 @@ class BillingProfilesController < ApplicationController
                                      .find_by!(uuid: params[:uuid])
   end
 
-  def authorize_user
-    authorize! :manage, BillingProfile
+  def authorize_billing_profile_for_user
+    authorize! :manage, @billing_profile
   end
 end

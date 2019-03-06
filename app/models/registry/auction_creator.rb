@@ -33,12 +33,20 @@ module Registry
       end
     end
 
-    def create_auction_from_api(domain_name, remote_id)
-      ends_at = Time.at(auction_starts_at.to_i + auction_duration_in_seconds).in_time_zone
+    def auction_ends_at
+      setting = Setting.auction_duration
 
+      if setting == :end_of_day
+        (auction_starts_at.to_date + 1).in_time_zone - 60
+      else
+        Time.at(auction_starts_at.to_i + Setting.auction_duration * 60 * 60).in_time_zone
+      end
+    end
+
+    def create_auction_from_api(domain_name, remote_id)
       Auction.find_or_initialize_by(domain_name: domain_name, remote_id: remote_id) do |auction|
         auction.starts_at = auction_starts_at
-        auction.ends_at = ends_at
+        auction.ends_at = auction_ends_at
         auction.save!
       end
     end

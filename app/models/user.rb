@@ -8,7 +8,8 @@ class User < ApplicationRecord
   ESTONIAN_COUNTRY_CODE = 'EE'.freeze
   TARA_PROVIDER = 'tara'.freeze
 
-  devise :database_authenticatable, :recoverable, :rememberable, :validatable, :confirmable
+  devise :database_authenticatable, :recoverable, :rememberable, :validatable, :confirmable,
+         :timeoutable
 
   alias_attribute :country_code, :alpha_two_country_code
 

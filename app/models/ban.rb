@@ -6,6 +6,14 @@ class Ban < ApplicationRecord
 
   belongs_to :user, required: false
   validates :valid_until, presence: true
+  validate :valid_until_later_valid_from
+
+  def valid_until_later_valid_from
+    return unless valid_until
+    return if valid_until > (valid_from || Time.zone.now)
+
+    errors.add(:valid_until, 'must be later than valid_from')
+  end
 
   def self.create_automatic(user:, domain_name:)
     now = Time.zone.now.to_datetime

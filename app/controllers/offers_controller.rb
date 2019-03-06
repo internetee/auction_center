@@ -2,7 +2,7 @@ class OffersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_offer, only: %i[show edit update destroy]
   before_action :authorize_phone_confirmation
-  before_action :authorize_user, except: :new
+  before_action :authorize_offer_for_user, except: %i[new index create]
   before_action :set_captcha_required
 
   # GET /auctions/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/offers/new
@@ -15,6 +15,7 @@ class OffersController < ApplicationController
   # POST /auctions/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/offers
   def create
     @offer = Offer.new(create_params)
+    authorize! :manage, @offer
 
     respond_to do |format|
       if create_predicate
@@ -103,7 +104,7 @@ class OffersController < ApplicationController
                 notice: t('phone_confirmations.confirmation_required')
   end
 
-  def authorize_user
-    authorize! :manage, Offer
+  def authorize_offer_for_user
+    authorize! :manage, @offer
   end
 end

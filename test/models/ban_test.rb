@@ -36,4 +36,19 @@ class BanTest < ActiveSupport::TestCase
   def test_valid_scope
     assert_equal([@ban].to_set, Ban.valid.to_set)
   end
+
+  def test_valid_until_must_be_later_than_valid_from
+    ban = Ban.new(user: @user)
+
+    ban.valid_until = Time.now - 1.day
+    refute(ban.valid?)
+    assert_equal(ban.errors[:valid_until], ['must be later than valid_from'])
+
+    ban.valid_until = Time.now
+    refute(ban.valid?)
+    assert_equal(ban.errors[:valid_until], ['must be later than valid_from'])
+
+    ban.valid_until = Time.now + 1.day
+    assert(ban.valid?)
+  end
 end

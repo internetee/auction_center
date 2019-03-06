@@ -86,12 +86,23 @@ class BansTest < ApplicationSystemTestCase
     sign_in(@administrator)
     visit admin_user_path(@other_participant)
 
-    fill_in('ban[valid_until]', with: "2200/01/01")
-
+    fill_in('ban[valid_until]', with: "01/01/2222")
     assert_changes -> { Ban.count } do
       click_link_or_button('Submit')
     end
 
     assert(page.has_css?('div.notice', text: 'Created successfully.'))
+  end
+
+ def test_administrator_cannot_create_bans_that_are_valid_in_the_past
+    sign_in(@administrator)
+    visit admin_user_path(@other_participant)
+
+    fill_in('ban[valid_until]', with: "01/01/1999")
+    assert_no_changes -> { Ban.count } do
+      click_link_or_button('Submit')
+    end
+
+    assert(page.has_css?('div.notice', text: 'Something went wrong.'))
   end
 end

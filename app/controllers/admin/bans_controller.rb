@@ -1,5 +1,6 @@
 module Admin
   class BansController < BaseController
+    before_action :authorize_user
     before_action :set_ban, only: %i[show destroy]
 
     # POST /admin/bans
@@ -39,6 +40,10 @@ module Admin
 
     def create_params
       params.require(:ban).permit(:user_id, :valid_until)
+    end
+
+    def authorize_user
+      authorize! :manage, Ban
     end
   end
 end

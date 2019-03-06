@@ -29,7 +29,15 @@ class Setting < ApplicationRecord
   end
 
   def self.auction_duration
+    value = Setting.find_by(code: :auction_duration).value
+
     Setting.find_by(code: :auction_duration).value.to_i
+
+    if value == 'end_of_day'
+      :end_of_day
+    else
+      value.to_i
+    end
   end
 
   def self.require_phone_confirmation

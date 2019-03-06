@@ -68,6 +68,10 @@ class AdministratorAbilityTest < ActiveSupport::TestCase
     assert(@administrator_ability.can?(:create, Job))
   end
 
+  def test_administrator_can_manage_bans
+    assert(@administrator_ability.can?(:manage, Ban))
+  end
+
   def test_administrator_cannot_manage_phone_number_confirmations
     assert(@administrator_ability.can?(:manage, PhoneConfirmation.new(@administrator)))
     refute(@administrator_ability.can?(:manage, PhoneConfirmation.new(@participant)))
