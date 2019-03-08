@@ -14,6 +14,7 @@ en:
 
     submit_offer: "Submit offer"
     edit_your_offer: "Edit your offer"
+    delete_your_offer: "Delete your offer"
 
     index:
       title: "Current auctions"
