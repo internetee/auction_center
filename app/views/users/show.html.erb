@@ -9,51 +9,51 @@
         <div class="content">
             <h2><%= @user.display_name %></h2>
             <div class="body">
-                <div class="details-list centered-list">
-                    <ul>
-                        <li>
-                            <span class="label"><%= t('users.email') %></span>
-                            <span class="value"><%= (@user.email) %></span>
-                        </li>
+                <table class="ui table very basic padded">
+                    <tbody>
+                        <tr>
+                            <td><strong><%= t('users.email') %></strong></td>
+                            <td><%= (@user.email) %></td>
+                        </tr>
 
                         <% if @user.mobile_phone.present? %>
-                            <li>
-                                <span class="label"><%= t('users.mobile_phone') %></span>
-                                <span class="value">
+                            <tr>
+                                <td><strong><%= t('users.mobile_phone') %></strong></td>
+                                <td>
                                     <% if @user.phone_number_confirmed? %>
-                                        <i class="ui icon check circle outline"></i>
+                                        <i class="ui icon check circle outtrne"></i>
                                     <% end %>
                                     <%= (@user.mobile_phone) %>
-                                </span>
-                            </li>
+                                </td>
+                            </tr>
                         <% end %>
 
-                        <li>
-                            <span class="label"><%= t('users.country_code') %></span>
-                            <span class="value">
+                        <tr>
+                            <td><strong><%= t('users.country_code') %></strong></td>
+                            <td>
                                 <i class="flag <%= @user.country_code.downcase %>"></i>
                                 <%= (@user.country_code) %>
-                            </span>
-                        </li>
+                            </td>
+                        </tr>
 
                         <% if @user.identity_code.present? %>
-                            <li>
-                                <span class="label"><%= t('users.identity_code') %></span>
-                                <span class="value"><%= (@user.identity_code) %></span>
-                            </li>
+                            <tr>
+                                <td><strong><%= t('users.identity_code') %></strong></td>
+                                <td><%= (@user.identity_code) %></td>
+                            </tr>
                         <% end %>
 
-                        <li>
-                            <span class="label"><%= t('created_at') %></span>
-                            <span class="value"><%= I18n.l(@user.created_at) %></span>
-                        </li>
+                        <tr>
+                            <td><strong><%= t('created_at') %></strong></td>
+                            <td><%= I18n.l(@user.created_at) %></td>
+                        </tr>
 
-                        <li>
-                            <span class="label"><%= t('users.terms_and_conditions') %></span>
-                            <span class="value"><%= link_to t('.review_terms_and_conditions'), Setting.terms_and_conditions_link %></span>
-                        </li>
-                    </ul>
-                </div>
+                        <tr>
+                            <td><strong><%= t('users.terms_and_conditions') %></strong></td>
+                            <td><%= link_to t('.review_terms_and_conditions'), Setting.terms_and_conditions_link %></td>
+                        </tr>
+                    </tbody>
+                </table>
 
                 <div class="buttons">
                     <%= link_to t(:edit), edit_user_path(@user.uuid), class: "ui button primary" %>
