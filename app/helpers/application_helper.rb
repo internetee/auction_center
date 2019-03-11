@@ -53,7 +53,7 @@ module ApplicationHelper
 
   def user_link_list
     [{ name: t(:auctions_name), path: auctions_path },
-    { name: t(:profile), path: user_path(current_user.uuid) },
+     { name: t(:profile), path: user_path(current_user.uuid) },
      { name: t(:my_invoices), path: invoices_path },
      { name: t(:my_offers), path: offers_path }]
   end
