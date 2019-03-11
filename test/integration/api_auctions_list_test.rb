@@ -22,6 +22,15 @@ class ApiAuctionsListTest < ActionDispatch::IntegrationTest
                  'X-User-Token, X-User-Email',
                response.headers['Access-Control-Allow-Headers'])
     assert_equal('3600', response.headers['Access-Control-Max-Age'])
+
+    process(:options, '/auctions.json', headers: { 'Origin' => 'https://example.com' })
+
+    assert_equal('https://example.com', response.headers['Access-Control-Allow-Origin'])
+    assert_equal('GET, OPTIONS', response.headers['Access-Control-Allow-Methods'])
+    assert_equal('Origin, Content-Type, Accept, Authorization, Token, Auth-Token, Email, ' \
+                 'X-User-Token, X-User-Email',
+               response.headers['Access-Control-Allow-Headers'])
+    assert_equal('3600', response.headers['Access-Control-Max-Age'])
   end
 
   def test_can_get_a_list_of_current_auctions_as_json

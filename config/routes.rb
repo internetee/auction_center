@@ -37,7 +37,7 @@ Rails.application.routes.draw do
   resources :auctions, only: %i[index show], param: :uuid do
     resources :offers, only: %i[new show create edit update destroy], shallow: true, param: :uuid
   end
-  match 'auctions', controller: 'auctions', action: 'cors_preflight_check', via: [:options]
+  match '*auctions', controller: 'auctions', action: 'cors_preflight_check', via: [:options]
 
   resources :billing_profiles, param: :uuid
 
