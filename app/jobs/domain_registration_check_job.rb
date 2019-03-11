@@ -2,6 +2,9 @@ class DomainRegistrationCheckJob < ApplicationJob
   def perform
     Result.pending_registration.map do |result|
       Registry::RegistrationChecker.new(result).call
+    rescue Registry::CommunicationError => e
+      Airbrake.notify(e)
+      next
     end
   end
 
