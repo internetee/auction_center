@@ -10,60 +10,61 @@
         <div class="content">
             <h2><%= @user.display_name %></h2>
             <div class="body">
-                <div class="details-list centered-list">
-                    <ul>
-                        <li>
-                            <span class="label"><%= t('users.email') %></span>
-                            <span class="value"><%= (@user.email) %></span>
-                        </li>
+                <table class="ui table very basic padded">
+                    <tbody>
+                        <tr>
+                            <td><strong><%= t('users.email') %></strong></td>
+                            <td><%= (@user.email) %></td>
+                        </tr>
 
-                        <li>
-                            <span class="label"><%= t('users.mobile_phone') %></span>
-                            <span class="value">
+                        <tr>
+                            <td><strong><%= t('users.mobile_phone') %></strong></td>
+                            <td>
                                 <% if @user.phone_number_confirmed? && @phone_confirmation_toggle %>
                                     <i class="ui icon check circle outline"></i>
                                 <% end %>
                                 <%= (@user.mobile_phone) %>
-                            </span>
-                        </li>
+                            </td>
+                        </tr>
 
-                        <li>
-                            <span class="label"><%= t('users.roles') %></span>
-                            <span class="value"><%= @user.roles.join(', ') %></span>
-                        </li>
+                        <tr>
+                            <td><strong><%= t('users.roles') %></strong></td>
+                            <td><%= @user.roles.join(', ') %></td>
+                        </tr>
 
-                        <li>
-                            <span class="label"><%= t('users.country_code') %></span>
-                            <span class="value">
+                        <tr>
+                            <td><strong><%= t('users.country_code') %></strong></td>
+                            <td>
                                 <i class="flag <%= @user.country_code.downcase %>"></i>
                                 <%= (@user.country_code) %>
-                            </span>
-                        </li>
+                            </td>
+                        </tr>
 
-                        <li>
-                            <span class="label"><%= t('users.identity_code') %></span>
-                            <span class="value"><%= (@user.identity_code) %></span>
-                        </li>
+                        <tr>
+                            <td><strong><%= t('users.identity_code') %></strong></td>
+                            <td><%= (@user.identity_code) %></td>
+                        </tr>
 
-                        <li>
-                            <span class="label"><%= t('users.terms_and_conditions_accepted_at') %></span>
-                            <span class="value">
+                        <tr>
+                            <td><strong><%= t('users.terms_and_conditions_accepted_at') %></strong></td>
+                            <td>
                                 <%- if @user.terms_and_conditions_accepted_at %>
                                     <%= I18n.l(@user.terms_and_conditions_accepted_at) %>
                                 <% else %>
                                     <%= t(:not_accepted) %>
                                 <% end %>
-                            </span>
-                        </li>
+                            </td>
+                        </tr>
 
-                        <li>
-                            <span class="label"><%= t('created_at') %></span>
-                            <span class="value"><%= I18n.l(@user.created_at) %></span>
-                        </li>
-                    </ul>
-                </div>
+                        <tr>
+                            <td><strong><%= t('created_at') %></strong></td>
+                            <td><%= I18n.l(@user.created_at) %></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
-                <h3><%= t('.ban_this_user') %>
+            <h3><%= t('.ban_this_user') %>
                 <%= form_with(model: @ban, local: true, url: admin_bans_path, class: "ui form big") do |f| %>
                     <div class="field">
                         <%= f.hidden_field :user_id, value: @ban.user_id %>
@@ -82,6 +83,6 @@
 
                     <%= link_to t(:versions_name), admin_user_versions_path(@user), class: "ui button primary" %>
                 </div>
-            </div>
+        </div>
     </div>
 </div>

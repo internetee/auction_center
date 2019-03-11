@@ -11,36 +11,42 @@
 
 <div class="u-container">
     <div class="margin-block">
-            <h2><%= t('.title') %></h2>
-            <div class="body">
-                <div class="details-list centered-list">
-                    <ul>
-                        <li>
-                            <span class="label"><%= t('auctions.starts_at') %></span>
-                            <span class="value"><%= I18n.l(@auction.starts_at) %></span>
-                        </li>
-                        <li>
-                            <span class="label"><%= t('auctions.ends_at') %></span>
-                            <span class="value"><%= I18n.l(@auction.ends_at) %></span>
-                        </li>
-                        <%- if @auction.offer_from_user(current_user).present? %>
-                            <li>
-                                <span class="label"><%= t('auctions.your_current_price') %></span>
-                                <span class="value"><%= @auction.current_price_from_user(current_user) %></span>
-                            </li>
-                        <% end %>
-                    </ul>
-                </div>
-
-                <div class="buttons">
+        <h2><%= t('.title') %></h2>
+        <div class="body">
+            <table class="ui table very basic padded">
+                <tbody>
+                    <tr>
+                        <td><strong><%= t('auctions.domain_name') %></strong></td>
+                        <td><%= @auction.domain_name %></td>
+                    </tr>
+                    <tr>
+                        <td><strong><%= t('auctions.starts_at') %></strong></td>
+                        <td><%= I18n.l(@auction.starts_at) %>
+                    </tr>
+                    <tr>
+                        <td><strong><%= t('auctions.ends_at') %></strong></td>
+                        <td><%= I18n.l(@auction.ends_at) %></td>
+                    </tr>
                     <%- if @auction.offer_from_user(current_user).present? %>
-                        <%= link_to t('auctions.edit_your_offer'),
-                        edit_offer_path(@auction.offer_from_user(current_user).uuid), class: "ui button primary" %>
-                    <% else %>
-                        <%= link_to t('auctions.submit_offer'),
-                        new_auction_offer_path(auction_uuid: @auction.uuid), class: "ui button primary" %>
+                        <tr>
+                            <td><strong><%= t('auctions.your_current_price') %></strong></td>
+                            <td><%= @auction.current_price_from_user(current_user) %></td>
+                        </tr>
                     <% end %>
-                </div>
+                </tbody>
+            </table>
+
+            <div class="buttons">
+                <%- if @auction.offer_from_user(current_user).present? %>
+                    <%= link_to t('auctions.edit_your_offer'),
+                    edit_offer_path(@auction.offer_from_user(current_user).uuid), class: "ui button primary" %>
+                    <%= link_to t('auctions.delete_your_offer'),
+                    offer_path(@auction.offer_from_user(current_user).uuid),
+                    method: :delete, data: { confirm: t(:are_you_sure) }, class: "ui button secondary"%>
+                <% else %>
+                    <%= link_to t('auctions.submit_offer'),
+                    new_auction_offer_path(auction_uuid: @auction.uuid), class: "ui button primary" %>
+                <% end %>
             </div>
         </div>
     </div>

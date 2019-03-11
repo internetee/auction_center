@@ -19,49 +19,49 @@
                             billing_profile_path(billing_profile.uuid) %>
                         </h2>
 
-                        <div class="details-list centered-list">
-                            <ul>
-                                <li>
-                                    <span class="label"><%= t('billing_profiles.vat_code') %></span>
-                                    <span class="value"><%= billing_profile.vat_code %></span>
-                                </li>
+                        <table class="ui table very basic padded">
+                            <tbody>
+                                <tr>
+                                    <td><strong><%= t('billing_profiles.vat_code') %></strong></td>
+                                    <td><%= billing_profile.vat_code %></td>
+                                </tr>
 
-                                <li>
-                                    <span class="label"><%= t('billing_profiles.street') %></span>
-                                    <span class="value"><%= billing_profile.street %></span>
-                                </li>
+                                <tr>
+                                    <td><strong><%= t('billing_profiles.street') %></strong></td>
+                                    <td><%= billing_profile.street %></td>
+                                </tr>
 
-                                <li>
-                                    <span class="label"><%= t('billing_profiles.city') %></span>
-                                    <span class="value"><%= billing_profile.city %></span>
-                                </li>
+                                <tr>
+                                    <td><strong><%= t('billing_profiles.city') %></strong></td>
+                                    <td><%= billing_profile.city %></td>
+                                </tr>
 
-                                <li>
-                                    <span class="label"><%= t('billing_profiles.state') %></span>
-                                    <span class="value"><%= billing_profile.state %></span>
-                                </li>
+                                <tr>
+                                    <td><strong><%= t('billing_profiles.state') %></strong></td>
+                                    <td><%= billing_profile.state %></td>
+                                </tr>
 
-                                <li>
-                                    <span class="label"><%= t('billing_profiles.postal_code') %></span>
-                                    <span class="value"><%= billing_profile.postal_code %></span>
-                                </li>
+                                <tr>
+                                    <td><strong><%= t('billing_profiles.postal_code') %></strong></td>
+                                    <td><%= billing_profile.postal_code %></td>
+                                </tr>
 
-                                <li>
-                                    <span class="label"><%= t('billing_profiles.country') %></span>
-                                    <span class="value"><%= billing_profile.country_code %></span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="buttons">
-                        <%= link_to t(:edit), edit_billing_profile_path(billing_profile.uuid), class: "ui button primary" %>
-                        <%= link_to t(:delete), billing_profile_path(billing_profile.uuid),
-                        method: :delete, data: { confirm: t(:are_you_sure) },
-                        remote: true, class: "ui button secondary" %>
-                    </div>
+                                <tr>
+                                    <td><strong><%= t('billing_profiles.country') %></strong></td>
+                                    <td><%= billing_profile.country_code %></td>
+                                </tr>
+                            </tbody>
+                        </table>
                 </div>
-            <% end %>
+
+                <div class="buttons">
+                    <%= link_to t(:edit), edit_billing_profile_path(billing_profile.uuid), class: "ui button primary" %>
+                    <%= link_to t(:delete), billing_profile_path(billing_profile.uuid),
+                    method: :delete, data: { confirm: t(:are_you_sure) },
+                    remote: true, class: "ui button secondary" %>
+                </div>
         </div>
+            <% end %>
     </div>
 </div>
+    </div>

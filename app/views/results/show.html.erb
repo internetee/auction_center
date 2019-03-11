@@ -7,38 +7,39 @@
 
 <div class="u-container">
     <div class="margin-block">
-        <div class="content">
             <div class="body">
-                <div class="details-list centered-list">
-                    <ul>
-                        <li>
-                            <span class="label"><%= t('results.status') %></span>
-                            <span class="value">
+                <table class="ui table very basic padded">
+                    <tbody>
+                        <tr>
+                            <td><strong><%= t('results.status') %></strong></td>
+                            <td>
                                 <%= @result.status.humanize %>
-                            </span>
-                        </li>
+                            </td>
+                        </tr>
 
-                        <li>
-                            <span class="label"><%= t('results.registration_code') %></span>
-                            <span class="value">
+                        <tr>
+                            <td><strong><%= t('results.registration_code') %></strong></td>
+                            <td>
                                 <%= registration_code_or_information(@result) %>
-                            </span>
-                        </li>
+                            </td>
+                        </tr>
 
-                        <li>
-                            <span class="label"><%= t('results.pay_invoice_before') %></span>
-                            <span class="value">
+                        <tr>
+                            <td><strong><%= t('results.pay_invoice_before') %></strong></td>
+                            <td>
                                 <%= pay_invoice_before(@result) %>
-                            </span>
-                        </li>
+                            </td>
+                        </tr>
 
-                        <li>
-                            <span class="label"><%= t('results.register_before') %></span>
-                            <span class="value">
+                        <tr>
+                            <td><strong><%= t('results.register_before') %></strong></td>
+                            <td>
                                 <%= @result.registration_due_date %>
-                            </span>
-                        </li>
-                    </ul>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
 
                     <div class="buttons">
                         <% if @result.invoice %>
@@ -48,7 +49,6 @@
                             <%= t('invoices.is_being_generated') %>
                         <% end %>
                     </div>
-                </div>
             </div>
         </div>
     </div>

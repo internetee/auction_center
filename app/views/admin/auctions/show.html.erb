@@ -7,24 +7,31 @@
 
 <div class="u-container">
     <div class="margin-block">
-        <div class="content">
-            <%- if @auction.finished? %>
-                <div class="ui centered aligned header"><%= t('auctions.finished') %></div>
-            <% end %>
+        <div class="body">
+            <div class="body">
+                <table class="ui table very basic padded">
+                    <tbody>
+                        <tr>
+                            <td><strong><%= t('auctions.domain_name') %></strong></td>
+                            <td><%= @auction.domain_name %></td>
+                        </tr>
+                        <tr>
+                            <td><strong><%= t('auctions.starts_at') %></strong></td>
+                            <td><%= I18n.l(@auction.starts_at) %>
+                        </tr>
+                        <tr>
+                            <td><strong><%= t('auctions.ends_at') %></strong></td>
+                            <td><%= I18n.l(@auction.ends_at) %></td>
+                        </tr>
+                        <%- if @auction.offer_from_user(current_user).present? %>
+                            <tr>
+                                <td><strong><%= t('auctions.your_current_price') %></strong></td>
+                                <td><%= @auction.current_price_from_user(current_user) %></td>
+                            </tr>
+                        <% end %>
+                    </tbody>
+                </table>
 
-            <div class="ui list">
-                <div class="item">
-                    <div class="header"><%= t('auctions.starts_at') %></div>
-                    <%= @auction.starts_at %>
-                </div>
-            </div>
-
-            <div class="ui list">
-                <div class="item">
-                    <div class="header"><%= t('auctions.ends_at') %></div>
-                    <%= @auction.ends_at %>
-                </div>
-            </div>
 
             <div class="buttons">
                 <%= link_to t(:delete), admin_auction_path(@auction),
