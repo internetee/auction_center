@@ -1,7 +1,12 @@
 class ResultStatusUpdateJob < ApplicationJob
   def perform
     Result.pending_status_report.map do |result|
-      Registry::StatusReporter.new(result).call
+      begin
+        Registry::StatusReporter.new(result).call
+      rescue Registry::CommunicationError => e
+        Airbrake.notify(e)
+        next
+      end
     end
   end
 
