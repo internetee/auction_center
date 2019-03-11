@@ -28,12 +28,12 @@ class AuctionsController < ApplicationController
   private
 
   def set_access_control_headers
-      response.headers['Access-Control-Allow-Origin'] = request.headers['Origin']
-      response.headers['Access-Control-Allow-Methods'] = 'GET, OPTIONS'
-      response.headers['Access-Control-Allow-Headers'] = 'Origin, Content-Type, Accept, ' \
-                                                         'Authorization, Token, Auth-Token, '\
-                                                         'Email, X-User-Token, X-User-Email'
-      response.headers['Access-Control-Max-Age'] = '3600'
+    response.headers['Access-Control-Allow-Origin'] = request.headers['Origin']
+    response.headers['Access-Control-Allow-Methods'] = 'GET, OPTIONS'
+    response.headers['Access-Control-Allow-Headers'] = 'Origin, Content-Type, Accept, ' \
+                                                       'Authorization, Token, Auth-Token, '\
+                                                       'Email, X-User-Token, X-User-Email'
+    response.headers['Access-Control-Max-Age'] = '3600'
   end
 
   def authorize_user
