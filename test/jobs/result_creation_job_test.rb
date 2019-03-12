@@ -24,4 +24,10 @@ class ResultCreationJobTest < ActiveJob::TestCase
     assert(result = @auction_without_result.result)
     assert_equal(true, result.awaiting_payment?)
   end
+
+  def test_job_schedules_invoice_creation
+    assert_enqueued_with(job: InvoiceCreationJob) do
+      ResultCreationJob.perform_now
+    end
+  end
 end
