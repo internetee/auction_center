@@ -54,8 +54,6 @@ class ApiAuctionsListTest < ActionDispatch::IntegrationTest
     assert_equal(expected_domains.to_set, response_json.map { |e| e['domain_name'] }.to_set)
   end
 
-
-
   def test_cannot_get_a_list_of_current_auctions_as_xml
     assert_raises ActionController::UnknownFormat do
       get(auctions_path, headers: { 'Accept': 'application/xml' })
