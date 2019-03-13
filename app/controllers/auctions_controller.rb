@@ -6,6 +6,8 @@ class AuctionsController < ApplicationController
 
   # GET /
   def index
+    set_cors_header
+
     unpaginated_auctions = Auction.active.accessible_by(current_ability)
 
     respond_to do |format|
@@ -26,6 +28,10 @@ class AuctionsController < ApplicationController
   end
 
   private
+
+  def set_cors_header
+    response.headers['Access-Control-Allow-Origin'] = request.headers['Origin']
+  end
 
   def set_access_control_headers
     response.headers['Access-Control-Allow-Origin'] = request.headers['Origin']
