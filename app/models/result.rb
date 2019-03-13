@@ -27,6 +27,13 @@ class Result < ApplicationRecord
     where('status = ?', statuses[:payment_received])
   }
 
+  scope :pending_registration_reminder, lambda {
+    where(status: Result.statuses[:payment_received])
+      .where('registration_due_date <= ?',
+             Time.zone.today + Setting.domain_registration_reminder_day)
+      .where('registration_reminder_sent_at IS NULL')
+  }
+
   def self.create_from_auction(auction_id)
     auction = Auction.find_by(id: auction_id)
 
