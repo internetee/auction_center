@@ -1071,7 +1071,8 @@ CREATE TABLE public.results (
     last_remote_status public.result_status,
     last_response jsonb,
     registration_code character varying,
-    registration_due_date date NOT NULL
+    registration_due_date date NOT NULL,
+    registration_reminder_sent_at timestamp without time zone
 );
 
 
@@ -2158,6 +2159,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190218144713'),
 ('20190221142432'),
 ('20190228125654'),
-('20190306112247');
+('20190306112247'),
+('20190313124938');
 
 
