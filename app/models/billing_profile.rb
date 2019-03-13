@@ -7,7 +7,7 @@ class BillingProfile < ApplicationRecord
   validates :country_code, presence: true
   validates :vat_code, uniqueness: { scope: :user_id }, allow_blank: true
 
-  belongs_to :user, required: false
+  belongs_to :user, optional: true
 
   def address
     country_name = Countries.name_from_alpha2_code(country_code)
@@ -33,6 +33,7 @@ class BillingProfile < ApplicationRecord
 
   def self.create_default_for_user(user_id)
     return if find_by(user_id: user_id)
+
     user = User.find(user_id)
 
     billing_profile = new(user: user, country_code: user.country_code, name: user.display_name)

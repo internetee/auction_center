@@ -6,9 +6,9 @@ class Invoice < ApplicationRecord
                  paid: 'paid',
                  cancelled: 'cancelled' }
 
-  belongs_to :result, required: true
-  belongs_to :user, required: false
-  belongs_to :billing_profile, required: true
+  belongs_to :result, optional: false
+  belongs_to :user, optional: true
+  belongs_to :billing_profile, optional: false
   has_many :invoice_items, dependent: :destroy
   has_many :payment_orders, dependent: :destroy
 

@@ -9,9 +9,9 @@ class Result < ApplicationRecord
                  domain_registered: 'domain_registered',
                  domain_not_registered: 'domain_not_registered' }
 
-  belongs_to :auction, required: true, inverse_of: :result
-  belongs_to :user, required: false
-  belongs_to :offer, required: false
+  belongs_to :auction, optional: false, inverse_of: :result
+  belongs_to :user, optional: true
+  belongs_to :offer, optional: true
   has_one :invoice, required: false, dependent: :destroy
 
   scope :pending_invoice, lambda {

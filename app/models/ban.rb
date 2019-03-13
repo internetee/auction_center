@@ -4,7 +4,7 @@ class Ban < ApplicationRecord
   # immediate rounds of auctions for a domain name.
   SHORT_BAN_PERIOD_IN_MONTHS = 3
 
-  belongs_to :user, required: false
+  belongs_to :user, optional: true
   validates :valid_until, presence: true
   validate :valid_until_later_valid_from
 
