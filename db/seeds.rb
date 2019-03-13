@@ -118,3 +118,13 @@ ban_length_setting = Setting.new(code: :ban_length, value: '100',
                                  description: ban_length_description)
 
 ban_length_setting.save
+
+# Default domain registration reminder time
+domain_registration_description = <<~TEXT.squish
+      Number of days before which the registration reminder email is sent on. Default: 5
+    TEXT
+
+domain_registration_setting = Setting.new(code: :domain_registration_reminder, value: '5',
+                                          description: domain_registration_description)
+
+domain_registration_setting.save

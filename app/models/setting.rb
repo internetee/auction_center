@@ -63,4 +63,8 @@ class Setting < ApplicationRecord
   def self.ban_length
     Setting.find_by(code: :ban_length).value.to_i
   end
+
+  def self.domain_registration_reminder_day
+    Setting.find_by(code: :domain_registration_reminder).value.to_i
+  end
 end

@@ -25,11 +25,11 @@ class DomainRegistrationReminderJobTest < ActiveJob::TestCase
   end
 
   def test_reminders_are_not_sent_multiple_times
-    @result.update!(registration_reminder_sent_at: @result.registration_due_date - 5)
-
     five_days_before = @result.registration_due_date - 5
     three_days_before = @result.registration_due_date - 3
     travel_to three_days_before
+
+    @result.update!(registration_reminder_sent_at: five_days_before)
 
     DomainRegistrationReminderJob.perform_now
 
@@ -64,6 +64,19 @@ class DomainRegistrationReminderJobTest < ActiveJob::TestCase
 
   def test_reminders_are_not_sent_after_domain_has_not_been_registered
     @result.update!(status: "domain_not_registered")
+
+    three_days_before = @result.registration_due_date - 3
+    travel_to three_days_before
+
+    DomainRegistrationReminderJob.perform_now
+
+    @result.reload
+    refute(@result.registration_reminder_sent_at)
+  end
+
+  def test_time_is_configurable_via_setting
+    setting = settings(:domain_registration_reminder)
+    setting.update!(value: 2)
 
     three_days_before = @result.registration_due_date - 3
     travel_to three_days_before

@@ -1,7 +1,8 @@
 class DomainRegistrationReminderJob < ApplicationJob
   def perform
     results = Result.where(status: Result.statuses[:payment_received])
-                    .where('registration_due_date <= ?', Time.zone.today + 5)
+                    .where('registration_due_date <= ?',
+                           Time.zone.today + Setting.domain_registration_reminder_day)
                     .where('registration_reminder_sent_at IS NULL')
 
     results.map do |result|

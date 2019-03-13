@@ -48,14 +48,14 @@ auction_duration:
   description: |
     Number of hours for which an auction is created. You can also use 'end_of_day'
     for auctions to end at the end of the same calendar day. Default: 24.
-  value: 24
+  value: '24'
 
 registration_term:
   code: registration_term
   description: |
     Number of days before the auctioned domain must be registered, starting from
     the auction start. Default: 14
-  value: 14
+  value: '14'
 
 auctions_start_at:
   code: 'auctions_start_at'
@@ -69,3 +69,9 @@ ban_length:
   description: |
     Number of months for which a repeated offender is banned for. Default: 100
   value: '100'
+
+domain_registration_reminder:
+  code: 'domain_registration_reminder'
+  description: |
+    Number of days before which the registration reminder email is sent on. Default: 5
+  value: '5'
