@@ -26,9 +26,18 @@ module Registry
       result.update!(last_remote_status: result.status,
                      last_response: body_as_json,
                      registration_code: body_as_json[:registration_code])
+
+      send_registration_code
     end
 
     private
+
+    def send_registration_code
+      return unless result.status == Result.statuses[:payment_received]
+      return unless result.registration_code
+
+      ResultMailer.registration_code_email(result).deliver_later
+    end
 
     def result_already_reported?
       result.last_remote_status == result.status

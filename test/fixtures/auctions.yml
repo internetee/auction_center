@@ -23,6 +23,7 @@ with_invoice:
   starts_at: <%= Time.parse('2010-07-05 10:29 +0000') %>
   ends_at: <%= Time.parse('2010-07-05 10:30 +0000') %>
   uuid: "12af3158-4c15-4d16-a605-2915e9f98d69"
+  remote_id: "4efbce78-b5f2-4317-b150-18605e8119c3"
 
 orphaned:
   domain_name: 'orphaned.test'
