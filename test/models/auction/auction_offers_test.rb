@@ -37,6 +37,18 @@ class AuctionOffersTest < ActiveSupport::TestCase
     assert_nil(@other_persisted_auction.currently_winning_offer)
   end
 
+  def test_winning_offer_returns_the_earliest_offer_in_case_of_a_draw
+    expected_winning_offer = offers(:minimum_offer)
+    other_offer = offers(:high_offer)
+    some_time = Time.parse('2010-07-05 10:30 +0000')
+
+    expected_winning_offer.update!(created_at: some_time)
+    assert_equal(other_offer, @persisted_auction.currently_winning_offer)
+
+    other_offer.update!(cents: expected_winning_offer.cents, created_at: some_time + 1)
+    assert_equal(expected_winning_offer, @persisted_auction.currently_winning_offer)
+  end
+
   def test_highest_price_returns_money_object_or_nil
     auction = Auction.new(domain_name: 'some-domain.test')
     auction.starts_at = Time.now + 2.days
