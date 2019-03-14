@@ -34,12 +34,6 @@ class AdminAuctionsTest < ApplicationSystemTestCase
     end
   end
 
-  def test_result_creation_job_is_scheduled_automatically
-    assert_enqueued_with(job: ResultCreationJob) do
-      visit(admin_auctions_path)
-    end
-  end
-
   def test_page_has_result_link
     visit(admin_auction_path(@expired_auction))
     assert(page.has_link?('Result', href: admin_result_path(@expired_auction.result)))

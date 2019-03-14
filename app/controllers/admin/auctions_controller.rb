@@ -55,9 +55,7 @@ module Admin
     end
 
     def enqueue_jobs
-      ResultCreationJob.perform_later if ResultCreationJob.needs_to_run?
       ResultStatusUpdateJob.perform_later if ResultStatusUpdateJob.needs_to_run?
-      AuctionCreationJob.perform_later if AuctionCreationJob.needs_to_run?
       DomainRegistrationCheckJob.perform_later if DomainRegistrationCheckJob.needs_to_run?
     end
 
