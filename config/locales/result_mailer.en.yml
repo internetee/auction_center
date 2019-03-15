@@ -28,3 +28,13 @@ en:
       footer: |
         Best regards, <br>
         EIS
+
+    participant_email:
+      subject: "Auction for %{domain_name} has ended"
+      salutation: "Hi!"
+      text: |
+        Auction for for %{domain_name} has ended. Your bid did not win.
+
+      footer: |
+        Best regards, <br>
+        EIS

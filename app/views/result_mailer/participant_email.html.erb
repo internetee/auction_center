@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
+    </head>
+    <body>
+        <h1><%= t('.salutation') %></h1>
+        <p><%= t('.text', domain_name: @auction.domain_name) %></p>
+        <p><%= sanitize t('.footer') %></p>
+    </body>
+</html>
