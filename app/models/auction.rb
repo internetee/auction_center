@@ -48,7 +48,7 @@ class Auction < ApplicationRecord
   # needs an account in the auction center, so he deletes it. Now, offer B is the winner,
   # even if the domain was already registered to the user A.
   def currently_winning_offer
-    offers.where('user_id IS NOT NULL').order(cents: :desc, created_at: :desc).first
+    offers.where('user_id IS NOT NULL').order(cents: :desc, created_at: :asc).first
   end
 
   def current_price_from_user(user_id)

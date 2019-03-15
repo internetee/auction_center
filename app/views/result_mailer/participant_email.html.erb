@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
+    </head>
+    <body>
+        <h1><%= t('.salutation') %></h1>
+        <p><%= t('.text', domain_name: @auction.domain_name) %></p>
+        <p><%= link_to t('.link_title', domain_name: @auction.domain_name), auction_url(@auction.uuid) %></p>
+        <p><%= sanitize t('.footer') %></p>
+    </body>
+</html>

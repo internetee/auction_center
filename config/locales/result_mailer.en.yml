@@ -15,3 +15,26 @@ en:
       footer: |
         Best regards, <br>
         EIS
+
+    registration_code_email:
+      subject: "Registration code for %{domain_name} is now available"
+      salutation: "Hello, %{display_name}"
+      introduction: |
+        The registration code for %{domain_name} is now avaialable.
+      link_description: |
+        You have until %{registration_due_date} to register the domain, otherwise it will be auctioned again.
+        You can register the domain at any of the accredited registrars.
+      link_title: "Registration code"
+      footer: |
+        Best regards, <br>
+        EIS
+
+    participant_email:
+      subject: "Auction for %{domain_name} has ended"
+      salutation: "Hi!"
+      text: |
+        Auction for for %{domain_name} has ended. Your bid did not win.
+      link_title: "Auction for %{domain_name}"
+      footer: |
+        Best regards, <br>
+        EIS

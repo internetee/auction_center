@@ -3,4 +3,8 @@ class ResultMailerPreview < ActionMailer::Preview
   def winner_email
     ResultMailer.winner_email(Result.where("user_id IS NOT NULL").first)
   end
+
+  def registration_code_email
+    ResultMailer.registration_code_email(Result.where("registration_code IS NOT NULL").last)
+  end
 end

@@ -6,7 +6,7 @@
     <body>
         <h1><%= t('.salutation', display_name: @user.display_name) %></h1>
         <p><%= t('.introduction', domain_name: @auction.domain_name) %></p>
-        <p><%= t('.link_description', payment_date: I18n.l(Date.today + Setting.payment_term)) %></p>
+        <p><%= t('.link_description', registration_due_date: @result.registration_due_date) %></p>
         <p><%= link_to t('.link_title'), result_url(@result.uuid) %></p>
         <p><%= sanitize t('.footer') %></p>
     </body>

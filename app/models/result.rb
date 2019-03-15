@@ -9,9 +9,9 @@ class Result < ApplicationRecord
                  domain_registered: 'domain_registered',
                  domain_not_registered: 'domain_not_registered' }
 
-  belongs_to :auction, required: true, inverse_of: :result
-  belongs_to :user, required: false
-  belongs_to :offer, required: false
+  belongs_to :auction, optional: false, inverse_of: :result
+  belongs_to :user, optional: true
+  belongs_to :offer, optional: true
   has_one :invoice, required: false, dependent: :destroy
 
   scope :pending_invoice, lambda {
@@ -25,6 +25,13 @@ class Result < ApplicationRecord
 
   scope :pending_registration, lambda {
     where('status = ?', statuses[:payment_received])
+  }
+
+  scope :pending_registration_reminder, lambda {
+    where(status: Result.statuses[:payment_received])
+      .where('registration_due_date <= ?',
+             Time.zone.today + Setting.domain_registration_reminder_day)
+      .where('registration_reminder_sent_at IS NULL')
   }
 
   def self.create_from_auction(auction_id)

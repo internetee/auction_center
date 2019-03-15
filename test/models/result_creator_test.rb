@@ -89,12 +89,23 @@ class ResultCreatorTest < ActiveSupport::TestCase
     assert(ActionMailer::Base.deliveries.empty?)
   end
 
-  def test_creator_emails_winner_for_auction_with_offers
+  def test_creator_emails_particiapants_for_auction_with_offers
     result_creator = ResultCreator.new(@auction_with_offers.id)
     result_creator.call
 
     refute(ActionMailer::Base.deliveries.empty?)
     last_email = ActionMailer::Base.deliveries.last
+
+    assert_equal('Auction for with-offers.test has ended', last_email.subject)
+    assert_equal(['second_place@auction.test'], last_email.to)
+  end
+
+  def test_creator_emails_winner_for_auction_with_offers
+    result_creator = ResultCreator.new(@auction_with_offers.id)
+    result_creator.call
+
+    refute(ActionMailer::Base.deliveries.empty?)
+    last_email = ActionMailer::Base.deliveries.first
 
     assert_equal('You won an auction!', last_email.subject)
     assert_equal(['user@auction.test'], last_email.to)

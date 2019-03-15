@@ -19,6 +19,8 @@ class ResultCreator
 
     create_result
     send_email_to_winner
+    send_email_to_participants
+
     result
   end
 
@@ -32,6 +34,18 @@ class ResultCreator
 
   def result_already_present?
     auction.result.present?
+  end
+
+  def send_email_to_participants
+    return if result.status == Result.statuses[:no_bids]
+
+    recipients = User.joins(:offers)
+                     .where(offers: { auction_id: auction_id })
+                     .where('users.id <> ?', result.user_id)
+
+    recipients.each do |recipient|
+      ResultMailer.participant_email(recipient, auction).deliver_later
+    end
   end
 
   def send_email_to_winner
