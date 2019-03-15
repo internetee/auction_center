@@ -97,7 +97,7 @@ class ResultCreatorTest < ActiveSupport::TestCase
     last_email = ActionMailer::Base.deliveries.last
 
     assert_equal('Auction for with-offers.test has ended', last_email.subject)
-    assert_equal(['second_place@auction.test'], last_email.bcc)
+    assert_equal(['second_place@auction.test'], last_email.to)
   end
 
   def test_creator_emails_winner_for_auction_with_offers

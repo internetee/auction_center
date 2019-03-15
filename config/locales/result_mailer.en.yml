@@ -34,7 +34,7 @@ en:
       salutation: "Hi!"
       text: |
         Auction for for %{domain_name} has ended. Your bid did not win.
-
+      link_title: "Auction for %{domain_name}"
       footer: |
         Best regards, <br>
         EIS
