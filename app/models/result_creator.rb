@@ -40,8 +40,8 @@ class ResultCreator
     return if result.status == Result.statuses[:no_bids]
 
     recipients = User.joins(:offers)
-      .where(offers: { auction_id: auction_id })
-      .where('users.id <> ?', result.user_id)
+                     .where(offers: { auction_id: auction_id })
+                     .where('users.id <> ?', result.user_id)
 
     recipients.each do |recipient|
       ResultMailer.participant_email(recipient, auction).deliver_later
