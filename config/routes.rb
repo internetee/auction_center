@@ -29,7 +29,12 @@ Rails.application.routes.draw do
     end
     resources :jobs, only: %i[index create]
     resources :offers, only: [:show], concerns: [:auditable]
-    resources :results, only: %i[index create show], concerns: [:auditable]
+    resources :results, only: %i[index create show], concerns: [:auditable] do
+      collection do
+        post "search"
+      end
+    end
+
     resources :settings, except: %i[create destroy], concerns: [:auditable]
     resources :users, concerns: [:auditable] do
       collection do

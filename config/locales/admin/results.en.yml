@@ -5,6 +5,12 @@ en:
         title: "Auction results"
         auctions_needing_result: "These auctions have finished, but don't have a result yet:"
         create_results: "Create results"
+        search: "Search by domain name"
+
+      search:
+        title: "Auction search"
+        search: "Search by domain name"
+        limit: "Search results are limited to first %{limit} hits."
 
       show:
         title: "Auction result"

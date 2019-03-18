@@ -51,6 +51,16 @@ class AdminResultsTest < ApplicationSystemTestCase
     end
   end
 
+  def test_search_by_domain_name
+    visit(admin_results_path)
+
+    fill_in('domain_name', with: "expired")
+    find(:css, "i.arrow.right.icon").click
+
+    assert(page.has_link?('expired.test'))
+    assert(page.has_text?('Search results are limited to first 20 hits.'))
+  end
+
   def test_administrator_can_see_details_of_an_orphaned_result
     visit(admin_result_path(@orphaned_result))
     assert(page.has_table?('result-offers-table'))
