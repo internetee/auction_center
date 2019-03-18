@@ -12,6 +12,9 @@ en:
         title: "Users"
         new_user: "New user"
 
+      search:
+        title: "User search"
+
       show:
         title: User
         ban_this_user: "Ban this user"

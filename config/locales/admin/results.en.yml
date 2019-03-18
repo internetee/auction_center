@@ -6,5 +6,8 @@ en:
         auctions_needing_result: "These auctions have finished, but don't have a result yet:"
         create_results: "Create results"
 
+      search:
+        title: "Result search"
+
       show:
         title: "Auction result"

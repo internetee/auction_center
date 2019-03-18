@@ -12,7 +12,8 @@
             </div>
             <div class="field">
                 <%= f.label :mobile_phone, t('users.mobile_phone') %>
-                <%= f.telephone_field :mobile_phone, autofocus: true, autocomplete: "off" %>
+                <%= f.telephone_field :mobile_phone, autofocus: true, autocomplete: "off",
+                    placeholder: "+372xxxxxxxx" %>
             </div>
             <div class="field">
                 <%= f.label :given_names, t('users.given_names') %>

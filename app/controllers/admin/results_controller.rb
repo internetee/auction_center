@@ -17,10 +17,26 @@ module Admin
       end
     end
 
+    # POST /admin/results/search
+    def search
+      domain_name = search_params[:domain_name]
+
+      @results = Result.joins(:auction)
+                       .where('auctions.domain_name ILIKE ?', "%#{domain_name}%")
+                       .accessible_by(current_ability)
+                       .page(1)
+    end
+
     # GET /admin/results/1
     def show
       @result = Result.includes(:auction).find(params[:id])
       @offers = Offer.where(auction_id: @result.auction_id)
+    end
+
+    private
+
+    def search_params
+      params.permit(:domain_name)
     end
   end
 end

@@ -6,8 +6,24 @@
 
 <%= render 'top_grid' %>
 
+<div class="features-grid top narrow grey">
+    <div class="ui search">
+        <div class="ui massive input icon">
+            <%= form_with(url: search_auctions_path, local: true) do |f| %>
+                <div class="ui input icon">
+                    <%= f.text_field :domain_name, placeholder: t('.search') %>
+                </div>
+
+                <%= f.button(class: "ui icon primary button") do %>
+                    <i aria-hidden="true" class="arrow right icon"></i>
+                <% end %>
+            <% end %>
+        </div>
+    </div>
+</div>
+
 <div class="u-container">
-    <div class="margin-block">
+    <div class="margin-block narrow">
         <div class="grid one column">
             <div class="column">
                 <table class="ui table selectable unstackable fixed" id="auctions-table">

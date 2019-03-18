@@ -292,6 +292,10 @@ strong {
         text-align: center;
         margin-bottom: 40px;
     }
+
+    &.narrow {
+        margin: 0px 0 80px 0;
+    }
     .body {
         display: block;
         width: 420px;

@@ -29,6 +29,14 @@ module Admin
       @auctions = Auction.accessible_by(current_ability).order(ends_at: :desc).page(params[:page])
     end
 
+    def search
+      domain_name = search_params[:domain_name]
+
+      @auctions = Auction.where('domain_name ILIKE ?', "%#{domain_name}%")
+                         .accessible_by(current_ability)
+                         .page(1)
+    end
+
     # GET /admin/auctions/1
     def show
       @offers = @auction.offers.order(cents: :desc)
@@ -49,6 +57,10 @@ module Admin
     end
 
     private
+
+    def search_params
+      params.permit(:domain_name)
+    end
 
     def create_params
       params.require(:auction).permit(:domain_name, :starts_at, :ends_at)

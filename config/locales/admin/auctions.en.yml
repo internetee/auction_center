@@ -5,6 +5,9 @@ en:
         title: "Auctions"
         new_auction: "New auction"
 
+      search:
+        title: "Auction search"
+
       new:
         title: "New auction"
         errors: "prohibited this auction from being saved"

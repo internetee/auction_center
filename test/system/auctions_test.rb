@@ -26,6 +26,29 @@ class AuctionsTest < ApplicationSystemTestCase
     assert(page.has_link?('no-offers.test', href: auction_path(@other_auction.uuid)))
   end
 
+  def test_search_by_domain_name_finds_all_auctions_with_common_beggining
+    travel_back
+
+    visit('/')
+    fill_in('domain_name', with: "w")
+    find(:css, "i.arrow.right.icon").click
+
+    assert(page.has_link?('with-invoice.test'))
+    assert(page.has_link?('with-offers.test'))
+    assert(page.has_text?('Search results are limited to first 20 hits.'))
+  end
+
+  def test_search_does_not_find_auctions_by_top_level_domain
+    travel_back
+
+    visit('/')
+    fill_in('domain_name', with: ".test")
+    find(:css, "i.arrow.right.icon").click
+
+    refute(page.has_link?('with-invoice.test'))
+    refute(page.has_link?('with-offers.test'))
+  end
+
   def test_auctions_index_does_not_contain_auctions_that_are_finished
     visit('/')
 

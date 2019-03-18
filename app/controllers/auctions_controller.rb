@@ -4,7 +4,7 @@ class AuctionsController < ApplicationController
   before_action :authorize_user
   before_action :enqueue_create_results_jobs, only: :index
 
-  # GET /
+  # GET /auctions
   def index
     set_cors_header
 
@@ -14,6 +14,15 @@ class AuctionsController < ApplicationController
       format.html { @auctions = unpaginated_auctions.page(params[:page]) }
       format.json { @auctions = unpaginated_auctions }
     end
+  end
+
+  # POST /auctions/search
+  def search
+    domain_name = search_params[:domain_name]
+
+    @auctions = Auction.where('domain_name ILIKE ?', "#{domain_name}%")
+                       .accessible_by(current_ability)
+                       .page(1)
   end
 
   def cors_preflight_check
@@ -28,6 +37,10 @@ class AuctionsController < ApplicationController
   end
 
   private
+
+  def search_params
+    params.permit(:domain_name)
+  end
 
   def set_cors_header
     response.headers['Access-Control-Allow-Origin'] = request.headers['Origin']

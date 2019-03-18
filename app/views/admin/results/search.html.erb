@@ -22,36 +22,6 @@
 
 <div class="u-container">
     <div class="margin-block">
-        <div class="grid one column">
-            <% unless @auctions_needing_results.empty? %>
-                <div class="column">
-                    <%= form_with(url: admin_results_path) do |f| %>
-                        <%= f.submit t('.create_results'), class: "ui button primary" %>
-                    <% end %>
-                </div>
-
-                <div class="column">
-                    <h3><%= t('.auctions_needing_result') %></h3>
-                    <table class="ui table" id="auctions-needing-results-table">
-                        <thead>
-                            <tr>
-                                <th scope="col"><%= t('auctions.domain_name') %></th>
-                                <th scope="col"><%= t('auctions.finished_at') %></th>
-                            </tr>
-                        </thead>
-
-                        <tbody id="auctions-needing-results-table">
-                            <% @auctions_needing_results.each do |auction| %>
-                                <tr class="auctions-needing-results-table-row">
-                                    <td><%= auction.domain_name %></td>
-                                    <td><%= I18n.l(auction.ends_at) %></td>
-                                </tr>
-                            <% end %>
-                        </tbody>
-                    </table>
-                </div>
-            <% end %>
-
             <div class="column">
                 <table class="ui table" id="results-table">
                     <thead>
@@ -82,7 +52,7 @@
                 </table>
             </div>
 
-            <%= paginate @results %>
+            <h4><%= t('search_limit', limit: Kaminari.config.default_per_page)%></h4>
         </div>
     </div>
 </div>
