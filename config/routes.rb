@@ -14,7 +14,12 @@ Rails.application.routes.draw do
   end
 
   namespace :admin, constraints: Constraints::Administrator.new do
-    resources :auctions, except: disallowed_auction_actions, concerns: [:auditable]
+    resources :auctions, except: disallowed_auction_actions, concerns: [:auditable] do
+      collection do
+        post "search"
+      end
+    end
+
     resources :bans, except: %i[new show edit update], concerns: [:auditable]
     resources :billing_profiles, only: :index, concerns: [:auditable]
     resources :invoices, only: %i[index show], concerns: [:auditable]
