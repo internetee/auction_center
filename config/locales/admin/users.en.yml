@@ -11,6 +11,13 @@ en:
       index:
         title: "Users"
         new_user: "New user"
+        search: "Search by email"
+
+      search:
+        title: "Users"
+        new_user: "New user"
+        search: "Search by email"
+        limit: "Search results are limited to first %{limit} hits."
 
       show:
         title: User

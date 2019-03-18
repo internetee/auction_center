@@ -27,7 +27,11 @@ Rails.application.routes.draw do
     resources :offers, only: [:show], concerns: [:auditable]
     resources :results, only: %i[index create show], concerns: [:auditable]
     resources :settings, except: %i[create destroy], concerns: [:auditable]
-    resources :users, concerns: [:auditable]
+    resources :users, concerns: [:auditable] do
+      collection do
+        post "search"
+      end
+    end
   end
 
   devise_scope :user do

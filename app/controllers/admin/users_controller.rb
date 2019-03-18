@@ -3,7 +3,7 @@ require 'countries'
 module Admin
   class UsersController < BaseController
     before_action :authorize_user
-    before_action :set_user, except: %i[index new create]
+    before_action :set_user, except: %i[index new create search]
     before_action :set_phone_confirmation_toggle, only: %i[index show]
 
     # GET /admin/users/new
@@ -14,6 +14,14 @@ module Admin
     # GET /admin/users
     def index
       @users = User.all.order(created_at: :desc).page(params[:page])
+    end
+
+    def search
+      email = search_params[:email]
+
+      @users = User.where('email ILIKE ?', "%#{email}%")
+                   .accessible_by(current_ability)
+                   .page(1)
     end
 
     # POST /admin/users
@@ -67,6 +75,10 @@ module Admin
     end
 
     private
+
+    def search_params
+      params.permit(:email)
+    end
 
     def create_params
       params.require(:user)
