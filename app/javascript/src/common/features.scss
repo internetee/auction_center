@@ -27,6 +27,13 @@
         padding-bottom: 80px;
         color: $true-white;
         text-align: center;
+
+        &.narrow {
+            margin-top: 0px;
+            padding-top: 30px;
+            padding-bottom: 15px;
+        }
+
         .overview {
             padding: 25px 0;
             box-shadow: 0 0 40px 0 rgba($true-black, 0.20);

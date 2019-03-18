@@ -1,4 +1,4 @@
-require 'constraints/administrator'
+require "constraints/administrator"
 
 disallowed_auction_actions = if Feature.registry_integration_enabled?
                                %i[new create edit update destroy]
@@ -7,7 +7,7 @@ disallowed_auction_actions = if Feature.registry_integration_enabled?
                              end
 
 Rails.application.routes.draw do
-  root to: 'auctions#index'
+  root to: "auctions#index"
 
   concern :auditable do
     resources :versions, only: :index
@@ -32,12 +32,16 @@ Rails.application.routes.draw do
     match "/auth/tara/create", via: [:post], to: "auth/tara#create", as: :tara_create
   end
 
-  devise_for :users, path: 'sessions', controllers: { confirmations: 'email_confirmations' }
+  devise_for :users, path: "sessions", controllers: { confirmations: "email_confirmations" }
 
   resources :auctions, only: %i[index show], param: :uuid do
+    collection do
+      post "search"
+    end
+
     resources :offers, only: %i[new show create edit update destroy], shallow: true, param: :uuid
   end
-  match '*auctions', controller: 'auctions', action: 'cors_preflight_check', via: [:options]
+  match "*auctions", controller: "auctions", action: "cors_preflight_check", via: [:options]
 
   resources :billing_profiles, param: :uuid
 

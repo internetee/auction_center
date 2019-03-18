@@ -48,7 +48,7 @@
                                     <%- if auction.offer_from_user(current_user).present? %>
                                         <%= link_to t('auctions.edit_your_offer'),
                                         edit_offer_path(auction.offer_from_user(current_user).uuid) %>
-                                    <% else %>
+                                    <% elsif auction.in_progress? %>
                                         <%= link_to t('auctions.submit_offer'),
                                         new_auction_offer_path(auction_uuid: auction.uuid) %>
                                     <% end %>
@@ -58,10 +58,7 @@
                     </tbody>
                 </table>
             </div>
-
-            <div class="column">
-                <%= paginate @auctions %>
-            </div>
         </div>
+        <h4><%= t('.limit', limit: Kaminari.config.default_per_page)%></h4>
     </div>
 </div>
