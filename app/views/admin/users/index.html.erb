@@ -9,7 +9,7 @@
         <div class="ui massive input icon">
             <%= form_with(url: search_admin_users_path, local: true) do |f| %>
                 <div class="ui input icon">
-                    <%= f.text_field :email, placeholder: t('.search') %>
+                    <%= f.text_field :email, placeholder: t('search_by_email') %>
                 </div>
 
                 <%= f.button(class: "ui icon primary button") do %>

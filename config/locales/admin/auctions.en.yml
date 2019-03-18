@@ -8,8 +8,6 @@ en:
 
       search:
         title: "Auction search"
-        search: "Search by domain name"
-        limit: "Search results are limited to first %{limit} hits."
 
       new:
         title: "New auction"
