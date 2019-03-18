@@ -75,6 +75,11 @@ en:
   invalid: "invalid"
   not_accepted: "Not accepted"
 
+
+  search_by_domain_name: "Search by domain name"
+  search_by_email: "Search by email"
+  search_limit: "Search results are limited to first %{limit} hits."
+
   time:
     formats:
       default: "%Y-%m-%d %H:%M"
