@@ -20,7 +20,6 @@ before_install:
   - "sudo ln -s /usr/local/share/chromedriver /usr/local/bin/chromedriver"
 
 install:
-  - gem install bundler
   - bundle install
   - nvm install
   - npm i -g yarn
