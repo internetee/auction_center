@@ -3,6 +3,12 @@ en:
     invoices:
       index:
         title: "Invoices"
+        search: "Search by user's email"
+
+      search:
+        title: "Invoices"
+        search: "Search by user's email"
+        limit: "Search results are limited to first %{limit} hits."
 
       show:
         title: "Invoice no. %{invoice_number}"

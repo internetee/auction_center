@@ -18,6 +18,16 @@ class AdminInvoicesTest < ApplicationSystemTestCase
     travel_back
   end
 
+  def test_search_by_users_email
+    visit admin_invoices_path
+
+    fill_in('email', with: '.test')
+    find(:css, "i.arrow.right.icon").click
+
+    assert(page.has_link?('ACME Inc.'))
+    assert(page.has_text?('Search results are limited to first 20 hits.'))
+  end
+
   def test_invoice_list_contains_all_invoices
     visit admin_invoices_path
 

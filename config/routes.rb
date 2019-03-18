@@ -22,7 +22,11 @@ Rails.application.routes.draw do
 
     resources :bans, except: %i[new show edit update], concerns: [:auditable]
     resources :billing_profiles, only: :index, concerns: [:auditable]
-    resources :invoices, only: %i[index show], concerns: [:auditable]
+    resources :invoices, only: %i[index show], concerns: [:auditable] do
+      collection do
+        post "search"
+      end
+    end
     resources :jobs, only: %i[index create]
     resources :offers, only: [:show], concerns: [:auditable]
     resources :results, only: %i[index create show], concerns: [:auditable]
