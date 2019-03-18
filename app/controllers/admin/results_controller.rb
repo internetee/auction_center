@@ -22,10 +22,9 @@ module Admin
       domain_name = search_params[:domain_name]
 
       @results = Result.joins(:auction)
-                         .where('auctions.domain_name ILIKE ?', "%#{domain_name}%")
-                         .accessible_by(current_ability)
-                         .page(1)
-
+                       .where('auctions.domain_name ILIKE ?', "%#{domain_name}%")
+                       .accessible_by(current_ability)
+                       .page(1)
     end
 
     # GET /admin/results/1
