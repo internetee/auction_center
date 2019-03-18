@@ -4,7 +4,6 @@ en:
       index:
         title: "Auctions"
         new_auction: "New auction"
-        search: "Search by domain name"
 
       search:
         title: "Auction search"
