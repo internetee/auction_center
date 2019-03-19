@@ -1,0 +1,16 @@
+et:
+  phone_confirmations:
+    instructions: "Your confirmation code is: %{code}"
+    invalid_code: "Invalid code"
+    confirmation_required: "You need to confirm your phone number before making an offer"
+
+    new:
+      title: "Confirm your phone number"
+      subheader: "We sent a four digit code to %{number}"
+      instructions: |
+        Enter it below and click submit to confirm your mobile phone.
+        It can take up to a few minutes for the code to be delivered.
+      already_confirmed: "Your phone number has already been confirmed."
+
+    create:
+      confirmed: "Your phone number has been confirmed. You can now submit offers."

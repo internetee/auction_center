@@ -1,0 +1,18 @@
+et:
+  domain_registration_mailer:
+    registration_reminder_email:
+      subject: "Domain %{domain_name} is still not registered"
+      salutation: "Hello, %{display_name}"
+      introduction_html: |
+        Please register your domain <strong>%{domain_name}</strong>
+        before <strong>%{registration_due_date}</strong>.
+        Depending on your registrar of choice, the registration can be a manual
+        process that takes a few business days.
+
+      details: |
+        To register a domain, provide an accredited registar with the registration code.
+        You can find the registration behind the following link.
+      link_title: "Registration code"
+      footer: |
+        Best regards, <br>
+        EIS

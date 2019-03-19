@@ -1,0 +1,39 @@
+et:
+  admin:
+    users:
+      new:
+        title: "New user"
+        identification_data: 'Identification data'
+        contact_data: 'Contact data'
+        roles: 'Roles'
+        errors: "prohibited this user from being saved"
+
+      index:
+        title: "Users"
+        new_user: "New user"
+
+      search:
+        title: "User search"
+
+      show:
+        title: User
+        ban_this_user: "Ban this user"
+
+      form:
+        password_requirements: "at least %{minimum} characters"
+        sign_up: "Sign up"
+        contact_data: "Contact data"
+        personal_data: "Personal data"
+        new_password: "New password"
+        you_can_leave_blank: "leave blank if you don't want to change it"
+        we_need_your_password: "we need your current password to confirm your changes)"
+        roles: 'Roles'
+
+      edit:
+        title: "Edit user"
+        contact_data: "Contact data"
+        personal_data: "Personal data"
+        new_password: "New password"
+        you_can_leave_blank: "You can leave this field blank"
+        roles: "Roles"
+        errors: "prohibited this user from being saved"

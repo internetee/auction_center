@@ -1,0 +1,5 @@
+et:
+  admin:
+    bans:
+      index:
+        title: "Bans"
