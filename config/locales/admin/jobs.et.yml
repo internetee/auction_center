@@ -2,8 +2,8 @@ et:
   admin:
     jobs:
       index:
-        title: "Periodic jobs"
+        title: "Perioodilised tegevused"
 
       create:
-        enqueued: "Job enqueued."
-        tampering: "Tampering detected. You are signed out and the incident is reported."
+        enqueued: "Tegevus on järjekorda pandud."
+        tampering: "Avastatud urkimine. Oled välja logitud ja intsidendist on teatatud."

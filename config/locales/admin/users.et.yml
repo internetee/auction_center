@@ -2,38 +2,38 @@ et:
   admin:
     users:
       new:
-        title: "New user"
-        identification_data: 'Identification data'
-        contact_data: 'Contact data'
-        roles: 'Roles'
-        errors: "prohibited this user from being saved"
+        title: "Uus kasutaja"
+        identification_data: 'Identifitseerimisandmed'
+        contact_data: 'Kontaktandmed'
+        roles: 'Rollid'
+        errors: "seda kasutajat ei saa salvestada"
 
       index:
-        title: "Users"
-        new_user: "New user"
+        title: "Kasutajad"
+        new_user: "Uus kasutaja"
 
       search:
         title: "User search"
 
       show:
-        title: User
-        ban_this_user: "Ban this user"
+        title: "Kasutaja"
+        ban_this_user: "Keela see kasutaja"
 
       form:
-        password_requirements: "at least %{minimum} characters"
-        sign_up: "Sign up"
-        contact_data: "Contact data"
-        personal_data: "Personal data"
-        new_password: "New password"
-        you_can_leave_blank: "leave blank if you don't want to change it"
-        we_need_your_password: "we need your current password to confirm your changes)"
-        roles: 'Roles'
+        password_requirements: "vähemalt %{minimum} tähemärki"
+        sign_up: "Registreeru"
+        contact_data: "Kontaktandmed"
+        personal_data: "Isikuandmed"
+        new_password: "Uus salasõna"
+        you_can_leave_blank: "kui ei soovi muuta, jäta tühjaks"
+        we_need_your_password: "(muudatuste kinnitamiseks vajame kehtivat salasõna)"
+        roles: 'Rollid'
 
       edit:
-        title: "Edit user"
-        contact_data: "Contact data"
-        personal_data: "Personal data"
-        new_password: "New password"
-        you_can_leave_blank: "You can leave this field blank"
-        roles: "Roles"
+        title: "Muuda kasutajat"
+        contact_data: "Kontaktandmed"
+        personal_data: "Isikuandmed"
+        new_password: "Uus salasõna"
+        you_can_leave_blank: "kui ei soovi muuta, jäta tühjaks"
+        roles: 'Rollid'
         errors: "prohibited this user from being saved"

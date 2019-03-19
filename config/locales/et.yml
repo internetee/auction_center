@@ -50,16 +50,16 @@ et:
   job_enqueued: "Tegevus on järjekorras. Kontrolli tulemusi mõne minuti pärast."
 
   versions:
-    action: 'Action'
-    recorded_at: 'Recorded at'
-    new_values: 'New values'
+    action: 'Tegevus'
+    recorded_at: 'Salvestatud'
+    new_values: 'Uued väärtused'
 
-  created_at: "Created at"
-  updated_at: "Updated at"
+  created_at: "Loodud"
+  updated_at: "Muudetud"
 
-  is_invalid: "is invalid"
-  invalid: "invalid"
-  not_accepted: "Not accepted"
+  is_invalid: "vale"
+  invalid: "vale"
+  not_accepted: "Tagasi lükatud"
 
   search_by_domain_name: "Search by domain name"
   search_by_email: "Search by email"

@@ -2,9 +2,9 @@ et:
   admin:
     results:
       index:
-        title: "Auction results"
-        auctions_needing_result: "These auctions have finished, but don't have a result yet:"
-        create_results: "Create results"
+        title: "Oksjoni tulemused"
+        auctions_needing_result: "Oksjonid on lõppenud, kuid tulemused ei ole veel teada:"
+        create_results: "Loo tulemused"
 
       search:
         title: "Result search"

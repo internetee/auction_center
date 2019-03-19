@@ -2,10 +2,10 @@ et:
   admin:
     settings:
       index:
-        title: "Settings"
+        title: "Seaded"
 
       edit:
-        title: "Edit Setting"
+        title: "Muuda seadeid"
 
       show:
-        title: "Setting"
+        title: "Seaded"
