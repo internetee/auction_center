@@ -14,8 +14,7 @@ et:
     show:
       title: "Sinu pakkumus"
       we_will_contact_winner: |
-        Once the auction time has ended, we will send an email to
-        the auction winner.
+        Kui oksjon on lõppenud, saadameoksjoni võitjale e-kirja aadressile
 
     edit:
       title: "Muuda pakkumust"

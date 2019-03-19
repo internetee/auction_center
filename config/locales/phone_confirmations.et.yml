@@ -8,8 +8,8 @@ et:
       title: "Kinnita oma telefoninumber"
       subheader: "Sulle on saadetud neljakohaline kood numbrile %{number}"
       instructions: |
-        Enter it below and click submit to confirm your mobile phone.
-        It can take up to a few minutes for the code to be delivered.
+        Sisesta kood siia ja klõpsa „esita“ mobiilinumbri kinnitamiseks.
+        Koodi saatmine võib võtta mitu minutit
       already_confirmed: "Sinu telefoninumber on juba kinnitatud."
 
     create:

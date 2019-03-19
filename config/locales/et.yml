@@ -41,7 +41,9 @@ et:
   user: "Kasutaja"
   deleted_user: "Kasutaja kustutatud"
   banned: |
-    Sul on keelatud osaleda kuni %{valid_until}; sa ei saa oma kasutajaandmeid muuta.
+    Sul on keelatud oksjonitel osaleda kuni %{valid_until};
+    sa ei saa oma kasutajaandmeid muuta või
+    osaleda domeeni %{domain_name oksjonitel.
   any: "kõik"
 
   my_offers: "Minu pakkumused"

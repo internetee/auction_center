@@ -34,7 +34,7 @@
                                 <%- if offer.auction.finished? %>
                                     <%- if offer.result %>
                                         <%= t('.you_won') %>
-                                    <% else %>
+                                    <%- elsif offer.auction&.result && !offer.result %>
                                         <%= t('.you_lost') %>
                                     <% end %>
                                 <% else %>
