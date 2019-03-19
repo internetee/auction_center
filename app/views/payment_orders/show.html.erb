@@ -1,18 +1,30 @@
 <% content_for :hero do %>
     <div class="hero green">
-        <h1><%= t('.you_are_being_redirected') %></h1>
+        <h1><%= t('.please_wait') %></h1>
     </div>
 <% end %>
 
 <div class="u-container">
     <div class="margin-block">
-        <div class="hidden form">
-            <%= form_with(url: @payment_order.form_url, local: true, id: 'payment-order-form') do |f| %>
-                <%- @payment_order.form_fields.each do |k, v| %>
-                    <%= f.hidden_field k, value: v %>
-                <% end %>
-                <%= f.submit t(:submit) %>
-            <% end %>
+        <div class="ui one column doubling stackable grid">
+            <div class="column">
+                <div class="margin-block narrow">
+                    <div class="ui active inverted dimmer">
+                        <div class="ui loader text"><%= t('.you_are_being_redirected') %></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="column">
+                <div class="hidden form">
+                    <%= form_with(url: @payment_order.form_url, local: true, id: 'payment-order-form') do |f| %>
+                        <%- @payment_order.form_fields.each do |k, v| %>
+                            <%= f.hidden_field k, value: v %>
+                        <% end %>
+                        <%= f.submit t(:submit) %>
+                    <% end %>
+                </div>
+            </div>
         </div>
     </div>
 </div>
