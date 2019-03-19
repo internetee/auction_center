@@ -97,7 +97,7 @@ class User < ApplicationRecord
 
   # Make sure that notifications are send asynchronously
   def send_devise_notification(notification, *args)
-    I18n.with_locale(self.locale) do
+    I18n.with_locale(locale) do
       devise_mailer.send(notification, self, *args).deliver_later
     end
   end

@@ -10,10 +10,7 @@ class OffersController < ApplicationController
     auction = Auction.find_by!(uuid: params[:auction_uuid])
 
     offer = auction.offer_from_user(current_user.id)
-
-    if offer
-      redirect_to edit_offer_path(offer.uuid), notice: t('offers.already_exists')
-    end
+    redirect_to edit_offer_path(offer.uuid), notice: t('offers.already_exists') if offer
 
     BillingProfile.create_default_for_user(current_user.id)
     @offer = Offer.new(auction_id: auction.id, user_id: current_user.id)
