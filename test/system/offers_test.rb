@@ -64,6 +64,14 @@ class OffersTest < ApplicationSystemTestCase
     assert_text('You need to sign in or sign up before continuing')
   end
 
+  def test_gets_redirected_to_an_offer_if_one_exists
+    sign_in(@user)
+    visit new_auction_offer_path(@valid_auction.uuid)
+
+    assert_text('You already have an offer for this auction.')
+    assert_equal(edit_offer_path(@offer.uuid), current_path)
+  end
+
   def test_participant_can_submit_an_offer_for_pending_auction
     sign_in(@user)
     visit auction_path(@valid_auction_with_no_offers.uuid)
