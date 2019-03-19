@@ -1,68 +1,62 @@
 et:
   auctions:
     domain_name: 'Domain name'
-    starts_at: 'Starts at'
-    ends_at: 'Ends at'
-    finished: "This auction has finished"
-    highest_price: "Highest price"
-    offers: "Offers"
-    offer_actions: "Offer actions"
-    your_current_price: "Your current offer"
+    starts_at: 'Algus'
+    ends_at: 'Lõpp'
+    finished: "Oksjon on lõppenud"
+    highest_price: "Kõrgeim hind"
+    offers: "Pakkumused"
+    offer_actions: "Pakkumistegevused"
+    your_current_price: "Sinu pakkumus"
 
-    still_in_progress: "Still in progress"
+    still_in_progress: "Töötlemisel"
 
-    submit_offer: "Submit offer"
-    edit_your_offer: "Edit your offer"
+    submit_offer: "Esita pakkumus"
+    edit_your_offer: "Muuda pakkumust"
 
     show:
-      title: "Auction details"
+      title: "Oksjoni andmed"
 
     index:
       title: "Oksjonid"
-      search: "Search by domain name"
+      search: "Domeeni otsing"
 
     search:
-      title: "Auction search"
-      search: "Search by domain name"
-      limit: "Search results are limited to first %{limit} hits."
+      title: "Otsing"
+      search: "Domeeni otsing"
 
     top_grid:
-      title: "Domeene oksjonil:"
-      1_step_header: "Submit an offer"
+      title: "Oksjonil olevad domeenid:"
+      1_step_header: "Esita pakkumus"
       1_step_explanation: |
-        you can change or remove offers at any time during the auction.
-        Offers are confidential.
+        Oksjoni ajal saad pakkumusi igal ajal muuta või eemaldada.
 
-      2_step_header: "Wait for auction to end"
+      2_step_header: "Oota oksjoni lõppemiseni"
       2_step_explanation: |
-        If your offer was the biggest, we will let you know by email.
+        Kui sinu pakkutud hind oli kõrgeim, teatame sellest sulle e-kirjaga.
 
-      3_step_header: "Pay auction fee"
+      3_step_header: "Maksa oksjonitasu"
       3_step_explanation: |
         Once the fee is paid, you will receive a registration code that you
         can use at any accredited registrar.
 
-      footer_html: "Read more from our %{link} page."
-      footer_link: "terms and conditions"
+      footer_html: "Loe lisaks meie %{link} leheküljelt."
+      footer_link: "tingimused"
 
     bottom_grid:
-      title: "Auction rules"
-      1_step_header: "Blind auction"
+      title: "Oksjoni eeskirjad"
+      1_step_header: "Pimeoksjon"
       1_step_explanation: |
-        Offers are confidential, participants do not see how many offers have been made
-        and with what price.
+        Pakkumised on konfidentsiaalsed, osalejad ei näe, mitu pakkumust on esitatud.
 
-      2_step_header: "Winning an auction"
+      2_step_header: "Oksjoni võitmine"
       2_step_explanation: |
-        Once you have won an auction, you should pay the invoice within 7 calendar days.
-        After that, you have 14 days to register the domains with a registrar of your choice.
+        Kui oled võitnud oksjoni, tuleb arve tasuda 7 kalendripäeva jooksul.
 
-      3_step_header: "Changing an offer"
+      3_step_header: "Pakkumuse muutmine"
       3_step_explanation: |
-        During the auction, you can adjust your offer at any point.
+        Saad pakkumust oksjoni jooksul igal ajal muuta.
 
-      4_step_header: "Withdrawing an offer"
+      4_step_header: "Pakkumuse tagasivõtmine"
       4_step_explanation: |
-        If you no longer want to participate in an auction, you can withdraw your offer
-        at any point, as long as the auction is still in progress. Once the action has ended,
-        you cannot withdraw your offer.
+        Kui sa ei soovi enam oksjonil osaleda, võid oma pakkumuse tagasi võtta.
