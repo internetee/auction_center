@@ -28,7 +28,7 @@ et:
       password_change:
         subject: "Salasõna muudetud"
     omniauth_callbacks:
-      failure: "Ei saanud autentida %{kind} , kuna \%{reason}\."
+      failure: "Ei saanud autentida %{kind} , kuna \"%{reason}\"."
       success: "Autentimine %{kind} kontolt."
     passwords:
       no_token: "Juurdepääs ainult salasõna lähtestamise e-kirjaga. Kui kasutasid salasõna lähtestamise e-kirja, kontrolli, et kasutasid tervet URL-i."
