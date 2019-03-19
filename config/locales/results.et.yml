@@ -1,0 +1,16 @@
+et:
+  results:
+    buyer: "Ostja"
+    sold: "Müüdud"
+    invoice: "Arve"
+    registration_code: "Registreerimiskood"
+    register_before: "Registreeru enne"
+    pay_invoice_before: "Tasu arve enne"
+    status: "Staatus"
+    registration_due_date: "Registreerimise tähtpäev"
+
+    show:
+      title: "Oled võitnud oksjoni"
+      only_available_after_paying_invoice: "Koodi saamiseks tuleb tasuda arve."
+      domain_already_registered: "Koodi on juba kasutatud."
+      paid: "Makstud"
