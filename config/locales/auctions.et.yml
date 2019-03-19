@@ -1,6 +1,6 @@
 et:
   auctions:
-    domain_name: 'Domain name'
+    domain_name: 'Domeeninimi'
     starts_at: 'Algus'
     ends_at: 'Lõpp'
     finished: "Oksjon on lõppenud"
