@@ -97,7 +97,9 @@ class User < ApplicationRecord
 
   # Make sure that notifications are send asynchronously
   def send_devise_notification(notification, *args)
-    devise_mailer.send(notification, self, *args).deliver_later
+    I18n.with_locale(self.locale) do
+      devise_mailer.send(notification, self, *args).deliver_later
+    end
   end
 
   def tampered_with?(omniauth_hash)
