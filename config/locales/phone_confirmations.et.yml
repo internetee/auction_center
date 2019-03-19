@@ -1,16 +1,16 @@
 et:
   phone_confirmations:
-    instructions: "Your confirmation code is: %{code}"
-    invalid_code: "Invalid code"
-    confirmation_required: "You need to confirm your phone number before making an offer"
+    instructions: "Sinu kinnituskood on  %{code}"
+    invalid_code: "Vale kood"
+    confirmation_required: "Enne pakkumuse esitamist kinnita oma telefoninumber"
 
     new:
-      title: "Confirm your phone number"
-      subheader: "We sent a four digit code to %{number}"
+      title: "Kinnita oma telefoninumber"
+      subheader: "Sulle on saadetud neljakohaline kood numbrile %{number}"
       instructions: |
         Enter it below and click submit to confirm your mobile phone.
         It can take up to a few minutes for the code to be delivered.
-      already_confirmed: "Your phone number has already been confirmed."
+      already_confirmed: "Sinu telefoninumber on juba kinnitatud."
 
     create:
-      confirmed: "Your phone number has been confirmed. You can now submit offers."
+      confirmed: "Sinu telefoninumber on kinnitatud. Võid esitada pakkumusi."
