@@ -1,0 +1,31 @@
+et:
+  offers:
+    auction: "Oksjon"
+    price: "Hind"
+    i_accept_terms_and_conditions: "Nõustun tingimustega"
+    price_in_currency: "%{price} €"
+    price_is_without_vat: "Pakkumus ei sisalda käibemaksu."
+    already_exists: "You already have an offer for this auction."
+    errors: "seda pakkumust ei saa salvestada"
+
+    new:
+      title: "Uus pakkumus"
+
+    show:
+      title: "Sinu pakkumus"
+      we_will_contact_winner: |
+        Once the auction time has ended, we will send an email to
+        the auction winner.
+
+    edit:
+      title: "Muuda pakkumust"
+
+    index:
+      your_last_offer: "Sinu viimane pakkumus"
+      claim_your_domain: "Võta domeen"
+      you_won: "Oled võitnud"
+      you_lost: "Teine pakkuja võitis"
+
+    form:
+      bidder: "Pakkuja"
+      offer: "Pakkumus"

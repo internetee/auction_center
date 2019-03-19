@@ -1,0 +1,9 @@
+et:
+  admin:
+    jobs:
+      index:
+        title: "Perioodilised tegevused"
+
+      create:
+        enqueued: "Tegevus on järjekorda pandud."
+        tampering: "Avastatud urkimine. Oled välja logitud ja intsidendist on teatatud."

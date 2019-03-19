@@ -1,0 +1,11 @@
+et:
+  admin:
+    invoices:
+      index:
+        title: "Invoices"
+
+      search:
+        title: "Invoice search"
+
+      show:
+        title: "Invoice no. %{invoice_number}"

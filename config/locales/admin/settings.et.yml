@@ -1,0 +1,11 @@
+et:
+  admin:
+    settings:
+      index:
+        title: "Seaded"
+
+      edit:
+        title: "Muuda seadeid"
+
+      show:
+        title: "Seaded"

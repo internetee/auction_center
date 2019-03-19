@@ -16,7 +16,7 @@ class LocaleTest < ApplicationSystemTestCase
     assert(page.has_link?('Eesti keeles'))
 
     click_link('Eesti keeles')
-    assert_text('Domeene oksjonil')
+    assert_text('Oksjonil olevad domeenid')
     refute(page.has_link?('Eesti keeles'))
   end
 
@@ -33,7 +33,7 @@ class LocaleTest < ApplicationSystemTestCase
     check_checkbox('user[accepts_terms_and_conditions]')
 
     fill_in('user[surname]', with: 'Last Name')
-    click_link_or_button('Sign up')
+    click_link_or_button('Registreeru')
 
     user = User.find_by(email: 'new-user@auction.test')
     assert_equal('et', user.locale)
@@ -45,7 +45,7 @@ class LocaleTest < ApplicationSystemTestCase
 
     visit root_path
     click_link('Eesti keeles')
-    assert_text('Domeene oksjonil')
+    assert_text('Oksjonil olevad domeenid')
     @user.reload
 
     assert_equal('et', @user.locale)

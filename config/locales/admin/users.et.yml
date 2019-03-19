@@ -1,0 +1,39 @@
+et:
+  admin:
+    users:
+      new:
+        title: "Uus kasutaja"
+        identification_data: 'Identifitseerimisandmed'
+        contact_data: 'Kontaktandmed'
+        roles: 'Rollid'
+        errors: "seda kasutajat ei saa salvestada"
+
+      index:
+        title: "Kasutajad"
+        new_user: "Uus kasutaja"
+
+      search:
+        title: "User search"
+
+      show:
+        title: "Kasutaja"
+        ban_this_user: "Keela see kasutaja"
+
+      form:
+        password_requirements: "vähemalt %{minimum} tähemärki"
+        sign_up: "Registreeru"
+        contact_data: "Kontaktandmed"
+        personal_data: "Isikuandmed"
+        new_password: "Uus salasõna"
+        you_can_leave_blank: "kui ei soovi muuta, jäta tühjaks"
+        we_need_your_password: "(muudatuste kinnitamiseks vajame kehtivat salasõna)"
+        roles: 'Rollid'
+
+      edit:
+        title: "Muuda kasutajat"
+        contact_data: "Kontaktandmed"
+        personal_data: "Isikuandmed"
+        new_password: "Uus salasõna"
+        you_can_leave_blank: "kui ei soovi muuta, jäta tühjaks"
+        roles: 'Rollid'
+        errors: "prohibited this user from being saved"

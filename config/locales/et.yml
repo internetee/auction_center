@@ -1,68 +1,69 @@
 et:
-  new: "New"
-  back: "Back"
-  update: "Update"
-  edit: "Edit"
-  submit: "Submit"
-  delete: "Delete"
+  new: "Uus"
+  back: "Tagasi"
+  update: "Uuenda"
+  edit: "Muuda"
+  submit: "Esita"
+  delete: "Kustuta"
 
   in_local_language: "Eesti keeles"
 
-  created: "Created successfully."
-  updated: "Updated successfully."
-  deleted: "Deleted successfully."
-  are_you_sure: "Are you sure?"
-  confirm: "Confirm"
+  created: "Loodud."
+  updated: "Uuendatud."
+  deleted: "Kustutatud."
+  are_you_sure: "Oled kindel?"
+  confirm: "Kinnita"
 
-  billing: "Billing"
-  new_billing_profile: "New billing profile"
+  billing: "Arveldamine"
+  new_billing_profile: "Uus arve aadress"
 
-  profile: "Profile"
-  sign_in: "Sign in"
-  sign_out: "Sign out"
-  forgot_your_password: "Forgot your password?"
-  change_your_password: "Change your password"
+  profile: "Kasutaja konto"
+  sign_in: "Logi sisse"
+  sign_out: "Logi välja"
+  forgot_your_password: "Unustasid salasõna?"
+  change_your_password: "Muuda salasõna"
 
-  'yes': "Yes"
-  'no': "No"
+  'yes': "Jah"
+  'no': "Ei"
 
-  auctions_name: "Auctions"
-  billing_profiles_name: "Billing Profiles"
-  settings_name: "Settings"
-  users_name: "Users"
-  results_name: "Results"
-  result_name: "Result"
-  versions_name: "Versions"
-  offers_name: "Offers"
-  invoices_name: "Invoices"
-  jobs_name: "Jobs"
+  auctions_name: "Oksjonid"
+  billing_profiles_name: "Arve aadressid"
+  settings_name: "Seadistus"
+  users_name: "Kasutajad"
+  results_name: "Tulemused"
+  result_name: "Tulemus"
+  versions_name: "Versioonid"
+  offers_name: "Pakkumused"
+  invoices_name: "Arved"
+  jobs_name: "Tegevused"
+  bans_name: "Keelud"
 
-  my_offers: "My offers"
-  my_invoices: "My invoices"
+  user: "Kasutaja"
+  deleted_user: "Kasutaja kustutatud"
+  banned: |
+    Sul on keelatud osaleda kuni %{valid_until}; sa ei saa oma kasutajaandmeid muuta.
+  any: "kõik"
+
+  my_offers: "Minu pakkumused"
+  my_invoices: "Minu arved"
   actions: "Actions"
-  job_enqueued: "Job enqueued. Check in a few minutes for results."
-
-  users:
-    display_name: "Display name"
-    email: "Email"
-    mobile_phone: "Mobile phone"
-    role: "Role"
-    roles: "Roles"
-    country_code: "Country code"
-    identity_code: "Identity code"
-    can_be_left_blank_if_not_estonian: 'Can be left blank if you are not Estonian'
+  job_enqueued: "Tegevus on järjekorras. Kontrolli tulemusi mõne minuti pärast."
 
   versions:
-    action: 'Action'
-    recorded_at: 'Recorded at'
-    new_values: 'New values'
+    action: 'Tegevus'
+    recorded_at: 'Salvestatud'
+    new_values: 'Uued väärtused'
 
-  created_at: "Created at"
-  updated_at: "Updated at"
+  created_at: "Loodud"
+  updated_at: "Muudetud"
 
-  is_invalid: "is invalid"
-  invalid: "invalid"
-  not_accepted: "Not accepted"
+  is_invalid: "vale"
+  invalid: "vale"
+  not_accepted: "Tagasi lükatud"
+
+  search_by_domain_name: "Search by domain name"
+  search_by_email: "Search by email"
+  search_limit: "Search results are limited to first %{limit} hits."
 
   time:
     formats:

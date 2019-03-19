@@ -11,17 +11,16 @@ en:
     postal_code: "Postal Code"
     country: "Country"
     orphaned: 'Orphaned'
+    errors: "prohibited this billing profile from being saved"
 
     edit:
       title: "Edit billing profile"
-      errors: "prohibited this billing profile from being saved"
 
     index:
       title: "Billing Profiles"
 
     new:
       title: "Create a billing profile"
-      errors: "prohibited this billing profile from being saved"
 
     show:
       title: "Billing profile"

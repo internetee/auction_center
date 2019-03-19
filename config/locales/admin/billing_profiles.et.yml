@@ -1,0 +1,5 @@
+et:
+  admin:
+    billing_profiles:
+      index:
+        title: "Arve aadressid"

@@ -1,27 +1,26 @@
-en:
+et:
   billing_profiles:
-    user: "User"
-    name: "Name"
-    vat_code: "VAT code"
-    legal_entity: "Legal entity"
-    address: "Address"
-    street: "Street"
-    city: "City"
-    state: "State"
-    postal_code: "Postal Code"
-    country: "Country"
-    orphaned: 'Orphaned'
+    user: "Kasutaja"
+    name: "Nimi"
+    vat_code: "Käibemaksukohustuslase number"
+    legal_entity: "Juriidiline isik"
+    address: "Aadress"
+    street: "Tänav"
+    city: "Linn"
+    state: "Vald"
+    postal_code: "Sihtnumber"
+    country: "Riik"
+    orphaned: 'Tühistatud'
+    errors: "seda arve aadressi ei saa salvestada"
 
     edit:
-      title: "Edit billing profile"
-      errors: "prohibited this billing profile from being saved"
+      title: "Muuda arve aadressi"
 
     index:
-      title: "Billing Profiles"
+      title: "Arve aadressid"
 
     new:
-      title: "Create a billing profile"
-      errors: "prohibited this billing profile from being saved"
+      title: "Loo arve aadress"
 
     show:
-      title: "Billing profile"
+      title: "Arve aadress"

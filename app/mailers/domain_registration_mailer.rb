@@ -3,6 +3,7 @@ class DomainRegistrationMailer < ApplicationMailer
     @result = result
     @user = result.user
     @domain_name = result.auction.domain_name
+    I18n.locale = @user.locale
 
     mail(to: @user.email, subject: t('.subject', domain_name: @domain_name))
 
