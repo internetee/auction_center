@@ -46,9 +46,9 @@ terms_and_conditions_setting.save
 
 # Default country
 default_country_description = <<~TEXT.squish
-      Alpha two code for default country, used for example in user and billing profile dropdowns.
-      Example values: "EE", "GB", "US", "CA"
-    TEXT
+  Alpha two code for default country, used for example in user and billing profile dropdowns.
+  Example values: "EE", "GB", "US", "CA"
+TEXT
 
 default_country_setting = Setting.new(code: :default_country, value: 'EE',
                                       description: default_country_description)
@@ -56,8 +56,8 @@ default_country_setting.save
 
 # Default payment term
 payment_term_description = <<~TEXT.squish
-      Number of days before which an invoice for auction must be paid. Default: 7
-    TEXT
+  Number of days before which an invoice for auction must be paid. Default: 7
+TEXT
 
 payment_term_setting = Setting.new(code: :payment_term, value: '7',
                                    description: payment_term_description)
@@ -66,9 +66,10 @@ payment_term_setting.save
 
 # Default registration term
 registration_term_description = <<~TEXT.squish
-      Number of days before the auctioned domain must be registered, starting from
-      the auction start. Default: 14
-    TEXT
+  Number of days before the auctioned domain must be registered, starting from release of
+  registration code. When a result is created, the date is first inserted, and then prolonged
+  when registration code is released. Default: 14
+TEXT
 
 registration_term_setting = Setting.new(code: :registration_term, value: '14',
                                         description: registration_term_description)
@@ -77,9 +78,9 @@ registration_term_setting.save
 
 # Default auction duration
 auction_duration_description = <<~TEXT.squish
-      Number of hours for which an auction is created. You can also use 'end_of_day'
-      for auctions to end at the end of the same calendar day. Default: 24.
-    TEXT
+  Number of hours for which an auction is created. You can also use 'end_of_day'
+  for auctions to end at the end of the same calendar day. Default: 24.
+TEXT
 
 auction_duration_setting = Setting.new(code: :auction_duration, value: '24',
                                        description: auction_duration_description)
@@ -88,9 +89,9 @@ auction_duration_setting.save
 
 # Default require phone confirmation
 phone_confirmation_description = <<~TEXT.squish
-      Require mobile numbers to be confirmed by SMS before user can place offers. Can be either 'true'
-      or 'false'
-    TEXT
+  Require mobile numbers to be confirmed by SMS before user can place offers. Can be either 'true'
+  or 'false'
+TEXT
 
 phone_confirmation_setting = Setting.new(code: :require_phone_confirmation,
                                          value: 'false',
@@ -100,9 +101,9 @@ phone_confirmation_setting.save
 
 # Default auction starts at
 auctions_start_at_description = <<~TEXT.squish
-      Whole hour at which auctions should start. Allowed values are anything between 0 and 23 or
-      'false'. In case 'false' is used, auctions are started as soon as possible.
-    TEXT
+  Whole hour at which auctions should start. Allowed values are anything between 0 and 23 or
+  'false'. In case 'false' is used, auctions are started as soon as possible.
+TEXT
 
 auctions_start_at_setting = Setting.new(code: :auctions_start_at, value: '0',
                                         description: auctions_start_at_description)
@@ -111,8 +112,8 @@ auctions_start_at_setting.save
 
 # Default long ban length
 ban_length_description = <<~TEXT.squish
-      Number of months for which a repeated offender is banned for. Default: 100
-    TEXT
+  Number of months for which a repeated offender is banned for. Default: 100
+TEXT
 
 ban_length_setting = Setting.new(code: :ban_length, value: '100',
                                  description: ban_length_description)
@@ -121,8 +122,8 @@ ban_length_setting.save
 
 # Default domain registration reminder time
 domain_registration_description = <<~TEXT.squish
-      Number of days before which the registration reminder email is sent on. Default: 5
-    TEXT
+  Number of days before which the registration reminder email is sent on. Default: 5
+TEXT
 
 domain_registration_setting = Setting.new(code: :domain_registration_reminder, value: '5',
                                           description: domain_registration_description)
