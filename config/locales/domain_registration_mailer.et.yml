@@ -1,8 +1,8 @@
-en:
+et:
   domain_registration_mailer:
     registration_reminder_email:
       subject: "Domeeninimi %{domain_name} on veel registreerimata"
-      salutation: ""
+      salutation: "Tere, %{display_name}"
       introduction_html: |
         Tuletame teile meelde, et teile reserveeritud domeeninimi %{domain_name} on seni registreerimata.
         Domeeninime registreerimiseks väljastatud registreerimiskood kehtib 14 päeva.
