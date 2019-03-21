@@ -34,7 +34,7 @@ module ApplicationHelper
     links_list.each do |item|
       concat(
         content_tag(:li) do
-          link_to(item[:name], item[:path], method: item[:method] || :get, class: 'item')
+          link_to(item[:name], item[:path], method: item[:method], class: 'item')
         end
       )
     end
