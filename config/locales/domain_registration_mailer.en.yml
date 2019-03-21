@@ -4,15 +4,19 @@ en:
       subject: "Domain %{domain_name} is still not registered"
       salutation: "Hello, %{display_name}"
       introduction_html: |
+        We would like to remind you that the domain name %{domain_name} is still not registered.
+        The registration code is valid for 14 days.
         Please register your domain <strong>%{domain_name}</strong>
         before <strong>%{registration_due_date}</strong>.
-        Depending on your registrar of choice, the registration can be a manual
-        process that takes a few business days.
-
       details: |
-        To register a domain, provide an accredited registar with the registration code.
-        You can find the registration behind the following link.
+        Depending on your registrar of choice, the registration can be a manual process
+        that takes up tp a few business days. You will need to present the registration
+        code to your registrar. Registration code is available here:
+
       link_title: "Registration code"
-      footer: |
-        Best regards, <br>
-        EIS
+      footer_html: |
+        <p>Please do not hesitate to turn to contact us on any questions regarding
+        .ee auctions at info@internet.ee or +372 727 1000.</p>
+
+        <p>Best Regards,<br>
+        Estonian Internet Foundation</p>
