@@ -6,7 +6,8 @@
     <body>
         <h1><%= t('.salutation') %></h1>
         <p><%= t('.text', domain_name: @auction.domain_name) %></p>
+        <p><%= t('.link_description') %></p>
         <p><%= link_to t('.link_title', domain_name: @auction.domain_name), auction_url(@auction.uuid) %></p>
-        <p><%= sanitize t('.footer') %></p>
+        <%= sanitize t('.footer_html') %>
     </body>
 </html>

@@ -12,29 +12,49 @@ en:
         You have until %{payment_date} to complete the payment.
         Follow the link below to fill in the data required for an invoice:
       link_title: "Set up invoice"
-      footer: |
-        Best regards, <br>
-        EIS
+      footer_html: |
+        <p>Please do not hesitate to turn to contact us on any questions regarding
+        .ee auctions at info@internet.ee or +372 727 1000.</p>
+
+        <p>Best Regards,<br>
+        Estonian Internet Foundation</p>
 
     registration_code_email:
       subject: "Registration code for %{domain_name} is now available"
       salutation: "Hello, %{display_name}"
       introduction: |
-        The registration code for %{domain_name} is now avaialable.
+        The registration code for %{domain_name} is now available in .ee auction center.
+      details: |
+        The code is active for 14 days. We ask you to timely turn to your favorite .ee
+        accredited registrar for register the domain %{domain_name}.
+        We would like to turn your attention to the fact that the domain
+        registration is priced according to the price list of the chosen registrar.
       link_description: |
-        You have until %{registration_due_date} to register the domain, otherwise it will be auctioned again.
-        You can register the domain at any of the accredited registrars.
+        If you do not register the domain name before
+        %{registration_due_date} the domain name will be put back to the auction.
       link_title: "Registration code"
-      footer: |
-        Best regards, <br>
-        EIS
+      footer_html: |
+        <p>Please do not hesitate to turn to contact us on any questions regarding
+        .ee auctions at info@internet.ee or +372 727 1000.</p>
+
+        <p>Best Regards,<br>
+        Estonian Internet Foundation</p>
 
     participant_email:
-      subject: "Auction for %{domain_name} has ended"
-      salutation: "Hi!"
+      subject: "Your bid for domain name %{domain_name} was not successful"
+      salutation: "Dear .ee domain auction participant,"
       text: |
-        Auction for for %{domain_name} has ended. Your bid did not win.
-      link_title: "Auction for %{domain_name}"
-      footer: |
-        Best regards, <br>
-        EIS
+        Auction for the domain name %{domain_name} has ended. Unfortunately your bid was not the highest.
+        You can keep informed with the further progress of this domain name using domain search on our
+        web page internet.ee. Thank you for the participation!
+
+      link_description: |
+        List of auctioned domains is available on Estonian Internet Foundation’s web page
+        and in the auction center.
+      link_title: "Auction Center"
+      footer_html: |
+        <p>Please do not hesitate to turn to contact us on any questions regarding
+        .ee auctions at info@internet.ee or +372 727 1000.</p>
+
+        <p>Best Regards,<br>
+        Estonian Internet Foundation</p>
