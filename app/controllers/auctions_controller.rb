@@ -8,7 +8,7 @@ class AuctionsController < ApplicationController
   def index
     set_cors_header
 
-    unpaginated_auctions = Auction.active.accessible_by(current_ability)
+    unpaginated_auctions = Auction.active.includes(:offers).accessible_by(current_ability)
 
     respond_to do |format|
       format.html { @auctions = unpaginated_auctions.page(params[:page]) }

@@ -2,7 +2,11 @@ module Admin
   class ResultsController < BaseController
     # GET /admin/results
     def index
-      @results = Result.all.order(created_at: :desc).page(params[:page])
+      @results = Result.includes(:auction, :offer, :invoice)
+                       .all
+                       .order(created_at: :desc)
+                       .page(params[:page])
+
       @auctions_needing_results = Auction.without_result
     end
 
@@ -22,6 +26,7 @@ module Admin
       domain_name = search_params[:domain_name]
 
       @results = Result.joins(:auction)
+                       .includes(:offer, :invoice)
                        .where('auctions.domain_name ILIKE ?', "%#{domain_name}%")
                        .accessible_by(current_ability)
                        .page(1)

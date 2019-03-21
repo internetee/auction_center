@@ -20,7 +20,7 @@ module Admin
 
     # GET /admin/bans
     def index
-      @bans = Ban.all.order(valid_until: :desc).page(params[:page])
+      @bans = Ban.includes(:user).all.order(valid_until: :desc).page(params[:page])
     end
 
     # DELETE /admin/bans/1

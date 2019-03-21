@@ -4,11 +4,14 @@ module Admin
     before_action :create_invoice_if_needed
 
     def show
-      @invoice = Invoice.find(params[:id])
+      @invoice = Invoice.includes(:billing_profile, :invoice_items, :user).find(params[:id])
     end
 
     def index
-      @invoices = Invoice.accessible_by(current_ability).order(due_date: :desc).page(params[:page])
+      @invoices = Invoice.accessible_by(current_ability)
+                         .includes(:billing_profile, :user)
+                         .order(due_date: :desc)
+                         .page(params[:page])
     end
 
     # POST /admin/invoices/search
@@ -16,6 +19,7 @@ module Admin
       email = search_params[:email]
 
       @invoices = Invoice.joins(:user)
+                         .includes(:billing_profile)
                          .where('users.email ILIKE ?', "%#{email}%")
                          .accessible_by(current_ability)
                          .page(1)

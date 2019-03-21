@@ -45,7 +45,7 @@
                                 <td><%= I18n.l(auction.ends_at) %></td>
                                 <td><%= auction.current_price_from_user(current_user) %></td>
                                 <td>
-                                    <%- if auction.offer_from_user(current_user).present? %>
+                                    <%- if auction.offer_from_user(current_user) %>
                                         <%= link_to t('auctions.edit_your_offer'),
                                         edit_offer_path(auction.offer_from_user(current_user).uuid) %>
                                     <% else %>

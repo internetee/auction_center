@@ -17,6 +17,10 @@ class Auction < ApplicationRecord
 
   delegate :count, to: :offers, prefix: true
 
+  def offers_size
+    offers.size
+  end
+
   def does_not_overlap
     return unless starts_at && ends_at
     return unless overlaping_auctions&.exists?
@@ -53,9 +57,7 @@ class Auction < ApplicationRecord
 
   def current_price_from_user(user_id)
     offers_query = offers.where(user_id: user_id)
-    return unless offers_query.any?
-
-    offers_query.order(cents: :desc).first.price
+    offers_query.order(cents: :desc).first&.price
   end
 
   def offer_from_user(user_id)

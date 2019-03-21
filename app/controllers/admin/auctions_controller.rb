@@ -26,7 +26,11 @@ module Admin
 
     # GET /admin/auctions
     def index
-      @auctions = Auction.accessible_by(current_ability).order(ends_at: :desc).page(params[:page])
+      @auctions = Auction.includes(:offers)
+                         .accessible_by(current_ability)
+                         .includes(:offers)
+                         .order(ends_at: :desc)
+                         .page(params[:page])
     end
 
     def search
@@ -34,6 +38,7 @@ module Admin
 
       @auctions = Auction.where('domain_name ILIKE ?', "%#{domain_name}%")
                          .accessible_by(current_ability)
+                         .includes(:offers)
                          .page(1)
     end
 

@@ -21,16 +21,17 @@
 </div>
 
 <div class="u-container">
-    <div class="margin-block narrow">
+    <div class="margin-block">
         <div class="grid one column">
             <div class="column">
-                <table class="ui table selectable unstackable fixed" id="auctions-table">
+                <table class="ui table selectable unstackable" id="auctions-table">
                     <thead>
                         <tr>
                             <th scope="col"><%= t('auctions.domain_name') %></th>
+                            <th scope="col"><%= t('auctions.starts_at') %></th>
                             <th scope="col"><%= t('auctions.ends_at') %></th>
-                            <th scope="col"><%= t('auctions.your_current_price') %></th>
-                            <th scope="col"><%= t('auctions.offer_actions') %></th>
+                            <th scope="col"><%= t('auctions.highest_price') %></th>
+                            <th scope="col"><%= t('auctions.offers') %></th>
                         </tr>
                     </thead>
 
@@ -38,19 +39,12 @@
                         <% @auctions.each do |auction| %>
                             <tr class="auctions-table-row">
                                 <td class="auction-domain-name">
-                                    <%= link_to auction.domain_name, auction_path(auction.uuid) %>
+                                    <%= link_to auction.domain_name, admin_auction_path(auction) %>
                                 </td>
+                                <td><%= I18n.l(auction.starts_at) %></td>
                                 <td><%= I18n.l(auction.ends_at) %></td>
-                                <td><%= auction.current_price_from_user(current_user) %></td>
-                                <td>
-                                    <%- if auction.offer_from_user(current_user).present? %>
-                                        <%= link_to t('auctions.edit_your_offer'),
-                                        edit_offer_path(auction.offer_from_user(current_user).uuid) %>
-                                    <% elsif auction.in_progress? %>
-                                        <%= link_to t('auctions.submit_offer'),
-                                        new_auction_offer_path(auction_uuid: auction.uuid) %>
-                                    <% end %>
-                                </td>
+                                <td class="auction-highest-offer"><%= auction.highest_price %></td>
+                                <td class="auction-offers-count"><%= auction.offers_size %></td>
                             </tr>
                         <% end %>
                     </tbody>
