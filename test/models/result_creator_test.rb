@@ -96,7 +96,7 @@ class ResultCreatorTest < ActiveSupport::TestCase
     refute(ActionMailer::Base.deliveries.empty?)
     last_email = ActionMailer::Base.deliveries.last
 
-    assert_equal('Auction for with-offers.test has ended', last_email.subject)
+    assert_equal('Your bid for domain name with-offers.test was not successful', last_email.subject)
     assert_equal(['second_place@auction.test'], last_email.to)
   end
 

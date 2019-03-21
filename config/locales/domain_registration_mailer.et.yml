@@ -1,18 +1,22 @@
 et:
   domain_registration_mailer:
     registration_reminder_email:
-      subject: "Domain %{domain_name} is still not registered"
-      salutation: "Hello, %{display_name}"
+      subject: "Domeeninimi %{domain_name} on veel registreerimata"
+      salutation: "Tere, %{display_name}"
       introduction_html: |
-        Please register your domain <strong>%{domain_name}</strong>
-        before <strong>%{registration_due_date}</strong>.
-        Depending on your registrar of choice, the registration can be a manual
-        process that takes a few business days.
-
+        Tuletame teile meelde, et teile reserveeritud domeeninimi %{domain_name} on seni registreerimata.
+        Domeeninime registreerimiseks väljastatud registreerimiskood kehtib 14 päeva.
+        Tähtaeg domeeninime registreerimiseks on <strong>%{registration_due_date}</strong>.
       details: |
-        To register a domain, provide an accredited registar with the registration code.
-        You can find the registration behind the following link.
-      link_title: "Registration code"
-      footer: |
-        Best regards, <br>
-        EIS
+        Reserveeritud domeenide registreerimine võib olla sõltuvalt valitud registripidajast
+        ajamahukas protsess. Domeeni registreerimiseks on vajalik esitada registripidajale
+        registreerimise kood, mille leiate oksjoni portaalist
+
+      link_title: "Registreerimiskood"
+      footer_html: |
+        <p>Lisaküsimuste korral võtke palun ühendust Eesti Interneti
+        Sihtasutusega aadressil info@internet.ee või +372 727 1000.</p>
+
+        <p>Lugupidamisega<br>
+        Eesti Interneti Sihtasutus
+        </p>

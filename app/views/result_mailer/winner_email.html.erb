@@ -8,6 +8,7 @@
         <p><%= t('.introduction', domain_name: @auction.domain_name) %></p>
         <p><%= t('.link_description', payment_date: I18n.l(Date.today + Setting.payment_term)) %></p>
         <p><%= link_to t('.link_title'), result_url(@result.uuid) %></p>
-        <p><%= sanitize t('.footer') %></p>
+
+        <%= sanitize t('.footer_html') %>
     </body>
 </html>

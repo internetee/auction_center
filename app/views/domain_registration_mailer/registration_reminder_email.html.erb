@@ -8,7 +8,8 @@
         <p><%= t('.introduction_html', domain_name: @domain_name,
                  registration_due_date: @result.registration_due_date) %></p>
         <p><%= t('.details') %></p>
-        <p><%= link_to t('.link_title'), result_url(@result.uuid) %>
-        <p><%= sanitize t('.footer') %>
+        <p><%= link_to t('.link_title'), result_url(@result.uuid) %></p>
+
+        <%= t('.footer_html') %>
     </body>
 </html>

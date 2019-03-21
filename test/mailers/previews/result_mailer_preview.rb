@@ -7,4 +7,8 @@ class ResultMailerPreview < ActionMailer::Preview
   def registration_code_email
     ResultMailer.registration_code_email(Result.where("registration_code IS NOT NULL").last)
   end
+
+  def participant_email
+    ResultMailer.participant_email(User.last, Auction.last)
+  end
 end
