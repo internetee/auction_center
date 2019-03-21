@@ -53,8 +53,8 @@ auction_duration:
 registration_term:
   code: registration_term
   description: |
-    Number of days before the auctioned domain must be registered, starting from
-    the auction start. Default: 14
+    Number of days before the auctioned domain must be registered, starting from release of
+    registration code. Default: 14
   value: '14'
 
 auctions_start_at:
