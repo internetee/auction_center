@@ -54,8 +54,7 @@ registration_term:
   code: registration_term
   description: |
     Number of days before the auctioned domain must be registered, starting from release of
-    registration code. When a result is created, the date is first inserted, and then prolonged
-    when registration code is released. Default: 14
+    registration code. Default: 14
   value: '14'
 
 auctions_start_at:

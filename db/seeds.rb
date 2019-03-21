@@ -67,8 +67,7 @@ payment_term_setting.save
 # Default registration term
 registration_term_description = <<~TEXT.squish
   Number of days before the auctioned domain must be registered, starting from release of
-  registration code. When a result is created, the date is first inserted, and then prolonged
-  when registration code is released. Default: 14
+  registration code. Default: 14
 TEXT
 
 registration_term_setting = Setting.new(code: :registration_term, value: '14',

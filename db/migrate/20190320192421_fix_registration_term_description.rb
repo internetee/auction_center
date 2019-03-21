@@ -5,8 +5,7 @@ class FixRegistrationTermDescription < ActiveRecord::Migration[5.2]
 
     text = <<~TEXT.squish
       Number of days before the auctioned domain must be registered, starting from release of
-      registration code. When a result is created, the date is first inserted, and then prolonged
-      when registration code is released. Default: 14
+      registration code. Default: 14
     TEXT
 
     setting.update!(description: text)
