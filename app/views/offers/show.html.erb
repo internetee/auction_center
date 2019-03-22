@@ -23,6 +23,10 @@
                         <td><strong><%= t('offers.price') %></strong></td>
                         <td><%= t('offers.price_in_currency', price: @offer.price) %></td>
                     </tr>
+                    <tr>
+                        <td><strong><%= t('offers.total') %></strong></td>
+                        <td><%= t('offers.price_in_currency', price: @offer.total) %></td>
+                    </tr>
                 </tbody>
             </table>
 

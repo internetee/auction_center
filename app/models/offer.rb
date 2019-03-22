@@ -39,4 +39,8 @@ class Offer < ApplicationRecord
     price = Money.from_amount(number, Setting.auction_currency)
     self.cents = price.cents
   end
+
+  def total
+    price * (1 + billing_profile.vat_rate)
+  end
 end

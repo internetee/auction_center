@@ -7,6 +7,7 @@ et:
     price_is_without_vat: "Pakkumus ei sisalda käibemaksu."
     already_exists: "You already have an offer for this auction."
     errors: "seda pakkumust ei saa salvestada"
+    total: "Käibemaksuga kokku"
 
     new:
       title: "Uus pakkumus"
