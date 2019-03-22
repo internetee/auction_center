@@ -12,6 +12,7 @@
                     <tr>
                         <th scope="col"><%= t('auctions.domain_name') %></th>
                         <th scope="col"><%= t('.your_last_offer') %></th>
+                        <th scope="col"><%= t('offers.total') %></th>
                         <th scope="col"><%= t('auctions.ends_at') %></th>
                         <th scope="col"><%= t('result_name') %></th>
                         <th scope="col"></th>
@@ -23,6 +24,7 @@
                         <tr class="offers-table-row">
                             <td><%= link_to offer.auction.domain_name, offer_path(offer.uuid) %></td>
                             <td><%= t('offers.price_in_currency', price: offer.price) %></td>
+                            <td><%= t('offers.price_in_currency', price: offer.total) %></td>
                             <td>
                                 <%- if offer.auction.finished? %>
                                     <%= t('auctions.finished') %>

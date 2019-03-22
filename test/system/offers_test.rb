@@ -52,6 +52,7 @@ class OffersTest < ApplicationSystemTestCase
     within('tbody#offers-table-body') do
       assert_text('with-offers.test')
       assert_text('50.00 €')
+      assert_text('60.00 €')
 
       assert(page.has_link?('with-offers.test', href: offer_path(@offer.uuid)))
     end

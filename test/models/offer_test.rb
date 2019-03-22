@@ -65,6 +65,21 @@ class OfferTest < ActiveSupport::TestCase
     assert_equal(["must be greater than 0"], offer.errors[:cents])
   end
 
+  def test_total
+    offer = Offer.new
+    offer.auction = @valid_auction
+    offer.user = @user
+    offer.cents = 1
+    offer.billing_profile = @billing_profile
+
+    offer.cents = 500
+
+    assert_equal(offer.total, Money.new('500', 'EUR'))
+
+    offer.billing_profile = billing_profiles(:private_person)
+    assert_equal(offer.total, Money.new('600', 'EUR'))
+  end
+
   def test_offer_must_be_higher_than_minimum_value_allowed_in_settings
     offer = Offer.new
     offer.auction = @valid_auction
