@@ -21,6 +21,7 @@ class AuctionsController < ApplicationController
     domain_name = search_params[:domain_name]
 
     @auctions = Auction.where('domain_name ILIKE ?', "#{domain_name}%")
+                       .includes(:offers)
                        .accessible_by(current_ability)
                        .page(1)
   end

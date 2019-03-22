@@ -15,7 +15,7 @@ Rails.application.routes.draw do
 
   concern :searchable do
     collection do
-      post 'search'
+      get 'search'
     end
   end
 
