@@ -41,6 +41,6 @@ class Offer < ApplicationRecord
   end
 
   def total
-   price * (1 + billing_profile.vat_rate)
+    price * (1 + billing_profile.vat_rate)
   end
 end
