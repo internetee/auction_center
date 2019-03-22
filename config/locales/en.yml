@@ -79,9 +79,6 @@ en:
   search_by_email: "Search by email"
   search_limit: "Search results are limited to first %{limit} hits."
 
-  registrar_portal: "Registrar portal"
-  registrant_portal: "Registrant portal"
-
   time:
     formats:
       default: "%Y-%m-%d %H:%M"

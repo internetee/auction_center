@@ -3,7 +3,9 @@
         <a class="footer-logo" href="/"><img src="/images/eis-logo-white.svg" alt="Eesti Interneti SA"></a>
         <div class="footer-contacts">
             <div class="address">
-                <h3>Eesti interneti Sihtasutus</h3>
+                <p><%= t('.copyright') %></p>
+                <p><%= t('.address') %></p>
+                <p><%= t('.registration_code') %></p>
             </div>
             <ul class="quickinfo">
                 <li><i aria-hidden="true" class="envelope icon"></i><a href="mailto:info@internet.ee">info@internet.ee</a></li>
@@ -13,6 +15,11 @@
     </div>
     <div class="footer-bottom">
         <nav class="menu-footer">
+            <% if I18n.locale == :et %>
+                <%= render 'common/estonian_links' %>
+            <% elsif I18n.locale == :en %>
+                <%= render 'common/english_links' %>
+            <% end %>
         </nav>
         <nav class="menu-social">
             <ul>

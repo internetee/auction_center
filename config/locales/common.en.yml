@@ -1,0 +1,29 @@
+en:
+  common:
+    header:
+      auction_portal: "Auction portal"
+      registrar_portal: "Registrar portal"
+      registrant_portal: "Registrant portal"
+
+    footer:
+      copyright: "© 2019 Estonian Internet Foundation"
+      address: "Paldiski mnt 80, 10617 Tallinn, Estonia"
+      registration_code: "Registration code: 90010019"
+
+    english_links:
+      help_and_info: "Help and info"
+      domain_regulation: ".ee Domain Regulation"
+      faq: "Frequently asked questions"
+      statistics: "Statistics"
+      dispute_committee: "Domain Dispute Committee"
+
+      registrars: "Registrars"
+      list_of_accredited_registrars: "List of .ee accredited registrars"
+      terms_and_conditions_for_registrars: "Terms and conditions for becoming a registrar"
+      partner_programme: "Elite Partner Program"
+
+      estonian_internet: "Estonian Internet"
+      contact_us: "Contact us!"
+      management: "Management"
+      documents: "Documents"
+      registrars_working_group: "Registrar's Working group"

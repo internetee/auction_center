@@ -67,9 +67,6 @@ et:
   search_by_email: "Search by email"
   search_limit: "Search results are limited to first %{limit} hits."
 
-  registrar_portal: "Registripidaja portaal"
-  registrant_portal: "Registreerija portaal"
-
   time:
     formats:
       default: "%Y-%m-%d %H:%M"

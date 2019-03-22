@@ -1,0 +1,29 @@
+et:
+  common:
+    header:
+      auction_portal: "Oksjooni portaal"
+      registrar_portal: "Registripidaja portaal"
+      registrant_portal: "Registreerija portaal"
+
+    footer:
+      copyright: "Eesti Interneti Sihtasutus"
+      address: "Paldiski mnt 80, 10617 Tallinn"
+      registration_code: "Registrikood: 90010019"
+
+    estonian_links:
+      help_and_info: "Abi & info"
+      domain_regulation: ".ee Domeenireeglid"
+      faq: "Korduma kippuvad küsimused"
+      statistics: "Statistika"
+      dispute_committee: "Domain Dispute Committee"
+
+      registrars: "Registripidajad"
+      list_of_accredited_registrars: "Akrediteeritud registripidajate nimekiri"
+      terms_and_conditions_for_registrars: "Akrediteeritud registripidajaks saamine"
+      partner_programme: |
+        "Elite Partner" programm"
+
+      estonian_internet: "Meist"
+      contact_us: "Võta meiega ühendust!"
+      management: "Juhtimine"
+      documents: "Documents"
