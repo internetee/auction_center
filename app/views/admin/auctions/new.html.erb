@@ -9,7 +9,7 @@
         <% if @auction.errors.any? %>
             <div class="ui message">
                 <div class="header">
-                    <%= t(:errors) %>
+                    <%= t(:errors_name) %>
                 </div>
                 <ul id="errors">
                     <% @auction.errors.full_messages.each do |message| %>

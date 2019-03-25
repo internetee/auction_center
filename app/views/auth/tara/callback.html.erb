@@ -10,7 +10,7 @@
             <% if @user.errors.any? %>
                 <div class="ui message">
                     <div class="header">
-                        <%= t(:errors) %>
+                        <%= t(:errors_name) %>
                     </div>
                     <ul id="errors">
                         <% @user.errors.full_messages.each do |message| %>
