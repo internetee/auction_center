@@ -63,9 +63,9 @@ et:
   invalid: "vale"
   not_accepted: "Tagasi lükatud"
 
-  search_by_domain_name: "Search by domain name"
-  search_by_email: "Search by email"
-  search_limit: "Search results are limited to first %{limit} hits."
+  search_by_domain_name: "Otsi domeeni nime järgi"
+  search_by_email: "Otsi e-posti aadressi järgil"
+  search_limit: "Otsingu tulemusena kuvatakse %{limit} esimest tulemust."
 
   time:
     formats:
