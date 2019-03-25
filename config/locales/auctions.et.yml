@@ -18,7 +18,7 @@ et:
       title: "Oksjoni andmed"
 
     index:
-      title: "Oksjonid"
+      title: "Domeenioksjonid"
       search: "Domeeni otsing"
 
     search:
@@ -27,28 +27,33 @@ et:
 
     top_grid:
       title: "Oksjonil olevad domeenid:"
-      1_step_header: "Esita pakkumus"
+      1_step_header: "Esita pakkumus,"
       1_step_explanation: |
-        Oksjoni ajal saad pakkumusi igal ajal muuta või eemaldada.
-        Pakkumised on konfidentsiaalsed
+        mida saad muuta ja tühistada oksjoni lõppemiseni.
+        Domeenioksjonid toimuvad pimeoksjoni stiilis, mis tähendab,
+        et keegi teine esitatud pakkumise suurust ei näe.
 
       2_step_header: "Oota oksjoni lõppemiseni"
       2_step_explanation: |
-        Kui sinu pakkutud hind oli kõrgeim, teatame sellest sulle e-kirjaga.
+        Anname oksjonitulemustest teada ka e-posti teel. Loodetavasti on sinu
+        pakkumine kõrgeim ja saad õiguse soovitud domeeninime registreerimiseks.
 
       3_step_header: "Maksa oksjonitasu"
       3_step_explanation: |
         Kui tasu on makstud, saadetakse sulle registreerimiskood,
         mida saad kasutada .ee akrediteeritud registripidaja juures
 
-      footer_html: "Loe lisaks meie %{link} leheküljelt."
-      footer_link: "tingimused"
+      footer_html: "Tutvu ka %{link} ja loe detailsemalt oksjoniprotsessist."
+      footer_link: "oksjonikeskkonna kasutajatingimustega"
 
     bottom_grid:
       title: "Oksjoni eeskirjad"
       1_step_header: "Pimeoksjon"
       1_step_explanation: |
-        Pakkumised on konfidentsiaalsed, osalejad ei näe, mitu pakkumust ja mis hinnaga on tehtud
+        Enampakkumine toimub domeeninime reserveerimise õigusele. Oksjoni võitjal tuleb
+        lisaks tasuda ka domeeni registreerimise tasu registripidajale vastavale valitud
+        registripidaja teenuste hinnakirjale. Pakkumised on konfidentsiaalsed, osalejad
+        ei näe, mitu pakkumust ja mis hinnaga on tehtud
 
       2_step_header: "Oksjoni võitmine"
       2_step_explanation: |

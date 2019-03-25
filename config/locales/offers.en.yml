@@ -11,7 +11,7 @@ en:
     must_be_higher_than: "must be higher than %{minimum}"
 
     new:
-      title: "New offer"
+      title: "Offer for the reservation of the domain name"
       errors: "prohibited this offer from being saved"
 
     show:
@@ -21,7 +21,7 @@ en:
         the auction winner.
 
     edit:
-      title: "Edit offer"
+      title: "Offer for the reservation of the domain name"
       errors: "prohibited this offer from being saved"
 
     index:

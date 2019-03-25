@@ -2,7 +2,7 @@ en:
   admin:
     auctions:
       index:
-        title: "Auctions"
+        title: "Domain auctions"
         new_auction: "New auction"
 
       search:

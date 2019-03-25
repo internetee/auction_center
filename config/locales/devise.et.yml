@@ -51,8 +51,8 @@ et:
       new:
         sign_in_with_identity_document: "Logi sisse isikut tõendava dokumendiga."
         identity_document_text: |
-          Logi sisse isikutunnistuse või mobiil ID-ga.
-          Kui kontot ei eksisteeri, siis see luuakse
+          Sisene kasutades Eesti (sh e-residendi) ID kaarti,
+          mobiil IDd, pangalinki või EU liikmeriikide elektroonset isikutunnistust (EIDAS).
         sign_in_with_password: "Logi sisse salasõnaga"
       user:
         signed_in: "Sisse logitud."

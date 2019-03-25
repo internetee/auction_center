@@ -2,7 +2,7 @@ et:
   admin:
     auctions:
       index:
-        title: "Auctions"
+        title: "Domeenioksjonid"
         new_auction: "New auction"
 
       search:
