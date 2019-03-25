@@ -35,7 +35,7 @@ Rails.application.configure do
   # Specifies the header that your server uses for sending files.
   # config.action_dispatch.x_sendfile_header = 'X-Sendfile' # for Apache
   # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for NGINX
-  config.action_dispatch.trusted_proxies = ENV.fetch('TRUSTED_PROXY_IP').split(',') unless ENV['TRUSTED_PROXY_IP'].blank?
+  config.action_dispatch.trusted_proxies = ENV['TRUSTED_PROXY_IP']&.split(',')
   # Store uploaded files on the local file system (see config/storage.yml for options)
   config.active_storage.service = :local
 
