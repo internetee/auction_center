@@ -68,4 +68,6 @@ Rails.application.routes.draw do
   resources :users, param: :uuid do
     resources :phone_confirmations, only: %i[new create]
   end
+
+  mount OkComputer::Engine, at: "/healthcheck"
 end
