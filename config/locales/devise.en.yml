@@ -51,7 +51,7 @@ en:
       new:
         sign_in_with_identity_document: "Sign in with identity document"
         identity_document_text: |
-          Sign in with eIDAS, ID card, mobile ID or SmartID.
+          Sign in with ID Card or MobileID.
           If an account does not exists, one will be created.
         sign_in_with_password: "Sign with password"
       signed_in: "Signed in successfully."

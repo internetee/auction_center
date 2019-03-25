@@ -39,6 +39,7 @@ gem 'devise'
 gem 'kaminari'
 gem 'money'
 gem 'omniauth-tara', github: 'internetee/omniauth-tara'
+gem 'rails-i18n'
 gem 'recaptcha'
 gem 'whenever', require: false
 

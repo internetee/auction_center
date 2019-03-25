@@ -8,7 +8,8 @@
                 <%= f.label :email, t('users.email') %>
                 <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
                 <% if user.pending_reconfirmation? %>
-                    <div>Currently waiting confirmation for: <%= user.unconfirmed_email %></div>
+                    <div><%= t('.currently_pending_confirmation',
+                               email: user.unconfirmed_email) %></div>
                 <% end %>
             </div>
             <div class="field">
@@ -43,14 +44,19 @@
                 <div class="ui checkbox">
                     <%= f.check_box :accepts_terms_and_conditions, { value: user.accepts_terms_and_conditions }, "true", "false" %>
                     <%= f.label :accepts_terms_and_conditions do %>
-                        <%= link_to t('users.terms_and_conditions'), Setting.terms_and_conditions_link %>
+                        <%= t('users.i_accept_terms_and_conditions_html',
+                              link: link_to(t('users.terms_and_conditions_link'), Setting.terms_and_conditions_link)) %>
                     <% end %>
                 </div>
             </div>
         </div>
 
         <div class="column">
-            <h3 class="p3"><%= t('.new_password') %></h3>
+            <% if user.persisted? %>
+                <h3 class="p3"><%= t('.new_password') %></h3>
+            <% else %>
+                <h3 class="p3"><%= t('users.password') %></h3>
+            <% end %>
             <div class="field">
                 <%= f.label :password, t('users.password') %>
                 <%= f.password_field :password, autocomplete: "new-password" %>

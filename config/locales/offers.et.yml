@@ -8,6 +8,8 @@ et:
     already_exists: "You already have an offer for this auction."
     errors: "seda pakkumust ei saa salvestada"
     total: "Käibemaksuga kokku"
+    must_be_active: "Must be active"
+    must_be_higher_than: "Must be higher than %{minimum}"
 
     new:
       title: "Uus pakkumus"
@@ -29,3 +31,9 @@ et:
     form:
       bidder: "Pakkuja"
       offer: "Pakkumus"
+
+  activerecord:
+    attributes:
+      offer:
+        auction: "Oksjon"
+        price: "Hind"

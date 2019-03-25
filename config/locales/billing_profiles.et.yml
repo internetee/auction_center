@@ -24,3 +24,17 @@ et:
 
     show:
       title: "Arve aadress"
+
+  activerecord:
+    attributes:
+      billing_profile:
+        user: "Kasutaja"
+        name: "Nimi"
+        vat_code: "Käibemaksukohustuslase number"
+        legal_entity: "Juriidiline isik"
+        address: "Aadress"
+        street: "Tänav"
+        city: "Linn"
+        state: "Vald"
+        postal_code: "Sihtnumber"
+        country: "Riik"

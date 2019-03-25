@@ -37,6 +37,7 @@ et:
   invoices_name: "Arved"
   jobs_name: "Tegevused"
   bans_name: "Keelud"
+  errors_name: "Errors"
 
   user: "Kasutaja"
   deleted_user: "Kasutaja kustutatud"
