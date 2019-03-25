@@ -9,7 +9,7 @@
         <% if @billing_profile.errors.any? %>
             <div class="ui message">
                 <div class="header">
-                    <%= pluralize(@billing_profile.errors.count, "error") %> <%= t('billing_profiles.errors') %>
+                    <%= t(:errors) %>
                 </div>
                 <ul id="errors">
                     <% @billing_profile.errors.full_messages.each do |message| %>

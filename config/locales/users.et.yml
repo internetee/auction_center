@@ -10,7 +10,7 @@ et:
     roles: "Rollid"
     country_code: "Riigikood"
     identity_code: "Isikukood"
-    terms_and_conditions: "tingimustega"
+    terms_and_conditions: "Kasutaja tingimused"
     must_accept_terms_and_conditions: "tuleb nõustuda"
     terms_and_conditions_accepted_at: "Tingimustega nõustunud"
     password: "Salasõna"
@@ -58,3 +58,17 @@ et:
 
     destroy:
       deleted: "Oled välja logitud ja sinu konto on kustutatud."
+
+  activerecord:
+    attributes:
+      user:
+        display_name: "Kuva nimi"
+        given_names: "Eesnimi"
+        surname: "Perekonnanimi"
+        country: "Riik"
+        email: "E-post"
+        mobile_phone: "Mobiil"
+        terms_and_conditions: "kasutaja tingimused"
+        password: "Salasõna"
+        password_confirmation: "Salasõna kinnitus"
+        identity_code: "Isikukood"

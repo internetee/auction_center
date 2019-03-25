@@ -13,7 +13,7 @@ class Offer < ApplicationRecord
     active_auction = Auction.active.find_by(id: auction_id)
     return if active_auction
 
-    errors.add(:auction, 'must be active')
+    errors.add(:auction, I18n.t('offers.must_be_active'))
   end
 
   def must_be_higher_than_minimum_offer
@@ -23,7 +23,7 @@ class Offer < ApplicationRecord
     currency = Setting.auction_currency
     minimum_offer_as_money = Money.new(minimum_offer, currency)
 
-    errors.add(:price, "must be higher than #{minimum_offer_as_money}")
+    errors.add(:price, I18n.t('offers.must_be_higher_than', minimum: minimum_offer_as_money))
   end
 
   def can_be_modified?

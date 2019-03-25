@@ -39,6 +39,7 @@ en:
   invoices_name: "Invoices"
   jobs_name: "Jobs"
   bans_name: "Bans"
+  errors_name: "Errors"
 
   user: "User"
   deleted_user: "User was deleted"

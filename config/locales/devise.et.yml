@@ -54,9 +54,10 @@ et:
           Logi sisse isikutunnistuse või mobiil ID-ga.
           Kui kontot ei eksisteeri, siis see luuakse
         sign_in_with_password: "Logi sisse salasõnaga"
+      user:
         signed_in: "Sisse logitud."
-      signed_out: "Välja logitud."
-      already_signed_out: "Välja logitud."
+        signed_out: "Välja logitud."
+        already_signed_out: "Välja logitud."
     unlocks:
       send_instructions: "Mõne minuti jooksul saadetakse sulle e-kiri konto avamise juhistega."
       send_paranoid_instructions: "Kui sinu konto on olemas, saad mõne minuti jooksul e-kirjaga juhised konto avamiseks."

@@ -44,9 +44,10 @@
             </div>
             <div class="field">
                 <div class="ui checkbox">
-                    <%= f.check_box :accepts_terms_and_conditions, { value: false }, "true", "false" %>
+                    <%= f.check_box :accepts_terms_and_conditions, { value: user.accepts_terms_and_conditions }, "true", "false" %>
                     <%= f.label :accepts_terms_and_conditions do %>
-                        <%= link_to t('users.terms_and_conditions'), Setting.terms_and_conditions_link %>
+                        <%= t('users.i_accept_terms_and_conditions_html',
+                              link: link_to(t('users.terms_and_conditions_link'), Setting.terms_and_conditions_link)) %>
                     <% end %>
                 </div>
             </div>
