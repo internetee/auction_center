@@ -12,7 +12,7 @@ et:
     must_be_higher_than: "Must be higher than %{minimum}"
 
     new:
-      title: "Uus pakkumus"
+      title: "Domeeni registreerimise eelisõiguse pakkumus"
 
     show:
       title: "Sinu pakkumus"
@@ -20,7 +20,7 @@ et:
         Kui oksjon on lõppenud, saadameoksjoni võitjale e-kirja aadressile
 
     edit:
-      title: "Muuda pakkumust"
+      title: "Domeeni registreerimise eelisõiguse pakkumus"
 
     index:
       your_last_offer: "Sinu viimane pakkumus"

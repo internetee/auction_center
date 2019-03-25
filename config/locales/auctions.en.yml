@@ -37,22 +37,26 @@ en:
 
       2_step_header: "Wait for auction to end"
       2_step_explanation: |
-        If your offer was the biggest, we will let you know by email.
+        We will let you know about the result by email.
+        Hopefully your offer was the highest and you will get
+        the reservation to register the domain name.
 
       3_step_header: "Pay auction fee"
       3_step_explanation: |
         Once the fee is paid, you will receive a registration code that you
         can use at any accredited registrar.
 
-      footer_html: "Read more from our %{link} page."
+      footer_html: "Please check out the %{link} of .ee auctioning process."
       footer_link: "terms and conditions"
 
     bottom_grid:
       title: "Auction rules"
       1_step_header: "Blind auction"
       1_step_explanation: |
-        Offers are confidential, participants do not see how many offers have been made
-        and with what price.
+        The bids are for domain name reservation. The winner will have to pay additional
+        registration fee to the registrar according to their pricelist.
+        Offers are confidential, participants do not see how many offers have been
+        made and with what price.
 
       2_step_header: "Winning an auction"
       2_step_explanation: |

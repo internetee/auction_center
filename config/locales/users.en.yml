@@ -17,8 +17,8 @@ en:
     password_confirmation: "Password confirmation"
     current_password: "Current password"
     remember_me: "Remember me"
-    i_accept_terms_and_conditions_html: "I accept %{link}."
-    terms_and_conditions_link: "terms and conditions"
+    i_accept_terms_and_conditions_html: "I have read and agree with %{link}."
+    terms_and_conditions_link: "auction portal user agreement"
 
     edit:
       title: "Edit your user profile"
