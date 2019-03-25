@@ -7,13 +7,14 @@
                 <%= f.label :email, t('users.email') %>
                 <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
                 <% if user.pending_reconfirmation? %>
-                    <div>Currently waiting confirmation for: <%= user.unconfirmed_email %></div>
+                    <div><%= t('.currently_pending_confirmation',
+                               email: user.unconfirmed_email) %></div>
                 <% end %>
             </div>
             <div class="field">
                 <%= f.label :mobile_phone, t('users.mobile_phone') %>
                 <%= f.telephone_field :mobile_phone, autofocus: true, autocomplete: "off",
-                    placeholder: "+372xxxxxxxx" %>
+                                      placeholder: "+372xxxxxxxx" %>
             </div>
             <div class="field">
                 <%= f.label :given_names, t('users.given_names') %>
@@ -42,7 +43,8 @@
                 <div class="ui checkbox">
                     <%= f.check_box :accepts_terms_and_conditions, { value: user.accepts_terms_and_conditions }, "true", "false" %>
                     <%= f.label :accepts_terms_and_conditions do %>
-                        <%= link_to t('users.terms_and_conditions'), Setting.terms_and_conditions_link %>
+                        <%= t('users.i_accept_terms_and_conditions_html',
+                              link: link_to(t('users.terms_and_conditions_link'), Setting.terms_and_conditions_link)) %>
                     <% end %>
                 </div>
             </div>

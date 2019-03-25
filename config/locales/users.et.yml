@@ -1,7 +1,7 @@
 et:
   users:
     display_name: "Kuva nimi"
-    given_names: "Eesnimed"
+    given_names: "Eesnimi"
     surname: "Perekonnanimi"
     country: "Riik"
     email: "E-post"
@@ -10,13 +10,15 @@ et:
     roles: "Rollid"
     country_code: "Riigikood"
     identity_code: "Isikukood"
-    terms_and_conditions: "Tingimustega"
+    terms_and_conditions: "tingimustega"
     must_accept_terms_and_conditions: "tuleb nõustuda"
     terms_and_conditions_accepted_at: "Tingimustega nõustunud"
     password: "Salasõna"
     password_confirmation: "Salasõna kinnitus"
     current_password: "Praegune salasõna"
     remember_me: "Mäleta mind"
+    i_accept_terms_and_conditions_html: "Nõustun %{link}."
+    terms_and_conditions_link: "tingimustega"
 
     edit:
       title: "Muuda kasutajaprofiili"
@@ -44,6 +46,7 @@ et:
       new_password: "Uus salasõna"
       we_need_your_password: "(muudatuste kinnitamiseks vajame kehtivat salasõna)"
       you_can_leave_blank: "(kui ei soovi muuta, jäta tühjaks)"
+      currently_pending_confirmation: "Currently pending confirmation for %{email}."
 
     update:
       incorrect_password: 'Vale salasõna'

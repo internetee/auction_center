@@ -51,7 +51,7 @@ et:
       new:
         sign_in_with_identity_document: "Logi sisse isikut tõendava dokumendiga."
         identity_document_text: |
-          Logi sisse eIDAS-i, isikutunnistuse, mobiil ID või SmartID-ga.
+          Logi sisse isikutunnistuse või mobiil ID-ga.
           Kui kontot ei eksisteeri, siis see luuakse
         sign_in_with_password: "Logi sisse salasõnaga"
         signed_in: "Sisse logitud."
