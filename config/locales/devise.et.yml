@@ -22,14 +22,34 @@ et:
     mailer:
       confirmation_instructions:
         subject: "Kinnitamise juhised."
+        salutation: "Hello, %{email}"
+        first_para: "You can confirm your account email through the link below."
+        second_para: "Confirm my account"
+
       reset_password_instructions:
         subject: "Salasõna lähtestamise juhised"
+        salutation: "Hello, %{email}"
+        first_para: "Someone has requested a link to change your password. You can do this through the link below."
+        second_para: "Change my password"
+        third_para: "If you didn't request this, please ignore this email."
+        fourth_para: "Your password won't change until you access the link above and create a new one."
+
       unlock_instructions:
         subject: "Ava juhised"
+        salutation: "Hello, %{email}"
+        first_para: "Your account has been locked due to an excessive number of unsuccessful sign in attempts."
+        second_para: "Click the link below to unlock your account:"
+        third_para: "Unlock my account"
       email_changed:
         subject: "E-posti aadress muudetud"
+        salutation: "Hello, %{email}"
+        first_para: "We're contacting you to notify you that your email is being changed to %{unconfirmed_email}."
+        second_para: "We're contacting you to notify you that your email is changed to %{unconfirmed_email}."
       password_change:
         subject: "Salasõna muudetud"
+        salutation: "Hello, %{email}"
+        first_para: "We're contacting you to notify you that your password has been changed."
+
     omniauth_callbacks:
       failure: "Ei saanud autentida %{kind} , kuna \"%{reason}\"."
       success: "Autentimine %{kind} kontolt."
