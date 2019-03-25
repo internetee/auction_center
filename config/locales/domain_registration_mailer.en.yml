@@ -1,22 +1,18 @@
 en:
   domain_registration_mailer:
     registration_reminder_email:
-      subject: "Domain %{domain_name} is still not registered"
-      salutation: "Hello, %{display_name}"
-      introduction_html: |
-        We would like to remind you that the domain name %{domain_name} is still not registered.
-        The registration code is valid for 14 days.
-        Please register your domain <strong>%{domain_name}</strong>
-        before <strong>%{registration_due_date}</strong>.
-      details: |
-        Depending on your registrar of choice, the registration can be a manual process
-        that takes up tp a few business days. You will need to present the registration
-        code to your registrar. Registration code is available here:
-
-      link_title: "Registration code"
-      footer_html: |
-        <p>Please do not hesitate to turn to contact us on any questions regarding
-        .ee auctions at info@internet.ee or +372 727 1000.</p>
-
-        <p>Best Regards,<br>
-        Estonian Internet Foundation</p>
+      subject: "Deadline to register the %{domain_name} domain"
+      salutation: "Dear .ee auction winner"
+      first_para: |
+        The domain name registration priority is reserved for you as the winner of
+        the %{domain_name} domain auction. You have 5 days to contact an accredited
+        .ee registrar to register the %{domain_name} domain.
+      second_para_html: |
+        Contact an <a href="https://www.internet.ee/registrars/accredited-registrars">
+        accredited .ee registrar</a> to register the %{domain_name} domain as
+        soon as possible! If you leave it to the last minute, your service provider
+        may not be able to register the domain.
+      third_para: |
+        If you do not contact the registrar in time to register the %{domain_name}
+        domain, your priority will be cancelled. The fee paid for the auction will
+        not be reimbursed and the domain name priority will be returned to auction.

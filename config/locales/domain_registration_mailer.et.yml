@@ -1,22 +1,18 @@
 et:
   domain_registration_mailer:
     registration_reminder_email:
-      subject: "Domeeninimi %{domain_name} on veel registreerimata"
-      salutation: "Tere, %{display_name}"
-      introduction_html: |
-        Tuletame teile meelde, et teile reserveeritud domeeninimi %{domain_name} on seni registreerimata.
-        Domeeninime registreerimiseks väljastatud registreerimiskood kehtib 14 päeva.
-        Tähtaeg domeeninime registreerimiseks on <strong>%{registration_due_date}</strong>.
-      details: |
-        Reserveeritud domeenide registreerimine võib olla sõltuvalt valitud registripidajast
-        ajamahukas protsess. Domeeni registreerimiseks on vajalik esitada registripidajale
-        registreerimise kood, mille leiate oksjoni portaalist
-
-      link_title: "Registreerimiskood"
-      footer_html: |
-        <p>Lisaküsimuste korral võtke palun ühendust Eesti Interneti
-        Sihtasutusega aadressil info@internet.ee või +372 727 1000.</p>
-
-        <p>Lugupidamisega<br>
-        Eesti Interneti Sihtasutus
-        </p>
+      subject: "Domeeni %{domain_name} registreerimistähtaeg"
+      salutation: "Lugupeetud .ee oksjoni võitja"
+      first_para: |
+        Teile kui domeeni %{domain_name} enampakkumise võitjale on reserveeritud domeeninime
+        eelisõigus. Teil on jäänud 5 päeva pöörduda .ee akrediteeritud registripidaja poole
+        domeeni <timo-nons3> registreerimiseks.
+      second_para_html: |
+        Pöörduge .ee <a href="https://www.internet.ee/registripidajad/akrediteeritud-registripidajad">
+        akrediteeritud registripidaja</a> poole domeeni %{domain_name} registreerimiseks
+        esimesel võimalusel! Viimasele hetkele jätmise korral ei pruugi teenusepakkujal olla
+        võimalik domeeni registreerida.
+      third_para: |
+        Juhul, kui Te õigeaegselt registripidaja poole domeeni %{domain_name} registreerimiseks
+        ei pöördu, eelisõigus tühistatakse. Enampakkumisel makstud tasu ei hüvitata ja
+        domeeninime eelisõigus läheb tagasi oksjonile.

@@ -2,13 +2,10 @@ et:
   ban_mailer:
     ban_email:
       subject: "Sul on keelatud edasistel oksjonitel osaleda"
-      salutation: "Tere, %{display_name}"
+      salutation: "Lugupeetud .ee oksjonil osaleja"
       introduction: |
         Jätsid oksjoni arve tähtajaks tasumata.
-        Seetõttu on sul keelatud edaspidistel oksjonitel osaleda\n+
+        Seetõttu on sul keelatud edaspidistel oksjonitel osaleda
       details: |
        Keeld kehtib kuni %{valid_until}; selle ajani ei
-       saa sa domeeniga %{domain_name} seotud oksjonitel osaleda\n+
-      footer: |
-        Best regards, <br>
-        EIS
+       saa sa domeeniga %{domain_name} seotud oksjonitel osaleda

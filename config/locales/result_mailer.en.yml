@@ -1,23 +1,29 @@
 en:
   result_mailer:
     winner_email:
-      subject: "You won an auction!"
-      salutation: "Hello, %{display_name}"
+      subject: "Bid for the %{domain_name} domain was successful"
+      salutation: "Dear .ee auction participant"
       introduction: |
-        Dear domain auction participant. You have won a domain auction for %{domain_name}.
-      details: |
-        The final price is %{final_price}. You can pay via Bank Link, a credit or a debit card.
-
-      link_description: |
-        You have until %{payment_date} to complete the payment.
-        Follow the link below to fill in the data required for an invoice:
-      link_title: "Set up invoice"
-      footer_html: |
-        <p>Please do not hesitate to turn to contact us on any questions regarding
-        .ee auctions at info@internet.ee or +372 727 1000.</p>
-
-        <p>Best Regards,<br>
-        Estonian Internet Foundation</p>
+        Congratulations! Your bid in the domain registration priority
+        auction for the %{domain_name} domain was successful.
+      details_html: |
+        In order to acquire the priority for the %{domain_name} domain,
+        a prepayment invoice must be paid within 7 days. You can also
+        assign another person to be the receiver of the prepayment
+        invoice in the %{link}.
+      auction_link: ".ee auction environment"
+      details_second_para_html: |
+        If you pay the invoice on time, you can find the appropriate registration
+        code in your user account that will allow you to register the %{domain_name}
+        domain name won in the auction within 14 days. To register the %{domain_name}
+        domain, contact an <a href="https://www.internet.ee/registrars/accredited-registrars">
+        accredited .ee registrar</a> as soon as possible! If you
+        leave it to the last minute, your service provider may not be able to
+        register the domain.
+      details_third_para: |
+        The prepayment invoice must be paid within 7 days. If you fail to pay, you will
+        lose the right to the auctioned priority and priority for the %{domain_name} domain
+        will be returned to auction. You will not be able to participate in the same auction again.
 
     registration_code_email:
       subject: "Registration code for %{domain_name} is now available"
@@ -33,28 +39,12 @@ en:
         If you do not register the domain name before
         %{registration_due_date} the domain name will be put back to the auction.
       link_title: "Registration code"
-      footer_html: |
-        <p>Please do not hesitate to turn to contact us on any questions regarding
-        .ee auctions at info@internet.ee or +372 727 1000.</p>
-
-        <p>Best Regards,<br>
-        Estonian Internet Foundation</p>
 
     participant_email:
-      subject: "Your bid for domain name %{domain_name} was not successful"
-      salutation: "Dear .ee domain auction participant,"
-      text: |
-        Auction for the domain name %{domain_name} has ended. Unfortunately your bid was not the highest.
-        You can keep informed with the further progress of this domain name using domain search on our
-        web page internet.ee. Thank you for the participation!
-
-      link_description: |
-        List of auctioned domains is available on Estonian Internet Foundation’s web page
-        and in the auction center.
-      link_title: "Auction Center"
-      footer_html: |
-        <p>Please do not hesitate to turn to contact us on any questions regarding
-        .ee auctions at info@internet.ee or +372 727 1000.</p>
-
-        <p>Best Regards,<br>
-        Estonian Internet Foundation</p>
+      subject: "Bid for the %{domain_name} domain was unsuccessful"
+      salutation: "Dear .ee domain auction participant"
+      first_para: |
+        Your bid in the domain registration priority auction for
+        the %{domain_name} domain was not successful.
+      second_para: |
+        Bids are secret and the information on other offers is not publicly disclosed.

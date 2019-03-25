@@ -4,11 +4,16 @@
         <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
     </head>
     <body>
-        <h1><%= t('.salutation', display_name: @user.display_name) %></h1>
+        <h1><%= t('.salutation') %></h1>
         <p><%= t('.introduction', domain_name: @auction.domain_name) %></p>
-        <p><%= t('.link_description', payment_date: I18n.l(Date.today + Setting.payment_term)) %></p>
-        <p><%= link_to t('.link_title'), result_url(@result.uuid) %></p>
+        <p>
+            <%= t('.details_html',
+                  domain_name: @auction.domain_name,
+                  link: link_to(t('.auction_link'), result_url(@result.uuid))) %>
+        </p>
+        <p><%= t('.details_second_para_html', domain_name: @auction.domain_name) %></p>
+        <p><%= t('.details_third_para', domain_name: @auction.domain_name) %></p>
 
-        <%= sanitize t('.footer_html') %>
+        <%= t('common_mailer.footer_html') %>
     </body>
 </html>
