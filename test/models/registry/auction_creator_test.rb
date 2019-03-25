@@ -90,7 +90,7 @@ class RegistryAuctionCreatorTest < ActiveSupport::TestCase
         instance.call
         example_auction = Auction.find_by(remote_id: "cdf377a6-8797-40d8-90a1-b7aadfddc8e3")
         assert_equal(Time.now + 1.minute, example_auction.starts_at)
-        assert_equal((Date.tomorrow.to_datetime - 1.minute), example_auction.ends_at)
+        assert_equal((Date.tomorrow.to_datetime - 1.second), example_auction.ends_at)
       end
     end  end
 

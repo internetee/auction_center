@@ -37,7 +37,7 @@ module Registry
       setting = Setting.auction_duration
 
       if setting == :end_of_day
-        (auction_starts_at.to_date + 1).in_time_zone - 60
+        (auction_starts_at.to_date + 1).in_time_zone - 1
       else
         Time.at(auction_starts_at.to_i + Setting.auction_duration * 60 * 60).in_time_zone
       end
