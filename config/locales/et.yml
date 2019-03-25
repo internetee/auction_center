@@ -80,3 +80,7 @@ et:
   date:
     formats:
       default: "%Y-%m-%d"
+
+  views:
+    pagination:
+      truncate: "&hellip;"
