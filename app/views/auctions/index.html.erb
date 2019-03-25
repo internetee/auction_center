@@ -11,7 +11,7 @@
         <div class="ui massive input icon">
             <%= form_with(url: search_auctions_path, local: true, method: :get) do |f| %>
                 <div class="ui input icon">
-                    <%= f.text_field :domain_name, placeholder: t('.search') %>
+                    <%= f.text_field :domain_name, placeholder: t('search_by_domain_name') %>
                 </div>
 
                 <%= f.button(class: "ui icon primary button") do %>
