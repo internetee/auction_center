@@ -4,11 +4,11 @@
         <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
     </head>
     <body>
-        <h1><%= t('.salutation', display_name: @user.display_name) %></h1>
+        <h1><%= t('.salutation') %></h1>
         <p><%= t('.introduction') %></p>
         <p><%= t('.details', valid_until: @ban.valid_until.to_date,
                  domain_name: @ban.domain_name || t(:any)) %>
         </p>
-        <p><%= sanitize t('.footer') %>
+        <%= t('common_mailer.footer_html') %>
     </body>
 </html>

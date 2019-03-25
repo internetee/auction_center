@@ -1,0 +1,9 @@
+et:
+  common_mailer:
+    footer_html: |
+        <p>Lisaküsimuste korral võtke palun ühendust Eesti Interneti
+        Sihtasutusega aadressil info@internet.ee või +372 727 1000.</p>
+
+        <p>Lugupidamisega<br>
+        Eesti Interneti Sihtasutus
+        </p>

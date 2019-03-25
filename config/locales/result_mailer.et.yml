@@ -1,27 +1,32 @@
 et:
   result_mailer:
     winner_email:
-      subject: "Oled võitnud oksjoni!"
+      subject: "Pakkumine domeenile %{domain_name} oli edukas"
       salutation: "Lugupeetud .ee oksjonil osaleja"
       introduction: |
-        Lugupeetud oksjonil osaleja. Oled võitnud %{domain_name} domeeninime oksjoni.
-      details: |
-        Lõpphind on %{final_price}. Hinna saad tasuda pangalingi kaudu, krediit- või deebetkaardiga.
-      link_description: |
-        Maksetähtpäev on %{payment_date}.
-      link_title: "Koosta arve"
-      footer_html: |
-        <p>Lisaküsimuste korral võtke palun ühendust Eesti Interneti
-        Sihtasutusega aadressil info@internet.ee või +372 727 1000.</p>
+        Palju õnne! Pakkumine domeeni eelisõiguse oksjonil domeenile
+        %{domain_name} oli edukas.
+      details_html: |
+        Domeeni %{domain_name} eelisõiguse soetamiseks tuleb 7 päeva
+        jooksul tasuda ettemaksuarve. Ettemaksuarve saajaks saad määrata
+        ka muu isiku %{link}.
+      auction_link: ".ee oksjonikeskkonnas"
+      details_second_para_html: |
+        Arve õigeaegsel tasumisel leiate oma kasutajakonto alt vastava reserveerimiskoodi,
+        millega saate 14. päeva jooksul enampakkumisel võidetud %{domain_name}
+        domeeninime registreerida. Domeeni %{domain_name} registreerimiseks pöörduge
+        <a href="https://www.internet.ee/registripidajad/akrediteeritud-registripidajad">
+        .ee akrediteeritud registripidaja</a> poole esimesel võimalusel! Viimasele hetkele
+        jätmise korral ei pruugi teenusepakkujal olla võimalik domeeni registreerida.
 
-        <p>Lugupidamisega<br>
-        Eesti Interneti Sihtasutus
-        </p>
-
+      details_third_para: |
+        Ettemaksuarve tuleb tasuda 7 päeva jooksul. Tasumata jätmisel te enampakkumisel
+        olnud eelisõigust endale ei saa ja domeeni %{domain_name} eelisõigus läheb
+        tagasi oksjonile. Teie samal oksjonil uuesti osaleda ei saa.
 
     registration_code_email:
       subject: "Domeeninime %{domain_name} registreerimiskood on nüüd kättesaadav"
-      salutation: "“Tere, %{display_name}"
+      salutation: "Lugupeetud .ee oksjonil osaleja"
       introduction: |
         Domeeninime %{domain_name} registreerimiskood on nüüd
         Eesti Interneti SA oksjonikeskkonnas kättesaadav.
@@ -33,30 +38,12 @@ et:
       link_description: |
         14 päeva möödudes kaotab registreerimise kood kehtivuse ning domeeninimi läheb tagasi oksjonile.
       link_title: "Registreerimiskood"
-      footer_html: |
-        <p>Lisaküsimuste korral võtke palun ühendust Eesti Interneti
-        Sihtasutusega aadressil info@internet.ee või +372 727 1000.</p>
-
-        <p>Lugupidamisega<br>
-        Eesti Interneti Sihtasutus
-        </p>
 
     participant_email:
-      subject: "Pakkumine domeeninimele %{domain_name} ei osutunud edukaks"
+      subject: "Domeeni %{domain_name} pakkumine ei olnud edukas"
       salutation: "Lugupeetud .ee oksjonil osaleja"
-      text: |
-        Oksjon domeeninimele %{domain_name} on lõppenud. Kahjuks ei osutunud teie
-        pakkumine parimaks. Selle domeeninime edasist käekäiku saate jälgida
-        domeeni otsingu teenuse vahenusel meie kodulejel (internet.ee). Täname
-        teid oksjonil osalemise eest!
-      link_description: |
-        Oksjonil olevate domeenide nimekirja leiate Eesti Interneti
-        Sihtasutuse koguleheküljelt ja oksjoni keskkonnast.
-      link_title: "Oksjoni keskkond"
-      footer_html: |
-        <p>Lisaküsimuste korral võtke palun ühendust Eesti Interneti
-        Sihtasutusega aadressil info@internet.ee või +372 727 1000.</p>
-
-        <p>Lugupidamisega<br>
-        Eesti Interneti Sihtasutus
-        </p>
+      first_para: |
+        Teie pakkumine domeeni eelisõiguse oksjonil domeenile %{domain_name}
+        ei olnud edukas.
+      second_para: |
+        Pakkumised on salajased ja avalikult teiste pakkumuste infot ei väljastata.

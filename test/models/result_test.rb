@@ -67,7 +67,7 @@ class ResultTest < ActiveSupport::TestCase
     email = ActionMailer::Base.deliveries.last
 
     assert_equal(['user@auction.test'], email.to)
-    assert_equal('You won an auction!', email.subject)
+    assert_equal('Bid for the expired.test domain was successful', email.subject)
   end
 
   def test_marking_as_payment_received_updates_registration_due_date
