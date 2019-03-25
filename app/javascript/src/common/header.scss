@@ -224,24 +224,30 @@
             font-weight: 900;
         }
         &.u-active:first-child {
-            background: $green;
+            background: $blue;
         }
         &.u-active:nth-child(2) {
-            background: $orange;
+            background: $green;
         }
         &.u-active:nth-child(3) {
+            background: $orange;
+        }
+        &.u-active:nth-child(4) {
             background: $green;
         }
         &:hover {
             color: #fff;
             text-decoration: underline;
             &:first-child {
-                background: $green;
+                background: $blue;
             }
             &:nth-child(2) {
-                background: $orange;
+                background: $green;
             }
             &:nth-child(3) {
+                background: $orange;
+            }
+            &:nth-child(4) {
                 background: $green;
             }
         }

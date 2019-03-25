@@ -1,7 +1,8 @@
 et:
   common:
     header:
-      auction_portal: "Oksjooni portaal"
+      open_portal: "Avalik portaal"
+      auction_portal: "Oksjonikeskkond"
       registrar_portal: "Registripidaja portaal"
       registrant_portal: "Registreerija portaal"
 
