@@ -16,6 +16,7 @@ et:
     password: "Salasõna"
     password_confirmation: "Salasõna kinnitus"
     current_password: "Praegune salasõna"
+    remember_me: "Mäleta mind"
 
     edit:
       title: "Muuda kasutajaprofiili"

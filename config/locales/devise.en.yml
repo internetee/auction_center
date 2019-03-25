@@ -3,6 +3,9 @@
 en:
   devise:
     confirmations:
+      new:
+        title: "Resend email confirmation instructions"
+
       confirmed: "Your email address has been successfully confirmed."
       send_instructions: "You will receive an email with instructions for how to confirm your email address in a few minutes."
       send_paranoid_instructions: "If your email address exists in our database, you will receive an email with instructions for how to confirm your email address in a few minutes."
@@ -58,6 +61,14 @@ en:
       send_instructions: "You will receive an email with instructions for how to unlock your account in a few minutes."
       send_paranoid_instructions: "If your account exists, you will receive an email with instructions for how to unlock it in a few minutes."
       unlocked: "Your account has been unlocked successfully. Please sign in to continue."
+
+    shared:
+      links:
+        log_in: "Log in"
+        sign_up: "Sign up"
+        forgot_your_password: "Forgot your password?"
+        didnt_receive_confirmation_instructions: "Didn't receive confirmation instructions?"
+
   errors:
     messages:
       already_confirmed: "was already confirmed, please try signing in"

@@ -3,6 +3,9 @@
 et:
   devise:
     confirmations:
+      new:
+        title: "Saada kinnitamise juhised"
+
       confirmed: "Sinu e-posti aadress on kinnitatud."
       send_instructions: "Mõne minuti jooksul saadetakse sulle e-kiri juhistega, kuidas kinnitada oma e-posti aadress. "
       send_paranoid_instructions: "Kui sinu e-posti aadress on meie andmebaasis, saadetakse sulle mõne minuti jooksul e-kiri juhistega, kuidas kinnitada oma e-posti aadress."
@@ -58,6 +61,14 @@ et:
       send_instructions: "Mõne minuti jooksul saadetakse sulle e-kiri konto avamise juhistega."
       send_paranoid_instructions: "Kui sinu konto on olemas, saad mõne minuti jooksul e-kirjaga juhised konto avamiseks."
       unlocked: "Sinu konto on avatud. Jätkamiseks logi sisse."
+
+    shared:
+      links:
+        log_in: "Logi sisse"
+        sign_up: "Loo konto"
+        forgot_your_password: "Unustasid parooli?"
+        didnt_receive_confirmation_instructions: "Ei saanud e-posti aadressi kinnituskirja?"
+
   errors:
     messages:
       already_confirmed: "was already confirmed, please try signing in"
