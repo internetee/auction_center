@@ -47,7 +47,7 @@ et:
     osaleda domeeni %{domain_name oksjonitel.
   any: "kõik"
 
-  my_offers: "Minu pakkumused"
+  my_offers: "Minu pakkumised"
   my_invoices: "Minu arved"
   actions: "Actions"
   job_enqueued: "Tegevus on järjekorras. Kontrolli tulemusi mõne minuti pärast."
