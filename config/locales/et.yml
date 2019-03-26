@@ -84,3 +84,7 @@ et:
   views:
     pagination:
       truncate: "&hellip;"
+
+  recaptcha:
+    errors:
+      recaptcha_unreachable: "reCAPTCHA kontroll ebaõnnestus. Palun proovige uuesti!"

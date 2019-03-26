@@ -5,7 +5,7 @@ et:
 
     issue_date: "Issue date"
     issued_for: "Issued for"
-    due_date: "Due date"
+    due_date: "Tähtaeg"
     status: "Staatus"
     price: "Hind"
     billing_profile: "Arve aadress"
