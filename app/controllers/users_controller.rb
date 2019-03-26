@@ -1,6 +1,7 @@
 require 'countries'
 
 class UsersController < ApplicationController
+  before_action :authenticate_user!, only: %i[show edit update destroy]
   before_action :set_user, only: %i[show edit update destroy]
   before_action :set_minimum_password_length, only: %i[new edit]
   before_action :authorize_user, except: %i[new index create show]

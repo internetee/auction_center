@@ -4,7 +4,7 @@ et:
     sold: "Müüdud"
     invoice: "Arve"
     registration_code: "Registreerimiskood"
-    register_before: "Registreeru enne"
+    register_before: "Registreeri hiljemalt"
     pay_invoice_before: "Tasu arve enne"
     status: "Staatus"
     registration_due_date: "Registreerimise tähtpäev"

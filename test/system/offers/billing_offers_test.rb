@@ -28,7 +28,7 @@ class BillingOffersTest < ApplicationSystemTestCase
     fill_in('offer[price]', with: '5.12')
 
     click_link_or_button('Submit')
-    assert(page.has_css?('div.notice', text: 'Created successfully.'))
+    assert(page.has_css?('div.notice', text: 'Offer submitted successfully.'))
   end
 
   def test_user_needs_to_select_a_billing_profile_when_creating_offer
@@ -42,6 +42,6 @@ class BillingOffersTest < ApplicationSystemTestCase
     select_from_dropdown('ACME Inc.', from: 'offer[billing_profile_id]')
     click_link_or_button('Submit')
 
-    assert(page.has_css?('div.notice', text: 'Created successfully.'))
+    assert(page.has_css?('div.notice', text: 'Offer submitted successfully.'))
   end
 end

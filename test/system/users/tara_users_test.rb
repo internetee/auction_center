@@ -49,6 +49,7 @@ class TaraUsersTest < ApplicationSystemTestCase
 
     fill_in('user[email]', with: 'new-user@auction.test')
     check_checkbox('user[accepts_terms_and_conditions]')
+    assert(page.has_link?('auction portal user agreement', href: Setting.terms_and_conditions_link))
 
     click_link_or_button('Sign up')
     assert(page.has_css?('div.alert', text: 'You have to confirm your email address before continuing'))

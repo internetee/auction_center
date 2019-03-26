@@ -4,7 +4,7 @@ en:
     sold: "Sold"
     invoice: "Invoice"
     registration_code: "Registration code"
-    register_before: "Register before"
+    register_before: "Registration deadline"
     pay_invoice_before: "Pay invoice before"
     status: "Status"
     registration_due_date: "Registration due date"
