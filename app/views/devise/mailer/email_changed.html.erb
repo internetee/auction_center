@@ -1,7 +1,17 @@
-<p><%= t('.salutation'), email: @email %>!</p>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
+    </head>
+    <body>
+        <p><%= t('.salutation', email: @email) %></p>
 
-<% if @resource.try(:unconfirmed_email?) %>
-    <p><%= t('.first_para', unconfirmed_email: @resource.unconfirmed_email) %></p>
-<% else %>
-    <p><%= t('.second_para', unconfirmed_email: @resource.email) %></p>
-<% end %>
+        <% if @resource.try(:unconfirmed_email?) %>
+            <p><%= t('.first_para', unconfirmed_email: @resource.unconfirmed_email) %></p>
+        <% else %>
+            <p><%= t('.second_para', unconfirmed_email: @resource.email) %></p>
+        <% end %>
+
+        <%= t('common_mailer.footer_html') %>
+    </body>
+</html>

@@ -25,6 +25,7 @@ en:
         salutation: "Hello, %{email}"
         first_para: "You can confirm your account email through the link below."
         second_para: "Confirm my account"
+
       reset_password_instructions:
         subject: "Reset password instructions"
         salutation: "Hello, %{email}"
