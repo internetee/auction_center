@@ -21,7 +21,9 @@
                 <% unless flash.empty? %>
                     <div class="ui message flash">
                         <% flash.each do |key, value| -%>
-                            <div class="header <%= key %>" id="flash"><%= h value %></div>
+                            <% if ['notice', 'alert'].include?(key) %>
+                                <div class="header <%= key %>" id="flash"><%= h value %></div>
+                            <% end %>
                         <% end %>
                     </div>
                 <% end %>
