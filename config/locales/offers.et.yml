@@ -14,6 +14,9 @@ et:
     new:
       title: "Domeeni registreerimise eelisõiguse pakkumus"
 
+    create:
+      created: "Pakkumus edukalt esitatud"
+
     show:
       title: "Sinu pakkumus"
       we_will_contact_winner: |
