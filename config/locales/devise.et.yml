@@ -48,6 +48,7 @@ et:
       update_needs_confirmation: "Sinu konto on uuendatud, kuid me peame kontrollima sinu uut e-posti aadressi. Vaata oma postkasti ja klõpsa kinnitamise lingile, et kinnitada oma uus e-posti aadress."
       updated: "Sinu konto on uuendatud."
     sessions:
+      signed_in: "Oled sisse logitud."
       new:
         sign_in_with_identity_document: "Logi sisse isikut tõendava dokumendiga."
         identity_document_text: |
