@@ -22,9 +22,10 @@ en:
     mailer:
       confirmation_instructions:
         subject: "Confirmation instructions"
-        salutation: "Hello, %{email}"
-        first_para: "You can confirm your account email through the link below."
-        second_para: "Confirm my account"
+        salutation: "Welcome to the Estonian Internet Foundation’s .ee domain auction environment!"
+        first_para: "You have created a new account using the e-mail address %{email}"
+        second_para: "To participate in a domain auction, you first need to verify your e-mail address. You can do this by clicking on the following link:"
+        link: "Confirm my account"
 
       reset_password_instructions:
         subject: "Reset password instructions"

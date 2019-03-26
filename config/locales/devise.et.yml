@@ -21,10 +21,11 @@ et:
       unconfirmed: "Enne jätkamist kinnita oma e-posti aadress."
     mailer:
       confirmation_instructions:
-        subject: "Kinnitamise juhised."
-        salutation: "Hello, %{email}"
-        first_para: "You can confirm your account email through the link below."
-        second_para: "Confirm my account"
+        subject: "E-posti aadressi kinnitamine"
+        salutation: "Tere tulemast Eesti Interneti SA .ee domeenide oksjonikeskkonda!"
+        first_para: "Oled loonud uue kasutaja e-posti aadressiga  %{email}"
+        second_para: "Domeeni oksjonil osalemiseks pead esmalt kinnitama oma e-posti aadressi. Seda saad teha klõpsates järgnevale lingile:"
+        link: "Kinnita minu konto"
 
       reset_password_instructions:
         subject: "Salasõna lähtestamise juhised"
