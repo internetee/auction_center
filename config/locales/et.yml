@@ -87,4 +87,5 @@ et:
 
   recaptcha:
     errors:
-      recaptcha_unreachable: "reCAPTCHA kontroll ebaõnnestus. Palun proovige uuesti!"
+      recaptcha_unreachable: "reCAPTCHA ebaõnnestus. Palun proovige uuesti!"
+      verification_failed: "reCAPTCHA kontroll ebaõnnestus. Palun proovige uuesti!"
