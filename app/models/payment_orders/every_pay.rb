@@ -51,7 +51,7 @@ module PaymentOrders
 
     # Perform necessary checks and mark the invoice as paid
     def mark_invoice_as_paid
-      return unless valid_response? && settled_payment?
+      return unless settled_payment? && valid_response?
 
       paid!
       time = Time.strptime(response['timestamp'], '%s')
