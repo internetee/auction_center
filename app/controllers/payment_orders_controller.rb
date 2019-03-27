@@ -34,8 +34,10 @@ class PaymentOrdersController < ApplicationController
         format.html { redirect_to invoice_path(@payment_order.invoice.uuid), notice: t(:updated) }
         format.json { redirect_to invoice_path(@payment_order.invoice.uuid), notice: t(:updated) }
       else
-        format.html { redirect_to invoice_path(@payment_order.invoice.uuid),
-                      notice: t('.not_successful') }
+        format.html do
+          redirect_to invoice_path(@payment_order.invoice.uuid),
+                      notice: t('.not_successful')
+        end
         format.json { render json: @payment_order.errors, status: :unprocessable_entity }
       end
     end

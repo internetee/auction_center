@@ -5,4 +5,4 @@ et:
       please_wait: "Palun oota"
 
     return:
-      not_successful: "The payment was not successful."
+      not_successful: "Makse ebaõnnestus!"
