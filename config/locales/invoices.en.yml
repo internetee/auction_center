@@ -4,6 +4,7 @@ en:
     is_being_generated: "We are generating the invoice, please check back in a few minutes."
 
     issue_date: "Issue date"
+    issuer: "Issuer"
     issued_for: "Issued for"
     due_date: "Due date"
     status: "Status"

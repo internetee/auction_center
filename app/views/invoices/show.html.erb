@@ -26,6 +26,11 @@
             <div class="column right aligned">
                 <div class="ui list">
                     <div class="item">
+                        <div class="header"><%= t('invoices.issuer') %></div>
+                        <%= Setting.invoice_issuer %>
+                    </div>
+
+                    <div class="item">
                         <div class="header"><%= t('invoices.issue_date') %></div>
                         <%= @invoice.issue_date %>
                     </div>
