@@ -18,6 +18,7 @@ et:
     vat_exclusive: "Käibemaksuta"
     paid_at: "Makstud"
     title: "Arve nr %{number}"
+    download: "Laadi alla"
 
     outstanding: "Tasumata arved"
     paid: "Tasutud arved"

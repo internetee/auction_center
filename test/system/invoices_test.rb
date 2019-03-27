@@ -45,6 +45,11 @@ class InvoicesTest < ApplicationSystemTestCase
     assert_text('foo bar baz')
   end
 
+  def test_invoice_can_be_downloaded
+    visit invoice_path(@invoice.uuid)
+    assert(page.has_link?('Download', href: download_invoice_path(@invoice.uuid)))
+  end
+
   def test_invoice_contains_items_and_prices_without_vat
     visit invoice_path(@invoice.uuid)
 

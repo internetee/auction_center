@@ -51,6 +51,13 @@ class InvoiceTest < ActiveSupport::TestCase
     assert_equal(["must be an integer"], invoice.errors[:cents])
   end
 
+  def test_filename
+    assert_match(/invoice-no-\d+/, @payable_invoice.filename)
+
+    invoice = prefill_invoice
+    refute(invoice.filename)
+  end
+
   def test_cents_must_be_positive
     invoice = prefill_invoice
     invoice.cents = -1000

@@ -18,6 +18,7 @@ en:
     vat_exclusive: "VAT exclusive"
     paid_at: "Paid at"
     title: "Invoice no. %{number}"
+    download: "Download"
 
     outstanding: "Outstanding invoices"
     paid: "Paid invoices"

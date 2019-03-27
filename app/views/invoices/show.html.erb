@@ -13,6 +13,9 @@
                     <%= link_to t('.change_billing_profile'),
                     edit_invoice_path(@invoice.uuid), class: 'ui button primary' %>
                 <% end %>
+
+                <%= link_to t('invoices.download'), download_invoice_path(@invoice.uuid),
+                            { class: 'ui button secondary', target: "_blank" } %>
             </div>
             <div class="column">
                 <div class="ui list">

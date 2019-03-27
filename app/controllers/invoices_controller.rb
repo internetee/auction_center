@@ -28,6 +28,12 @@ class InvoicesController < ApplicationController
     @paid_invoices = get_invoices_list_by_status(Invoice.statuses[:paid])
   end
 
+  # GET /invoices/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/download
+  def download
+    pdf = PDFKit.new(render_to_string('pdf', layout: false))
+    send_data pdf.to_pdf, filename: "foo.pdf"
+  end
+
   private
 
   def get_invoices_list_by_status(status)
