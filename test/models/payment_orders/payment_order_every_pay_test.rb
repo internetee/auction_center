@@ -51,7 +51,7 @@ class PaymentOrderEveryPayTest < ActiveSupport::TestCase
       api_username: 'api_user',
       account_id: 'EUR3D1',
       timestamp: '1522542600',
-      amount: '12,00',
+      amount: '12.00',
       transaction_type: 'charge',
       hmac_fields: 'account_id,amount,api_username,callback_url,customer_url,hmac_fields,nonce,order_reference,timestamp,transaction_type'
     }
