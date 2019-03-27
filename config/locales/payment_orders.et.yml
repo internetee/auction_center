@@ -3,3 +3,6 @@ et:
     show:
       you_are_being_redirected: "Sind suunatakse maksma"
       please_wait: "Palun oota"
+
+    return:
+      not_successful: "The payment was not successful."
