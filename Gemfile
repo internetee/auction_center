@@ -44,6 +44,7 @@ gem 'pdfkit'
 gem 'rails-i18n'
 gem 'recaptcha'
 gem 'whenever', require: false
+gem 'wkhtmltopdf-binary'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
