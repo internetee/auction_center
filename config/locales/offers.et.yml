@@ -8,11 +8,14 @@ et:
     already_exists: "You already have an offer for this auction."
     errors: "seda pakkumust ei saa salvestada"
     total: "Käibemaksuga kokku"
-    must_be_active: "Must be active"
-    must_be_higher_than: "Must be higher than %{minimum}"
+    must_be_active: "peab olema aktiivne"
+    must_be_higher_than: "peab olema suurem kui %{minimum}"
 
     new:
       title: "Domeeni registreerimise eelisõiguse pakkumus"
+
+    create:
+      created: "Pakkumus edukalt esitatud"
 
     show:
       title: "Sinu pakkumus"
@@ -35,5 +38,6 @@ et:
   activerecord:
     attributes:
       offer:
-        auction: "Oksjon"
-        price: "Hind"
+        auction: "oksjon"
+        price: "hind"
+        cents: "hind"

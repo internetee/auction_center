@@ -51,7 +51,7 @@ class RecaptchaOffersTest < ApplicationSystemTestCase
       fill_in('offer[price]', with: '5.12')
       click_link_or_button('Submit')
 
-      assert_text('Created successfully.')
+      assert_text('Offer submitted successfully.')
     end
 
     disable_recaptcha
@@ -66,7 +66,7 @@ class RecaptchaOffersTest < ApplicationSystemTestCase
     select_from_dropdown('ACME Inc.', from: 'offer[billing_profile_id]')
     click_link_or_button('Submit')
 
-    assert_text('Created successfully.')
+    assert_text('Offer submitted successfully.')
   end
 
   def with_recaptcha_test_keys

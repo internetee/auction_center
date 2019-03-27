@@ -83,7 +83,7 @@ class OffersTest < ApplicationSystemTestCase
     fill_in('offer[price]', with: '5.12')
     click_link_or_button('Submit')
 
-    assert(page.has_text?('Created successfully'))
+    assert(page.has_text?('Offer submitted successfully.'))
   end
 
   def test_participant_cannot_submit_an_offer_with_3_or_more_decimal_places

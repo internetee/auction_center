@@ -51,7 +51,7 @@ class PhoneConfirmationsTest < ApplicationSystemTestCase
       fill_in('offer[price]', with: '5.12')
       click_link_or_button('Submit')
 
-      assert(page.has_text?('Created successfully'))
+      assert(page.has_text?('Offer submitted successfully.'))
     end
   end
 

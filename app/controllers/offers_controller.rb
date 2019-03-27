@@ -23,7 +23,7 @@ class OffersController < ApplicationController
 
     respond_to do |format|
       if create_predicate
-        format.html { redirect_to offer_path(@offer.uuid), notice: t(:created) }
+        format.html { redirect_to offer_path(@offer.uuid), notice: t('.created') }
         format.json { render :show, status: :created, location: @offer }
       else
         format.html { render :new }
