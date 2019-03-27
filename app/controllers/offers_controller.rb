@@ -18,11 +18,18 @@ class OffersController < ApplicationController
 
   # POST /auctions/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/offers
   def create
+    auction = Auction.find_by!(uuid: params[:auction_uuid])
+    existing_offer = auction.offer_from_user(current_user.id)
+
     @offer = Offer.new(create_params)
     authorize! :manage, @offer
 
     respond_to do |format|
-      if create_predicate
+      if existing_offer
+        format.html do
+          redirect_to offer_path(existing_offer.uuid), notice: t('offers.already_exists')
+        end
+      elsif create_predicate
         format.html { redirect_to offer_path(@offer.uuid), notice: t('.created') }
         format.json { render :show, status: :created, location: @offer }
       else
