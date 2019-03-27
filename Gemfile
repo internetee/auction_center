@@ -40,6 +40,7 @@ gem 'kaminari'
 gem 'money'
 gem 'okcomputer'
 gem 'omniauth-tara', github: 'internetee/omniauth-tara'
+gem 'pdfkit'
 gem 'rails-i18n'
 gem 'recaptcha'
 gem 'whenever', require: false

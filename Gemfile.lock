@@ -166,6 +166,7 @@ GEM
       validate_url
       webfinger (>= 1.0.1)
     orm_adapter (0.5.0)
+    pdfkit (0.8.4.1)
     pg (1.1.4)
     pry (0.12.2)
       coderay (~> 1.1.0)
@@ -296,6 +297,7 @@ DEPENDENCIES
   money
   okcomputer
   omniauth-tara!
+  pdfkit
   pg (>= 0.18, < 2.0)
   pry
   puma (~> 3.11)
