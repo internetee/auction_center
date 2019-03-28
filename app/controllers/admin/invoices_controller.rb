@@ -2,7 +2,7 @@ module Admin
   class InvoicesController < BaseController
     before_action :authorize_user
     before_action :create_invoice_if_needed
-    before_action :set_invoice, only: [:show, :download]
+    before_action :set_invoice, only: %i[show download]
 
     # GET /admin/invoices/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
     def show; end
