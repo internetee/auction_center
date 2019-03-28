@@ -26,6 +26,9 @@ et:
         first_para: "Oled loonud uue kasutaja e-posti aadressiga  %{email}"
         second_para: "Domeeni oksjonil osalemiseks pead esmalt kinnitama oma e-posti aadressi. Seda saad teha klõpsates järgnevale lingile:"
         link: "Kinnita minu konto"
+        reconfirmation_salutation: "Lugupeetud .ee oksjonil osaleja"
+        reconfirmation_first_para: "Sinu e-posti aadress on muudetud. Uus e-posti aadress on %{email}."
+        reconfirmation_link: "Kinnita uus e-posti aadress"
 
       reset_password_instructions:
         subject: "Salasõna lähtestamise juhised"
@@ -41,12 +44,6 @@ et:
         first_para: "Your account has been locked due to an excessive number of unsuccessful sign in attempts."
         second_para: "Click the link below to unlock your account:"
         third_para: "Unlock my account"
-
-      email_changed:
-        subject: "E-posti aadress muudetud"
-        salutation: "Lugupeetud, %{email}!"
-        first_para: "Sinu e-posti aadress muudab. Uus e-posti aadress on %{unconfirmed_email}."
-        second_para: "Sinu e-posti aadress on muudetud. Uus e-posti aadress on %{confirmed_email}."
 
       password_change:
         subject: "Salasõna muudetud"

@@ -3,12 +3,19 @@
     <head>
         <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
     </head>
-    <body>
-        <p><%= t('.salutation', email: @email) %></p>
-        <p><%= t('.first_para', email: @email) %></p>
-        <p><%= t('.second_para') %></p>
 
-        <p><%= link_to t('.link'), confirmation_url(@resource, confirmation_token: @token) %></p>
+
+    <body>
+        <% if @resource.unconfirmed_email && @resource.confirmed_at %>
+            <p><%= t('.reconfirmation_salutation') %></p>
+            <p><%= t('.reconfirmation_first_para', email: @resource.unconfirmed_email) %></p>
+            <p><%= link_to t('.reconfirmation_link'), confirmation_url(@resource, confirmation_token: @token) %></p>
+        <% else %>
+            <p><%= t('.salutation', email: @email) %></p>
+            <p><%= t('.first_para', email: @email) %></p>
+            <p><%= t('.second_para') %></p>
+            <p><%= link_to t('.link'), confirmation_url(@resource, confirmation_token: @token) %></p>
+        <% end %>
 
         <%= t('common_mailer.footer_html') %>
     </body>

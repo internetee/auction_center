@@ -26,6 +26,10 @@ en:
         first_para: "You have created a new account using the e-mail address %{email}"
         second_para: "To participate in a domain auction, you first need to verify your e-mail address. You can do this by clicking on the following link:"
         link: "Confirm my account"
+        reconfirmation_subject: "Email Changed"
+        reconfirmation_salutation: "Dear .ee auction participant"
+        reconfirmation_first_para: "We're contacting you to notify you that your email is being changed to %{email}."
+        reconfirmation_link: "Confirm my new email address"
 
       reset_password_instructions:
         subject: "Reset password instructions"
@@ -41,12 +45,6 @@ en:
         first_para: "Your account has been locked due to an excessive number of unsuccessful sign in attempts."
         second_para: "Click the link below to unlock your account:"
         third_para: "Unlock my account"
-
-      email_changed:
-        subject: "Email Changed"
-        salutation: "Hello, %{email}"
-        first_para: "We're contacting you to notify you that your email is being changed to %{unconfirmed_email}."
-        second_para: "We're contacting you to notify you that your email is changed to %{unconfirmed_email}."
 
       password_change:
         subject: "Password Changed"
