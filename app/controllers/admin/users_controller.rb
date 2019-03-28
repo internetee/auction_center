@@ -16,7 +16,7 @@ module Admin
       @users = User.all.order(created_at: :desc).page(params[:page])
     end
 
-    # POST /admin/users/search
+    # GET /admin/users/search
     def search
       email = search_params[:email]
 

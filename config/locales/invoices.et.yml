@@ -19,6 +19,7 @@ et:
     paid_at: "Makstud"
     title: "Arve nr %{number}"
     download: "Laadi alla"
+    number: "Number"
 
     outstanding: "Tasumata arved"
     paid: "Tasutud arved"

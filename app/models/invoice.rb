@@ -70,7 +70,8 @@ class Invoice < ApplicationRecord
 
   def filename
     return unless title
-    title.parameterize
+
+    "#{title.parameterize}.pdf"
   end
 
   def mark_as_paid_at(time)

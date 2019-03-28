@@ -9,6 +9,8 @@
         <div class="ui two column doubling stackable grid">
             <div class="column sixteen wide">
                 <%= link_to t(:versions_name), admin_invoice_versions_path(@invoice), class: "ui button primary" %>
+                <%= link_to t('invoices.download'), download_admin_invoice_path(@invoice),
+                            { class: 'ui button secondary', target: "_blank" } %>
             </div>
 
             <div class="column">
