@@ -3,3 +3,6 @@ en:
     billing_profiles:
       index:
         title: "Billing profiles"
+
+      show:
+        title: "Billing profile"

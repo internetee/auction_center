@@ -26,7 +26,9 @@
                                 <%= billing_profile.user_name %>
                             <% end %>
                         </td>
-                        <td class="billing-profile-name"><%= billing_profile.name %></td>
+                        <td class="billing-profile-name">
+                            <%= link_to billing_profile.name, admin_billing_profile_path(billing_profile) %>
+                        </td>
                         <td><%= billing_profile.vat_code %></td>
                         <td><%= billing_profile.address %></td>
                     </tr>
