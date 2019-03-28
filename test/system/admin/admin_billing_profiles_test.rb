@@ -26,7 +26,6 @@ class AdminBillingProfilesTest < ApplicationSystemTestCase
 
   def test_billing_profiles_orphans_are_marked_on_view_page
     orphan = billing_profiles(:orphaned)
-
     visit admin_billing_profile_path(orphan)
 
     assert_text("Orphaned")
