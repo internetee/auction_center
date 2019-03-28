@@ -48,6 +48,9 @@ class InvoicesTest < ApplicationSystemTestCase
   def test_invoice_can_be_downloaded
     visit invoice_path(@invoice.uuid)
     assert(page.has_link?('Download', href: download_invoice_path(@invoice.uuid)))
+
+    new_window = window_opened_by { click_link_or_button('Download') }
+    assert(new_window)
   end
 
   def test_invoice_contains_items_and_prices_without_vat
