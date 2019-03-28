@@ -45,8 +45,8 @@ et:
       email_changed:
         subject: "E-posti aadress muudetud"
         salutation: "Lugupeetud, %{email}!"
-        first_para: "We're contacting you to notify you that your email is being changed to %{unconfirmed_email}."
-        second_para: "Sinu e-posti aadress on muudetud. Uus e-posti aadress on %{unconfirmed_email}."
+        first_para: "Sinu e-posti aadress muudab. Uus e-posti aadress on %{unconfirmed_email}."
+        second_para: "Sinu e-posti aadress on muudetud. Uus e-posti aadress on %{confirmed_email}."
 
       password_change:
         subject: "Salasõna muudetud"

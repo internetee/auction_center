@@ -9,7 +9,7 @@
         <% if @resource.try(:unconfirmed_email?) %>
             <p><%= t('.first_para', unconfirmed_email: @resource.unconfirmed_email) %></p>
         <% else %>
-            <p><%= t('.second_para', unconfirmed_email: @resource.email) %></p>
+            <p><%= t('.second_para', confirmed_email: @resource.email) %></p>
         <% end %>
 
         <%= t('common_mailer.footer_html') %>
