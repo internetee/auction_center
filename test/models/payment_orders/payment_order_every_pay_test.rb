@@ -36,8 +36,11 @@ class PaymentOrderEveryPayTest < ActiveSupport::TestCase
     @every_pay = PaymentOrders::EveryPay.new(status: :issued, invoice: @orphaned_invoice,
                                              user: @user, response: response)
 
-    @fake_every_pay = PaymentOrders::EveryPay.new(status: :issued, invoice: @payable_invoice,
-                                                  user: @user)
+    @fake_every_pay = PaymentOrders::EveryPay.new(status: :issued,
+                                                  invoice: @payable_invoice,
+                                                  user: @user,
+                                                  response: {"payment_state": "cancelled",
+                                                             "hmac_fields": ""})
   end
 
   def teardown

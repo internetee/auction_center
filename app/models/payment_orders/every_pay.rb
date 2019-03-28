@@ -51,7 +51,7 @@ module PaymentOrders
 
     # Perform necessary checks and mark the invoice as paid
     def mark_invoice_as_paid
-      return unless valid_response? && settled_payment?
+      return unless settled_payment? && valid_response?
 
       paid!
       time = Time.strptime(response['timestamp'], '%s')
@@ -100,7 +100,7 @@ module PaymentOrders
         timestamp: Time.now.to_i.to_s,
         callback_url: callback_url,
         customer_url: return_url,
-        amount: invoice.total.to_s,
+        amount: invoice.total.format(symbol: nil, decimal_mark: '.'),
         order_reference: SecureRandom.hex(15),
         transaction_type: 'charge',
         hmac_fields: '',

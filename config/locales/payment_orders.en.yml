@@ -3,3 +3,6 @@ en:
     show:
       you_are_being_redirected: "You are being redirected to the payment gateway"
       please_wait: "Please wait"
+
+    return:
+      not_successful: "The payment was not successful."
