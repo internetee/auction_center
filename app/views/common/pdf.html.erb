@@ -200,6 +200,12 @@
                         <dd>
                             <%= @invoice.number %>
                         </dd>
+                        <dt>
+                            <%= t('invoices.status') %>
+                        </dt>
+                        <dd>
+                            <%= I18n.t("activerecord.enums.invoice.statuses.#{@invoice.status}") %>
+                        </dd>
                     </dl>
                 </div>
                 <div class="col-md-6 right">

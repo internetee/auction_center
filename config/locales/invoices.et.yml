@@ -33,3 +33,11 @@ et:
 
     index:
       title: "Sinu arved"
+
+  activerecord:
+    enums:
+      invoice:
+        statuses:
+          issued: "Esitatud"
+          paid: "Makstud"
+          cancelled: "Aegnud"

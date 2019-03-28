@@ -17,7 +17,7 @@
                 <div class="ui list">
                     <div class="item">
                         <div class="header"><%= t('invoices.status') %></div>
-                        <%= @invoice.status %>
+                        <%= I18n.t("activerecord.enums.invoice.statuses.#{@invoice.status}") %>
                     </div>
 
                     <div class="item">
