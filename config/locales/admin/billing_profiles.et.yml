@@ -3,3 +3,6 @@ et:
     billing_profiles:
       index:
         title: "Arve aadressid"
+
+      show:
+        title: "Billing profile"

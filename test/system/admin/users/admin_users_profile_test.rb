@@ -64,4 +64,11 @@ class AdminUsersProfileTest < ApplicationSystemTestCase
 
     assert_text('Deleted successfully.')
   end
+
+  def test_administrator_can_see_billing_profiles_attached_to_user
+    billing_profile = billing_profiles(:company)
+    visit admin_user_path(@participant)
+
+    assert(page.has_link?("ACME Inc.", href: admin_billing_profile_path(billing_profile)))
+  end
 end

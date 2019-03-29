@@ -13,6 +13,9 @@
                     <%= link_to t('.change_billing_profile'),
                     edit_invoice_path(@invoice.uuid), class: 'ui button primary' %>
                 <% end %>
+
+                <%= link_to t('invoices.download'), download_invoice_path(@invoice.uuid),
+                            { class: 'ui button secondary', target: "_blank" } %>
             </div>
             <div class="column">
                 <div class="ui list">
@@ -25,6 +28,11 @@
 
             <div class="column right aligned">
                 <div class="ui list">
+                    <div class="item">
+                        <div class="header"><%= t('invoices.issuer') %></div>
+                        <%= Setting.invoice_issuer %>
+                    </div>
+
                     <div class="item">
                         <div class="header"><%= t('invoices.issue_date') %></div>
                         <%= @invoice.issue_date %>

@@ -14,7 +14,7 @@ class AuctionsController < ApplicationController
     end
   end
 
-  # POST /auctions/search
+  # GET /auctions/search
   def search
     domain_name = search_params[:domain_name]
 

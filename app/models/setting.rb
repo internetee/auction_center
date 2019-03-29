@@ -67,4 +67,8 @@ class Setting < ApplicationRecord
   def self.domain_registration_reminder_day
     Setting.find_by(code: :domain_registration_reminder).value.to_i
   end
+
+  def self.invoice_issuer
+    Setting.find_by(code: :invoice_issuer).value
+  end
 end

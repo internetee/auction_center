@@ -32,6 +32,7 @@ module Admin
                          .page(params[:page])
     end
 
+    # GET /admin/auctions/search
     def search
       domain_name = search_params[:domain_name]
 

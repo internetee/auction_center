@@ -64,6 +64,31 @@
                 </table>
             </div>
 
+            <div class="margin-block">
+                <h2><%= t(:billing_profiles_name) %></h2>
+                <table class="ui table fixed" id="billing-profiles-table">
+                    <thead>
+                        <tr>
+                            <th scope="col"><%= t('billing_profiles.name') %></th>
+                            <th scope="col"><%= t('billing_profiles.vat_code') %></th>
+                            <th scope="col"><%= t('billing_profiles.address') %></th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="billing-profiles-table-body">
+                        <% @user.billing_profiles.each do |billing_profile| %>
+                            <tr class="billing-profiles-table-row">
+                                <td class="billing-profile-name">
+                                    <%= link_to billing_profile.name, admin_billing_profile_path(billing_profile) %>
+                                </td>
+                                <td><%= billing_profile.vat_code %></td>
+                                <td><%= billing_profile.address %></td>
+                            </tr>
+                        <% end %>
+                    </tbody>
+                </table>
+            </div>
+
             <h3><%= t('.ban_this_user') %>
                 <%= form_with(model: @ban, local: true, url: admin_bans_path, class: "ui form big") do |f| %>
                     <div class="field">

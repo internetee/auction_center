@@ -75,3 +75,10 @@ domain_registration_reminder:
   description: |
     Number of days before which the registration reminder email is sent on. Default: 5
   value: '5'
+
+invoice_issuer:
+  code: 'invoice_issuer'
+  description: |
+    Text that should appear in invoice as issuer. Usually contains company name, VAT number and
+    local court registration number.e which the registration reminder email is sent on. Default: 5
+  value: 'Eesti Interneti SA, VAT number EE101286464'

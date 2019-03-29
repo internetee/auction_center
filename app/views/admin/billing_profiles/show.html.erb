@@ -1,0 +1,59 @@
+<% content_for :hero do %>
+    <div class="hero orange">
+        <h1><%= t('.title') %></h1>
+    </div>
+<% end %>
+
+<div class="u-container">
+    <div class="margin-block">
+        <div class="content">
+            <h2>
+                <%= @billing_profile.name %>
+            </h2>
+            <div class="body">
+                <% unless @billing_profile.user %>
+                    <p><%= t('billing_profiles.orphaned') %></p>
+                <% end %>
+                <table class="ui table very basic padded">
+                    <tbody>
+                        <tr>
+                            <td><strong><%= t('billing_profiles.vat_code') %></strong></td>
+                            <td><%= @billing_profile.vat_code %></td>
+                        </tr>
+
+                        <tr>
+                            <td><strong><%= t('billing_profiles.street') %></strong></td>
+                            <td><%= @billing_profile.street %></td>
+                        </tr>
+
+                        <tr>
+                            <td><strong><%= t('billing_profiles.city') %></strong></td>
+                            <td><%= @billing_profile.city %></td>
+                        </tr>
+
+                        <tr>
+                            <td><strong><%= t('billing_profiles.state') %></strong></td>
+                            <td><%= @billing_profile.state %></td>
+                        </tr>
+
+                        <tr>
+                            <td><strong><%= t('billing_profiles.postal_code') %></strong></td>
+                            <td><%= @billing_profile.postal_code %></td>
+                        </tr>
+
+                        <tr>
+                            <td><strong><%= t('billing_profiles.country') %></strong></td>
+                            <td><%= @billing_profile.country_code %></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="buttons">
+                <%- if @billing_profile.user %>
+                    <%= link_to t(:user), admin_user_path(@billing_profile.user), class: "ui button primary" %>
+                <% end %>
+            </div>
+        </div>
+    </div>
+</div>

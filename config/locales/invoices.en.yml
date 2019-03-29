@@ -4,6 +4,7 @@ en:
     is_being_generated: "We are generating the invoice, please check back in a few minutes."
 
     issue_date: "Issue date"
+    issuer: "Issuer"
     issued_for: "Issued for"
     due_date: "Due date"
     status: "Status"
@@ -17,6 +18,8 @@ en:
     vat_exclusive: "VAT exclusive"
     paid_at: "Paid at"
     title: "Invoice no. %{number}"
+    download: "Download"
+    number: "Number"
 
     outstanding: "Outstanding invoices"
     paid: "Paid invoices"
@@ -30,3 +33,11 @@ en:
 
     index:
       title: "Your invoices"
+
+  activerecord:
+    enums:
+      invoice:
+        statuses:
+          issued: "Issued"
+          paid: "Paid"
+          cancelled: "Cancelled"

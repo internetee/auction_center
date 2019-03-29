@@ -28,3 +28,6 @@ en:
       management: "Management"
       documents: "Documents"
       registrars_working_group: "Registrar's Working group"
+
+    pdf:
+      payment_information: "We accept payments only in the Estonian Internet Foundation’s .ee auction center at %{link}"
