@@ -44,7 +44,8 @@ class InvoiceCreator
                       cents: result_offer.cents,
                       name: I18n.t('invoice_items.name',
                                    domain_name: result_auction.domain_name,
-                                   auction_end: result_auction.ends_at.to_date)),
+                                   auction_end: result_auction.ends_at.to_date,
+                                   locale: I18n.default_locale)),
     ]
   end
 
