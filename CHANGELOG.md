@@ -1,5 +1,5 @@
 29.03.2019
-* Fixed VAT calculation for Estonian comapnies [#179](https://github.com/internetee/auction_center/issues/179)
+* Vat rate and paid sum is now saved on invoice payment  [#182](https://github.com/internetee/auction_center/pull/182)
 * Replaced invoice id with invoice number in invoice view [#177](https://github.com/internetee/auction_center/issues/177)
 * Added invoice download option [#147](https://github.com/internetee/auction_center/issues/147)
 * Fixed issue where user could generate multiple offers from multiple borwser tabs [#161](https://github.com/internetee/auction_center/pull/161)
