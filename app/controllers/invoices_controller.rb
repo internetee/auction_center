@@ -13,7 +13,7 @@ class InvoicesController < ApplicationController
         format.html { redirect_to invoice_path(@invoice.uuid), notice: t(:updated) }
         format.json { render :show, status: :ok, location: @invoice }
       else
-        format.html { render :edit, notice(:something_went_wrong) }
+        format.html { redirect_to invoice_path(@invoice.uuid), notice: t(:something_went_wrong) }
         format.json { render json: @invoice.errors, status: :unprocessable_entity }
       end
     end

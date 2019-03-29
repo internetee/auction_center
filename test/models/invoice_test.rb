@@ -131,6 +131,7 @@ class InvoiceTest < ActiveSupport::TestCase
   def test_mark_as_paid_populates_vat_rate_and_total_amount
     time = Time.parse('2010-07-06 10:30 +0000')
     @payable_invoice.mark_as_paid_at(time)
+    @payable_invoice.reload
 
     assert(@payable_invoice.paid?)
     assert_equal(BigDecimal.new("0.0"), @payable_invoice.vat_rate)

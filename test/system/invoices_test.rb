@@ -35,13 +35,10 @@ class InvoicesTest < ApplicationSystemTestCase
   end
 
   def test_user_cannot_update_billing_profile_on_paid_invoice
-    @invoice.paid!
+    @invoice.mark_as_paid_at(Time.now.utc)
+    @invoice.reload
 
-    visit invoice_path(@invoice.uuid)
-
-    assert(page.has_link?('Change billing profile', href: edit_invoice_path(@invoice.uuid)))
-
-    click_link_or_button('Change billing profile')
+    visit edit_invoice_path(@invoice.uuid)
     select_from_dropdown('Joe John Participant', from: 'invoice[billing_profile_id]')
     click_link_or_button('Submit')
 
