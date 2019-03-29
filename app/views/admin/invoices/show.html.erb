@@ -92,6 +92,19 @@
                             <th scope="col"><%= t('invoices.total') %></th>
                             <th scope="col"><%= t('offers.price_in_currency', price: @invoice.total) %></th>
                         </tr>
+
+                        <% if @invoice.paid? %>
+                            <tr>
+                                <th scope="col"></th>
+                                <th scope="col"><%= t('invoices.vat_rate_on_payment') %></th>
+                                <th scope="col"><%= t('offers.price_in_currency', price: @invoice.vat_rate) %></th>
+                            </tr>
+                            <tr>
+                                <th scope="col"></th>
+                                <th scope="col"><%= t('invoices.total_paid') %></th>
+                                <th scope="col"><%= t('offers.price_in_currency', price: @invoice.total_amount) %></th>
+                            </tr>
+                        <% end %>
                     </tfoot>
                 </table>
             </div>

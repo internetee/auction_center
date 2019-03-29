@@ -20,6 +20,8 @@ en:
     title: "Invoice no. %{number}"
     download: "Download"
     number: "Number"
+    total_paid: "Total paid"
+    vat_rate_on_payment: "VAT rate on payment date"
 
     outstanding: "Outstanding invoices"
     paid: "Paid invoices"
