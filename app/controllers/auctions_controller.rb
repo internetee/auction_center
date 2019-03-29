@@ -1,8 +1,6 @@
 class AuctionsController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [:cors_preflight_check]
-
   before_action :authorize_user
-  before_action :enqueue_create_results_jobs, only: :index
 
   # GET /auctions
   def index
@@ -26,6 +24,7 @@ class AuctionsController < ApplicationController
                        .page(1)
   end
 
+  # OPTIONS /auctions
   def cors_preflight_check
     set_access_control_headers
 
@@ -58,9 +57,5 @@ class AuctionsController < ApplicationController
 
   def authorize_user
     authorize! :read, Auction
-  end
-
-  def enqueue_create_results_jobs
-    ResultStatusUpdateJob.perform_later if ResultStatusUpdateJob.needs_to_run?
   end
 end
