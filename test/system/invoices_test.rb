@@ -34,6 +34,18 @@ class InvoicesTest < ApplicationSystemTestCase
     assert_text('Joe John Participant')
   end
 
+  def test_user_cannot_update_billing_profile_on_paid_invoice
+    @invoice.mark_as_paid_at(Time.now.utc)
+    @invoice.reload
+
+    visit edit_invoice_path(@invoice.uuid)
+    select_from_dropdown('Joe John Participant', from: 'invoice[billing_profile_id]')
+    click_link_or_button('Submit')
+
+    assert_text('Something went wrong.')
+    assert_text('ACME Inc.')
+  end
+
   def test_invoice_view_contains_issuer_info
     visit invoice_path(@invoice.uuid)
     assert_text('Eesti Interneti SA, VAT number EE101286464')

@@ -13,7 +13,7 @@ class InvoicesController < ApplicationController
         format.html { redirect_to invoice_path(@invoice.uuid), notice: t(:updated) }
         format.json { render :show, status: :ok, location: @invoice }
       else
-        format.html { render :edit }
+        format.html { redirect_to invoice_path(@invoice.uuid), notice: t(:something_went_wrong) }
         format.json { render json: @invoice.errors, status: :unprocessable_entity }
       end
     end
@@ -46,7 +46,7 @@ class InvoicesController < ApplicationController
   end
 
   def update_predicate
-    @invoice.update(update_params)
+    @invoice.issued? && @invoice.update(update_params)
   end
 
   def update_params

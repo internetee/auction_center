@@ -938,6 +938,8 @@ CREATE TABLE public.invoices (
     status public.invoice_status DEFAULT 'issued'::public.invoice_status,
     number integer NOT NULL,
     uuid uuid DEFAULT public.gen_random_uuid(),
+    vat_rate numeric,
+    total_amount numeric,
     CONSTRAINT invoices_cents_are_positive CHECK ((cents > 0)),
     CONSTRAINT issued_at_earlier_than_payment_at CHECK ((issue_date <= due_date)),
     CONSTRAINT paid_at_is_filled_when_status_is_paid CHECK ((NOT ((status = 'paid'::public.invoice_status) AND (paid_at IS NULL)))),
@@ -2163,6 +2165,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190313124938'),
 ('20190313140756'),
 ('20190320192421'),
-('20190327085138');
+('20190327085138'),
+('20190329153430'),
+('20190329172510');
 
 

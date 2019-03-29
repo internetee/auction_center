@@ -29,6 +29,8 @@
                     <th scope="col"><%= t('invoices.due_date') %></th>
                     <th scope="col"><%= t('invoices.status') %></th>
                     <th scope="col"><%= t('invoices.total') %></th>
+                    <th scope="col"><%= t('invoices.vat_rate_on_payment') %></th>
+                    <th scope="col"><%= t('invoices.total_paid') %></th>
                 </tr>
             </thead>
 
@@ -39,6 +41,10 @@
                         <td><%= I18n.l(invoice.due_date) %></td>
                         <td><%= invoice.status %></td>
                         <td><%= t('offers.price_in_currency', price: invoice.total) %></td>
+                        <% if invoice.paid? %>
+                            <td><%= number_to_percentage(invoice.vat_rate * 100, precision: 0) %></td>
+                            <td><%= t('offers.price_in_currency', price: invoice.total_amount) %></td>
+                        <% end %>
                     </tr>
                 <% end %>
             </tbody>
