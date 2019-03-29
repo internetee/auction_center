@@ -34,6 +34,25 @@ class InvoicesTest < ApplicationSystemTestCase
     assert_text('Joe John Participant')
   end
 
+  def test_invoice_view_contains_issuer_info
+    visit invoice_path(@invoice.uuid)
+    assert_text('Eesti Interneti SA, VAT number EE101286464')
+
+    setting = settings(:invoice_issuer)
+    setting.update!(value: "foo bar baz")
+
+    visit invoice_path(@invoice.uuid)
+    assert_text('foo bar baz')
+  end
+
+  def test_invoice_can_be_downloaded
+    visit invoice_path(@invoice.uuid)
+    assert(page.has_link?('Download', href: download_invoice_path(@invoice.uuid)))
+
+    new_window = window_opened_by { click_link_or_button('Download') }
+    assert(new_window)
+  end
+
   def test_invoice_contains_items_and_prices_without_vat
     visit invoice_path(@invoice.uuid)
 

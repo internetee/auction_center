@@ -41,4 +41,12 @@ class AdminInvoicesTest < ApplicationSystemTestCase
 
     assert(page.has_link?('Versions', href: admin_invoice_versions_path(@invoice)))
   end
+
+  def test_invoice_can_be_downloaded
+    visit admin_invoice_path(@invoice)
+    assert(page.has_link?('Download', href: download_admin_invoice_path(@invoice)))
+
+    new_window = window_opened_by { click_link_or_button('Download') }
+    assert(new_window)
+  end
 end

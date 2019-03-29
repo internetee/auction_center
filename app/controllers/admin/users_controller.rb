@@ -16,7 +16,7 @@ module Admin
       @users = User.all.order(created_at: :desc).page(params[:page])
     end
 
-    # POST /admin/users/search
+    # GET /admin/users/search
     def search
       email = search_params[:email]
 
@@ -100,7 +100,7 @@ module Admin
     end
 
     def set_user
-      @user = User.find(params[:id])
+      @user = User.includes(:billing_profiles).find(params[:id])
     end
 
     def set_phone_confirmation_toggle

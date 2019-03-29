@@ -28,3 +28,6 @@ et:
       contact_us: "Võta meiega ühendust!"
       management: "Juhtimine"
       documents: "Dokumentid"
+
+    pdf:
+      payment_information: "We accept payments only in the Estonian Internet Foundation’s .ee auction center at %{link}"

@@ -23,8 +23,12 @@ Rails.application.routes.draw do
     resources :auctions, except: disallowed_auction_actions, concerns: [:auditable, :searchable]
 
     resources :bans, except: %i[new show edit update], concerns: [:auditable]
-    resources :billing_profiles, only: :index, concerns: [:auditable]
-    resources :invoices, only: %i[index show], concerns: [:auditable, :searchable]
+    resources :billing_profiles, only: %i[index show], concerns: [:auditable]
+    resources :invoices, only: %i[index show], concerns: [:auditable, :searchable] do
+      member do
+        get "download"
+      end
+    end
     resources :jobs, only: %i[index create]
     resources :offers, only: [:show], concerns: [:auditable]
     resources :results, only: %i[index create show], concerns: [:auditable, :searchable]
@@ -50,6 +54,10 @@ Rails.application.routes.draw do
   resources :billing_profiles, param: :uuid
 
   resources :invoices, only: %i[show edit update index], param: :uuid do
+    member do
+      get "download"
+    end
+
     resources :payment_orders, only: %i[new show create], shallow: true, param: :uuid do
       member do
         get "return"

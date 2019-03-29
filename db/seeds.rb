@@ -128,3 +128,17 @@ domain_registration_setting = Setting.new(code: :domain_registration_reminder, v
                                           description: domain_registration_description)
 
 domain_registration_setting.save
+
+# Default invoice issuer
+invoice_issuer_description = <<~TEXT.squish
+      Text that should appear in invoice as issuer. Usually contains company name, VAT number and
+      local court registration number.
+    TEXT
+
+invoice_issuer_value = <<~TEXT.squish
+      Eesti Interneti SA Paldiski mnt 80, Tallinn, Harjumaa, 10617 Estonia,
+      Reg. no 90010019, VAT number EE101286464
+    TEXT
+
+invoice_issuer_setting = Setting.new(code: :invoice_issuer, value: invoice_issuer_value,
+                                     description: invoice_issuer_description)

@@ -4,6 +4,7 @@ et:
     is_being_generated: "We are generating the invoice, please check back in a few minutes."
 
     issue_date: "Issue date"
+    issuer: "Issuer"
     issued_for: "Issued for"
     due_date: "Tähtaeg"
     status: "Staatus"
@@ -17,6 +18,8 @@ et:
     vat_exclusive: "Käibemaksuta"
     paid_at: "Makstud"
     title: "Arve nr %{number}"
+    download: "Laadi alla"
+    number: "Number"
 
     outstanding: "Tasumata arved"
     paid: "Tasutud arved"
@@ -30,3 +33,11 @@ et:
 
     index:
       title: "Sinu arved"
+
+  activerecord:
+    enums:
+      invoice:
+        statuses:
+          issued: "Esitatud"
+          paid: "Makstud"
+          cancelled: "Aegnud"

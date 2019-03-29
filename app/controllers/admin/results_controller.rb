@@ -21,7 +21,7 @@ module Admin
       end
     end
 
-    # POST /admin/results/search
+    # GET /admin/results/search
     def search
       domain_name = search_params[:domain_name]
 
