@@ -29,6 +29,8 @@ class PaymentOrdersController < ApplicationController
     @payment_order = PaymentOrder.find_by!(uuid: params[:uuid])
     @payment_order.update!(response: params.to_unsafe_h)
 
+    ResultStatusUpdateJob.perform_later
+
     respond_to do |format|
       if @payment_order.mark_invoice_as_paid
         format.html { redirect_to invoice_path(@payment_order.invoice.uuid), notice: t(:updated) }
