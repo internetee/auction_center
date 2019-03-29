@@ -64,26 +64,6 @@ class BillingProfileTest < ActiveSupport::TestCase
     assert_equal(BigDecimal('0'), @billing_profile.vat_rate)
   end
 
-  def test_estonian_customer_always_gets_vat_rate_applied
-    assert_equal(BigDecimal('0'), @billing_profile.vat_rate)
-
-    @billing_profile.update(country_code: 'EE')
-    assert_equal(BigDecimal('0.20'), @billing_profile.vat_rate)
-  end
-
-  def test_customer_from_outside_european_union_has_vat_rate_0
-    assert_equal(BigDecimal('0'), @billing_profile.vat_rate)
-
-    @billing_profile.update(country_code: 'EE')
-    assert_equal(BigDecimal('0.20'), @billing_profile.vat_rate)
-
-    @billing_profile.update(country_code: 'US')
-    assert_equal(BigDecimal('0'), @billing_profile.vat_rate)
-
-    @billing_profile.update(country_code: 'BJ')
-    assert_equal(BigDecimal('0'), @billing_profile.vat_rate)
-  end
-
   def test_can_be_orphaned_by_a_user
     @user.destroy
 
