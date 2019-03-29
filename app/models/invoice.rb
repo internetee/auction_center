@@ -77,6 +77,9 @@ class Invoice < ApplicationRecord
   def mark_as_paid_at(time)
     ActiveRecord::Base.transaction do
       self.paid_at = time
+      self.vat_rate = billing_profile.vat_rate
+      self.total_amount = total
+
       paid!
       result.mark_as_payment_received(time)
     end
