@@ -1,3 +1,12 @@
+29.03.2019
+* Added invoice download option [#147](https://github.com/internetee/auction_center/issues/147)
+* Fixed issue where user could generate multiple offers from multiple borwser tabs [#161](https://github.com/internetee/auction_center/pull/161)
+* Fixes and improvements to autoemail templates [#162](https://github.com/internetee/auction_center/pull/162)
+* Fixed Invoices being randomly in English and Estonian [#164](https://github.com/internetee/auction_center/pull/164)
+* Fixed reCaptcha error translation [#168](https://github.com/internetee/auction_center/issues/168)
+* Pagination added to invoices [#163](https://github.com/internetee/auction_center/pull/163)
+* Moved job triggers away from root url [#166](https://github.com/internetee/auction_center/pull/166)
+
 27.03.2019
 * Fixed payment cancellation handling [#154](https://github.com/internetee/auction_center/issues/154)
 * Translation fixes for reCaptcha [#153](https://github.com/internetee/auction_center/pull/153)
