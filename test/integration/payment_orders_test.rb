@@ -1,6 +1,8 @@
 require 'test_helper'
 
 class PaymentOrdersTest < ActionDispatch::IntegrationTest
+  include ActiveJob::TestHelper
+
   def setup
     @invoice = invoices(:payable)
     @payment_order = payment_orders(:issued)
@@ -15,10 +17,15 @@ class PaymentOrdersTest < ActionDispatch::IntegrationTest
   end
 
   def test_response_from_return_payment_redirects_to_invoice
-    post return_payment_order_path(@payment_order.uuid),
-      { params: request_params }
+    post return_payment_order_path(@payment_order.uuid), { params: request_params }
 
     assert_equal(302, response.status)
+  end
+
+  def test_response_from_return_payment_schedules_result_status_update_job
+    assert_enqueued_with(job: ResultStatusUpdateJob) do
+      post return_payment_order_path(@payment_order.uuid), { params: request_params }
+    end
   end
 
   def request_params
