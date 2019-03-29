@@ -113,5 +113,5 @@ en:
 
   recaptcha:
     errors:
-      recaptcha_unreachable: "reCAPTCHA unreachable. Please try again!"
-      verification_failed: "reCAPTCHA is not correct. Please try again!"
+      recaptcha_unreachable: "reCAPTCHA is unreachable, please try again."
+      verification_failed: "reCAPTCHA verification failed, please try again."
