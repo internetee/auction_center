@@ -42,7 +42,7 @@
                         <td><%= invoice.status %></td>
                         <td><%= t('offers.price_in_currency', price: invoice.total) %></td>
                         <% if invoice.paid? %>
-                            <td><%= invoice.vat_rate %></td>
+                            <td><%= number_to_percentage(invoice.vat_rate * 100, precision: 0) %></td>
                             <td><%= t('offers.price_in_currency', price: invoice.total_amount) %></td>
                         <% end %>
                     </tr>

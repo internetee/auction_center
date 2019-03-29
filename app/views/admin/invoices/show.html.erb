@@ -97,7 +97,7 @@
                             <tr>
                                 <th scope="col"></th>
                                 <th scope="col"><%= t('invoices.vat_rate_on_payment') %></th>
-                                <th scope="col"><%= t('offers.price_in_currency', price: @invoice.vat_rate) %></th>
+                                <th scope="col"><%= number_to_percentage(@invoice.vat_rate * 100, precision: 0) %></th>
                             </tr>
                             <tr>
                                 <th scope="col"></th>
