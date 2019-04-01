@@ -47,6 +47,16 @@ class PaymentOrderEstonianBankLinkTest < ActiveSupport::TestCase
     end
   end
 
+  def test_form_fields_with_estonian_locale
+    I18n.locale = "et"
+
+    I18n.stub(:t, 'Invoice no. 1') do
+      test_form_fields
+    end
+
+    I18n.locale = "en"
+  end
+
   def test_completed_bank_link
     assert(@completed_bank_link.valid_response?)
     assert(@completed_bank_link.mark_invoice_as_paid)
