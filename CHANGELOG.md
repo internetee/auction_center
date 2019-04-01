@@ -1,5 +1,5 @@
 01.04.2019
-* Fixed decimal separator for banklink paiments [#188](https://github.com/internetee/auction_center/pull/188)
+* Fixed decimal separator for banklink payments [#188](https://github.com/internetee/auction_center/pull/188)
 
 29.03.2019
 * Fixed VAT calculation for Estonian companies [#179](https://github.com/internetee/auction_center/issues/179)
