@@ -1,3 +1,6 @@
+01.04.2019
+* Fixed decimal separator for banklink payments [#188](https://github.com/internetee/auction_center/pull/188)
+
 29.03.2019
 * Fixed VAT calculation for Estonian companies [#179](https://github.com/internetee/auction_center/issues/179)
 * Vat rate and paid sum is now saved on invoice payment  [#182](https://github.com/internetee/auction_center/pull/182)
