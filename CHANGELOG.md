@@ -1,3 +1,6 @@
+02.04.2019
+* Stop logging passwords to errbit [#190](https://github.com/internetee/auction_center/pull/190)
+
 01.04.2019
 * Fixed decimal separator for banklink payments [#188](https://github.com/internetee/auction_center/pull/188)
 
