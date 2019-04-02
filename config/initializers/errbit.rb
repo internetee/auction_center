@@ -19,4 +19,6 @@ Airbrake.configure do |config|
 
   config.environment = Rails.application.config.customization.dig('airbrake', 'environment') || Rails.env
   config.ignore_environments = %w(development test)
+
+  config.blacklist_keys = [:password, :password_confirmation, 'password', 'password_confirmation']
 end
