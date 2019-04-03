@@ -43,8 +43,14 @@ et:
         Kui tasu on makstud, saadetakse sulle registreerimiskood,
         mida saad kasutada .ee akrediteeritud registripidaja juures
 
-      footer_html: "Tutvu ka %{link} ja loe detailsemalt oksjoniprotsessist."
-      footer_link: "oksjonikeskkonna kasutajatingimustega"
+      please_note: |
+        NB Juhime tähelepanu, et oksjonilt soetad domeeni registreerimise eelisõiguse!
+        Domeeni registreerimisel lisandub teie valitud registripidaja hinnakirja alusel
+        ka domeeni registreerimise tasu.
+
+      footer_html: "Tutvu ka %{terms_and_conditions_link} ja loe %{faq_link}."
+      terms_and_conditions_link: "oksjonikeskkonna kasutajatingimustega"
+      faq_link: "detailsemalt oksjoniprotsessist"
 
     bottom_grid:
       title: "Oksjoni eeskirjad"

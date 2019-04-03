@@ -49,6 +49,17 @@ class AuctionsTest < ApplicationSystemTestCase
     refute(page.has_link?('with-offers.test'))
   end
 
+  def test_auctions_index_contains_a_link_to_terms_and_conditions
+    visit('/')
+
+    assert(
+      page.has_link?('auctioning process',
+                     href: 'https://www.internet.ee/help-and-info/faq#III__ee_domain_auctions')
+    )
+
+    assert(page.has_link?('terms and conditions', href: Setting.terms_and_conditions_link))
+  end
+
   def test_auctions_index_does_not_contain_auctions_that_are_finished
     visit('/')
 
