@@ -37,9 +37,11 @@
             </div>
         </div>
         <div class="text">
+            <p><strong><%= t(".please_note") %></strong></p>
             <p><%= t(".footer_html",
-                     link: link_to(t(".footer_link"),
-                                   Setting.terms_and_conditions_link)) %>
+                     terms_and_conditions_link: link_to(t(".terms_and_conditions_link"),
+                                                        Setting.terms_and_conditions_link),
+                     faq_link: link_to(t(".faq_link"), faq_link)) %></p>
         </div>
     </div>
 </div>
