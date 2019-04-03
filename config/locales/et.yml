@@ -44,7 +44,7 @@ et:
   banned: |
     Sul on keelatud oksjonitel osaleda kuni %{valid_until};
     sa ei saa oma kasutajaandmeid muuta või
-    osaleda domeeni %{domain_name oksjonitel.
+    osaleda domeeni %{domain_name} oksjonitel.
   any: "kõik"
 
   my_offers: "Minu pakkumised"

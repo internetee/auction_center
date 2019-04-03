@@ -12,7 +12,7 @@
             <p><%= t('.number_of_strikes_short_ban', number: @past_due_invoices) %></p>
         <% else %>
             <p><%= t('.introduction_long_ban', domain_name: @ban.domain_name) %></p>
-            <p><%= t('.details_long_ban', valid_until: @ban.valid_until) %></p>
+            <p><%= t('.details_long_ban', valid_until: @ban.valid_until.to_date) %></p>
         <% end %>
 
         <%= t('common_mailer.footer_html') %>

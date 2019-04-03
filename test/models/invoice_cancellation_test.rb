@@ -70,7 +70,7 @@ class InvoiceCancellationTest < ActiveSupport::TestCase
     refute(ActionMailer::Base.deliveries.empty?)
     last_email = ActionMailer::Base.deliveries.last
 
-    assert_equal('Participation in an auction prohibited', last_email.subject)
+    assert_equal('Participation in with-invoice.test auction prohibited', last_email.subject)
     assert_equal(['user@auction.test'], last_email.to)
   end
 end

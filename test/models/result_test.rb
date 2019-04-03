@@ -4,6 +4,7 @@ class ResultTest < ActiveSupport::TestCase
   def setup
     super
 
+    clear_email_deliveries
     travel_to Time.parse('2010-07-05 10:30 +0000')
     @valid_auction = auctions(:valid_with_offers)
     @expired_auction = auctions(:expired)
