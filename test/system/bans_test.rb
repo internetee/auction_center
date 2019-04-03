@@ -8,6 +8,7 @@ class BansTest < ApplicationSystemTestCase
 
     @expired_auction = auctions(:expired)
     @valid_auction_with_no_offers = auctions(:valid_without_offers)
+    @valid_auction_with_offers = auctions(:valid_with_offers)
     @administrator = users(:administrator)
     @participant = users(:participant)
     @other_participant = users(:second_place_participant)
@@ -31,6 +32,18 @@ class BansTest < ApplicationSystemTestCase
     click_link_or_button('Submit')
 
     assert(page.has_css?('div.alert', text: 'You are not authorized to access this page'))
+  end
+
+  def test_banned_user_can_submit_offers_for_other_auctions
+    @valid_auction_with_offers.offers.destroy_all
+
+    sign_in(@participant)
+    visit auction_path(@valid_auction_with_offers.uuid)
+    click_link('Submit offer')
+    fill_in('offer[price]', with: '5.12')
+    click_link_or_button('Submit')
+
+    assert(page.has_text?('Offer submitted successfully.'))
   end
 
   def test_banned_user_can_view_their_information

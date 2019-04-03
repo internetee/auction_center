@@ -103,8 +103,7 @@ class OffersController < ApplicationController
   end
 
   def set_offer
-    @offer = Offer.accessible_by(current_ability)
-                  .where(user_id: current_user.id)
+    @offer = Offer.where(user_id: current_user.id)
                   .find_by!(uuid: params[:uuid])
   end
 
