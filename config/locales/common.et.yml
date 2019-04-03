@@ -30,4 +30,4 @@ et:
       documents: "Dokumentid"
 
     pdf:
-      payment_information: "We accept payments only in the Estonian Internet Foundation’s .ee auction center at %{link}"
+      payment_information: "Arvet saab maksta vaid Eesti Interneti Sihtasutuse .ee domeenioksjoni keskkonnas %{link}"
