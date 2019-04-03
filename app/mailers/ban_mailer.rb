@@ -11,14 +11,14 @@ class BanMailer < ApplicationMailer
                          else
                            invoices
                          end
+    mail(to: @user.email, subject: set_subject)
+  end
 
-    subject = if @ban.domain_name
-                t('.subject_short_ban', domain_name: @ban.domain_name)
-              else
-                t('.subject_long_ban')
-              end
-
-
-    mail(to: @user.email, subject: subject)
+  def set_subject
+    if @ban.domain_name
+      t('.subject_short_ban', domain_name: @ban.domain_name)
+    else
+      t('.subject_long_ban')
+    end
   end
 end
