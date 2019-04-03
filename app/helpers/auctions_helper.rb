@@ -1,5 +1,6 @@
 module AuctionsHelper
-  # MS: need better way about this
+  # MS: need better way about these links. They are external and can change at any time,
+  # breaking our website.
   def faq_link
     if I18n.locale == :et
       'https://www.internet.ee/abi-ja-info/kkk#III__ee_domeenioksjonid'
