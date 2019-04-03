@@ -1,14 +1,22 @@
 en:
   ban_mailer:
     ban_email:
-      subject: "You are banned participating in further auctions"
-      salutation: "Hello, %{display_name}"
-      introduction: |
-        You did not pay the auction invoice in time. As a result, you are being banned
-        from participation in further auctions.
-      details: |
-       The ban is valid until %{valid_until}, you are not participate in auctions
-       for %{domain_name} domain until then.
-      footer: |
-        Best regards, <br>
-        EIS
+      subject: "Participation in an auction prohibited"
+      salutation: "Dear .ee auction participant"
+
+      # Short ban
+      introduction_short_ban: |
+        The invoice for the preferential right to register %{domain_name} purchased from the .ee
+        auction is overdue. You can not participate in future %{domain_name} auctions.
+      details_short_ban: |
+        After a third unpaid invoice it will not be possible for you to participate in .ee
+        domain auctions for one year.
+      number_of_strikes_short_ban: This is your %{number} invoice overdue.
+
+      # Long ban
+      introduction_long_ban: |
+        The invoice for the preferential right to register %{domain_name} purchased from the .ee
+        auction is overdue.
+      details_long_ban: |
+        This the 3rd unpaid invoice in the .ee auction portal. It is not possible for you
+        to participate in .ee domain auctions until %{valid_until}

@@ -5,10 +5,16 @@
     </head>
     <body>
         <h1><%= t('.salutation') %></h1>
-        <p><%= t('.introduction') %></p>
-        <p><%= t('.details', valid_until: @ban.valid_until.to_date,
-                 domain_name: @ban.domain_name || t(:any)) %>
-        </p>
+
+        <% if @ban.domain_name %>
+            <p><%= t('.introduction_short_ban', domain_name: @ban.domain_name) %></p>
+            <p><%= t('.details_short_ban') %></p>
+            <p><%= t('.number_of_strikes_short_ban', number: @past_due_invoices) %></p>
+        <% else %>
+            <p><%= t('.introduction_long_ban', domain_name: @ban.domain_name) %></p>
+            <p><%= t('.details_long_ban', valid_until: @ban.valid_until) %></p>
+        <% end %>
+
         <%= t('common_mailer.footer_html') %>
     </body>
 </html>
