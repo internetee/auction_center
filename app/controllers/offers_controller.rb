@@ -43,7 +43,6 @@ class OffersController < ApplicationController
   def index
     @offers = Offer.includes(:auction)
                    .includes(:result)
-                   .accessible_by(current_ability)
                    .where(user_id: current_user)
                    .order('auctions.ends_at DESC')
                    .page(params[:page])
