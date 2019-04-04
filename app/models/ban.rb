@@ -17,20 +17,15 @@ class Ban < ApplicationRecord
 
   def self.create_automatic(user:, domain_name:)
     now = Time.zone.now.to_datetime
+    unpaid_invoices = Invoice.where(user_id: user, status: Invoice.statuses[:cancelled]).count
 
-    ban = find_or_initialize_by(user: user) do |first_time_ban|
-      first_time_ban.domain_name = domain_name
-      first_time_ban.valid_from = now
-      valid_until = now >> SHORT_BAN_PERIOD_IN_MONTHS
-      first_time_ban.valid_until = valid_until
-    end
+    if unpaid_invoices < Setting.ban_number_of_strikes
+      short_ban = create!(user: user, domain_name: domain_name, valid_from: now,
+                          valid_until: now >> SHORT_BAN_PERIOD_IN_MONTHS)
 
-    if ban.persisted?
-      valid_until = now >> Setting.ban_length
-      create!(user: user, valid_until: valid_until)
-    else
-      ban.save!
-      ban
+    elsif unpaid_invoices >= Setting.ban_number_of_strikes
+      long_ban = create!(user: user, valid_from: now,
+                         valid_until: now >> Setting.ban_length)
     end
   end
 
