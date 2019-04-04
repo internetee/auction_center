@@ -20,6 +20,7 @@ class BansTest < ApplicationSystemTestCase
     super
 
     travel_back
+    @ban.destroy
   end
 
   def test_banned_user_cannot_create_offers
@@ -44,6 +45,13 @@ class BansTest < ApplicationSystemTestCase
     click_link_or_button('Submit')
 
     assert(page.has_text?('Offer submitted successfully.'))
+  end
+
+  def test_banned_user_can_review_their_existing_offers
+    sign_in(@participant)
+
+    visit offers_path
+    refute(page.has_css?('div.alert', text: 'You are not authorized to access this page'))
   end
 
   def test_banned_user_can_view_their_information
