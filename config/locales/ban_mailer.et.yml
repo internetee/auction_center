@@ -19,3 +19,24 @@ et:
         .ee domeenioksjonilt soetatud domeeni registreerimise eelisõiguse arve on tähtajaks tasumata.
       details_long_ban: |
         See on 3. tasumata arve .ee oksjonikeskkonnas, Sa ei saa kuni %{valid_until} osaleda .ee domeenioksjonitel.
+
+    short_ban_mail:
+      salutation: "Lugupeetud .ee oksjonil osaleja"
+      subject: "%{domain_name} oksjonil osalemise keeld"
+      introduction: |
+        .ee domeeni oksjonilt soetatud domeeni %{domain_name} registreerimise
+        eelisõiguse arve on tähtajaks tasumata. Sa ei saa domeeni %{domain_name} oksjonitel edaspidi osaleda.
+      details: |
+        Pärast kolmandat tasumata arvet ei ole Sul võimalik järgneva
+        aasta jooksul .ee domeenioksjonitel osaleda.
+      number_of_strikes: "See on %{number}. tasumata arve."
+
+    long_ban_mail:
+      salutation: "Lugupeetud .ee oksjonil osaleja"
+      subject: "Oksjonitel osalemise keeld"
+      introduction: |
+        .ee domeenioksjonilt soetatud domeeni %{domain_name} registreerimise eelisõiguse arve on
+        tähtajaks tasumata.
+      details: |
+        See on %{number}. tasumata arve .ee oksjonikeskkonnas, Sa ei saa kuni %{valid_until}
+        osaleda .ee domeenioksjonitel.
