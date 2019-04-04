@@ -18,6 +18,10 @@ class AutomaticBanTest < ActiveSupport::TestCase
     travel_back
   end
 
+  def test_constant
+    assert_equal(3, AutomaticBan::SHORT_BAN_PERIOD_IN_MONTHS)
+  end
+
   def test_bans_are_based_on_number_of_cancelled_invoices
     _, domain_name = create_bannable_offence(@user)
     ban = AutomaticBan.new(user: @user, domain_name: domain_name).create
