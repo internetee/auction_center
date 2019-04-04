@@ -16,7 +16,6 @@ class Auction < ApplicationRecord
   }
 
   delegate :count, to: :offers, prefix: true
-
   delegate :size, to: :offers, prefix: true
 
   def does_not_overlap
