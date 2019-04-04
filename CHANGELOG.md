@@ -1,3 +1,6 @@
+04.04.2019
+* Fixed page access errors for users with bans [#201](https://github.com/internetee/auction_center/issues/201)
+
 03.04.2019
 * Updated auction participating reminder in auuction center's header [#191](https://github.com/internetee/auction_center/issues/191)
 * Added missing translations to Estonian version of invoice PDF [#197](https://github.com/internetee/auction_center/issues/197)
