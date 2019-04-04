@@ -25,8 +25,4 @@ class InvoiceCancellation
   def domain_name
     result.auction.domain_name
   end
-
-  def send_email_to_offender(ban)
-    BanMailer.ban_email(ban).deliver_later
-  end
 end
