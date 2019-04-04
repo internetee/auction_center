@@ -1,5 +1,7 @@
 04.04.2019
 * Fixed page access errors for users with bans [#201](https://github.com/internetee/auction_center/issues/201)
+* Whenever gem removed [#157](https://github.com/internetee/auction_center/issues/157)
+* Removed unnecessary Semantic UI modules [#68](https://github.com/internetee/auction_center/issues/68)
 
 03.04.2019
 * Updated auction participating reminder in auuction center's header [#191](https://github.com/internetee/auction_center/issues/191)
