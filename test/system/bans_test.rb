@@ -12,8 +12,10 @@ class BansTest < ApplicationSystemTestCase
     @administrator = users(:administrator)
     @participant = users(:participant)
     @other_participant = users(:second_place_participant)
-    @ban = AutomaticBan.new(user: @participant,
-                            domain_name: @valid_auction_with_no_offers.domain_name).create
+
+    @ban = Ban.create!(user: @participant,
+                       domain_name: @valid_auction_with_no_offers.domain_name,
+                       valid_from: Time.zone.today - 1, valid_until: Time.zone.today + 2)
   end
 
   def teardown
@@ -80,7 +82,7 @@ class BansTest < ApplicationSystemTestCase
     sign_in(@participant)
 
     text = <<~TEXT.squish
-    You are banned until 2010-10-05, you are not allowed to change your user data or participate in
+    You are banned until 2010-07-07, you are not allowed to change your user data or participate in
     auctions for no-offers.test domain.
     TEXT
 

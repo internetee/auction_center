@@ -22,6 +22,14 @@ class AutomaticBanTest < ActiveSupport::TestCase
     assert_equal(3, AutomaticBan::SHORT_BAN_PERIOD_IN_MONTHS)
   end
 
+  def test_automatic_ban_on_user_without_overdue_invoices_fails
+    ban = AutomaticBan.new(user: @user, domain_name: "some-domain.test")
+
+    assert_raises(Errors::NoCancelledInvoices) do
+      ban.create
+    end
+  end
+
   def test_bans_are_based_on_number_of_cancelled_invoices
     _, domain_name = create_bannable_offence(@user)
     ban = AutomaticBan.new(user: @user, domain_name: domain_name).create

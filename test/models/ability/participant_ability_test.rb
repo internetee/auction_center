@@ -17,7 +17,8 @@ class ParticipantAbilityTest < ActiveSupport::TestCase
   end
 
   def test_banned_participant_cannot_destroy_their_account
-    AutomaticBan.new(user: @participant, domain_name: 'example.com').create
+    Ban.create!(user: @participant, domain_name: "example.com",
+                valid_from: Time.zone.today - 1, valid_until: Time.zone.today + 2)
     # Needs override, as ability is computed only on ability creation
     @participant_ability = Ability.new(@participant)
 
@@ -51,7 +52,9 @@ class ParticipantAbilityTest < ActiveSupport::TestCase
   end
 
   def test_participant_cannot_manage_offers_if_they_are_banned_from_that_domain
-    AutomaticBan.new(user: @participant, domain_name: @auction.domain_name).create
+    Ban.create!(user: @participant, domain_name: @auction.domain_name,
+                valid_from: Time.zone.today - 1, valid_until: Time.zone.today + 2)
+
     @participant_ability = Ability.new(@participant)
 
     refute(@participant_ability.can?(:manage,
