@@ -119,6 +119,16 @@ ban_length_setting = Setting.new(code: :ban_length, value: '100',
 
 ban_length_setting.save
 
+# Default number of ban strikes
+ban_number_of_strikes_description = <<~TEXT.squish
+  Number of strikes (unpaid invoices) at which a long ban is applied. Default: 3
+TEXT
+
+ban_number_of_strikes_setting = Setting.new(code: :ban_number_of_strikes, value: '3',
+                                            description: ban_number_of_strikes_description)
+
+ban_number_of_strikes_setting.save
+
 # Default domain registration reminder time
 domain_registration_description = <<~TEXT.squish
   Number of days before which the registration reminder email is sent on. Default: 5
