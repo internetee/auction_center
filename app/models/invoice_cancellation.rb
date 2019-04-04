@@ -13,8 +13,7 @@ class InvoiceCancellation
       invoice.cancelled!
 
       if user
-        ban = Ban.create_automatic(user: user, domain_name: domain_name)
-        send_email_to_offender(ban)
+        AutomaticBan.new(user: user, domain_name: domain_name).create
       end
     end
   end
