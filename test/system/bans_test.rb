@@ -12,8 +12,8 @@ class BansTest < ApplicationSystemTestCase
     @administrator = users(:administrator)
     @participant = users(:participant)
     @other_participant = users(:second_place_participant)
-    @ban = Ban.create_automatic(user: @participant,
-                                domain_name: @valid_auction_with_no_offers.domain_name)
+    @ban = AutomaticBan.new(user: @participant,
+                            domain_name: @valid_auction_with_no_offers.domain_name).create
   end
 
   def teardown
