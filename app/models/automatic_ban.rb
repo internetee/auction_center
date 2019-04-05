@@ -6,12 +6,14 @@ class AutomaticBan
   # immediate rounds of auctions for a domain name.
   SHORT_BAN_PERIOD_IN_MONTHS = 3
 
+  attr_reader :invoice
   attr_reader :user
   attr_reader :domain_name
   attr_reader :ban
   attr_reader :unpaid_invoices
 
-  def initialize(user:, domain_name:)
+  def initialize(invoice:, user:, domain_name:)
+    @invoice = invoice
     @user = user
     @domain_name = domain_name
   end
@@ -28,7 +30,7 @@ class AutomaticBan
   end
 
   def create_ban
-    @ban = Ban.new(user: user, valid_from: Time.zone.now.to_datetime)
+    @ban = Ban.new(user: user, valid_from: Time.zone.now.to_datetime, invoice: invoice)
   end
 
   def assign_ban_length

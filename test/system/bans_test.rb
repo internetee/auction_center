@@ -105,6 +105,24 @@ class BansTest < ApplicationSystemTestCase
     assert(page.has_css?('div.notice', text: 'Deleted successfully.'))
   end
 
+  def test_administrator_can_link_bans_with_invoice
+    InvoiceCreationJob.perform_now
+    @expired_auction.reload
+    invoice = @expired_auction.result.invoice
+    invoice.update!(issue_date: Time.zone.today - 30, due_date: Time.zone.today - 14)
+    InvoiceCancellationJob.perform_now
+
+    sign_in(@administrator)
+    visit admin_bans_path
+
+   within('tbody#bans-table-body') do
+     assert(page.has_link?('Invoice', href: admin_invoice_path(invoice)))
+     click_link_or_button('Invoice')
+
+     assert(page.has_text?('Domain transfer code for expired.test (auction 1999-07-05)'))
+    end
+  end
+
   def test_administrator_can_create_bans
     sign_in(@administrator)
     visit admin_user_path(@other_participant)

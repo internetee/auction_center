@@ -12,7 +12,7 @@ class InvoiceCancellation
       result.payment_not_received!
       invoice.cancelled!
 
-      AutomaticBan.new(user: user, domain_name: domain_name).create if user
+      AutomaticBan.new(invoice: invoice, user: user, domain_name: domain_name).create if user
     end
   end
 

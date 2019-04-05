@@ -1,5 +1,7 @@
 class Ban < ApplicationRecord
   belongs_to :user, optional: true
+  belongs_to :invoice, optional: true
+
   validates :valid_until, presence: true
   validate :valid_until_later_valid_from
 

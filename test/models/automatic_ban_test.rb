@@ -23,7 +23,7 @@ class AutomaticBanTest < ActiveSupport::TestCase
   end
 
   def test_automatic_ban_on_user_without_overdue_invoices_fails
-    ban = AutomaticBan.new(user: @user, domain_name: "some-domain.test")
+    ban = AutomaticBan.new(invoice: Invoice.new, user: @user, domain_name: "some-domain.test")
 
     assert_raises(Errors::NoCancelledInvoices) do
       ban.create
@@ -31,20 +31,22 @@ class AutomaticBanTest < ActiveSupport::TestCase
   end
 
   def test_bans_are_based_on_number_of_cancelled_invoices
-    _, domain_name = create_bannable_offence(@user)
-    ban = AutomaticBan.new(user: @user, domain_name: domain_name).create
+    invoice, domain_name = create_bannable_offence(@user)
+    ban = AutomaticBan.new(invoice: invoice, user: @user, domain_name: domain_name).create
 
     assert(ban.persisted?)
+    assert_equal(invoice, ban.invoice)
     assert_equal(domain_name, ban.domain_name)
     assert_equal(@time >> 3, ban.valid_until)
   end
 
   def test_ban_for_second_invoice_is_also_short
     create_bannable_offence(@user)
-    _, domain_name = create_bannable_offence(@user)
-    ban = AutomaticBan.new(user: @user, domain_name: domain_name).create
+    invoice, domain_name = create_bannable_offence(@user)
+    ban = AutomaticBan.new(invoice: invoice, user: @user, domain_name: domain_name).create
 
     assert(ban.persisted?)
+    assert_equal(invoice, ban.invoice)
     assert_equal(domain_name, ban.domain_name)
     assert_equal(@time >> 3, ban.valid_until)
   end
@@ -53,10 +55,11 @@ class AutomaticBanTest < ActiveSupport::TestCase
     create_bannable_offence(@user)
     create_bannable_offence(@user)
 
-    _, domain_name = create_bannable_offence(@user)
-    ban = AutomaticBan.new(user: @user, domain_name: domain_name).create
+    invoice, domain_name = create_bannable_offence(@user)
+    ban = AutomaticBan.new(invoice: invoice, user: @user, domain_name: domain_name).create
 
     assert(ban.persisted?)
+    assert_equal(invoice, ban.invoice)
     assert_nil(ban.domain_name)
     assert_equal(@time >> 100, ban.valid_until)
   end
@@ -65,8 +68,8 @@ class AutomaticBanTest < ActiveSupport::TestCase
     setting = settings(:ban_number_of_strikes)
     setting.update!(value: '1')
 
-    _, domain_name = create_bannable_offence(@user)
-    ban = AutomaticBan.new(user: @user, domain_name: domain_name).create
+    invoice, domain_name = create_bannable_offence(@user)
+    ban = AutomaticBan.new(invoice: invoice, user: @user, domain_name: domain_name).create
 
     assert(ban.persisted?)
     assert_nil(ban.domain_name)
@@ -74,10 +77,10 @@ class AutomaticBanTest < ActiveSupport::TestCase
   end
 
   def test_creating_a_short_ban_sends_an_email
-    _, domain_name = create_bannable_offence(@user)
+    invoice, domain_name = create_bannable_offence(@user)
     clear_email_deliveries
 
-    AutomaticBan.new(user: @user, domain_name: domain_name).create
+    AutomaticBan.new(invoice: invoice, user: @user, domain_name: domain_name).create
 
     refute(ActionMailer::Base.deliveries.empty?)
     last_email = ActionMailer::Base.deliveries.last
@@ -90,10 +93,10 @@ class AutomaticBanTest < ActiveSupport::TestCase
     create_bannable_offence(@user)
     create_bannable_offence(@user)
 
-    _, domain_name = create_bannable_offence(@user)
+    invoice, domain_name = create_bannable_offence(@user)
     clear_email_deliveries
 
-    AutomaticBan.new(user: @user, domain_name: domain_name).create
+    AutomaticBan.new(invoice: invoice, user: @user, domain_name: domain_name).create
 
     refute(ActionMailer::Base.deliveries.empty?)
     last_email = ActionMailer::Base.deliveries.last
