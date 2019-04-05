@@ -95,4 +95,16 @@ class InvoicesTest < ApplicationSystemTestCase
 
     assert(page.has_text?('You are being redirected to the payment gateway'))
   end
+
+  def test_a_user_cannot_pay_for_cancelled_invoice
+    @invoice.update!(status: Invoice.statuses[:cancelled])
+    visit invoice_path(@invoice.uuid)
+    refute(page.has_css?("form#every_pay"))
+  end
+
+  def test_a_user_cannot_pay_for_paid_invoice
+    @invoice.update!(status: Invoice.statuses[:paid], paid_at: Time.zone.now)
+    visit invoice_path(@invoice.uuid)
+    refute(page.has_css?("form#every_pay"))
+  end
 end
