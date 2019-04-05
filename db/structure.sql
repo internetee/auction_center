@@ -2043,6 +2043,14 @@ ALTER TABLE ONLY public.billing_profiles
 
 
 --
+-- Name: fk_rails_9c21645d6a; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.bans
+    ADD CONSTRAINT fk_rails_9c21645d6a FOREIGN KEY (invoice_id) REFERENCES public.invoices(id);
+
+
+--
 -- Name: fk_rails_9f5d06cf95; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2178,6 +2186,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190329153430'),
 ('20190329172510'),
 ('20190404082458'),
-('20190405065151');
+('20190405065151'),
+('20190405081018'),
+('20190405111702');
 
 
