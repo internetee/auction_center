@@ -115,12 +115,12 @@ class BansTest < ApplicationSystemTestCase
     sign_in(@administrator)
     visit admin_bans_path
 
-   within('tbody#bans-table-body') do
-     assert(page.has_link?('Invoice', href: admin_invoice_path(invoice)))
-     click_link_or_button('Invoice')
-
-     assert(page.has_text?('Domain transfer code for expired.test (auction 1999-07-05)'))
+    within('tbody#bans-table-body') do
+      assert(page.has_link?('Invoice', href: admin_invoice_path(invoice)))
+      click_link_or_button('Invoice')
     end
+
+    assert(page.has_text?('Domain transfer code for expired.test (auction 1999-07-05)'))
   end
 
   def test_administrator_can_create_bans
@@ -135,7 +135,7 @@ class BansTest < ApplicationSystemTestCase
     assert(page.has_css?('div.notice', text: 'Created successfully.'))
   end
 
- def test_administrator_cannot_create_bans_that_are_valid_in_the_past
+  def test_administrator_cannot_create_bans_that_are_valid_in_the_past
     sign_in(@administrator)
     visit admin_user_path(@other_participant)
 
