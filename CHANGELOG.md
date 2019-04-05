@@ -2,6 +2,7 @@
 * Added configurable warning ban setting before full ban is applied [#198](https://github.com/internetee/auction_center/issues/198)
 * Removed paiment option from canceled invoices [#210](https://github.com/internetee/auction_center/issues/210)
 * Fixed page access errors for users with bans [#201](https://github.com/internetee/auction_center/issues/201)
+* Updated payment_term setting description in admin [#211](https://github.com/internetee/auction_center/pull/211)
 * Whenever gem removed [#157](https://github.com/internetee/auction_center/issues/157)
 * Removed unnecessary Semantic UI modules [#68](https://github.com/internetee/auction_center/issues/68)
 
