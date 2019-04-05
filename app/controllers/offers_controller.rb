@@ -99,6 +99,7 @@ class OffersController < ApplicationController
 
   def update_params
     params.require(:offer).permit(:price, :billing_profile_id)
+          .merge(updated_by: current_user_for_updated_by)
   end
 
   def set_offer

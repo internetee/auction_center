@@ -85,6 +85,7 @@ class UsersController < ApplicationController
                                   :given_names, :surname, :mobile_phone,
                                   :accepts_terms_and_conditions)
     update_params.reject! { |_k, v| v.empty? }
+    update_params.merge(updated_by: current_user_for_updated_by)
   end
 
   def valid_password?

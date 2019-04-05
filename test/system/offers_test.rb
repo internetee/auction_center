@@ -115,6 +115,9 @@ class OffersTest < ApplicationSystemTestCase
     click_link_or_button('Submit')
 
     assert(page.has_text?('Updated successfully'))
+
+    @offer.reload
+    assert_equal("#{@user.id} - Joe John Participant", @offer.updated_by)
   end
 
   def test_participant_can_delete_an_offer

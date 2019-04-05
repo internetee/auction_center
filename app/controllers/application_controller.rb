@@ -9,4 +9,10 @@ class ApplicationController < ActionController::Base
   def set_locale
     I18n.locale = current_user&.locale || cookies[:locale] || I18n.default_locale
   end
+
+  def current_user_for_updated_by
+    return unless current_user
+
+    "#{current_user.id} - #{current_user.display_name}"
+  end
 end
