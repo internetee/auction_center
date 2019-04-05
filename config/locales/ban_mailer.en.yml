@@ -1,23 +1,22 @@
 en:
   ban_mailer:
-    ban_email:
+    short_ban_mail:
       salutation: "Dear .ee auction participant"
-
-      # Short ban
-      subject_short_ban: "Participation in %{domain_name} auction prohibited"
-      introduction_short_ban: |
+      subject: "Participation in %{domain_name} auction prohibited"
+      introduction: |
         The invoice for the preferential right to register %{domain_name} purchased from the .ee
         auction is overdue. You can not participate in future %{domain_name} auctions.
-      details_short_ban: |
+      details: |
         After a third unpaid invoice it will not be possible for you to participate in .ee
         domain auctions for one year.
-      number_of_strikes_short_ban: This is your %{number} invoice overdue.
+      number_of_strikes: "This is your %{number} invoice overdue."
 
-      # Long ban
-      subject_long_ban: "Participation in auctions prohibited"
-      introduction_long_ban: |
+    long_ban_mail:
+      salutation: "Dear .ee auction participant"
+      subject: "Participation in auctions prohibited"
+      introduction: |
         The invoice for the preferential right to register %{domain_name} purchased from the .ee
         auction is overdue.
-      details_long_ban: |
-        This the 3rd unpaid invoice in the .ee auction portal. It is not possible for you
+      details: |
+        This the %{number} unpaid invoice in the .ee auction portal. It is not possible for you
         to participate in .ee domain auctions until %{valid_until}

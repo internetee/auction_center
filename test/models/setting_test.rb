@@ -54,6 +54,7 @@ class SettingTest < ActiveSupport::TestCase
     assert_equal(false, Setting.auctions_start_at)
 
     assert_equal(100, Setting.ban_length)
+    assert_equal(3, Setting.ban_number_of_strikes)
 
     assert_equal(5, Setting.domain_registration_reminder_day)
 

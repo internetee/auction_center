@@ -72,6 +72,12 @@ ban_length:
     Number of months for which a repeated offender is banned for. Default: 100
   value: '100'
 
+ban_number_of_strikes:
+  code: 'ban_number_of_strikes'
+  description: |
+    Number of strikes (unpaid invoices) at which a long ban is applied. Default: 3
+  value: '3'
+
 domain_registration_reminder:
   code: 'domain_registration_reminder'
   description: |
