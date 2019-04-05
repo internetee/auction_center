@@ -101,7 +101,7 @@
                 </table>
             </div>
 
-            <% unless @invoice.paid? %>
+            <% if @invoice.issued? %>
                 <div class="column sixteen wide">
                     <h3><%= t('.pay') %></h3>
                     <% PaymentOrder.supported_methods.each do |method| %>
