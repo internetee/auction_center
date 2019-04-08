@@ -255,30 +255,6 @@ strong {
     margin-top: 20px;
   }
 }
-.status--message.ui {
-  margin: -40px 0 0;
-  padding: 120px 50px 80px;
-  background: #fff;
-  text-align: center;
-  border: 0;
-  border-radius: 0;
-  .header:not(.ui) {
-    color: #fff;
-    font-size: 30px;
-    line-height: 30px;
-    font-weight: 900;
-  }
-  &.positive {
-    color: #fff;
-    background: $green;
-    box-shadow: none;
-  }
-  &.negative {
-    color: #fff;
-    background: $orange;
-    box-shadow: none;
-  }
-}
 
 .padded-block {
   &.ui.segment {

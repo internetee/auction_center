@@ -35,45 +35,6 @@
     }
 }
 
-
-/* Cookie Notice */
-.cookie-notice {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    padding: 10px 20px;
-    color: #fff;
-    background: $green;
-    z-index: 99999;
-    a {
-        color: #fff;
-        text-decoration: underline;
-    }
-    .content {
-        margin-bottom: 10px;
-    }
-    @include min-screen(768px) {
-        .container {
-            display: flex;
-            align-items: center;
-        }
-        .content {
-            margin: 0 20px 0 0;
-        }
-    }
-    @include min-screen(1224px) {
-        position: static;
-        padding: 20px 50px;
-        .actions {
-            margin-left: auto;
-        }
-        .content {
-            margin-right: 40px;
-        }
-    }
-}
-
 /* Main Header */
 .main-header {
     position: relative;
@@ -338,31 +299,6 @@
         margin: 0;
         > li {
             position: relative;
-            &.u-submenu-open {
-                .btn--submenu-toggle {
-                    i {
-                        color: $green;
-                        transform: rotate(180deg);
-                    }
-                }
-            }
-            .btn--submenu-toggle {
-                display: flex;
-                align-items: center;
-                width: 40px;
-                min-height: 50px;
-                font-size: 18px;
-                line-height: 40px;
-                background: #fff;
-                border: 0;
-                outline: none;
-                border-left: 1px solid #EAEBED;
-                i {
-                    margin: auto;
-                    line-height: 18px;
-                    transition: all .3s ease-in-out;
-                }
-            }
             > a {
                 display: block;
                 padding: 10px 20px;
