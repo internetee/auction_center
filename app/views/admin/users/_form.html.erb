@@ -7,7 +7,7 @@
                 <%= f.label :email, t('users.email') %>
                 <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
                 <% if user.pending_reconfirmation? %>
-                    <div><%= t('.currently_pending_confirmation',
+                    <div><%= t('users.form.currently_pending_confirmation',
                                email: user.unconfirmed_email) %></div>
                 <% end %>
             </div>
