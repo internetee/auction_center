@@ -331,19 +331,6 @@
         & > label {
             font-size: 14px;
         }
-
-        &.file-upload,
-        &.tos {
-            margin: 40px 0;
-
-            &:first-child {
-                margin-top: 0;
-            }
-
-            &:last-child {
-                margin-bottom: 0;
-            }
-        }
     }
 
     input:not([type]),
@@ -379,107 +366,6 @@
                     font-size: 14px;
                     line-height: 20px;
                 }
-            }
-        }
-    }
-}
-
-.file-upload {
-    font-size: 14px;
-
-    h3 {
-        display: flex;
-        align-items: center;
-        line-height: 30px;
-
-        .title {
-            flex: 1;
-        }
-
-        i {
-            flex-shrink: 0;
-            margin-left: 20px;
-            font-size: 18px;
-            color: $grey;
-        }
-    }
-
-    &__files {
-        margin-bottom: 20px;
-        display: none;
-
-        &__item {
-            display: flex;
-            align-items: center;
-            padding: 9px 0 10px;
-            border-top: 1px solid $grey3;
-            font-weight: 500;
-
-            &__title {
-                flex: 1;
-                min-width: 0;
-                word-break: break-all;
-            }
-
-            &__remove {
-                background: none;
-                border: 0;
-                min-width: 20px;
-                display: block;
-                margin-left: 20px;
-                text-align: center;
-                flex-shrink: 0;
-                font-size: 14px;
-                color: $grey;
-                cursor: pointer;
-                padding: 0;
-
-                i {
-                    display: block;
-                    line-height: 20px;
-                }
-
-                &:hover {
-                    transform: scale(1.05);
-                }
-
-                &:active {
-                    transform: scale(1);
-                }
-            }
-
-            &:last-child {
-                padding-bottom: 9px;
-                border-bottom: 1px solid $grey3;
-            }
-        }
-    }
-
-    &__upload {
-        & > label {
-            display: inline-flex;
-            vertical-align: top;
-            align-items: center;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 200ms ease;
-
-            & > * {
-                margin-right: 5px;
-            }
-
-            i {
-                display: block;
-                min-width: 20px;
-                text-align: center;
-            }
-
-            &:hover {
-                transform: scale(1.05);
-            }
-
-            &:active {
-                transform: scale(1);
             }
         }
     }
