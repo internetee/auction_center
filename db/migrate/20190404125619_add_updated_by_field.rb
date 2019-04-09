@@ -5,6 +5,5 @@ class AddUpdatedByField < ActiveRecord::Migration[5.2]
     add_column :invoices, :updated_by, :string
     add_column :offers, :updated_by, :string
     add_column :settings, :updated_by, :string
-    add_column :payment_orders, :updated_by, :string
   end
 end

@@ -1038,8 +1038,7 @@ CREATE TABLE public.payment_orders (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     status public.payment_order_status DEFAULT 'issued'::public.payment_order_status,
-    uuid uuid DEFAULT public.gen_random_uuid(),
-    updated_by character varying
+    uuid uuid DEFAULT public.gen_random_uuid()
 );
 
 
