@@ -10,9 +10,14 @@ class ApplicationController < ActionController::Base
     I18n.locale = current_user&.locale || cookies[:locale] || I18n.default_locale
   end
 
-  def current_user_for_updated_by
-    return unless current_user
-
-    "#{current_user.id} - #{current_user.display_name}"
+  # If needed, add updated_by to the params hash. Updated by takes format of "123 - User Surname"
+  # When no current user is set, return back the hash as is.
+  def merge_updated_by(update_params)
+    if current_user
+      user_string = "#{current_user.id} - #{current_user.display_name}"
+      update_params.merge(updated_by: user_string)
+    else
+      update_params
+    end
   end
 end

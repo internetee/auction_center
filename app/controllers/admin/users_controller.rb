@@ -93,8 +93,7 @@ module Admin
                                     :country_code, :given_names, :surname, :mobile_phone,
                                     :accepts_terms_and_conditions, roles: [])
       update_params.reject! { |_k, v| v.empty? }
-
-      update_params.merge(updated_by: current_user_for_updated_by)
+      merge_updated_by(update_params)
     end
 
     def authorize_user

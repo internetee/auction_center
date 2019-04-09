@@ -98,8 +98,8 @@ class OffersController < ApplicationController
   end
 
   def update_params
-    params.require(:offer).permit(:price, :billing_profile_id)
-          .merge(updated_by: current_user_for_updated_by)
+    update_params = params.require(:offer).permit(:price, :billing_profile_id)
+    merge_updated_by(update_params)
   end
 
   def set_offer
