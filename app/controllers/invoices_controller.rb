@@ -50,7 +50,8 @@ class InvoicesController < ApplicationController
   end
 
   def update_params
-    params.require(:invoice).permit(:billing_profile_id)
+    update_params = params.require(:invoice).permit(:billing_profile_id)
+    update_params.merge(updated_by: current_user_for_updated_by)
   end
 
   def set_invoice

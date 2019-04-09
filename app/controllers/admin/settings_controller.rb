@@ -32,7 +32,8 @@ module Admin
     private
 
     def update_params
-      params.require(:setting).permit(:description, :value)
+      update_params = params.require(:setting).permit(:description, :value)
+      update_params.merge(updated_by: current_user_for_updated_by)
     end
 
     def set_setting

@@ -32,6 +32,9 @@ class InvoicesTest < ApplicationSystemTestCase
 
     assert_text('Updated successfully')
     assert_text('Joe John Participant')
+
+    @invoice.reload
+    assert_equal("#{@user.id} - Joe John Participant", @invoice.updated_by)
   end
 
   def test_user_cannot_update_billing_profile_on_paid_invoice

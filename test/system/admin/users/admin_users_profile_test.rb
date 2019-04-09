@@ -23,6 +23,9 @@ class AdminUsersProfileTest < ApplicationSystemTestCase
     fill_in('user[mobile_phone]', with: '+37255000003')
     click_link_or_button('Update')
     assert_text('+37255000003')
+
+    @participant.reload
+    assert_equal("#{@administrator.id} - John Joe Administrator", @participant.updated_by)
   end
 
   def test_mobile_phone_needs_to_be_valid
