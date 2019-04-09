@@ -10,11 +10,15 @@ class AdminInvoicesTest < ApplicationSystemTestCase
 
     travel_to Time.parse('2010-07-05 10:30 +0000')
     sign_in(@administrator)
+
+    @original_wait_time = Capybara.default_max_wait_time
+    Capybara.default_max_wait_time = 10
   end
 
   def teardown
     super
 
+    Capybara.default_max_wait_time = @original_wait_time
     travel_back
   end
 
