@@ -12,8 +12,10 @@ class BansTest < ApplicationSystemTestCase
     @administrator = users(:administrator)
     @participant = users(:participant)
     @other_participant = users(:second_place_participant)
-    @ban = Ban.create_automatic(user: @participant,
-                                domain_name: @valid_auction_with_no_offers.domain_name)
+
+    @ban = Ban.create!(user: @participant,
+                       domain_name: @valid_auction_with_no_offers.domain_name,
+                       valid_from: Time.zone.today - 1, valid_until: Time.zone.today + 2)
   end
 
   def teardown
@@ -80,7 +82,7 @@ class BansTest < ApplicationSystemTestCase
     sign_in(@participant)
 
     text = <<~TEXT.squish
-    You are banned until 2010-10-05, you are not allowed to change your user data or participate in
+    You are banned until 2010-07-07, you are not allowed to change your user data or participate in
     auctions for no-offers.test domain.
     TEXT
 
@@ -103,6 +105,24 @@ class BansTest < ApplicationSystemTestCase
     assert(page.has_css?('div.notice', text: 'Deleted successfully.'))
   end
 
+  def test_administrator_can_link_bans_with_invoice
+    InvoiceCreationJob.perform_now
+    @expired_auction.reload
+    invoice = @expired_auction.result.invoice
+    invoice.update!(issue_date: Time.zone.today - 30, due_date: Time.zone.today - 14)
+    InvoiceCancellationJob.perform_now
+
+    sign_in(@administrator)
+    visit admin_bans_path
+
+    within('tbody#bans-table-body') do
+      assert(page.has_link?('Invoice', href: admin_invoice_path(invoice)))
+      click_link_or_button('Invoice')
+    end
+
+    assert(page.has_text?('Domain transfer code for expired.test (auction 1999-07-05)'))
+  end
+
   def test_administrator_can_create_bans
     sign_in(@administrator)
     visit admin_user_path(@other_participant)
@@ -115,7 +135,7 @@ class BansTest < ApplicationSystemTestCase
     assert(page.has_css?('div.notice', text: 'Created successfully.'))
   end
 
- def test_administrator_cannot_create_bans_that_are_valid_in_the_past
+  def test_administrator_cannot_create_bans_that_are_valid_in_the_past
     sign_in(@administrator)
     visit admin_user_path(@other_participant)
 

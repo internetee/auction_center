@@ -33,7 +33,9 @@ default_country:
 payment_term:
   code: payment_term
   description: |
-    Number of days before which an invoice for auction must be paid. Default: 7
+    Number of full days after the issue date the recipient has time to pay for the invoice.
+    If invoices are generated at the start of a day you might want to substract 1 from the
+    setting to achieve desired invoice due date. Default: 7
   value: 7
 
 require_phone_confirmation:
@@ -69,6 +71,12 @@ ban_length:
   description: |
     Number of months for which a repeated offender is banned for. Default: 100
   value: '100'
+
+ban_number_of_strikes:
+  code: 'ban_number_of_strikes'
+  description: |
+    Number of strikes (unpaid invoices) at which a long ban is applied. Default: 3
+  value: '3'
 
 domain_registration_reminder:
   code: 'domain_registration_reminder'

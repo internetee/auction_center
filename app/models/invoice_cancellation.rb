@@ -12,10 +12,7 @@ class InvoiceCancellation
       result.payment_not_received!
       invoice.cancelled!
 
-      if user
-        ban = Ban.create_automatic(user: user, domain_name: domain_name)
-        send_email_to_offender(ban)
-      end
+      AutomaticBan.new(invoice: invoice, user: user, domain_name: domain_name).create if user
     end
   end
 
@@ -25,9 +22,5 @@ class InvoiceCancellation
 
   def domain_name
     result.auction.domain_name
-  end
-
-  def send_email_to_offender(ban)
-    BanMailer.ban_email(ban).deliver_later
   end
 end

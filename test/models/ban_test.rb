@@ -10,27 +10,14 @@ class BanTest < ActiveSupport::TestCase
     @user = users(:participant)
     @other_user = users(:second_place_participant)
     @domain_name = 'example.test'
-    @ban = Ban.create_automatic(user: @user, domain_name: @domain_name)
+    @ban = Ban.create!(valid_from: Time.zone.now - 1, valid_until: Time.zone.now + 60,
+                       user: @user)
   end
 
   def teardown
     super
 
     travel_back
-  end
-
-  def test_create_automatic
-    assert(@ban.persisted?)
-    assert_equal(@domain_name, @ban.domain_name)
-    assert_equal(@time >> 3, @ban.valid_until)
-  end
-
-  def test_second_automatic_ban_is_of_the_long_kind
-    ban = Ban.create_automatic(user: @user, domain_name: @domain_name)
-
-    assert(ban.persisted?)
-    assert_nil(ban.domain_name)
-    assert_equal(@time >> 100, ban.valid_until)
   end
 
   def test_valid_scope

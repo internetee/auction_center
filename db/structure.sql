@@ -785,7 +785,8 @@ CREATE TABLE public.bans (
     valid_until timestamp without time zone NOT NULL,
     domain_name character varying,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    invoice_id integer
 );
 
 
@@ -1727,6 +1728,13 @@ CREATE INDEX index_bans_on_domain_name ON public.bans USING btree (domain_name);
 
 
 --
+-- Name: index_bans_on_invoice_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_bans_on_invoice_id ON public.bans USING btree (invoice_id);
+
+
+--
 -- Name: index_bans_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2041,6 +2049,14 @@ ALTER TABLE ONLY public.billing_profiles
 
 
 --
+-- Name: fk_rails_9c21645d6a; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.bans
+    ADD CONSTRAINT fk_rails_9c21645d6a FOREIGN KEY (invoice_id) REFERENCES public.invoices(id);
+
+
+--
 -- Name: fk_rails_9f5d06cf95; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2176,6 +2192,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190329153430'),
 ('20190329172510'),
 ('20190404082458'),
-('20190404125619');
+('20190404125619'),
+('20190405065151'),
+('20190405081018'),
+('20190405111702');
 
 

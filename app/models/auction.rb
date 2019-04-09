@@ -16,10 +16,7 @@ class Auction < ApplicationRecord
   }
 
   delegate :count, to: :offers, prefix: true
-
-  def offers_size
-    offers.size
-  end
+  delegate :size, to: :offers, prefix: true
 
   def does_not_overlap
     return unless starts_at && ends_at

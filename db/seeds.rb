@@ -56,7 +56,9 @@ default_country_setting.save
 
 # Default payment term
 payment_term_description = <<~TEXT.squish
-  Number of days before which an invoice for auction must be paid. Default: 7
+  Number of full days after the issue date the recipient has time to pay for the invoice.
+  If invoices are generated at the start of a day you might want to substract 1 from the
+  setting to achieve desired invoice due date. Default: 7
 TEXT
 
 payment_term_setting = Setting.new(code: :payment_term, value: '7',
@@ -118,6 +120,16 @@ ban_length_setting = Setting.new(code: :ban_length, value: '100',
                                  description: ban_length_description)
 
 ban_length_setting.save
+
+# Default number of ban strikes
+ban_number_of_strikes_description = <<~TEXT.squish
+  Number of strikes (unpaid invoices) at which a long ban is applied. Default: 3
+TEXT
+
+ban_number_of_strikes_setting = Setting.new(code: :ban_number_of_strikes, value: '3',
+                                            description: ban_number_of_strikes_description)
+
+ban_number_of_strikes_setting.save
 
 # Default domain registration reminder time
 domain_registration_description = <<~TEXT.squish
