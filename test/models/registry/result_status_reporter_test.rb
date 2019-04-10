@@ -54,7 +54,7 @@ class ResultStatusReporterTest < ActiveSupport::TestCase
 
       email = ActionMailer::Base.deliveries.last
       assert_equal(["user@auction.test"], email.to)
-      assert_equal("Registration code for with-invoice.test is now available", email.subject)
+      assert_equal("with-invoice.test registration code available", email.subject)
     end
   end
 

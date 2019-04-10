@@ -1,14 +1,52 @@
 # Preview all emails at http://localhost:3000/rails/mailers/auction_result_mailer
 class ResultMailerPreview < ActionMailer::Preview
-  def winner_email
-    ResultMailer.winner_email(Result.where("user_id IS NOT NULL").first)
+  def winner_email_english
+    user = User.new(email: "some@email.com", locale: :en)
+    auction = Auction.new(domain_name: 'example.test')
+    result = Result.new(user: user, auction: auction, registration_code: 'registration code',
+                        uuid: SecureRandom.uuid)
+
+    ResultMailer.winner_email(result)
   end
 
-  def registration_code_email
-    ResultMailer.registration_code_email(Result.where("registration_code IS NOT NULL").last)
+  def winner_email_estonian
+    user = User.new(email: "some@email.com", locale: :et)
+    auction = Auction.new(domain_name: 'example.test')
+    result = Result.new(user: user, auction: auction, registration_code: 'registration code',
+                        uuid: SecureRandom.uuid)
+
+    ResultMailer.winner_email(result)
   end
 
-  def participant_email
-    ResultMailer.participant_email(User.last, Auction.last)
+  def registration_code_email_english
+    user = User.new(email: "some@email.com", locale: :en)
+    auction = Auction.new(domain_name: 'example.test')
+    result = Result.new(user: user, auction: auction, registration_code: 'registration code',
+                        uuid: SecureRandom.uuid)
+
+    ResultMailer.registration_code_email(result)
+  end
+
+  def registration_code_email_estonian
+    user = User.new(email: "some@email.com", locale: :et)
+    auction = Auction.new(domain_name: 'example.test')
+    result = Result.new(user: user, auction: auction, registration_code: 'registration code',
+                        uuid: SecureRandom.uuid)
+
+    ResultMailer.registration_code_email(result)
+  end
+
+  def participant_email_english
+    user = User.new(email: "some@email.com", locale: :en)
+    auction = Auction.new(domain_name: 'example.test')
+
+    ResultMailer.participant_email(user, auction)
+  end
+
+  def participant_email_estonian
+    user = User.new(email: "some@email.com", locale: :et)
+    auction = Auction.new(domain_name: 'example.test')
+
+    ResultMailer.participant_email(user, auction)
   end
 end

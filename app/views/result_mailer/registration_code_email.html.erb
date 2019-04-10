@@ -4,10 +4,13 @@
         <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
     </head>
     <body>
-        <h1><%= t('.salutation', display_name: @user.display_name) %></h1>
-        <p><%= t('.details', domain_name: @auction.domain_name) %></p>
-        <p><%= t('.link_description', registration_due_date: @result.registration_due_date) %></p>
-        <p><%= link_to t('.link_title'), result_url(@result.uuid) %></p>
+        <h1><%= t('.salutation', domain_name: @auction.domain_name) %></h1>
+        <p>
+            <%= t('.introduction_html', domain_name: @auction.domain_name,
+                  link: link_to(t('.link_title'), result_url(@result.uuid))) %>
+        </p>
+        <p><%= t('.details', domain_name: @auction.domain_name, days: 14) %></p>
+        <p><%= t('.reminder', domain_name: @auction.domain_name) %></body>
 
         <%= t('common_mailer.footer_html') %>
     </body>

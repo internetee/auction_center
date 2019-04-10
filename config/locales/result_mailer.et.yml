@@ -25,19 +25,20 @@ et:
         tagasi oksjonile. Teie samal oksjonil uuesti osaleda ei saa.
 
     registration_code_email:
-      subject: "Domeeninime %{domain_name} registreerimiskood on nüüd kättesaadav"
-      salutation: "Lugupeetud .ee oksjonil osaleja"
-      introduction: |
-        Domeeninime %{domain_name} registreerimiskood on nüüd
-        Eesti Interneti SA oksjonikeskkonnas kättesaadav.
+      subject: "%{domain_name} registreerimise kood on nüüd kättesaadav"
+      salutation: "Lugupeetud %{domain_name} oksjoni võitja"
+      introduction_html: |
+        Domeeni %{domain_name} registreerimise koodi leiad .ee oksjonikeskkonnast %{link}.
       details: |
-        Kood kehtib 14 päeva. Palume teil pöörduda aegsasti enda valitud .ee
-        akrediteeritud registripidaja poole domeeninime %{domain_name} regsitreerimiseks.
-        Juhime tähelepanu, et domeeninime registreerimine on tasuline vastavalt valitud
-        registripidaja hinnakirjale.
-      link_description: |
-        14 päeva möödudes kaotab registreerimise kood kehtivuse ning domeeninimi läheb tagasi oksjonile.
-      link_title: "Registreerimiskood"
+        Kood kehtib %{days} päeva. Pöörduge .ee akrediteeritud registripidaja poole
+        %{domain_name} registreerimiseks esimesel võimalusel! Viimasele hetkele jätmise
+        korral ei pruugi teenusepakkujal olla võimalik domeeni registreerida. Domeeninime
+        registreerimine on tasuline vastavalt valitud registripidaja hinnakirjale.
+      reminder: |
+        Juhul, kui Te õigeaegselt registripidaja poole %{domain_name} registreerimiseks ei pöördu,
+        eelisõigus tühistatakse. Enampakkumisel makstud tasu ei hüvitata ja domeeninime
+        registreerimise eelisõigus läheb tagasi oksjonile.
+      link_title: "siit"
 
     participant_email:
       subject: "Domeeni %{domain_name} pakkumine ei olnud edukas"
