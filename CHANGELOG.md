@@ -1,3 +1,8 @@
+10.04.2019
+* Updated registration code email template [#218](https://github.com/internetee/auction_center/pull/218)
+* Added updated by feature for auditing [#216](https://github.com/internetee/auction_center/pull/216)
+* Removed obsolete CSS modules [#215](https://github.com/internetee/auction_center/pull/215)
+
 05.04.2019
 * Added configurable warning ban setting before full ban is applied [#198](https://github.com/internetee/auction_center/issues/198)
 * Removed paiment option from canceled invoices [#210](https://github.com/internetee/auction_center/issues/210)
