@@ -825,7 +825,8 @@ CREATE TABLE public.billing_profiles (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     alpha_two_country_code character varying(2) NOT NULL,
-    uuid uuid DEFAULT public.gen_random_uuid()
+    uuid uuid DEFAULT public.gen_random_uuid(),
+    updated_by character varying
 );
 
 
@@ -941,6 +942,7 @@ CREATE TABLE public.invoices (
     uuid uuid DEFAULT public.gen_random_uuid(),
     vat_rate numeric,
     total_amount numeric,
+    updated_by character varying,
     CONSTRAINT invoices_cents_are_positive CHECK ((cents > 0)),
     CONSTRAINT issued_at_earlier_than_payment_at CHECK ((issue_date <= due_date)),
     CONSTRAINT paid_at_is_filled_when_status_is_paid CHECK ((NOT ((status = 'paid'::public.invoice_status) AND (paid_at IS NULL)))),
@@ -999,6 +1001,7 @@ CREATE TABLE public.offers (
     updated_at timestamp without time zone NOT NULL,
     billing_profile_id integer NOT NULL,
     uuid uuid DEFAULT public.gen_random_uuid(),
+    updated_by character varying,
     CONSTRAINT offers_cents_are_positive CHECK ((cents > 0))
 );
 
@@ -1117,7 +1120,8 @@ CREATE TABLE public.settings (
     description text NOT NULL,
     value text NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    updated_by character varying
 );
 
 
@@ -1170,6 +1174,7 @@ CREATE TABLE public.users (
     locale character varying DEFAULT 'en'::character varying NOT NULL,
     provider character varying,
     uid character varying,
+    updated_by character varying,
     CONSTRAINT users_roles_are_known CHECK ((roles <@ ARRAY['participant'::character varying, 'administrator'::character varying]))
 );
 
@@ -2186,6 +2191,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190329153430'),
 ('20190329172510'),
 ('20190404082458'),
+('20190404125619'),
 ('20190405065151'),
 ('20190405081018'),
 ('20190405111702');

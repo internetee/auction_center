@@ -34,5 +34,7 @@ class AdminSettingsTest < ApplicationSystemTestCase
 
     setting = Setting.find_by(code: 'application_name')
     assert_equal('This setting is unused', setting.description)
+
+    assert_equal("#{@user.id} - John Joe Administrator", setting.updated_by)
   end
 end

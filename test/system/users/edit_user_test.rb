@@ -59,6 +59,20 @@ class EditUserTest < ApplicationSystemTestCase
     assert_equal('New Surname', @user.surname)
   end
 
+  def test_update_adds_updated_by_field
+    visit edit_user_path(@user.uuid)
+    fill_in('user[given_names]', with: 'New Given Name')
+    fill_in('user[current_password]', with: 'password123')
+    click_link_or_button('Update')
+
+    assert(page.has_css?('div.notice', text: 'Updated successfully.'))
+    @user.reload
+    assert_equal('New Given Name', @user.given_names)
+
+    # This is the old name, as it is recorded before the change is made.
+    assert_equal("#{@user.id} - Joe John Participant", @user.updated_by)
+  end
+
   def test_terms_and_conditions_are_not_updated_if_already_accepted
     original_terms_and_conditions_accepted_at = @user.terms_and_conditions_accepted_at
     visit edit_user_path(@user.uuid)

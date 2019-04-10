@@ -83,6 +83,7 @@ class BillingProfilesController < ApplicationController
     )
 
     update_params.reject! { |_k, v| v.empty? }
+    merge_updated_by(update_params)
   end
 
   def set_billing_profile
