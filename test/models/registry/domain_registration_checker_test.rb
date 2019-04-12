@@ -65,8 +65,8 @@ class DomainRegistrationCheckerTest < ActiveSupport::TestCase
     end
   end
 
-  def test_call_updates_result_record_to_domain_not_registered
-    @result.update!(created_at: Time.now)
+  def test_call_updates_result_record_to_domain_not_registered_based
+    @result.update!(registration_due_date: Time.zone.today)
     travel_back
 
     instance = Registry::RegistrationChecker.new(@result)
@@ -88,6 +88,30 @@ class DomainRegistrationCheckerTest < ActiveSupport::TestCase
       instance.call
       assert_equal(@result.status, 'domain_not_registered')
       assert_equal(@result.last_response, body)
+    end
+  end
+
+  def test_call_does_not_update_result_when_registration_due_date_has_not_passed
+    @result.update!(registration_due_date: Time.zone.tomorrow)
+    instance = Registry::RegistrationChecker.new(@result)
+
+    body = { "id" => "f15f032d-2f6b-4b87-be29-5edb25e9e4d2",
+             "domain" => "expired.test",
+             "status" => "payment_received" }
+
+    response = Minitest::Mock.new
+
+    response.expect(:code, '200')
+    response.expect(:code, '200')
+    response.expect(:body, body.to_json)
+
+    http = Minitest::Mock.new
+    http.expect(:request, nil, [instance.request])
+
+    Net::HTTP.stub(:start, response, http) do
+      instance.call
+      assert_equal(@result.status, 'payment_received')
+      assert_nil(@result.last_response)
     end
   end
 end

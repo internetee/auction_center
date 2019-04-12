@@ -40,8 +40,7 @@ module Registry
     end
 
     def domain_not_registered?(json)
-      Time.zone.today > (result.created_at.to_date + Setting.registration_term) &&
-        json[:status] == 'payment_received'
+      Time.zone.today > result.registration_due_date && json[:status] == 'payment_received'
     end
 
     def remote_id
