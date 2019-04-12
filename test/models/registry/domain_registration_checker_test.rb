@@ -7,6 +7,7 @@ class DomainRegistrationCheckerTest < ActiveSupport::TestCase
     travel_to Time.parse('2010-07-05 10:30 +0000')
 
     @result = results(:expired_participant)
+    @result.update!(status: Result.statuses[:payment_received])
   end
 
   def teardown
@@ -20,6 +21,15 @@ class DomainRegistrationCheckerTest < ActiveSupport::TestCase
 
     instance = Registry::RegistrationChecker.new(@result)
     refute(instance.call)
+  end
+
+  def test_call_raises_an_error_updates_when_status_is_not_payment_received
+    @result.update!(status: Result.statuses[:awaiting_payment])
+
+    instance = Registry::RegistrationChecker.new(@result)
+    assert_raises(Errors::ResultNotPaid) do
+      instance.call
+    end
   end
 
   def test_call_raises_an_error_when_answer_is_not_200
