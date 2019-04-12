@@ -1,3 +1,6 @@
+12.04.2019
+* Registration checker uses registration due date for regisration deadline [#220](https://github.com/internetee/auction_center/issues/220)
+
 10.04.2019
 * Updated registration code email template [#218](https://github.com/internetee/auction_center/pull/218)
 * Added updated by feature for auditing [#216](https://github.com/internetee/auction_center/pull/216)
