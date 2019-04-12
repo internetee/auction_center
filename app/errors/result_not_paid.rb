@@ -4,7 +4,7 @@ module Errors
 
     def initialize(result_id = nil)
       @result_id = result_id
-      @message = "Result with id #{result_id} does not exist"
+      @message = "Result with id #{result_id} not in 'payment_received' status"
       super(message)
     end
   end
