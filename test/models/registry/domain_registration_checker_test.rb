@@ -75,7 +75,7 @@ class DomainRegistrationCheckerTest < ActiveSupport::TestCase
     end
   end
 
-  def test_call_updates_result_record_to_domain_not_registered_based
+  def test_call_updates_result_record_to_domain_not_registered
     @result.update!(registration_due_date: Time.zone.today)
     travel_back
 
