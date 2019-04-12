@@ -1,3 +1,5 @@
+require 'result_not_paid'
+
 module Registry
   class RegistrationChecker < Base
     attr_reader :result
@@ -5,14 +7,13 @@ module Registry
 
     def initialize(result)
       @result = result
-      @result.update!(status: Result.statuses[:payment_received])
     end
 
     def call
       return if remote_id_missing?
+      raise(Errors::ResultNotPaid, result.id) if result_not_paid?
 
       perform_request(request)
-
       @body_as_json = JSON.parse(body_as_string, symbolize_names: true)
 
       if domain_registered?(body_as_json)
@@ -40,12 +41,15 @@ module Registry
     end
 
     def domain_not_registered?(json)
-      Time.zone.today > (result.created_at.to_date + Setting.registration_term) &&
-        json[:status] == 'payment_received'
+      Time.zone.today > result.registration_due_date && json[:status] == 'payment_received'
     end
 
     def remote_id
       result.auction.remote_id
+    end
+
+    def result_not_paid?
+      result.status != Result.statuses[:payment_received]
     end
 
     def remote_id_missing?
