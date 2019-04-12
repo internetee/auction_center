@@ -11,7 +11,7 @@ module Registry
 
     def call
       return if remote_id_missing?
-      raise Errors::ResultNotPaid.new(result.id) if result_not_paid?
+      raise(Errors::ResultNotPaid, result.id) if result_not_paid?
 
       perform_request(request)
       @body_as_json = JSON.parse(body_as_string, symbolize_names: true)
