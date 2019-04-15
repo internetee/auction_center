@@ -13,6 +13,9 @@ import Turbolinks from 'turbolinks';
 Rails.start();
 Turbolinks.start();
 
+// Import Raleway font
+import 'typeface-raleway';
+
 // Semantic UI
 import '../src/semantic-ui/definitions/modules/transition.js';
 import '../src/semantic-ui/definitions/modules/checkbox.js';
