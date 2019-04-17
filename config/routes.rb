@@ -44,7 +44,8 @@ Rails.application.routes.draw do
     match "/auth/tara/create", via: [:post], to: "auth/tara#create", as: :tara_create
   end
 
-  devise_for :users, path: "sessions", controllers: { confirmations: "email_confirmations" }
+  devise_for :users, path: "sessions",
+    controllers: { confirmations: "email_confirmations", sessions: "auth/sessions" }
 
   resources :auctions, only: %i[index show], param: :uuid, concerns: [:searchable] do
     resources :offers, only: %i[new show create edit update destroy], shallow: true, param: :uuid

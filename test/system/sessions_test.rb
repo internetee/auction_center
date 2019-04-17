@@ -41,7 +41,6 @@ class SessionsTest < ApplicationSystemTestCase
   end
 
   def test_session_expires_in_10_minutes
-    user = users(:participant)
     travel_to Time.parse('2010-07-05 10:30 +0000')
 
     visit(users_path)

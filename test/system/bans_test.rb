@@ -79,11 +79,23 @@ class BansTest < ApplicationSystemTestCase
   end
 
   def test_banned_user_can_see_a_red_banner
-    sign_in(@participant)
+    visit(users_path)
+
+    within('nav.menu-user') do
+      click_link_or_button('Sign in')
+    end
+
+    fill_in('user_email', with: 'user@auction.test')
+    fill_in('user_password', with: 'password123')
+
+    within('form') do
+      click_link_or_button('Sign in')
+    end
+
+    assert_text('Signed in successfully')
 
     text = <<~TEXT.squish
-    You are banned until 2010-07-07, you are not allowed to change your user data or participate in
-    auctions for no-offers.test domain.
+    You are banned from participating in auctions for domain(s): no-offers.test.
     TEXT
 
     visit auctions_path
