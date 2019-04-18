@@ -16,6 +16,7 @@ class SessionsTest < ApplicationSystemTestCase
     end
 
     assert_text('Signed in successfully')
+    refute_text('You are banned from participating in auctions for domain(s)')
   end
 
   def test_can_sign_out_via_button
