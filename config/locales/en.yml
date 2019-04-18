@@ -44,9 +44,10 @@ en:
   user: "User"
   deleted_user: "User was deleted"
   banned: |
-    You are banned until %{valid_until}, you are not allowed to change your user data or
-    participate in auctions for %{domain_name} domain.
-  any: "any"
+    You are banned from participating in auctions for domain(s): %{domain_names}.
+  banned_completely: |
+    You are banned from participating in .ee domain auctions due to multiple overdue
+    invoices until %{valid_until}.
 
   my_offers: "My offers"
   my_invoices: "My invoices"
