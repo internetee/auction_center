@@ -1,3 +1,9 @@
+18.04.2019
+* Registration checker follows now registration due date to determine when to reauction the domain [#220](https://github.com/internetee/auction_center/issues/220)
+* Email address confirmation link expires now in 3 days [#226](https://github.com/internetee/auction_center/pull/226)
+* Ban notification text update and ban check optimisation [#202](https://github.com/internetee/auction_center/issues/202)
+* Enforced Raleway font everywhere in the application [#223](https://github.com/internetee/auction_center/issues/223)
+
 12.04.2019
 * Registration checker uses registration due date for regisration deadline [#220](https://github.com/internetee/auction_center/issues/220)
 
