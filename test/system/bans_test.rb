@@ -78,24 +78,25 @@ class BansTest < ApplicationSystemTestCase
     assert(page.has_css?('div.alert', text: 'You are not authorized to access this page'))
   end
 
-  def test_banned_user_can_see_a_red_banner
-    visit(users_path)
-
-    within('nav.menu-user') do
-      click_link_or_button('Sign in')
-    end
-
-    fill_in('user_email', with: 'user@auction.test')
-    fill_in('user_password', with: 'password123')
-
-    within('form') do
-      click_link_or_button('Sign in')
-    end
-
-    assert_text('Signed in successfully')
+  def test_banned_user_can_see_the_ban_notification_for_one_domain
+    sign_in_manually
 
     text = <<~TEXT.squish
-    You are banned from participating in auctions for domain(s): no-offers.test.
+      You are banned from participating in auctions for domain(s): no-offers.test.
+    TEXT
+
+    visit auctions_path
+    assert(page.has_css?('div.ban', text: text))
+  end
+
+  def test_banned_user_can_see_the_ban_notification_for_repetitive_ban
+    Ban.create!(user: @participant,
+                valid_from: Time.zone.today - 1, valid_until: Time.zone.today + 2)
+    sign_in_manually
+
+    text = <<~TEXT.squish
+      You are banned from participating in .ee domain auctions due to multiple overdue
+      invoices until 2010-07-07.
     TEXT
 
     visit auctions_path
@@ -157,5 +158,22 @@ class BansTest < ApplicationSystemTestCase
     end
 
     assert(page.has_css?('div.notice', text: 'Something went wrong.'))
+  end
+
+  def sign_in_manually
+    visit(users_path)
+
+    within('nav.menu-user') do
+      click_link_or_button('Sign in')
+    end
+
+    fill_in('user_email', with: 'user@auction.test')
+    fill_in('user_password', with: 'password123')
+
+    within('form') do
+      click_link_or_button('Sign in')
+    end
+
+    assert_text('Signed in successfully')
   end
 end

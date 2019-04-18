@@ -42,10 +42,10 @@ et:
   user: "Kasutaja"
   deleted_user: "Kasutaja kustutatud"
   banned: |
-    Sul on keelatud oksjonitel osaleda kuni %{valid_until};
-    sa ei saa oma kasutajaandmeid muuta või
-    osaleda domeeni %{domain_name} oksjonitel.
-  any: "kõik"
+    Sul on keelatud osaleda oksjonil järgmis(t)ele domeeninime(de)le:: %{domain_names}.
+  banned_completely: |
+    Korduvalt tasumata jäetud arvete tõttu on Su õigus osaleda .ee domeenioksjonitel
+    peatatud kuni %{valid_until}.
 
   my_offers: "Minu pakkumised"
   my_invoices: "Minu arved"
