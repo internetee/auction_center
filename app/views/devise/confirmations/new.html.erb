@@ -8,7 +8,7 @@
     <div class="u-container margin-block">
         <%= form_for(resource, as: resource_name, url: confirmation_path(resource_name),
                      html: { method: :post, class: "ui form big"}) do |f| %>
-            <%= devise_error_messages! %>
+            <%= render "devise/shared/error_messages", resource: resource %>
 
             <div class="field">
                 <%= f.label :email, t("users.email") %>
