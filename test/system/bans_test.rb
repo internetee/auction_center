@@ -89,14 +89,33 @@ class BansTest < ApplicationSystemTestCase
     assert(page.has_css?('div.ban', text: text))
   end
 
-  def test_banned_user_can_see_the_ban_notification_for_repetitive_ban
+  def test_banned_user_can_see_the_ban_notification_for_two_domains
+    Ban.create!(user: @participant,
+                domain_name: 'temporary.test',
+                valid_from: Time.zone.today - 1, valid_until: Time.zone.today + 5)
+
+
+    sign_in_manually
+
+    text = <<~TEXT.squish
+      You are banned from participating in auctions for
+      domain(s): temporary.test, no-offers.test.
+    TEXT
+
+    visit auctions_path
+    assert(page.has_css?('div.ban', text: text))
+  end
+
+  def test_banned_user_can_see_the_ban_notification_for_longest_repetitive_ban
+        Ban.create!(user: @participant,
+                valid_from: Time.zone.today - 1, valid_until: Time.zone.today + 5)
     Ban.create!(user: @participant,
                 valid_from: Time.zone.today - 1, valid_until: Time.zone.today + 2)
     sign_in_manually
 
     text = <<~TEXT.squish
       You are banned from participating in .ee domain auctions due to multiple overdue
-      invoices until 2010-07-07.
+      invoices until 2010-07-10.
     TEXT
 
     visit auctions_path

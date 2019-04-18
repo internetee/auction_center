@@ -11,7 +11,7 @@ module BansHelper
   def set_ban_in_session
     return unless current_user
 
-    bans = Ban.valid.where(user: current_user.id)
+    bans = Ban.valid.where(user: current_user.id).order(valid_until: :desc)
     return unless bans
 
     session['auction.bans'] = if (complete_ban = bans.detect { |e| !e.domain_name })
