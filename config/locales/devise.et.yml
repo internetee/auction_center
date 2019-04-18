@@ -94,7 +94,7 @@ et:
   errors:
     messages:
       already_confirmed: "was already confirmed, please try signing in"
-      confirmation_period_expired: "E-post tuleb kinnitada 3 päeva jooksul kinnitus teate väljastamisest, palun esita uus taotlus e-posti aadressi kinnitamiseks."
+      confirmation_period_expired: "tuleb kinnitada 3 päeva jooksul kinnitus teate väljastamisest, palun esita uus taotlus e-posti aadressi kinnitamiseks."
       expired: "has expired, please request a new one"
       not_found: "not found"
       not_locked: "was not locked"
