@@ -17,18 +17,25 @@ module ApplicationHelper
   end
 
   def banned_banner
-    return unless current_user&.banned?
+    return unless session['auction.bans']
 
-    ban = current_user.longest_ban
+    domains, valid_until = session['auction.bans']
+    message = ban_error_message(domains, valid_until)
 
     content_tag(:div, class: 'ui message ban') do
-      content_tag(:div, t(:banned, valid_until: ban.valid_until.to_date,
-                                   domain_name: ban.domain_name || t(:any)),
-                  class: 'header')
+      content_tag(:div, message, class: 'header')
     end
   end
 
   private
+
+  def ban_error_message(domains, valid_until)
+    if valid_until
+      t(:banned_completely, valid_until: valid_until.to_date)
+    else
+      t(:banned, domain_names: domains.join(', '))
+    end
+  end
 
   def links(links_list)
     links_list.each do |item|

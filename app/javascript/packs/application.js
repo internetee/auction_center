@@ -13,12 +13,13 @@ import Turbolinks from 'turbolinks';
 Rails.start();
 Turbolinks.start();
 
-// Semantic UI
+// UI modules and fonts
 import '../src/semantic-ui/definitions/modules/transition.js';
 import '../src/semantic-ui/definitions/modules/checkbox.js';
 import '../src/semantic-ui/definitions/modules/dropdown.js';
 import '../src/semantic-ui/definitions/modules/sidebar.js';
 import '../src/semantic-ui/semantic.less';
+import 'typeface-raleway';
 
 $(document).on('turbolinks:load', function() {
     $('.ui.dropdown').dropdown();
