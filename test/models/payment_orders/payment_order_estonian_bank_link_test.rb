@@ -22,6 +22,7 @@ class PaymentOrderEstonianBankLinkTest < ActiveSupport::TestCase
     super
 
     travel_back
+    I18n.locale = I18n.default_locale
   end
 
   def test_form_fields
@@ -53,8 +54,6 @@ class PaymentOrderEstonianBankLinkTest < ActiveSupport::TestCase
     I18n.stub(:t, 'Invoice no. 1') do
       test_form_fields
     end
-
-    I18n.locale = "en"
   end
 
   def test_completed_bank_link
