@@ -62,7 +62,8 @@ module PaymentOrders
       hash['VK_VERSION']  = BANK_LINK_VERSION
       hash['VK_SND_ID']   = seller_account
       hash['VK_STAMP']    = invoice.number
-      hash['VK_AMOUNT']   = invoice.total.format(symbol: nil, decimal_mark: '.')
+      hash['VK_AMOUNT'] = invoice.total.format(symbol: nil, thousands_separator: false,
+                                               decimal_mark: '.')
       hash['VK_CURR']     = Setting.auction_currency
       hash['VK_REF']      = ''
       hash['VK_MSG']      = invoice.title

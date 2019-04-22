@@ -50,11 +50,14 @@ class PaymentOrderEveryPayTest < ActiveSupport::TestCase
   end
 
   def test_form_fields_are_filled_according_to_schema
+    @orphaned_invoice.cents = Money.from_amount(1000.00, Setting.auction_currency).cents
+    assert_equal Money.from_amount(1200.00, Setting.auction_currency), @orphaned_invoice.total
+
     expected_fields = {
       api_username: 'api_user',
       account_id: 'EUR3D1',
       timestamp: '1522542600',
-      amount: '12.00',
+      amount: '1200.00',
       transaction_type: 'charge',
       hmac_fields: 'account_id,amount,api_username,callback_url,customer_url,hmac_fields,nonce,order_reference,timestamp,transaction_type'
     }
