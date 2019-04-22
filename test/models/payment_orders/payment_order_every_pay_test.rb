@@ -1,6 +1,8 @@
 # encoding: UTF-8
 require 'test_helper'
 
+# https://every-pay.com/wp-content/uploads/EveryPay-Payment-API-Documentation.pdf
+
 class PaymentOrderEveryPayTest < ActiveSupport::TestCase
   def setup
     super
