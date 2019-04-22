@@ -26,25 +26,32 @@ class PaymentOrderEstonianBankLinkTest < ActiveSupport::TestCase
   end
 
   def test_form_fields
-    expected_response = {
+    @orphaned_invoice.cents = Money.from_amount(1000.00, Setting.auction_currency).cents
+    assert_equal Money.from_amount(1200.00, Setting.auction_currency), @orphaned_invoice.total
+
+    expected_fields = {
       'VK_SERVICE': '1012',
       'VK_VERSION': '008',
       'VK_SND_ID': 'testvpos',
       'VK_STAMP': 1,
-      'VK_AMOUNT': '12.00',
+      'VK_AMOUNT': '1200.00',
       'VK_CURR': 'EUR',
       'VK_REF': '',
       'VK_MSG': 'Invoice no. 1',
       'VK_RETURN': 'return.url',
       'VK_CANCEL': 'return.url',
       'VK_DATETIME': '2010-07-05T10:30:00+0000',
-      'VK_MAC': 'a947QsWS7rkBhGqtX5WHDStSkYvXVbYKo9j21UY6cxEaIJ4F6KgQXCAMaYVsyes/OQdPwqHDosvS9TQ9jSV/enWzKhFdwEgF1M4iboa0bfwydbiZ14AUQiIB32c6kBtp/2Ug2Hena0LGmTlyrhHv3+gZTitiA/1nVChKN1wnNNk=',
+      'VK_MAC': 'zdQUhEzozyt6IVgB5+8oTxm1lj2xswIKYI/htHRVZ/TLfi4fa3boBi1Jk4SpY3dPaDMsxHqlnhwv913VVgvpwJZW0YEN1o4pPztvLvZDlNgu+XZyi8c5SluYSeB9CijbFGQz0oOLZ4rHlfYf5S5ALA/x1/NVdtJURwUrFnWBlYs=',
       'VK_ENCODING': 'UTF-8',
       'VK_LANG': 'ENG'
     }.with_indifferent_access
 
     @orphaned_invoice.stub(:number, 1) do
-      assert_equal(expected_response, @new_bank_link.form_fields)
+      form_fields = @new_bank_link.form_fields
+
+      expected_fields.each do |k, v|
+        assert_equal v, form_fields[k]
+      end
     end
   end
 
