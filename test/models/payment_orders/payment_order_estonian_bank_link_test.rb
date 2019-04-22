@@ -1,6 +1,9 @@
 # encoding: UTF-8
 require 'test_helper'
 
+# https://www.lhv.ee/images/docs/Bank_Link_Technical_Specification-EN.pdf
+# All Estonian banks share the same specification
+
 class PaymentOrderEstonianBankLinkTest < ActiveSupport::TestCase
   def setup
     super
