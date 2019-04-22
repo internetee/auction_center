@@ -1,3 +1,7 @@
+22.04.2019
+* Removed thousands' separator from the payment amount sent to payment processors [#231](https://github.com/internetee/auction_center/issues/231)
+* Added payment standard references to code [#233](https://github.com/internetee/auction_center/pull/233)
+
 18.04.2019
 * Registration checker follows now registration due date to determine when to reauction the domain [#220](https://github.com/internetee/auction_center/issues/220)
 * Email address confirmation link expires now in 3 days [#226](https://github.com/internetee/auction_center/pull/226)
