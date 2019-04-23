@@ -46,6 +46,29 @@ class AdminInvoicesTest < ApplicationSystemTestCase
     assert(page.has_link?('Versions', href: admin_invoice_versions_path(@invoice)))
   end
 
+  def test_admin_can_mark_invoice_as_paid
+    visit admin_invoice_path(@invoice)
+    click_link_or_button('Mark as paid')
+
+    assert(page.has_css?('div.notice', text: 'Invoice marked as paid.'))
+
+    @invoice.reload
+
+    assert(@invoice.paid?)
+    assert_equal(Time.zone.now, @invoice.paid_at)
+    assert_equal("#{@administrator.id} - John Joe Administrator", @invoice.updated_by)
+  end
+
+  def test_admin_cannot_mark_invoice_as_paid_if_it_has_been_paid
+    @invoice.update(status: Invoice.statuses[:paid], paid_at: Time.now,
+                    vat_rate: @invoice.billing_profile.vat_rate, total_amount: @invoice.total)
+
+    visit admin_invoice_path(@invoice)
+    click_link_or_button('Mark as paid')
+
+    assert(page.has_css?('div.notice', text: 'Invoice is already paid.'))
+  end
+
   def test_invoice_can_be_downloaded
     visit admin_invoice_path(@invoice)
     assert(page.has_link?('Download', href: download_admin_invoice_path(@invoice)))

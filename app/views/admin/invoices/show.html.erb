@@ -108,6 +108,16 @@
                     </tfoot>
                 </table>
             </div>
+
+            <% unless @invoice.overdue? && !@invoice.paid? %>
+                <div class="column three right aligned">
+                    <br>
+                    <%= form_with(model: @invoice, local: true, url: admin_invoice_path(@invoice)) do |f|  %>
+                        <%=  f.hidden_field :user_id, value: @invoice.user_id %>
+                        <%=  f.submit t('invoices.mark_as_paid'), class: "ui button secondary" %>
+                    <% end %>
+                </div>
+            <% end %>
         </div>
     </div>
 </div>

@@ -23,6 +23,9 @@ et:
 
     outstanding: "tasumata arved"
     paid: "tasutud arved"
+    mark_as_paid: "Mark as paid"
+    marked_as_paid: "Invoice marked as paid."
+    already_paid: "Invoice is already paid."
 
     show:
       change_billing_profile: "Muuda arve aadressi"
