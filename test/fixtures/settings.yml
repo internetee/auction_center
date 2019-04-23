@@ -95,5 +95,5 @@ invoice_reminder_in_days:
   code: 'invoice_reminder_in_days'
   description: |
     Number of days before due date on which reminders about unpaid invoices are sent.
-    Use 0 to send reminders on due date. Default: 3
-  value: '3'
+    Use 0 to send reminders on due date. Default: 1
+  value: '1'
