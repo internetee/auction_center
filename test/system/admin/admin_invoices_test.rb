@@ -48,7 +48,10 @@ class AdminInvoicesTest < ApplicationSystemTestCase
 
   def test_admin_can_mark_invoice_as_paid
     visit admin_invoice_path(@invoice)
-    click_link_or_button('Mark as paid')
+
+    accept_confirm do
+      click_link_or_button('Mark as paid')
+    end
 
     assert(page.has_css?('div.notice', text: 'Invoice marked as paid.'))
 
@@ -80,7 +83,9 @@ class AdminInvoicesTest < ApplicationSystemTestCase
     @invoice.update(status: Invoice.statuses[:paid], paid_at: Time.now,
                     vat_rate: @invoice.billing_profile.vat_rate, total_amount: @invoice.total)
 
-    click_link_or_button('Mark as paid')
+    accept_confirm do
+      click_link_or_button('Mark as paid')
+    end
 
     assert(page.has_css?('div.notice', text: 'Invoice is already paid.'))
   end

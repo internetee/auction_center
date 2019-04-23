@@ -114,7 +114,8 @@
                     <br>
                     <%= form_with(model: @invoice, local: true, url: admin_invoice_path(@invoice)) do |f|  %>
                         <%=  f.hidden_field :user_id, value: @invoice.user_id %>
-                        <%=  f.submit t('invoices.mark_as_paid'), class: "ui button secondary" %>
+                        <%=  f.submit t('invoices.mark_as_paid'), class: "ui button secondary",
+                                      data: { confirm: t(:are_you_sure) } %>
                     <% end %>
                 </div>
             <% end %>
