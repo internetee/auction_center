@@ -1,3 +1,7 @@
+23.04.2019
+* Nokiri update to 1.10.3 (CVE-2019-11068) and Rails update to 5.2.3 [#235](https://github.com/internetee/auction_center/pull/235)
+* Added Invoice payment reminder email functionality [#227](https://github.com/internetee/auction_center/issues/227)
+
 22.04.2019
 * Removed thousands' separator from the payment amount sent to payment processors [#231](https://github.com/internetee/auction_center/issues/231)
 * Added payment standard references to code [#233](https://github.com/internetee/auction_center/pull/233)
