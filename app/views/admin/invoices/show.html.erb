@@ -109,7 +109,7 @@
                 </table>
             </div>
 
-            <% unless @invoice.overdue? && !@invoice.paid? %>
+            <% unless @invoice.overdue? || @invoice.paid? %>
                 <div class="column three right aligned">
                     <br>
                     <%= form_with(model: @invoice, local: true, url: admin_invoice_path(@invoice)) do |f|  %>
