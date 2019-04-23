@@ -5,7 +5,7 @@ class UnpaidInvoiceReminderJobTest < ActiveJob::TestCase
     super
 
     @invoice = invoices(:payable)
-    travel_to @invoice.due_date
+    travel_to(@invoice.due_date - Setting.invoice_reminder_in_days)
     clear_email_deliveries
   end
 
@@ -16,7 +16,7 @@ class UnpaidInvoiceReminderJobTest < ActiveJob::TestCase
     clear_email_deliveries
   end
 
-  def test_emails_are_sent_on_last_day
+  def test_emails_are_sent_according_to_setting
     perform_enqueued_jobs do
       UnpaidInvoiceReminderJob.perform_now
     end
