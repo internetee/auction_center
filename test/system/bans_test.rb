@@ -152,7 +152,7 @@ class BansTest < ApplicationSystemTestCase
       click_link_or_button('Invoice')
     end
 
-    assert(page.has_text?('Domain transfer code for expired.test (auction 1999-07-05)'))
+    assert(page.has_text?('expired.test (auction 1999-07-05) registration code'))
   end
 
   def test_administrator_can_create_bans
