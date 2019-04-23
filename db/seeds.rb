@@ -154,3 +154,14 @@ invoice_issuer_value = <<~TEXT.squish
 
 invoice_issuer_setting = Setting.new(code: :invoice_issuer, value: invoice_issuer_value,
                                      description: invoice_issuer_description)
+
+# Default invoice reminder
+invoice_reminder_description = <<~TEXT.squish
+  Number of days before due date on which reminders about unpaid invoices are sent.
+  Use 0 to send reminders on due date. Default: 1
+TEXT
+
+invoice_reminder_setting = Setting.new(code: :invoice_reminder_in_days, value: '1',
+                                       description: invoice_reminder_description)
+
+invoice_reminder_setting.save

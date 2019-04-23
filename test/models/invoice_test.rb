@@ -13,6 +13,12 @@ class InvoiceTest < ActiveSupport::TestCase
     @orphaned_invoice = invoices(:orphaned)
   end
 
+  def teardown
+    super
+
+    travel_back
+  end
+
   def test_price_is_a_money_object
     invoice = Invoice.new(cents: 1000)
 
@@ -151,6 +157,13 @@ class InvoiceTest < ActiveSupport::TestCase
 
     new_invoice = Invoice.new
     refute(new_invoice.title)
+  end
+
+  def test_payment_reminder_scope_accepts_an_argument
+    travel_to @payable_invoice.due_date
+
+    assert_equal([@payable_invoice, @orphaned_invoice].to_set,
+                 Invoice.pending_payment_reminder(0).to_set)
   end
 
   def prefill_invoice

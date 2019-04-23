@@ -1,6 +1,19 @@
 require 'application_system_test_case'
 
 class SessionsTest < ApplicationSystemTestCase
+  def setup
+    super
+
+    @original_wait_time = Capybara.default_max_wait_time
+    Capybara.default_max_wait_time = 10
+  end
+
+  def teardown
+    super
+
+    Capybara.default_max_wait_time = @original_wait_time
+  end
+
   def test_can_sign_in_with_password
     visit(users_path)
 

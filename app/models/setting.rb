@@ -75,4 +75,8 @@ class Setting < ApplicationRecord
   def self.invoice_issuer
     Setting.find_by(code: :invoice_issuer).value
   end
+
+  def self.invoice_reminder_in_days
+    Setting.find_by(code: :invoice_reminder_in_days).value.to_i
+  end
 end
