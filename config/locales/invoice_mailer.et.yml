@@ -7,11 +7,6 @@ et:
         Tuletame meelde, et .ee domeeni oksjonilt soetatud domeeni %{domain_name}
         registreerimise eelisõiguse arve tasumise tähtaeg on %{due_date}.
       details: |
-        If you fail to pay, you will lose the right to the auctioned priority and
-        priority for the %{domain_name} domain will be returned to auction. You will
-        not be able to participate in the same auction again. After a third unpaid
-        invoice it will not be possible for you to participate in .ee domain auctions
-        for one year.
         Tasumata jätmisel te enampakkumisel olnud eelisõigust endale ei saa ja domeeni
         %{domain_name} eelisõigus läheb tagasi oksjonile. Teie samal oksjonil uuesti
         osaleda ei saa. Pärast kolmandat tasumata arvet ei ole teil võimalik järgneva
