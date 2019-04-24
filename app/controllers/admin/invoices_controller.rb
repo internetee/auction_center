@@ -3,6 +3,7 @@ module Admin
     before_action :authorize_user
     before_action :create_invoice_if_needed
     before_action :set_invoice, only: %i[show download update edit]
+    before_action :authorize_for_update, only: %i[edit update]
 
     # GET /admin/invoices/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
     def show; end
@@ -48,8 +49,6 @@ module Admin
 
     # PUT /admin/invoices/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
     def update
-      authorize! :update, @invoice
-
       respond_to do |format|
         if update_predicate
           format.html do
@@ -90,6 +89,10 @@ module Admin
 
     def authorize_user
       authorize! :read, Invoice
+    end
+
+    def authorize_for_update
+      authorize! :update, @invoice
     end
 
     def create_invoice_if_needed
