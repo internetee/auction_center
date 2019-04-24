@@ -1,3 +1,6 @@
+24.04.2019
+* User's language param is now forwarded on transfering user to payment processor [#238](https://github.com/internetee/auction_center/issues/238) 
+
 23.04.2019
 * Nokiri update to 1.10.3 (CVE-2019-11068) and Rails update to 5.2.3 [#235](https://github.com/internetee/auction_center/pull/235)
 * Added Invoice payment reminder email functionality [#227](https://github.com/internetee/auction_center/issues/227)
