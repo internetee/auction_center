@@ -1,0 +1,13 @@
+et:
+  invoice_mailer:
+    reminder_email:
+      subject: "%{domain_name} arve tasumise tähtaeg"
+      salutation: "Lugupeetud %{domain_name} oksjoni võitja"
+      introduction: |
+        Tuletame meelde, et .ee domeeni oksjonilt soetatud domeeni %{domain_name}
+        registreerimise eelisõiguse arve tasumise tähtaeg on %{due_date}.
+      details: |
+        Tasumata jätmisel te enampakkumisel olnud eelisõigust endale ei saa ja domeeni
+        %{domain_name} eelisõigus läheb tagasi oksjonile. Teie samal oksjonil uuesti
+        osaleda ei saa. Pärast kolmandat tasumata arvet ei ole teil võimalik järgneva
+        aasta jooksul .ee domeeni oksjonitel osaleda.

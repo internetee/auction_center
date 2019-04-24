@@ -90,11 +90,8 @@ class AdminInvoicesTest < ApplicationSystemTestCase
     assert(page.has_css?('div.notice', text: 'Invoice is already paid.'))
   end
 
-  def test_invoice_can_be_downloaded
+  def test_invoice_view_contains_a_download_link
     visit admin_invoice_path(@invoice)
     assert(page.has_link?('Download', href: download_admin_invoice_path(@invoice)))
-
-    new_window = window_opened_by { click_link_or_button('Download') }
-    assert(new_window)
   end
 end

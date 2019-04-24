@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
+    </head>
+    <body>
+        <h1><%= t('.salutation', domain_name: @auction.domain_name) %></h1>
+        <p>
+            <%= t('.introduction', domain_name: @auction.domain_name, due_date: @invoice.due_date) %>
+        </p>
+        <p><%= t('.details', domain_name: @auction.domain_name) %></p>
+        <%= t('common_mailer.footer_html') %>
+    </body>
+</html>

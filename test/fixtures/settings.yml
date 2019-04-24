@@ -90,3 +90,10 @@ invoice_issuer:
     Text that should appear in invoice as issuer. Usually contains company name, VAT number and
     local court registration number.e which the registration reminder email is sent on. Default: 5
   value: 'Eesti Interneti SA, VAT number EE101286464'
+
+invoice_reminder_in_days:
+  code: 'invoice_reminder_in_days'
+  description: |
+    Number of days before due date on which reminders about unpaid invoices are sent.
+    Use 0 to send reminders on due date. Default: 1
+  value: '1'
