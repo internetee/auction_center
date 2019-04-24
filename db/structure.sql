@@ -943,6 +943,7 @@ CREATE TABLE public.invoices (
     vat_rate numeric,
     total_amount numeric,
     updated_by character varying,
+    notes character varying,
     CONSTRAINT invoices_cents_are_positive CHECK ((cents > 0)),
     CONSTRAINT issued_at_earlier_than_payment_at CHECK ((issue_date <= due_date)),
     CONSTRAINT paid_at_is_filled_when_status_is_paid CHECK ((NOT ((status = 'paid'::public.invoice_status) AND (paid_at IS NULL)))),
@@ -2195,6 +2196,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190405065151'),
 ('20190405081018'),
 ('20190405111702'),
-('20190423092327');
+('20190423092327'),
+('20190424070710');
 
 
