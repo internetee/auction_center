@@ -20,6 +20,9 @@ module PaymentOrders
 
     SUCCESSFUL_PAYMENT = %w[settled authorized].freeze
 
+    LANGUAGE_CODE_ET = 'et'.freeze
+    LANGUAGE_CODE_EN = 'en'.freeze
+
     # Base interface for creating payments.
     def form_fields
       base_json = base_params
@@ -73,6 +76,14 @@ module PaymentOrders
 
     private
 
+    def language
+      if user&.locale == LANGUAGE_CODE_ET
+        LANGUAGE_CODE_ET
+      else
+        LANGUAGE_CODE_EN
+      end
+    end
+
     def valid_hmac?
       hmac_fields = response['hmac_fields'].split(',')
       hmac_hash = {}
@@ -103,6 +114,7 @@ module PaymentOrders
         amount: invoice.total.format(symbol: nil, thousands_separator: false, decimal_mark: '.'),
         order_reference: SecureRandom.hex(15),
         transaction_type: 'charge',
+        locale: language,
         hmac_fields: '',
       }.with_indifferent_access
     end

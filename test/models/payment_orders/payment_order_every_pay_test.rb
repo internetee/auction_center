@@ -61,7 +61,29 @@ class PaymentOrderEveryPayTest < ActiveSupport::TestCase
       timestamp: '1522542600',
       amount: '1200.00',
       transaction_type: 'charge',
-      hmac_fields: 'account_id,amount,api_username,callback_url,customer_url,hmac_fields,nonce,order_reference,timestamp,transaction_type'
+      hmac_fields: 'account_id,amount,api_username,callback_url,customer_url,hmac_fields,locale,nonce,order_reference,timestamp,transaction_type',
+      locale: 'en'
+    }
+    form_fields = @every_pay.form_fields
+    expected_fields.each do |k, v|
+      assert_equal(v, form_fields[k])
+    end
+  end
+
+  def test_form_fields_with_estonian_locale
+    @every_pay.user = @user
+    @orphaned_invoice.cents = Money.from_amount(1234.56, Setting.auction_currency).cents
+    assert_equal Money.from_amount(1481.47, Setting.auction_currency), @orphaned_invoice.total
+    @user.update!(locale: :et)
+
+    expected_fields = {
+      api_username: 'api_user',
+      account_id: 'EUR3D1',
+      timestamp: '1522542600',
+      amount: '1481.47',
+      transaction_type: 'charge',
+      hmac_fields: 'account_id,amount,api_username,callback_url,customer_url,hmac_fields,locale,nonce,order_reference,timestamp,transaction_type',
+      locale: 'et'
     }
     form_fields = @every_pay.form_fields
     expected_fields.each do |k, v|
