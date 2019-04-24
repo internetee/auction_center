@@ -6,6 +6,9 @@ module PaymentOrders
     SUCCESSFUL_PAYMENT_SERVICE_NUMBER = '1111'.freeze
     CANCELLED_PAYMENT_SERVICE_NUMBER  = '1911'.freeze
 
+    LANGUAGE_CODE_ET = 'EST'.freeze
+    LANGUAGE_CODE_EN = 'ENG'.freeze
+
     NEW_MESSAGE_KEYS     = %w[VK_SERVICE VK_VERSION VK_SND_ID VK_STAMP VK_AMOUNT
                               VK_CURR VK_REF VK_MSG VK_RETURN VK_CANCEL
                               VK_DATETIME].freeze
@@ -72,7 +75,7 @@ module PaymentOrders
       hash['VK_DATETIME'] = Time.zone.now.strftime('%Y-%m-%dT%H:%M:%S%z')
       hash['VK_MAC']      = calc_mac(hash)
       hash['VK_ENCODING'] = 'UTF-8'
-      hash['VK_LANG']     = 'ENG'
+      hash['VK_LANG']     = language
       hash
     end
 
@@ -101,6 +104,14 @@ module PaymentOrders
     end
 
     private
+
+    def language
+      if user&.locale == 'et'
+        LANGUAGE_CODE_ET
+      else
+        LANGUAGE_CODE_EN
+      end
+    end
 
     def valid_successful_transaction?
       valid_success_notice? && valid_amount? && valid_currency?
