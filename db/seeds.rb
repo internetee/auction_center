@@ -155,7 +155,7 @@ invoice_issuer_value = <<~TEXT.squish
 invoice_issuer_setting = Setting.new(code: :invoice_issuer, value: invoice_issuer_value,
                                      description: invoice_issuer_description)
 
-invoice_issuer.save
+invoice_issuer_setting.save
 
 # Default invoice reminder
 invoice_reminder_description = <<~TEXT.squish
