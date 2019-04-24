@@ -9,3 +9,6 @@ et:
 
       show:
         title: "Invoice no. %{invoice_number}"
+
+      edit:
+        title: "Märgi arve makstuks"

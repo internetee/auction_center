@@ -50,7 +50,7 @@ class Ability
     can :manage, Auction
     can :manage, Ban
     can :manage, BillingProfile
-    can :read, Invoice
+    can %i[read update], Invoice
     can :read, InvoiceItem
     can %i[read create], Job
     can :manage, User

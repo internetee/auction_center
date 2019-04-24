@@ -10,6 +10,7 @@ en:
     status: "Status"
     price: "Price"
     billing_profile: "Billing Profile"
+    notes: "Notes"
     item: "Item"
     items: "Items"
     total: "Total"
@@ -25,6 +26,9 @@ en:
 
     outstanding: "Outstanding invoices"
     paid: "Paid invoices"
+    mark_as_paid: "Mark as paid"
+    marked_as_paid: "Invoice marked as paid."
+    already_paid: "Invoice is already paid."
 
     show:
       change_billing_profile: "Change billing profile"

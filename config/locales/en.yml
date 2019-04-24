@@ -77,6 +77,7 @@ en:
   invalid: "invalid"
   not_accepted: "Not accepted"
   details: "Details"
+  updated_by: "Updated by"
 
   search_by_domain_name: "Search by domain name"
   search_by_email: "Search by email"

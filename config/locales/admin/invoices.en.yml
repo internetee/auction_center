@@ -9,3 +9,6 @@ en:
 
       show:
         title: "Invoice no. %{invoice_number}"
+
+      edit:
+        title: "Mark invoice as paid"

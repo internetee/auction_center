@@ -63,6 +63,11 @@ class AdministratorAbilityTest < ActiveSupport::TestCase
     assert(@administrator_ability.can?(:read, PaymentOrder))
   end
 
+  def test_administrator_can_update_invoices
+    assert(@administrator_ability.can?(:update, Invoice))
+    assert(@administrator_ability.cannot?(:create, Invoice))
+  end
+
   def test_administrator_can_create_job_runs
     assert(@administrator_ability.can?(:read, Job))
     assert(@administrator_ability.can?(:create, Job))

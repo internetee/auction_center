@@ -24,7 +24,7 @@ Rails.application.routes.draw do
 
     resources :bans, except: %i[new show edit update], concerns: [:auditable]
     resources :billing_profiles, only: %i[index show], concerns: [:auditable]
-    resources :invoices, only: %i[index show], concerns: [:auditable, :searchable] do
+    resources :invoices, except: %i[new create destroy], concerns: [:auditable, :searchable] do
       member do
         get "download"
       end

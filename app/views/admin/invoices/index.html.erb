@@ -28,6 +28,7 @@
                     <th scope="col"><%= t('invoices.billing_profile') %></th>
                     <th scope="col"><%= t('invoices.due_date') %></th>
                     <th scope="col"><%= t('invoices.status') %></th>
+                    <th scope="col"><%= t('invoices.notes') %></th>
                     <th scope="col"><%= t('invoices.total') %></th>
                     <th scope="col"><%= t('invoices.vat_rate_on_payment') %></th>
                     <th scope="col"><%= t('invoices.total_paid') %></th>
@@ -40,6 +41,7 @@
                         <td><%= link_to invoice.billing_profile.name, admin_invoice_path(invoice) %></td>
                         <td><%= I18n.l(invoice.due_date) %></td>
                         <td><%= invoice.status %></td>
+                        <td><%= invoice.notes %></td>
                         <td><%= t('offers.price_in_currency', price: invoice.total) %></td>
                         <% if invoice.paid? %>
                             <td><%= number_to_percentage(invoice.vat_rate * 100, precision: 0) %></td>

@@ -11,6 +11,10 @@
                 <%= link_to t(:versions_name), admin_invoice_versions_path(@invoice), class: "ui button primary" %>
                 <%= link_to t('invoices.download'), download_admin_invoice_path(@invoice),
                             { class: 'ui button secondary', target: "_blank" } %>
+
+                <% unless @invoice.overdue? || @invoice.paid? %>
+                    <%= link_to t('invoices.mark_as_paid'), edit_admin_invoice_path(@invoice), class: 'ui button secondary' %>
+                <% end %>
             </div>
 
             <div class="column">
@@ -25,6 +29,20 @@
                         <%= @invoice.billing_profile.name %><br>
                         <%= @invoice.billing_profile.address %>
                     </div>
+
+                    <% if @invoice.updated_by %>
+                        <div class="item">
+                            <div class="header"><%= t(:updated_by) %></div>
+                            <%= @invoice.updated_by %>
+                        </div>
+                    <% end %>
+
+                    <% if @invoice.notes %>
+                        <div class="item">
+                            <div class="header"><%= t('invoices.notes') %></div>
+                            <%= @invoice.notes %>
+                        </div>
+                    <% end %>
                 </div>
             </div>
 

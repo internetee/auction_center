@@ -144,6 +144,17 @@ class InvoiceTest < ActiveSupport::TestCase
     assert_equal(BigDecimal.new("10.0"), @payable_invoice.total_amount)
   end
 
+  def test_mark_as_paid_raises_if_already_paid
+    @payable_invoice.update!(status: Invoice.statuses[:paid],
+                             paid_at: Time.zone.now)
+
+    time = Time.parse('2010-07-06 10:30 +0000')
+
+    assert_raises(Errors::InvoiceAlreadyPaid) do
+      @payable_invoice.mark_as_paid_at(time)
+    end
+  end
+
   def test_invoice_items
     item = InvoiceItem.new(cents: 1200, name: :test_item)
     @payable_invoice.items =[item]
