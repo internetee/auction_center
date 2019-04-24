@@ -1,5 +1,5 @@
 <% content_for :hero do %>
-    <div class="hero green">
+    <div class="hero orange">
         <h1><%= t('.title') %></h1>
     </div>
 <% end %>
@@ -19,6 +19,6 @@
             </div>
         <% end %>
 
-        <%= render 'form', invoice: @invoice, url: invoice_path(@invoice.uuid) %>
+        <%= render 'form', invoice: @invoice, url: admin_invoice_path(@invoice) %>
     </div>
 </div>

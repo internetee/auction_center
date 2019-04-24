@@ -10,6 +10,7 @@ en:
     status: "Status"
     price: "Price"
     billing_profile: "Billing Profile"
+    notes: "Notes"
     item: "Item"
     items: "Items"
     total: "Total"

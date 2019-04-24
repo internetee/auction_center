@@ -1,0 +1,15 @@
+<%= form_with(model: invoice, local: true, url: url, class: 'ui form big') do |f| %>
+    <div class="ui one column grid">
+        <div class="column">
+            <div class="field">
+                <%= f.label :notes, t('invoices.notes') %>
+                <%= f.text_field :notes, value: invoice.notes, required: "true" %>
+            </div>
+        </div>
+
+        <div class="column">
+            <%= f.submit t(:submit), class: "ui button primary" %>
+            <%= link_to t(:back), :back, class: "ui button secondary" %>
+        </div>
+    </div>
+<% end %>

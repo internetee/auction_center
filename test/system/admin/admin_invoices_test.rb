@@ -47,18 +47,21 @@ class AdminInvoicesTest < ApplicationSystemTestCase
   end
 
   def test_admin_can_mark_invoice_as_paid
+    note = 'Money received by wire transfer'
+
     visit admin_invoice_path(@invoice)
 
-    accept_confirm do
-      click_link_or_button('Mark as paid')
-    end
+    click_link_or_button('Mark as paid')
+    fill_in('invoice[notes]', with: note)
 
+    click_link_or_button('Submit')
     assert(page.has_css?('div.notice', text: 'Invoice marked as paid.'))
 
     @invoice.reload
 
     assert(@invoice.paid?)
     assert_equal(Time.zone.now, @invoice.paid_at)
+    assert_equal(note, @invoice.notes)
     assert_equal("#{@administrator.id} - John Joe Administrator", @invoice.updated_by)
   end
 
@@ -77,17 +80,33 @@ class AdminInvoicesTest < ApplicationSystemTestCase
     refute(page.has_link?('Mark as paid'))
   end
 
-  def test_admin_cannot_mark_invoice_as_paid_if_it_has_been_paid
+  def test_admin_cannot_open_edit_page_if_invoice_is_already_paid
     visit admin_invoice_path(@invoice)
 
     @invoice.update(status: Invoice.statuses[:paid], paid_at: Time.now,
                     vat_rate: @invoice.billing_profile.vat_rate, total_amount: @invoice.total)
 
-    accept_confirm do
-      click_link_or_button('Mark as paid')
-    end
+    click_link_or_button('Mark as paid')
+    assert(page.has_css?('div.notice', text: 'Invoice is already paid.'))
+  end
+
+  def test_admin_cannot_update_invoice_if_invoice_is_already_paid
+    visit edit_admin_invoice_path(@invoice)
+
+    @invoice.update(status: Invoice.statuses[:paid], paid_at: Time.now,
+                    vat_rate: @invoice.billing_profile.vat_rate, total_amount: @invoice.total)
+
+    note = 'Money received by wire transfer'
+    fill_in('invoice[notes]', with: note)
+    click_link_or_button('Submit')
 
     assert(page.has_css?('div.notice', text: 'Invoice is already paid.'))
+
+    @invoice.reload
+
+    assert(@invoice.paid?)
+    refute_equal(note, @invoice.notes)
+    refute_equal("#{@administrator.id} - John Joe Administrator", @invoice.updated_by)
   end
 
   def test_invoice_view_contains_a_download_link
