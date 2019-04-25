@@ -6,3 +6,4 @@ en:
 
     return:
       not_successful: "The payment was not successful."
+      already_paid: "This invoice has already been paid."

@@ -32,7 +32,7 @@ class PaymentOrdersController < ApplicationController
       respond_to do |format|
         format.html do
           redirect_to invoice_path(@payment_order.invoice.uuid),
-            notice: t('.already paid') and return
+            notice: t('.already_paid') and return
         end
 
         format.json { render json: @payment_order.errors, status: :unprocessable_entity and return }
