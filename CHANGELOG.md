@@ -1,3 +1,6 @@
+25.04.2019
+* Graceful error handling on multiple invoice payment attempts [#243](https://github.com/internetee/auction_center/pull/243)
+
 24.04.2019
 * User's language param is now forwarded on transfering user to payment processor [#238](https://github.com/internetee/auction_center/issues/238)
 * Added option for admin to manually mark invoices as paid [#178](https://github.com/internetee/auction_center/issues/178)
