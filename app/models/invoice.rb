@@ -1,6 +1,5 @@
 require 'result_not_found'
 require 'result_not_sold'
-require 'invoice_already_paid'
 
 class Invoice < ApplicationRecord
   enum status: { issued: 'issued',
@@ -82,8 +81,6 @@ class Invoice < ApplicationRecord
   end
 
   def mark_as_paid_at(time)
-    raise(Errors::InvoiceAlreadyPaid, id) if paid?
-
     ActiveRecord::Base.transaction do
       self.paid_at = time
       self.vat_rate = billing_profile.vat_rate

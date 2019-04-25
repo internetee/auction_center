@@ -27,6 +27,18 @@ class PaymentOrdersController < ApplicationController
   # ANY /payment_orders/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/return
   def return
     @payment_order = PaymentOrder.find_by!(uuid: params[:uuid])
+
+    if @payment_order.paid?
+      respond_to do |format|
+        format.html do
+          redirect_to invoice_path(@payment_order.invoice.uuid),
+            notice: t('.already paid') and return
+        end
+
+        format.json { render json: @payment_order.errors, status: :unprocessable_entity and return }
+      end
+    end
+
     @payment_order.update!(response: params.to_unsafe_h)
 
     ResultStatusUpdateJob.perform_later
