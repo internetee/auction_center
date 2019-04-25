@@ -1,3 +1,5 @@
+require 'invoice_already_paid'
+
 module Admin
   class InvoicesController < BaseController
     before_action :authorize_user
@@ -80,6 +82,8 @@ module Admin
 
     def update_predicate
       @invoice.assign_attributes(update_params)
+      raise(Errors::InvoiceAlreadyPaid, @invoice.id) if @invoice.paid?
+
       @invoice.mark_as_paid_at(Time.zone.now)
     end
 

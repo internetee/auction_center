@@ -28,6 +28,15 @@ class PaymentOrdersTest < ActionDispatch::IntegrationTest
     end
   end
 
+  def test_return_does_nothing_when_payment_order_is_already_paid
+    @payment_order.update!(status: :paid)
+    post return_payment_order_path(@payment_order.uuid), { params: request_params }
+
+    assert_equal(302, response.status)
+    refute @payment_order.response
+  end
+
+
   def request_params
     {
       authenticity_token:  'OnA69vbccQtMt3C9wxEWigs5Gpf/7z+NoxRCMkFPlTvaATs8+OgMKF1I4B2f+vuK37zCgpWZaWWtyuslRRSwkw==',

@@ -6,3 +6,4 @@ et:
 
     return:
       not_successful: "Makse ebaõnnestus!"
+      already_paid: "Arve on juba makstud."
