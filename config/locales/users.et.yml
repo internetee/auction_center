@@ -17,7 +17,7 @@ et:
     password_confirmation: "Salasõna kinnitus"
     current_password: "Praegune salasõna"
     remember_me: "Mäleta mind"
-    i_accept_terms_and_conditions_html: "Olen tutvunud ja nõustut  %{link}."
+    i_accept_terms_and_conditions_html: "Olen tutvunud ja nõustun %{link}."
     terms_and_conditions_link: "domeenide oksjonikeskkonna kasutajatingimustega"
 
     edit:
