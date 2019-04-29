@@ -5,7 +5,7 @@ ARG APP_DBHOST
 
 ENV RAILS_ENV "$RAILS_ENV"
 ENV SECRET_KEY_BASE "$SECRET_KEY_BASE"
-ENV ADD_DBHOST "$ADD_DBHOST"
+ENV APP_DBHOST "$APP_DBHOST"
 RUN npm install -g yarn@latest
 WORKDIR /opt/webapps/app
 COPY Gemfile Gemfile.lock ./
