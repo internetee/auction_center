@@ -1,3 +1,8 @@
+29.04.2019
+* Reprased payment and registration deadline in Estonian view [#245](https://github.com/internetee/auction_center/issues/245)
+* Fixed typo on registration form [#246](https://github.com/internetee/auction_center/issues/246)
+* Fixed typo in staging dockerfile [](https://github.com/internetee/auction_center/pull/248)
+
 25.04.2019
 * Graceful error handling on multiple invoice payment attempts [#243](https://github.com/internetee/auction_center/pull/243)
 
