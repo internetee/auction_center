@@ -5,7 +5,7 @@ et:
     invoice: "Arve"
     registration_code: "Registreerimiskood"
     register_before: "Registreeri hiljemalt"
-    pay_invoice_before: "Tasu arve enne"
+    pay_invoice_before: "Tasu arve hiljemalt"
     status: "Staatus"
     registration_due_date: "Registreerimise tähtpäev"
 
