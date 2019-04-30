@@ -38,7 +38,7 @@
                     <tbody id="auctions-table-body">
                         <% @auctions.each do |auction| %>
                             <tr class="auctions-table-row">
-                                <td class="auction-domain-name">
+                                <td class="auction-domain-name monospace">
                                     <%= link_to auction.domain_name, admin_auction_path(auction) %>
                                 </td>
                                 <td><%= I18n.l(auction.starts_at) %></td>

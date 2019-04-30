@@ -39,7 +39,7 @@
                     <tbody id="auctions-table-body">
                         <% @auctions.each do |auction| %>
                             <tr class="auctions-table-row">
-                                <td class="auction-domain-name">
+                                <td class="auction-domain-name monospace">
                                     <%= link_to auction.domain_name, auction_path(auction.uuid) %>
                                 </td>
                                 <td><%= I18n.l(auction.ends_at) %></td>

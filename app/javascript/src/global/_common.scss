@@ -57,6 +57,10 @@ strong {
   font-weight: 900;
 }
 
+.monospace {
+  font-family: $monospace-font-family;
+}
+
 ::-webkit-input-placeholder {
   color: $black;
 }

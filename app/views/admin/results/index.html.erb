@@ -43,7 +43,7 @@
                         <tbody id="auctions-needing-results-table">
                             <% @auctions_needing_results.each do |auction| %>
                                 <tr class="auctions-needing-results-table-row">
-                                    <td><%= auction.domain_name %></td>
+                                    <td class="monospace"><%= auction.domain_name %></td>
                                     <td><%= I18n.l(auction.ends_at) %></td>
                                 </tr>
                             <% end %>
@@ -67,7 +67,9 @@
                     <tbody id="results-table-body">
                         <% @results.each do |result| %>
                             <tr class="results-table-row">
-                                <td><%= link_to result.auction.domain_name, admin_result_path(result) %></td>
+                                <td class="monospace">
+                                    <%= link_to result.auction.domain_name, admin_result_path(result) %>
+                                </td>
                                 <td><%= I18n.l(result.auction.ends_at) %></td>
                                 <td><%= I18n.l(result.registration_due_date) %></td>
                                 <td><%= result.status.humanize %></td>
