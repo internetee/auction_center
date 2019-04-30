@@ -1,7 +1,7 @@
 <% content_for :hero do %>
     <div class="hero green">
         <h1><%= t('.title') %></h1>
-        <%= @offer.auction.domain_name %>
+        <div class="monospace"><%= @offer.auction.domain_name %></div>
     </div>
 <% end %>
 
@@ -12,7 +12,7 @@
                 <tbody>
                     <tr>
                         <td><strong><%= t('auctions.domain_name') %></strong></td>
-                        <td><%= @offer.auction.domain_name %></td>
+                        <td class="monospace"><%= @offer.auction.domain_name %></td>
                     </tr>
 
                     <tr>

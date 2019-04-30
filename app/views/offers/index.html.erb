@@ -22,7 +22,7 @@
                 <tbody id="offers-table-body">
                     <% @offers.each do |offer| %>
                         <tr class="offers-table-row">
-                            <td><%= link_to offer.auction.domain_name, offer_path(offer.uuid) %></td>
+                            <td class="monospace"><%= link_to offer.auction.domain_name, offer_path(offer.uuid) %></td>
                             <td><%= t('offers.price_in_currency', price: offer.price) %></td>
                             <td><%= t('offers.price_in_currency', price: offer.total) %></td>
                             <td>

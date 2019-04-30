@@ -1,7 +1,7 @@
 <% content_for :hero do %>
     <div class="hero green">
         <h1><%= t('.title') %></h1>
-        <%= @offer.auction.domain_name %>
+        <div class="monospace"<%= @offer.auction.domain_name %></div>
     </div>
 <% end %>
 
