@@ -1,5 +1,5 @@
-30.04.2019
-* Added option to set different font for domain names, apllied sys default monospace [#252](https://github.com/internetee/auction_center/pull/252)
+02.05.2019
+* Different font for domain names to reduce confusion - apllied sys default monospace [#252](https://github.com/internetee/auction_center/pull/252)
 
 29.04.2019
 * Reprased payment and registration deadline in Estonian view [#245](https://github.com/internetee/auction_center/issues/245)
