@@ -16,7 +16,7 @@
                         Countries.for_selection,
                         user.country_code || Setting.default_country
                     ),
-                    { readonly: user.signed_in_with_identity_document? },
+                    { readonly: true },
                     class: "ui dropdown" %>
                 </div>
             </div>
