@@ -1,5 +1,6 @@
 03.05.2019
 * jQuery update to 3.4.1 (CVE-2019-11358) [#254](https://github.com/internetee/auction_center/pull/254)
+* Fixed test failures that came with newer version of Chrome [#255](https://github.com/internetee/auction_center/pull/255)
 
 02.05.2019
 * Different font for domain names to reduce confusion - apllied sys default monospace [#252](https://github.com/internetee/auction_center/pull/252)
