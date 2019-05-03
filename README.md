@@ -11,8 +11,7 @@ Software for managing TLD domain auctions
 1. Run `bin/setup`
 2. Configure database in `config/database.yml` according to your needs
 3. Adjust configuration variables in `config/customization.yml`.
-4. Adjust schedule in `config/schedule.rb`, and then run `whenever --update-crontab` to write the schedule to crontab.
-5. Run `bundle exec rake db:setup`
+4. Run `bundle exec rake db:setup`
 
 ## Default user account
 
@@ -49,6 +48,12 @@ Content-Type: application/json
 ## Settings
 
 There are certain settings stored in the database that are used for the application logic. For example, the currency in which all auctions are conducted. An administrator can change these settings in /admin/settings page.
+
+## Jobs
+
+To send out emails and perform other asynchronous tasks, we use a background processing with PostgreSQL as queue backend. To start an executor, use `bundle exec rails jobs:work`.
+
+Part of running the application according to EIS business rules includes creating new auctions at the beginning of the day. Jobs are scheduled outside of the application, as the exact times are no concern of the application.
 
 ## Audits
 
