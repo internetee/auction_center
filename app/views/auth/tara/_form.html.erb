@@ -12,15 +12,10 @@
                 </div>
             </div>
             <div class="field">
-                <%= f.label :country, t('users.country') %>
+                <%= f.label :country, t('users.country_code') %>
                 <div class="ui disabled input">
-                    <%= f.select :country_code,
-                    options_for_select(
-                        Countries.for_selection,
-                        user.country_code || Setting.default_country
-                    ),
-                    { readonly: true },
-                    class: "ui dropdown" %>
+                    <%= f.text_field :country_code, value: user.country_code || Setting.default_country,
+                                     readonly: true %>
                 </div>
             </div>
             <div class="field">
