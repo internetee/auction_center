@@ -9,6 +9,6 @@ et:
 
       form:
         contact_data: "Kontaktandmed"
-        data_from_identity_document: "Isikut tõendava dokumendi andmed"
+        data_from_identity_document: "Andmed elektroonselt isikutunnistuselt"
         new_password: "Uus salasõna"
         sign_up: "Registreeru"
