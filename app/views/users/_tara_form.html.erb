@@ -1,7 +1,7 @@
 <%= form_with(model: user, url: url, local: true, id: 'user_form', class: 'ui form big') do |f| %>
     <div class="ui two column doubling stackable grid">
         <div class="column">
-            <h3 class="p3"><%= t('.data_from_identity_document') %></h3>
+            <h3 class="p3"><%= t('auth.tara.form.data_from_identity_document') %></h3>
             <div class="field">
                 <%= f.label :identity_code, t('users.identity_code') %>
                 <div class="ui disabled input">
@@ -9,15 +9,11 @@
                 </div>
             </div>
             <div class="field">
-                <%= f.label :country, t('users.country') %>
+                <%= f.label :country, t('users.country_code') %>
                 <div class="ui disabled input">
-                    <%= f.select :country_code,
-                    options_for_select(
-                        Countries.for_selection,
-                        user.country_code || Setting.default_country
-                    ),
-                    { readonly: user.signed_in_with_identity_document? },
-                    class: "ui dropdown" %>
+                    <%= f.text_field :country_code,
+                        value: user.country_code || Setting.default_country,
+                        readonly: true %>
                 </div>
             </div>
             <div class="field">
@@ -35,7 +31,7 @@
         </div>
 
         <div class="column">
-            <h3 class="p3"><%= t('.contact_data') %></h3>
+            <h3 class="p3"><%= t('auth.tara.form.data_from_identity_document') %></h3>
 
             <div class="field">
                 <%= f.hidden_field :locale, value: I18n.locale %>
