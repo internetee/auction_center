@@ -1,3 +1,9 @@
+06.05.2019
+* Fixed HTML error on making an offer view [#260](https://github.com/internetee/auction_center/pull/260)
+* Disabled country editing for electronically authenticated users [#256](https://github.com/internetee/auction_center/issues/256)
+* Readme update about background jobs [#258](https://github.com/internetee/auction_center/pull/258)
+* Update Yarn packages [#261](https://github.com/internetee/auction_center/pull/261)
+
 03.05.2019
 * jQuery update to 3.4.1 (CVE-2019-11358) [#254](https://github.com/internetee/auction_center/pull/254)
 * Fixed test failures that came with newer version of Chrome [#255](https://github.com/internetee/auction_center/pull/255)
