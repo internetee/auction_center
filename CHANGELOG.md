@@ -1,3 +1,6 @@
+08.05.2019
+* Updated test dependencies [#263](https://github.com/internetee/auction_center/pull/263)
+
 06.05.2019
 * Fixed HTML error on making an offer view [#260](https://github.com/internetee/auction_center/pull/260)
 * Disabled country editing for electronically authenticated users [#256](https://github.com/internetee/auction_center/issues/256)
