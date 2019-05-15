@@ -1,0 +1,4 @@
+en:
+  notification_mailer:
+    daily_summary_email:
+      subject: "Daily summary for %{date}"
