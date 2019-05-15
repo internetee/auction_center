@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
+    </head>
+    <body>
+        <h1><%= t('.salutation') %></h1>
+
+        <h2><%= t('.auctions') %></h2>
+        <table>
+            <thead>
+                <th>Domain name</th>
+                <th>Price in currency</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>domain.ee</td>
+                    <td>500.00 €</td>
+                </tr>
+                <tr>
+                    <td>domain.ee</td>
+                    <td>400.00 €</td>
+                </tr>
+                <tr>
+                    <td>domain.ee</td>
+                    <td>300.00 €</td>
+                </tr>
+                <tr>
+                    <td>domain.ee</td>
+                    <td>200.00 €</td>
+                </tr>
+                <tr>
+                    <td>domain.ee</td>
+                    <td>100.00 €</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p><%= t('.there_were_auctions_with_no_offers', number: 123) %></p>
+
+
+        <h2><%= t('.registration_deadlines') %></h2>
+        <table>
+            <thead>
+                <th>Domain name</th>
+                <th>Customer email</th>
+                <th>Phone number</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>domain.ee</td>
+                    <td>foo@bar.baz</td>
+                    <td>+372 5596 5357</td>
+                </tr>
+            </tbody>
+        </table>
+
+
+        <h2><%= t('.unpaid_invoices')%></h2>
+
+        <table>
+            <thead>
+                <th>Domain name</th>
+                <th>Customer email</th>
+                <th>Offence count</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>domain.ee</td>
+                    <td>foo@bar.baz</td>
+                    <td>1</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <%= t('common_mailer.footer_html') %>
+    </body>
+</html>

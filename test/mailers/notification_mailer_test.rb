@@ -23,6 +23,6 @@ class NotificationMailerTest < ActionMailer::TestCase
     refute(ActionMailer::Base.deliveries.empty?)
     email = ActionMailer::Base.deliveries.last
     assert_equal(['administrator@auction.test'], email.to)
-    assert_equal('Daily summary for 2010-07-05', email.subject)
+    assert_equal('Daily summary for 2010-07-04', email.subject)
   end
 end
