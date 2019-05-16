@@ -1,3 +1,4 @@
+# Used for email previews
 class MockSummaryReport < SummaryReport
   attr_writer :winning_offers
   attr_writer :results_with_no_bids
