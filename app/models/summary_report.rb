@@ -7,6 +7,13 @@ class SummaryReport
     @end_time = end_time
   end
 
+  def gather_data
+    winning_offers
+    results_with_no_bids
+    registration_deadlines
+    bans
+  end
+
   # Returns an array of hashes:
   # [{'domain_name' => 'foo.test', 'cents' => 4000},
   #  {'domain_name' => 'bar.test', 'cents' => 2000}]

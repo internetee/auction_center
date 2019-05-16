@@ -8,7 +8,7 @@ class NotificationMailerPreview < ActionMailer::Preview
 
 
   def daily_summary_report
-    summary_report = MockSummaryReport.new(Date.yesterday, Date.today)
+    summary_report = MockSummaryReport.new(Time.zone.yesterday, Time.zone.today)
 
     summary_report.results_with_no_bids = [
       {'domain_name' => 'expired.test', 'status' => 'no_bids'},
