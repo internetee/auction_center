@@ -72,8 +72,9 @@ class SummaryReport
         AND results.registration_due_date = ?
     SQL
 
+    tomorrow = Time.zone.today + 1
     interpolated = ActiveRecord::Base.sanitize_sql([sql, Result.statuses[:payment_received],
-                                                   Time.zone.today + 1])
+                                                    tomorrow])
     @registration_deadlines ||= ActiveRecord::Base.connection.execute(interpolated).to_a
   end
 
