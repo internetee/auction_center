@@ -11,6 +11,8 @@ class SummaryReportTest < ActiveSupport::TestCase
     @user = users(:participant)
     @result = results(:expired_participant)
     @no_offers = results(:without_offers_nobody)
+    @with_invoice = results(:with_invoice)
+    @orphaned = results(:orphaned)
   end
 
   def test_holds_start_and_end_date
@@ -19,14 +21,17 @@ class SummaryReportTest < ActiveSupport::TestCase
   end
 
   def test_winning_offers_uses_created_at
-    assert_equal([{'domain_name' => 'expired.test', 'cents' => 1000},
-                  {'domain_name' => 'with-invoice.test', 'cents' => 10000},
-                  {'domain_name' => 'orphaned.test', 'cents' => 1000}].to_set,
+    assert_equal([{'domain_name' => 'with-invoice.test', 'cents' => 10000,
+                   'result_id' => @with_invoice.id},
+                  {'domain_name' => 'expired.test', 'cents' => 1000, 'result_id' => @result.id},
+                  {'domain_name' => 'orphaned.test', 'cents' => 1000,
+                   'result_id' => @orphaned.id}].to_set,
                  @summary.winning_offers.to_set)
   end
 
   def test_winning_offers_are_ordered_by_cents
-    assert_equal({'domain_name' => 'with-invoice.test', 'cents' => 10000},
+    assert_equal({'domain_name' => 'with-invoice.test', 'cents' => 10000,
+                   'result_id' => @with_invoice.id},
                  @summary.winning_offers.first)
   end
 
@@ -34,7 +39,8 @@ class SummaryReportTest < ActiveSupport::TestCase
     Result.all.update(created_at: Time.zone.today - 30)
     @result.update!(created_at: Time.zone.now - 3)
 
-    assert_equal([{'domain_name' => 'expired.test', 'cents' => 1000}], @summary.winning_offers)
+    assert_equal([{'domain_name' => 'expired.test', 'cents' => 1000,
+                   'result_id' => @result.id}], @summary.winning_offers)
   end
 
   def test_results_with_no_bids
@@ -49,7 +55,8 @@ class SummaryReportTest < ActiveSupport::TestCase
 
     assert_equal([{'domain_name' => 'expired.test',
                     'email' => @user.email,
-                    'mobile_phone' => @user.mobile_phone}],
+                    'mobile_phone' => @user.mobile_phone,
+                    'result_id' => @result.id}],
                 @summary.registration_deadlines)
   end
 

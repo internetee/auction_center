@@ -13,10 +13,11 @@ class SummaryReport
   def winning_offers
     sql = <<~SQL
       SELECT auctions.domain_name,
-             offers.cents
-      FROM auctions, offers
-      INNER JOIN results ON offers.id = results.offer_id
+             offers.cents,
+             results.id result_id
+      FROM auctions, offers, results
       WHERE offers.auction_id = auctions.id
+        AND offers.id = results.offer_id
         AND results.status <> ?
         AND results.created_at > ?
         AND results.created_at < ?
@@ -55,10 +56,11 @@ class SummaryReport
     sql = <<~SQL
       SELECT auctions.domain_name,
              users.email,
-             users.mobile_phone
-      FROM auctions, users
-      INNER JOIN results ON users.id = results.user_id
+             users.mobile_phone,
+             results.id result_id
+      FROM auctions, users, results
       WHERE results.auction_id = auctions.id
+        AND users.id = results.user_id
         AND results.status = ?
         AND results.registration_due_date = ?
     SQL

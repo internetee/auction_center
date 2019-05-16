@@ -16,13 +16,15 @@ class NotificationMailerPreview < ActionMailer::Preview
     ]
 
     summary_report.winning_offers = [
-      {'domain_name' => 'expired.test', 'cents' => 1000},
-      {'domain_name' => 'very-interesting.test', 'cents' => 10000},
+      {'domain_name' => 'expired.test', 'cents' => 1000, 'result_id' => 1},
+      {'domain_name' => 'very-interesting.test', 'cents' => 10000, 'result_id' => 3}
     ]
 
     summary_report.registration_deadlines = [
-      {'domain_name' => 'expired.test', 'email' => 'foo@bar.baz', 'mobile_phone' => nil},
-      {'domain_name' => 'other.test', 'email' => 'foo@bar.baz', 'mobile_phone' => '+37255556666'}
+      {'domain_name' => 'expired.test', 'email' => 'foo@bar.baz', 'mobile_phone' => nil,
+        'result_id' => 3},
+      {'domain_name' => 'other.test', 'email' => 'foo@bar.baz', 'mobile_phone' => '+37255556666',
+        'result_id' => 4}
     ]
 
     summary_report.bans = [

@@ -5,18 +5,18 @@
     </head>
     <body>
         <h1><%= t('.salutation') %></h1>
-
         <h2><%= t('.auctions') %></h2>
         <table>
             <thead>
-                <th>Domain name</th>
-                <th>Price in currency</th>
+                <th><%= t('auctions.domain_name') %></th>
+                <th><%= t('offers.price') %></th>
             </thead>
             <tbody>
                 <% @winning_offers.each do |offer| %>
                     <tr>
                         <td><%= offer['domain_name'] %></td>
-                        <td><%= offer['cents'] %></td>
+                        <td><%= Money.new(offer['cents'], Setting.auction_currency) %></td>
+                        <td><%= link_to(t('result_name'), admin_result_url(offer['result_id'])) %>
                     </tr>
                 <% end %>
             </tbody>
@@ -31,6 +31,7 @@
                 <th><%= t('auctions.domain_name') %></th>
                 <th><%= t('users.email') %></th>
                 <th><%= t('users.mobile_phone') %></th>
+                <th></th>
             </thead>
             <tbody>
                 <% @registration_deadlines.each do |result| %>
@@ -38,6 +39,7 @@
                         <td><%= result['domain_name'] %></td>
                         <td><%= result['email'] %></td>
                         <td><%= result['mobile_phone'] %></td>
+                        <td><%= link_to(t('result_name'), admin_result_url(result['result_id'])) %>
                     </tr>
 
                 <% end %>
@@ -45,7 +47,7 @@
         </table>
 
 
-        <h2><%= t('.unpaid_invoices')%></h2>
+        <h2><%= t('.bans')%></h2>
 
         <table>
             <thead>
