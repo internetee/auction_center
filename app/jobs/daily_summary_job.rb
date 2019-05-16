@@ -1,6 +1,6 @@
 class DailySummaryJob < ApplicationJob
   def perform
-    User.where("'administrator' = ANY (roles)").each do |administrator|
+    User.where('? = ANY (roles)', User::ADMINISTATOR_ROLE).each do |administrator|
       NotificationMailer.daily_summary_email(administrator).deliver_later
     end
   end
