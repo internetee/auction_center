@@ -13,45 +13,34 @@
                 <th>Price in currency</th>
             </thead>
             <tbody>
-                <tr>
-                    <td>domain.ee</td>
-                    <td>500.00 €</td>
-                </tr>
-                <tr>
-                    <td>domain.ee</td>
-                    <td>400.00 €</td>
-                </tr>
-                <tr>
-                    <td>domain.ee</td>
-                    <td>300.00 €</td>
-                </tr>
-                <tr>
-                    <td>domain.ee</td>
-                    <td>200.00 €</td>
-                </tr>
-                <tr>
-                    <td>domain.ee</td>
-                    <td>100.00 €</td>
-                </tr>
+                <% @winning_offers.each do |offer| %>
+                    <tr>
+                        <td><%= offer['domain_name'] %></td>
+                        <td><%= offer['cents'] %></td>
+                    </tr>
+                <% end %>
             </tbody>
         </table>
 
-        <p><%= t('.there_were_auctions_with_no_offers', number: 123) %></p>
+        <p><%= t('.there_were_auctions_with_no_offers', number: @results_with_no_bids.size) %></p>
 
 
         <h2><%= t('.registration_deadlines') %></h2>
         <table>
             <thead>
-                <th>Domain name</th>
-                <th>Customer email</th>
-                <th>Phone number</th>
+                <th><%= t('auctions.domain_name') %></th>
+                <th><%= t('users.email') %></th>
+                <th><%= t('users.mobile_phone') %></th>
             </thead>
             <tbody>
-                <tr>
-                    <td>domain.ee</td>
-                    <td>foo@bar.baz</td>
-                    <td>+372 5596 5357</td>
-                </tr>
+                <% @registration_deadlines.each do |result| %>
+                    <tr>
+                        <td><%= result['domain_name'] %></td>
+                        <td><%= result['email'] %></td>
+                        <td><%= result['mobile_phone'] %></td>
+                    </tr>
+
+                <% end %>
             </tbody>
         </table>
 
@@ -60,16 +49,19 @@
 
         <table>
             <thead>
-                <th>Domain name</th>
-                <th>Customer email</th>
-                <th>Offence count</th>
+                <th><%= t('auctions.domain_name') %></th>
+                <th><%= t('users.email') %></th>
+                <th><%= t('bans.valid_until') %></th>
             </thead>
             <tbody>
-                <tr>
-                    <td>domain.ee</td>
-                    <td>foo@bar.baz</td>
-                    <td>1</td>
-                </tr>
+                <% @bans.each do |ban| %>
+                    <tr>
+                        <td><%= ban['domain_name'] %></td>
+                        <td><%= ban['email'] %></td>
+                        <td><%= I18n.l(ban['valid_until']) %></td>
+                    </tr>
+
+                <% end %>
             </tbody>
         </table>
 
