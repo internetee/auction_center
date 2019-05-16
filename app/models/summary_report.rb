@@ -1,10 +1,10 @@
 class SummaryReport
-  attr_reader :start_date
-  attr_reader :end_date
+  attr_reader :start_time
+  attr_reader :end_time
 
-  def initialize(start_date, end_date)
-    @start_date = start_date
-    @end_date = end_date
+  def initialize(start_time, end_time)
+    @start_time = start_time
+    @end_time = end_time
   end
 
   # Returns an array of hashes:
@@ -24,7 +24,7 @@ class SummaryReport
     SQL
 
     interpolated = ActiveRecord::Base.sanitize_sql([sql, Result.statuses[:no_bids],
-                                                    start_date, result_creation_date])
+                                                    start_time, end_time])
     @winning_offers ||= ActiveRecord::Base.connection.execute(interpolated).to_a
   end
 
@@ -44,7 +44,7 @@ class SummaryReport
     SQL
 
     interpolated = ActiveRecord::Base.sanitize_sql([sql, Result.statuses[:no_bids],
-                                                    start_date, result_creation_date])
+                                                    start_time, end_time])
     @results_with_no_bids ||= ActiveRecord::Base.connection.execute(interpolated).to_a
   end
 
@@ -82,16 +82,7 @@ class SummaryReport
         AND bans.created_at < ?
     SQL
 
-    interpolated = ActiveRecord::Base.sanitize_sql([sql, start_date, result_creation_date])
+    interpolated = ActiveRecord::Base.sanitize_sql([sql, start_time, end_time])
     @bans ||= ActiveRecord::Base.connection.execute(interpolated).to_a
-  end
-
-  private
-
-  # Results are created on the next day after the auction has finished.
-  # A report for 30th of April should then take results created on 1st of May
-  # to avoid being one day late.
-  def result_creation_date
-    end_date + 1
   end
 end

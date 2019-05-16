@@ -4,9 +4,9 @@ class SummaryReportTest < ActiveSupport::TestCase
   def setup
     super
 
-    @yesterday = Date.yesterday
-    @today = Date.today
-    @tomorrow = Date.tomorrow
+    @yesterday = Time.zone.yesterday.to_time
+    @today = Time.zone.now + 60
+    @tomorrow = Time.zone.tomorrow.to_time
     @summary = SummaryReport.new(@yesterday, @today)
     @user = users(:participant)
     @result = results(:expired_participant)
@@ -14,8 +14,8 @@ class SummaryReportTest < ActiveSupport::TestCase
   end
 
   def test_holds_start_and_end_date
-    assert_equal(@yesterday, @summary.start_date)
-    assert_equal(@today, @summary.end_date)
+    assert_equal(@yesterday, @summary.start_time)
+    assert_equal(@today, @summary.end_time)
   end
 
   def test_winning_offers_uses_created_at
