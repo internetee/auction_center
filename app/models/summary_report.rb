@@ -15,8 +15,8 @@ class SummaryReport
   end
 
   # Returns an array of hashes:
-  # [{'domain_name' => 'foo.test', 'cents' => 4000},
-  #  {'domain_name' => 'bar.test', 'cents' => 2000}]
+  # [{'domain_name' => 'foo.test', 'cents' => 4000, 'result_id' => 1234},
+  #  {'domain_name' => 'bar.test', 'cents' => 2000, 'result_id' => 1235}]
   def winning_offers
     sql = <<~SQL
       SELECT auctions.domain_name,
@@ -57,8 +57,10 @@ class SummaryReport
   end
 
   # Returns an array of hashes:
-  # [{'domain_name' => 'foo.test', 'email' => 'foo@bar.baz', 'mobile_phone' => '+37255556666'},
-  #  {'domain_name' => 'bar.test', 'email' => 'bar@foo.baz', 'mobile_phone' => nil}]
+  # [{'domain_name' => 'foo.test', 'email' => 'foo@bar.baz', 'mobile_phone' => '+37255556666',
+  #   'result_id' => 1234},
+  #  {'domain_name' => 'bar.test', 'email' => 'bar@foo.baz', 'mobile_phone' => nil,
+  #   'result_id' => 1235}]
   def registration_deadlines
     sql = <<~SQL
       SELECT auctions.domain_name,
