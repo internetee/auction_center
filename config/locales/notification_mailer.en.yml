@@ -1,0 +1,11 @@
+en:
+  notification_mailer:
+    daily_summary_email:
+      subject: "Daily summary for %{date}"
+      salutation: "Daily summary for .EE auction"
+      auctions: "Yesterday's auctions with final offer:"
+      there_were_auctions_with_no_offers: |
+        Additionally, there were %{number} auctions with no offers that will be released.
+
+      registration_due_dates: "Domains due to be registered tomorrow:"
+      bans: "Bans issued yesterday:"
