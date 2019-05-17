@@ -1207,7 +1207,7 @@ CREATE TABLE public.wishlist_items (
     id bigint NOT NULL,
     domain_name character varying NOT NULL,
     user_id integer NOT NULL,
-    valid_until timestamp without time zone NOT NULL,
+    valid_until timestamp without time zone DEFAULT (now() + '2 years'::interval) NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
