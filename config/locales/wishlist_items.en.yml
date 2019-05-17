@@ -1,0 +1,8 @@
+en:
+  wishlist_items:
+    too_many_items: "has too many items."
+
+  activerecord:
+    attributes:
+      wishlist_item:
+        wishlist: "Wishlist"

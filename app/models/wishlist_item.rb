@@ -8,9 +8,22 @@ class WishlistItem < ApplicationRecord
             # of the top level domain.
               with: /[a-z0-9\-\u00E4\u00F5\u00F6\u00FC\u0161\u017E]{1,61}\.[a-z0-9]{1,61}/,
             }
-  validate :must_fit_in_wishlist_size
+  validate :must_fit_in_wishlist_size, on: :create
 
   # A user can only have limited number to discourage people from putting the whole zone into
   # the wishlist.
-  def must_fit_in_wishlist_size; end
+  def must_fit_in_wishlist_size
+    return if number_of_items_for_user <= Setting.wishlist_size
+
+    errors.add(:wishlist, I18n.t('wishlist_items.too_many_items'))
+  end
+
+  # Can safely return zero if user_id is unset, without it the whole object is invalid.
+  def number_of_items_for_user
+    if user_id
+      WishlistItem.where(user_id: user_id)
+    else
+      0
+    end
+  end
 end
