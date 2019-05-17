@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
+    </head>
+    <body>
+        <h1><%= t('.salutation') %></h1>
+        <h2><%= t('.auctions') %></h2>
+        <table>
+            <thead>
+                <th><%= t('auctions.domain_name') %></th>
+                <th><%= t('offers.price') %></th>
+                <th><%= t('result_name' )%></th>
+            </thead>
+            <tbody>
+                <% @winning_offers.each do |offer| %>
+                    <tr>
+                        <td><%= offer['domain_name'] %></td>
+                        <td><%= Money.new(offer['cents'], Setting.auction_currency) %></td>
+                        <td><%= link_to(t('result_name'), admin_result_url(offer['result_id'])) %>
+                    </tr>
+                <% end %>
+            </tbody>
+        </table>
+
+        <p><%= t('.there_were_auctions_with_no_offers', number: @results_with_no_bids.size) %></p>
+
+
+        <h2><%= t('.registration_due_dates') %></h2>
+        <table>
+            <thead>
+                <th><%= t('auctions.domain_name') %></th>
+                <th><%= t('users.email') %></th>
+                <th><%= t('users.mobile_phone') %></th>
+                <th><%= t('result_name' )%></th>
+            </thead>
+            <tbody>
+                <% @registration_deadlines.each do |result| %>
+                    <tr>
+                        <td><%= result['domain_name'] %></td>
+                        <td><%= result['email'] %></td>
+                        <td><%= result['mobile_phone'] %></td>
+                        <td><%= link_to(t('result_name'), admin_result_url(result['result_id'])) %>
+                    </tr>
+
+                <% end %>
+            </tbody>
+        </table>
+
+
+        <h2><%= t('.bans')%></h2>
+
+        <table>
+            <thead>
+                <th><%= t('auctions.domain_name') %></th>
+                <th><%= t('users.email') %></th>
+                <th><%= t('bans.valid_until') %></th>
+            </thead>
+            <tbody>
+                <% @bans.each do |ban| %>
+                    <tr>
+                        <td><%= ban['domain_name'] %></td>
+                        <td><%= ban['email'] %></td>
+                        <td><%= ban['valid_until'] %></td>
+                    </tr>
+
+                <% end %>
+            </tbody>
+        </table>
+
+        <%= t('common_mailer.footer_html') %>
+    </body>
+</html>
