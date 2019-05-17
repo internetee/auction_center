@@ -97,3 +97,9 @@ invoice_reminder_in_days:
     Number of days before due date on which reminders about unpaid invoices are sent.
     Use 0 to send reminders on due date. Default: 1
   value: '1'
+
+wishlist_size:
+  code: 'wishlist_size'
+  description: |
+    Number of domains a single user can keep in their wishlist. Default: 10
+  value: '10'

@@ -167,3 +167,13 @@ invoice_reminder_setting = Setting.new(code: :invoice_reminder_in_days, value: '
                                        description: invoice_reminder_description)
 
 invoice_reminder_setting.save
+
+
+# Default wishlist size
+wishlist_size_description = <<~TEXT.squish
+  Number of domains a single user can keep in their wishlist. Default: 10
+TEXT
+
+wishlist_size_setting = Setting.new(code: :wishlist_size, value: '10',
+                                    description: wishlist_size_description)
+wishlist_size_setting.save
