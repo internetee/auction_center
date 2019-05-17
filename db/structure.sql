@@ -1200,6 +1200,39 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 
 --
+-- Name: wishlist_items; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE public.wishlist_items (
+    id bigint NOT NULL,
+    domain_name character varying NOT NULL,
+    user_id integer NOT NULL,
+    valid_until timestamp without time zone NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: wishlist_items_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.wishlist_items_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: wishlist_items_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.wishlist_items_id_seq OWNED BY public.wishlist_items.id;
+
+
+--
 -- Name: id; Type: DEFAULT; Schema: audit; Owner: -
 --
 
@@ -1351,6 +1384,13 @@ ALTER TABLE ONLY public.settings ALTER COLUMN id SET DEFAULT nextval('public.set
 --
 
 ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.wishlist_items ALTER COLUMN id SET DEFAULT nextval('public.wishlist_items_id_seq'::regclass);
 
 
 --
@@ -1543,6 +1583,14 @@ ALTER TABLE ONLY public.auctions
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: wishlist_items_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY public.wishlist_items
+    ADD CONSTRAINT wishlist_items_pkey PRIMARY KEY (id);
 
 
 --
@@ -1924,6 +1972,13 @@ CREATE UNIQUE INDEX index_users_on_uuid ON public.users USING btree (uuid);
 
 
 --
+-- Name: index_wishlist_items_on_domain_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_wishlist_items_on_domain_name ON public.wishlist_items USING btree (domain_name);
+
+
+--
 -- Name: users_by_identity_code_and_country; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2022,6 +2077,14 @@ ALTER TABLE ONLY public.invoice_items
 
 ALTER TABLE ONLY public.invoices
     ADD CONSTRAINT fk_rails_3d1522a0d8 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: fk_rails_5c10acf6bc; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.wishlist_items
+    ADD CONSTRAINT fk_rails_5c10acf6bc FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
 --
@@ -2198,6 +2261,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190405111702'),
 ('20190423092327'),
 ('20190424070710'),
-('20190517063450');
+('20190517063450'),
+('20190517073827');
 
 

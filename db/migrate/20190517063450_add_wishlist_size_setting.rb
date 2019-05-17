@@ -5,7 +5,7 @@ class AddWishlistSizeSetting < ActiveRecord::Migration[5.2]
     TEXT
 
     wishlist_size_setting = Setting.new(code: :wishlist_size, value: '10',
-                                           description: wishlist_size_description)
+                                        description: wishlist_size_description)
     wishlist_size_setting.save
   end
 
