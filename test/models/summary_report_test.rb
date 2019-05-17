@@ -20,6 +20,17 @@ class SummaryReportTest < ActiveSupport::TestCase
     assert_equal(@today, @summary.end_time)
   end
 
+  def test_winning_offers_data_structure
+    keys = ['domain_name', 'cents', 'result_id']
+
+    @summary.winning_offers.each do |item|
+      assert_equal(keys.length, item.length)
+      keys.each do |key|
+        assert(item.has_key?(key))
+      end
+    end
+  end
+
   def test_winning_offers_uses_created_at
     assert_equal([{'domain_name' => 'with-invoice.test', 'cents' => 10000,
                    'result_id' => @with_invoice.id},
@@ -49,6 +60,17 @@ class SummaryReportTest < ActiveSupport::TestCase
                 @summary.results_with_no_bids)
   end
 
+  def test_results_with_no_bids_data_structure
+    keys = ['domain_name', 'status']
+
+    @summary.results_with_no_bids.each do |item|
+      assert_equal(keys.length, item.length)
+      keys.each do |key|
+        assert(item.has_key?(key))
+      end
+    end
+  end
+
   def test_registration_deadlines
     @result.update!(status: Result.statuses[:payment_received],
                    registration_due_date: Date.tomorrow)
@@ -58,6 +80,17 @@ class SummaryReportTest < ActiveSupport::TestCase
                     'mobile_phone' => @user.mobile_phone,
                     'result_id' => @result.id}],
                 @summary.registration_deadlines)
+  end
+
+  def test_registration_deadlines_data_structure
+    keys = ['domain_name', 'email', 'mobile_phone', 'result_id']
+
+    @summary.registration_deadlines.each do |item|
+      assert_equal(keys.length, item.length)
+      keys.each do |key|
+        assert(item.has_key?(key))
+      end
+    end
   end
 
   def test_bans_returns_bans_that_started_within_the_period
@@ -75,5 +108,27 @@ class SummaryReportTest < ActiveSupport::TestCase
     assert_equal([{'domain_name' => ban.domain_name,
                    'valid_until' => ban.valid_until,
                    'email' => @user.email}], @summary.bans)
+  end
+
+  def test_bans_data_structure
+    keys = ['domain_name', 'valid_until', 'email']
+
+    Ban.create!(domain_name: "foo.test",
+                user: @user,
+                valid_from: @today,
+                valid_until: @tomorrow)
+
+    Ban.create!(domain_name: "not-in-the-list.test",
+                user: @user,
+                valid_from: @today,
+                valid_until: @tomorrow,
+                created_at: @yesterday)
+
+    @summary.bans.each do |item|
+      assert_equal(keys.length, item.length)
+      keys.each do |key|
+        assert(item.has_key?(key))
+      end
+    end
   end
 end
