@@ -1,0 +1,67 @@
+<% content_for :hero do %>
+    <div class="hero green">
+        <h1><%= t(:my_wishlist) %></h1>
+    </div>
+<% end %>
+
+<div class="u-container">
+    <div class="margin-block">
+        <div class="grid one column">
+            <table class="table ui stackable" id="my-wishlist-table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col"><%= t('auctions.domain_name') %></th>
+                        <th scope="col"><%= t('actions') %></th>
+                    </tr>
+                </thead>
+
+                <tbody id="wishlist-table-body">
+                    <% @wishlist_items.each_with_index do |wishlist_item, index| %>
+                        <tr class="wishlist-table-row">
+                            <td><%= index + 1 %></td>
+                            <td><%= wishlist_item.domain_name %></td>
+                            <td>
+                                <%= link_to t(:delete), wishlist_item_path(wishlist_item.uuid),
+                                 method: :delete, data: { confirm: t(:are_you_sure) },
+                                 remote: true, class: "ui button secondary" %>
+                            </td>
+                        </tr>
+                    <% end %>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="column">
+            <%= paginate @wishlist_items %>
+        </div>
+
+        <div class="column">
+            <h2><%= t('.new_item') %></h2>
+
+            <div id="errors" class="ui message hidden">
+                <div class="header">
+                    <%= t(:errors_name) %>
+                </div>
+                <ul id="errors-list">
+                </ul>
+            </div>
+
+            <%= form_with(model: @wishlist_item, url: wishlist_items_path,
+                          class: "ui form big") do |f| %>
+                <%= f.hidden_field :user_id, value: @wishlist_item.user_id %>
+
+                <div class="field">
+                    <%= f.label :domain_name, t('auctions.domain_name') %>
+                    <%= f.text_field :domain_name %>
+                </div>
+
+                <div class="buttons">
+                    <%= f.submit t(:submit), class: "ui button primary" %>
+                </div>
+            <% end %>
+        </div>
+    </div>
+</div>
+
+<%= javascript_pack_tag 'wishlist_items', 'data-turbolinks-track': 'reload' %>

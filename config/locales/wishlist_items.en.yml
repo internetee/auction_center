@@ -2,6 +2,9 @@ en:
   wishlist_items:
     too_many_items: "has too many items"
 
+    index:
+      new_item: "New item"
+
   activerecord:
     attributes:
       wishlist_item:
