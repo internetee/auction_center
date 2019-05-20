@@ -4,6 +4,39 @@
     </div>
 <% end %>
 
+<div class="features-grid top green">
+    <div class="overview">
+        <div class="u-container">
+            <span class="title"><%= t('.limit_html', limit: Setting.wishlist_size) %></span>
+        </div>
+    </div>
+    <div class="u-container">
+        <div class="items">
+            <div class="item two-column">
+                <h3 class="ui icon header">
+                    <i class="clipboard list icon"></i>
+                    <div class="content">
+                        <%= t('.list_title') %>
+                        <div class="sub header"><%= t('.list_description') %></div>
+                    </div>
+                </h3>
+            </div>
+            <div class="item two-column">
+                <h3 class="ui icon header">
+                    <i class="cloud icon"></i>
+                    <div class="content">
+                        <%= t('.notification_title') %>
+                        <div class="sub header"><%= t('.notification_description') %></div>
+                    </div>
+                </h3>
+            </div>
+        </div>
+        <div class="text">
+        </div>
+    </div>
+</div>
+
+
 <div class="u-container">
     <div class="margin-block">
         <div class="grid one column">
