@@ -1,7 +1,7 @@
-en:
+et:
   wishlist_mailer:
     auction_notification_mail:
-      subject: "%{domain_name} is now at auction"
+      subject: "%{domain_name} is now in .EE auction"
       salutation: "Dear .ee auction participant"
       introduction: "%{domain_name} is now at auction in .EE auction center. Auction ends at %{ends_at}."
       link: "Make an offer"
