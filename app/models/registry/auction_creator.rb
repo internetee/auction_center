@@ -15,6 +15,7 @@ module Registry
       body_as_json = JSON.parse(body_as_string, symbolize_names: true)
       body_as_json.each do |item|
         create_auction_from_api(item[:domain], item[:id])
+        send_wishlist_notifications(item[:domain], item[:id])
       end
     end
 
@@ -49,6 +50,11 @@ module Registry
         auction.ends_at = auction_ends_at
         auction.save!
       end
+    end
+
+    def send_wishlist_notifications(domain_name, remote_id)
+      WishlistJob.set(wait: WishlistJob::DEFAULT_WAIT_TIME)
+                 .perform_later(domain_name, remote_id)
     end
   end
 end

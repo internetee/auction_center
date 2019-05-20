@@ -1,0 +1,6 @@
+en:
+  wishlist_mailer:
+    auction_notification_mail:
+      salutation: "Dear .ee auction participant"
+      introduction: "%{domain_name} is now at auction in .EE auction center. Auction ends at %{ends_at}."
+      link: "Make an offer"

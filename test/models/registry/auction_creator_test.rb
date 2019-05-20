@@ -1,6 +1,11 @@
 require 'test_helper'
 
 class RegistryAuctionCreatorTest < ActiveSupport::TestCase
+  # Without this helper, the test fail on trying to set wait time on Job
+  # Registry::AuctionCreator#send_wishlist_notification(domain_name, remote_id)
+  # app/models/registry/auction_creator:56
+  include ActiveJob::TestHelper
+
   def setup
     super
 

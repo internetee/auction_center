@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
+    </head>
+    <body>
+        <h1><%= t('.salutation') %></h1>
+        <p><%= t('.introduction', domain_name: @auction.domain_name, ends_at: I18n.l(@auction.ends_at)) %></p>
+        <p><%= link_to(t('.link'), auction_url(uuid: @auction.uuid)) %></p>
+
+        <%= t('common_mailer.footer_html') %>
+    </body>
+</html>
