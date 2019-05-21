@@ -15,6 +15,21 @@ class SummaryReportTest < ActiveSupport::TestCase
     @orphaned = results(:orphaned)
   end
 
+  def test_gather_data_calls_required_methods
+    mock = Minitest::Mock.new
+
+    SummaryReport.stub(:new, mock, [@yesterday, @today]) do
+      mock.expect(:gather_data, [])
+      mock.expect(:winning_offers, [])
+      mock.expect(:results_with_no_bids, [])
+      mock.expect(:registration_deadlines, [])
+      mock.expect(:bans, [])
+
+      summary_report = SummaryReport.new(@yesterday, @today)
+      summary_report.gather_data
+    end
+  end
+
   def test_holds_start_and_end_date
     assert_equal(@yesterday, @summary.start_time)
     assert_equal(@today, @summary.end_time)
