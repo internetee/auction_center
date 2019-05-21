@@ -24,8 +24,6 @@ document.addEventListener("ajax:beforeSend", (event) => {
     let errorsList = document.getElementById('errors-list');
 
     errorsBlock.classList.add('hidden');
-
-    while (errorsList.hasChildNodes()) {
-        errorsList.removeChild(errorsList.firstChild);
-    }
+    let duplicate = errorsList.cloneNode();
+    errorsList.replaceWith(duplicate);
 });
