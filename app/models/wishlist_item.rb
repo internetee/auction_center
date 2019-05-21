@@ -1,14 +1,14 @@
 class WishlistItem < ApplicationRecord
   belongs_to :user, optional: false
 
-  validates :domain_name, uniqueness: {scope: :user_id }
+  validates :domain_name, uniqueness: { scope: :user_id }
   validates :domain_name,
             presence: true,
             allow_blank: false,
             format: {
-            # allows 1 to 61 characters with Estonian diacritic signs and 1 to 61 character
-            # of the top level domain.
-              with: /[a-z0-9\-\u00E4\u00F5\u00F6\u00FC\u0161\u017E]{1,61}\.[a-z0-9]{1,61}/,
+              # allows 1 to 61 characters with Estonian diacritic signs and 1 to 61 character
+              # of the top level domain.
+              with: /\A[a-z0-9\-\u00E4\u00F5\u00F6\u00FC\u0161\u017E]{1,61}\.[a-z0-9]{1,61}\z/,
             }
 
   validate :must_fit_in_wishlist_size, on: :create

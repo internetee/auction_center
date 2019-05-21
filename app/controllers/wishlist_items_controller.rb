@@ -10,17 +10,16 @@ class WishlistItemsController < ApplicationController
 
   def create
     @wishlist_item = WishlistItem.new(create_params)
-    authorize! :create, @wishlist_item
 
     respond_to do |format|
-      if @wishlist_item.save
+      if create_predicate
         format.html { redirect_to wishlist_items_path, notice: t(:created) }
         format.json { render json: @wishlist_item, status: :created }
       else
         format.json do
-        format.html { redirect_to wishlist_items_path, notice: t(:something_went_wrong) }
           render json: @wishlist_item.errors.full_messages, status: :unprocessable_entity
         end
+        format.html { redirect_to wishlist_items_path, notice: t(:something_went_wrong) }
       end
     end
   end
@@ -34,6 +33,11 @@ class WishlistItemsController < ApplicationController
       format.html { redirect_to wishlist_items_path, notice: t(:deleted) }
       format.json { head :no_content }
     end
+  end
+
+  def create_predicate
+    authorize! :create, @wishlist_item
+    @wishlist_item.save
   end
 
   private
