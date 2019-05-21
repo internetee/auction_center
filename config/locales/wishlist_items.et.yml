@@ -23,3 +23,9 @@ et:
       wishlist_item:
         domain_name: 'Domeeninimi'
         wishlist: "Soovidenimekirja"
+    errors:
+      models:
+        wishlist_item:
+          attributes:
+            domain_name:
+              taken: "on juba nimekirjas"

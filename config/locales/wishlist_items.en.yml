@@ -23,3 +23,9 @@ en:
     attributes:
       wishlist_item:
         wishlist: "Wishlist"
+    errors:
+      models:
+        wishlist_item:
+          attributes:
+            domain_name:
+              taken: "is already in your wishlist"

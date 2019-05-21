@@ -48,7 +48,7 @@ class WishlistItemTest < ActiveSupport::TestCase
     item = WishlistItem.new(user: @user, domain_name: 'dupe.test')
 
     refute(item.valid?)
-    assert_equal(['has already been taken'], item.errors[:domain_name])
+    assert_equal(['is already in your wishlist'], item.errors[:domain_name])
   end
 
   def test_domain_name_must_be_a_valid_domain
