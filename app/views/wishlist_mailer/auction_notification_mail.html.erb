@@ -6,7 +6,11 @@
     <body>
         <h1><%= t('.salutation') %></h1>
         <p><%= t('.introduction', domain_name: @auction.domain_name, ends_at: I18n.l(@auction.ends_at)) %></p>
-        <p><%= link_to(t('.link'), new_auction_offer_url(auction_uuid: @auction.uuid)) %></p>
+        <p>
+            <%= t('.call_to_action_html',
+                  link: link_to(t('.call_to_action_link'),
+                                new_auction_offer_url(auction_uuid: @auction.uuid))) %>
+        </p>
 
         <%= t('common_mailer.footer_html') %>
     </body>

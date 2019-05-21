@@ -1,7 +1,11 @@
 en:
   wishlist_mailer:
     auction_notification_mail:
-      subject: "%{domain_name} is now at auction"
-      salutation: "Dear .ee auction participant"
-      introduction: "%{domain_name} is now at auction in .EE auction center. Auction ends at %{ends_at}."
-      link: "Make an offer"
+      subject: "%{domain_name} is now on auction"
+      salutation: "Dear .ee auction portal user"
+      introduction: |
+        You have added %{domain_name} to your wishlist of .ee domains.
+        %{domain_name} is now on auction at .ee auction environment.
+        The auction ends at %{ends_at}.
+      call_to_action_html: "Make your bid %{link}."
+      call_to_action_link: "here"
