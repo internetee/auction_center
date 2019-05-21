@@ -53,8 +53,10 @@ class WishlistJobTest < ActiveJob::TestCase
 
   def test_wait_time
     assert_equal(1.minute, WishlistJob.wait_time)
+    mock = MiniTest::Mock.new
+    mock.expect(:production?, true)
 
-    Rails.stub(:env, 'production') do
+    Rails.stub(:env, mock) do
       assert_equal(2.hours, WishlistJob.wait_time)
     end
   end

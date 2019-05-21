@@ -15,7 +15,7 @@ class WishlistJob < ApplicationJob
 
   # Consider different management of this property.
   def self.wait_time
-    if Rails.env == 'production'
+    if Rails.env.production?
       LONG_WAIT_TIME
     else
       SHORT_WAIT_TIME
