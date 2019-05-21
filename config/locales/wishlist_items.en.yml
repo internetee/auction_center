@@ -5,9 +5,6 @@ en:
     index:
       new_item: "Add domain to wishlist"
       limit_html: "You can add up to <strong>%{limit}</strong> domains to your wishlist."
-      limit_subheading: |
-        If a domain from your wishlist goes to auction,
-        we will send you an email so that you can participate.
       list_title: "Add domains to your wishlist"
       list_description: |
        in unicode format, e.g "internetpäev.ee". Diacritical signs are significant, päev.ee and

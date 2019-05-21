@@ -5,9 +5,6 @@ et:
     index:
       new_item: "Lisa uus domeeninimi"
       limit_html: "Nimekirja saad lisada kuni <strong>%{limit}</strong> domeeninime."
-      limit_subheading: |
-        If a domain from your wishlist goes to auction,
-        we will send you an email so that you can participate.
       list_title: "Lisa domeeninimi oma soovidenimekirja."
       list_description: |
        Täpitähed on olulised - päev.ee ei ole sama mis paev.ee
