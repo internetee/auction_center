@@ -51,7 +51,11 @@ class WishlistJobTest < ActiveJob::TestCase
   end
 
 
-  def test_constant
-    assert_equal(2.hours, WishlistJob::DEFAULT_WAIT_TIME)
+  def test_wait_time
+    assert_equal(1.minute, WishlistJob.wait_time)
+
+    Rails.stub(:env, 'production') do
+      assert_equal(2.hours, WishlistJob.wait_time)
+    end
   end
 end

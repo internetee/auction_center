@@ -53,7 +53,7 @@ module Registry
     end
 
     def send_wishlist_notifications(domain_name, remote_id)
-      WishlistJob.set(wait: WishlistJob::DEFAULT_WAIT_TIME)
+      WishlistJob.set(wait: WishlistJob.wait_time)
                  .perform_later(domain_name, remote_id)
     end
   end
