@@ -4,7 +4,8 @@ class WishlistJob < ApplicationJob
 
   def perform(domain_name, auction_remote_id)
     wishlist_items = WishlistItem.where(domain_name: domain_name)
-    auction = Auction.active.find_by(remote_id: auction_remote_id)
+    auction = Auction.where('ends_at > ?', Time.zone.now)
+                     .find_by(remote_id: auction_remote_id)
     return unless auction
 
     wishlist_items.each do |item|
