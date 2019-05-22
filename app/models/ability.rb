@@ -21,6 +21,7 @@ class Ability
       user.id == phone_confirmation.user.id
     end
     can :read, Result, user_id: user.id
+    can %i[read create delete], WishlistItem, user_id: user.id
 
     if user.banned?
       restrictions_from_bans

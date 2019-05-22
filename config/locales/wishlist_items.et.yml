@@ -1,0 +1,27 @@
+et:
+  wishlist_items:
+    too_many_items: "suuruse piirang on ületatud"
+
+    index:
+      new_item: "Lisa uus domeeninimi"
+      limit_html: "Nimekirja saad lisada kuni <strong>%{limit}</strong> domeeninime."
+      list_title: "Lisa domeeninimi oma soovide nimekirja."
+      list_description: |
+       Täpitähed on olulised - päev.ee ei ole sama mis paev.ee
+
+      notification_title: "Oota teadet"
+      notification_description: |
+        Saadame epostiga teate, kui soovitud domeeninimi läheb oksjonile.
+        Võib minna väga kaua aega enne kui domeeninimi jõuab oksjonile seepärast kirjed nimekirjas ei aegu.
+
+  activerecord:
+    attributes:
+      wishlist_item:
+        domain_name: 'Domeeninimi'
+        wishlist: "Soovide nimekirja"
+    errors:
+      models:
+        wishlist_item:
+          attributes:
+            domain_name:
+              taken: "on juba nimekirjas"

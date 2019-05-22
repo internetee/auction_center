@@ -62,7 +62,8 @@ module ApplicationHelper
     [{ name: t(:auctions_name), path: auctions_path },
      { name: t(:profile), path: user_path(current_user.uuid) },
      { name: t(:my_invoices), path: invoices_path },
-     { name: t(:my_offers), path: offers_path }]
+     { name: t(:my_offers), path: offers_path },
+     { name: t(:my_wishlist), path: wishlist_items_path }]
   end
 
   def administrator_link_list

@@ -60,5 +60,7 @@ class SettingTest < ActiveSupport::TestCase
     assert_equal(1, Setting.invoice_reminder_in_days)
 
     assert_equal('Eesti Interneti SA, VAT number EE101286464', Setting.invoice_issuer)
+
+    assert_equal(10, Setting.wishlist_size)
   end
 end

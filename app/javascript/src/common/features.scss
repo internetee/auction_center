@@ -64,6 +64,11 @@
                 padding-left: 40px;
                 margin-bottom: 40px;
 
+                &.two-column {
+                    flex: 0 0 50%;
+                    max-width: 50%;
+                }
+
                 .ui {
                     &.icon {
                         &.header {

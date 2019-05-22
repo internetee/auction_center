@@ -1,0 +1,11 @@
+et:
+  wishlist_mailer:
+    auction_notification_mail:
+      subject: "%{domain_name} on nüüd oksjonil"
+      salutation: "Hea .ee oksjonikeskkonna kasutaja"
+      introduction: |
+        Oled lisanud domeeninime %{domain_name} oma soovitud domeenide nimekirja.
+        %{domain_name} on nüüd oksjonil .ee oksjonikeskkonnas
+        Oksjon lõppeb %{ends_at}.
+      call_to_action_html: "Tee oma pakkumine %{link}."
+      call_to_action_link: "siin"

@@ -94,6 +94,12 @@ class ParticipantAbilityTest < ActiveSupport::TestCase
     assert(@participant_ability.cannot?(:manage, Ban))
   end
 
+  def test_participant_can_create_and_delete_wishlist_items
+    assert(@participant_ability.can?(:read, WishlistItem.new(user_id: @participant.id)))
+    assert(@participant_ability.can?(:create, WishlistItem.new(user_id: @participant.id)))
+    assert(@participant_ability.can?(:delete, WishlistItem.new(user_id: @participant.id)))
+  end
+
   def test_participant_can_manage_phone_number_confirmations
     assert(@participant_ability.can?(:manage, PhoneConfirmation.new(@participant)))
     refute(@participant_ability.can?(:manage, PhoneConfirmation.new(User.new)))

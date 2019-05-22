@@ -79,4 +79,8 @@ class Setting < ApplicationRecord
   def self.invoice_reminder_in_days
     Setting.find_by(code: :invoice_reminder_in_days).value.to_i
   end
+
+  def self.wishlist_size
+    Setting.find_by(code: :wishlist_size).value.to_i
+  end
 end
