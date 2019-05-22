@@ -1,3 +1,6 @@
+22.05.2019
+* New wishlist funcionality so no important auction would be missed [#192](https://github.com/internetee/auction_center/issues/192)
+
 17.05.2019
 * Added daily admin report (yesterdays results, domains due to be registered tomorrow, new bans) [#267](https://github.com/internetee/auction_center/pull/267) 
 
