@@ -11,9 +11,8 @@ et:
 
       notification_title: "Oota teadet"
       notification_description: |
-        Saadame epostiga teate ning eemaldame nime nimekirjast kui domeeninimi läheb oksjonile.
-        Võib minna väga kaua aega enne kui domeeninimi jõuab oksjonile seepärast
-        kirjed nimekirjas ei aegu.
+        Saadame epostiga teate, kui soovitud domeeninimi läheb oksjonile.
+        Võib minna väga kaua aega enne kui domeeninimi jõuab oksjonile seepärast kirjed nimekirjas ei aegu.
 
   activerecord:
     attributes:
