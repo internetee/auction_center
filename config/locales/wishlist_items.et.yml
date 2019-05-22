@@ -5,7 +5,7 @@ et:
     index:
       new_item: "Lisa uus domeeninimi"
       limit_html: "Nimekirja saad lisada kuni <strong>%{limit}</strong> domeeninime."
-      list_title: "Lisa domeeninimi oma soovidenimekirja."
+      list_title: "Lisa domeeninimi oma soovide nimekirja."
       list_description: |
        Täpitähed on olulised - päev.ee ei ole sama mis paev.ee
 
@@ -19,7 +19,7 @@ et:
     attributes:
       wishlist_item:
         domain_name: 'Domeeninimi'
-        wishlist: "Soovidenimekirja"
+        wishlist: "Soovide nimekirja"
     errors:
       models:
         wishlist_item:
