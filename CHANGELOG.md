@@ -1,3 +1,6 @@
+05.06.2019
+* Updated non-critical javascript dependencies [#275](https://github.com/internetee/auction_center/pull/275)
+
 22.05.2019
 * New wishlist functionality so no important auction would be missed [#192](https://github.com/internetee/auction_center/issues/192)
 
