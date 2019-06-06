@@ -1,8 +1,8 @@
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
-  test: /\.less$/,
-  use: ExtractTextPlugin.extract({
-    use: ['css-loader', 'less-loader']
-  })
+    test: /\.less$/,
+    use: [{loader: MiniCssExtractPlugin.loader},
+        'css-loader',
+        'less-loader'],
 };
