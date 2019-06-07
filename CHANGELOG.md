@@ -1,3 +1,6 @@
+07.06.2019
+* Omniauth fix for CVE-2015-9284 [#280](https://github.com/internetee/auction_center/pull/280)
+
 06.06.2019
 * Added Google Analytics support [#274](https://github.com/internetee/auction_center/issues/274)
 * Upgraded webpack to v4 [#277](https://github.com/internetee/auction_center/pull/277)
