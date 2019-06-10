@@ -1,6 +1,10 @@
 OpenIDConnect.logger = Rails.logger
 OpenIDConnect.debug!
 
+OpenIDConnect.http_config do |config|
+  config.proxy  = AuctionCenter::Application.config.customization.dig('tara', 'proxy')
+end
+
 OmniAuth.config.logger = Rails.logger
 # Block GET requests to avoid exposing self to CVE-2015-9284
 OmniAuth.config.allowed_request_methods = [:post]
