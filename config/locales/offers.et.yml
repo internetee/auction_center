@@ -10,6 +10,11 @@ et:
     total: "Käibemaksuga kokku"
     must_be_active: "peab olema aktiivne"
     must_be_higher_than: "peab olema suurem kui %{minimum}"
+    reminder: |
+      NB: tegemist on pimeoksjoniga!
+      Domeeninimele võib olla teisigi huvilisi.
+      Tee pakkumine mida pärast kahetsema ei pea.
+      Teiste pakkumiste kohta info puudumine ei tähenda, et neid pole!
 
     new:
       title: "Domeeni registreerimise eelisõiguse pakkumus"
@@ -34,6 +39,7 @@ et:
     form:
       bidder: "Pakkuja"
       offer: "Pakkumus"
+      minimum_offer: "Pakkumus peab olema suurem kui %{minimum}."
 
   activerecord:
     attributes:

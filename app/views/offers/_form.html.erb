@@ -7,7 +7,14 @@
             <div class="field">
                 <%= f.label :price, t('.offer') %>
                 <%= f.number_field :price, class: "form-control", min: 0, step: "0.01" %>
-                <br><em><%= t('offers.price_is_without_vat') %></em><br>
+                <br>
+                <em>
+                    <%= t('.minimum_offer',
+                          minimum: Money.new(Setting.auction_minimum_offer,
+                                             Setting.auction_currency)) %>
+                    <%= t('offers.price_is_without_vat') %>
+                </em>
+                <br>
             </div>
 
             <div class="field">
@@ -35,4 +42,6 @@
             <%= link_to t(:back), :back, class: "ui button secondary" %>
         </div>
     </div>
+
+    <h4><%= t('offers.reminder') %></h4>
 <% end %>

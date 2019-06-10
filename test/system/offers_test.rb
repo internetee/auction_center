@@ -45,6 +45,24 @@ class OffersTest < ApplicationSystemTestCase
     assert(page.has_css?('div.alert', text: 'You are not authorized to access this page'))
   end
 
+  def test_offer_submission_has_a_disclaimer_text
+    sign_in(@user)
+    visit auction_path(@valid_auction_with_no_offers.uuid)
+
+    assert(page.has_link?('Submit offer'))
+    click_link('Submit offer')
+
+    expected_minimum_offer_text = 'Minimum offer is 5.00. The offer does not include VAT'
+    assert(page.has_text?(expected_minimum_offer_text))
+
+    expected_text =
+      'NB: this is blind auction!' \
+      ' This domain name might have others that are also interested in it.' \
+      ' Make a bid that you will not regret later.' \
+      ' No information about other bids does not mean there are not any!'
+    assert_text(expected_text)
+  end
+
   def test_offers_table_rows_have_links_to_each_offer
     sign_in(@user)
     visit offers_path
