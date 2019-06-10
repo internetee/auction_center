@@ -92,6 +92,8 @@ default: &default
     # "http://192.168.0.1:8080"
     # "http://user:password@address.com:8080"
     # "http://address.com"
+    #
+    # When commented out, no proxy is used.
     # proxy: "http://user:password@address.com:8080"
 
   registry_integration:
