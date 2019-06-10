@@ -1,35 +1,38 @@
-import IdentityCode from '../src/identity_code';
 import MobilePhone from '../src/mobile_phone';
 
 function setMobilePhoneInvalid() {
-    let mobilePhoneField = document.getElementById('user_mobile_phone').parentElement;
+    const mobilePhoneField = document
+        .getElementById('user_mobile_phone')
+        .parentElement;
     mobilePhoneField.classList.add('error');
 }
 
 function disableSubmitButton() {
-    let button = document.getElementById('user_form_commit');
+    const button = document.getElementById('user_form_commit');
     button.disabled = true;
 }
 
 function enableSubmitButton() {
-    let button = document.getElementById('user_form_commit');
+    const button = document.getElementById('user_form_commit');
     button.disabled = false;
 }
 
 function resetFields() {
-    let mobilePhoneField = document.getElementById('user_mobile_phone').parentElement;
+    const mobilePhoneField = document
+        .getElementById('user_mobile_phone')
+        .parentElement;
     mobilePhoneField.classList.remove('error');
 }
 
 function formHandler() {
-    let mobilePhoneField = document.getElementById('user_mobile_phone');
-    let countryCodeField = document.getElementById('user_country_code');
-    let button = document.getElementById('user_form_commit');
+    const mobilePhoneField = document.getElementById('user_mobile_phone');
+    const countryCodeField = document.getElementById('user_country_code');
 
     resetFields();
     enableSubmitButton();
 
-    let mobilePhone = new MobilePhone(countryCodeField.value, mobilePhoneField.value);
+    const mobilePhone =
+          new MobilePhone(countryCodeField.value, mobilePhoneField.value);
     if (!mobilePhone.validate()) {
         setMobilePhoneInvalid();
     } else {
@@ -42,8 +45,8 @@ function formHandler() {
 }
 
 document.addEventListener('turbolinks:load', function() {
-    let form = document.getElementById('user_form');
-    let button = document.getElementById('user_form_commit');
+    const form = document.getElementById('user_form');
+    const button = document.getElementById('user_form_commit');
 
     form.addEventListener('change', formHandler);
     button.addEventListener('click', formHandler);

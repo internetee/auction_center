@@ -11,7 +11,7 @@ gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 3.11'
 
 # Manage javascript assets like applications
-gem 'webpacker', '~> 3.0'
+gem 'webpacker', '~> 4.0'
 
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
 gem 'turbolinks', '~> 5'
@@ -39,6 +39,7 @@ gem 'devise'
 gem 'kaminari'
 gem 'money'
 gem 'okcomputer'
+gem 'omniauth-rails_csrf_protection'
 gem 'omniauth-tara', github: 'internetee/omniauth-tara'
 gem 'pdfkit'
 gem 'rails-i18n'
