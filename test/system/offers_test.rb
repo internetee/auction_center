@@ -56,10 +56,9 @@ class OffersTest < ApplicationSystemTestCase
     assert(page.has_text?(expected_minimum_offer_text))
 
     expected_text =
-      'NB: this is blind auction!' \
-      ' This domain name might have others that are also interested in it.' \
-      ' Make a bid that you will not regret later.' \
-      ' No information about other bids does not mean there are not any!'
+      'NB: This is blind auction and the domain name might have others interested in it as well.' \
+      ' No information about other bids does not mean there are not any.' \
+      ' Make a bid according to the value of the domain name to you.'
     assert_text(expected_text)
   end
 
