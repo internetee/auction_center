@@ -27,7 +27,6 @@ module Admin
     def index
       @auctions = Auction.includes(:offers)
                          .accessible_by(current_ability)
-                         .includes(:offers)
                          .order(ends_at: :desc)
                          .page(params[:page])
     end
