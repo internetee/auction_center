@@ -1,4 +1,6 @@
 <%= form_with(model: offer, local: true, url: url, class: "ui form big") do |f| %>
+    <h4><%= t('offers.reminder') %></h4>
+
     <div class="ui two column doubling stackable grid">
         <div class="column">
             <%= f.hidden_field :user_id, value: offer.user_id %>
@@ -42,6 +44,4 @@
             <%= link_to t(:back), :back, class: "ui button secondary" %>
         </div>
     </div>
-
-    <h4><%= t('offers.reminder') %></h4>
 <% end %>

@@ -10,10 +10,9 @@ en:
     must_be_active: "must be active"
     must_be_higher_than: "must be higher than %{minimum}"
     reminder: |
-      NB: this is blind auction!
-      This domain name might have others that are also interested in it.
-      Make a bid that you will not regret later.
-      No information about other bids does not mean there are not any!
+      NB: This is blind auction and the domain name might have others interested in it as well.
+      No information about other bids does not mean there are not any.
+      Make a bid according to the value of the domain name to you.
 
     new:
       title: "Offer for the reservation of the domain name"

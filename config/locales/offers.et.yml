@@ -11,10 +11,9 @@ et:
     must_be_active: "peab olema aktiivne"
     must_be_higher_than: "peab olema suurem kui %{minimum}"
     reminder: |
-      NB: tegemist on pimeoksjoniga!
-      Domeeninimele võib olla teisigi huvilisi.
-      Tee pakkumine mida pärast kahetsema ei pea.
-      Teiste pakkumiste kohta info puudumine ei tähenda, et neid pole!
+      NB: Tegemist on pimeoksjoniga ning domeeninimele võib olla teisigi huvilisi.
+      Teiste pakkumiste kohta info puudumine ei tähenda, et neid pole.
+      Tee pakkumine vastavalt oma hinnangule domeeni väärtuse kohta.
 
     new:
       title: "Domeeni registreerimise eelisõiguse pakkumus"
