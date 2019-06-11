@@ -88,6 +88,14 @@ default: &default
       n: jWwAjT_03ypme9ZWeSe7c-jY26NO50Wo5I1LBnPW2JLc0dPMj8v7y4ehiRpClYNTaSWcLd4DJmlKXDXXudEUWwXa7TtjBFJfzlZ-1u0tDvJ-H9zv9MzO7UhUFytztUEMTrtStdhGbzkzdEZZCgFYeo2i33eXxzIR1nGvI05d9Y-e_LHnNE2ZKTa89BC7ZiCXq5nfAaCgQna_knh4kFAX-KgiPRAtsiDHcAWKcBY3qUVcb-5XAX8p668MlGLukzsh5tFkQCbJVyNtmlbIHdbGvVHPb8C0H3oLYciv1Fjy_tS1lO7OT_cb3GVp6Ql-CG0uED_8pkpVtfsGRviub4_ElQ
       e: AQAB
 
+    # HTTP Proxy address as a string. Only HTTP is allowed, in the following schema:
+    # "http://192.168.0.1:8080"
+    # "http://user:password@address.com:8080"
+    # "http://address.com"
+    #
+    # When commented out, no proxy is used.
+    # proxy: "http://user:password@address.com:8080"
+
   registry_integration:
     enabled: false
     url: 'http://registry/api/v1/auctions/'
