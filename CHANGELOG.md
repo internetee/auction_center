@@ -1,3 +1,7 @@
+12.06.2019
+* Added reminder in offer view on how to bid in blind auction [#284](https://github.com/internetee/auction_center/pull/284)
+* Enabled use of http poxy for TARA auth integration [#285](https://github.com/internetee/auction_center/pull/285)
+
 07.06.2019
 * Omniauth fix for CVE-2015-9284 [#280](https://github.com/internetee/auction_center/pull/280)
 
