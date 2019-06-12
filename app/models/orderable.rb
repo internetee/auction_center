@@ -3,7 +3,7 @@
 # Accepts also a 'default' hash to return valid value in case the order is not valid.
 class Orderable
   ORDERABLE_MODELS = %w[Auction BillingProfile Invoice Result User].freeze
-  ALLOWED_DIRECTIONS = ['desc', :desc, :DESC, 'DESC' 'asc', :asc, :ASC, 'ASC'].freeze
+  ALLOWED_DIRECTIONS = ['desc', :desc, :DESC, 'DESC', 'asc', :asc, :ASC, 'ASC'].freeze
 
   include ActiveModel::Model
 
@@ -22,7 +22,7 @@ class Orderable
   # There are several caveats to this interface, it can produce a lot of invalid hashes
   # if used carelessly.
   #
-  # 1. model_name must be capitalized, so it can be easily constantized.
+  # 1. model_name, can be in snake_case or CamelCase.
   # 2. column_name must be a string, not a symbol
   # 3. Direction allows every permutation of String/Symbol of asc/ASC/desc/DESC.
   #    ApplicationRecord.order does the same thing.
@@ -34,12 +34,21 @@ class Orderable
   end
 
   # Return model class if it is allowed to be ordered by or nil for everything else. Works
-  # around unitialized constant errors.
+  # around uninitialized constant errors.
   def model
-    model_name.constantize if ORDERABLE_MODELS.include?(model_name)
+    singular_camel_case_model.constantize if ORDERABLE_MODELS.include?(singular_camel_case_model)
   end
 
-  # Always return an array.
+  # Accepts either form:
+  # "auction"
+  # "Auction"
+  # "auctions"
+  # "Auctions"
+  def singular_camel_case_model
+    model_name&.singularize&.camelize
+  end
+
+  # Returning an array in all cases is useful for downstream interfaces.
   def model_columns
     if model
       model.column_names
@@ -49,9 +58,9 @@ class Orderable
   end
 
   def model_is_orderable
-    return if ORDERABLE_MODELS.include?(model_name)
+    return if ORDERABLE_MODELS.include?(singular_camel_case_model)
 
-    errors.add(:model, I18n.t('Orderable.errors.not_orderable'))
+    errors.add(:model, I18n.t('orderable.errors.not_orderable'))
   end
 
   def column_exists_in_model
@@ -59,31 +68,29 @@ class Orderable
     return unless column
     return if model_columns.include?(column)
 
-    errors.add(:column, I18n.t('Orderable.errors.not_orderable'))
+    errors.add(:column, I18n.t('orderable.errors.not_orderable'))
   end
 
   def direction_is_valid
     return unless direction
     return if ALLOWED_DIRECTIONS.include?(direction)
 
-    errors.add(:direction, I18n.t('order.errorss.not_a_valid_order_direction'))
+    errors.add(:direction, I18n.t('order.errors.not_a_valid_order_direction'))
   end
 
-  # This is the most important / only method in this class.
-  # If valid ordering arguments are provided, return a hash to chain into
+  # This is the most important method in this class.
+  # If valid ordering arguments are provided, return a string to chain into
   # ActiveRecord's query:
   # order = Orderable.new('Auction', 'domain_name', 'desc')
-  # Auction.active.order(order.hash)
+  # Auction.active.order(order.condition)
   #
-  # If invalid, return the default hash provided to .new. The caller should
-  # know what is a valid order hash.
-  def hash
+  # If invalid, return the default value provided to .new or empty string.
+  # The caller should know what is a valid order.
+  def condition
     if valid?
-      conditions = {}
-      conditions[column] = direction
-      conditions
+      "#{model.table_name}.#{column} #{direction}"
     else
-      default || {}
+      default || ''
     end
   end
 end

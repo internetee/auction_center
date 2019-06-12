@@ -1,5 +1,7 @@
 module Admin
   class ResultsController < BaseController
+    include OrderableHelper
+
     # GET /admin/results
     def index
       @results = Result.includes(:auction, :offer, :invoice)

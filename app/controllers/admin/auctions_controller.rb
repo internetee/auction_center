@@ -1,5 +1,7 @@
 module Admin
   class AuctionsController < BaseController
+    include OrderableHelper
+
     before_action :authorize_user
     before_action :set_auction, only: %i[show destroy]
 
@@ -27,7 +29,7 @@ module Admin
     def index
       @auctions = Auction.includes(:offers)
                          .accessible_by(current_ability)
-                         .order(ends_at: :desc)
+                         .order(orderable_array)
                          .page(params[:page])
     end
 
@@ -38,6 +40,7 @@ module Admin
       @auctions = Auction.where('domain_name ILIKE ?', "%#{domain_name}%")
                          .accessible_by(current_ability)
                          .includes(:offers)
+                         .order(orderable_array)
                          .page(1)
     end
 
@@ -61,6 +64,10 @@ module Admin
     end
 
     private
+
+    def orderable_array
+      orderable(order_params)
+    end
 
     def search_params
       params.permit(:domain_name)
