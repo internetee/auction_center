@@ -184,18 +184,6 @@ class BansTest < ApplicationSystemTestCase
     assert(page.has_css?('div.notice', text: 'Something went wrong.'))
   end
 
-  def test_bans_are_orderable_in_admin_interface
-    Ban.create!(user: @participant,
-                domain_name: 'aaa.test',
-                valid_from: Time.zone.today - 3, valid_until: Time.zone.today + 5)
-
-    sign_in(@administrator)
-    visit admin_bans_path
-
-    click_link(id: 'bans.domain_name_asc_button')
-    assert(page.text.index('aaa.test') < page.text.index('no-offers.test'))
-  end
-
   def sign_in_manually
     visit(users_path)
 
