@@ -6,6 +6,9 @@ class BansTest < ApplicationSystemTestCase
 
     travel_to Time.parse('2010-07-05 10:31 +0000')
 
+    @original_wait_time = Capybara.default_max_wait_time
+    Capybara.default_max_wait_time = 10
+
     @expired_auction = auctions(:expired)
     @valid_auction_with_no_offers = auctions(:valid_without_offers)
     @valid_auction_with_offers = auctions(:valid_with_offers)
@@ -20,6 +23,8 @@ class BansTest < ApplicationSystemTestCase
 
   def teardown
     super
+
+    Capybara.default_max_wait_time = @original_wait_time
 
     travel_back
     @ban.destroy
@@ -177,6 +182,18 @@ class BansTest < ApplicationSystemTestCase
     end
 
     assert(page.has_css?('div.notice', text: 'Something went wrong.'))
+  end
+
+  def test_bans_are_orderable_in_admin_interface
+    Ban.create!(user: @participant,
+                domain_name: 'aaa.test',
+                valid_from: Time.zone.today - 3, valid_until: Time.zone.today + 5)
+
+    sign_in(@administrator)
+    visit admin_bans_path
+
+    click_link(id: 'bans.domain_name_asc_button')
+    assert(page.text.index('aaa.test') < page.text.index('no-offers.test'))
   end
 
   def sign_in_manually

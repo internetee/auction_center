@@ -9,12 +9,26 @@
         <table class="ui table unstackable fixed" id="bans-table">
             <thead>
                 <tr>
-                    <th scope="col"><%= t('user') %></th>
-                    <th scope="col"><%= t('bans.valid_from') %></th>
-                    <th scope="col"><%= t('bans.valid_until') %></th>
-                    <th scope="col"><%= t('bans.domain_name') %></th>
-                    <th scope="col"><%= t('results.invoice') %></th>
-                    <th scope="col"><%= t('actions') %></th>
+                    <th scope="col"><%= t('user') %>
+                        <%= order_buttons('users.surname') %>
+                    </th>
+                    <th scope="col">
+                        <%= t('bans.valid_from') %>
+                        <%= order_buttons('bans.valid_from') %>
+                    </th>
+                    <th scope="col">
+                        <%= t('bans.valid_until') %>
+                        <%= order_buttons('bans.valid_until') %>
+                    </th>
+                    <th scope="col">
+                        <%= t('bans.domain_name') %>
+                        <%= order_buttons('bans.domain_name') %>
+                    </th>
+                    <th scope="col">
+                        <%= t('results.invoice') %>
+                        <%= order_buttons('bans.invoice_id') %>
+                    </th>
+                    <th scope="col"><%= t('actions') %> <%= clear_order_button %></th>
                 </tr>
             </thead>
 

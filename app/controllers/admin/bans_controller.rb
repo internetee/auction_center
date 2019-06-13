@@ -1,5 +1,7 @@
 module Admin
   class BansController < BaseController
+    include OrderableHelper
+
     before_action :authorize_user
     before_action :set_ban, only: %i[show destroy]
 
@@ -20,7 +22,7 @@ module Admin
 
     # GET /admin/bans
     def index
-      @bans = Ban.includes(:user).all.order(valid_until: :desc).page(params[:page])
+      @bans = Ban.includes(:user).all.order(orderable_array).page(params[:page])
     end
 
     # DELETE /admin/bans/1

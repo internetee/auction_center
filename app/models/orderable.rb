@@ -2,7 +2,7 @@
 # Checks if the model exists, if it has the requested order column and returns a ordering query.
 # Accepts also a 'default' hash to return valid value in case the order is not valid.
 class Orderable
-  ORDERABLE_MODELS = %w[Auction BillingProfile Invoice Result User].freeze
+  ORDERABLE_MODELS = %w[Auction Ban BillingProfile Invoice Result User].freeze
   ALLOWED_DIRECTIONS = ['desc', :desc, :DESC, 'DESC', 'asc', :asc, :ASC, 'ASC'].freeze
 
   include ActiveModel::Model
