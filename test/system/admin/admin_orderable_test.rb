@@ -24,6 +24,13 @@ class AdminOrderableTest < ApplicationSystemTestCase
     assert_appears_before('with-offers.test', 'expired.test')
   end
 
+  def test_billing_profiles_are_orderable
+    visit admin_billing_profiles_path
+
+    click_link(id: 'billing_profiles.name_asc_button')
+    assert_appears_before('ACME Inc', 'Orphan Profile')
+  end
+
   def test_users_are_orderable
     visit admin_users_path
 

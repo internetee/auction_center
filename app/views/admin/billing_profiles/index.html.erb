@@ -9,10 +9,20 @@
         <table class="ui table fixed" id="billing-profiles-table">
             <thead>
                 <tr>
-                    <th scope="col"><%= t('billing_profiles.user') %></th>
-                    <th scope="col"><%= t('billing_profiles.name') %></th>
-                    <th scope="col"><%= t('billing_profiles.vat_code') %></th>
+                    <th scope="col">
+                        <%= t('billing_profiles.user') %>
+                        <%= order_buttons('users.surname') %>
+                    </th>
+                    <th scope="col">
+                        <%= t('billing_profiles.name') %>
+                        <%= order_buttons('billing_profiles.name') %>
+                    </th>
+                    <th scope="col">
+                        <%= t('billing_profiles.vat_code') %>
+                        <%= order_buttons('billing_profiles.vat_code') %>
+                    </th>
                     <th scope="col"><%= t('billing_profiles.address') %></th>
+                    <th scope="col"><%= clear_order_button %></th>
                 </tr>
             </thead>
 
@@ -31,6 +41,7 @@
                         </td>
                         <td><%= billing_profile.vat_code %></td>
                         <td><%= billing_profile.address %></td>
+                        <td></td>
                     </tr>
                 <% end %>
             </tbody>
