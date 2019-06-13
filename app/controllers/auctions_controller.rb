@@ -7,9 +7,6 @@ class AuctionsController < ApplicationController
   # GET /auctions
   def index
     set_cors_header
-
-    orderable_array = orderable(order_params)
-
     unpaginated_auctions = Auction.active
                                   .includes(:offers)
                                   .order(orderable_array)
@@ -27,6 +24,7 @@ class AuctionsController < ApplicationController
 
     @auctions = Auction.where('domain_name ILIKE ?', "#{domain_name}%")
                        .includes(:offers)
+                       .order(orderable_array)
                        .accessible_by(current_ability)
                        .page(1)
   end
