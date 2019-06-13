@@ -6,9 +6,6 @@ class BansTest < ApplicationSystemTestCase
 
     travel_to Time.parse('2010-07-05 10:31 +0000')
 
-    @original_wait_time = Capybara.default_max_wait_time
-    Capybara.default_max_wait_time = 10
-
     @expired_auction = auctions(:expired)
     @valid_auction_with_no_offers = auctions(:valid_without_offers)
     @valid_auction_with_offers = auctions(:valid_with_offers)
@@ -23,8 +20,6 @@ class BansTest < ApplicationSystemTestCase
 
   def teardown
     super
-
-    Capybara.default_max_wait_time = @original_wait_time
 
     travel_back
     @ban.destroy
