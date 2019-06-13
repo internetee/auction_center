@@ -29,12 +29,17 @@
                 <table class="ui table selectable unstackable fixed" id="auctions-table">
                     <thead>
                         <tr>
-                            <th scope="col"><%= t('auctions.domain_name') %></th>
-                            <th scope="col"><%= t('auctions.ends_at') %></th>
+                            <th scope="col">
+                                <%= t('auctions.domain_name') %>
+                                <%= order_buttons('auctions.domain_name') %>
+                            </th>
+                            <th scope="col">
+                                <%= t('auctions.ends_at') %>
+                                <%= order_buttons('auctions.ends_at') %>
+                            </th>
                             <th scope="col"><%= t('auctions.your_current_price') %></th>
                             <th scope="col"><%= t('auctions.offer_actions') %></th>
                             <th scope="col"><%= clear_order_button %></th>
-                            <th scope="col"><%= order_buttons('foo') %></th>
                         </tr>
                     </thead>
 

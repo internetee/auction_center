@@ -2,6 +2,8 @@ require 'countries'
 
 module Admin
   class UsersController < BaseController
+    include OrderableHelper
+
     before_action :authorize_user
     before_action :set_user, except: %i[index new create search]
     before_action :set_phone_confirmation_toggle, only: %i[index show]
@@ -13,7 +15,9 @@ module Admin
 
     # GET /admin/users
     def index
-      @users = User.all.order(created_at: :desc).page(params[:page])
+      @users = User.all
+                   .order(orderable_array)
+                   .page(params[:page])
     end
 
     # GET /admin/users/search
@@ -22,6 +26,7 @@ module Admin
 
       @users = User.where('email ILIKE ?', "%#{email}%")
                    .accessible_by(current_ability)
+                   .order(orderable_array)
                    .page(1)
     end
 
@@ -76,6 +81,10 @@ module Admin
     end
 
     private
+
+    def orderable_array
+      orderable(order_params)
+    end
 
     def search_params
       params.permit(:email)
