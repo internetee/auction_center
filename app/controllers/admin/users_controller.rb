@@ -82,10 +82,6 @@ module Admin
 
     private
 
-    def orderable_array
-      orderable(order_params)
-    end
-
     def search_params
       params.permit(:email)
     end

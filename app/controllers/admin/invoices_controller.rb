@@ -2,6 +2,8 @@ require 'invoice_already_paid'
 
 module Admin
   class InvoicesController < BaseController
+    include OrderableHelper
+
     before_action :authorize_user
     before_action :create_invoice_if_needed
     before_action :set_invoice, only: %i[show download update edit]
@@ -14,7 +16,7 @@ module Admin
     def index
       @invoices = Invoice.accessible_by(current_ability)
                          .includes(:billing_profile, :user)
-                         .order(due_date: :desc)
+                         .order(orderable_array)
                          .page(params[:page])
     end
 
@@ -26,6 +28,7 @@ module Admin
                          .includes(:billing_profile)
                          .where('users.email ILIKE ?', "%#{email}%")
                          .accessible_by(current_ability)
+                         .order(orderable_array)
                          .page(1)
     end
 

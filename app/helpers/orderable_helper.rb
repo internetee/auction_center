@@ -18,6 +18,11 @@ module OrderableHelper
       order_button(table_with_column, descending_order)
   end
 
+  # Chain this with order(orderable_array) in controller actions
+  def orderable_array
+    orderable(order_params)
+  end
+
   # Returns an Array of conditions that can be chained directly to order method.
   # Makes sure that order is against allowed tables and columns that exist against those tables.
   #
@@ -55,7 +60,7 @@ module OrderableHelper
     new_hash = append_or_create_sort_hash(requested_order)
 
     map_of_values = { 'params' => new_hash, 'id' => "#{table_with_column}_desc_button",
-                      'icon_class' => 'sort alphabet down icon' }
+                      'icon_class' => 'sort alphabet up icon' }
 
     link_with_icon(map_of_values)
   end
@@ -65,7 +70,7 @@ module OrderableHelper
     new_hash = append_or_create_sort_hash(requested_order)
 
     map_of_values = { 'params' => new_hash, 'id' => "#{table_with_column}_asc_button",
-                      'icon_class' => 'sort alphabet up icon' }
+                      'icon_class' => 'sort alphabet down icon' }
 
     link_with_icon(map_of_values)
   end

@@ -15,21 +15,6 @@ class AdminUsersListTest < ApplicationSystemTestCase
     clear_email_deliveries
   end
 
-  def test_users_are_ordered_by_descending_created_at_date
-    display_name_cells = page.find_all('.user-table-user-name')
-
-    # First is users(:second_place_participant)
-    assert_equal('Second Place', display_name_cells[0].text)
-    # Next is users(:signed_in_with_omniauth)
-    assert_equal('TARA USER', display_name_cells[1].text)
-
-    # Next is users(:participant)
-    assert_equal('Joe John Participant', display_name_cells[2].text)
-
-    # Finally, is users(:administrator) (self)
-    assert_equal('John Joe Administrator', display_name_cells[3].text)
-  end
-
   def test_user_display_names_are_links
     edited_user = users(:participant)
     display_name_cell_link = page.find('a', text: 'Joe John Participant')
