@@ -9,6 +9,10 @@ en:
     already_exists: "You already have an offer for this auction."
     must_be_active: "must be active"
     must_be_higher_than: "must be higher than %{minimum}"
+    reminder: |
+      NB: This is a blind auction where bids are not public.
+      There might be other bids.
+      Make an offer according to the value the domain name holds to you.
 
     new:
       title: "Offer for the reservation of the domain name"
@@ -36,3 +40,4 @@ en:
     form:
       bidder: "Bidder"
       offer: "Offer"
+      minimum_offer: "Minimum offer is %{minimum}."
