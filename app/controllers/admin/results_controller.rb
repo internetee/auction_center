@@ -1,10 +1,12 @@
 module Admin
   class ResultsController < BaseController
+    include OrderableHelper
+
     # GET /admin/results
     def index
-      @results = Result.includes(:auction, :offer, :invoice)
+      @results = Result.includes(:auction, :offer, :invoice, :user)
                        .all
-                       .order(created_at: :desc)
+                       .order(orderable_array)
                        .page(params[:page])
 
       @auctions_needing_results = Auction.without_result
@@ -29,6 +31,7 @@ module Admin
                        .includes(:offer, :invoice)
                        .where('auctions.domain_name ILIKE ?', "%#{domain_name}%")
                        .accessible_by(current_ability)
+                       .order(orderable_array)
                        .page(1)
     end
 

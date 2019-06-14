@@ -25,13 +25,35 @@
         <table class="ui table unstackable fixed" id="my-outstanding-invoices-table">
             <thead>
                 <tr>
-                    <th scope="col"><%= t('invoices.billing_profile') %></th>
-                    <th scope="col"><%= t('invoices.due_date') %></th>
-                    <th scope="col"><%= t('invoices.status') %></th>
-                    <th scope="col"><%= t('invoices.notes') %></th>
-                    <th scope="col"><%= t('invoices.total') %></th>
-                    <th scope="col"><%= t('invoices.vat_rate_on_payment') %></th>
-                    <th scope="col"><%= t('invoices.total_paid') %></th>
+                    <th scope="col">
+                        <%= t('invoices.billing_profile') %>
+                        <%= order_buttons('invoices.billing_profile_id') %>
+                    </th>
+                    <th scope="col">
+                        <%= t('invoices.due_date') %>
+                        <%= order_buttons('invoices.due_date') %>
+                    </th>
+                    <th scope="col">
+                        <%= t('invoices.status') %>
+                        <%= order_buttons('invoices.status') %>
+                    </th>
+                    <th scope="col">
+                        <%= t('invoices.notes') %>
+                        <%= order_buttons('invoices.notes') %>
+                    </th>
+                    <th scope="col">
+                        <%= t('invoices.total') %>
+                        <%= order_buttons('invoices.total') %>
+                    </th>
+                    <th scope="col">
+                        <%= t('invoices.vat_rate_on_payment') %>
+                        <%= order_buttons('invoices.vat_rate') %>
+                    </th>
+                    <th scope="col">
+                        <%= t('invoices.total_paid') %>
+                        <%= order_buttons('invoices.total_paid') %>
+                    </th>
+                    <th scope="col"><%= clear_order_button %></th>
                 </tr>
             </thead>
 
@@ -46,7 +68,11 @@
                         <% if invoice.paid? %>
                             <td><%= number_to_percentage(invoice.vat_rate * 100, precision: 0) %></td>
                             <td><%= t('offers.price_in_currency', price: invoice.total_amount) %></td>
+                        <% else %>
+                            <td></td>
+                            <td></td>
                         <% end %>
+                        <td></td>
                     </tr>
                 <% end %>
             </tbody>

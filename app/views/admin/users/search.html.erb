@@ -25,10 +25,18 @@
         <table class="ui table unstackable fixed" id="users-table">
             <thead>
                 <tr>
-                    <th scope="col"><%= t('users.display_name') %></th>
-                    <th scope="col"><%= t('users.mobile_phone') %></th>
-                    <th scope="col" class="six wide"><%= t('users.email') %></th>
-                    <th scope="col"><%= t('users.roles') %></th>
+                    <th scope="col">
+                        <%= t('users.display_name') %>
+                        <%= order_buttons('users.surname') %>
+                    </th>
+                    <th scope="col">
+                        <%= t('users.mobile_phone') %>
+                        <%= order_buttons('users.mobile_phone') %>
+                    </th>
+                    <th scope="col" class="six wide">
+                        <%= t('users.email') %>
+                        <%= order_buttons('users.email') %>
+                    </th>
                 </tr>
             </thead>
 

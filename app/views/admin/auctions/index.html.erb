@@ -27,11 +27,21 @@
                 <table class="ui table selectable unstackable" id="auctions-table">
                     <thead>
                         <tr>
-                            <th scope="col"><%= t('auctions.domain_name') %></th>
-                            <th scope="col"><%= t('auctions.starts_at') %></th>
-                            <th scope="col"><%= t('auctions.ends_at') %></th>
+                            <th scope="col">
+                                <%= t('auctions.domain_name') %>
+                                <%= order_buttons('auctions.domain_name') %>
+                            </th>
+                            <th scope="col">
+                                <%= t('auctions.starts_at') %>
+                                <%= order_buttons('auctions.starts_at') %>
+                            </th>
+                            <th scope="col">
+                                <%= t('auctions.ends_at') %>
+                                <%= order_buttons('auctions.ends_at') %>
+                            </th>
                             <th scope="col"><%= t('auctions.highest_price') %></th>
                             <th scope="col"><%= t('auctions.offers') %></th>
+                            <th scope="col"><%= clear_order_button %></th>
                         </tr>
                     </thead>
 
@@ -45,6 +55,7 @@
                                 <td><%= I18n.l(auction.ends_at) %></td>
                                 <td class="auction-highest-offer"><%= auction.highest_price %></td>
                                 <td class="auction-offers-count"><%= auction.offers_size %></td>
+                                <td></td>
                             </tr>
                         <% end %>
                     </tbody>

@@ -1,12 +1,16 @@
 class AuctionsController < ApplicationController
+  include OrderableHelper
+
   skip_before_action :verify_authenticity_token, only: [:cors_preflight_check]
   before_action :authorize_user
 
   # GET /auctions
   def index
     set_cors_header
-
-    unpaginated_auctions = Auction.active.includes(:offers).accessible_by(current_ability)
+    unpaginated_auctions = Auction.active
+                                  .includes(:offers)
+                                  .order(orderable_array)
+                                  .accessible_by(current_ability)
 
     respond_to do |format|
       format.html { @auctions = unpaginated_auctions.page(params[:page]) }
@@ -20,6 +24,7 @@ class AuctionsController < ApplicationController
 
     @auctions = Auction.where('domain_name ILIKE ?', "#{domain_name}%")
                        .includes(:offers)
+                       .order(orderable_array)
                        .accessible_by(current_ability)
                        .page(1)
   end

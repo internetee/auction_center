@@ -56,11 +56,27 @@
                 <table class="ui table" id="results-table">
                     <thead>
                         <tr>
-                            <th scope="col"><%= t('auctions.domain_name') %></th>
-                            <th scope="col"><%= t('auctions.finished_at') %></th>
-                            <th scope="col"><%= t('results.registration_due_date') %></th>
-                            <th scope="col"><%= t('status') %></th>
-                            <th scope="col"><%= t('billing_profiles.name') %></th>
+                            <th scope="col">
+                                <%= t('auctions.domain_name') %>
+                                <%= order_buttons('auctions.domain_name') %>
+                            </th>
+                            <th scope="col">
+                                <%= t('auctions.finished_at') %>
+                                <%= order_buttons('auctions.ends_at') %>
+                            </th>
+                            <th scope="col">
+                                <%= t('results.registration_due_date') %>
+                                <%= order_buttons('results.registration_due_date') %>
+                            </th>
+                            <th scope="col">
+                                <%= t('status') %>
+                                <%= order_buttons('results.status') %>
+                            </th>
+                            <th scope="col">
+                                <%= t('billing_profiles.name') %>
+                                <%= order_buttons('users.id') %>
+                            </th>
+                            <th scope="col"><%= clear_order_button %></th>
                         </tr>
                     </thead>
 
@@ -78,6 +94,7 @@
                                         <%= result.offer.billing_profile&.name %>
                                     <% end %>
                                 </td>
+                                <td></td>
                             </tr>
                         <% end %>
                     </tbody>
