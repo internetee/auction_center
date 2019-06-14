@@ -1,3 +1,6 @@
+14.06.2019
+* Added orderable columns to auctions list and most of admin views [#173](https://github.com/internetee/auction_center/issues/173)
+
 12.06.2019
 * Added reminder in offer view on how to bid in blind auction [#284](https://github.com/internetee/auction_center/pull/284)
 * Enabled use of http poxy for TARA auth integration [#285](https://github.com/internetee/auction_center/pull/285)
