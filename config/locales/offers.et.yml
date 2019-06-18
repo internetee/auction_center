@@ -38,7 +38,7 @@ et:
     form:
       bidder: "Pakkuja"
       offer: "Pakkumus"
-      minimum_offer: "Pakkumus peab olema suurem kui %{minimum}."
+      minimum_offer: "Pakkumus peab olema vähemalt %{minimum}."
 
   activerecord:
     attributes:
