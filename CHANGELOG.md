@@ -1,3 +1,6 @@
+18.06.2019
+* Added headers for mobile view [#291](https://github.com/internetee/auction_center/pull/291)
+
 14.06.2019
 * Added orderable columns to auctions list and most of admin views [#173](https://github.com/internetee/auction_center/issues/173)
 
