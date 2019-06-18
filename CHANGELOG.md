@@ -1,4 +1,5 @@
 18.06.2019
+* Fixed et minimum offer traslation in offer form [#293](https://github.com/internetee/auction_center/pull/293)
 * Added headers for mobile view [#291](https://github.com/internetee/auction_center/pull/291)
 
 14.06.2019
