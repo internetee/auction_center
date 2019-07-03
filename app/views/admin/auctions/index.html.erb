@@ -50,7 +50,7 @@
                             <tr class="auctions-table-row">
                                 <td class="auction-domain-name monospace">
                                     <%= link_to(admin_auction_path(auction)) do %>
-                                        <%= auction.domain_name %>
+                                        <%= domain_name_with_embedded_colors(auction.domain_name) %>
                                     <% end %>
                                 </td>
                                 <td><%= I18n.l(auction.starts_at) %></td>

@@ -8,4 +8,9 @@ module AuctionsHelper
       'https://www.internet.ee/help-and-info/faq#III__ee_domain_auctions'
     end
   end
+
+  def domain_name_with_embedded_colors(domain_name)
+    new_domain_name = domain_name.gsub(/([0-9]+)/, "<span class='number-in-domain-name'>\\1</span>")
+    sanitize(new_domain_name)
+  end
 end

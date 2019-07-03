@@ -50,7 +50,8 @@ class ApiAuctionsListTest < ActionDispatch::IntegrationTest
       assert(item.has_key?('id'))
     end
 
-    expected_domains = ['with-offers.test', 'no-offers.test', 'with-invoice.test', 'orphaned.test']
+    expected_domains = ['with-offers.test', 'no-offers.test', 'with-invoice.test',
+                        'orphaned123.test']
     assert_equal(expected_domains.to_set, response_json.map { |e| e['domain_name'] }.to_set)
   end
 

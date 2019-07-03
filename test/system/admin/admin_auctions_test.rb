@@ -45,6 +45,20 @@ class AdminAuctionsTest < ApplicationSystemTestCase
     assert(page.has_text?('Search results are limited to first 20 hits.'))
   end
 
+  def test_numbers_have_a_span_class_in_index_list
+    visit(admin_auctions_path)
+
+    assert(span_element = page.find('span.number-in-domain-name'))
+    assert_equal('123', span_element.text)
+  end
+
+  def test_numbers_have_a_span_class_in_show_view
+    visit(admin_auction_path(@orphaned_auction.id))
+
+    assert(span_element = page.find('span.number-in-domain-name'))
+    assert_equal('123', span_element.text)
+  end
+
   def test_administrator_can_search_by_top_level_domain
     visit(admin_auctions_path)
 

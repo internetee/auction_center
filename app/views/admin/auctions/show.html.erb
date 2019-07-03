@@ -13,7 +13,9 @@
                     <tbody>
                         <tr>
                             <td><strong><%= t('auctions.domain_name') %></strong></td>
-                            <td class="monospace"><%= @auction.domain_name %></td>
+                            <td class="monospace">
+                                <%= domain_name_with_embedded_colors(@auction.domain_name) %>
+                            </td>
                         </tr>
                         <tr>
                             <td><strong><%= t('auctions.starts_at') %></strong></td>

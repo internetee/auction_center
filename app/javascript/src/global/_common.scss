@@ -61,6 +61,10 @@ strong {
   font-family: $monospace-font-family;
 }
 
+.number-in-domain-name {
+    color: $darkblue;
+}
+
 ::-webkit-input-placeholder {
   color: $black;
 }
