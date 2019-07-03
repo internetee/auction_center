@@ -4,7 +4,7 @@ class AutomaticBanTest < ActiveSupport::TestCase
   def setup
     super
 
-    @time = DateTime.parse('2010-07-05 10:31 +0000').in_time_zone
+    @time = DateTime.parse('2010-07-05 10:31 +0000')
     travel_to @time
 
     @user = users(:participant)
