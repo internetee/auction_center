@@ -12,7 +12,7 @@ class RecaptchaOffersTest < ApplicationSystemTestCase
     @offer = offers(:minimum_offer)
     @expired_offer = offers(:expired_offer)
 
-    travel_to Time.parse('2010-07-05 10:31 +0000')
+    travel_to Time.parse('2010-07-05 10:31 +0000').in_time_zone
   end
 
   def teardown

@@ -4,7 +4,7 @@ class BansTest < ApplicationSystemTestCase
   def setup
     super
 
-    travel_to Time.parse('2010-07-05 10:31 +0000')
+    travel_to Time.parse('2010-07-05 10:31 +0000').in_time_zone
 
     @expired_auction = auctions(:expired)
     @valid_auction_with_no_offers = auctions(:valid_without_offers)
@@ -53,14 +53,14 @@ class BansTest < ApplicationSystemTestCase
     sign_in(@participant)
 
     visit offers_path
-    refute(page.has_css?('div.alert', text: 'You are not authorized to access this page'))
+    assert_not(page.has_css?('div.alert', text: 'You are not authorized to access this page'))
   end
 
   def test_banned_user_can_view_their_information
     sign_in(@participant)
 
     visit user_path(@participant.uuid)
-    refute(page.has_css?('div.alert', text: 'You are not authorized to access this page'))
+    assert_not(page.has_css?('div.alert', text: 'You are not authorized to access this page'))
 
     click_link_or_button('Edit')
     assert(page.has_css?('div.alert', text: 'You are not authorized to access this page'))
@@ -94,7 +94,6 @@ class BansTest < ApplicationSystemTestCase
                 domain_name: 'temporary.test',
                 valid_from: Time.zone.today - 1, valid_until: Time.zone.today + 5)
 
-
     sign_in_manually
 
     text = <<~TEXT.squish
@@ -107,7 +106,7 @@ class BansTest < ApplicationSystemTestCase
   end
 
   def test_banned_user_can_see_the_ban_notification_for_longest_repetitive_ban
-        Ban.create!(user: @participant,
+    Ban.create!(user: @participant,
                 valid_from: Time.zone.today - 1, valid_until: Time.zone.today + 5)
     Ban.create!(user: @participant,
                 valid_from: Time.zone.today - 1, valid_until: Time.zone.today + 2)
@@ -159,7 +158,7 @@ class BansTest < ApplicationSystemTestCase
     sign_in(@administrator)
     visit admin_user_path(@other_participant)
 
-    fill_in('ban[valid_until]', with: "01/01/2222")
+    fill_in('ban[valid_until]', with: '01/01/2222')
     assert_changes -> { Ban.count } do
       click_link_or_button('Submit')
     end
@@ -171,7 +170,7 @@ class BansTest < ApplicationSystemTestCase
     sign_in(@administrator)
     visit admin_user_path(@other_participant)
 
-    fill_in('ban[valid_until]', with: "01/01/1999")
+    fill_in('ban[valid_until]', with: '01/01/1999')
     assert_no_changes -> { Ban.count } do
       click_link_or_button('Submit')
     end

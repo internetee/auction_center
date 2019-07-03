@@ -10,11 +10,11 @@ class UserTest < ActiveSupport::TestCase
   def test_required_fields
     user = User.new
 
-    refute(user.valid?)
+    assert_not(user.valid?)
     assert_equal(["can't be blank"], user.errors[:password])
     assert_equal(["can't be blank"], user.errors[:email])
-    assert_equal(["can't be blank", "is invalid"], user.errors[:mobile_phone])
-    assert_equal(["must be accepted"], user.errors[:terms_and_conditions])
+    assert_equal(["can't be blank", 'is invalid'], user.errors[:mobile_phone])
+    assert_equal(['must be accepted'], user.errors[:terms_and_conditions])
     assert_equal(["can't be blank"], user.errors[:given_names])
     assert_equal(["can't be blank"], user.errors[:surname])
 
@@ -41,7 +41,7 @@ class UserTest < ActiveSupport::TestCase
     user.password_confirmation = 'email@example.com'
     user.mobile_phone = '+372500100300'
     user.country_code = 'PL'
-    user.accepts_terms_and_conditions = "true"
+    user.accepts_terms_and_conditions = 'true'
 
     assert(user.valid?)
   end
@@ -54,15 +54,15 @@ class UserTest < ActiveSupport::TestCase
     assert_equal(longer_ban, @administrator.longest_ban)
 
     user = User.new
-    refute(user.banned?)
-    refute(user.longest_ban)
+    assert_not(user.banned?)
+    assert_not(user.longest_ban)
   end
 
   def test_password_needs_a_confirmation
     @administrator.password = 'password'
     @administrator.password_confirmation = 'not matching'
 
-    refute(@administrator.valid?)
+    assert_not(@administrator.valid?)
     assert_equal(["doesn't match Password"], @administrator.errors[:password_confirmation])
 
     @administrator.password_confirmation = 'password'
@@ -73,7 +73,7 @@ class UserTest < ActiveSupport::TestCase
     new_user = User.new(email: @administrator.email, password: 'password',
                         password_confirmation: 'password')
 
-    refute(new_user.valid?)
+    assert_not(new_user.valid?)
     assert_equal(['has already been taken'], new_user.errors[:email])
   end
 
@@ -81,7 +81,7 @@ class UserTest < ActiveSupport::TestCase
     new_user = User.new(identity_code: @administrator.identity_code,
                         country_code: @administrator.country_code)
 
-    refute(new_user.valid?)
+    assert_not(new_user.valid?)
     assert_equal(['has already been taken'], new_user.errors[:identity_code])
   end
 
@@ -94,13 +94,13 @@ class UserTest < ActiveSupport::TestCase
   def test_signed_in_with_identity_document
     user = User.new
 
-    refute(user.signed_in_with_identity_document?)
+    assert_not(user.signed_in_with_identity_document?)
 
     user.provider = 'github'
-    refute(user.signed_in_with_identity_document?)
+    assert_not(user.signed_in_with_identity_document?)
 
     user.provider = User::TARA_PROVIDER
-    refute(user.signed_in_with_identity_document?)
+    assert_not(user.signed_in_with_identity_document?)
 
     user.uid = 'EE1234'
     assert(user.signed_in_with_identity_document?)
@@ -114,23 +114,23 @@ class UserTest < ActiveSupport::TestCase
     user.provider = User::TARA_PROVIDER
     user.uid = 'EE1234'
 
-    refute(user.requires_captcha?)
+    assert_not(user.requires_captcha?)
   end
 
   def test_requires_phone_number_confirmation
     user = User.new
-    refute(user.requires_phone_number_confirmation?)
+    assert_not(user.requires_phone_number_confirmation?)
 
     Setting.find_by(code: :require_phone_confirmation).update!(value: 'true')
     assert(user.requires_phone_number_confirmation?)
 
-    user.mobile_phone_confirmed_at = Time.now
-    refute(user.requires_phone_number_confirmation?)
+    user.mobile_phone_confirmed_at = Time.now.in_time_zone
+    assert_not(user.requires_phone_number_confirmation?)
 
     user.mobile_phone_confirmed_at = nil
     user.provider = User::TARA_PROVIDER
     user.uid = 'EE1234'
-    refute(user.requires_phone_number_confirmation?)
+    assert_not(user.requires_phone_number_confirmation?)
   end
 
   def test_country_code_must_be_two_letters_long
@@ -157,8 +157,8 @@ class UserTest < ActiveSupport::TestCase
     @administrator.update(accepts_terms_and_conditions: false)
     @administrator.update(accepts_terms_and_conditions: true)
 
-    refute_equal(original_terms_and_conditions_accepted_at,
-                 @administrator.terms_and_conditions_accepted_at)
+    assert_not_equal(original_terms_and_conditions_accepted_at,
+                     @administrator.terms_and_conditions_accepted_at)
   end
 
   def test_has_default_role
@@ -166,7 +166,7 @@ class UserTest < ActiveSupport::TestCase
 
     assert_equal([User::PARTICIPANT_ROLE], user.roles)
     assert(user.role?(User::PARTICIPANT_ROLE))
-    refute(user.role?(User::ADMINISTATOR_ROLE))
+    assert_not(user.role?(User::ADMINISTATOR_ROLE))
   end
 
   def test_localized_validations_are_ignored_for_different_countries
@@ -187,7 +187,7 @@ class UserTest < ActiveSupport::TestCase
 
     ['Foo', '112', '55965456', 'Foo+3727271000'].each do |number|
       user.mobile_phone = number
-      refute(user.valid? , "Expected #{number} to be invalid")
+      assert_not(user.valid?, "Expected #{number} to be invalid")
     end
   end
 

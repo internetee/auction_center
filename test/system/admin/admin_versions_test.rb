@@ -9,7 +9,7 @@ class AdminVersionsTest < ApplicationSystemTestCase
   end
 
   def test_it_shows_history_of_updated_fields
-    @administrator.update(given_names: "New Given Name", surname: "New Surname")
+    @administrator.update(given_names: 'New Given Name', surname: 'New Surname')
     visit admin_user_versions_path(@administrator)
 
     page.within('tr.items-table-row') do
@@ -20,7 +20,7 @@ class AdminVersionsTest < ApplicationSystemTestCase
 
   def test_it_can_be_accessed_after_the_object_has_been_deleted
     user = users(:participant)
-    user.update(given_names: "New Given Name", surname: "New Surname")
+    user.update(given_names: 'New Given Name', surname: 'New Surname')
     user.destroy
     visit admin_user_versions_path(user)
 

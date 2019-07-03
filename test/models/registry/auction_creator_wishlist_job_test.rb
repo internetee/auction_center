@@ -4,7 +4,7 @@ class AuctionCreatorWishlistJobTest < ActiveSupport::TestCase
   include ActiveJob::TestHelper
 
   def setup
-    travel_to Time.parse('2010-07-05 10:30 +0000')
+    travel_to Time.parse('2010-07-05 10:30 +0000').in_time_zone
 
     @user = users(:participant)
     @wishlist_item = WishlistItem.create!(domain_name: 'shop.test', user: @user)
@@ -20,12 +20,12 @@ class AuctionCreatorWishlistJobTest < ActiveSupport::TestCase
   def test_schedules_wishlist_job
     instance = Registry::AuctionCreator.new
 
-    body = [{"id" => "cdf377a6-8797-40d8-90a1-b7aadfddc8e3", "domain" => "shop.test",
-             "status" => "started"},
-            {"id" => "e561ce42-9003-47b4-af73-8092fffe6591", "domain" => "foo.test",
-             "status" => "started"},
-            {"id" => "1c92c1a9-4b5b-466b-92bf-05bbc3bca5e8", "domain" => "fo.test",
-             "status" => "started"}]
+    body = [{ 'id' => 'cdf377a6-8797-40d8-90a1-b7aadfddc8e3', 'domain' => 'shop.test',
+              'status' => 'started' },
+            { 'id' => 'e561ce42-9003-47b4-af73-8092fffe6591', 'domain' => 'foo.test',
+              'status' => 'started' },
+            { 'id' => '1c92c1a9-4b5b-466b-92bf-05bbc3bca5e8', 'domain' => 'fo.test',
+              'status' => 'started' }]
     response = Minitest::Mock.new
 
     response.expect(:code, '200')

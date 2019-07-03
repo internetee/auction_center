@@ -4,7 +4,7 @@ class DomainRegistrationCheckerTest < ActiveSupport::TestCase
   def setup
     super
 
-    travel_to Time.parse('2010-07-05 10:30 +0000')
+    travel_to Time.parse('2010-07-05 10:30 +0000').in_time_zone
 
     @result = results(:expired_participant)
     @result.update!(status: Result.statuses[:payment_received])
@@ -20,7 +20,7 @@ class DomainRegistrationCheckerTest < ActiveSupport::TestCase
     @result.auction.update!(remote_id: nil)
 
     instance = Registry::RegistrationChecker.new(@result)
-    refute(instance.call)
+    assert_not(instance.call)
   end
 
   def test_call_raises_an_error_updates_when_status_is_not_payment_received
@@ -55,9 +55,9 @@ class DomainRegistrationCheckerTest < ActiveSupport::TestCase
   def test_call_updates_result_record_to_domain_registered
     instance = Registry::RegistrationChecker.new(@result)
 
-    body = { "id" => "f15f032d-2f6b-4b87-be29-5edb25e9e4d2",
-             "domain" => "expired.test",
-             "status" => "domain_registered" }
+    body = { 'id' => 'f15f032d-2f6b-4b87-be29-5edb25e9e4d2',
+             'domain' => 'expired.test',
+             'status' => 'domain_registered' }
 
     response = Minitest::Mock.new
 
@@ -81,9 +81,9 @@ class DomainRegistrationCheckerTest < ActiveSupport::TestCase
 
     instance = Registry::RegistrationChecker.new(@result)
 
-    body = { "id" => "f15f032d-2f6b-4b87-be29-5edb25e9e4d2",
-             "domain" => "expired.test",
-             "status" => "payment_received" }
+    body = { 'id' => 'f15f032d-2f6b-4b87-be29-5edb25e9e4d2',
+             'domain' => 'expired.test',
+             'status' => 'payment_received' }
 
     response = Minitest::Mock.new
 
@@ -105,9 +105,9 @@ class DomainRegistrationCheckerTest < ActiveSupport::TestCase
     @result.update!(registration_due_date: Time.zone.tomorrow)
     instance = Registry::RegistrationChecker.new(@result)
 
-    body = { "id" => "f15f032d-2f6b-4b87-be29-5edb25e9e4d2",
-             "domain" => "expired.test",
-             "status" => "payment_received" }
+    body = { 'id' => 'f15f032d-2f6b-4b87-be29-5edb25e9e4d2',
+             'domain' => 'expired.test',
+             'status' => 'payment_received' }
 
     response = Minitest::Mock.new
 

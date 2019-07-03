@@ -4,7 +4,7 @@ class JobTest < ActiveSupport::TestCase
   def setup
     super
 
-    @job_name = "InvoiceCreationJob"
+    @job_name = 'InvoiceCreationJob'
     @instance = Job.new(@job_name)
   end
 

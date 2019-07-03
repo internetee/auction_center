@@ -12,7 +12,7 @@ class OmniauthUserTest < ActiveSupport::TestCase
         'first_name' => 'User',
         'last_name' => 'OmniAuth',
         'name' => 'EE51007050604',
-      }
+      },
     }
   end
 
@@ -30,7 +30,7 @@ class OmniauthUserTest < ActiveSupport::TestCase
     assert_equal(user.identity_code, '51007050604')
     assert_equal(user.country_code, 'EE')
 
-    refute(user.persisted?)
+    assert_not(user.persisted?)
   end
 
   def test_tampering_protection
@@ -44,8 +44,8 @@ class OmniauthUserTest < ActiveSupport::TestCase
     @input_hash['provider'] = 'github'
 
     user = User.from_omniauth(@input_hash)
-    refute_equal(user.identity_code, '51007050604')
-    refute_equal(user.country_code, 'EE')
+    assert_not_equal(user.identity_code, '51007050604')
+    assert_not_equal(user.country_code, 'EE')
   end
 
   def test_from_omniauth_finds_user_if_it_exists

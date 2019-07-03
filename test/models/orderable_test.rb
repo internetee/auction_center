@@ -8,19 +8,19 @@ class OrderableTest < ActiveSupport::TestCase
   end
 
   def test_returns_the_default_when_not_valid_and_default_given
-    orderable = Orderable.new('some_model', 'some_column', 'desc', {id: :desc})
+    orderable = Orderable.new('some_model', 'some_column', 'desc', id: :desc)
 
-    assert_equal({id: :desc}, orderable.condition)
+    assert_equal({ id: :desc }, orderable.condition)
   end
 
   def test_returns_order_hash_for_valid_conditions
-    orderable = Orderable.new('Auction', 'domain_name', 'desc', {id: :desc})
+    orderable = Orderable.new('Auction', 'domain_name', 'desc', id: :desc)
 
     assert_equal('auctions.domain_name desc', orderable.condition)
   end
 
   def test_order_hashes_are_chainable_in_a_query
-    orderable = Orderable.new('Auction', 'domain_name', 'desc', {id: :desc})
+    orderable = Orderable.new('Auction', 'domain_name', 'desc', id: :desc)
     second_orderable = Orderable.new('Auction', 'uuid', 'desc')
 
     assert_nothing_raised do

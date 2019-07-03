@@ -93,7 +93,7 @@ class EditUserTest < ApplicationSystemTestCase
     uncheck_checkbox('user[accepts_terms_and_conditions]')
     click_link_or_button('Update')
 
-    refute((page.has_css?('div.notice', text: 'Updated successfully.')))
+    assert_not(page.has_css?('div.notice', text: 'Updated successfully.'))
     assert(page.has_text?('Terms and conditions must be accepted'))
   end
 
@@ -110,7 +110,7 @@ class EditUserTest < ApplicationSystemTestCase
     visit edit_user_path(@user.uuid)
     fill_in('user[mobile_phone]', with: '+372 500')
     fill_in('user[current_password]', with: 'password123')
-    refute(page.has_button?('Update'))
+    assert_not(page.has_button?('Update'))
 
     fill_in('user[mobile_phone]', with: '+37250006000')
     page.find('body').click # blur
@@ -161,6 +161,6 @@ class EditUserTest < ApplicationSystemTestCase
 
   def test_profile_page_has_a_link_to_terms_and_conditions
     visit user_path(@user.uuid)
-    assert(page.has_link?("Review terms and condition", href: Setting.terms_and_conditions_link))
+    assert(page.has_link?('Review terms and condition', href: Setting.terms_and_conditions_link))
   end
 end

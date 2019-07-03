@@ -1,4 +1,3 @@
-# encoding: UTF-8
 require 'application_system_test_case'
 
 class InvoicesTest < ApplicationSystemTestCase
@@ -10,7 +9,7 @@ class InvoicesTest < ApplicationSystemTestCase
     @user = users(:participant)
     @invoice = invoices(:payable)
 
-    travel_to Time.parse('2010-07-05 10:30 +0000')
+    travel_to Time.parse('2010-07-05 10:30 +0000').in_time_zone
 
     sign_in(@user)
   end
@@ -54,7 +53,7 @@ class InvoicesTest < ApplicationSystemTestCase
     assert_text('Eesti Interneti SA, VAT number EE101286464')
 
     setting = settings(:invoice_issuer)
-    setting.update!(value: "foo bar baz")
+    setting.update!(value: 'foo bar baz')
 
     visit invoice_path(@invoice.uuid)
     assert_text('foo bar baz')
@@ -71,7 +70,7 @@ class InvoicesTest < ApplicationSystemTestCase
   def test_invoice_contains_items_and_prices_without_vat
     visit invoice_path(@invoice.uuid)
 
-    assert_text("Domain transfer code for with-invoice.test")
+    assert_text('Domain transfer code for with-invoice.test')
     assert_text('VAT exclusive 10.00 €')
     assert_text('VAT rate 0%')
     assert_text('VAT 0.00 €')
@@ -82,15 +81,15 @@ class InvoicesTest < ApplicationSystemTestCase
     visit invoices_path
 
     within('tbody.invoices-table-body') do
-      assert_text("Domain transfer code for with-invoice.test")
-      assert_text("10.00 €")
+      assert_text('Domain transfer code for with-invoice.test')
+      assert_text('10.00 €')
     end
   end
 
   def test_a_user_can_pay_invoice_via_every_pay
     visit invoice_path(@invoice.uuid)
 
-    assert(page.has_css?("form#every_pay"))
+    assert(page.has_css?('form#every_pay'))
 
     within('form#every_pay') do
       click_link_or_button('Submit')
@@ -102,12 +101,12 @@ class InvoicesTest < ApplicationSystemTestCase
   def test_a_user_cannot_pay_for_cancelled_invoice
     @invoice.update!(status: Invoice.statuses[:cancelled])
     visit invoice_path(@invoice.uuid)
-    refute(page.has_css?("form#every_pay"))
+    assert_not(page.has_css?('form#every_pay'))
   end
 
   def test_a_user_cannot_pay_for_paid_invoice
     @invoice.update!(status: Invoice.statuses[:paid], paid_at: Time.zone.now)
     visit invoice_path(@invoice.uuid)
-    refute(page.has_css?("form#every_pay"))
+    assert_not(page.has_css?('form#every_pay'))
   end
 end

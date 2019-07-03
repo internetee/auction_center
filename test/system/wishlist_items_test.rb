@@ -34,7 +34,7 @@ class WishlistItemsTest < ApplicationSystemTestCase
     fill_in('wishlist_item[domain_name]', with: 'not a real domain')
     click_link_or_button('Submit')
 
-    refute(page.has_css?('div.notice', text: 'Created successfully.'))
+    assert_not(page.has_css?('div.notice', text: 'Created successfully.'))
     assert(page.has_text?('Domain name is invalid'))
   end
 
@@ -45,7 +45,7 @@ class WishlistItemsTest < ApplicationSystemTestCase
     fill_in('wishlist_item[domain_name]', with: 'new-item.test')
     click_link_or_button('Submit')
 
-    refute(page.has_css?('div.notice', text: 'Created successfully.'))
+    assert_not(page.has_css?('div.notice', text: 'Created successfully.'))
     assert(page.has_text?('Wishlist has too many items'))
   end
 end

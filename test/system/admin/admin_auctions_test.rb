@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 require 'application_system_test_case'
 
 class AdminAuctionsTest < ApplicationSystemTestCase
@@ -38,8 +36,8 @@ class AdminAuctionsTest < ApplicationSystemTestCase
   def test_administrator_can_search_for_auctions
     visit(admin_auctions_path)
 
-    fill_in('domain_name', with: "w")
-    find(:css, "i.arrow.right.icon").click
+    fill_in('domain_name', with: 'w')
+    find(:css, 'i.arrow.right.icon').click
 
     assert(page.has_link?('with-invoice.test'))
     assert(page.has_link?('with-offers.test'))
@@ -63,8 +61,8 @@ class AdminAuctionsTest < ApplicationSystemTestCase
   def test_administrator_can_search_by_top_level_domain
     visit(admin_auctions_path)
 
-    fill_in('domain_name', with: "offers.test")
-    find(:css, "i.arrow.right.icon").click
+    fill_in('domain_name', with: 'offers.test')
+    find(:css, 'i.arrow.right.icon').click
 
     assert(page.has_link?('with-offers.test'))
     assert(page.has_text?('Search results are limited to first 20 hits.'))
@@ -75,18 +73,18 @@ class AdminAuctionsTest < ApplicationSystemTestCase
     assert(page.has_link?('Result', href: admin_result_path(@expired_auction.result)))
 
     visit(admin_auction_path(@auction))
-    refute(page.has_link?('Result', href: /admin\/results\//))
+    assert_not(page.has_link?('Result', href: %r{admin/results/}))
   end
 
   def test_creating_auction_with_ends_at_time_in_the_past_fails
-   visit(new_admin_auction_path)
+    visit(new_admin_auction_path)
 
     fill_in('auction[domain_name]', with: 'new-domain-auction.test')
     fill_in('auction[starts_at]', with: Time.zone.now)
     fill_in('auction[ends_at]', with: (Time.zone.now - 1.day))
 
     # Check in-browser validation
-    validation_message = find("#auction_ends_at").native.attribute("validationMessage")
+    validation_message = find('#auction_ends_at').native.attribute('validationMessage')
     assert(validation_message)
 
     assert_no_changes('Auction.count') do
@@ -95,7 +93,7 @@ class AdminAuctionsTest < ApplicationSystemTestCase
   end
 
   def test_creating_auction_with_ends_at_time_earlier_than_starts_at_fails
-   visit(new_admin_auction_path)
+    visit(new_admin_auction_path)
 
     fill_in('auction[domain_name]', with: 'new-domain-auction.test')
     fill_in('auction[starts_at]', with: Time.zone.now + 2.days)
@@ -118,11 +116,11 @@ class AdminAuctionsTest < ApplicationSystemTestCase
     assert_equal(['50.00', '10.00', '', '100.00'].to_set, prices.to_set)
 
     offers_count = page.find_all('.auction-offers-count').map(&:text)
-    assert_equal(['2', '1', '0', '1'].to_set, offers_count.to_set)
+    assert_equal(%w[2 1 0 1].to_set, offers_count.to_set)
   end
 
   def test_auctions_for_domain_names_need_to_be_unique_for_its_duration
-    travel_to Time.parse('2010-07-05 10:31 +0000')
+    travel_to Time.parse('2010-07-05 10:31 +0000').in_time_zone
 
     visit(new_admin_auction_path)
 
@@ -136,7 +134,7 @@ class AdminAuctionsTest < ApplicationSystemTestCase
   end
 
   def test_administrator_can_remove_auction_if_it_has_not_started
-    travel_to Time.parse('2010-07-04 10:30 +0000')
+    travel_to Time.parse('2010-07-04 10:30 +0000').in_time_zone
 
     visit(admin_auction_path(@auction))
 
@@ -161,7 +159,7 @@ class AdminAuctionsTest < ApplicationSystemTestCase
   end
 
   def test_administrator_cannot_remove_auction_if_it_has_started
-    travel_to Time.parse('2010-07-05 11:30 +0000')
+    travel_to Time.parse('2010-07-05 11:30 +0000').in_time_zone
 
     visit(admin_auction_path(@auction))
 
@@ -173,7 +171,7 @@ class AdminAuctionsTest < ApplicationSystemTestCase
       end
     end
 
-    refute(page.has_text?('Deleted successfully'))
+    assert_not(page.has_text?('Deleted successfully'))
     assert(
       page.has_text?('You cannot delete an auction that is already in progress or has finished.')
     )

@@ -1,4 +1,3 @@
-# encoding: UTF-8
 require 'test_helper'
 
 class WishlistItemTest < ActiveSupport::TestCase
@@ -30,7 +29,7 @@ class WishlistItemTest < ActiveSupport::TestCase
     item = WishlistItem.new(user: @user, domain_name: 'invalid.test')
     item.save
 
-    refute(item.valid?)
+    assert_not(item.valid?)
     assert_equal(['has too many items'], item.errors[:wishlist])
   end
 
@@ -38,8 +37,8 @@ class WishlistItemTest < ActiveSupport::TestCase
     item = WishlistItem.new(user: @user, domain_name: 'dupe.test')
     assert(item.valid?)
 
-    item.user_id = SecureRandom.random_number(10000)
-    refute(item.valid?)
+    item.user_id = SecureRandom.random_number(10_000)
+    assert_not(item.valid?)
     assert_equal(['must exist'], item.errors[:user])
   end
 
@@ -47,7 +46,7 @@ class WishlistItemTest < ActiveSupport::TestCase
     WishlistItem.create!(user: @user, domain_name: 'dupe.test')
     item = WishlistItem.new(user: @user, domain_name: 'dupe.test')
 
-    refute(item.valid?)
+    assert_not(item.valid?)
     assert_equal(['is already in your wishlist'], item.errors[:domain_name])
   end
 
@@ -59,11 +58,11 @@ class WishlistItemTest < ActiveSupport::TestCase
     item = WishlistItem.new(user: @user, domain_name: "#{SecureRandom.hex}.test")
     assert(item.valid?)
 
-    item = WishlistItem.new(user: @user, domain_name: "üõöä.test")
+    item = WishlistItem.new(user: @user, domain_name: 'üõöä.test')
     assert(item.valid?)
 
     item = WishlistItem.new(user: @user, domain_name: 'some')
-    refute(item.valid?)
+    assert_not(item.valid?)
     assert_equal(['is invalid'], item.errors[:domain_name])
   end
 end

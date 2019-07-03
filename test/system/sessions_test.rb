@@ -51,11 +51,11 @@ class SessionsTest < ApplicationSystemTestCase
 
   def test_link_to_profile_is_invisible_for_anonymous_users
     visit(users_path)
-    refute(page.has_link?('Profile'))
+    assert_not(page.has_link?('Profile'))
   end
 
   def test_session_expires_in_10_minutes
-    travel_to Time.parse('2010-07-05 10:30 +0000')
+    travel_to Time.parse('2010-07-05 10:30 +0000').in_time_zone
 
     visit(users_path)
     within('nav.menu-user') do
@@ -71,10 +71,10 @@ class SessionsTest < ApplicationSystemTestCase
 
     assert_text('Signed in successfully')
 
-    travel_to Time.parse('2010-07-05 10:41 +0000')
+    travel_to Time.parse('2010-07-05 10:41 +0000').in_time_zone
 
     visit(auctions_path)
-    assert_text("Your session expired. Please sign in again to continue")
+    assert_text('Your session expired. Please sign in again to continue')
 
     travel_back
   end

@@ -1,4 +1,3 @@
-# encoding: UTF-8
 require 'application_system_test_case'
 
 class OffersTest < ApplicationSystemTestCase
@@ -12,7 +11,7 @@ class OffersTest < ApplicationSystemTestCase
     @offer = offers(:high_offer)
     @expired_offer = offers(:expired_offer)
 
-    travel_to Time.parse('2010-07-05 10:31 +0000')
+    travel_to Time.parse('2010-07-05 10:31 +0000').in_time_zone
   end
 
   def teardown
@@ -113,8 +112,8 @@ class OffersTest < ApplicationSystemTestCase
     fill_in('offer[price]', with: '5.121')
 
     # Check in-browser validation
-    validation_message = find("#offer_price").native.attribute("validationMessage")
-    assert_equal("Please enter a valid value. The two nearest valid values are 5.12 and 5.13.",
+    validation_message = find('#offer_price').native.attribute('validationMessage')
+    assert_equal('Please enter a valid value. The two nearest valid values are 5.12 and 5.13.',
                  validation_message)
 
     assert_no_changes('Offer.count') do
@@ -154,14 +153,14 @@ class OffersTest < ApplicationSystemTestCase
     sign_in(@user)
     visit offer_path(@expired_offer.uuid)
 
-    refute(page.has_link?('Delete'))
+    assert_not(page.has_link?('Delete'))
   end
 
   def test_participant_cannot_submit_an_offer_for_old_auction
     sign_in(@user)
     visit auction_path(@expired_auction.uuid)
 
-    refute(page.has_link?('Submit offer'))
+    assert_not(page.has_link?('Submit offer'))
 
     visit new_auction_offer_path(@expired_auction.uuid)
 
@@ -172,7 +171,7 @@ class OffersTest < ApplicationSystemTestCase
   end
 
   def test_participant_cannot_update_an_offer_for_an_inactive_auction
-    travel_to Time.parse('2010-08-05 10:30 +0000')
+    travel_to Time.parse('2010-08-05 10:30 +0000').in_time_zone
     sign_in(@user)
 
     visit edit_offer_path(@offer.uuid)

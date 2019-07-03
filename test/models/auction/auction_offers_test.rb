@@ -10,7 +10,7 @@ class AuctionOffersTest < ActiveSupport::TestCase
     @other_persisted_auction = auctions(:valid_without_offers)
     @orphaned_auction = auctions(:orphaned)
     @with_invoice_auction = auctions(:with_invoice)
-    travel_to Time.parse('2010-07-05 10:30 +0000')
+    travel_to Time.parse('2010-07-05 10:30 +0000').in_time_zone
   end
 
   def teardown
@@ -40,7 +40,7 @@ class AuctionOffersTest < ActiveSupport::TestCase
   def test_winning_offer_returns_the_earliest_offer_in_case_of_a_draw
     expected_winning_offer = offers(:minimum_offer)
     other_offer = offers(:high_offer)
-    some_time = Time.parse('2010-07-05 10:30 +0000')
+    some_time = Time.parse('2010-07-05 10:30 +0000').in_time_zone
 
     expected_winning_offer.update!(created_at: some_time)
     assert_equal(other_offer, @persisted_auction.currently_winning_offer)
@@ -51,10 +51,10 @@ class AuctionOffersTest < ActiveSupport::TestCase
 
   def test_highest_price_returns_money_object_or_nil
     auction = Auction.new(domain_name: 'some-domain.test')
-    auction.starts_at = Time.now + 2.days
-    auction.ends_at = Time.now + 3.days
+    auction.starts_at = Time.now.in_time_zone + 2.days
+    auction.ends_at = Time.now.in_time_zone + 3.days
 
-    refute(auction.highest_price)
+    assert_not(auction.highest_price)
     assert_equal(Money.new(5000, 'EUR'), @persisted_auction.highest_price)
   end
 
@@ -63,13 +63,13 @@ class AuctionOffersTest < ActiveSupport::TestCase
     user = users(:participant)
 
     assert_equal(@persisted_auction.offer_from_user(user), offer)
-    refute(@persisted_auction.offer_from_user(User.new))
+    assert_not(@persisted_auction.offer_from_user(User.new))
   end
 
   def test_current_price_from_user_returns_a_money_object_or_nil
     user = users(:participant)
     assert_equal(Money.new(5000, 'EUR'), @persisted_auction.current_price_from_user(user))
-    refute(@persisted_auction.current_price_from_user(User.new))
+    assert_not(@persisted_auction.current_price_from_user(User.new))
   end
 
   def test_offers_count_returns_integer

@@ -40,6 +40,6 @@ class InvoiceCreatorTest < ActiveSupport::TestCase
     assert(invoice.is_a?(Invoice))
     assert(invoice.items)
 
-    assert_equal("expired.test (auction 1999-07-05) registration code", invoice.items.first.name)
+    assert_equal('expired.test (auction 1999-07-05) registration code', invoice.items.first.name)
   end
 end

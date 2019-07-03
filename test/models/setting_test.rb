@@ -6,7 +6,7 @@ class SettingTest < ActiveSupport::TestCase
   end
 
   def test_required_fields
-    refute(@subject.valid?)
+    assert_not(@subject.valid?)
 
     assert_equal(["can't be blank"], @subject.errors[:code])
     assert_equal(["can't be blank"], @subject.errors[:value])
@@ -28,7 +28,7 @@ class SettingTest < ActiveSupport::TestCase
 
     new_subject = @subject.dup
 
-    refute(new_subject.valid?)
+    assert_not(new_subject.valid?)
     assert_equal(['has already been taken'], new_subject.errors[:code])
   end
 

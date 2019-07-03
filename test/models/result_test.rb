@@ -5,7 +5,7 @@ class ResultTest < ActiveSupport::TestCase
     super
 
     clear_email_deliveries
-    travel_to Time.parse('2010-07-05 10:30 +0000')
+    travel_to Time.parse('2010-07-05 10:30 +0000').in_time_zone
     @valid_auction = auctions(:valid_with_offers)
     @expired_auction = auctions(:expired)
 
@@ -25,9 +25,9 @@ class ResultTest < ActiveSupport::TestCase
   def test_required_fields
     result = Result.new
 
-    refute(result.valid?)
+    assert_not(result.valid?)
 
-    assert_equal(["must exist"], result.errors[:auction], result.errors.full_messages)
+    assert_equal(['must exist'], result.errors[:auction], result.errors.full_messages)
   end
 
   def test_status_predicates
@@ -46,7 +46,7 @@ class ResultTest < ActiveSupport::TestCase
     end
 
     assert_raises(Errors::AuctionNotFound) do
-      Result.create_from_auction("foo")
+      Result.create_from_auction('foo')
     end
   end
 
@@ -64,7 +64,7 @@ class ResultTest < ActiveSupport::TestCase
   def test_send_email_to_winner_sends_an_email_if_winner_exists
     @invoiceable_result.send_email_to_winner
 
-    refute(ActionMailer::Base.deliveries.empty?)
+    assert_not(ActionMailer::Base.deliveries.empty?)
     email = ActionMailer::Base.deliveries.last
 
     assert_equal(['user@auction.test'], email.to)
@@ -72,7 +72,7 @@ class ResultTest < ActiveSupport::TestCase
   end
 
   def test_marking_as_payment_received_updates_registration_due_date
-    @invoiceable_result.mark_as_payment_received(Time.parse('2010-07-06 10:30 +0000'))
+    @invoiceable_result.mark_as_payment_received(Time.parse('2010-07-06 10:30 +0000').in_time_zone)
 
     assert_equal(Date.parse('2010-07-20'), @invoiceable_result.registration_due_date)
     assert_equal(Result.statuses[:payment_received], @invoiceable_result.status)

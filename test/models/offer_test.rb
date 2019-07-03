@@ -10,7 +10,7 @@ class OfferTest < ActiveSupport::TestCase
     @user = users(:participant)
     @offer = offers(:expired_offer)
 
-    travel_to Time.parse('2010-07-05 10:30 +0000')
+    travel_to Time.parse('2010-07-05 10:30 +0000').in_time_zone
   end
 
   def teardown
@@ -22,10 +22,10 @@ class OfferTest < ActiveSupport::TestCase
   def test_required_fields
     offer = Offer.new
 
-    refute(offer.valid?)
-    assert_equal(["must exist", "must be active"], offer.errors[:auction])
-    assert_equal(["is not a number"], offer.errors[:cents])
-    assert_equal(["must exist"], offer.errors[:billing_profile])
+    assert_not(offer.valid?)
+    assert_equal(['must exist', 'must be active'], offer.errors[:auction])
+    assert_equal(['is not a number'], offer.errors[:cents])
+    assert_equal(['must exist'], offer.errors[:billing_profile])
 
     offer.auction = @valid_auction
     offer.billing_profile = @billing_profile
@@ -40,8 +40,8 @@ class OfferTest < ActiveSupport::TestCase
     offer.auction = @expired_auction
     offer.user = @user
 
-    refute(offer.valid?(:create))
-    assert_equal(["must be active"], offer.errors[:auction])
+    assert_not(offer.valid?(:create))
+    assert_equal(['must be active'], offer.errors[:auction])
   end
 
   def test_cents_must_be_an_integer
@@ -50,9 +50,9 @@ class OfferTest < ActiveSupport::TestCase
     offer.user = @user
     offer.cents = 12.00
 
-    refute(offer.valid?)
+    assert_not(offer.valid?)
 
-    assert_equal(["must be an integer"], offer.errors[:cents])
+    assert_equal(['must be an integer'], offer.errors[:cents])
   end
 
   def test_cents_must_be_positive
@@ -61,8 +61,8 @@ class OfferTest < ActiveSupport::TestCase
     offer.user = @user
     offer.cents = -100
 
-    refute(offer.valid?)
-    assert_equal(["must be greater than 0"], offer.errors[:cents])
+    assert_not(offer.valid?)
+    assert_equal(['must be greater than 0'], offer.errors[:cents])
   end
 
   def test_total
@@ -87,8 +87,8 @@ class OfferTest < ActiveSupport::TestCase
     offer.cents = 1
     offer.billing_profile = @billing_profile
 
-    refute(offer.valid?)
-    assert_equal(["must be higher than 5.00"], offer.errors[:price])
+    assert_not(offer.valid?)
+    assert_equal(['must be higher than 5.00'], offer.errors[:price])
 
     offer.cents = 500
     assert(offer.valid?)
@@ -97,7 +97,6 @@ class OfferTest < ActiveSupport::TestCase
   def test_can_be_orphaned_by_a_user
     @user.destroy
     @offer.reload
-
 
     assert_nil(@offer.user)
     assert_nil(@offer.user_id)

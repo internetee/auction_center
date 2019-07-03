@@ -40,8 +40,8 @@ class ResultCreatorTest < ActiveSupport::TestCase
     assert_equal(false, result.awaiting_payment?)
     assert_equal(true, result.no_bids?)
     assert_equal(@auction_without_offers, result.auction)
-    refute(result.user)
-    refute(result.invoice)
+    assert_not(result.user)
+    assert_not(result.invoice)
   end
 
   def test_result_is_created_even_after_a_user_is_deleted
@@ -93,7 +93,7 @@ class ResultCreatorTest < ActiveSupport::TestCase
     result_creator = ResultCreator.new(@auction_with_offers.id)
     result_creator.call
 
-    refute(ActionMailer::Base.deliveries.empty?)
+    assert_not(ActionMailer::Base.deliveries.empty?)
     last_email = ActionMailer::Base.deliveries.last
 
     assert_equal('Bid for the with-offers.test domain was unsuccessful', last_email.subject)
@@ -104,7 +104,7 @@ class ResultCreatorTest < ActiveSupport::TestCase
     result_creator = ResultCreator.new(@auction_with_offers.id)
     result_creator.call
 
-    refute(ActionMailer::Base.deliveries.empty?)
+    assert_not(ActionMailer::Base.deliveries.empty?)
     last_email = ActionMailer::Base.deliveries.first
 
     assert_equal('Bid for the with-offers.test domain was successful', last_email.subject)

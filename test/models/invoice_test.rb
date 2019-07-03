@@ -30,7 +30,7 @@ class InvoiceTest < ActiveSupport::TestCase
 
   def test_required_fields
     invoice = Invoice.new
-    refute(invoice.valid?)
+    assert_not(invoice.valid?)
 
     assert_equal(['must exist'], invoice.errors[:result], invoice.errors.full_messages)
     assert_equal(['must exist'], invoice.errors[:billing_profile], invoice.errors.full_messages)
@@ -52,25 +52,25 @@ class InvoiceTest < ActiveSupport::TestCase
     invoice = prefill_invoice
     invoice.cents = 10.00
 
-    refute(invoice.valid?)
+    assert_not(invoice.valid?)
 
-    assert_equal(["must be an integer"], invoice.errors[:cents])
+    assert_equal(['must be an integer'], invoice.errors[:cents])
   end
 
   def test_filename
     assert_match(/invoice-no-\d+/, @payable_invoice.filename)
 
     invoice = prefill_invoice
-    refute(invoice.filename)
+    assert_not(invoice.filename)
   end
 
   def test_cents_must_be_positive
     invoice = prefill_invoice
     invoice.cents = -1000
 
-    refute(invoice.valid?)
+    assert_not(invoice.valid?)
 
-    assert_equal(["must be greater than 0"], invoice.errors[:cents])
+    assert_equal(['must be greater than 0'], invoice.errors[:cents])
   end
 
   def test_user_must_be_the_same_as_the_one_on_billing_or_nil
@@ -79,14 +79,14 @@ class InvoiceTest < ActiveSupport::TestCase
     invoice.billing_profile = @orphan_billing_profile
     invoice.user = @user
 
-    refute(invoice.valid?)
+    assert_not(invoice.valid?)
     assert_equal(['must belong to the same user as invoice'], invoice.errors[:billing_profile])
   end
 
   def test_user_id_must_be_present_on_creation
     invoice = prefill_invoice
     invoice.user = nil
-    refute(invoice.valid?(:create))
+    assert_not(invoice.valid?(:create))
 
     invoice.user = @user
     assert(invoice.valid?(:create))
@@ -106,13 +106,13 @@ class InvoiceTest < ActiveSupport::TestCase
   def test_paid_at_must_be_present_when_status_is_paid
     @payable_invoice.status = :paid
 
-    refute(@payable_invoice.valid?)
+    assert_not(@payable_invoice.valid?)
     assert_equal(["can't be blank"], @payable_invoice.errors[:paid_at])
   end
 
   def test_create_from_result_only_works_when_result_exists_and_is_sold
     assert_raises(Errors::ResultNotFound) do
-      Invoice.create_from_result("foo")
+      Invoice.create_from_result('foo')
     end
 
     assert_raises(Errors::ResultNotSold) do
@@ -125,7 +125,7 @@ class InvoiceTest < ActiveSupport::TestCase
   end
 
   def test_mark_as_paid_at
-    time = Time.parse('2010-07-06 10:30 +0000')
+    time = Time.parse('2010-07-06 10:30 +0000').in_time_zone
     @payable_invoice.mark_as_paid_at(time)
 
     assert(@payable_invoice.paid?)
@@ -135,18 +135,18 @@ class InvoiceTest < ActiveSupport::TestCase
   end
 
   def test_mark_as_paid_populates_vat_rate_and_total_amount
-    time = Time.parse('2010-07-06 10:30 +0000')
+    time = Time.parse('2010-07-06 10:30 +0000').in_time_zone
     @payable_invoice.mark_as_paid_at(time)
     @payable_invoice.reload
 
     assert(@payable_invoice.paid?)
-    assert_equal(BigDecimal.new("0.0"), @payable_invoice.vat_rate)
-    assert_equal(BigDecimal.new("10.0"), @payable_invoice.total_amount)
+    assert_equal(BigDecimal('0.0'), @payable_invoice.vat_rate)
+    assert_equal(BigDecimal('10.0'), @payable_invoice.total_amount)
   end
 
   def test_invoice_items
     item = InvoiceItem.new(cents: 1200, name: :test_item)
-    @payable_invoice.items =[item]
+    @payable_invoice.items = [item]
 
     assert_equal([item], @payable_invoice.items)
   end
@@ -156,7 +156,7 @@ class InvoiceTest < ActiveSupport::TestCase
     assert_equal("Invoice no. #{expected_number}", @payable_invoice.title)
 
     new_invoice = Invoice.new
-    refute(new_invoice.title)
+    assert_not(new_invoice.title)
   end
 
   def test_payment_reminder_scope_accepts_an_argument

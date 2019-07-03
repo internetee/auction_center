@@ -33,12 +33,12 @@ class EmailConfirmationsTest < ApplicationSystemTestCase
     assert_equal('Confirmation instructions', last_email.subject)
     assert_equal(['new-user@auction.test'], last_email.to)
 
-    url = last_email.body.match(/sessions\/confirmation\?confirmation_token=[A-z0-9\-]+/)
+    url = last_email.body.match(%r{sessions/confirmation\?confirmation_token=[A-z0-9\-]+})
 
     visit(url)
 
     assert(page.has_css?('div.notice', text: 'Your email address has been successfully confirmed.'))
-    assert_current_path(/users\/[A-z0-9-]+/)
+    assert_current_path(%r{users/[A-z0-9-]+})
   end
 
   def test_you_need_to_confirm_email_within_three_days
@@ -63,7 +63,7 @@ class EmailConfirmationsTest < ApplicationSystemTestCase
     user = User.find_by(email: 'new-user@auction.test')
     user.update!(confirmation_sent_at: Date.today - 10.days)
 
-    url = last_email.body.match(/sessions\/confirmation\?confirmation_token=[A-z0-9\-]+/)
+    url = last_email.body.match(%r{sessions/confirmation\?confirmation_token=[A-z0-9\-]+})
     visit(url)
 
     assert(page.has_text?('Email needs to be confirmed within 3 days, please request a new one'))

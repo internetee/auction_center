@@ -26,8 +26,8 @@ class AdminUsersListTest < ApplicationSystemTestCase
   def test_search_by_email
     visit admin_users_path
 
-    fill_in('email', with: "omniauth@auction")
-    find(:css, "i.arrow.right.icon").click
+    fill_in('email', with: 'omniauth@auction')
+    find(:css, 'i.arrow.right.icon').click
 
     assert(page.has_link?('TARA USER'))
     assert(page.has_text?('Search results are limited to first 20 hits.'))
@@ -65,11 +65,11 @@ class AdminUsersListTest < ApplicationSystemTestCase
 
     errors_list = page.find('#errors').all('li')
     assert_equal(7, errors_list.size)
-    errors_array = errors_list.collect { |i| i.text }
+    errors_array = errors_list.collect(&:text)
 
     expected_errors = ["Email can't be blank", "Password can't be blank",
-                       "Mobile phone can't be blank", "Terms and conditions must be accepted",
-                       "Mobile phone is invalid", "Given names can't be blank",
+                       "Mobile phone can't be blank", 'Terms and conditions must be accepted',
+                       'Mobile phone is invalid', "Given names can't be blank",
                        "Surname can't be blank"]
 
     assert_equal(errors_array.to_set, expected_errors.to_set)

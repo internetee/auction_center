@@ -9,7 +9,7 @@ class PhoneConfirmationsTest < ApplicationSystemTestCase
     enable_phone_confirmation
 
     @valid_auction_with_no_offers = auctions(:valid_without_offers)
-    travel_to Time.parse('2010-07-05 10:31 +0000')
+    travel_to Time.parse('2010-07-05 10:31 +0000').in_time_zone
 
     sign_in(@user)
   end
@@ -28,7 +28,8 @@ class PhoneConfirmationsTest < ApplicationSystemTestCase
       click_link_or_button('Submit')
       assert(
         page.has_css?('div.notice',
-                      text: 'Your phone number has been confirmed. You can now submit offers.'))
+                      text: 'Your phone number has been confirmed. You can now submit offers.')
+      )
     end
   end
 
@@ -69,6 +70,6 @@ class PhoneConfirmationsTest < ApplicationSystemTestCase
 
   def enable_phone_confirmation
     setting = settings(:require_phone_confirmation)
-    setting.update!(value: "true")
+    setting.update!(value: 'true')
   end
 end

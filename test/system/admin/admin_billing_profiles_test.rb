@@ -28,9 +28,9 @@ class AdminBillingProfilesTest < ApplicationSystemTestCase
     orphan = billing_profiles(:orphaned)
     visit admin_billing_profile_path(orphan)
 
-    assert_text("Orphaned")
-    assert_text("Orphan")
-    assert_text("NW1 6XE")
-    assert_text("London")
+    assert_text('Orphaned')
+    assert_text('Orphan')
+    assert_text('NW1 6XE')
+    assert_text('London')
   end
 end

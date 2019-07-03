@@ -4,7 +4,7 @@ class DomainRegistrationCheckJobTest < ActiveJob::TestCase
   def setup
     super
 
-    travel_to Time.parse('2010-07-05 10:30 +0000')
+    travel_to Time.parse('2010-07-05 10:30 +0000').in_time_zone
     @result = results(:expired_participant)
     @result.update!(status: Result.statuses[:payment_received])
   end
@@ -18,8 +18,8 @@ class DomainRegistrationCheckJobTest < ActiveJob::TestCase
   def test_perform_now
     mock = Minitest::Mock.new
     mock.expect(:call, @result)
-    body = { "id" => @result.auction.remote_id, "domain" => 'expired.test',
-            "status" => "domain_registered" }
+    body = { 'id' => @result.auction.remote_id, 'domain' => 'expired.test',
+             'status' => 'domain_registered' }
 
     response = Minitest::Mock.new
 
@@ -43,7 +43,7 @@ class DomainRegistrationCheckJobTest < ActiveJob::TestCase
       assert(DomainRegistrationCheckJob.needs_to_run?)
 
       @result.update!(status: Result.statuses[:awaiting_payment])
-      refute(DomainRegistrationCheckJob.needs_to_run?)
+      assert_not(DomainRegistrationCheckJob.needs_to_run?)
     end
   end
 end

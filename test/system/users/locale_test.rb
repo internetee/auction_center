@@ -1,4 +1,3 @@
-# encoding: utf-8
 require 'application_system_test_case'
 
 class LocaleTest < ApplicationSystemTestCase
@@ -17,7 +16,7 @@ class LocaleTest < ApplicationSystemTestCase
 
     click_link('Eesti keeles')
     assert_text('Oksjonil olevad domeenid')
-    refute(page.has_link?('Eesti keeles'))
+    assert_not(page.has_link?('Eesti keeles'))
   end
 
   def test_locale_are_carried_over_on_user_creation
