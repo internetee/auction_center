@@ -12,6 +12,7 @@ class AdminAuctionsTest < ApplicationSystemTestCase
     @auction = auctions(:valid_with_offers)
     @auction_without_offers = auctions(:valid_without_offers)
     @expired_auction = auctions(:expired)
+    @orphaned_auction = auctions(:orphaned)
 
     sign_in(@user)
   end
