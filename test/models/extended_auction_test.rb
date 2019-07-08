@@ -4,11 +4,7 @@ class ExtendedAuctionTest < ActiveSupport::TestCase
   def setup
     super
 
-    @expired_auction = auctions(:expired)
     @persisted_auction = auctions(:valid_with_offers)
-    @other_persisted_auction = auctions(:valid_without_offers)
-    @orphaned_auction = auctions(:orphaned)
-    @with_invoice_auction = auctions(:with_invoice)
     travel_to Time.parse('2010-07-05 10:30 +0000').in_time_zone
   end
 

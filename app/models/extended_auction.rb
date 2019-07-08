@@ -45,7 +45,7 @@ class ExtendedAuction
   # Returns the dataset as auction objects, and then leverages the way in which ActiveRecord
   # infers methods from database schema. As a result, you can use the following:
   #
-  # auction = AdminAuctionDecorator.with_highest_offers.first
+  # auction = ExtendedAuction.with_highest_offers.first
   # auction.highest_offer_uuid => "f4c8bb6b-00f2-4bb0-a097-4a5265fd1c9c"
   # auction.highest_offer_id => 156
   def self.with_highest_offers_query

@@ -28,8 +28,8 @@ module Admin
     # GET /admin/auctions
     def index
       @collection = ExtendedAuction.with_highest_offers
-                                  .order(orderable_array)
-                                  .page(params[:page])
+                                   .order(orderable_array)
+                                   .page(params[:page])
 
       @auctions = @collection.map { |auction| ExtendedAuction.new(auction) }
     end
