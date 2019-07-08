@@ -2,7 +2,12 @@
 # Checks if the model exists, if it has the requested order column and returns a ordering query.
 # Accepts also a 'default' hash to return valid value in case the order is not valid.
 class Orderable
-  ORDERABLE_MODELS = %w[Auction Ban BillingProfile Invoice Result User].freeze
+  # An orderable class does not have to be an ActiveRecord, but it needs to implement the following
+  # class methods:
+  # column_names => Should return an array of strings.
+  # table_name => Should return a string
+  ORDERABLE_CLASSES = %w[Auction AuctionOfferComposite Ban BillingProfile Invoice
+                        Result User].freeze
   ALLOWED_DIRECTIONS = ['desc', :desc, :DESC, 'DESC', 'asc', :asc, :ASC, 'ASC'].freeze
   ALLOWED_NULLS = ['first', :first, :FIRST, 'FIRST', 'last', :last, :LAST, 'LAST'].freeze
   DEFAULT_NULLS_POSITION = 'LAST'.freeze
@@ -43,7 +48,7 @@ class Orderable
   # Return model class if it is allowed to be ordered by or nil for everything else. Works
   # around uninitialized constant errors.
   def model
-    singular_camel_case_model.constantize if ORDERABLE_MODELS.include?(singular_camel_case_model)
+    singular_camel_case_model.constantize if ORDERABLE_CLASSES.include?(singular_camel_case_model)
   end
 
   # Accepts either form:
@@ -65,7 +70,7 @@ class Orderable
   end
 
   def model_is_orderable
-    return if ORDERABLE_MODELS.include?(singular_camel_case_model)
+    return if ORDERABLE_CLASSES.include?(singular_camel_case_model)
 
     errors.add(:model, I18n.t('orderable.errors.not_orderable'))
   end
