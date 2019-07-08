@@ -86,6 +86,8 @@ et:
   views:
     pagination:
       truncate: "&hellip;"
+      next: "Järgmine"
+      previous: "Eelmine"
 
   recaptcha:
     errors:
