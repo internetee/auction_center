@@ -1,5 +1,5 @@
 # Query decorator for Auctions. Implements Orderable interaface
-class ExtendedAuction
+class AdminAuctionDecorator
   attr_reader :auction
 
   def self.column_names
