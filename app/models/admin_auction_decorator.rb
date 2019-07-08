@@ -10,7 +10,7 @@ class AdminAuctionDecorator
   end
 
   def self.table_name
-    'auctions'
+    Auction.table_name
   end
 
   # Any object of this class works properly only with the new query with additional fields.

@@ -14,6 +14,15 @@ class AdminAuctionDecoratorTest < ActiveSupport::TestCase
     travel_back
   end
 
+  def test_class_methods_do_not_leak_to_auction_class
+    assert(AdminAuctionDecorator.column_names.include?('highest_offer_cents'))
+    assert_not(Auction.column_names.include?('highest_offer_cents'))
+  end
+
+  def test_table_names_are_the_same_as_auction
+    assert_equal(AdminAuctionDecorator.table_name, Auction.table_name)
+  end
+
   def test_with_highest_offers_scope_returns_a_relation_of_auctions
     auctions = AdminAuctionDecorator.with_highest_offers
 

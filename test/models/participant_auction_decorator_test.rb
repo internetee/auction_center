@@ -15,6 +15,15 @@ class ParticipantAuctionDecoratorTest < ActiveSupport::TestCase
     travel_back
   end
 
+  def test_class_methods_do_not_leak_to_auction_class
+    assert(ParticipantAuctionDecorator.column_names.include?('users_offer_cents'))
+    assert_not(Auction.column_names.include?('user_offers_cents'))
+  end
+
+  def test_table_names_are_the_same_as_auction
+    assert_equal(ParticipantAuctionDecorator.table_name, Auction.table_name)
+  end
+
   def test_with_highest_offers_scope_returns_a_relation_of_auctions
     auctions = ParticipantAuctionDecorator.with_user_offers(@user)
 
