@@ -6,7 +6,7 @@ class Orderable
   # class methods:
   # column_names => Should return an array of strings.
   # table_name => Should return a string
-  ORDERABLE_CLASSES = %w[Auction AuctionOfferComposite Ban BillingProfile Invoice
+  ORDERABLE_CLASSES = %w[Auction ExtendedAuction Ban BillingProfile Invoice
                         Result User].freeze
   ALLOWED_DIRECTIONS = ['desc', :desc, :DESC, 'DESC', 'asc', :asc, :ASC, 'ASC'].freeze
   ALLOWED_NULLS = ['first', :first, :FIRST, 'FIRST', 'last', :last, :LAST, 'LAST'].freeze
