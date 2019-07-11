@@ -1,4 +1,4 @@
-# Query decorator for Auctions. Implements Orderable interaface
+# Query decorator for Auctions. Implements Orderable interface
 class ParticipantAuctionDecorator
   attr_reader :auction
 
@@ -14,7 +14,7 @@ class ParticipantAuctionDecorator
   end
 
   # Any object of this class works properly only with the new query with additional fields.
-  # Passing a traditional auction object will produce errors on #highest_price as well as
+  # Passing a traditional auction object will produce errors on #users_price as well as
   # other delegate methods.
   def initialize(auction_with_additional_fields)
     @auction = auction_with_additional_fields

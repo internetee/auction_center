@@ -1,4 +1,4 @@
-# Query decorator for Auctions. Implements Orderable interaface
+# Query decorator for Auctions. Implements Orderable interface
 class AdminAuctionDecorator
   attr_reader :auction
 
