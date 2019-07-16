@@ -6,3 +6,6 @@ et:
 
       show:
         title: "Billing profile"
+
+      search:
+        title: "Billing profile search"

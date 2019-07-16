@@ -82,6 +82,7 @@ en:
 
   search_by_domain_name: "Search by domain name"
   search_by_email: "Search by email"
+  search_by_name: "Search by name"
   search_limit: "Search results are limited to first %{limit} hits."
 
   time:

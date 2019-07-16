@@ -12,9 +12,33 @@ module Admin
                                         .page(params[:page])
     end
 
+    # GET /admin/billing_profiles/search
+    def search
+      search_string = search_params[:search_string]
+
+      @billing_profiles = BillingProfile.accessible_by(current_ability)
+                                        .joins(:user)
+                                        .includes(:user)
+                                        .where(
+                                          'billing_profiles.name ILIKE ? OR ' \
+                                          'users.email ILIKE ? OR users.surname ILIKE ?',
+                                          "#{search_string}%",
+                                          "#{search_string}%",
+                                          "#{search_string}%"
+                                        )
+                                        .order(orderable_array)
+                                        .page(1)
+    end
+
     # GET /admin/billing_profiles/12
     def show
       @billing_profile = BillingProfile.accessible_by(current_ability).find(params[:id])
+    end
+
+    private
+
+    def search_params
+      params.permit(:search_string)
     end
 
     def authorize_user

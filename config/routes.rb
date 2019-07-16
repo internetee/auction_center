@@ -23,7 +23,7 @@ Rails.application.routes.draw do
     resources :auctions, except: disallowed_auction_actions, concerns: [:auditable, :searchable]
 
     resources :bans, except: %i[new show edit update], concerns: [:auditable]
-    resources :billing_profiles, only: %i[index show], concerns: [:auditable]
+    resources :billing_profiles, only: %i[index show], concerns: [:auditable, :searchable]
     resources :invoices, except: %i[new create destroy], concerns: [:auditable, :searchable] do
       member do
         get "download"
