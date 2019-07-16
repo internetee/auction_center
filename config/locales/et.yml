@@ -66,6 +66,7 @@ et:
   not_accepted: "Tagasi lükatud"
   details: "Detailid"
 
+  search: "Otsi"
   search_by_domain_name: "Otsi domeeni nime järgi"
   search_by_email: "Otsi e-posti aadressi järgil"
   search_limit: "Otsingu tulemusena kuvatakse %{limit} esimest tulemust."
