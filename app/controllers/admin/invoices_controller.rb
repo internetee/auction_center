@@ -22,11 +22,13 @@ module Admin
 
     # GET /admin/invoices/search
     def search
-      email = search_params[:email]
+      search_string = search_params[:search_string]
 
       @invoices = Invoice.joins(:user)
                          .includes(:billing_profile)
-                         .where('users.email ILIKE ?', "%#{email}%")
+                         .where('users.email ILIKE ? OR users.surname ILIKE ?',
+                                "%#{search_string}%",
+                                "%#{search_string}%")
                          .accessible_by(current_ability)
                          .order(orderable_array)
                          .page(1)
@@ -91,7 +93,7 @@ module Admin
     end
 
     def search_params
-      params.permit(:email)
+      params.permit(:search_string)
     end
 
     def authorize_user
