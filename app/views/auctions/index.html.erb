@@ -47,7 +47,9 @@
                         <% @auctions.each do |auction| %>
                             <tr class="auctions-table-row">
                                 <td class="auction-domain-name monospace">
-                                    <%= link_to auction.domain_name, auction_path(auction.uuid) %>
+                                    <%= link_to auction_path(auction.uuid) do %>
+                                        <%= domain_name_with_embedded_colors(auction.domain_name) %>
+                                    <% end %>
                                 </td>
                                 <td><%= I18n.l(auction.ends_at) %></td>
                                 <td><%= auction.current_price_from_user(current_user) %></td>

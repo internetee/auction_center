@@ -7,5 +7,5 @@ payable:
 orphaned:
   invoice: orphaned
   cents: 1000
-  name: "Domain transfer code for orphaned.test (auction)."
+  name: "Domain transfer code for orphaned123.test (auction)."
   uuid: "92f2d552-4270-4d08-8687-b332432c872f"
