@@ -55,7 +55,7 @@
                         <% @auctions.each do |auction| %>
                             <tr class="auctions-table-row">
                                 <td class="auction-domain-name monospace">
-                                    <%= link_to(admin_auction_path(auction)) do %>
+                                    <%= link_to(admin_auction_path(auction.id)) do %>
                                         <%= domain_name_with_embedded_colors(auction.domain_name) %>
                                     <% end %>
                                 </td>
