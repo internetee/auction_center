@@ -1,50 +1,50 @@
 body {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility !important;
-  &.u-menu-open{
-    overflow: hidden;
-    height: 100vh;
-  }
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility !important;
+    &.u-menu-open{
+        overflow: hidden;
+        height: 100vh;
+    }
 }
 
 .app-wrapper {
-  position: relative;
-  left: 0;
-  transition: left .5s ease-in-out;
-  &:after {
-    content: '';
-    display: block;
-    position: fixed;
-    top: 0;
+    position: relative;
     left: 0;
-    width: 100vw;
-    height: 100vw;
-    min-height: 100vh;
-    background: $darkblue;
-    opacity: 0;
-    visibility: hidden;
-    transition: all .5s ease-in-out;
-    z-index: 99998;
-  }
-  .u-menu-open & {
-    left: -320px;
-    pointer-events: none;
-    user-select: none;
+    transition: left .5s ease-in-out;
     &:after {
-      opacity: .5;
-      visibility: visible;
+        content: '';
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vw;
+        min-height: 100vh;
+        background: $darkblue;
+        opacity: 0;
+        visibility: hidden;
+        transition: all .5s ease-in-out;
+        z-index: 99998;
     }
-  }
+    .u-menu-open & {
+        left: -320px;
+        pointer-events: none;
+        user-select: none;
+        &:after {
+            opacity: .5;
+            visibility: visible;
+        }
+    }
 }
 
 a {
-  color: $base-blue;
-  text-decoration: none;
-  transition: color .3s ease-in-out;
-  img {
-    border-style: none;
-  }
+    color: $base-blue;
+    text-decoration: none;
+    transition: color .3s ease-in-out;
+    img {
+        border-style: none;
+    }
 }
 
 h1,
@@ -54,71 +54,75 @@ h4,
 h5,
 h6,
 strong {
-  font-weight: 900;
+    font-weight: 900;
 }
 
 .monospace {
-  font-family: $monospace-font-family;
+    font-family: $monospace-font-family;
+}
+
+.number-in-domain-name {
+    color: $darkblue;
 }
 
 ::-webkit-input-placeholder {
-  color: $black;
+    color: $black;
 }
 ::-moz-placeholder {
-  color: $black;
+    color: $black;
 }
 :-ms-input-placeholder {
-  color: $black;
+    color: $black;
 }
 :-moz-placeholder {
-  color: $black;
+    color: $black;
 }
 
 .clearfix {
-  zoom: 1;
-  clear: both;
-
-  &:before,
-  &:after {
-    content: "";
-    display: table;
-  }
-
-  &:after {
+    zoom: 1;
     clear: both;
-  }
+
+    &:before,
+    &:after {
+        content: "";
+        display: table;
+    }
+
+    &:after {
+        clear: both;
+    }
 }
 
 .u-invisible {
-  position: absolute;
-  top: 0;
-  left: -99999px;
-  visibility: hidden;
-  opacity: 0;
-  width: 0;
-  height: 0;
+    position: absolute;
+    top: 0;
+    left: -99999px;
+    visibility: hidden;
+    opacity: 0;
+    width: 0;
+    height: 0;
 }
 .u-container {
-  @include container;
+    @include container;
 }
 
 .loading {
-  padding: 80px 0;
-  .ui.loader {
-    position: static;
-    margin: 0 auto;
-    font-size: 40px;
-    transform: translateX(0) translateY(0);
-  }
-  h2 {
-    margin-top: 20px;
-  }
+    padding: 80px 0;
+    .ui.loader {
+        position: static;
+        margin: 0 auto;
+        font-size: 40px;
+        transform: translateX(0) translateY(0);
+    }
+    h2 {
+        margin-top: 20px;
+    }
 }
 
 .padded-block {
-  &.ui.segment {
-    margin: 40px auto 60px auto;
-  }
+    &.ui.segment {
+        margin: 40px auto 60px auto;
+    }
 }
 
 .margin-block {

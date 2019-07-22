@@ -1,6 +1,11 @@
 // Fonts
+@font-face {
+    font-family: 'DejaVu Sans Mono';
+    src: url('../fonts/dejavu-sans/deja-vu-sans-mono.woff');
+}
+
 $font-primary: 'Raleway', sans-serif;
-$monospace-font-family: monospace;
+$monospace-font-family: 'DejaVu Sans Mono', monospace;
 $base-font-size: 14px;
 $base-line-height: 20px;
 
