@@ -50,7 +50,7 @@ class SummaryReportTest < ActiveSupport::TestCase
     assert_equal([{ 'domain_name' => 'with-invoice.test', 'cents' => 10_000,
                     'result_id' => @with_invoice.id },
                   { 'domain_name' => 'expired.test', 'cents' => 1000, 'result_id' => @result.id },
-                  { 'domain_name' => 'orphaned.test', 'cents' => 1000,
+                  { 'domain_name' => 'orphaned123.test', 'cents' => 1000,
                     'result_id' => @orphaned.id }].to_set,
                  @summary.winning_offers.to_set)
   end
