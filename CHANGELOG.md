@@ -1,5 +1,6 @@
 23.07.2019
 * Running Rubocop for test files [#297](https://github.com/internetee/auction_center/pull/297)
+* Upgraded Cancan gem to v3.0.1 [#300](https://github.com/internetee/auction_center/pull/300)
 
 22.07.2019
 * DejaVu Mono font and colorcoding for numbers in domain names to improve readability [#294](https://github.com/internetee/auction_center/issues/294)
