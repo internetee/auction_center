@@ -21,6 +21,10 @@
             border-color: transparent;
             box-shadow: 0 0 10px 0 rgba($true-black, 0.05);
             width: 30em;
+
+	    @include max-screen(767px) {
+		width: 22em;
+	    }
         }
 
         input:focus {
