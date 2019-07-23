@@ -25,8 +25,13 @@ module Admin
       search_string = search_params[:search_string]
 
       @invoices = Invoice.joins(:user)
-                         .includes(:billing_profile)
-                         .where('users.email ILIKE ? OR users.surname ILIKE ?',
+                         .joins(:billing_profile)
+                         .joins(:invoice_items)
+                         .where('billing_profiles.name ILIKE ? OR ' \
+                                'users.email ILIKE ? OR users.surname ILIKE ? OR ' \
+                                'invoice_items.name ILIKE ?',
+                                "%#{search_string}%",
+                                "%#{search_string}%",
                                 "%#{search_string}%",
                                 "%#{search_string}%")
                          .accessible_by(current_ability)
