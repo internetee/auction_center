@@ -10,7 +10,6 @@ class OmnimessageTest < ActiveSupport::TestCase
     @text = 'Your text sms'
   end
 
-
   def test_initialization_requires_recipent_text_and_channel
     instance = Messente::Omnimessage.new(@recipient, @text)
 
@@ -35,7 +34,7 @@ class OmnimessageTest < ActiveSupport::TestCase
 
   def test_body_is_a_json_object
     instance = Messente::Omnimessage.new(@recipient, @text)
-    expected_body = { to: @recipient, messages: [channel: 'sms', text: @text]}.to_json
+    expected_body = { to: @recipient, messages: [channel: 'sms', text: @text] }.to_json
 
     assert_equal(expected_body, instance.body)
   end
@@ -45,11 +44,11 @@ class OmnimessageTest < ActiveSupport::TestCase
 
     body = {
       errors: [{
-        code:"103",
-        detail: "Unauthorized",
+        code: '103',
+        detail: 'Unauthorized',
         source: nil,
-        title:"Unauthorized"
-      }]
+        title: 'Unauthorized',
+      }],
     }
 
     response = Minitest::Mock.new
@@ -72,9 +71,10 @@ class OmnimessageTest < ActiveSupport::TestCase
       messages: [{
         channel: 'sms',
         message_id: '02a632d6-9c7c-436e-8b9c-ea3ef636724c',
-        sender: '+37255000002'}],
+        sender: '+37255000002',
+      }],
       omnimessage_id: '75cbf2b6-74e8-4c75-8093-f1041587cd04',
-      to: '+37255000001'
+      to: '+37255000001',
     }
 
     response = Minitest::Mock.new

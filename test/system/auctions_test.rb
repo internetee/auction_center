@@ -6,7 +6,7 @@ class AuctionsTest < ApplicationSystemTestCase
   def setup
     super
 
-    travel_to Time.parse('2010-07-05 10:30 +0000')
+    travel_to Time.parse('2010-07-05 10:30 +0000').in_time_zone
     @auction = auctions(:valid_with_offers)
     @other_auction = auctions(:valid_without_offers)
     @expired_auction = auctions(:expired)
@@ -45,8 +45,8 @@ class AuctionsTest < ApplicationSystemTestCase
     travel_back
 
     visit('/')
-    fill_in('domain_name', with: "w")
-    find(:css, "i.arrow.right.icon").click
+    fill_in('domain_name', with: 'w')
+    find(:css, 'i.arrow.right.icon').click
 
     assert(page.has_link?('with-invoice.test'))
     assert(page.has_link?('with-offers.test'))
@@ -57,11 +57,11 @@ class AuctionsTest < ApplicationSystemTestCase
     travel_back
 
     visit('/')
-    fill_in('domain_name', with: ".test")
-    find(:css, "i.arrow.right.icon").click
+    fill_in('domain_name', with: '.test')
+    find(:css, 'i.arrow.right.icon').click
 
-    refute(page.has_link?('with-invoice.test'))
-    refute(page.has_link?('with-offers.test'))
+    assert_not(page.has_link?('with-invoice.test'))
+    assert_not(page.has_link?('with-offers.test'))
   end
 
   def test_auctions_index_contains_a_link_to_terms_and_conditions
@@ -78,7 +78,7 @@ class AuctionsTest < ApplicationSystemTestCase
   def test_auctions_index_does_not_contain_auctions_that_are_finished
     visit('/')
 
-    refute(page.has_link?('expired.test'))
+    assert_not(page.has_link?('expired.test'))
   end
 
   def test_show_page_for_finished_auctions_still_exists

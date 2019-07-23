@@ -1,4 +1,3 @@
-# encoding: UTF-8
 require 'application_system_test_case'
 
 class AdminResultsTest < ApplicationSystemTestCase
@@ -9,7 +8,7 @@ class AdminResultsTest < ApplicationSystemTestCase
 
     @administrator = users(:administrator)
     @result = results(:expired_participant)
-    @orphaned_result =results(:orphaned)
+    @orphaned_result = results(:orphaned)
     @offer = offers(:expired_offer)
     sign_in(@administrator)
   end
@@ -54,8 +53,8 @@ class AdminResultsTest < ApplicationSystemTestCase
   def test_search_by_domain_name
     visit(admin_results_path)
 
-    fill_in('domain_name', with: "expired")
-    find(:css, "i.arrow.right.icon").click
+    fill_in('domain_name', with: 'expired')
+    find(:css, 'i.arrow.right.icon').click
 
     assert(page.has_link?('expired.test'))
     assert(page.has_text?('Search results are limited to first 20 hits.'))

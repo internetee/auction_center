@@ -4,7 +4,7 @@ class BillingProfileAuditTest < ActiveSupport::TestCase
   def setup
     super
 
-    travel_to Time.parse('2010-07-05 10:30 +0000')
+    travel_to Time.parse('2010-07-05 10:30 +0000').in_time_zone
     @billing_profile = billing_profiles(:private_person)
     @user = users(:participant)
   end
@@ -17,12 +17,12 @@ class BillingProfileAuditTest < ActiveSupport::TestCase
 
   def test_creating_a_billing_profile_creates_a_history_record
     billing_profile = BillingProfile.new(user: @user,
-                                         name: "New Billing Profile",
-                                         vat_code: "1234567890",
-                                         street: "New Street 11",
-                                         city: "London",
-                                         postal_code: "NW1 6XE",
-                                         country_code: "GB")
+                                         name: 'New Billing Profile',
+                                         vat_code: '1234567890',
+                                         street: 'New Street 11',
+                                         city: 'London',
+                                         postal_code: 'NW1 6XE',
+                                         country_code: 'GB')
     billing_profile.save
 
     assert(audit_record = Audit::BillingProfile.find_by(object_id: billing_profile.id, action: 'INSERT'))

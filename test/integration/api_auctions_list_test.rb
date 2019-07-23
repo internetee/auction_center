@@ -4,7 +4,7 @@ class ApiAuctionsListTest < ActionDispatch::IntegrationTest
   def setup
     super
 
-    travel_to Time.parse('2010-07-05 10:30 +0000')
+    travel_to Time.parse('2010-07-05 10:30 +0000').in_time_zone
   end
 
   def teardown
@@ -20,7 +20,7 @@ class ApiAuctionsListTest < ActionDispatch::IntegrationTest
     assert_equal('GET, OPTIONS', response.headers['Access-Control-Allow-Methods'])
     assert_equal('Origin, Content-Type, Accept, Authorization, Token, Auth-Token, Email, ' \
                  'X-User-Token, X-User-Email',
-               response.headers['Access-Control-Allow-Headers'])
+                 response.headers['Access-Control-Allow-Headers'])
     assert_equal('3600', response.headers['Access-Control-Max-Age'])
 
     # OPTIONS /auctions.json
@@ -29,7 +29,7 @@ class ApiAuctionsListTest < ActionDispatch::IntegrationTest
     assert_equal('GET, OPTIONS', response.headers['Access-Control-Allow-Methods'])
     assert_equal('Origin, Content-Type, Accept, Authorization, Token, Auth-Token, Email, ' \
                  'X-User-Token, X-User-Email',
-               response.headers['Access-Control-Allow-Headers'])
+                 response.headers['Access-Control-Allow-Headers'])
     assert_equal('3600', response.headers['Access-Control-Max-Age'])
 
     # GET /auctions
@@ -44,10 +44,10 @@ class ApiAuctionsListTest < ActionDispatch::IntegrationTest
     assert_equal(response_json.count, 4)
 
     response_json.each do |item|
-      assert(item.has_key?('domain_name'))
-      assert(item.has_key?('starts_at'))
-      assert(item.has_key?('ends_at'))
-      assert(item.has_key?('id'))
+      assert(item.key?('domain_name'))
+      assert(item.key?('starts_at'))
+      assert(item.key?('ends_at'))
+      assert(item.key?('id'))
     end
 
     expected_domains = ['with-offers.test', 'no-offers.test', 'with-invoice.test',

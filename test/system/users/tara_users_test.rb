@@ -1,4 +1,3 @@
-# encoding: utf-8
 require 'application_system_test_case'
 
 class TaraUsersTest < ApplicationSystemTestCase
@@ -14,8 +13,8 @@ class TaraUsersTest < ApplicationSystemTestCase
       'info' => {
         'first_name' => @user.given_names,
         'last_name' => @user.surname,
-        'name' => @user.uid
-      }
+        'name' => @user.uid,
+      },
     }
 
     @new_user_hash = {
@@ -25,7 +24,7 @@ class TaraUsersTest < ApplicationSystemTestCase
         'first_name' => 'User',
         'last_name' => 'OmniAuth',
         'name' => 'EE51007050604',
-      }
+      },
     }
   end
 
@@ -87,7 +86,7 @@ class TaraUsersTest < ApplicationSystemTestCase
   end
 
   def test_banned_user_can_see_the_ban_notification_for_one_domain
-    travel_to Time.parse('2010-07-05 10:31 +0000')
+    travel_to Time.parse('2010-07-05 10:31 +0000').in_time_zone
     valid_auction_with_no_offers = auctions(:valid_without_offers)
     Ban.create!(user: @user,
                 domain_name: valid_auction_with_no_offers.domain_name,
@@ -106,7 +105,7 @@ class TaraUsersTest < ApplicationSystemTestCase
   end
 
   def test_banned_user_can_see_the_ban_notification_for_many_domains
-    travel_to Time.parse('2010-07-05 10:31 +0000')
+    travel_to Time.parse('2010-07-05 10:31 +0000').in_time_zone
     Ban.create!(user: @user,
                 valid_from: Time.zone.today - 1, valid_until: Time.zone.today + 2)
 

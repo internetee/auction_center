@@ -25,23 +25,23 @@ class AdministratorAbilityTest < ActiveSupport::TestCase
     assert(@administrator_ability.can?(:read, Audit::Result))
     assert(@administrator_ability.can?(:read, Audit::PaymentOrder))
 
-    refute(@administrator_ability.can?(:create, Audit::Auction))
-    refute(@administrator_ability.can?(:create, Audit::BillingProfile))
-    refute(@administrator_ability.can?(:create, Audit::Ban))
-    refute(@administrator_ability.can?(:create, Audit::User))
-    refute(@administrator_ability.can?(:create, Audit::Setting))
-    refute(@administrator_ability.can?(:create, Audit::Invoice))
-    refute(@administrator_ability.can?(:create, Audit::InvoiceItem))
-    refute(@administrator_ability.can?(:create, Audit::Result))
-    refute(@administrator_ability.can?(:create, Audit::PaymentOrder))
+    assert_not(@administrator_ability.can?(:create, Audit::Auction))
+    assert_not(@administrator_ability.can?(:create, Audit::BillingProfile))
+    assert_not(@administrator_ability.can?(:create, Audit::Ban))
+    assert_not(@administrator_ability.can?(:create, Audit::User))
+    assert_not(@administrator_ability.can?(:create, Audit::Setting))
+    assert_not(@administrator_ability.can?(:create, Audit::Invoice))
+    assert_not(@administrator_ability.can?(:create, Audit::InvoiceItem))
+    assert_not(@administrator_ability.can?(:create, Audit::Result))
+    assert_not(@administrator_ability.can?(:create, Audit::PaymentOrder))
   end
 
   def test_administrator_can_edit_settings
     assert(@administrator_ability.can?(:read, Setting))
     assert(@administrator_ability.can?(:update, Setting))
 
-    refute(@administrator_ability.can?(:create, Setting))
-    refute(@administrator_ability.can?(:destroy, Setting))
+    assert_not(@administrator_ability.can?(:create, Setting))
+    assert_not(@administrator_ability.can?(:destroy, Setting))
   end
 
   def test_administrator_can_manage_auctions
@@ -49,7 +49,7 @@ class AdministratorAbilityTest < ActiveSupport::TestCase
   end
 
   def test_administrator_cannot_manage_offers
-    refute(@administrator_ability.can?(:manage, Offer))
+    assert_not(@administrator_ability.can?(:manage, Offer))
     assert(@administrator_ability.can?(:read, Offer))
   end
 
@@ -79,6 +79,6 @@ class AdministratorAbilityTest < ActiveSupport::TestCase
 
   def test_administrator_cannot_manage_phone_number_confirmations
     assert(@administrator_ability.can?(:manage, PhoneConfirmation.new(@administrator)))
-    refute(@administrator_ability.can?(:manage, PhoneConfirmation.new(@participant)))
+    assert_not(@administrator_ability.can?(:manage, PhoneConfirmation.new(@participant)))
   end
 end

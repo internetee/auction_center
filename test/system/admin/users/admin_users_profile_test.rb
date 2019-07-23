@@ -32,7 +32,7 @@ class AdminUsersProfileTest < ApplicationSystemTestCase
     visit edit_admin_user_path(@participant)
     fill_in('user[mobile_phone]', with: '+372 500')
     page.find('body').click # blur
-    refute(page.has_button?('Update'))
+    assert_not(page.has_button?('Update'))
 
     fill_in('user[mobile_phone]', with: '+37250006000')
     page.find('body').click # blur
@@ -55,7 +55,7 @@ class AdminUsersProfileTest < ApplicationSystemTestCase
     fill_in('user[mobile_phone]', with: '+372 11111111111111111111111117 1000')
     page.find('body').click # blur
 
-    refute(page.has_button?('Submit'))
+    assert_not(page.has_button?('Submit'))
   end
 
   def test_administrator_can_delete_user
@@ -72,6 +72,6 @@ class AdminUsersProfileTest < ApplicationSystemTestCase
     billing_profile = billing_profiles(:company)
     visit admin_user_path(@participant)
 
-    assert(page.has_link?("ACME Inc.", href: admin_billing_profile_path(billing_profile)))
+    assert(page.has_link?('ACME Inc.', href: admin_billing_profile_path(billing_profile)))
   end
 end

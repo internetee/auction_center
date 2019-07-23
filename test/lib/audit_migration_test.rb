@@ -8,7 +8,6 @@ class AuditMigrationTest < ActiveSupport::TestCase
 
   def test_raw_sql_for_create_table
     assert_equal(expected_create_table, @instance.create_table)
-
   end
 
   def test_raw_sql_for_create_trigger

@@ -1,4 +1,3 @@
-# encoding: UTF-8
 require 'test_helper'
 
 # https://www.lhv.ee/images/docs/Bank_Link_Technical_Specification-EN.pdf
@@ -8,7 +7,7 @@ class PaymentOrderEstonianBankLinkTest < ActiveSupport::TestCase
   def setup
     super
 
-    travel_to Time.parse('2010-07-05 10:30 +0000')
+    travel_to Time.parse('2010-07-05 10:30 +0000').in_time_zone
     @payable_invoice = invoices(:payable)
     @orphaned_invoice = invoices(:orphaned)
     @user = users(:participant)
@@ -19,7 +18,6 @@ class PaymentOrderEstonianBankLinkTest < ActiveSupport::TestCase
     create_completed_bank_link
     create_cancelled_bank_link
   end
-
 
   def teardown
     super
@@ -46,7 +44,7 @@ class PaymentOrderEstonianBankLinkTest < ActiveSupport::TestCase
       'VK_DATETIME': '2010-07-05T10:30:00+0000',
       'VK_MAC': 'zdQUhEzozyt6IVgB5+8oTxm1lj2xswIKYI/htHRVZ/TLfi4fa3boBi1Jk4SpY3dPaDMsxHqlnhwv913VVgvpwJZW0YEN1o4pPztvLvZDlNgu+XZyi8c5SluYSeB9CijbFGQz0oOLZ4rHlfYf5S5ALA/x1/NVdtJURwUrFnWBlYs=',
       'VK_ENCODING': 'UTF-8',
-      'VK_LANG': 'ENG'
+      'VK_LANG': 'ENG',
     }.with_indifferent_access
 
     @orphaned_invoice.stub(:number, 1) do
@@ -59,7 +57,7 @@ class PaymentOrderEstonianBankLinkTest < ActiveSupport::TestCase
   end
 
   def test_form_fields_with_estonian_locale
-    I18n.locale = "et"
+    I18n.locale = 'et'
 
     I18n.stub(:t, 'Invoice no. 1') do
       test_form_fields
@@ -86,7 +84,7 @@ class PaymentOrderEstonianBankLinkTest < ActiveSupport::TestCase
       'VK_DATETIME': '2010-07-05T10:30:00+0000',
       'VK_MAC': 'E+R5WbTfdziFVR2bcgsH/Mapdz5JRv8P2rKhgdoSUQbjmnQ/vssXF/ZEVjU5fUXy+FI6w6Y33bJK6GHRUPhjbsKPChCPCGofe4gGjmFYyA5ODtQEpD29tcNii6K5gLsytmRI0k6/igXTMZOErY0K9zgJbxAPENh//iocxAjCjHs=',
       'VK_ENCODING': 'UTF-8',
-      'VK_LANG': 'EST'
+      'VK_LANG': 'EST',
     }.with_indifferent_access
 
     @orphaned_invoice.stub(:number, 1) do
@@ -108,11 +106,11 @@ class PaymentOrderEstonianBankLinkTest < ActiveSupport::TestCase
 
   def test_cancelled_bank_link
     assert(@cancelled_bank_link.valid_response?)
-    refute(@cancelled_bank_link.mark_invoice_as_paid)
+    assert_not(@cancelled_bank_link.mark_invoice_as_paid)
     assert_equal(PaymentOrder.statuses[:cancelled], @cancelled_bank_link.status)
 
     assert_equal(Invoice.statuses[:issued], @cancelled_bank_link.invoice.status)
-    refute(@cancelled_bank_link.invoice.paid_at)
+    assert_not(@cancelled_bank_link.invoice.paid_at)
   end
 
   def test_config_namespace
@@ -132,7 +130,7 @@ class PaymentOrderEstonianBankLinkTest < ActiveSupport::TestCase
       'VK_MSG': 'Order nr 1',
       'VK_MAC': 'PElE2mYXXN50q2UBvTuYU1rN0BmOQcbafPummDnWfNdm9qbaGQkGyOn0XaaFGlrdEcldXaHBbZKUS0HegIgjdDfl2NOk+wkLNNH0Iu38KzZaxHoW9ga7vqiyKHC8dcxkHiO9HsOnz77Sy/KpWCq6cz48bi3fcMgo+MUzBMauWoQ=',
       'VK_ENCODING': 'UTF-8',
-      'VK_LANG': 'ENG'
+      'VK_LANG': 'ENG',
     }
 
     @cancelled_bank_link = PaymentOrders::SEB.new(invoice: @orphaned_invoice, response: params,
@@ -158,7 +156,7 @@ class PaymentOrderEstonianBankLinkTest < ActiveSupport::TestCase
       'VK_T_DATETIME': '2018-04-01T00:30:00+0300',
       'VK_MAC': 'CZZvcptkxfuOxRR88JmT4N+Lw6Hs4xiQfhBWzVYldAcRTQbcB/lPf9MbJzBE4e1/HuslQgkdCFt5g1xW2lJwrVDBQTtP6DAHfvxU3kkw7dbk0IcwhI4whUl68/QCwlXEQTAVDv1AFnGVxXZ40vbm/aLKafBYgrirB5SUe8+g9FE=',
       'VK_ENCODING': 'UTF-8',
-      'VK_LANG': 'ENG'
+      'VK_LANG': 'ENG',
     }
 
     @completed_bank_link = PaymentOrders::SEB.new(invoice: @orphaned_invoice, response: params,

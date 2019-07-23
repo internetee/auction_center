@@ -36,28 +36,28 @@ class SummaryReportTest < ActiveSupport::TestCase
   end
 
   def test_winning_offers_data_structure
-    keys = ['domain_name', 'cents', 'result_id']
+    keys = %w[domain_name cents result_id]
 
     @summary.winning_offers.each do |item|
       assert_equal(keys.length, item.length)
       keys.each do |key|
-        assert(item.has_key?(key))
+        assert(item.key?(key))
       end
     end
   end
 
   def test_winning_offers_uses_created_at
-    assert_equal([{'domain_name' => 'with-invoice.test', 'cents' => 10000,
-                   'result_id' => @with_invoice.id},
-                  {'domain_name' => 'expired.test', 'cents' => 1000, 'result_id' => @result.id},
-                  {'domain_name' => 'orphaned123.test', 'cents' => 1000,
-                   'result_id' => @orphaned.id}].to_set,
+    assert_equal([{ 'domain_name' => 'with-invoice.test', 'cents' => 10_000,
+                    'result_id' => @with_invoice.id },
+                  { 'domain_name' => 'expired.test', 'cents' => 1000, 'result_id' => @result.id },
+                  { 'domain_name' => 'orphaned123.test', 'cents' => 1000,
+                    'result_id' => @orphaned.id }].to_set,
                  @summary.winning_offers.to_set)
   end
 
   def test_winning_offers_are_ordered_by_cents
-    assert_equal({'domain_name' => 'with-invoice.test', 'cents' => 10000,
-                   'result_id' => @with_invoice.id},
+    assert_equal({ 'domain_name' => 'with-invoice.test', 'cents' => 10_000,
+                   'result_id' => @with_invoice.id },
                  @summary.winning_offers.first)
   end
 
@@ -65,75 +65,75 @@ class SummaryReportTest < ActiveSupport::TestCase
     Result.all.update(created_at: Time.zone.today - 30)
     @result.update!(created_at: Time.zone.now - 3)
 
-    assert_equal([{'domain_name' => 'expired.test', 'cents' => 1000,
-                   'result_id' => @result.id}], @summary.winning_offers)
+    assert_equal([{ 'domain_name' => 'expired.test', 'cents' => 1000,
+                    'result_id' => @result.id }], @summary.winning_offers)
   end
 
   def test_results_with_no_bids
-    assert_equal([{'domain_name' => 'no-offers.test',
-                   'status' => 'no_bids'}],
-                @summary.results_with_no_bids)
+    assert_equal([{ 'domain_name' => 'no-offers.test',
+                    'status' => 'no_bids' }],
+                 @summary.results_with_no_bids)
   end
 
   def test_results_with_no_bids_data_structure
-    keys = ['domain_name', 'status']
+    keys = %w[domain_name status]
 
     @summary.results_with_no_bids.each do |item|
       assert_equal(keys.length, item.length)
       keys.each do |key|
-        assert(item.has_key?(key))
+        assert(item.key?(key))
       end
     end
   end
 
   def test_registration_deadlines
     @result.update!(status: Result.statuses[:payment_received],
-                   registration_due_date: Date.tomorrow)
+                    registration_due_date: Date.tomorrow)
 
-    assert_equal([{'domain_name' => 'expired.test',
+    assert_equal([{ 'domain_name' => 'expired.test',
                     'email' => @user.email,
                     'mobile_phone' => @user.mobile_phone,
-                    'result_id' => @result.id}],
-                @summary.registration_deadlines)
+                    'result_id' => @result.id }],
+                 @summary.registration_deadlines)
   end
 
   def test_registration_deadlines_data_structure
-    keys = ['domain_name', 'email', 'mobile_phone', 'result_id']
+    keys = %w[domain_name email mobile_phone result_id]
 
     @summary.registration_deadlines.each do |item|
       assert_equal(keys.length, item.length)
       keys.each do |key|
-        assert(item.has_key?(key))
+        assert(item.key?(key))
       end
     end
   end
 
   def test_bans_returns_bans_that_started_within_the_period
-    ban = Ban.create!(domain_name: "foo.test",
-                user: @user,
-                valid_from: @today,
-                valid_until: @tomorrow)
+    ban = Ban.create!(domain_name: 'foo.test',
+                      user: @user,
+                      valid_from: @today,
+                      valid_until: @tomorrow)
 
-    Ban.create!(domain_name: "not-in-the-list.test",
+    Ban.create!(domain_name: 'not-in-the-list.test',
                 user: @user,
                 valid_from: @today,
                 valid_until: @tomorrow,
                 created_at: @yesterday)
 
-    assert_equal([{'domain_name' => ban.domain_name,
-                   'valid_until' => ban.valid_until,
-                   'email' => @user.email}], @summary.bans)
+    assert_equal([{ 'domain_name' => ban.domain_name,
+                    'valid_until' => ban.valid_until,
+                    'email' => @user.email }], @summary.bans)
   end
 
   def test_bans_data_structure
-    keys = ['domain_name', 'valid_until', 'email']
+    keys = %w[domain_name valid_until email]
 
-    Ban.create!(domain_name: "foo.test",
+    Ban.create!(domain_name: 'foo.test',
                 user: @user,
                 valid_from: @today,
                 valid_until: @tomorrow)
 
-    Ban.create!(domain_name: "not-in-the-list.test",
+    Ban.create!(domain_name: 'not-in-the-list.test',
                 user: @user,
                 valid_from: @today,
                 valid_until: @tomorrow,
@@ -142,7 +142,7 @@ class SummaryReportTest < ActiveSupport::TestCase
     @summary.bans.each do |item|
       assert_equal(keys.length, item.length)
       keys.each do |key|
-        assert(item.has_key?(key))
+        assert(item.key?(key))
       end
     end
   end

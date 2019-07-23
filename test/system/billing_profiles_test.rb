@@ -26,7 +26,7 @@ class BillingProfilesTest < ApplicationSystemTestCase
     sign_in users(:administrator)
     visit billing_profiles_path
 
-    refute(page.has_link?('ACME Inc.'))
+    assert_not(page.has_link?('ACME Inc.'))
   end
 
   def test_index_contains_a_link_to_new_billing_profile
@@ -79,8 +79,8 @@ class BillingProfilesTest < ApplicationSystemTestCase
     end
 
     assert(@user.billing_profiles
-                .where(name: "ACME corporation")
-                .where("vat_code IS NULL"))
+                .where(name: 'ACME corporation')
+                .where('vat_code IS NULL'))
 
     assert(page.has_css?('div.notice', text: 'Created successfully.'))
   end
@@ -88,7 +88,7 @@ class BillingProfilesTest < ApplicationSystemTestCase
   def test_a_user_can_create_private_billing_profile
     visit new_billing_profile_path
     fill_in_address
-     fill_in('billing_profile[name]', with: 'Private Person')
+    fill_in('billing_profile[name]', with: 'Private Person')
 
     assert_changes('BillingProfile.count') do
       click_link_or_button('Submit')
@@ -131,7 +131,7 @@ class BillingProfilesTest < ApplicationSystemTestCase
     assert(page.has_css?('div.notice', text: 'Updated successfully.'))
 
     @billing_profile.reload
-    refute(@billing_profile.vat_code)
+    assert_not(@billing_profile.vat_code)
   end
 
   def test_edit_form_contains_existing_values

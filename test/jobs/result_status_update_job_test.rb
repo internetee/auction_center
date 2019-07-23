@@ -10,8 +10,8 @@ class ResultStatusUpdateJobTest < ActiveJob::TestCase
   def test_perform_now
     mock = Minitest::Mock.new
     mock.expect(:call, @result)
-    body = { "id" => @result.auction.remote_id, "domain" => 'no-offers.test',
-            "status" => "no_bids" }
+    body = { 'id' => @result.auction.remote_id, 'domain' => 'no-offers.test',
+             'status' => 'no_bids' }
 
     response = Minitest::Mock.new
 
@@ -35,7 +35,7 @@ class ResultStatusUpdateJobTest < ActiveJob::TestCase
       assert(ResultStatusUpdateJob.needs_to_run?)
 
       @result.update!(last_remote_status: @result.status)
-      refute(ResultStatusUpdateJob.needs_to_run?)
+      assert_not(ResultStatusUpdateJob.needs_to_run?)
     end
   end
 end

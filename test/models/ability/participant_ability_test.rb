@@ -12,23 +12,23 @@ class ParticipantAbilityTest < ActiveSupport::TestCase
     assert(@participant_ability.can?(:read?, @participant))
     assert(@participant_ability.can?(:update?, @participant))
 
-    refute(@participant_ability.can?(:destroy, User.new))
-    refute(@participant_ability.can?(:edit, User.new))
+    assert_not(@participant_ability.can?(:destroy, User.new))
+    assert_not(@participant_ability.can?(:edit, User.new))
   end
 
   def test_banned_participant_cannot_destroy_their_account
-    Ban.create!(user: @participant, domain_name: "example.com",
+    Ban.create!(user: @participant, domain_name: 'example.com',
                 valid_from: Time.zone.today - 1, valid_until: Time.zone.today + 2)
     # Needs override, as ability is computed only on ability creation
     @participant_ability = Ability.new(@participant)
 
-    refute(@participant_ability.can?(:destroy, @participant))
+    assert_not(@participant_ability.can?(:destroy, @participant))
 
     Ban.delete_all
     Ban.create!(user: @participant, valid_until: Date.tomorrow)
 
     @participant_ability = Ability.new(@participant)
-    refute(@participant_ability.can?(:destroy, @participant))
+    assert_not(@participant_ability.can?(:destroy, @participant))
   end
 
   def test_user_can_edit_their_own_billing_profiles
@@ -37,8 +37,8 @@ class ParticipantAbilityTest < ActiveSupport::TestCase
     assert(@participant_ability.can?(:delete?, BillingProfile.new(user_id: @participant.id)))
     assert(@participant_ability.can?(:create?, BillingProfile.new(user_id: @participant.id)))
 
-    refute(@participant_ability.can?(:destroy, BillingProfile.new()))
-    refute(@participant_ability.can?(:update, BillingProfile.new()))
+    assert_not(@participant_ability.can?(:destroy, BillingProfile.new))
+    assert_not(@participant_ability.can?(:update, BillingProfile.new))
   end
 
   def test_participant_can_manage_their_own_offers
@@ -47,8 +47,8 @@ class ParticipantAbilityTest < ActiveSupport::TestCase
     assert(@participant_ability.can?(:delete?, Offer.new(user_id: @participant.id)))
     assert(@participant_ability.can?(:create?, Offer.new(user_id: @participant.id)))
 
-    refute(@participant_ability.can?(:destroy, Offer.new()))
-    refute(@participant_ability.can?(:update, Offer.new()))
+    assert_not(@participant_ability.can?(:destroy, Offer.new))
+    assert_not(@participant_ability.can?(:update, Offer.new))
   end
 
   def test_participant_cannot_manage_offers_if_they_are_banned_from_that_domain
@@ -57,8 +57,8 @@ class ParticipantAbilityTest < ActiveSupport::TestCase
 
     @participant_ability = Ability.new(@participant)
 
-    refute(@participant_ability.can?(:manage,
-                                     Offer.new(user_id: @participant.id, auction_id: @auction.id)))
+    assert_not(@participant_ability.can?(:manage,
+                                         Offer.new(user_id: @participant.id, auction_id: @auction.id)))
   end
 
   def test_participant_cannot_manage_offers_if_they_are_banned_in_general
@@ -67,22 +67,22 @@ class ParticipantAbilityTest < ActiveSupport::TestCase
     # Needs override, as ability is computed only on ability creation
     @participant_ability = Ability.new(@participant)
 
-    refute(@participant_ability.can?(:manage,
-                                     Offer.new(user_id: @participant.id, auction_id: @auction.id)))
+    assert_not(@participant_ability.can?(:manage,
+                                         Offer.new(user_id: @participant.id, auction_id: @auction.id)))
   end
 
   def test_participant_can_read_their_own_results
     assert(@participant_ability.can?(:read, Result.new(user_id: @participant.id)))
-    refute(@participant_ability.can?(:read, Result.new))
+    assert_not(@participant_ability.can?(:read, Result.new))
   end
 
   def test_participant_can_edit_their_own_invoices
     assert(@participant_ability.can?(:read, Invoice.new(user_id: @participant.id)))
     assert(@participant_ability.can?(:update, Invoice.new(user_id: @participant.id)))
 
-    refute(@participant_ability.can?(:delete, Invoice.new(user_id: @participant.id)))
-    refute(@participant_ability.can?(:create, Invoice.new(user_id: @participant.id)))
-    refute(@participant_ability.can?(:manage, Invoice.new))
+    assert_not(@participant_ability.can?(:delete, Invoice.new(user_id: @participant.id)))
+    assert_not(@participant_ability.can?(:create, Invoice.new(user_id: @participant.id)))
+    assert_not(@participant_ability.can?(:manage, Invoice.new))
   end
 
   def test_participant_can_create_and_read_payment_orders
@@ -102,6 +102,6 @@ class ParticipantAbilityTest < ActiveSupport::TestCase
 
   def test_participant_can_manage_phone_number_confirmations
     assert(@participant_ability.can?(:manage, PhoneConfirmation.new(@participant)))
-    refute(@participant_ability.can?(:manage, PhoneConfirmation.new(User.new)))
+    assert_not(@participant_ability.can?(:manage, PhoneConfirmation.new(User.new)))
   end
 end

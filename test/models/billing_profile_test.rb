@@ -12,22 +12,22 @@ class BillingProfileTest < ActiveSupport::TestCase
   def test_required_fields
     billing_profile = BillingProfile.new
 
-    refute(billing_profile.valid?)
+    assert_not(billing_profile.valid?)
     assert_equal(["can't be blank"], billing_profile.errors[:country_code])
     assert_equal(["can't be blank"], billing_profile.errors[:name])
 
-    billing_profile.name = "Private Person"
-    billing_profile.street = "Baker Street 221B"
-    billing_profile.city = "London"
-    billing_profile.postal_code = "NW1 6XE"
-    billing_profile.country_code = "GB"
+    billing_profile.name = 'Private Person'
+    billing_profile.street = 'Baker Street 221B'
+    billing_profile.city = 'London'
+    billing_profile.postal_code = 'NW1 6XE'
+    billing_profile.country_code = 'GB'
     assert(billing_profile.valid?)
   end
 
   def test_vat_codes_must_be_unique_per_user
     duplicate = @billing_profile.dup
 
-    refute(duplicate.valid?)
+    assert_not(duplicate.valid?)
     assert_equal(duplicate.errors[:vat_code], ['has already been taken'])
 
     private_person_profile = billing_profiles(:private_person)
@@ -64,12 +64,12 @@ class BillingProfileTest < ActiveSupport::TestCase
     assert_equal(BigDecimal('0'), @billing_profile.vat_rate)
   end
 
- def test_estonian_customer_always_gets_vat_rate_applied
+  def test_estonian_customer_always_gets_vat_rate_applied
     assert_equal(BigDecimal('0'), @billing_profile.vat_rate)
 
     @billing_profile.update(country_code: 'EE')
     assert_equal(BigDecimal('0.20'), @billing_profile.vat_rate)
-  end
+   end
 
   def test_customer_from_outside_european_union_has_vat_rate_0
     assert_equal(BigDecimal('0'), @billing_profile.vat_rate)
@@ -92,7 +92,7 @@ class BillingProfileTest < ActiveSupport::TestCase
   end
 
   def test_create_default_for_user_returns_if_already_exists
-    refute(BillingProfile.create_default_for_user(@user.id))
+    assert_not(BillingProfile.create_default_for_user(@user.id))
   end
 
   def test_create_default_for_user_creates_a_billing_profile

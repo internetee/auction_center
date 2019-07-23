@@ -4,7 +4,7 @@ class WishlistItemAuditTest < ActiveSupport::TestCase
   def setup
     super
 
-    travel_to Time.parse('2010-07-05 10:30 +0000')
+    travel_to Time.parse('2010-07-05 10:30 +0000').in_time_zone
     @user = users(:participant)
   end
 

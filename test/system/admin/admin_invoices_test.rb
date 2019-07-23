@@ -1,4 +1,3 @@
-# encoding: UTF-8
 require 'application_system_test_case'
 
 class AdminInvoicesTest < ApplicationSystemTestCase
@@ -8,7 +7,7 @@ class AdminInvoicesTest < ApplicationSystemTestCase
     @administrator = users(:administrator)
     @invoice = invoices(:orphaned)
 
-    travel_to Time.parse('2010-07-05 10:30 +0000')
+    travel_to Time.parse('2010-07-05 10:30 +0000').in_time_zone
     sign_in(@administrator)
 
     @original_wait_time = Capybara.default_max_wait_time
@@ -26,7 +25,7 @@ class AdminInvoicesTest < ApplicationSystemTestCase
     visit admin_invoices_path
 
     fill_in('email', with: '.test')
-    find(:css, "i.arrow.right.icon").click
+    find(:css, 'i.arrow.right.icon').click
 
     assert(page.has_link?('ACME Inc.'))
     assert(page.has_text?('Search results are limited to first 20 hits.'))
@@ -37,8 +36,8 @@ class AdminInvoicesTest < ApplicationSystemTestCase
 
     within('tbody.invoices-table-body') do
       assert_text('Orphan Profile')
-      assert_text("12.00 €")
-      assert_text("10.00 €")
+      assert_text('12.00 €')
+      assert_text('10.00 €')
     end
 
     click_link('Orphan Profile')
@@ -70,20 +69,20 @@ class AdminInvoicesTest < ApplicationSystemTestCase
                     due_date: Time.zone.yesterday)
 
     visit admin_invoice_path(@invoice)
-    refute(page.has_link?('Mark as paid'))
+    assert_not(page.has_link?('Mark as paid'))
 
-    @invoice.update(status: Invoice.statuses[:paid], paid_at: Time.now,
+    @invoice.update(status: Invoice.statuses[:paid], paid_at: Time.now.in_time_zone,
                     vat_rate: @invoice.billing_profile.vat_rate,
                     total_amount: @invoice.total, due_date: Time.zone.tomorrow)
 
     visit admin_invoice_path(@invoice)
-    refute(page.has_link?('Mark as paid'))
+    assert_not(page.has_link?('Mark as paid'))
   end
 
   def test_admin_cannot_open_edit_page_if_invoice_is_already_paid
     visit admin_invoice_path(@invoice)
 
-    @invoice.update(status: Invoice.statuses[:paid], paid_at: Time.now,
+    @invoice.update(status: Invoice.statuses[:paid], paid_at: Time.now.in_time_zone,
                     vat_rate: @invoice.billing_profile.vat_rate, total_amount: @invoice.total)
 
     click_link_or_button('Mark as paid')
@@ -93,7 +92,7 @@ class AdminInvoicesTest < ApplicationSystemTestCase
   def test_admin_cannot_update_invoice_if_invoice_is_already_paid
     visit edit_admin_invoice_path(@invoice)
 
-    @invoice.update(status: Invoice.statuses[:paid], paid_at: Time.now,
+    @invoice.update(status: Invoice.statuses[:paid], paid_at: Time.now.in_time_zone,
                     vat_rate: @invoice.billing_profile.vat_rate, total_amount: @invoice.total)
 
     note = 'Money received by wire transfer'
@@ -105,8 +104,8 @@ class AdminInvoicesTest < ApplicationSystemTestCase
     @invoice.reload
 
     assert(@invoice.paid?)
-    refute_equal(note, @invoice.notes)
-    refute_equal("#{@administrator.id} - John Joe Administrator", @invoice.updated_by)
+    assert_not_equal(note, @invoice.notes)
+    assert_not_equal("#{@administrator.id} - John Joe Administrator", @invoice.updated_by)
   end
 
   def test_invoice_view_contains_a_download_link

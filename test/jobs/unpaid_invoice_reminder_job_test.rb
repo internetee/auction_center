@@ -36,7 +36,7 @@ class UnpaidInvoiceReminderJobTest < ActiveJob::TestCase
     end
 
     last_email = ActionMailer::Base.deliveries.last
-    refute last_email
+    assert_not last_email
   end
 
   def test_emails_are_not_sent_when_invoice_is_paid
@@ -49,6 +49,6 @@ class UnpaidInvoiceReminderJobTest < ActiveJob::TestCase
     end
 
     last_email = ActionMailer::Base.deliveries.last
-    refute last_email
+    assert_not last_email
   end
 end

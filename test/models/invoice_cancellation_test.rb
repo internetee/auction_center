@@ -36,7 +36,7 @@ class InvoiceCancellationTest < ActiveSupport::TestCase
     assert_equal(@overdue_invoice, invoice_cancellation.invoice)
     assert_equal(@result, invoice_cancellation.result)
     assert_equal(@user, invoice_cancellation.user)
-    assert_equal("with-invoice.test", invoice_cancellation.domain_name)
+    assert_equal('with-invoice.test', invoice_cancellation.domain_name)
   end
 
   def test_cancel_sets_the_status_on_results
@@ -49,7 +49,7 @@ class InvoiceCancellationTest < ActiveSupport::TestCase
 
   def test_cancel_does_nothing_when_invoice_is_not_overdue
     invoice_cancellation = InvoiceCancellation.new(@new_invoice)
-    refute(invoice_cancellation.cancel)
+    assert_not(invoice_cancellation.cancel)
 
     assert_equal(Invoice.statuses[:issued], @new_invoice.status)
   end
@@ -67,7 +67,7 @@ class InvoiceCancellationTest < ActiveSupport::TestCase
     invoice_cancellation = InvoiceCancellation.new(@overdue_invoice)
     assert(invoice_cancellation.cancel)
 
-    refute(ActionMailer::Base.deliveries.empty?)
+    assert_not(ActionMailer::Base.deliveries.empty?)
     last_email = ActionMailer::Base.deliveries.last
 
     assert_equal('Participation in with-invoice.test auction prohibited', last_email.subject)

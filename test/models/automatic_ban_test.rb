@@ -23,7 +23,7 @@ class AutomaticBanTest < ActiveSupport::TestCase
   end
 
   def test_automatic_ban_on_user_without_overdue_invoices_fails
-    ban = AutomaticBan.new(invoice: Invoice.new, user: @user, domain_name: "some-domain.test")
+    ban = AutomaticBan.new(invoice: Invoice.new, user: @user, domain_name: 'some-domain.test')
 
     assert_raises(Errors::NoCancelledInvoices) do
       ban.create
@@ -82,7 +82,7 @@ class AutomaticBanTest < ActiveSupport::TestCase
 
     AutomaticBan.new(invoice: invoice, user: @user, domain_name: domain_name).create
 
-    refute(ActionMailer::Base.deliveries.empty?)
+    assert_not(ActionMailer::Base.deliveries.empty?)
     last_email = ActionMailer::Base.deliveries.last
 
     assert_equal("Participation in #{domain_name} auction prohibited", last_email.subject)
@@ -98,10 +98,10 @@ class AutomaticBanTest < ActiveSupport::TestCase
 
     AutomaticBan.new(invoice: invoice, user: @user, domain_name: domain_name).create
 
-    refute(ActionMailer::Base.deliveries.empty?)
+    assert_not(ActionMailer::Base.deliveries.empty?)
     last_email = ActionMailer::Base.deliveries.last
 
-    assert_equal("Participation in auctions prohibited", last_email.subject)
+    assert_equal('Participation in auctions prohibited', last_email.subject)
     assert_equal(['user@auction.test'], last_email.to)
   end
 

@@ -5,7 +5,7 @@ class DailySummaryJobTest < ActiveJob::TestCase
     super
 
     @administrator = users(:administrator)
-    travel_to Time.parse('2010-07-05 10:30 +0000')
+    travel_to Time.parse('2010-07-05 10:30 +0000').in_time_zone
   end
 
   def teardown
@@ -20,7 +20,7 @@ class DailySummaryJobTest < ActiveJob::TestCase
       DailySummaryJob.perform_now
     end
 
-    refute(ActionMailer::Base.deliveries.empty?)
+    assert_not(ActionMailer::Base.deliveries.empty?)
     email = ActionMailer::Base.deliveries.last
     assert_equal(['administrator@auction.test'], email.to)
     assert_equal('Daily summary for 2010-07-04', email.subject)

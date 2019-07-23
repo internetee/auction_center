@@ -6,7 +6,7 @@ class WishlistJobTest < ActiveJob::TestCase
   def setup
     super
 
-    travel_to Time.parse('2010-07-05 10:30 +0000')
+    travel_to Time.parse('2010-07-05 10:30 +0000').in_time_zone
     @auction = auctions(:valid_without_offers)
     @user = users(:participant)
   end
@@ -49,7 +49,6 @@ class WishlistJobTest < ActiveJob::TestCase
       WishlistJob.perform_now(@auction.domain_name, @auction.remote_id)
     end
   end
-
 
   def test_wait_time
     assert_equal(1.minute, WishlistJob.wait_time)

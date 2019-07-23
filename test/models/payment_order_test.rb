@@ -11,13 +11,13 @@ class PaymentOrderTest < ActiveSupport::TestCase
 
   def test_required_fields
     payment_order = PaymentOrder.new
-    refute(payment_order.valid?)
+    assert_not(payment_order.valid?)
 
     assert_equal(['must exist'], payment_order.errors[:invoice], payment_order.errors.full_messages)
 
     payment_order.invoice = @payable_invoice
     payment_order.user = @user
-    payment_order.type = "PaymentOrders::EveryPay"
+    payment_order.type = 'PaymentOrders::EveryPay'
 
     assert(payment_order.valid?, payment_order.errors.full_messages)
   end
@@ -36,7 +36,7 @@ class PaymentOrderTest < ActiveSupport::TestCase
       PaymentOrder.supported_method?(Auction)
     end
 
-    refute(PaymentOrder.supported_method?(PaymentOrders::LHV))
+    assert_not(PaymentOrder.supported_method?(PaymentOrders::LHV))
   end
 
   def test_supported_method_returns_true_or_false
@@ -48,12 +48,12 @@ class PaymentOrderTest < ActiveSupport::TestCase
 
     payment_order.invoice = @payable_invoice
     payment_order.user = @user
-    payment_order.type = "PaymentOrders::EveryPay"
+    payment_order.type = 'PaymentOrders::EveryPay'
 
     assert(payment_order.valid?)
 
-    payment_order.type = "PaymentOrders::Manual"
-    refute(payment_order.valid?)
+    payment_order.type = 'PaymentOrders::Manual'
+    assert_not(payment_order.valid?)
   end
 
   def test_invoice_cannot_be_already_paid
@@ -61,12 +61,12 @@ class PaymentOrderTest < ActiveSupport::TestCase
 
     payment_order.invoice = @payable_invoice
     payment_order.user = @user
-    payment_order.type = "PaymentOrders::EveryPay"
+    payment_order.type = 'PaymentOrders::EveryPay'
 
     assert(payment_order.valid?)
 
     @payable_invoice.mark_as_paid_at(Time.zone.now)
 
-    refute(payment_order.valid?)
+    assert_not(payment_order.valid?)
   end
 end
