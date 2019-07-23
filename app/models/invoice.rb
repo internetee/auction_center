@@ -81,6 +81,9 @@ class Invoice < ApplicationRecord
     "#{title.parameterize}.pdf"
   end
 
+  # mark_as_paid_at_with_payment_order(time, payment_order) is the preferred version to use
+  # in the application, but this is also used with administrator manually setting invoice as
+  # paid in the user interface.
   def mark_as_paid_at(time)
     ActiveRecord::Base.transaction do
       self.paid_at = time
