@@ -1,3 +1,6 @@
+23.07.2019
+* Running Rubocop for test files [#297](https://github.com/internetee/auction_center/pull/297)
+
 22.07.2019
 * DejaVu Mono font and colorcoding for numbers in domain names to improve readability [#294](https://github.com/internetee/auction_center/issues/294)
 * Fix for security alert and deprecation warning in tests [#298](https://github.com/internetee/auction_center/pull/298)
