@@ -56,6 +56,10 @@ class PaymentOrderEstonianBankLinkTest < ActiveSupport::TestCase
     end
   end
 
+  def test_channel
+    assert_equal('SEB', @new_bank_link.channel)
+  end
+
   def test_form_fields_with_estonian_locale
     I18n.locale = 'et'
 

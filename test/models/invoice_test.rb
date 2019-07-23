@@ -134,6 +134,18 @@ class InvoiceTest < ActiveSupport::TestCase
     assert_equal(time, @payable_invoice.paid_at)
   end
 
+  def test_mark_as_paid_at_with_payment_order
+    time = Time.parse('2010-07-06 10:30 +0000')
+    payment_order = payment_orders(:issued)
+    @payable_invoice.mark_as_paid_at_with_payment_order(time, payment_order)
+
+    assert(@payable_invoice.paid?)
+    assert(@payable_invoice.result.payment_received?)
+    assert_equal(time.to_date + 14, @payable_invoice.result.registration_due_date)
+    assert_equal(time, @payable_invoice.paid_at)
+    assert_equal(payment_order, @payable_invoice.paid_with_payment_order)
+  end
+
   def test_mark_as_paid_populates_vat_rate_and_total_amount
     time = Time.parse('2010-07-06 10:30 +0000').in_time_zone
     @payable_invoice.mark_as_paid_at(time)

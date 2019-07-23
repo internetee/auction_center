@@ -92,6 +92,18 @@ class Invoice < ApplicationRecord
     end
   end
 
+  def mark_as_paid_at_with_payment_order(time, payment_order)
+    ActiveRecord::Base.transaction do
+      self.paid_at = time
+      self.vat_rate = billing_profile.vat_rate
+      self.total_amount = total
+      self.paid_with_payment_order = payment_order
+
+      paid!
+      result.mark_as_payment_received(time)
+    end
+  end
+
   def overdue?
     due_date < Time.zone.today && issued?
   end

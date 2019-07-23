@@ -79,6 +79,18 @@ class AdminInvoicesTest < ApplicationSystemTestCase
     assert_not(page.has_link?('Mark as paid'))
   end
 
+  def test_admin_can_see_which_channel_was_used_to_pay_the_invoice
+    @invoice.update(status: Invoice.statuses[:paid], paid_at: Time.now,
+                    vat_rate: @invoice.billing_profile.vat_rate, total_amount: @invoice.total,
+                    paid_with_payment_order: payment_orders(:issued))
+
+    visit admin_invoices_path
+    assert(page.has_text?('EveryPay'))
+
+    visit admin_invoice_path(@invoice)
+    assert(page.has_text?('EveryPay'))
+  end
+
   def test_admin_cannot_open_edit_page_if_invoice_is_already_paid
     visit admin_invoice_path(@invoice)
 
