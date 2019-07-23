@@ -22,9 +22,9 @@ module Admin
                                         .where(
                                           'billing_profiles.name ILIKE ? OR ' \
                                           'users.email ILIKE ? OR users.surname ILIKE ?',
-                                          "#{search_string}%",
-                                          "#{search_string}%",
-                                          "#{search_string}%"
+                                          "%#{search_string}%",
+                                          "%#{search_string}%",
+                                          "%#{search_string}%"
                                         )
                                         .order(orderable_array)
                                         .page(1)
