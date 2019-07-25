@@ -1,3 +1,7 @@
+25.07.2019
+* Added Add sorting by highest price and number of offers to portal and admin [#299](https://github.com/internetee/auction_center/pull/299)
+* Removed N+1 from auctions index [#128](https://github.com/internetee/auction_center/issues/128)
+
 23.07.2019
 * Running Rubocop for test files [#297](https://github.com/internetee/auction_center/pull/297)
 * Upgraded Cancan gem to v3.0.1 [#300](https://github.com/internetee/auction_center/pull/300)
