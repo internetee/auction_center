@@ -138,7 +138,7 @@
 
 /* Buttons */
 @buttonMargin: 0px -@borderWidth;
-@buttonWidth: ~"calc(100% + "(@borderWidth * 2)~")";
+@buttonWidth: calc(100% + (@borderWidth * 2));
 
 /*-------------------
       Variations
@@ -186,29 +186,29 @@
 
 @oneCard: @oneColumn;
 @oneCardOffset: 0em;
-@twoCard: ~"calc("@twoColumn~" - "(@twoCardSpacing * 2)~")";
+@twoCard: calc(@twoColumn - (@twoCardSpacing * 2));
 @twoCardOffset: -@twoCardSpacing;
-@threeCard: ~"calc("@threeColumn~" - "(@threeCardSpacing * 2)~")";
+@threeCard: calc(@threeColumn - (@threeCardSpacing * 2));
 @threeCardOffset: -@threeCardSpacing;
-@fourCard: ~"calc("@fourColumn~" - "(@fourCardSpacing * 2)~")";
+@fourCard: calc(@fourColumn - (@fourCardSpacing * 2));
 @fourCardOffset: -@fourCardSpacing;
-@fiveCard: ~"calc("@fiveColumn~" - "(@fiveCardSpacing * 2)~")";
+@fiveCard: calc(@fiveColumn - (@fiveCardSpacing * 2));
 @fiveCardOffset: -@fiveCardSpacing;
-@sixCard: ~"calc("@sixColumn~" - "(@sixCardSpacing * 2)~")";
+@sixCard: calc(@sixColumn - (@sixCardSpacing * 2));
 @sixCardOffset: -@sixCardSpacing;
-@sevenCard: ~"calc("@sevenColumn~" - "(@sevenCardSpacing * 2)~")";
+@sevenCard: calc(@sevenColumn - (@sevenCardSpacing * 2));
 @sevenCardOffset: -@sevenCardSpacing;
-@eightCard: ~"calc("@eightColumn~" - "(@sevenCardSpacing * 2)~")";
+@eightCard: calc(@eightColumn - (@sevenCardSpacing * 2));
 @eightCardOffset: -@sevenCardSpacing;
-@nineCard: ~"calc("@nineColumn~" - "(@nineCardSpacing * 2)~")";
+@nineCard: calc(@nineColumn - (@nineCardSpacing * 2));
 @nineCardOffset: -@nineCardSpacing;
-@tenCard: ~"calc("@tenColumn~" - "(@tenCardSpacing * 2)~")";
+@tenCard: calc(@tenColumn - (@tenCardSpacing * 2));
 @tenCardOffset: -@tenCardSpacing;
 
 /* Stackable */
 @stackableRowSpacing: 1em;
 @stackableCardSpacing: 1em;
-@stackableMargin: ~"calc("@oneColumn~" - "(@stackableCardSpacing * 2)~")";
+@stackableMargin: calc(@oneColumn - (@stackableCardSpacing * 2));
 
 /* Sizes */
 @medium: 1em;

@@ -36,10 +36,10 @@
 /* Horizontal / Vertical */
 @horizontalMargin: '';
 @horizontalDividerMargin: 1em;
-@horizontalRulerOffset: ~"calc(-50% - "(@horizontalDividerMargin)~")";
+@horizontalRulerOffset: calc(-50% - (@horizontalDividerMargin));
 
 @verticalDividerMargin: 1rem;
-@verticalDividerHeight: ~"calc(100% - "(@verticalDividerMargin)~")";
+@verticalDividerHeight: calc(100% - (@verticalDividerMargin));
 
 /* Inverted */
 @invertedTextColor: @white;
