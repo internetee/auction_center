@@ -1007,6 +1007,7 @@ CREATE TABLE public.invoices (
     total_amount numeric,
     updated_by character varying,
     notes character varying,
+    paid_with_payment_order_id bigint,
     CONSTRAINT invoices_cents_are_positive CHECK ((cents > 0)),
     CONSTRAINT issued_at_earlier_than_payment_at CHECK ((issue_date <= due_date)),
     CONSTRAINT paid_at_is_filled_when_status_is_paid CHECK ((NOT ((status = 'paid'::public.invoice_status) AND (paid_at IS NULL)))),
@@ -1924,6 +1925,13 @@ CREATE INDEX index_invoices_on_billing_profile_id ON public.invoices USING btree
 
 
 --
+-- Name: index_invoices_on_paid_with_payment_order_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_invoices_on_paid_with_payment_order_id ON public.invoices USING btree (paid_with_payment_order_id);
+
+
+--
 -- Name: index_invoices_on_result_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2362,6 +2370,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190424070710'),
 ('20190517063450'),
 ('20190517073827'),
-('20190521071232');
+('20190521071232'),
+('20190722100652');
 
 

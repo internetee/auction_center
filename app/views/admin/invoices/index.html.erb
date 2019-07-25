@@ -53,6 +53,10 @@
                         <%= t('invoices.total_paid') %>
                         <%= order_buttons('invoices.total_paid') %>
                     </th>
+                    <th scope="col">
+                        <%= t('invoices.paid_through') %>
+                    </th>
+
                     <th scope="col"><%= clear_order_button %></th>
                 </tr>
             </thead>
@@ -68,7 +72,9 @@
                         <% if invoice.paid? %>
                             <td><%= number_to_percentage(invoice.vat_rate * 100, precision: 0) %></td>
                             <td><%= t('offers.price_in_currency', price: invoice.total_amount) %></td>
+                            <td><%= invoice.paid_with_payment_order&.channel %></td>
                         <% else %>
+                            <td></td>
                             <td></td>
                             <td></td>
                         <% end %>

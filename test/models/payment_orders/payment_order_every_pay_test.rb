@@ -94,6 +94,10 @@ class PaymentOrderEveryPayTest < ActiveSupport::TestCase
     assert_equal(PaymentOrders::EveryPay::URL, @every_pay.form_url)
   end
 
+  def test_channel
+    assert_equal('EveryPay', @every_pay.channel)
+  end
+
   def test_mark_invoice_as_paid_works_when_response_is_valid
     @every_pay.mark_invoice_as_paid
 

@@ -58,7 +58,7 @@ module PaymentOrders
 
       paid!
       time = Time.strptime(response['timestamp'], '%s')
-      invoice.mark_as_paid_at(time)
+      invoice.mark_as_paid_at_with_payment_order(time, self)
     end
 
     # Check if response is there and if basic security methods are fullfilled.

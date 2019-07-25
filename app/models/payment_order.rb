@@ -42,6 +42,10 @@ class PaymentOrder < ApplicationRecord
     end
   end
 
+  def channel
+    type.gsub('PaymentOrders::', '')
+  end
+
   def self.supported_methods
     enabled = []
 

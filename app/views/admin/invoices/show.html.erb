@@ -62,6 +62,13 @@
                         <div class="header"><%= t('invoices.due_date') %></div>
                         <%= @invoice.due_date %>
                     </div>
+
+		    <% if @invoice.paid_with_payment_order %>
+			<div class="item">
+                            <div class="header"><%= t('invoices.paid_through') %></div>
+                            <%= @invoice.paid_with_payment_order&.channel %>
+			</div>
+		    <% end %>
                 </div>
             </div>
 

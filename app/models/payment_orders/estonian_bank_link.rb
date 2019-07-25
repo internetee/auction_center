@@ -83,7 +83,7 @@ module PaymentOrders
       if valid_response? && valid_success_notice?
         time = Time.zone.parse(response['VK_T_DATETIME'])
         paid!
-        invoice.mark_as_paid_at(time)
+        invoice.mark_as_paid_at_with_payment_order(time, self)
       elsif valid_response? && valid_cancel_notice?
         cancelled!
         false

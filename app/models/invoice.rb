@@ -11,6 +11,7 @@ class Invoice < ApplicationRecord
   belongs_to :billing_profile, optional: false
   has_many :invoice_items, dependent: :destroy
   has_many :payment_orders, dependent: :destroy
+  belongs_to :paid_with_payment_order, class_name: 'PaymentOrder', optional: true
 
   validates :user_id, presence: true, on: :create
   validates :issue_date, presence: true
@@ -80,11 +81,26 @@ class Invoice < ApplicationRecord
     "#{title.parameterize}.pdf"
   end
 
+  # mark_as_paid_at_with_payment_order(time, payment_order) is the preferred version to use
+  # in the application, but this is also used with administrator manually setting invoice as
+  # paid in the user interface.
   def mark_as_paid_at(time)
     ActiveRecord::Base.transaction do
       self.paid_at = time
       self.vat_rate = billing_profile.vat_rate
       self.total_amount = total
+
+      paid!
+      result.mark_as_payment_received(time)
+    end
+  end
+
+  def mark_as_paid_at_with_payment_order(time, payment_order)
+    ActiveRecord::Base.transaction do
+      self.paid_at = time
+      self.vat_rate = billing_profile.vat_rate
+      self.total_amount = total
+      self.paid_with_payment_order = payment_order
 
       paid!
       result.mark_as_payment_received(time)
