@@ -31,13 +31,16 @@
                         <tr>
                             <th scope="col">
                                 <%= t('auctions.domain_name') %>
-                                <%= order_buttons('auctions.domain_name') %>
+                                <%= order_buttons('participant_auction_decorators.domain_name') %>
                             </th>
                             <th scope="col">
                                 <%= t('auctions.ends_at') %>
-                                <%= order_buttons('auctions.ends_at') %>
+                                <%= order_buttons('participant_auction_decorators.ends_at') %>
                             </th>
-                            <th scope="col"><%= t('auctions.your_current_price') %></th>
+                            <th scope="col">
+                                <%= t('auctions.your_current_price') %>
+                                <%= order_buttons('participant_auction_decorators.users_offer_cents') %>
+                            </th>
                             <th scope="col"><%= t('auctions.offer_actions') %></th>
                             <th scope="col"><%= clear_order_button %></th>
                         </tr>
@@ -52,14 +55,14 @@
                                     <% end %>
                                 </td>
                                 <td><%= I18n.l(auction.ends_at) %></td>
-                                <td><%= auction.current_price_from_user(current_user) %></td>
+                                <td><%= auction.users_price %></td>
                                 <td>
-                                    <%- if auction.offer_from_user(current_user) %>
+                                    <%- if auction.users_offer_uuid %>
                                         <%= link_to t('auctions.edit_your_offer'),
-                                        edit_offer_path(auction.offer_from_user(current_user).uuid) %>
+                                         edit_offer_path(auction.users_offer_uuid) %>
                                     <% else %>
                                         <%= link_to t('auctions.submit_offer'),
-                                        new_auction_offer_path(auction_uuid: auction.uuid) %>
+                                         new_auction_offer_path(auction_uuid: auction.uuid) %>
                                     <% end %>
                                 </td>
                                 <td></td>
@@ -70,7 +73,7 @@
             </div>
 
             <div class="column">
-                <%= paginate @auctions %>
+                <%= paginate @collection %>
             </div>
         </div>
     </div>

@@ -20,7 +20,7 @@ class AdminOrderableTest < ApplicationSystemTestCase
   def test_auctions_are_orderable
     visit admin_auctions_path
 
-    click_link(id: 'auctions.domain_name_desc_button')
+    click_link(id: 'admin_auction_decorators.number_of_offers_desc_button')
     assert_appears_before('with-offers.test', 'expired.test')
   end
 

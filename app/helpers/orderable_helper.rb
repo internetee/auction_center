@@ -33,7 +33,7 @@ module OrderableHelper
     unsafe_hash = orderable_params.to_unsafe_h
     unsafe_hash.map do |key, value|
       model_name, column = key.split('.')
-      Orderable.new(model_name, column, value).condition
+      Orderable.new(model_name: model_name, column: column, direction: value).condition
     end
   end
 

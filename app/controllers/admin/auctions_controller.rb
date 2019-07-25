@@ -27,21 +27,23 @@ module Admin
 
     # GET /admin/auctions
     def index
-      @auctions = Auction.includes(:offers)
-                         .accessible_by(current_ability)
-                         .order(orderable_array)
-                         .page(params[:page])
+      @collection = AdminAuctionDecorator.with_highest_offers
+                                         .order(orderable_array)
+                                         .page(params[:page])
+
+      @auctions = @collection.map { |auction| AdminAuctionDecorator.new(auction) }
     end
 
     # GET /admin/auctions/search
     def search
       domain_name = search_params[:domain_name]
 
-      @auctions = Auction.where('domain_name ILIKE ?', "%#{domain_name}%")
-                         .accessible_by(current_ability)
-                         .includes(:offers)
-                         .order(orderable_array)
-                         .page(1)
+      collection = AdminAuctionDecorator.with_highest_offers
+                                        .where('domain_name ILIKE ?', "%#{domain_name}%")
+                                        .order(orderable_array)
+                                        .page(1)
+
+      @auctions = collection.map { |auction| AdminAuctionDecorator.new(auction) }
     end
 
     # GET /admin/auctions/1

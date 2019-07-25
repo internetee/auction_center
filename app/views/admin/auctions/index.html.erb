@@ -29,18 +29,24 @@
                         <tr>
                             <th scope="col">
                                 <%= t('auctions.domain_name') %>
-                                <%= order_buttons('auctions.domain_name') %>
+                                <%= order_buttons('admin_auction_decorators.domain_name') %>
                             </th>
                             <th scope="col">
                                 <%= t('auctions.starts_at') %>
-                                <%= order_buttons('auctions.starts_at') %>
+                                <%= order_buttons('admin_auction_decorators.starts_at') %>
                             </th>
                             <th scope="col">
                                 <%= t('auctions.ends_at') %>
-                                <%= order_buttons('auctions.ends_at') %>
+                                <%= order_buttons('admin_auction_decorators.ends_at') %>
                             </th>
-                            <th scope="col"><%= t('auctions.highest_price') %></th>
-                            <th scope="col"><%= t('auctions.offers') %></th>
+                            <th scope="col">
+                                <%= t('auctions.highest_price') %>
+                                <%= order_buttons('admin_auction_decorators.highest_offer_cents') %>
+                            </th>
+                            <th scope="col">
+                                <%= t('auctions.offers') %>
+                                <%= order_buttons('admin_auction_decorators.number_of_offers') %>
+                            </th>
                             <th scope="col"><%= clear_order_button %></th>
                         </tr>
                     </thead>
@@ -49,14 +55,14 @@
                         <% @auctions.each do |auction| %>
                             <tr class="auctions-table-row">
                                 <td class="auction-domain-name monospace">
-                                    <%= link_to(admin_auction_path(auction)) do %>
+                                    <%= link_to(admin_auction_path(auction.id)) do %>
                                         <%= domain_name_with_embedded_colors(auction.domain_name) %>
                                     <% end %>
                                 </td>
                                 <td><%= I18n.l(auction.starts_at) %></td>
                                 <td><%= I18n.l(auction.ends_at) %></td>
                                 <td class="auction-highest-offer"><%= auction.highest_price %></td>
-                                <td class="auction-offers-count"><%= auction.offers_size %></td>
+                                <td class="auction-offers-count"><%= auction.number_of_offers %></td>
                                 <td></td>
                             </tr>
                         <% end %>
@@ -64,7 +70,9 @@
                 </table>
             </div>
 
-            <%= paginate @auctions %>
+            <div class="column">
+                <%= paginate @collection %>
+            </div>
         </div>
     </div>
 </div>
