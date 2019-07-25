@@ -1,6 +1,7 @@
 25.07.2019
 * Added Add sorting by highest price and number of offers to portal and admin [#299](https://github.com/internetee/auction_center/pull/299)
 * Improved search functionality in admin [#170](https://github.com/internetee/auction_center/issues/170)
+* Display used payment channel for paid invoices in admin [#240](https://github.com/internetee/auction_center/issues/240)
 * Removed N+1 from auctions index [#128](https://github.com/internetee/auction_center/issues/128)
 
 23.07.2019
