@@ -22,9 +22,12 @@ module Admin
 
     # GET /admin/users/search
     def search
-      email = search_params[:email]
+      search_string = search_params[:search_string]
 
-      @users = User.where('email ILIKE ?', "%#{email}%")
+      @users = User.where('email ILIKE ? OR surname ILIKE ? OR given_names ILIKE ? ' \
+                          'OR mobile_phone ILIKE ?',
+                          "%#{search_string}%", "%#{search_string}%", "%#{search_string}%",
+                          "%#{search_string}%")
                    .accessible_by(current_ability)
                    .order(orderable_array)
                    .page(1)
@@ -83,7 +86,7 @@ module Admin
     private
 
     def search_params
-      params.permit(:email)
+      params.permit(:search_string)
     end
 
     def create_params

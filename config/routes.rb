@@ -1,4 +1,4 @@
-require "constraints/administrator"
+require 'constraints/administrator'
 
 disallowed_auction_actions = if Feature.registry_integration_enabled?
                                %i[new create edit update destroy]
@@ -7,7 +7,7 @@ disallowed_auction_actions = if Feature.registry_integration_enabled?
                              end
 
 Rails.application.routes.draw do
-  root to: "auctions#index"
+  root to: 'auctions#index'
 
   concern :auditable do
     resources :versions, only: :index
@@ -20,52 +20,52 @@ Rails.application.routes.draw do
   end
 
   namespace :admin, constraints: Constraints::Administrator.new do
-    resources :auctions, except: disallowed_auction_actions, concerns: [:auditable, :searchable]
+    resources :auctions, except: disallowed_auction_actions, concerns: %i[auditable searchable]
 
     resources :bans, except: %i[new show edit update], concerns: [:auditable]
-    resources :billing_profiles, only: %i[index show], concerns: [:auditable]
-    resources :invoices, except: %i[new create destroy], concerns: [:auditable, :searchable] do
+    resources :billing_profiles, only: %i[index show], concerns: %i[auditable searchable]
+    resources :invoices, except: %i[new create destroy], concerns: %i[auditable searchable] do
       member do
-        get "download"
+        get 'download'
       end
     end
     resources :jobs, only: %i[index create]
     resources :offers, only: [:show], concerns: [:auditable]
-    resources :results, only: %i[index create show], concerns: [:auditable, :searchable]
+    resources :results, only: %i[index create show], concerns: %i[auditable searchable]
 
     resources :settings, except: %i[create destroy], concerns: [:auditable]
-    resources :users, concerns: [:auditable, :searchable]
+    resources :users, concerns: %i[auditable searchable]
   end
 
   devise_scope :user do
-    match "/auth/tara/callback", via: [:get, :post], to: "auth/tara#callback", as: :tara_callback
-    match "/auth/tara/cancel", via: [:get, :post, :delete], to: "auth/tara#cancel",
+    match '/auth/tara/callback', via: %i[get post], to: 'auth/tara#callback', as: :tara_callback
+    match '/auth/tara/cancel', via: %i[get post delete], to: 'auth/tara#cancel',
                                as: :tara_cancel
-    match "/auth/tara/create", via: [:post], to: "auth/tara#create", as: :tara_create
+    match '/auth/tara/create', via: [:post], to: 'auth/tara#create', as: :tara_create
   end
 
-  devise_for :users, path: "sessions",
-    controllers: { confirmations: "email_confirmations", sessions: "auth/sessions" }
+  devise_for :users, path: 'sessions',
+                     controllers: { confirmations: 'email_confirmations', sessions: 'auth/sessions' }
 
   resources :auctions, only: %i[index show], param: :uuid, concerns: [:searchable] do
     resources :offers, only: %i[new show create edit update destroy], shallow: true, param: :uuid
   end
-  match "*auctions", controller: "auctions", action: "cors_preflight_check", via: [:options]
+  match '*auctions', controller: 'auctions', action: 'cors_preflight_check', via: [:options]
 
   resources :billing_profiles, param: :uuid
 
   resources :invoices, only: %i[show edit update index], param: :uuid do
     member do
-      get "download"
+      get 'download'
     end
 
     resources :payment_orders, only: %i[new show create], shallow: true, param: :uuid do
       member do
-        get "return"
-        put "return"
-        post "return"
+        get 'return'
+        put 'return'
+        post 'return'
 
-        post "callback"
+        post 'callback'
       end
     end
   end
@@ -80,5 +80,5 @@ Rails.application.routes.draw do
 
   resources :wishlist_items, param: :uuid, only: %i[index create destroy]
 
-  mount OkComputer::Engine, at: "/healthcheck"
+  mount OkComputer::Engine, at: '/healthcheck'
 end

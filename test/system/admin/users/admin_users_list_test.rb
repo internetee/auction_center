@@ -26,8 +26,8 @@ class AdminUsersListTest < ApplicationSystemTestCase
   def test_search_by_email
     visit admin_users_path
 
-    fill_in('email', with: 'omniauth@auction')
-    find(:css, 'i.arrow.right.icon').click
+    fill_in('search_string', with: "omniauth@auction")
+    find(:css, "i.arrow.right.icon").click
 
     assert(page.has_link?('TARA USER'))
     assert(page.has_text?('Search results are limited to first 20 hits.'))
