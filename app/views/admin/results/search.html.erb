@@ -22,37 +22,52 @@
 
 <div class="u-container">
     <div class="margin-block">
-            <div class="column">
-                <table class="ui table" id="results-table">
-                    <thead>
-                        <tr>
-                            <th scope="col"><%= t('auctions.domain_name') %></th>
-                            <th scope="col"><%= t('auctions.finished_at') %></th>
-                            <th scope="col"><%= t('results.registration_due_date') %></th>
-                            <th scope="col"><%= t('status') %></th>
-                            <th scope="col"><%= t('billing_profiles.name') %></th>
+        <div class="column">
+            <table class="ui table" id="results-table">
+                <thead>
+                    <tr>
+                        <th scope="col">
+                            <%= t('auctions.domain_name') %>
+                            <%= order_buttons('auctions.domain_name') %>
+                        </th>
+                        <th scope="col">
+                            <%= t('auctions.finished_at') %>
+                            <%= order_buttons('auctions.ends_at') %>
+                        </th>
+                        <th scope="col">
+                            <%= t('results.registration_due_date') %>
+                            <%= order_buttons('results.registration_due_date') %>
+                        </th>
+                        <th scope="col">
+                            <%= t('status') %>
+                            <%= order_buttons('results.status') %>
+                        </th>
+                        <th scope="col">
+                            <%= t('billing_profiles.name') %>
+                            <%= order_buttons('users.id') %>
+                        </th>
+                        <th scope="col"><%= clear_order_button %></th>
+                    </tr>
+                </thead>
+
+                <tbody id="results-table-body">
+                    <% @results.each do |result| %>
+                        <tr class="results-table-row">
+                            <td class="monospace"><%= link_to result.auction.domain_name, admin_result_path(result) %></td>
+                            <td><%= I18n.l(result.auction.ends_at) %></td>
+                            <td><%= I18n.l(result.registration_due_date) %></td>
+                            <td><%= result.status.humanize %></td>
+                            <td>
+                                <%- unless result.no_bids? %>
+                                    <%= result.offer.billing_profile&.name %>
+                                <% end %>
+                            </td>
                         </tr>
-                    </thead>
-
-                    <tbody id="results-table-body">
-                        <% @results.each do |result| %>
-                            <tr class="results-table-row">
-                                <td class="monospace"><%= link_to result.auction.domain_name, admin_result_path(result) %></td>
-                                <td><%= I18n.l(result.auction.ends_at) %></td>
-                                <td><%= I18n.l(result.registration_due_date) %></td>
-                                <td><%= result.status.humanize %></td>
-                                <td>
-                                    <%- unless result.no_bids? %>
-                                        <%= result.offer.billing_profile&.name %>
-                                    <% end %>
-                                </td>
-                            </tr>
-                        <% end %>
-                    </tbody>
-                </table>
-            </div>
-
-            <h4><%= t('search_limit', limit: Kaminari.config.default_per_page)%></h4>
+                    <% end %>
+                </tbody>
+            </table>
         </div>
+
+        <h4><%= t('search_limit', limit: Kaminari.config.default_per_page) %></h4>
     </div>
 </div>
