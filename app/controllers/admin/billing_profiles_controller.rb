@@ -38,7 +38,8 @@ module Admin
     private
 
     def search_params
-      params.permit(:search_string)
+      search_params_copy = params.dup
+      search_params_copy.permit(:search_string)
     end
 
     def authorize_user
