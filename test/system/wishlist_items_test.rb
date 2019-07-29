@@ -38,6 +38,16 @@ class WishlistItemsTest < ApplicationSystemTestCase
     assert(page.has_text?('õun.ee'))
   end
 
+  def test_user_cannot_create_wishlist_items_in_the_name_of_other_user
+    other_user = users(:second_place_participant)
+
+    fill_in('wishlist_item[domain_name]', with: 'new-item.test')
+    page.evaluate_script("document.getElementById('wishlist_item_user_id').value = '#{other_user.id}'")
+
+    click_link_or_button('Submit')
+    assert(page.has_css?('div.alert', text: 'You are not authorized to access this page'))
+  end
+
   def test_domain_name_must_be_a_valid_domain
     fill_in('wishlist_item[domain_name]', with: 'not a real domain')
     click_link_or_button('Submit')
