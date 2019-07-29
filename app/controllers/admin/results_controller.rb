@@ -44,7 +44,8 @@ module Admin
     private
 
     def search_params
-      params.permit(:domain_name)
+      search_params_copy = params.dup
+      search_params_copy.permit(:domain_name)
     end
   end
 end
