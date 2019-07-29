@@ -1,9 +1,9 @@
 import * as punycode from 'punycode';
 
 function formHandler() {
-		const domainNameField = document
-				.getElementById('wishlist_item_domain_name');
-		domainNameField.value = punycode.toUnicode(domainNameField.value);
+    const domainNameField = document
+        .getElementById('wishlist_item_domain_name');
+    domainNameField.value = punycode.toUnicode(domainNameField.value);
 }
 
 function createListItem(string, document) {
