@@ -30,6 +30,14 @@ class WishlistItemsTest < ApplicationSystemTestCase
     assert(page.has_css?('div.notice', text: 'Created successfully.'))
   end
 
+  def test_punycode_items_are_converted_to_unicode
+    fill_in('wishlist_item[domain_name]', with: 'xn--un-bka.ee')
+    click_link_or_button('Submit')
+
+    assert(page.has_css?('div.notice', text: 'Created successfully.'))
+    assert(page.has_text?('õun.ee'))
+  end
+
   def test_domain_name_must_be_a_valid_domain
     fill_in('wishlist_item[domain_name]', with: 'not a real domain')
     click_link_or_button('Submit')

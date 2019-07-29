@@ -1,3 +1,11 @@
+import * as punycode from 'punycode';
+
+function formHandler() {
+		const domainNameField = document
+				.getElementById('wishlist_item_domain_name');
+		domainNameField.value = punycode.toUnicode(domainNameField.value);
+}
+
 function createListItem(string, document) {
     const listItem = document.createElement('li');
     listItem.innerHTML = string;
@@ -31,4 +39,12 @@ document.addEventListener('ajax:beforeSend', (event) => {
     errorsBlock.classList.add('hidden');
     const duplicate = errorsList.cloneNode();
     errorsList.replaceWith(duplicate);
+});
+
+document.addEventListener('turbolinks:load', (event) => {
+    const form = document.getElementById('wishlist_item_form');
+    const button = document.getElementById('wishlist_item_form_commit');
+
+    form.addEventListener('change', formHandler);
+    button.addEventListener('click', formHandler);
 });

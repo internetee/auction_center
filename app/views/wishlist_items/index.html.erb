@@ -51,7 +51,7 @@
             </div>
 
             <%= form_with(model: @wishlist_item, url: wishlist_items_path,
-                          class: "ui form big") do |f| %>
+                          class: "ui form big", id: "wishlist_item_form") do |f| %>
                 <%= f.hidden_field :user_id, value: @wishlist_item.user_id %>
 
                 <div class="field">
@@ -60,7 +60,7 @@
                 </div>
 
                 <div class="buttons">
-                    <%= f.submit t(:submit), class: "ui button primary" %>
+                    <%= f.submit t(:submit), class: "ui button primary", id: "wishlist_item_form_commit" %>
                 </div>
             <% end %>
             <br>
