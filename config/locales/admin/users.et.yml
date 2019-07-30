@@ -13,7 +13,7 @@ et:
         new_user: "Uus kasutaja"
 
       search:
-        title: "User search"
+        title: "Kasutaja otsing"
 
       show:
         title: "Kasutaja"
@@ -36,4 +36,4 @@ et:
         new_password: "Uus salasõna"
         you_can_leave_blank: "kui ei soovi muuta, jäta tühjaks"
         roles: 'Rollid'
-        errors: "prohibited this user from being saved"
+        errors: "ei võimaldanud kasutaja andmeid salvestada"

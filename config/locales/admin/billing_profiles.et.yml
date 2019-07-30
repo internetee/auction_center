@@ -2,10 +2,10 @@ et:
   admin:
     billing_profiles:
       index:
-        title: "Arve aadressid"
+        title: "Arve saajad"
 
       show:
-        title: "Billing profile"
+        title: "Arve saaja"
 
       search:
-        title: "Billing profile search"
+        title: "Arve saaja otsing"

@@ -2,13 +2,13 @@ et:
   admin:
     invoices:
       index:
-        title: "Invoices"
+        title: "Arved"
 
       search:
-        title: "Invoice search"
+        title: "Arve otsing"
 
       show:
-        title: "Invoice no. %{invoice_number}"
+        title: "Arve nr. %{invoice_number}"
 
       edit:
         title: "Märgi arve makstuks"
