@@ -3,21 +3,21 @@ et:
     auctions:
       index:
         title: "Domeenioksjonid"
-        new_auction: "New auction"
+        new_auction: "Uus oksjon"
 
       search:
-        title: "Auction search"
+        title: "Oksjoni otsing"
 
       new:
-        title: "New auction"
-        errors: "prohibited this auction from being saved"
+        title: "Uus oksjon"
+        errors: "ei võimaldanud toimingut salvestada"
 
       show:
-        title: "Auction"
+        title: "Oksjon"
 
       edit:
-        title: "Edit auction"
-        errors: "prohibited this auction from being saved"
+        title: "Muuda oksjonit"
+        errors: "ei võimaldanud toimingut salvestada"
 
       destroy:
-        cannot_delete: "You cannot delete an auction that is already in progress or has finished."
+        cannot_delete: "Oksjonit mis on alanud või lõppenud ei saa kustutada."
