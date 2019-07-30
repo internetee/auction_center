@@ -44,6 +44,7 @@ gem 'omniauth-tara', github: 'internetee/omniauth-tara'
 gem 'pdfkit'
 gem 'rails-i18n'
 gem 'recaptcha'
+gem 'simpleidn'
 gem 'wkhtmltopdf-binary'
 
 group :development, :test do

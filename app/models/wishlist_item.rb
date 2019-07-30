@@ -1,5 +1,9 @@
+require 'simpleidn'
+
 class WishlistItem < ApplicationRecord
   belongs_to :user, optional: false
+
+  before_validation :set_domain_name_to_unicode
 
   validates :domain_name, uniqueness: { scope: :user_id }
   validates :domain_name,
@@ -21,6 +25,15 @@ class WishlistItem < ApplicationRecord
     return if number_of_items_for_user < Setting.wishlist_size
 
     errors.add(:wishlist, I18n.t('wishlist_items.too_many_items'))
+  end
+
+  # The fact that we store domain names as unicode is our own implementation detail and we should
+  # accept either form from the user, so this should not be a validation.
+  #
+  # Duplicates the functionality in written in Javascript, just in case someone has it disabled
+  # on their browsers.
+  def set_domain_name_to_unicode
+    self.domain_name = SimpleIDN.to_unicode(domain_name)
   end
 
   # Can safely return zero if user_id is unset, without it the whole object is invalid.
