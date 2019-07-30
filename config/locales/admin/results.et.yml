@@ -7,7 +7,7 @@ et:
         create_results: "Loo tulemused"
 
       search:
-        title: "Result search"
+        title: "Tulemuse otsing"
 
       show:
-        title: "Auction result"
+        title: "Oksjoni tulemus"
