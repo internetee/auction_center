@@ -1,3 +1,6 @@
+30.07.2019
+* Admin: added some missing Estonian translations [#310](https://github.com/internetee/auction_center/pull/310)
+
 29.07.2019
 * Admin: fixed filtered views to match corresponding index tables [#307](https://github.com/internetee/auction_center/issues/307)
 
