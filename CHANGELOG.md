@@ -1,5 +1,6 @@
 31.07.2019
 * Whishilst now supports punycode so utf8 and their ascii formats are hanled as the same [#270](https://github.com/internetee/auction_center/issues/270)
+* Admin: added missing Estonian traslations for invoices column titles [#315](https://github.com/internetee/auction_center/pull/315)
 
 30.07.2019
 * Admin: added some missing Estonian translations [#310](https://github.com/internetee/auction_center/pull/310)
