@@ -21,6 +21,9 @@ et:
     title: "arve nr %{number}"
     download: "laadi alla"
     number: "number"
+    vat_rate_on_payment: "käibemaksu protsent"
+    total_paid: "kokku makstud"
+    paid_through: "makseviis"
 
     outstanding: "tasumata arved"
     paid: "tasutud arved"
