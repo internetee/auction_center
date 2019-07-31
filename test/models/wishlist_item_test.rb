@@ -33,6 +33,13 @@ class WishlistItemTest < ActiveSupport::TestCase
     assert_equal(['has too many items'], item.errors[:wishlist])
   end
 
+  def test_domain_name_is_automatically_converted_to_unicode
+    item = WishlistItem.new(user: @user, domain_name: 'xn--un-bka.ee')
+    item.validate
+
+    assert_equal('õun.ee', item.domain_name)
+  end
+
   def test_user_must_exist
     item = WishlistItem.new(user: @user, domain_name: 'dupe.test')
     assert(item.valid?)
