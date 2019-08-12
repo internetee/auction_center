@@ -10,7 +10,7 @@
             <div class="column sixteen wide">
                 <%= link_to t(:versions_name), admin_invoice_versions_path(@invoice), class: "ui button primary" %>
                 <%= link_to t('invoices.download'), download_admin_invoice_path(@invoice),
-                            { class: 'ui button secondary', target: "_blank" } %>
+                            { class: 'ui button secondary', download: true } %>
 
                 <% unless @invoice.overdue? || @invoice.paid? %>
                     <%= link_to t('invoices.mark_as_paid'), edit_admin_invoice_path(@invoice), class: 'ui button secondary' %>
