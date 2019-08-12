@@ -132,6 +132,6 @@ class AdminInvoicesTest < ApplicationSystemTestCase
 
   def test_invoice_view_contains_a_download_link
     visit admin_invoice_path(@invoice)
-    assert(page.has_link?('Download', href: download_admin_invoice_path(@invoice)))
+    assert_link 'Download', href: download_admin_invoice_path(@invoice)
   end
 end
