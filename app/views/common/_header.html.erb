@@ -28,9 +28,7 @@
             <a href="https://registrant.internet.ee"><span><%= t('.registrant_portal')%></span></a>
         </nav>
         <nav class="menu-language">
-            <ul>
-                <%= locale_links %>
-            </ul>
+            <%= locale_links %>
         </nav>
         <nav class="menu-user">
             <% if current_user %>
@@ -60,5 +58,6 @@
         <button type="button" class="btn btn-menu" data-menu-toggle="">
             <i aria-hidden="true" class="bars icon"></i>
         </button>
+    </div>
     </div>
 </header>
