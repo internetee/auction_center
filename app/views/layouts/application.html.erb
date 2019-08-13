@@ -35,7 +35,7 @@
             </main>
 
             <%= render 'common/footer' %>
-            <%= render 'google_analytics' if google_analytics_enabled? %>
+            <%= render 'google_analytics', tracking_id: google_analytics.tracking_id if google_analytics.enabled? %>
         </div>
     </body>
 </html>

@@ -1,10 +1,13 @@
 require 'application_system_test_case'
 
-class GoogleAnalyticsTest < ActionDispatch::IntegrationTest
+class GoogleAnalyticsIntegrationTest < ActionDispatch::IntegrationTest
   def test_google_analytics_integration
+    tracking_id = 'test-tracking-id'
+    Rails.configuration.customization['google_analytics']['tracking_id'] = tracking_id
+
     get auctions_path
 
-    assert_select '#google-tracking-id[data-value="MY-GOOGLE-ID"]'
-    assert_select 'script[src="https://www.googletagmanager.com/gtag/js?id=MY-GOOGLE-ID"]'
+    assert_select %Q(#google-tracking-id[data-value="#{tracking_id}"])
+    assert_select %Q(script[src="https://www.googletagmanager.com/gtag/js?id=#{tracking_id}"])
   end
 end
