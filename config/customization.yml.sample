@@ -51,7 +51,6 @@ default: &default
 
   google_analytics:
     # Google analytics ID. When not set or commented out, analytics tracking is disabled.
-    # Analytics tracking is also disabled in any environment other than production.
     tracking_id: 'MY-GOOGLE-ID'
 
   payment_methods:

@@ -4,7 +4,7 @@ module ApplicationHelper
   end
 
   def google_analytics_enabled?
-    Rails.env.production? && google_analytics_tracking_id
+    google_analytics_tracking_id
   end
 
   def google_analytics_tracking_id
