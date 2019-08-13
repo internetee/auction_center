@@ -4,10 +4,10 @@ module ApplicationHelper
   end
 
   def google_analytics_enabled?
-    Rails.env.production? && google_tracking_id
+    Rails.env.production? && google_analytics_tracking_id
   end
 
-  def google_tracking_id
+  def google_analytics_tracking_id
     Rails.configuration.customization.dig('google_analytics', 'tracking_id')
   end
 
