@@ -15,8 +15,6 @@ plugins:
       - javascript
   eslint:
     enabled: true
-  fixme:
-    enabled: true
   rubocop:
     enabled: true
     channel: rubocop-0-58
