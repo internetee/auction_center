@@ -1,6 +1,4 @@
 require 'test_helper'
-require 'devise'
-require 'socket'
 require 'support/semantic_ui_helper'
 
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
