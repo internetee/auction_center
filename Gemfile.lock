@@ -308,7 +308,6 @@ DEPENDENCIES
   rails (~> 5.2.1)
   rails-i18n
   recaptcha
-  selenium-webdriver
   simplecov
   simpleidn
   turbolinks (~> 5)
