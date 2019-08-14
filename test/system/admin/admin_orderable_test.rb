@@ -5,7 +5,7 @@ class AdminOrderableTest < ApplicationSystemTestCase
     super
 
     @original_wait_time = Capybara.default_max_wait_time
-    Capybara.default_max_wait_time = 10
+    Capybara.default_max_wait_time = 15
 
     @administrator = users(:administrator)
     sign_in(@administrator)
@@ -20,7 +20,7 @@ class AdminOrderableTest < ApplicationSystemTestCase
   def test_auctions_are_orderable
     visit admin_auctions_path
 
-    click_link(id: 'admin_auction_decorators.number_of_offers_desc_button')
+    click_link(id: 'admin_auction_decorators.number_of_offers_desc_button', wait: 20)
     assert_appears_before('with-offers.test', 'expired.test')
   end
 
