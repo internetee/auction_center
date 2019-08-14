@@ -30,6 +30,7 @@
 
 /public/assets
 .byebug_history
+.rubocop-ruby.yml
 .rubocop.yml
 
 # Test files
