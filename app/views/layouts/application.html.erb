@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="<%= locale %>">
     <head>
         <title><%= t('common.header.auction_portal') %></title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,7 +16,7 @@
         <div class="app-wrapper">
             <%= render 'common/header' %>
 
-            <main class="main-layout" role="main">
+            <main class="main-layout">
                 <%= yield :hero %>
 
                 <% unless flash.empty? %>

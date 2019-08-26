@@ -63,12 +63,12 @@
                         <%= @invoice.due_date %>
                     </div>
 
-		    <% if @invoice.paid_with_payment_order %>
-			<div class="item">
+                    <% if @invoice.paid_with_payment_order %>
+                        <div class="item">
                             <div class="header"><%= t('invoices.paid_through') %></div>
                             <%= @invoice.paid_with_payment_order&.channel %>
-			</div>
-		    <% end %>
+                        </div>
+                    <% end %>
                 </div>
             </div>
 
@@ -91,7 +91,7 @@
                                 <td><%= item.price %></td>
                             </tr>
                         <% end %>
-                    </tbody class="mb-2">
+                    </tbody>
 
                     <tfoot>
                         <tr>
