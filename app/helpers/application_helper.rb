@@ -3,8 +3,9 @@ module ApplicationHelper
     Rails.configuration.customization['application_name']
   end
 
-  def google_tracking_id
-    Rails.configuration.customization.dig('google_analytics', 'tracking_id')
+  def google_analytics
+    tracking_id = Rails.configuration.customization.dig('google_analytics', 'tracking_id')
+    GoogleAnalytics.new(tracking_id: tracking_id)
   end
 
   def navigation_links(current_user)
