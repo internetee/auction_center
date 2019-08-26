@@ -15,7 +15,7 @@
                 <% end %>
 
                 <%= link_to t('invoices.download'), download_invoice_path(@invoice.uuid),
-                            { class: 'ui button secondary', target: "_blank" } %>
+                            { class: 'ui button secondary', download: true } %>
             </div>
             <div class="column">
                 <div class="ui list">
