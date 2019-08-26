@@ -14,12 +14,6 @@ bundler_args: --without development staging production
 before_install:
   - gem update --system
   - gem install bundler
-  - "wget -N http://chromedriver.storage.googleapis.com/2.43/chromedriver_linux64.zip -P ~/"
-  - "unzip ~/chromedriver_linux64.zip -d ~/"
-  - "rm ~/chromedriver_linux64.zip"
-  - "sudo mv -f ~/chromedriver /usr/local/share/"
-  - "sudo chmod +x /usr/local/share/chromedriver"
-  - "sudo ln -s /usr/local/share/chromedriver /usr/local/bin/chromedriver"
 
 install:
   - bundle install
@@ -45,5 +39,5 @@ services:
   - postgresql
 
 addons:
-  postgresql: "9.4"
+  postgresql: "9.6"
   chrome: stable
