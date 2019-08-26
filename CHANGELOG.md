@@ -1,3 +1,18 @@
+26.08.2019
+* Updatede Nokogiri gem to 1.10.4 (CVE-2019-5477) [#334](https://github.com/internetee/auction_center/pull/334)
+* Invoices are now downloaded on click without opening new window first [#317](https://github.com/internetee/auction_center/pull/317)
+* HTML fixes [#318](https://github.com/internetee/auction_center/pull/318)
+* Improved Google Analytics integration [#319](https://github.com/internetee/auction_center/pull/319)
+* Upgraded webdrivers gem to 4.1.2 [#320](https://github.com/internetee/auction_center/pull/320)
+* Upgraded capybara gem to 3.28.0 [#322](https://github.com/internetee/auction_center/pull/322)
+* Updated delayed_job to 4.1.8 and delayed_job_active_records to 4.1.4 in prep for Rails 6 [#337](https://github.com/internetee/auction_center/pull/337)
+* Updated jbuilder gem to 2.9.1 (Rails 6) [#338](https://github.com/internetee/auction_center/pull/338)
+* Updated device gem to 4.7.0 (Rails 6) [#339](https://github.com/internetee/auction_center/pull/339)
+* Removed selenium-webdriver gem (included in webdrivers gem) [#323](https://github.com/internetee/auction_center/pull/323)
+* Gemfile clean up [#324](https://github.com/internetee/auction_center/pull/324)
+* Code cleanup - removed unneeded require statements [#326](https://github.com/internetee/auction_center/pull/326)
+* Travis config updated for postgresql 9.6 [#331](https://github.com/internetee/auction_center/pull/331)
+
 31.07.2019
 * Whishilst now supports punycode so utf8 and their ascii formats are hanled as the same [#270](https://github.com/internetee/auction_center/issues/270)
 * Admin: added missing Estonian traslations for invoices column titles [#315](https://github.com/internetee/auction_center/pull/315)
