@@ -63,6 +63,7 @@ default: &default
       user: ''
       key: ''
       account_id: ''
+      icon: '/images/payment_methods/every_pay.png'
 
     seb:
       url: ''
