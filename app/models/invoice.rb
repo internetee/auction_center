@@ -88,7 +88,7 @@ class Invoice < ApplicationRecord
     ActiveRecord::Base.transaction do
       self.paid_at = time
       self.vat_rate = billing_profile.vat_rate
-      self.total_amount = total
+      self.paid_amount = total
 
       paid!
       result.mark_as_payment_received(time)
@@ -99,7 +99,7 @@ class Invoice < ApplicationRecord
     ActiveRecord::Base.transaction do
       self.paid_at = time
       self.vat_rate = billing_profile.vat_rate
-      self.total_amount = total
+      self.paid_amount = total
       self.paid_with_payment_order = payment_order
 
       paid!

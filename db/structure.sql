@@ -1004,7 +1004,7 @@ CREATE TABLE public.invoices (
     number integer NOT NULL,
     uuid uuid DEFAULT public.gen_random_uuid(),
     vat_rate numeric,
-    total_amount numeric,
+    paid_amount numeric,
     updated_by character varying,
     notes character varying,
     paid_with_payment_order_id bigint,
@@ -2371,6 +2371,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190517063450'),
 ('20190517073827'),
 ('20190521071232'),
-('20190722100652');
+('20190722100652'),
+('20190915171050');
 
 
