@@ -1,4 +1,7 @@
-12:09.2019
+23.09.2019
+* Estonian translation improvements [#352](https://github.com/internetee/auction_center/pull/352)
+
+12.09.2019
 * Autoupdated devise to 4.7.1 [#349](https://github.com/internetee/auction_center/pull/349)
 * Updated reCaptcha gem to 5.1.0 [#345](https://github.com/internetee/auction_center/pull/345)
 
