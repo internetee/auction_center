@@ -40,10 +40,10 @@ et:
 
       unlock_instructions:
         subject: "Ava juhised"
-        salutation: "Hello, %{email}"
-        first_para: "Your account has been locked due to an excessive number of unsuccessful sign in attempts."
-        second_para: "Click the link below to unlock your account:"
-        third_para: "Unlock my account"
+        salutation: "Tere, %{email}"
+        first_para: "Sinu konto on lukustatud ülemääraste ebaõnnestunud sisselogimise katsete tõttu."
+        second_para: "Klõpsa allolevale lingile oma konto lahti lukustamiseks:"
+        third_para: "Lukusta konto lahti"
 
       password_change:
         subject: "Salasõna muudetud"
@@ -73,7 +73,7 @@ et:
         sign_in_with_identity_document: "Logi sisse isikut tõendava dokumendiga."
         identity_document_text: |
           Sisene kasutades Eesti (sh e-residendi) ID kaarti,
-          mobiil IDd, pangalinki või EU liikmeriikide elektroonset isikutunnistust (EIDAS).
+          Mobiil-IDd, pangalinki või EU liikmeriikide elektroonset isikutunnistust (EIDAS).
         sign_in_with_password: "Logi sisse salasõnaga"
       user:
         signed_in: "Oled sisse logitud."
@@ -93,11 +93,11 @@ et:
 
   errors:
     messages:
-      already_confirmed: "was already confirmed, please try signing in"
+      already_confirmed: "on juba kinnitatud, palun proovi sisse logida"
       confirmation_period_expired: "tuleb kinnitada 3 päeva jooksul kinnitus teate väljastamisest, palun esita uus taotlus e-posti aadressi kinnitamiseks."
-      expired: "has expired, please request a new one"
-      not_found: "not found"
-      not_locked: "was not locked"
+      expired: "on aegunud, palun küsi uus"
+      not_found: "ei leitud"
+      not_locked: "ei ole lukustatud"
       not_saved:
         one: "1 viga takistab kasutaja konto salvestamist:"
-        other: "%{count} errors prohibited this %{resource} from being saved:"
+        other: "%{count} viga takistab %{resource} salvestamist:"
