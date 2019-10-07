@@ -28,28 +28,23 @@ class WishlistItem < ApplicationRecord
     errors.add(:wishlist, I18n.t('wishlist_items.too_many_items'))
   end
 
-  # Make sure that domain has supported TLD upon creation.
+  # Validate that domain has supported tld
   def valid_tld
-    begin
-      tlds = Setting.find_by!(code: "wishlist_supported_tld").value.split("|")
-      current_tld = self.domain_name.split(".", 2).last
+    tlds = Setting.find_by(code: 'wishlist_supported_tld').value.split('|')
+    unless tlds.nil?
+      current_tld = domain_name.split('.', 2).last
       return if tlds.include?(current_tld)
-      errors.add(:domain_name, I18n.t('is_invalid'))
-    rescue StandardError
-      # Ignored intentionally
     end
+
+    errors.add(:domain_name, I18n.t('is_invalid'))
   end
 
-  # Appends default tld in case no tld was added by customer beforehand.
+  # Autocomplete domain's tld with preset if none present
   def tld_autocomplete
-    begin
-      default_tld = Setting.find_by!(code: "wishlist_supported_tld").value.split("|").first
-      if !default_tld.empty?
-        self.domain_name = "#{self.domain_name}.#{default_tld}" unless self.domain_name.include?(".")
-      end
-    rescue StandardError
-      # Ignored intentionally
-    end
+    default_tld = Setting.find_by(code: 'wishlist_supported_tld').value.split('|').first
+    return if default_tld.nil?
+
+    self.domain_name = "#{domain_name}.#{default_tld}" unless domain_name.include?('.')
   end
 
   # The fact that we store domain names as unicode is our own implementation detail and we should

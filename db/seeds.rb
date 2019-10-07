@@ -177,3 +177,12 @@ TEXT
 wishlist_size_setting = Setting.new(code: :wishlist_size, value: '10',
                                     description: wishlist_size_description)
 wishlist_size_setting.save
+
+# Wishlist supported domain tld's
+wishlist_supported_tld_description = <<~TEXT.squish
+Supported TLD's for wishlist domain monitoring. First entry is used as a default autocomplete value. Separate with "|" (pipe) 
+TEXT
+
+wishlist_supported_tld_setting = Setting.new(code: :wishlist_supported_tld, value: 'ee|pri.ee|com.ee|med.ee|fie.ee',
+                                  description: wishlist_supported_tld_description)
+wishlist_supported_tld_setting.save
