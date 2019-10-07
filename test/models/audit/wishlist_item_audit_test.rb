@@ -15,7 +15,7 @@ class WishlistItemAuditTest < ActiveSupport::TestCase
   end
 
   def test_creating_a_wishlist_item_creates_a_history_record
-    wishlist_item = WishlistItem.new(domain_name: 'foo.bar', user: @user)
+    wishlist_item = WishlistItem.new(domain_name: 'foo.test', user: @user)
     wishlist_item.save
 
     assert(audit_record = Audit::WishlistItem.find_by(object_id: wishlist_item.id,
@@ -24,7 +24,7 @@ class WishlistItemAuditTest < ActiveSupport::TestCase
   end
 
   def test_deleting_a_wishlist_item_creates_a_history_record
-    wishlist_item = WishlistItem.new(domain_name: 'foo.bar', user: @user)
+    wishlist_item = WishlistItem.new(domain_name: 'foo.test', user: @user)
     wishlist_item.save
     wishlist_item.destroy
 

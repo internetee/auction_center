@@ -69,7 +69,62 @@ class WishlistItemTest < ActiveSupport::TestCase
     assert(item.valid?)
 
     item = WishlistItem.new(user: @user, domain_name: 'some')
+    assert(item.valid?)
+
+    item = WishlistItem.new(user: @user, domain_name: 'kana.')
     assert_not(item.valid?)
     assert_equal(['is invalid'], item.errors[:domain_name])
+  end
+
+  def test_domain_has_valid_tld
+    # This should be a generative test in the future.
+    # Valid list is populated to ee, test, pri.ee, com.ee, med.ee, fie.ee
+    item = WishlistItem.new(user: @user, domain_name: 'dupe.ee')
+    assert(item.valid?)
+
+    item = WishlistItem.new(user: @user, domain_name: "#{SecureRandom.hex}.pri.ee")
+    assert(item.valid?)
+
+    item = WishlistItem.new(user: @user, domain_name: 'üõöä.med.ee')
+    assert(item.valid?)
+
+    item = WishlistItem.new(user: @user, domain_name: 'foo.bar')
+    assert_not(item.valid?)
+
+    item = WishlistItem.new(user: @user, domain_name: 'foo.')
+    assert_not(item.valid?)
+
+    item = WishlistItem.new(user: @user, domain_name: 'test.pri')
+    assert_not(item.valid?)
+
+    item = WishlistItem.new(user: @user, domain_name: 'test.pri.ee.')
+    assert_not(item.valid?)
+
+    item = WishlistItem.new(user: @user, domain_name: 'kana.')
+    assert_not(item.valid?)
+    assert_equal(['is invalid'], item.errors[:domain_name])
+  end
+
+  def test_domain_is_autocompleted_with_tld
+    # Valid list is populated to ee, test, pri.ee, com.ee, med.ee, fie.ee
+    item = WishlistItem.new(user: @user, domain_name: 'noep')
+    item.save
+    assert_equal('noep.ee', item.domain_name)
+
+    item = WishlistItem.new(user: @user, domain_name: "#{SecureRandom.hex}")
+    item.save
+    assert(item.valid?)
+
+    item = WishlistItem.new(user: @user, domain_name: 'korras.pri.ee')
+    item.save
+    assert_equal('korras.pri.ee', item.domain_name)
+
+    item = WishlistItem.new(user: @user, domain_name: 'üõöä.med.')
+    item.save
+    assert_not(item.valid?)
+
+    item = WishlistItem.new(user: @user, domain_name: 'peppa-pig')
+    item.save
+    assert_equal('peppa-pig.ee', item.domain_name)
   end
 end

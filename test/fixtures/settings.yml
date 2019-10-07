@@ -103,3 +103,9 @@ wishlist_size:
   description: |
     Number of domains a single user can keep in their wishlist. Default: 10
   value: '10'
+
+wishlist_supported_tld:
+  code: 'wishlist_supported_tld'
+  description: |
+    Supported TLD's for wishlist domain monitoring. First entry is used as a default autocomplete value. Separate with "|" (pipe)
+  value: 'ee|test|pri.ee|com.ee|med.ee|fie.ee'
