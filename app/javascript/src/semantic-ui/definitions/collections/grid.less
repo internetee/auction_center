@@ -1916,5 +1916,21 @@
   }
 }
 
+@media only screen and (max-width: @largestMobileScreen) {
+  [class*="mobile hidden"],
+  [class*="tablet only"]:not(.mobile),
+  [class*="computer only"]:not(.mobile),
+  [class*="large monitor only"]:not(.mobile),
+  [class*="widescreen monitor only"]:not(.mobile),
+  [class*="or lower hidden"] {
+    display: none !important;
+  }
+}
+
+.mobile-show {
+  @media only screen and (min-width: @tabletBreakpoint) {
+      display: none !important;
+  }
+}
 
 .loadUIOverrides();

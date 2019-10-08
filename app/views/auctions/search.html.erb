@@ -26,8 +26,20 @@
     <div class="margin-block narrow">
         <div class="grid one column">
             <div class="column">
-                <table class="ui table selectable unstackable fixed" id="auctions-table">
-                    <thead>
+                <table class="ui table selectable mobile stackable fixed" id="auctions-table">
+                    <thead class="mobile-show">
+                        <tr>
+                            <th scope="col">
+                                <%= t('auctions.domain_name') %>
+                                <%= order_buttons('participant_auction_decorators.domain_name') %>
+                            </th>
+                            <th scope="col">
+                                <%= t('auctions.ends_at') %>
+                                <%= order_buttons('participant_auction_decorators.ends_at') %>
+                            </th>
+                        </tr>
+                    </thead>
+                    <thead class="mobile hidden">
                         <tr>
                             <th scope="col">
                                 <%= t('auctions.domain_name') %>
@@ -52,8 +64,8 @@
                                 <td class="auction-domain-name monospace">
                                     <%= link_to auction.domain_name, auction_path(auction.uuid) %>
                                 </td>
-                                <td><%= I18n.l(auction.ends_at) %></td>
-                                <td><%= auction.users_price %></td>
+                                <td><span class="mobile-show"><%= t('auctions.ends_at') %> </span> <%= I18n.l(auction.ends_at) %></td>
+                                <td><span class="mobile-show"><%= t('auctions.your_current_price') %>:  </span><%= auction.users_price %></td>
                                 <td>
                                     <%- if auction.users_offer_uuid %>
                                         <%= link_to t('auctions.edit_your_offer'),
