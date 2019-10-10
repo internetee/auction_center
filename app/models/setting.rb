@@ -83,4 +83,27 @@ class Setting < ApplicationRecord
   def self.wishlist_size
     Setting.find_by(code: :wishlist_size).value.to_i
   end
+
+  def self.wishlist_supported_domain_extensions
+    extensions = Setting.find_by(code: :wishlist_supported_domain_extensions)
+    if extensions.present?
+      return JSON.parse(extensions.value) if valid_json?(extensions.value)
+    end
+
+    []
+  end
+
+  def self.wishlist_default_domain_extension
+    default_domain = Setting.find_by(code: :wishlist_default_domain_extension)
+    return default_domain.value if default_domain.present?
+
+    nil
+  end
+end
+
+def valid_json?(json)
+  JSON.parse(json)
+  true
+rescue JSON::ParserError
+  false
 end

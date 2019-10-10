@@ -28,26 +28,22 @@ class WishlistItem < ApplicationRecord
     errors.add(:wishlist, I18n.t('wishlist_items.too_many_items'))
   end
 
-  # Validate that domain has supported tld
+  # Validate that FQDN has supported extension
   def valid_tld
-    tlds = Setting.find_by(code: 'wishlist_supported_tld')
-    unless tlds.nil?
-      tlds = tlds.value.split('|')
-      current_tld = domain_name.split('.', 2).last
-      return if tlds.include?(current_tld)
-    end
+    return if Setting.wishlist_supported_domain_extensions.empty?
+
+    return if Setting.wishlist_supported_domain_extensions.include?(domain_name.split('.', 2).last)
 
     errors.add(:domain_name, I18n.t('is_invalid')) if errors[:domain_name].blank?
   end
 
-  # Autocomplete domain's tld with preset if none present
+  # Autocomplete domain name's extension with preset if none present
   def tld_autocomplete
-    default_tld = Setting.find_by(code: 'wishlist_supported_tld')
-    return if default_tld.nil?
+    return if Setting.wishlist_default_domain_extension.nil?
 
     return if domain_name.include?('.')
 
-    self.domain_name = "#{domain_name}.#{default_tld.value.split('|').first}"
+    self.domain_name = "#{domain_name}.#{Setting.wishlist_default_domain_extension}"
   end
 
   # The fact that we store domain names as unicode is our own implementation detail and we should

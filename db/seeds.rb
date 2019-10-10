@@ -178,11 +178,21 @@ wishlist_size_setting = Setting.new(code: :wishlist_size, value: '10',
                                     description: wishlist_size_description)
 wishlist_size_setting.save
 
-# Wishlist supported domain tld's
-wishlist_supported_tld_description = <<~TEXT.squish
-Supported TLD's for wishlist domain monitoring. First entry is used as a default autocomplete value. Separate with "|" (pipe) 
+# Wishlist supported domain extensions
+wishlist_supported_domain_extensions_description = <<~TEXT.squish
+Supported domain extensions for wishlist domain monitoring. 
 TEXT
 
-wishlist_supported_tld_setting = Setting.new(code: :wishlist_supported_tld, value: 'ee|pri.ee|com.ee|med.ee|fie.ee',
-                                  description: wishlist_supported_tld_description)
-wishlist_supported_tld_setting.save
+extensions = ['ee', 'pri.ee', 'com.ee', 'med.ee', 'fie.ee']
+wishlist_supported_domain_extensions = Setting.new(code: :wishlist_supported_domain_extensions, value: extensions,
+                                  description: wishlist_supported_domain_extensions_description)
+wishlist_supported_domain_extensions.save
+
+# Wishlist default domain extension
+wishlist_default_domain_extension_description = <<~TEXT.squish
+Used to autocomplete domain name in order to get FQDN, if not present
+TEXT
+
+wishlist_default_domain_extension = Setting.new(code: :wishlist_default_domain_extension, value: 'ee',
+                                  description: wishlist_default_domain_extension_description)
+wishlist_default_domain_extension.save
