@@ -146,14 +146,14 @@ class InvoiceTest < ActiveSupport::TestCase
     assert_equal(payment_order, @payable_invoice.paid_with_payment_order)
   end
 
-  def test_mark_as_paid_populates_vat_rate_and_total_amount
+  def test_mark_as_paid_populates_vat_rate_and_paid_amount
     time = Time.parse('2010-07-06 10:30 +0000').in_time_zone
     @payable_invoice.mark_as_paid_at(time)
     @payable_invoice.reload
 
     assert(@payable_invoice.paid?)
     assert_equal(BigDecimal('0.0'), @payable_invoice.vat_rate)
-    assert_equal(BigDecimal('10.0'), @payable_invoice.total_amount)
+    assert_equal(BigDecimal('10.0'), @payable_invoice.paid_amount)
   end
 
   def test_invoice_items

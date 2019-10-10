@@ -83,7 +83,8 @@ class AdminInvoicesTest < ApplicationSystemTestCase
 
     @invoice.update(status: Invoice.statuses[:paid], paid_at: Time.now.in_time_zone,
                     vat_rate: @invoice.billing_profile.vat_rate,
-                    total_amount: @invoice.total, due_date: Time.zone.tomorrow)
+                    paid_amount: @invoice.total,
+                    due_date: Time.zone.tomorrow)
 
     visit admin_invoice_path(@invoice)
     assert_not(page.has_link?('Mark as paid'))
@@ -91,7 +92,8 @@ class AdminInvoicesTest < ApplicationSystemTestCase
 
   def test_admin_can_see_which_channel_was_used_to_pay_the_invoice
     @invoice.update(status: Invoice.statuses[:paid], paid_at: Time.now,
-                    vat_rate: @invoice.billing_profile.vat_rate, total_amount: @invoice.total,
+                    vat_rate: @invoice.billing_profile.vat_rate,
+                    paid_amount: @invoice.total,
                     paid_with_payment_order: payment_orders(:issued))
 
     visit admin_invoices_path
@@ -105,7 +107,8 @@ class AdminInvoicesTest < ApplicationSystemTestCase
     visit admin_invoice_path(@invoice)
 
     @invoice.update(status: Invoice.statuses[:paid], paid_at: Time.now.in_time_zone,
-                    vat_rate: @invoice.billing_profile.vat_rate, total_amount: @invoice.total)
+                    vat_rate: @invoice.billing_profile.vat_rate,
+                    paid_amount: @invoice.total)
 
     click_link_or_button('Mark as paid')
     assert(page.has_css?('div.notice', text: 'Invoice is already paid.'))
@@ -115,7 +118,8 @@ class AdminInvoicesTest < ApplicationSystemTestCase
     visit edit_admin_invoice_path(@invoice)
 
     @invoice.update(status: Invoice.statuses[:paid], paid_at: Time.now.in_time_zone,
-                    vat_rate: @invoice.billing_profile.vat_rate, total_amount: @invoice.total)
+                    vat_rate: @invoice.billing_profile.vat_rate,
+                    paid_amount: @invoice.total)
 
     note = 'Money received by wire transfer'
     fill_in('invoice[notes]', with: note)

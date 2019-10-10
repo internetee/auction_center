@@ -127,7 +127,7 @@
                             <tr>
                                 <th scope="col"></th>
                                 <th scope="col"><%= t('invoices.total_paid') %></th>
-                                <th scope="col"><%= t('offers.price_in_currency', price: @invoice.total_amount) %></th>
+                                <th scope="col"><%= t('offers.price_in_currency', price: @invoice.paid_amount) %></th>
                             </tr>
                         <% end %>
                     </tfoot>
