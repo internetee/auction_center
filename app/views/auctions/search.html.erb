@@ -27,7 +27,7 @@
         <div class="grid one column">
             <div class="column">
                 <table class="ui table selectable stackable fixed" id="auctions-table">
-                    <thead class="mobile show">
+                    <thead>
                         <tr>
                             <th>
                                 <%= t('auctions.domain_name') %>
@@ -37,24 +37,12 @@
                                 <%= t('auctions.ends_at') %>
                                 <%= order_buttons('participant_auction_decorators.ends_at') %>
                             </th>
-                        </tr>
-                    </thead>
-                    <thead class="mobile hidden">
-                        <tr>
-                            <th>
-                                <%= t('auctions.domain_name') %>
-                                <%= order_buttons('participant_auction_decorators.domain_name') %>
-                            </th>
-                            <th>
-                                <%= t('auctions.ends_at') %>
-                                <%= order_buttons('participant_auction_decorators.ends_at') %>
-                            </th>
-                            <th>
+                            <th class="auctions-table-cell-name-no-mobile">
                                 <%= t('auctions.your_current_price') %>
                                 <%= order_buttons('participant_auction_decorators.users_offer_cents') %>
                             </th>
-                            <th><%= t('auctions.offer_actions') %></th>
-                            <th><%= clear_order_button %></th>
+                            <th class="auctions-table-cell-name-no-mobile"><%= t('auctions.offer_actions') %></th>
+                            <th class="auctions-table-cell-name-no-mobile"><%= clear_order_button %></th>
                         </tr>
                     </thead>
 
@@ -62,15 +50,17 @@
                         <% @auctions.each do |auction| %>
                             <tr class="auctions-table-row">
                                 <td class="auction-domain-name monospace">
-                                    <%= link_to auction.domain_name, auction_path(auction.uuid) %>
+                                    <%= link_to auction_path(auction.uuid) do %>
+                                        <%= domain_name_with_embedded_colors(auction.domain_name) %>
+                                    <% end %>
                                 </td>
-                                <td><span class="mobile show"><%= t('auctions.ends_at') %> </span> <%= I18n.l(auction.ends_at) %></td>
-                                <td><span class="mobile show"><%= t('auctions.your_current_price') %>:  </span><%= auction.users_price %></td>
+                                <td><span class="auctions-table-mobile-infotainment"><%= t('auctions.ends_at') %> </span><%= I18n.l(auction.ends_at) %></td>
+                                <td><span class="auctions-table-mobile-infotainment"><%= t('auctions.your_current_price') %>: </span><%= auction.users_price %></td>
                                 <td>
                                     <%- if auction.users_offer_uuid %>
                                         <%= link_to t('auctions.edit_your_offer'),
                                          edit_offer_path(auction.users_offer_uuid) %>
-                                    <% elsif auction.in_progress? %>
+                                    <% else %>
                                         <%= link_to t('auctions.submit_offer'),
                                          new_auction_offer_path(auction_uuid: auction.uuid) %>
                                     <% end %>

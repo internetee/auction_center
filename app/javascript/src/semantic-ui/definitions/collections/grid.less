@@ -1821,9 +1821,6 @@
   .ui.grid.grid.grid > .row > [class*="widescreen only"].column:not(.mobile) {
     display: none !important;
   }
-  .auction[class*="mobile only"]:not(.auction[class*="tablet computer large screen widescreen"]) {
-    display: none !important;
-  }
 }
 /* Tablet Only Hide */
 @media only screen and (min-width: @tabletBreakpoint) and (max-width: @largestTabletScreen) {
@@ -1831,7 +1828,6 @@
   .ui.grid.grid.grid > [class*="mobile only"].row:not(.tablet),
   .ui.grid.grid.grid > [class*="mobile only"].column:not(.tablet),
   .ui.grid.grid.grid > .row > [class*="mobile only"].column:not(.tablet) {
-    
     display: none !important;
   }
   .ui[class*="computer only"].grid.grid.grid:not(.tablet),
@@ -1920,21 +1916,5 @@
   }
 }
 
-@media only screen and (max-width: @largestMobileScreen) {
-  [class*="mobile hidden"],
-  [class*="tablet only"]:not(.mobile),
-  [class*="computer only"]:not(.mobile),
-  [class*="large monitor only"]:not(.mobile),
-  [class*="widescreen monitor only"]:not(.mobile),
-  [class*="or lower hidden"] {
-    display: none !important;
-  }
-}
-
-  @media only screen and (min-width: @tabletBreakpoint) {
-    [class*="mobile show"] {
-      display: none;
-    }
-  }
 
 .loadUIOverrides();
