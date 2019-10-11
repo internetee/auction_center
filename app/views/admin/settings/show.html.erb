@@ -15,7 +15,14 @@
 
             <div class="item">
                 <div class="header"><%= t('settings.value') %></div>
-                <%= @setting.value %>
+                  <% if filled_json_array?(@setting.value)
+                    values = JSON.parse(@setting.value)
+                    values.each do |value| %>
+                      <a class='ui label'><%= value %></a>
+                    <% end
+                  else %>
+                    <%= @setting.value %>
+                  <% end %>
             </div>
 
             <div class="item">
@@ -27,4 +34,5 @@
         <%= link_to t(:edit), edit_admin_setting_path(@setting), class: "ui button primary" %>
         <%= link_to t(:versions_name), admin_setting_versions_path(@setting), class: "ui button primary" %>
     </div>
-</div>
+  </div>
+  

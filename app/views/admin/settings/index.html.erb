@@ -22,7 +22,16 @@
                                 <%=link_to setting.code, admin_setting_path(setting) %>
                             </td>
                             <td><%= setting.description %></td>
-                            <td><%= setting.value %></td>
+                            <td>
+                              <% if filled_json_array?(setting.value)
+                                values = JSON.parse(setting.value)
+                                values.each do |value| %>
+                                  <a class='ui label'><%= value %></a>
+                              <% end
+                              else %>
+                                <%= setting.value %>
+                              <% end %>
+                            </td>
                         </tr>
                     <% end %>
                 </tbody>
