@@ -1821,6 +1821,9 @@
   .ui.grid.grid.grid > .row > [class*="widescreen only"].column:not(.mobile) {
     display: none !important;
   }
+  .auction[class*="mobile only"]:not(.auction[class*="tablet computer large screen widescreen"]) {
+    display: none !important;
+  }
 }
 /* Tablet Only Hide */
 @media only screen and (min-width: @tabletBreakpoint) and (max-width: @largestTabletScreen) {
@@ -1828,6 +1831,7 @@
   .ui.grid.grid.grid > [class*="mobile only"].row:not(.tablet),
   .ui.grid.grid.grid > [class*="mobile only"].column:not(.tablet),
   .ui.grid.grid.grid > .row > [class*="mobile only"].column:not(.tablet) {
+    
     display: none !important;
   }
   .ui[class*="computer only"].grid.grid.grid:not(.tablet),
@@ -1927,10 +1931,10 @@
   }
 }
 
-.mobile-show {
   @media only screen and (min-width: @tabletBreakpoint) {
-      display: none !important;
+    [class*="mobile show"] {
+      display: none;
+    }
   }
-}
 
 .loadUIOverrides();

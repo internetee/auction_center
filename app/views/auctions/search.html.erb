@@ -26,14 +26,14 @@
     <div class="margin-block narrow">
         <div class="grid one column">
             <div class="column">
-                <table class="ui table selectable mobile stackable fixed" id="auctions-table">
-                    <thead class="mobile-show">
+                <table class="ui table selectable stackable fixed" id="auctions-table">
+                    <thead class="mobile show">
                         <tr>
-                            <th scope="col">
+                            <th>
                                 <%= t('auctions.domain_name') %>
                                 <%= order_buttons('participant_auction_decorators.domain_name') %>
                             </th>
-                            <th scope="col">
+                            <th>
                                 <%= t('auctions.ends_at') %>
                                 <%= order_buttons('participant_auction_decorators.ends_at') %>
                             </th>
@@ -41,20 +41,20 @@
                     </thead>
                     <thead class="mobile hidden">
                         <tr>
-                            <th scope="col">
+                            <th>
                                 <%= t('auctions.domain_name') %>
                                 <%= order_buttons('participant_auction_decorators.domain_name') %>
                             </th>
-                            <th scope="col">
+                            <th>
                                 <%= t('auctions.ends_at') %>
                                 <%= order_buttons('participant_auction_decorators.ends_at') %>
                             </th>
-                            <th scope="col">
+                            <th>
                                 <%= t('auctions.your_current_price') %>
                                 <%= order_buttons('participant_auction_decorators.users_offer_cents') %>
                             </th>
-                            <th scope="col"><%= t('auctions.offer_actions') %></th>
-                            <th scope="col"><%= clear_order_button %></th>
+                            <th><%= t('auctions.offer_actions') %></th>
+                            <th><%= clear_order_button %></th>
                         </tr>
                     </thead>
 
@@ -64,8 +64,8 @@
                                 <td class="auction-domain-name monospace">
                                     <%= link_to auction.domain_name, auction_path(auction.uuid) %>
                                 </td>
-                                <td><span class="mobile-show"><%= t('auctions.ends_at') %> </span> <%= I18n.l(auction.ends_at) %></td>
-                                <td><span class="mobile-show"><%= t('auctions.your_current_price') %>:  </span><%= auction.users_price %></td>
+                                <td><span class="mobile show"><%= t('auctions.ends_at') %> </span> <%= I18n.l(auction.ends_at) %></td>
+                                <td><span class="mobile show"><%= t('auctions.your_current_price') %>:  </span><%= auction.users_price %></td>
                                 <td>
                                     <%- if auction.users_offer_uuid %>
                                         <%= link_to t('auctions.edit_your_offer'),
