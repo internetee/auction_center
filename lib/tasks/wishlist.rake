@@ -20,7 +20,7 @@ namespace :wishlist do
     TEXT
 
     default_domain_extension = Setting.new(
-      code: :default_domain_extension,
+      code: :wishlist_default_domain_extension,
       value: 'ee',
       description: default_domain_extension_description
     )

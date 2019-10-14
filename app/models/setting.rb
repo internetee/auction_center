@@ -3,6 +3,8 @@ class Setting < ApplicationRecord
   validates :description, presence: true
   validates :value, presence: true
   validates :code, uniqueness: true
+  validate :valid_format_for_wishlist_domain_extensions, on: %i[create update]
+  validate :supported_default_wishlist_domain_extension, on: %i[create update]
 
   def self.auction_currency
     Setting.find_by(code: :auction_currency).value
@@ -87,7 +89,7 @@ class Setting < ApplicationRecord
   def self.wishlist_supported_domain_extensions
     extensions = Setting.find_by(code: :wishlist_supported_domain_extensions)
     if extensions.present?
-      return JSON.parse(extensions.value) if valid_json?(extensions.value)
+      return JSON.parse(extensions.value) if json_array?(extensions.value)
     end
 
     []
@@ -101,9 +103,34 @@ class Setting < ApplicationRecord
   end
 end
 
-def valid_json?(json)
-  JSON.parse(json)
-  true
+private
+def valid_format_for_wishlist_domain_extensions
+  return unless code == 'wishlist_supported_domain_extensions'
+
+  r = /\A([a-z0-9\-\u00E4\u00F5\u00F6\u00FC\u0161\u017E]{1,61}\.)?[a-z0-9]{1,61}\z/x
+  err = false
+  if json_array?(value)
+    JSON.parse(value).each do |ext|
+      err = true unless ext.match?(r)
+    end
+    return if err == false
+  end
+
+  errors.add(:value, 'is invalid')
+end
+
+def supported_default_wishlist_domain_extension
+  return unless code == 'wishlist_default_domain_extension'
+  return if Setting.wishlist_supported_domain_extensions.empty?
+  return if Setting.wishlist_supported_domain_extensions.include?(value)
+
+  errors.add(:value, 'is invalid')
+end
+
+def json_array?(text)
+  JSON.parse(text).is_a?(Array)
 rescue JSON::ParserError
+  false
+rescue NoMethodError
   false
 end

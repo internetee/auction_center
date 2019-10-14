@@ -31,7 +31,6 @@ class WishlistItem < ApplicationRecord
   # Validate that FQDN has supported extension
   def valid_tld
     return if Setting.wishlist_supported_domain_extensions.empty?
-
     return if Setting.wishlist_supported_domain_extensions.include?(domain_name.split('.', 2).last)
 
     errors.add(:domain_name, I18n.t('is_invalid')) if errors[:domain_name].blank?
@@ -40,7 +39,6 @@ class WishlistItem < ApplicationRecord
   # Autocomplete domain name's extension with preset if none present
   def tld_autocomplete
     return if Setting.wishlist_default_domain_extension.nil?
-
     return if domain_name.include?('.')
 
     self.domain_name = "#{domain_name}.#{Setting.wishlist_default_domain_extension}"

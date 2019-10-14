@@ -1,11 +1,9 @@
 module SettingsHelper
   def filled_json_array?(text)
-    data = JSON.parse(text)
-    return false unless data.is_a? Array
-    return false if data.empty?
-
-    true
+    JSON.parse(text).is_a?(Array) && JSON.parse(text).first.present?
   rescue JSON::ParserError
+    false
+  rescue NoMethodError
     false
   end
 end
