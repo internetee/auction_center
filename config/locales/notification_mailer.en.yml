@@ -9,3 +9,7 @@ en:
 
       registration_due_dates: "Domains due to be registered tomorrow:"
       bans: "Bans issued yesterday:"
+    daily_auctions_broadcast_email:
+      subject: "Today's .EE domain auction list is available!"
+      salutation: "Daily newsletter for .EE auctions happening today"
+      auctions: "Domains auctioned from #{date}:"

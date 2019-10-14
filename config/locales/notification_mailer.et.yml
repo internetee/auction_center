@@ -10,3 +10,7 @@ et:
 
       registration_due_dates: "Domains due to be registered tomorrow:"
       bans: "Bans issued yesterday:"
+    daily_auctions_broadcast_email:
+      subject: "Tänane .EE domeenide oksjoninimekiri on saadaval!"
+      salutation: "Tänane .EE domeenide oksjoninimekiri"
+      auctions: "Oksjonil olevad domeenid kuupäeval #{date}:"

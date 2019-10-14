@@ -9,12 +9,15 @@
         <table>
             <thead>
                 <th><%= t('auctions.domain_name') %></th>
-                <th><%= t('offers.price') %></th>
+                <th><%= t('auctions.ends_at') %></th>
+                <th></th>
             </thead>
             <tbody>
                 <% @auctions.each do |auction| %>
                     <tr>
                         <td><%= auction.domain_name %></td>
+                        <td><%= auction.ends_at %></td>
+                        <td><%= link_to(t('auctions.submit_offer'), auction_url(auction.uuid)) %>
                     </tr>
                 <% end %>
             </tbody>
