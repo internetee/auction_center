@@ -106,15 +106,7 @@ end
 private
 def valid_format_for_wishlist_domain_extensions
   return unless code == 'wishlist_supported_domain_extensions'
-
-  r = /\A([a-z0-9\-\u00E4\u00F5\u00F6\u00FC\u0161\u017E]{1,61}\.)?[a-z0-9]{1,61}\z/x
-  err = false
-  if json_array?(value)
-    JSON.parse(value).each do |ext|
-      err = true unless ext.match?(r)
-    end
-    return if err == false
-  end
+  return if valid_domain_extension_elements?(value)
 
   errors.add(:value, 'is invalid')
 end
@@ -133,4 +125,13 @@ rescue JSON::ParserError
   false
 rescue NoMethodError
   false
+end
+
+def valid_domain_extension_elements?(hash)
+  return false unless json_array?(hash)
+
+  r = /\A([a-z0-9\-\u00E4\u00F5\u00F6\u00FC\u0161\u017E]{1,61}\.)?[a-z0-9]{1,61}\z/x
+  JSON.parse(hash).each do |item|
+    return false unless item.match?(r)
+  end
 end
