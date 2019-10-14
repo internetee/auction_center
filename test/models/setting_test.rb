@@ -91,7 +91,7 @@ class SettingTest < ActiveSupport::TestCase
     assert @subject.valid?
 
     @subject.value = '[".ee"]'
-    assert @subject.valid?
+    assert_not @subject.valid?
 
     @subject.value = '["pri.ee.ee"]'
     assert_not @subject.valid?
