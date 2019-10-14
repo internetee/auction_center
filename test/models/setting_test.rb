@@ -63,4 +63,37 @@ class SettingTest < ActiveSupport::TestCase
 
     assert_equal(10, Setting.wishlist_size)
   end
+
+  def test_accept_json_array_as_wishlist_domain_extensions_setting
+    @subject = settings(:application_name)
+    @subject.code = 'wishlist_supported_domain_extensions'
+
+    @subject.value = '["ee", "pri.ee"]'
+    assert @subject.valid?
+    
+    @subject.value = '[]'
+    assert @subject.valid?
+
+    @subject.value = '[nope]'
+    assert_not @subject.valid?
+
+    @subject.value = "spagett"
+    assert_not @subject.valid?
+  end
+
+  def test_valid_format_for_wishlist_domain_extension_setting
+    @subject = settings(:application_name)
+    @subject.code = 'wishlist_supported_domain_extensions'
+    @subject.value = '["ee", "pri.ee"]'
+    assert @subject.valid?
+    
+    @subject.value = '["pri.ee"]'
+    assert @subject.valid?
+
+    @subject.value = '[".ee"]'
+    assert @subject.valid?
+
+    @subject.value = '["pri.ee.ee"]'
+    assert_not @subject.valid?
+  end
 end
