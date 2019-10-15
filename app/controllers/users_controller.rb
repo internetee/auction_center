@@ -76,7 +76,8 @@ class UsersController < ApplicationController
   def create_params
     params.require(:user)
           .permit(:email, :password, :password_confirmation, :country_code,
-                  :given_names, :surname, :mobile_phone, :accepts_terms_and_conditions, :locale, :auction_newsletter)
+                  :given_names, :surname, :mobile_phone, :accepts_terms_and_conditions,
+                  :locale, :auction_newsletter)
   end
 
   def update_params
