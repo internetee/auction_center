@@ -10,7 +10,7 @@ en:
     roles: "Roles"
     country_code: "Country code"
     identity_code: "Identity code"
-    terms_and_conditions: "terms and conditions"
+    terms_and_conditions: "Terms and conditions"
     must_accept_terms_and_conditions: "must be accepted"
     terms_and_conditions_accepted_at: "Terms and conditions accepted at"
     password: "Password"
