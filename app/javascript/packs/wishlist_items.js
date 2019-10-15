@@ -24,6 +24,8 @@ document.addEventListener('ajax:error', (event) => {
 
     const uniqueMessages = xhr.filter(onlyUnique);
 
+    errorsList.innerHTML = "";
+
     uniqueMessages.forEach(function(message) {
         const listItem = createListItem(message, document);
         errorsList.appendChild(listItem);
