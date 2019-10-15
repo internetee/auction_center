@@ -19,6 +19,7 @@ en:
     remember_me: "Remember me"
     i_accept_terms_and_conditions_html: "I have read and agree with %{link}."
     auction_newsletter_intention: "I wish to receive daily newsletters about currently auctioned domains."
+    auction_newsletter: "Daily auction list newsletter"
     terms_and_conditions_link: "auction portal user agreement"
 
     edit:

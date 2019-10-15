@@ -52,6 +52,10 @@
                             <td><strong><%= t('users.terms_and_conditions') %></strong></td>
                             <td><%= link_to t('.review_terms_and_conditions'), Setting.terms_and_conditions_link %></td>
                         </tr>
+                        <tr>
+                            <td><strong><%= t('users.auction_newsletter') %></strong></td>
+                            <td><%= @user.auction_newsletter %></td>
+                        </tr>
                     </tbody>
                 </table>
 

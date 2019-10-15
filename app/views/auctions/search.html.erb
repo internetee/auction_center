@@ -19,6 +19,15 @@
                 <% end %>
             <% end %>
         </div>
+        <% if current_user %>
+        <%= link_to user_path(current_user.uuid), class: "auction-newsletter-link ui icon primary basic button" do %>
+        <i class="mail icon"></i>
+        <% end %>
+        <% else %>
+        <%= link_to new_user_path, class: "auction-newsletter-link ui icon primary basic button" do %>
+        <i class="mail icon"></i>
+        <% end %>
+        <% end %>
     </div>
 </div>
 

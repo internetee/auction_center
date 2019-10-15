@@ -19,6 +19,7 @@ et:
     remember_me: "Mäleta mind"
     i_accept_terms_and_conditions_html: "Olen tutvunud ja nõustun %{link}."
     auction_newsletter_intention: "Soovin saada iga päev oksjonil olevate domeenide nimekirja meilile"
+    auction_newsletter: "Igapäevane oksjoninimekirja uudiskiri"
     terms_and_conditions_link: "domeenide oksjonikeskkonna kasutajatingimustega"
 
     edit:
