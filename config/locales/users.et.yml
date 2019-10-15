@@ -18,6 +18,7 @@ et:
     current_password: "Praegune salasõna"
     remember_me: "Mäleta mind"
     i_accept_terms_and_conditions_html: "Olen tutvunud ja nõustun %{link}."
+    auction_newsletter_intention: "Soovin saada iga päev oksjonil olevate domeenide nimekirja meilile"
     terms_and_conditions_link: "domeenide oksjonikeskkonna kasutajatingimustega"
 
     edit:
@@ -43,6 +44,7 @@ et:
       sign_up: "Registreeru"
       contact_data: "Kontaktandmed"
       personal_data: "Isikuandmed"
+      newsletters: "Uudiskirjad"
       new_password: "Uus salasõna"
       we_need_your_password: "(muudatuste kinnitamiseks vajame kehtivat salasõna)"
       you_can_leave_blank: "(kui ei soovi muuta, jäta tühjaks)"
