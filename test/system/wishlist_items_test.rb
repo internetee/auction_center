@@ -66,4 +66,17 @@ class WishlistItemsTest < ApplicationSystemTestCase
     assert_not(page.has_css?('div.notice', text: 'Created successfully.'))
     assert(page.has_text?('Wishlist has too many items'))
   end
+
+  def test_translation_for_already_exist_message
+    @user.update!(locale: 'en')
+
+    fill_in('wishlist_item[domain_name]', with: 'example.test')
+    click_link_or_button('Submit')
+    assert(page.has_text?('Domain name is already in your wishlist'))
+
+    @user.update!(locale: 'et')
+    fill_in('wishlist_item[domain_name]', with: 'example.test')
+    click_link_or_button('Submit')
+    assert(page.has_text?('Domeeninimi on juba nimekirjas'))
+  end
 end
