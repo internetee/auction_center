@@ -1,3 +1,6 @@
+15.10.2019
+* Fixed mobile view of auction listings [#354](https://github.com/internetee/auction_center/issues/354)
+
 09.10.2019
 * English translation improvement to profile view [#361](https://github.com/internetee/auction_center/pull/361)
 * Renamed total_amount to paid_amount for clarification [#351](https://github.com/internetee/auction_center/pull/351)
