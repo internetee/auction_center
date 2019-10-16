@@ -158,9 +158,28 @@ strong {
     @include max-screen(991px) {
         margin: 40px 0;
     }
+
+    .auctions-table-mobile-infotainment {
+        @media only screen and (min-width: 768px) {
+            display: none;
+        }
+    }
+
+    #auctions-table > thead > tr {
+        th.auctions-table-cell-name-no-mobile {
+            @media only screen and (max-width: 767px) {
+                display: none !important;
+            }
+        }
+    }
 }
+
 .auction-newsletter-link {
     margin-left: 0.75em !important;
+}
+
+.ui.table.stackable thead {
+    background: #212224;
 }
 
 @media only screen and (max-width: 767px) {
