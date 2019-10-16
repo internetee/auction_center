@@ -19,6 +19,7 @@ en:
   activerecord:
     attributes:
       wishlist_item:
+        domain_name: 'Domain name'
         wishlist: "Wishlist"
     errors:
       models:
