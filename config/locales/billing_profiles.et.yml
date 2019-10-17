@@ -12,6 +12,7 @@ et:
     country: "Riik"
     orphaned: 'Tühistatud'
     errors: "seda arve aadressi ei saa salvestada"
+    in_use_by_offer: "Arve aadressit '%{name}' ei saa kustutada, kuna on juba seotud mõne pakkumisega."
 
     edit:
       title: "Muuda arve aadressi"
