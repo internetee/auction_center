@@ -17,6 +17,7 @@ module Admin
     def index
       @users = User.all
                    .order(orderable_array)
+                   .reorder(created_at: :desc)
                    .page(params[:page])
     end
 
@@ -30,6 +31,7 @@ module Admin
                           "%#{search_string}%")
                    .accessible_by(current_ability)
                    .order(orderable_array)
+                   .reorder(created_at: :desc)
                    .page(1)
     end
 
