@@ -8,7 +8,7 @@ class BillingProfile < ApplicationRecord
   validates :vat_code, uniqueness: { scope: :user_id }, allow_blank: true
 
   belongs_to :user, optional: true
-  before_destroy :check_no_offers_associated
+  before_destroy :check_no_active_offers_associated
 
   def address
     country_name = Countries.name_from_alpha2_code(country_code)
@@ -46,10 +46,24 @@ class BillingProfile < ApplicationRecord
     billing_profile
   end
 
-  def check_no_offers_associated
-    return unless Offer.where(billing_profile_id: id).any?
+  def check_no_active_offers_associated
+    return unless active_offers?
 
-    errors.add(:base, I18n.t('billing_profiles.in_use_by_offer', name: name))
+    errors.add(:base, I18n.t('billing_profiles.in_use_by_offer'))
     throw :abort
+  end
+
+  def active_offers?
+    return false unless Offer.where(billing_profile_id: id).any?
+
+    Offer.where(billing_profile_id: id).find_each do |offer|
+      return true if offer.auction.result&.invoice.blank?
+    end
+    false
+  end
+
+  def nillify_user
+    self.user_id = nil
+    save
   end
 end

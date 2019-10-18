@@ -141,14 +141,25 @@ class BillingProfilesTest < ApplicationSystemTestCase
     assert_equal(@billing_profile.country_code, country_code_field.value)
   end
 
-  def test_a_user_can_delete_their_billing_profile
-    visit billing_profile_path(@billing_profile.uuid)
+  def test_a_user_can_delete_their_unused_billing_profile
+    billing_profile = billing_profiles(:unused)
+    visit billing_profile_path(billing_profile.uuid)
 
     accept_confirm do
       click_link_or_button('Delete')
     end
 
     assert_text('Deleted successfully.')
+  end
+
+  def test_user_cannot_destroy_billing_profile_in_use
+    visit billing_profile_path(@billing_profile.uuid)
+
+    accept_confirm do
+      click_link_or_button('Delete')
+    end
+
+    assert_text("Billing profile can't be deleted, because it is linked with an active offer")
   end
 
   def test_user_cannot_create_billing_profiles_in_the_name_of_other_user

@@ -57,6 +57,9 @@ class BillingProfilesController < ApplicationController
     else
       redirect_to billing_profiles_path, notice: @billing_profile.errors[:base].to_sentence
     end
+  rescue ActiveRecord::InvalidForeignKey
+    @billing_profile.nillify_user
+    redirect_to billing_profiles_path, notice: t(:deleted)
   end
 
   private
