@@ -16,7 +16,7 @@ function onlyUnique(value, index, self) {
     return self.indexOf(value) === index;
 }
 
-document.addEventListener('ajax:error', (event) => {
+document.body.addEventListener('ajax:error', (event) => {
     const xhr = event.detail[0];
 
     const errorsBlock = document.getElementById('errors');
@@ -37,8 +37,10 @@ document.addEventListener('ajax:beforeSend', (event) => {
     const errorsList = document.getElementById('errors-list');
 
     errorsBlock.classList.add('hidden');
-    const duplicate = errorsList.cloneNode();
-    errorsList.replaceWith(duplicate);
+
+    while (errorsList.firstChild) {
+        errorsList.removeChild(errorsList.firstChild);
+    }
 });
 
 document.addEventListener('turbolinks:load', (event) => {
