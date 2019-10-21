@@ -15,9 +15,9 @@ module Admin
 
     # GET /admin/users
     def index
+      default_params = { 'users.created_at' => 'desc' }
       @users = User.all
-                   .order(orderable_array)
-                   .reorder(created_at: :desc)
+                   .order(orderable_array(default_params))
                    .page(params[:page])
     end
 
@@ -31,7 +31,6 @@ module Admin
                           "%#{search_string}%")
                    .accessible_by(current_ability)
                    .order(orderable_array)
-                   .reorder(created_at: :desc)
                    .page(1)
     end
 

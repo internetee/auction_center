@@ -19,8 +19,12 @@ module OrderableHelper
   end
 
   # Chain this with order(orderable_array) in controller actions
-  def orderable_array
-    orderable(order_params)
+  def orderable_array(default_params = {})
+    params = order_params
+    if params.empty?
+      params = ActionController::Parameters.new(default_params) unless default_params.empty?
+    end
+    orderable(params)
   end
 
   # Returns an Array of conditions that can be chained directly to order method.
