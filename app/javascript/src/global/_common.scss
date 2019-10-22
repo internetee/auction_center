@@ -170,10 +170,14 @@ strong {
             @media only screen and (max-width: 767px) {
                 display: none !important;
             }
-        }   
+        }
     }
 }
 
 .ui.table.stackable thead {
     background: #212224;
-  }
+}
+
+.auction-domain-name {
+    word-break: break-all;
+}
