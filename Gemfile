@@ -33,6 +33,8 @@ end
 group :development do
   gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'pry'
+  gem 'rubocop', '~> 0.75.1', require: false
+  gem 'standard', '~> 0.1.5', require: false
   gem 'web-console', '>= 3.3.0'
 end
 

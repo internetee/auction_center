@@ -33,6 +33,8 @@
 .rubocop-ruby.yml
 .rubocop.yml
 
+.idea/
+
 # Test files
 /coverage/
 
