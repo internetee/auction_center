@@ -1,3 +1,6 @@
+22.10.2019
+* Fixed multiple error issue in wishlist [#358](https://github.com/internetee/auction_center/issues/358)
+
 15.10.2019
 * Fixed mobile view of auction listings [#354](https://github.com/internetee/auction_center/issues/354)
 
