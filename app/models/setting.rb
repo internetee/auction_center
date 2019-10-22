@@ -13,7 +13,10 @@ class Setting < ApplicationRecord
   end
 
   def self.terms_and_conditions_link
-    Setting.find_by(code: :terms_and_conditions_link).value
+    localized_link_key = "terms_and_conditions_link_#{I18n.locale}".to_sym
+    fallback_link_key = :terms_and_conditions_link
+    Setting.find_by(code: localized_link_key)&.value ||
+      Setting.find_by(code: fallback_link_key).value
   end
 
   def self.default_country

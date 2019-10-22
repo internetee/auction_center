@@ -36,7 +36,6 @@ class SettingTest < ActiveSupport::TestCase
     assert_equal('EUR', Setting.auction_currency)
     assert_equal(500, Setting.auction_minimum_offer)
 
-    assert_equal('https://example.com', Setting.terms_and_conditions_link)
     assert_equal('EE', Setting.default_country)
 
     assert_equal(7, Setting.payment_term)
@@ -62,5 +61,16 @@ class SettingTest < ActiveSupport::TestCase
     assert_equal('Eesti Interneti SA, VAT number EE101286464', Setting.invoice_issuer)
 
     assert_equal(10, Setting.wishlist_size)
+  end
+
+  def test_terms_and_conditions_link_localization
+    default_locale = I18n.locale
+    I18n.locale = :en
+    assert_equal('https://www.internet.ee/domains/auction-environment-user-agreement', Setting.find_by(code: "terms_and_conditions_link_#{I18n.locale}".to_sym)&.value)
+    assert_equal('https://www.internet.ee/domains/auction-environment-user-agreement', Setting.terms_and_conditions_link)
+    I18n.locale = :et
+    assert_equal('https://www.internet.ee/domeenid/domeenide-oksjonikeskkonna-kasutajatingimused', Setting.find_by(code: "terms_and_conditions_link_#{I18n.locale}".to_sym)&.value)
+    assert_equal('https://www.internet.ee/domeenid/domeenide-oksjonikeskkonna-kasutajatingimused', Setting.terms_and_conditions_link)
+    I18n.locale = default_locale
   end
 end
