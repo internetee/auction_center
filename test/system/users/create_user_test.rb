@@ -55,7 +55,7 @@ class CreateUserTest < ApplicationSystemTestCase
   end
 
   def test_terms_and_conditions_link_can_also_be_relative
-    setting = Setting.find_by(code: "terms_and_conditions_link_#{I18n.locale}".to_sym)
+    setting = Setting.find_by(code: :terms_and_conditions_link)
     setting.update!(value: '/terms_and_conditions.pdf')
     visit new_user_path
     assert(page.has_link?('auction portal user agreement', href: '/terms_and_conditions.pdf'))

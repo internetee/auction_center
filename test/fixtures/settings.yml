@@ -23,30 +23,6 @@ terms_and_conditions_link:
     forward slash. Default is: https://example.com
   value: 'https://example.com'
 
-terms_and_conditions_link_ru:
-  code: terms_and_conditions_link_ru
-  description: |
-    Link to terms and conditions document. Can be relative ('/public/terms_and_conditions.pdf')
-    or absolute ('https://example.com/terms_and_conditions.pdf'). Relative link must start with a
-    forward slash. Default is: https://example.com
-  value: 'https://www.internet.ee/domeny/dogovor-pol-zovatelya-aukcionnoj-sredy'
-
-terms_and_conditions_link_en:
-  code: terms_and_conditions_link_en
-  description: |
-    Link to terms and conditions document. Can be relative ('/public/terms_and_conditions.pdf')
-    or absolute ('https://example.com/terms_and_conditions.pdf'). Relative link must start with a
-    forward slash. Default is: https://example.com
-  value: 'https://www.internet.ee/domains/auction-environment-user-agreement'
-
-terms_and_conditions_link_et:
-  code: terms_and_conditions_link_et
-  description: |
-    Link to terms and conditions document. Can be relative ('/public/terms_and_conditions.pdf')
-    or absolute ('https://example.com/terms_and_conditions.pdf'). Relative link must start with a
-    forward slash. Default is: https://example.com
-  value: 'https://www.internet.ee/domeenid/domeenide-oksjonikeskkonna-kasutajatingimused'
-
 default_country:
   code: default_country
   description: |
