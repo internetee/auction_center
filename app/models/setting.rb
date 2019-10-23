@@ -13,7 +13,12 @@ class Setting < ApplicationRecord
   end
 
   def self.terms_and_conditions_link
-    Setting.find_by(code: :terms_and_conditions_link).value
+    value = Setting.find_by(code: :terms_and_conditions_link).value
+    if json_hash?(value)
+      JSON.parse(value)[I18n.locale.to_s]
+    else
+      value
+    end
   end
 
   def self.default_country
@@ -94,5 +99,17 @@ class Setting < ApplicationRecord
 
   def self.check_tara_url
     Setting.find_by(code: :check_tara_url)&.value
+  end
+
+  class << self
+    private
+
+    def json_hash?(text)
+      JSON.parse(text).is_a?(Hash)
+    rescue JSON::ParserError
+      false
+    rescue NoMethodError
+      false
+    end
   end
 end
