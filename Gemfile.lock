@@ -300,7 +300,7 @@ DEPENDENCIES
   omniauth-rails_csrf_protection
   omniauth-tara!
   pdfkit
-  pg (>= 0.18, < 2.0)
+  pg (~> 1.1)
   pry
   puma (~> 3.11)
   rails (~> 5.2.1)
