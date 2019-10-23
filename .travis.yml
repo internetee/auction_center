@@ -39,5 +39,5 @@ services:
   - postgresql
 
 addons:
-  postgresql: "9.6"
+  postgresql: "12"
   chrome: stable
