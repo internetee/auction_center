@@ -11,10 +11,9 @@ class NotificationMailer < ApplicationMailer
     mail(to: addressee.email, subject: t('.subject', date: Date.yesterday))
   end
 
-  def daily_auctions_broadcast_email(addressee, auctions)
-    I18n.locale = addressee.locale
+  def daily_auctions_broadcast_email(recipient:, auctions:)
     @auctions = auctions
-    mail(to: addressee.email, subject: t('.subject'))
+    mail(to: recipient.email, subject: t('.subject'))
   end
 
   private

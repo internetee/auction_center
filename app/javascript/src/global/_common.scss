@@ -174,16 +174,20 @@ strong {
     }
 }
 
-.auction-newsletter-link {
-    margin-left: 0.75em !important;
-}
-
 .ui.table.stackable thead {
     background: #212224;
 }
 
+.auction-domain-name {
+    word-break: break-all;
+}
+
+.daily-summary-link {
+    margin-left: 0.75em !important;
+}
+
 @media only screen and (max-width: 767px) {
     .ui.search input {
-        width: 19.5em !important;
+        width: 19.5em;
     }
 }

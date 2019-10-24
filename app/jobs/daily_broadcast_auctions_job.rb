@@ -1,7 +1,10 @@
 class DailyBroadcastAuctionsJob < ApplicationJob
   def perform
-    User.where(auction_newsletter: true).each do |subscriber|
-      NotificationMailer.daily_auctions_broadcast_email(subscriber, auctions_today).deliver_later
+    User.where(daily_summary: true).each do |user|
+      NotificationMailer.daily_auctions_broadcast_email(
+        recipient: user,
+        auctions: auctions_today
+      ).deliver_later
     end
   end
 

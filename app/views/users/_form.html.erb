@@ -49,11 +49,11 @@
                     <% end %>
                 </div>
             </div>
-            <h3 class="p3"><%= t('.newsletters') %></h3>
+            <h3 class="p3"><%= t('users.daily_summary') %></h3>
             <div class="field">
                 <div class="ui checkbox">
-                    <%= f.check_box :auction_newsletter, { value: user.auction_newsletter }, "true", "false" %>
-                    <%= f.label :auction_newsletter, t('users.auction_newsletter_intention') %>
+                    <%= f.check_box :daily_summary %>
+                    <%= f.label :daily_summary, t('.daily_summary_intention') %>
                 </div>
             </div>
         </div>
