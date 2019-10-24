@@ -16,7 +16,15 @@ function onlyUnique(value, index, self) {
     return self.indexOf(value) === index;
 }
 
-document.addEventListener('ajax:error', (event) => {
+function clearErrors() {
+    const container = document.getElementById('errors-list');
+
+    while (container.firstChild) {
+        container.removeChild(container.firstChild);
+    }
+}
+
+document.body.addEventListener('ajax:error', (event) => {
     const xhr = event.detail[0];
 
     const errorsBlock = document.getElementById('errors');
@@ -34,11 +42,8 @@ document.addEventListener('ajax:error', (event) => {
 
 document.addEventListener('ajax:beforeSend', (event) => {
     const errorsBlock = document.getElementById('errors');
-    const errorsList = document.getElementById('errors-list');
-
     errorsBlock.classList.add('hidden');
-    const duplicate = errorsList.cloneNode();
-    errorsList.replaceWith(duplicate);
+    clearErrors();
 });
 
 document.addEventListener('turbolinks:load', (event) => {
