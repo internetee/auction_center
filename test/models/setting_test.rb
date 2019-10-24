@@ -73,4 +73,20 @@ class SettingTest < ActiveSupport::TestCase
     Setting.find_by(code: :violations_count_regulations_link).update!(value: "{\"en\":\"https://regulations.test#some_anchor\"}")
     assert_equal('https://regulations.test#some_anchor', Setting.violations_count_regulations_link)
   end
+
+  def test_valid_format_for_wishlist_domain_extension_setting
+    @setting = settings(:application_name)
+    @setting.code = 'wishlist_supported_domain_extensions'
+    @setting.value = '["ee", "pri.ee"]'
+    assert @setting.valid?
+
+    @setting.value = '["pri.ee"]'
+    assert @setting.valid?
+
+    @setting.value = '[".ee"]'
+    assert @setting.invalid?
+
+    @setting.value = '["pri.ee.ee"]'
+    assert @setting.invalid?
+  end
 end

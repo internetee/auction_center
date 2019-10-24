@@ -22,7 +22,7 @@
                                 <%=link_to setting.code, admin_setting_path(setting) %>
                             </td>
                             <td><%= setting.description %></td>
-                            <td><%= setting.value %></td>
+                            <td><%= formatted_setting_value(setting.value) %></td>
                         </tr>
                     <% end %>
                 </tbody>
