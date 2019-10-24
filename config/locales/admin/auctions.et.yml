@@ -4,6 +4,7 @@ et:
       index:
         title: "Domeenioksjonid"
         new_auction: "Uus oksjon"
+        no_price: "NaN"
 
       search:
         title: "Oksjoni otsing"
