@@ -10,7 +10,7 @@ class DailyBroadcastAuctionsJob < ApplicationJob
 
   def auctions_today
     timeframe = Time.zone.today.beginning_of_day..Time.zone.today.end_of_day
-    Auction.where(starts_at: timeframe).to_ary
+    Auction.where(starts_at: timeframe).to_a
   end
 
   def self.needs_to_run?
