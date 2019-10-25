@@ -48,16 +48,22 @@ module ApplicationHelper
     if valid_until
       t(:banned_completely, valid_until: valid_until.to_date)
     else
-      t(:banned, domain_names: domains.join(', '))
+      active_domains = check_active_auctions_for(domains)
+      t(:banned, domain_names: active_domains.join(', '))
     end
   end
 
   def strikes_message(domains)
-    if domains.count
+    if domains
       "You have got #{domains.count} of 3 bans last year."
     else
       "You have got 3 of 3 bans last year."
     end
+  end
+
+  def check_active_auctions_for(domains)
+    active_auction_domains = Auction.active.map(&:domain_name)
+    domains.reject{ |element| !active_auction_domains.include?(element) }
   end
 
   def links(links_list)
