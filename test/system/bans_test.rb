@@ -91,18 +91,49 @@ class BansTest < ApplicationSystemTestCase
 
   def test_banned_user_can_see_the_ban_notification_for_two_domains
     Ban.create!(user: @participant,
-                domain_name: 'temporary.test',
+                domain_name: @valid_auction_with_offers.domain_name,
                 valid_from: Time.zone.today - 1, valid_until: Time.zone.today + 5)
 
     sign_in_manually
 
     text = <<~TEXT.squish
       You are banned from participating in auctions for
-      domain(s): temporary.test, no-offers.test.
+      domain(s): with-offers.test, no-offers.test.
     TEXT
 
     visit auctions_path
     assert(page.has_css?('div.ban', text: text))
+  end
+
+  def test_banned_user_can_see_the_ban_notification_only_for_active_auctions
+    Ban.create!(user: @participant,
+                domain_name: 'dummy-domain.net',
+                valid_from: Time.zone.today - 1, valid_until: Time.zone.today + 5)
+
+    sign_in_manually
+
+    text = <<~TEXT.squish
+      You are banned from participating in auctions for
+      domain(s): no-offers.test.
+    TEXT
+
+    visit auctions_path
+    assert(page.has_css?('div.ban', text: text))
+  end
+
+  def test_banned_user_can_see_total_strikes_count
+    Ban.create!(user: @participant,
+                domain_name: @valid_auction_with_offers.domain_name,
+                valid_from: Time.zone.today - 1, valid_until: Time.zone.today + 5)
+
+    sign_in_manually
+
+    text = <<~TEXT.squish
+      You have got 2 of 3 bans last year.
+    TEXT
+    # binding.pry
+    visit auctions_path
+    assert(page.has_css?('div.strikes', text: text))
   end
 
   def test_banned_user_can_see_the_ban_notification_for_longest_repetitive_ban

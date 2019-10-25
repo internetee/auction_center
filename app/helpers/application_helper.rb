@@ -21,6 +21,16 @@ module ApplicationHelper
     end
   end
 
+  def strikes_banner
+    return unless session['auction.bans']
+    domains = session['auction.bans'][0]
+    message = strikes_message(domains)
+
+    content_tag(:div, class: 'ui message strikes') do
+      content_tag(:div, message, class: 'header')
+    end
+  end
+
   def banned_banner
     return unless session['auction.bans']
 
@@ -39,6 +49,14 @@ module ApplicationHelper
       t(:banned_completely, valid_until: valid_until.to_date)
     else
       t(:banned, domain_names: domains.join(', '))
+    end
+  end
+
+  def strikes_message(domains)
+    if domains.count
+      "You have got #{domains.count} of 3 bans last year."
+    else
+      "You have got 3 of 3 bans last year."
     end
   end
 
