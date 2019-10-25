@@ -60,4 +60,14 @@ class CreateUserTest < ApplicationSystemTestCase
     visit new_user_path
     assert(page.has_link?('auction portal user agreement', href: '/terms_and_conditions.pdf'))
   end
+
+  def test_terms_and_conditions_link_can_be_stored_as_hash
+    setting = Setting.find_by(code: :terms_and_conditions_link)
+    setting.update(value: "{\"en\":\"https://example.com\", \"et\":\"https://example.et\"}")
+
+    I18n.with_locale(:en) do
+      visit new_user_path
+      assert(page.has_link?('auction portal user agreement', href: 'https://example.com'))
+    end
+  end
 end
