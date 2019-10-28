@@ -49,6 +49,15 @@ class InvoiceCreator
     ]
   end
 
+  def assign_billing_address
+    billing_fields = %w[vat_code legal_entity street city state postal_code alpha_two_country_code]
+    invoice.recipient = invoice.billing_profile.name
+
+    invoice.billing_profile.attributes.keys.each do |attribute|
+      invoice[attribute] = invoice.billing_profile[attribute] if billing_fields.include? attribute
+    end
+  end
+
   def set_issue_and_due_date
     invoice.issue_date = Time.zone.today
     invoice.due_date = Time.zone.today + Setting.payment_term
@@ -61,6 +70,7 @@ class InvoiceCreator
       assign_invoice_associations
       assign_price
       set_issue_and_due_date
+      assign_billing_address
 
       invoice.save
     end

@@ -1,7 +1,7 @@
 class Offer < ApplicationRecord
   belongs_to :user, optional: true
   belongs_to :auction, optional: false
-  belongs_to :billing_profile, optional: false
+  belongs_to :billing_profile, optional: true
 
   has_one :result, required: false, dependent: :nullify
 
@@ -41,6 +41,10 @@ class Offer < ApplicationRecord
   end
 
   def total
-    price * (1 + billing_profile.vat_rate)
+    if billing_profile.present?
+      price * (1 + billing_profile.vat_rate)
+    else
+      price * (1 + Invoice.find_by(result: result).vat_rate)
+    end
   end
 end

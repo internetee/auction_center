@@ -64,7 +64,7 @@
             <tbody class="invoices-table-body">
                 <% @invoices.each do |invoice| %>
                     <tr class="invoices-table-row">
-                        <td><%= link_to invoice.billing_profile.name, admin_invoice_path(invoice) %></td>
+                        <td><%= link_to invoice.recipient, admin_invoice_path(invoice) %></td>
                         <td><%= I18n.l(invoice.due_date) %></td>
                         <td><%= invoice.status %></td>
                         <td><%= invoice.notes %></td>

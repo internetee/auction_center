@@ -2,6 +2,7 @@ require 'result_not_found'
 require 'result_not_sold'
 
 class Invoice < ApplicationRecord
+  alias_attribute :country_code, :alpha_two_country_code
   enum status: { issued: 'issued',
                  paid: 'paid',
                  cancelled: 'cancelled' }
@@ -20,6 +21,7 @@ class Invoice < ApplicationRecord
   validates :cents, numericality: { only_integer: true, greater_than: 0 }
 
   validate :user_id_must_be_the_same_as_on_billing_profile_or_nil
+  before_update :update_billing_address
 
   scope :overdue, lambda {
     where('due_date < ? AND status = ?', Time.zone.today, statuses[:issued])
@@ -62,11 +64,11 @@ class Invoice < ApplicationRecord
   end
 
   def total
-    price * (1 + billing_profile.vat_rate)
+    price * (1 + vat_rate)
   end
 
   def vat
-    price * billing_profile.vat_rate
+    price * vat_rate
   end
 
   def title
@@ -109,5 +111,33 @@ class Invoice < ApplicationRecord
 
   def overdue?
     due_date < Time.zone.today && issued?
+  end
+
+  def address
+    country_name = Countries.name_from_alpha2_code(country_code)
+    postal_code_with_city = [postal_code, city].join(' ')
+    [street, postal_code_with_city, state, country_name].compact.join(', ')
+  end
+
+  def vat_rate
+    if country_code == 'EE'
+      Countries.vat_rate_from_alpha2_code(country_code)
+    elsif vat_code.present?
+      BigDecimal('0')
+    else
+      # We only supply VAT values for EU countries, otherwise it is always 0.
+      Countries.vat_rate_from_alpha2_code(country_code)
+    end
+  end
+
+  def update_billing_address
+    return if billing_profile.blank?
+
+    billing_fields = %w[vat_code legal_entity street city state postal_code alpha_two_country_code]
+    self.recipient = billing_profile.name
+
+    billing_profile.attributes.keys.each do |attribute|
+      self[attribute] = billing_profile[attribute] if billing_fields.include? attribute
+    end
   end
 end
