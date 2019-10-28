@@ -4,6 +4,11 @@ class Setting < ApplicationRecord
   validates :description, presence: true
   validates :value, presence: true
   validates :code, uniqueness: true
+  validate :validate_value
+
+  FORMAT_VALIDATIONS = {
+    violations_count_regulations_link: [:validate_json_hash],
+  }.with_indifferent_access.freeze
 
   def self.auction_currency
     Setting.find_by(code: :auction_currency).value
@@ -98,15 +103,30 @@ class Setting < ApplicationRecord
     Setting.find_by(code: :check_tara_url)&.value
   end
 
-  class << self
-    private
+  def self.violations_count_regulations_link
+    Setting.find_by(code: :violations_count_regulations_link)&.value
+  end
 
-    def json_hash?(text)
-      JSON.parse(text).is_a?(Hash)
-    rescue JSON::ParserError
-      false
-    rescue NoMethodError
-      false
+  private
+
+  def validate_value
+    methods = FORMAT_VALIDATIONS[code]
+    return unless methods
+
+    methods.each do |method|
+      send(method)
     end
+  end
+
+  def validate_json_hash
+    return if parsable_json_hash?(value)
+
+    errors.add(:value, :invalid)
+  end
+
+  def parsable_json_hash?(value)
+    JSON.parse(value).is_a?(Hash)
+  rescue JSON::ParserError
+    errors.add(:value, :not_a_json_hash)
   end
 end

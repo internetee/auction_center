@@ -68,4 +68,13 @@ class SettingTest < ActiveSupport::TestCase
     Setting.find_by(code: :terms_and_conditions_link).update!(value: "{\"en\":\"https://example.com\", \"et\":\"https://example.et\"}")
     assert_equal('https://example.com', Setting.terms_and_conditions_link)
   end
+
+  def test_multilocale_violations_count_regulations_link
+    Setting.find_by(code: :violations_count_regulations_link).update(value: "{\"en\":\"https://example.com#some_anchor\", \"et\":\"https://example.et#some_anchor\"}")
+    I18n.with_locale(:et) { assert_equal('https://example.et#some_anchor', Setting.violations_count_regulations_link) }
+    I18n.with_locale(:en) { assert_equal('https://example.com#some_anchor', Setting.violations_count_regulations_link) }
+    Setting.find_by(code: :violations_count_regulations_link).update(value: "https://alphabetagamma.com#some_anchor")
+    I18n.with_locale(:et) { assert_equal('https://alphabetagamma.com#some_anchor', Setting.violations_count_regulations_link) }
+    I18n.with_locale(:en) { assert_equal('https://alphabetagamma.com#some_anchor', Setting.violations_count_regulations_link) }
+  end
 end
