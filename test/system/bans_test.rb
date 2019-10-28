@@ -115,25 +115,11 @@ class BansTest < ApplicationSystemTestCase
     text = <<~TEXT.squish
       You are banned from participating in auctions for
       domain(s): no-offers.test.
+      Total number of strikes: 2 of 3
     TEXT
 
     visit auctions_path
     assert(page.has_css?('div.ban', text: text))
-  end
-
-  def test_banned_user_can_see_total_strikes_count
-    Ban.create!(user: @participant,
-                domain_name: @valid_auction_with_offers.domain_name,
-                valid_from: Time.zone.today - 1, valid_until: Time.zone.today + 5)
-
-    sign_in_manually
-
-    text = <<~TEXT.squish
-      You have got 2 of 3 bans last year.
-    TEXT
-    # binding.pry
-    visit auctions_path
-    assert(page.has_css?('div.strikes', text: text))
   end
 
   def test_banned_user_can_see_the_ban_notification_for_longest_repetitive_ban
