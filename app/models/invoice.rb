@@ -9,7 +9,7 @@ class Invoice < ApplicationRecord
 
   belongs_to :result, optional: false
   belongs_to :user, optional: true
-  belongs_to :billing_profile, optional: false
+  belongs_to :billing_profile, optional: true
   has_many :invoice_items, dependent: :destroy
   has_many :payment_orders, dependent: :destroy
   belongs_to :paid_with_payment_order, class_name: 'PaymentOrder', optional: true
@@ -19,6 +19,7 @@ class Invoice < ApplicationRecord
   validates :due_date, presence: true
   validates :paid_at, presence: true, if: proc { |invoice| invoice.paid? }
   validates :cents, numericality: { only_integer: true, greater_than: 0 }
+  validates :billing_profile, presence: true, on: :create
 
   validate :user_id_must_be_the_same_as_on_billing_profile_or_nil
   before_update :update_billing_address
@@ -89,7 +90,7 @@ class Invoice < ApplicationRecord
   def mark_as_paid_at(time)
     ActiveRecord::Base.transaction do
       self.paid_at = time
-      self.vat_rate = billing_profile.vat_rate
+      self.vat_rate = billing_profile.present? ? billing_profile.vat_rate : vat_rate
       self.paid_amount = total
 
       paid!
@@ -100,7 +101,7 @@ class Invoice < ApplicationRecord
   def mark_as_paid_at_with_payment_order(time, payment_order)
     ActiveRecord::Base.transaction do
       self.paid_at = time
-      self.vat_rate = billing_profile.vat_rate
+      self.vat_rate = billing_profile.present? ? billing_profile.vat_rate : vat_rate
       self.paid_amount = total
       self.paid_with_payment_order = payment_order
 

@@ -33,7 +33,7 @@ class InvoiceTest < ActiveSupport::TestCase
     assert_not(invoice.valid?)
 
     assert_equal(['must exist'], invoice.errors[:result], invoice.errors.full_messages)
-    assert_equal(['must exist'], invoice.errors[:billing_profile], invoice.errors.full_messages)
+    assert_equal(["can't be blank"], invoice.errors[:billing_profile], invoice.errors.full_messages)
     assert_equal(["can't be blank"], invoice.errors[:user_id], invoice.errors.full_messages)
     assert_equal(["can't be blank"], invoice.errors[:issue_date], invoice.errors.full_messages)
     assert_equal(["can't be blank"], invoice.errors[:due_date], invoice.errors.full_messages)

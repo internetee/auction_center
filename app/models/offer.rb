@@ -1,7 +1,7 @@
 class Offer < ApplicationRecord
   belongs_to :user, optional: true
   belongs_to :auction, optional: false
-  belongs_to :billing_profile, optional: true
+  belongs_to :billing_profile, optional: false
 
   has_one :result, required: false, dependent: :nullify
 
