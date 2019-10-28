@@ -113,13 +113,11 @@ class BansTest < ApplicationSystemTestCase
     sign_in_manually
 
     text = <<~TEXT.squish
-      You are banned from participating in auctions for
-      domain(s): no-offers.test.
-      Total number of strikes: 2 of 3
+      Number of current violations: 2 of 3
     TEXT
 
     visit auctions_path
-    assert(page.has_css?('div.ban', text: text))
+    assert(page.has_css?('div.ban > p', text: text))
   end
 
   def test_banned_user_can_see_the_ban_notification_for_longest_repetitive_ban
@@ -136,6 +134,7 @@ class BansTest < ApplicationSystemTestCase
 
     visit auctions_path
     assert(page.has_css?('div.ban', text: text))
+    assert_not(page.has_css?('div.ban > p'))
   end
 
   def test_administrator_can_review_bans

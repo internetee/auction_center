@@ -46,8 +46,9 @@ et:
   banned_completely: |
     Korduvalt tasumata jäetud arvete tõttu on Su õigus osaleda .ee domeenioksjonitel
     peatatud kuni %{valid_until}.
-  total_strikes: |
-    Total number of strikes: %{count} of 3
+  violation_message_html: >-
+    Oksjoni reeglite <a href="%{violations_count_regulations_link}">rikkumisi</a>:
+    %{violations_count} '%{ban_number_of_strikes}'st
 
   my_offers: "Minu pakkumised"
   my_invoices: "Minu arved"
