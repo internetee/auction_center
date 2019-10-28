@@ -1,3 +1,6 @@
+28.10.2019
+* Changed due date constraint on invoices table [#386](https://github.com/internetee/auction_center/pull/386)
+
 22.10.2019
 * Fixed multiple error issue in wishlist [#358](https://github.com/internetee/auction_center/issues/358)
 * Long domain names are not cut short any more in full and tablet views [#368](https://github.com/internetee/auction_center/issues/368)
