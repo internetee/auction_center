@@ -28,4 +28,11 @@ class ForgottenPasswordTest < ApplicationSystemTestCase
     @user.reload
     assert(@user.valid_password?(new_password))
   end
+
+  def test_password_reset_button_localized
+    visit new_user_password_path
+    assert(page.has_button?("Send me reset password instructions"))
+    click_link('Eesti keeles')
+    assert(page.has_button?("Saada parooli muutmise juhised"))
+  end
 end
