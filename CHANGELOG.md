@@ -1,3 +1,6 @@
+29.10.2019
+* Bug: Password change confirmation letter is sent again [#167](https://github.com/internetee/auction_center/issues/167)
+
 28.10.2019
 * Changed due date constraint on invoices table [#386](https://github.com/internetee/auction_center/pull/386)
 
