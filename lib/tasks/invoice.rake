@@ -9,7 +9,7 @@ namespace :invoice do
       next if invoice.billing_profile.blank?
       next unless invoice.recipient.nil?
 
-      fields = %w[vat_code legal_entity street city state postal_code alpha_two_country_code]
+      fields = %w[vat_code street city state postal_code alpha_two_country_code]
       invoice.recipient = invoice.billing_profile.name
 
       invoice.billing_profile.attributes.keys.each do |attribute|

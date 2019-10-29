@@ -7,6 +7,7 @@ payable:
   vat_code: "12234567890"
   street: "Baker Street 221B"
   city: "London"
+  state: nil
   postal_code: "NW1 6XE"
   alpha_two_country_code: "GB"
   status: <%= Invoice.statuses[:issued] %>

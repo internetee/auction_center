@@ -1,6 +1,7 @@
 require 'countries'
 
 class BillingProfile < ApplicationRecord
+  include BillingHelpers
   alias_attribute :country_code, :alpha_two_country_code
 
   validates :name, presence: true
@@ -10,28 +11,11 @@ class BillingProfile < ApplicationRecord
   belongs_to :user, optional: true
   before_destroy :check_no_active_offers_associated
 
-  def address
-    country_name = Countries.name_from_alpha2_code(country_code)
-    postal_code_with_city = [postal_code, city].join(' ')
-    [street, postal_code_with_city, state, country_name].compact.join(', ')
-  end
-
   def user_name
     if user
       user.display_name
     else
       I18n.t('billing_profiles.orphaned')
-    end
-  end
-
-  def vat_rate
-    if country_code == 'EE'
-      Countries.vat_rate_from_alpha2_code(country_code)
-    elsif vat_code.present?
-      BigDecimal('0')
-    else
-      # We only supply VAT values for EU countries, otherwise it is always 0.
-      Countries.vat_rate_from_alpha2_code(country_code)
     end
   end
 

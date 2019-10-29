@@ -2,6 +2,7 @@ require 'result_not_found'
 require 'result_not_sold'
 
 class Invoice < ApplicationRecord
+  include BillingHelpers
   alias_attribute :country_code, :alpha_two_country_code
   enum status: { issued: 'issued',
                  paid: 'paid',
@@ -114,27 +115,10 @@ class Invoice < ApplicationRecord
     due_date < Time.zone.today && issued?
   end
 
-  def address
-    country_name = Countries.name_from_alpha2_code(country_code)
-    postal_code_with_city = [postal_code, city].join(' ')
-    [street, postal_code_with_city, state, country_name].compact.join(', ')
-  end
-
-  def vat_rate
-    if country_code == 'EE'
-      Countries.vat_rate_from_alpha2_code(country_code)
-    elsif vat_code.present?
-      BigDecimal('0')
-    else
-      # We only supply VAT values for EU countries, otherwise it is always 0.
-      Countries.vat_rate_from_alpha2_code(country_code)
-    end
-  end
-
   def update_billing_address
     return if billing_profile.blank?
 
-    billing_fields = %w[vat_code legal_entity street city state postal_code alpha_two_country_code]
+    billing_fields = %w[vat_code street city postal_code alpha_two_country_code]
     self.recipient = billing_profile.name
 
     billing_profile.attributes.keys.each do |attribute|
