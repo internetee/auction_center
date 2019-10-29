@@ -37,7 +37,7 @@ class IdentityCode
 
       if checknum == 10
         scales = [3, 4, 5, 6, 7, 8, 9, 1, 2, 3]
-        checknum  = combine_scale_with_number(scales, identity_code)
+        checknum = combine_scale_with_number(scales, identity_code)
 
         checknum == 10 ? 0 : checknum
       else

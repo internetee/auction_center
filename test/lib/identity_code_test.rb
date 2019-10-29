@@ -30,4 +30,15 @@ class IdentityCodeTest < ActiveSupport::TestCase
     identity_code = IdentityCode.new('EE', array_of_codes.sample)
     assert(identity_code.valid?)
   end
+
+  def test_is_valid_for_every_century
+    identity_code = IdentityCode.new('EE', "14501234213")
+    assert(identity_code.valid?)
+
+    identity_code = IdentityCode.new('EE', "38701234218")
+    assert(identity_code.valid?)
+
+    identity_code = IdentityCode.new('EE', "60901234211")
+    assert(identity_code.valid?)
+  end
 end
