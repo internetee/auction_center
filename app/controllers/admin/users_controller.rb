@@ -15,9 +15,8 @@ module Admin
 
     # GET /admin/users
     def index
-      default_params = { 'users.created_at' => 'desc' }
       @users = User.all
-                   .order(orderable_array(default_params))
+                   .order(orderable_array(default_order_params))
                    .page(params[:page])
     end
 
@@ -116,6 +115,10 @@ module Admin
 
     def set_phone_confirmation_toggle
       @phone_confirmation_toggle = Setting.require_phone_confirmation
+    end
+
+    def default_order_params
+      { 'users.created_at' => 'desc' }
     end
   end
 end
