@@ -1012,7 +1012,7 @@ CREATE TABLE public.invoices (
     notes character varying,
     paid_with_payment_order_id bigint,
     CONSTRAINT invoices_cents_are_positive CHECK ((cents > 0)),
-    CONSTRAINT issued_at_earlier_than_payment_at CHECK ((issue_date <= due_date)),
+    CONSTRAINT invoices_due_date_is_not_before_issue_date CHECK ((issue_date <= due_date)),
     CONSTRAINT paid_at_is_filled_when_status_is_paid CHECK ((NOT ((status = 'paid'::public.invoice_status) AND (paid_at IS NULL)))),
     CONSTRAINT paid_at_is_not_filled_when_status_is_not_paid CHECK ((NOT ((status <> 'paid'::public.invoice_status) AND (paid_at IS NOT NULL))))
 );
@@ -2377,5 +2377,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190521071232'),
 ('20190722100652'),
 ('20190915171050'),
+('20191025092912');
 ('20191008124157');
 
