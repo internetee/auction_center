@@ -47,6 +47,7 @@ en:
       you_can_leave_blank: "leave blank if you don't want to change it"
       we_need_your_password: "we need your current password to confirm your changes)"
       currently_pending_confirmation: "Currently pending confirmation for %{email}."
+      daily_summary: "Daily summary"
 
     tara_form:
       password_requirements: "at least %{minimum} characters"
