@@ -1,3 +1,6 @@
+01.11.2019
+* Admin: users are now ordered from newest to old [#316](https://github.com/internetee/auction_center/issues/316)
+
 29.10.2019
 * Bug: Password change confirmation letter is sent again [#167](https://github.com/internetee/auction_center/issues/167)
 
