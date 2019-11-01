@@ -31,14 +31,29 @@ class IdentityCodeTest < ActiveSupport::TestCase
     assert(identity_code.valid?)
   end
 
-  def test_is_valid_for_every_century
+  def test_validates_estonian_id_codes_correctly
+
+    # Valid estonian ID code for person born in 19th century
     identity_code = IdentityCode.new('EE', "14501234213")
     assert(identity_code.valid?)
 
+    # Valid estonian ID code for person born in 20th century
     identity_code = IdentityCode.new('EE', "38701234218")
     assert(identity_code.valid?)
 
+    # Valid estonian ID code for person born in 21th century
     identity_code = IdentityCode.new('EE', "60901234211")
     assert(identity_code.valid?)
+
+    # Incorrect estonian ID codes
+    identity_code = IdentityCode.new('EE', "29511234213")
+    assert_not(identity_code.valid?)
+
+    identity_code = IdentityCode.new('EE', "52501233210")
+    assert_not(identity_code.valid?)
+
+    identity_code = IdentityCode.new('EE', "44501234213")
+    assert_not(identity_code.valid?)
+
   end
 end
