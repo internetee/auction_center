@@ -65,7 +65,6 @@ et:
         new_password: "Uus parool"
         min_characters: "Vähemalt %{min_chars} märki"
         confirm_new_password: "Sisesta uus parool uuesti"
-        change_password: "Muuda mu parool"
     registrations:
       destroyed: "Nägemist! Sinu konto on tühistatud. Loodame, et kohtume varsti jälle."
       signed_up: "Tere tulemast! Oled sisse logitud."
