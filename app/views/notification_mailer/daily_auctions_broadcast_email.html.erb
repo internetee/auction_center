@@ -1,28 +1,19 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
-    </head>
-    <body>
-        <h1><%= t('.salutation') %></h1>
-        <h2><%= t('.auctions') %></h2>
-        <table>
-            <thead>
-                <th><%= t('auctions.domain_name') %></th>
-                <th><%= t('auctions.ends_at') %></th>
-                <th></th>
-            </thead>
-            <tbody>
-                <% @auctions.each do |auction| %>
-                    <tr>
-                        <td><%= auction.domain_name %></td>
-                        <td><%= auction.ends_at %></td>
-                        <td><%= link_to(t('auctions.submit_offer'), auction_url(auction.uuid)) %>
-                    </tr>
-                <% end %>
-            </tbody>
-        </table>
+<h1><%= t('.salutation') %></h1>
+ <table>
+    <thead>
+        <th><%= t('auctions.domain_name') %></th>
+        <th><%= t('auctions.ends_at') %></th>
+        <th><%= t('auctions.action') %></th>
+    </thead>
+    <tbody>
+        <% @auctions.each do |auction| %>
+            <tr>
+                <td><%= auction.domain_name %></td>
+                <td><%= auction.ends_at %></td>
+                <td><%= link_to(t('auctions.submit_offer'), auction_url(auction.uuid)) %>
+            </tr>
+        <% end %>
+    </tbody>
+</table>
 
-        <%= t('common_mailer.footer_html') %>
-    </body>
-</html>
+<%= t('common_mailer.footer_html') %>

@@ -13,7 +13,8 @@ class NotificationMailer < ApplicationMailer
 
   def daily_auctions_broadcast_email(user:, auctions:)
     @auctions = auctions
-    mail(to: user)
+    @date = Time.zone.today
+    mail(to: user, subject: t('.subject'))
   end
 
   private

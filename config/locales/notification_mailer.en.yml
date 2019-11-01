@@ -12,4 +12,4 @@ en:
     daily_auctions_broadcast_email:
       subject: "Today's .EE domain auction list is available!"
       salutation: "Daily summary for .EE auctions happening today"
-      auctions: "Domains auctioned from #{date}:"
+      action: "Action"

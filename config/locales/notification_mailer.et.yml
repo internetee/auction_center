@@ -13,4 +13,4 @@ et:
     daily_auctions_broadcast_email:
       subject: "Tänane .EE domeenide oksjoninimekiri on saadaval!"
       salutation: "Tänane .EE domeenide oksjoninimekiri"
-      auctions: "Oksjonil olevad domeenid kuupäeval #{date}:"
+      action: "Tegevus"
