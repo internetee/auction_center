@@ -130,4 +130,8 @@ class User < ApplicationRecord
       end
     end
   end
+
+  def self.subscribed_to_daily_summary
+    User.where(daily_summary: true)
+  end
 end

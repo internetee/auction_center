@@ -38,6 +38,7 @@ class NotificationMailerTest < ActionMailer::TestCase
 
     assert_not(ActionMailer::Base.deliveries.empty?)
     email = ActionMailer::Base.deliveries.last
+    # User email, which is provided by DailyBroadcastAuctionsJob
     assert_equal(['user@auction.test'], email.to)
     assert_equal("Today's .EE domain auction list is available!", email.subject)
     assert_includes(email.body, "with-offers.test")

@@ -1,16 +1,18 @@
 class DailyBroadcastAuctionsJob < ApplicationJob
   def perform
-    User.where(daily_summary: true).each do |user|
-      NotificationMailer.daily_auctions_broadcast_email(
-        recipient: user,
-        auctions: auctions_today
-      ).deliver_later
+    User.subscribed_to_daily_summary.each do |user|
+      I18n.with_locale(user.locale) do
+        NotificationMailer.daily_auctions_broadcast_email(
+          user: user.email,
+          auctions: auctions_today
+        ).deliver_later
+      end
     end
   end
 
   def auctions_today
-    timeframe = Time.zone.today.beginning_of_day..Time.zone.today.end_of_day
-    Auction.where(starts_at: timeframe).to_a
+    period = Time.zone.today.beginning_of_day..Time.zone.today.end_of_day
+    Auction.started_within(period).to_a
   end
 
   def self.needs_to_run?

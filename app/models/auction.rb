@@ -107,4 +107,8 @@ class Auction < ApplicationRecord
       false
     end
   end
+
+  def self.started_within(period)
+    Auction.where(starts_at: period)
+  end
 end
