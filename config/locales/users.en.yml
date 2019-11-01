@@ -19,7 +19,6 @@ en:
     remember_me: "Remember me"
     i_accept_terms_and_conditions_html: "I have read and agree with %{link}."
     terms_and_conditions_link: "auction portal user agreement"
-    daily_summary: "Daily summary to email"
 
     edit:
       title: "Edit your user profile"
@@ -48,7 +47,6 @@ en:
       you_can_leave_blank: "leave blank if you don't want to change it"
       we_need_your_password: "we need your current password to confirm your changes)"
       currently_pending_confirmation: "Currently pending confirmation for %{email}."
-      daily_summary_intention: "I wish to receive daily summary about currently auctioned domains."
 
     tara_form:
       password_requirements: "at least %{minimum} characters"
@@ -67,6 +65,7 @@ en:
       title: "User profile"
       delete: "Delete account"
       review_terms_and_conditions: "Review terms and conditions"
+      daily_summary: "Daily summary to email"
 
     destroy:
       deleted: "You have been logged out and your account has been deleted."

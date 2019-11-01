@@ -61,8 +61,8 @@
                             <td><%= I18n.l(@user.created_at) %></td>
                         </tr>
                         <tr>
-                            <td><strong><%= t('users.daily_summary') %></strong></td>
-                            <td><%= @user.daily_summary? ? I18n.t('yes') : I18n.t('no')%></td>
+                            <td><strong><%= t('.daily_summary') %></strong></td>
+                            <td><%= @user.daily_summary? ? t('yes') : t('no')%></td>
                         </tr>
                     </tbody>
                 </table>

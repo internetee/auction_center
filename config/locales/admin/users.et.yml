@@ -18,6 +18,7 @@ et:
       show:
         title: "Kasutaja"
         ban_this_user: "Keela see kasutaja"
+        daily_summary: "Igapäevane oksjoninimekiri meilile"
 
       form:
         password_requirements: "vähemalt %{minimum} tähemärki"
@@ -28,6 +29,7 @@ et:
         you_can_leave_blank: "kui ei soovi muuta, jäta tühjaks"
         we_need_your_password: "(muudatuste kinnitamiseks vajame kehtivat salasõna)"
         roles: 'Rollid'
+        daily_summary: "Igapäevane oksjoninimekiri"
 
       edit:
         title: "Muuda kasutajat"
