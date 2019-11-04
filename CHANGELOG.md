@@ -1,3 +1,12 @@
+01.11.2019
+* Admin: users are now ordered from newest to old [#316](https://github.com/internetee/auction_center/issues/316)
+
+29.10.2019
+* Bug: Password change confirmation letter is sent again [#167](https://github.com/internetee/auction_center/issues/167)
+
+28.10.2019
+* Changed due date constraint on invoices table [#386](https://github.com/internetee/auction_center/pull/386)
+
 22.10.2019
 * Fixed multiple error issue in wishlist [#358](https://github.com/internetee/auction_center/issues/358)
 * Long domain names are not cut short any more in full and tablet views [#368](https://github.com/internetee/auction_center/issues/368)
