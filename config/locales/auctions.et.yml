@@ -74,3 +74,13 @@ et:
       4_step_explanation: |
         Kui sa ei soovi enam oksjonil osaleda, võid oma pakkumuse
         igal ajal tagasi võtta nii kaua kuni oksjon kestab.
+
+
+    banned: |
+      Sul on keelatud osaleda oksjonil järgmis(t)ele domeeninime(de)le: %{domain_names}.
+    banned_completely: |
+      Korduvalt tasumata jäetud arvete tõttu on Su õigus osaleda .ee domeenioksjonitel
+      peatatud kuni %{valid_until}.
+    violation_message_html: >-
+      Oksjoni reeglite <a href="%{violations_count_regulations_link}">rikkumisi</a>:
+      %{violations_count} '%{ban_number_of_strikes}'st

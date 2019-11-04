@@ -146,7 +146,7 @@ violations_count_regulations_setting = Setting.new(code: :violations_count_regul
                                             value: "https://example.com#some_anchor",
                                             description: violations_count_regulations_description)
 
-violations_count_regulations_setting.save
+violations_count_regulations_setting.save!
 
 
 # Default domain registration reminder time

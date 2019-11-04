@@ -1,6 +1,9 @@
 require 'application_system_test_case'
 
 class BansTest < ApplicationSystemTestCase
+
+  DAYS_BEFORE = 1.days.freeze
+  DAYS_AFTER = 5.days.freeze
   def setup
     super
 
@@ -15,7 +18,7 @@ class BansTest < ApplicationSystemTestCase
 
     @ban = Ban.create!(user: @participant,
                        domain_name: @valid_auction_with_no_offers.domain_name,
-                       valid_from: Time.zone.today - 1, valid_until: Time.zone.today + 2)
+                       valid_from: Time.zone.today - DAYS_BEFORE, valid_until: Time.zone.today + DAYS_AFTER)
   end
 
   def teardown
@@ -92,13 +95,13 @@ class BansTest < ApplicationSystemTestCase
   def test_banned_user_can_see_the_ban_notification_for_two_domains
     Ban.create!(user: @participant,
                 domain_name: @valid_auction_with_offers.domain_name,
-                valid_from: Time.zone.today - 1, valid_until: Time.zone.today + 5)
+                valid_from: Time.zone.today - DAYS_BEFORE, valid_until: Time.zone.today + DAYS_AFTER)
 
     sign_in_manually
 
     text = <<~TEXT.squish
       You are banned from participating in auctions for
-      domain(s): with-offers.test, no-offers.test.
+      domain(s): no-offers.test, with-offers.test.
     TEXT
 
     visit auctions_path
@@ -108,7 +111,7 @@ class BansTest < ApplicationSystemTestCase
   def test_banned_user_can_see_the_ban_notification_only_for_active_auctions
     Ban.create!(user: @participant,
                 domain_name: 'dummy-domain.net',
-                valid_from: Time.zone.today - 1, valid_until: Time.zone.today + 5)
+                valid_from: Time.zone.today - DAYS_BEFORE, valid_until: Time.zone.today + DAYS_AFTER)
 
     sign_in_manually
 
@@ -132,9 +135,10 @@ class BansTest < ApplicationSystemTestCase
       invoices until 2010-07-10.
     TEXT
 
+
     visit auctions_path
     assert(page.has_css?('div.ban', text: text))
-    assert_not(page.has_css?('div.ban > p'))
+    has_no_css?('div.ban > p')
   end
 
   def test_administrator_can_review_bans

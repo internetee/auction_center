@@ -17,10 +17,8 @@ namespace :data_migrations do
                                                          value: "https://example.com#some_anchor",
                                                          description: violations_count_regulations_description)
 
-      violations_count_regulations_setting.save
-
+      violations_count_regulations_setting.save!
+      puts "Violation count regulation link setting updated"
     end
-
-    puts "Violation count regulation link setting updated"
   end
 end
