@@ -10,6 +10,7 @@ class BillingProfile < ApplicationRecord
 
   belongs_to :user, optional: true
   before_destroy :check_no_active_offers_associated
+  after_update :mirror_address_to_attached_invoices
 
   def user_name
     if user
@@ -46,8 +47,14 @@ class BillingProfile < ApplicationRecord
     false
   end
 
-  def nillify_user
-    self.user_id = nil
-    save
+  def mirror_address_to_attached_invoices
+    return unless Invoice.with_billing_profile(billing_profile_id: id).any?
+
+    Invoice.with_billing_profile(billing_profile_id: id).find_each do |invoice|
+      next if invoice.paid?
+
+      invoice.update_billing_address
+      invoice.save!
+    end
   end
 end

@@ -125,4 +125,8 @@ class Invoice < ApplicationRecord
       self[attribute] = billing_profile[attribute] if billing_fields.include? attribute
     end
   end
+
+  def self.with_billing_profile(billing_profile_id:)
+    Invoice.where(billing_profile_id: billing_profile_id)
+  end
 end

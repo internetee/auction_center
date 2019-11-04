@@ -102,4 +102,13 @@ class BillingProfileTest < ActiveSupport::TestCase
     assert_equal(billing_profile.country_code, user_without_billing_profile.country_code)
     assert_equal(billing_profile.name, user_without_billing_profile.display_name)
   end
+
+  def test_billing_address_is_mirrored_to_linked_invoice
+    # Invoice which is linked with @billing_profile
+    invoice = invoices(:payable)
+    @billing_profile.update(name: "New Company Ltd")
+    invoice.reload
+
+    assert_equal('New Company Ltd', invoice.recipient)
+  end
 end
