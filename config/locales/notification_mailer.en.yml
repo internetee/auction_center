@@ -13,3 +13,6 @@ en:
       subject: "Today's .EE domain auction list is available!"
       salutation: "Daily summary for .EE auctions happening today"
       action: "Action"
+      submit_offer: "Submit offer"
+      domain_name: "Domain name"
+      ends_at: "Ends at"

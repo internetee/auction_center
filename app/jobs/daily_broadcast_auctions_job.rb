@@ -3,7 +3,7 @@ class DailyBroadcastAuctionsJob < ApplicationJob
     User.subscribed_to_daily_summary.each do |user|
       I18n.with_locale(user.locale) do
         NotificationMailer.daily_auctions_broadcast_email(
-          user: user.email,
+          recipient: user.email,
           auctions: auctions_today
         ).deliver_later
       end

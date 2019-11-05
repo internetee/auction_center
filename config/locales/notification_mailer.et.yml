@@ -14,3 +14,6 @@ et:
       subject: "Tänane .EE domeenide oksjoninimekiri on saadaval!"
       salutation: "Tänane .EE domeenide oksjoninimekiri"
       action: "Tegevus"
+      submit_offer: "Esita pakkumus"
+      domain_name: "Domeeninimi"
+      ends_at: "Lõpp"
