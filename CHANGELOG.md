@@ -1,3 +1,6 @@
+05.11.2019
+* Admin: replaced 0 value with NaN in auction view highest price column marking auctions with no bids to remove confusion on sorting [#321](https://github.com/internetee/auction_center/issues/321)
+
 01.11.2019
 * Admin: users are now ordered from newest to old [#316](https://github.com/internetee/auction_center/issues/316)
 
