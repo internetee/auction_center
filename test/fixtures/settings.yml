@@ -33,7 +33,7 @@ violations_count_regulations_link:
     or absolute ('https://example.com/terms_and_conditions.pdf'). Relative URL must start with a
     forward slash.
     Default: https://example.com#some_anchor
-  value: 'https://example.com#some_anchor'
+  value: "{\"en\":\"https://example.com#some_anchor\"}"
 
 default_country:
   code: default_country
