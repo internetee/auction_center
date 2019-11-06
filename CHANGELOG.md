@@ -1,3 +1,7 @@
+06.11.2019
+* Fixed ET translation in password change request view [#389](https://github.com/internetee/auction_center/issues/389)
+* Fixed ET translation issues in password change form view [#390](https://github.com/internetee/auction_center/issues/390)
+
 05.11.2019
 * Admin: replaced 0 value with NaN in auction view highest price column marking auctions with no bids to remove confusion on sorting [#321](https://github.com/internetee/auction_center/issues/321)
 
