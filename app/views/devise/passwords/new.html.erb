@@ -13,8 +13,7 @@
                 <%= f.label :email %><br />
                 <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
             </div>
-
-            <%= f.submit "Send me reset password instructions", class: "ui button primary" %>
+            <%= f.submit t('.reset_button'), class: "ui button primary" %>
         <% end %>
 
         <br>
