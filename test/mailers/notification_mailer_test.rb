@@ -41,6 +41,6 @@ class NotificationMailerTest < ActionMailer::TestCase
     # User email, which is provided by DailyBroadcastAuctionsJob
     assert_equal(['user@auction.test'], email.to)
     assert_equal("Today's .EE domain auction list is available!", email.subject)
-    assert_includes(email.body, "with-offers.test")
+    assert_includes(email.body, 'with-offers.test')
   end
 end

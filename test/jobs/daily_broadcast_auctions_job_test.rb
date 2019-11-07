@@ -25,7 +25,7 @@ class DailyBroadcastAuctionsJobTest < ActiveJob::TestCase
     end
 
     email = ActionMailer::Base.deliveries.last
-    assert_not_includes(email.body, "expired.test")
+    assert_not_includes(email.body, 'expired.test')
 
   end
 end
