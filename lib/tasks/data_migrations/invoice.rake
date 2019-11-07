@@ -1,4 +1,4 @@
-namespace :invoice do
+namespace :data_migrations do
   desc 'Copy associated BillingProfile address to Invoice'
   task populate_billing_fields: :environment do
     @invoices = Invoice.all
