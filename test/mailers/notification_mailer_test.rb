@@ -32,9 +32,9 @@ class NotificationMailerTest < ActionMailer::TestCase
   end
 
   def test_sends_auctioned_domain_list_to_subscribers
-    perform_enqueued_jobs do
-      DailyBroadcastAuctionsJob.perform_now
-    end
+    period = Time.zone.today.beginning_of_day..Time.zone.today.end_of_day
+    NotificationMailer.daily_auctions_broadcast_email(recipient: 'user@auction.test',
+                                                      auctions: Auction.started_within(period)).deliver_now
 
     assert_not(ActionMailer::Base.deliveries.empty?)
     email = ActionMailer::Base.deliveries.last
