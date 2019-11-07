@@ -19,6 +19,9 @@ et:
     remember_me: "Mäleta mind"
     i_accept_terms_and_conditions_html: "Olen tutvunud ja nõustun %{link}."
     terms_and_conditions_link: "domeenide oksjonikeskkonna kasutajatingimustega"
+    email_changed: >-
+      Palun kinnita eposti aadressi muutus klõpsates uuele aadressile saadetud ekirjas olevale
+      kinnituse lingile.
 
     edit:
       title: "Muuda kasutajaprofiili"
