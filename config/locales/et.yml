@@ -89,3 +89,9 @@ et:
       truncate: "&hellip;"
       next: "Järgmine"
       previous: "Eelmine"
+
+  helpers:
+    submit:
+      user:
+        update: "Muuda mu parool"
+        create: "Muuda mu parool"

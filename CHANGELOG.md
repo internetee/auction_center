@@ -1,3 +1,13 @@
+06.11.2019
+* Fixed ET translation in password change request view [#389](https://github.com/internetee/auction_center/issues/389)
+* Fixed ET translation issues in password change form view [#390](https://github.com/internetee/auction_center/issues/390)
+
+05.11.2019
+* Admin: replaced 0 value with NaN in auction view highest price column marking auctions with no bids to remove confusion on sorting [#321](https://github.com/internetee/auction_center/issues/321)
+
+01.11.2019
+* Admin: users are now ordered from newest to old [#316](https://github.com/internetee/auction_center/issues/316)
+
 29.10.2019
 * Bug: Password change confirmation letter is sent again [#167](https://github.com/internetee/auction_center/issues/167)
 

@@ -11,19 +11,19 @@
             <%= f.hidden_field :reset_password_token %>
 
             <div class="field">
-                <%= f.label :password, "New password" %><br />
+                <%= f.label :password, t('.new_password') %><br />
                 <% if @minimum_password_length %>
-                    <em>(<%= @minimum_password_length %> characters minimum)</em>
+                    <em>(<%= t('.min_characters', min_chars: @minimum_password_length ) %>)</em>
                 <% end %>
                 <%= f.password_field :password, autofocus: true, autocomplete: "new-password" %>
             </div>
 
             <div class="field">
-                <%= f.label :password_confirmation, "Confirm new password" %><br />
+                <%= f.label :password_confirmation, t('.confirm_new_password') %><br />
                 <%= f.password_field :password_confirmation, autocomplete: "off" %>
             </div>
 
-            <%= f.submit "Change my password", class: "ui button primary" %>
+            <%= f.submit nil, class: 'ui button primary' %>
         <% end %>
 
         <%= render "devise/shared/links" %>

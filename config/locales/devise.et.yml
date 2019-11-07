@@ -59,6 +59,12 @@ et:
       send_paranoid_instructions: "Kui sinu e-posti aadress on meie andmebaasis, saadetakse  mõne minuti jooksul sinu e-posti aadressile link salasõna taastamiseks."
       updated: "Salasõna on muudetud. Oled sisse logitud."
       updated_not_active: "Salasõna on muudetud."
+      new:
+        reset_button: "Saada parooli muutmise juhised"
+      edit:
+        new_password: "Uus parool"
+        min_characters: "Vähemalt %{min_chars} märki"
+        confirm_new_password: "Sisesta uus parool uuesti"
     registrations:
       destroyed: "Nägemist! Sinu konto on tühistatud. Loodame, et kohtume varsti jälle."
       signed_up: "Tere tulemast! Oled sisse logitud."

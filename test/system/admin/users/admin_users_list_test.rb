@@ -74,4 +74,15 @@ class AdminUsersListTest < ApplicationSystemTestCase
 
     assert_equal(errors_array.to_set, expected_errors.to_set)
   end
+
+  def test_newer_users_are_showed_on_top
+    visit admin_users_path
+    assert_appears_before('user@auction.test', 'administrator@auction.test')
+  end
+
+  private
+
+  def assert_appears_before(earlier_element, later_element)
+    assert(page.text.index(earlier_element) < page.text.index(later_element))
+  end
 end
