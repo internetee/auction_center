@@ -18,10 +18,11 @@ auction_minimum_offer:
 terms_and_conditions_link:
   code: terms_and_conditions_link
   description: |
-    Link to terms and conditions document. Can be relative ('/public/terms_and_conditions.pdf')
-    or absolute ('https://example.com/terms_and_conditions.pdf'). Relative link must start with a
-    forward slash. Default is: https://example.com
-  value: 'https://example.com'
+    Link to terms and conditions document. Must be single parsable hash of <locale>:<URL> elements.
+    URL can be relative ('/public/terms_and_conditions.pdf')
+    or absolute ('https://example.com/terms_and_conditions.pdf'). Relative URL must start with a
+    forward slash. Default is: "{\"en\":\"https://example.com\"}"
+  value: "{\"en\":\"https://example.com\"}"
 
 default_country:
   code: default_country
