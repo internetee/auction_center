@@ -49,7 +49,7 @@ module Admin
     end
 
     def default_order_params
-      { 'results.finished_at' => 'desc' }
+      { 'results.created_at' => 'desc' }
     end
   end
 end

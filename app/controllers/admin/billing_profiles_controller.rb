@@ -47,7 +47,7 @@ module Admin
     end
 
     def default_order_params
-      { 'orders.created_at' => 'desc' }
+      { 'billing_profiles.created_at' => 'desc' }
     end
   end
 end
