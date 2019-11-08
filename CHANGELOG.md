@@ -1,3 +1,6 @@
+08.11.2019
+* Improved test coverage for Estonian identity code validations [#393](https://github.com/internetee/auction_center/pull/393)
+
 06.11.2019
 * Fixed ET translation in password change request view [#389](https://github.com/internetee/auction_center/issues/389)
 * Fixed ET translation issues in password change form view [#390](https://github.com/internetee/auction_center/issues/390)
