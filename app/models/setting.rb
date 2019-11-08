@@ -111,18 +111,16 @@ class Setting < ApplicationRecord
   private
 
   def validate_value
-    methods = FORMAT_VALIDATIONS[code]
-    return unless methods
+    validation_methods_for_code = FORMAT_VALIDATIONS[code]
+    return unless validation_methods_for_code
 
-    methods.each do |method|
-      send(method)
+    validation_methods_for_code.each do |validation_method|
+      send(validation_method)
     end
   end
 
   def validate_json_hash
-    return if parsable_json_hash?(value)
-
-    errors.add(:value, :invalid)
+    errors.add(:value, :invalid) unless parsable_json_hash?(value)
   end
 
   def parsable_json_hash?(value)

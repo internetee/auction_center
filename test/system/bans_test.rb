@@ -115,12 +115,12 @@ class BansTest < ApplicationSystemTestCase
 
     sign_in_manually
 
-    text = <<~TEXT.squish
+    expected_notification = <<~TEXT.squish
       Number of current violations: 2 of 3
     TEXT
 
     visit auctions_path
-    assert(page.has_css?('div.ban > p', text: text))
+    assert_text expected_notification
   end
 
   def test_banned_user_can_see_the_ban_notification_for_longest_repetitive_ban
@@ -130,15 +130,18 @@ class BansTest < ApplicationSystemTestCase
                 valid_from: Time.zone.today - 1, valid_until: Time.zone.today + 2)
     sign_in_manually
 
-    text = <<~TEXT.squish
+    expected_notification = <<~TEXT.squish
       You are banned from participating in .ee domain auctions due to multiple overdue
       invoices until 2010-07-10.
     TEXT
 
+    violations_notification = <<~TEXT.squish
+      Number of current violations: 2 of 3
+    TEXT
 
     visit auctions_path
-    assert(page.has_css?('div.ban', text: text))
-    has_no_css?('div.ban > p')
+    assert_text expected_notification
+    assert_no_text violations_notification
   end
 
   def test_administrator_can_review_bans

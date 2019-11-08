@@ -70,7 +70,7 @@ class SettingTest < ActiveSupport::TestCase
   end
 
   def test_multilocale_violations_count_regulations_link
-    Setting.find_by(code: :violations_count_regulations_link).update!(value: "{\"en\":\"https://example.com#some_anchor\", \"et\":\"https://example.et#some_anchor\"}")
-    assert_equal('https://example.com#some_anchor', Setting.violations_count_regulations_link)
+    Setting.find_by(code: :violations_count_regulations_link).update!(value: "{\"en\":\"https://regulations.test#some_anchor\"}")
+    assert_equal('https://regulations.test#some_anchor', Setting.violations_count_regulations_link)
   end
 end
