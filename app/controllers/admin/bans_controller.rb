@@ -22,7 +22,8 @@ module Admin
 
     # GET /admin/bans
     def index
-      @bans = Ban.includes(:user).all.order(orderable_array).page(params[:page])
+      @bans = Ban.includes(:user).all.order(orderable_array(default_order_params))
+                 .page(params[:page])
     end
 
     # DELETE /admin/bans/1
@@ -46,6 +47,10 @@ module Admin
 
     def authorize_user
       authorize! :manage, Ban
+    end
+
+    def default_order_params
+      { 'bans.valid_from' => 'desc' }
     end
   end
 end

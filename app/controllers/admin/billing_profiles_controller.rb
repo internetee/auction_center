@@ -8,7 +8,7 @@ module Admin
     def index
       @billing_profiles = BillingProfile.accessible_by(current_ability)
                                         .includes(:user)
-                                        .order(orderable_array)
+                                        .order(orderable_array(default_order_params))
                                         .page(params[:page])
     end
 
@@ -44,6 +44,10 @@ module Admin
 
     def authorize_user
       authorize! :manage, BillingProfile
+    end
+
+    def default_order_params
+      { 'orders.created_at' => 'desc' }
     end
   end
 end

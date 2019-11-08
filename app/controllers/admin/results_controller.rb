@@ -6,7 +6,7 @@ module Admin
     def index
       @results = Result.includes(:auction, :offer, :invoice, :user)
                        .all
-                       .order(orderable_array)
+                       .order(orderable_array(default_order_params))
                        .page(params[:page])
 
       @auctions_needing_results = Auction.without_result
@@ -46,6 +46,10 @@ module Admin
     def search_params
       search_params_copy = params.dup
       search_params_copy.permit(:domain_name)
+    end
+
+    def default_order_params
+      { 'results.finished_at' => 'desc' }
     end
   end
 end
