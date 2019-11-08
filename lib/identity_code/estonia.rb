@@ -4,6 +4,10 @@ class IdentityCode
       valid_length? && valid_century? && valid_birth_date? && valid_check_digit?
     end
 
+    def invalid?
+      !valid?
+    end
+
     private
 
     def valid_century?

@@ -47,13 +47,13 @@ class IdentityCodeTest < ActiveSupport::TestCase
 
     # Incorrect estonian ID codes
     identity_code = IdentityCode.new('EE', "29511234213")
-    assert_not(identity_code.valid?)
+    assert(identity_code.invalid?)
 
     identity_code = IdentityCode.new('EE', "52501233210")
-    assert_not(identity_code.valid?)
+    assert(identity_code.invalid?)
 
     identity_code = IdentityCode.new('EE', "44501234213")
-    assert_not(identity_code.valid?)
+    assert(identity_code.invalid?)
 
   end
 end
