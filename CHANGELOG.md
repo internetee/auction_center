@@ -1,3 +1,6 @@
+11.11.2019
+* Imroved feedback on email address update in UI [#402](https://github.com/internetee/auction_center/issues/402)
+
 08.11.2019
 * Improved test coverage for Estonian identity code validations [#393](https://github.com/internetee/auction_center/pull/393)
 
