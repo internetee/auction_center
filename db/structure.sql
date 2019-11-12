@@ -78,7 +78,7 @@ CREATE TYPE public.invoice_status AS ENUM (
     'issued',
     'paid',
     'cancelled'
-);
+    );
 
 
 --
@@ -90,7 +90,7 @@ CREATE TYPE public.payment_order_status AS ENUM (
     'in_progress',
     'paid',
     'cancelled'
-);
+    );
 
 
 --
@@ -104,7 +104,7 @@ CREATE TYPE public.result_status AS ENUM (
     'payment_not_received',
     'domain_registered',
     'domain_not_registered'
-);
+    );
 
 
 --
@@ -113,26 +113,26 @@ CREATE TYPE public.result_status AS ENUM (
 
 CREATE FUNCTION public.process_auction_audit() RETURNS trigger
     LANGUAGE plpgsql
-    AS $$
-  BEGIN
+AS $$
+BEGIN
     IF (TG_OP = 'INSERT') THEN
-      INSERT INTO audit.auctions
-      (object_id, action, recorded_at, old_value, new_value)
-      VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
-      RETURN NEW;
+        INSERT INTO audit.auctions
+        (object_id, action, recorded_at, old_value, new_value)
+        VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
+        RETURN NEW;
     ELSEIF (TG_OP = 'UPDATE') THEN
-      INSERT INTO audit.auctions
-      (object_id, action, recorded_at, old_value, new_value)
-      VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
-      RETURN NEW;
+        INSERT INTO audit.auctions
+        (object_id, action, recorded_at, old_value, new_value)
+        VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
+        RETURN NEW;
     ELSEIF (TG_OP = 'DELETE') THEN
-      INSERT INTO audit.auctions
-      (object_id, action, recorded_at, old_value, new_value)
-      VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
-      RETURN OLD;
+        INSERT INTO audit.auctions
+        (object_id, action, recorded_at, old_value, new_value)
+        VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
+        RETURN OLD;
     END IF;
     RETURN NULL;
-  END
+END
 $$;
 
 
@@ -142,26 +142,26 @@ $$;
 
 CREATE FUNCTION public.process_ban_audit() RETURNS trigger
     LANGUAGE plpgsql
-    AS $$
-  BEGIN
+AS $$
+BEGIN
     IF (TG_OP = 'INSERT') THEN
-      INSERT INTO audit.bans
-      (object_id, action, recorded_at, old_value, new_value)
-      VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
-      RETURN NEW;
+        INSERT INTO audit.bans
+        (object_id, action, recorded_at, old_value, new_value)
+        VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
+        RETURN NEW;
     ELSEIF (TG_OP = 'UPDATE') THEN
-      INSERT INTO audit.bans
-      (object_id, action, recorded_at, old_value, new_value)
-      VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
-      RETURN NEW;
+        INSERT INTO audit.bans
+        (object_id, action, recorded_at, old_value, new_value)
+        VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
+        RETURN NEW;
     ELSEIF (TG_OP = 'DELETE') THEN
-      INSERT INTO audit.bans
-      (object_id, action, recorded_at, old_value, new_value)
-      VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
-      RETURN OLD;
+        INSERT INTO audit.bans
+        (object_id, action, recorded_at, old_value, new_value)
+        VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
+        RETURN OLD;
     END IF;
     RETURN NULL;
-  END
+END
 $$;
 
 
@@ -171,26 +171,26 @@ $$;
 
 CREATE FUNCTION public.process_billing_profile_audit() RETURNS trigger
     LANGUAGE plpgsql
-    AS $$
-  BEGIN
+AS $$
+BEGIN
     IF (TG_OP = 'INSERT') THEN
-      INSERT INTO audit.billing_profiles
-      (object_id, action, recorded_at, old_value, new_value)
-      VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
-      RETURN NEW;
+        INSERT INTO audit.billing_profiles
+        (object_id, action, recorded_at, old_value, new_value)
+        VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
+        RETURN NEW;
     ELSEIF (TG_OP = 'UPDATE') THEN
-      INSERT INTO audit.billing_profiles
-      (object_id, action, recorded_at, old_value, new_value)
-      VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
-      RETURN NEW;
+        INSERT INTO audit.billing_profiles
+        (object_id, action, recorded_at, old_value, new_value)
+        VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
+        RETURN NEW;
     ELSEIF (TG_OP = 'DELETE') THEN
-      INSERT INTO audit.billing_profiles
-      (object_id, action, recorded_at, old_value, new_value)
-      VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
-      RETURN OLD;
+        INSERT INTO audit.billing_profiles
+        (object_id, action, recorded_at, old_value, new_value)
+        VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
+        RETURN OLD;
     END IF;
     RETURN NULL;
-  END
+END
 $$;
 
 
@@ -200,26 +200,26 @@ $$;
 
 CREATE FUNCTION public.process_invoice_audit() RETURNS trigger
     LANGUAGE plpgsql
-    AS $$
-  BEGIN
+AS $$
+BEGIN
     IF (TG_OP = 'INSERT') THEN
-      INSERT INTO audit.invoices
-      (object_id, action, recorded_at, old_value, new_value)
-      VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
-      RETURN NEW;
+        INSERT INTO audit.invoices
+        (object_id, action, recorded_at, old_value, new_value)
+        VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
+        RETURN NEW;
     ELSEIF (TG_OP = 'UPDATE') THEN
-      INSERT INTO audit.invoices
-      (object_id, action, recorded_at, old_value, new_value)
-      VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
-      RETURN NEW;
+        INSERT INTO audit.invoices
+        (object_id, action, recorded_at, old_value, new_value)
+        VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
+        RETURN NEW;
     ELSEIF (TG_OP = 'DELETE') THEN
-      INSERT INTO audit.invoices
-      (object_id, action, recorded_at, old_value, new_value)
-      VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
-      RETURN OLD;
+        INSERT INTO audit.invoices
+        (object_id, action, recorded_at, old_value, new_value)
+        VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
+        RETURN OLD;
     END IF;
     RETURN NULL;
-  END
+END
 $$;
 
 
@@ -229,26 +229,26 @@ $$;
 
 CREATE FUNCTION public.process_invoice_item_audit() RETURNS trigger
     LANGUAGE plpgsql
-    AS $$
-  BEGIN
+AS $$
+BEGIN
     IF (TG_OP = 'INSERT') THEN
-      INSERT INTO audit.invoice_items
-      (object_id, action, recorded_at, old_value, new_value)
-      VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
-      RETURN NEW;
+        INSERT INTO audit.invoice_items
+        (object_id, action, recorded_at, old_value, new_value)
+        VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
+        RETURN NEW;
     ELSEIF (TG_OP = 'UPDATE') THEN
-      INSERT INTO audit.invoice_items
-      (object_id, action, recorded_at, old_value, new_value)
-      VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
-      RETURN NEW;
+        INSERT INTO audit.invoice_items
+        (object_id, action, recorded_at, old_value, new_value)
+        VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
+        RETURN NEW;
     ELSEIF (TG_OP = 'DELETE') THEN
-      INSERT INTO audit.invoice_items
-      (object_id, action, recorded_at, old_value, new_value)
-      VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
-      RETURN OLD;
+        INSERT INTO audit.invoice_items
+        (object_id, action, recorded_at, old_value, new_value)
+        VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
+        RETURN OLD;
     END IF;
     RETURN NULL;
-  END
+END
 $$;
 
 
@@ -258,26 +258,26 @@ $$;
 
 CREATE FUNCTION public.process_offer_audit() RETURNS trigger
     LANGUAGE plpgsql
-    AS $$
-  BEGIN
+AS $$
+BEGIN
     IF (TG_OP = 'INSERT') THEN
-      INSERT INTO audit.offers
-      (object_id, action, recorded_at, old_value, new_value)
-      VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
-      RETURN NEW;
+        INSERT INTO audit.offers
+        (object_id, action, recorded_at, old_value, new_value)
+        VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
+        RETURN NEW;
     ELSEIF (TG_OP = 'UPDATE') THEN
-      INSERT INTO audit.offers
-      (object_id, action, recorded_at, old_value, new_value)
-      VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
-      RETURN NEW;
+        INSERT INTO audit.offers
+        (object_id, action, recorded_at, old_value, new_value)
+        VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
+        RETURN NEW;
     ELSEIF (TG_OP = 'DELETE') THEN
-      INSERT INTO audit.offers
-      (object_id, action, recorded_at, old_value, new_value)
-      VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
-      RETURN OLD;
+        INSERT INTO audit.offers
+        (object_id, action, recorded_at, old_value, new_value)
+        VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
+        RETURN OLD;
     END IF;
     RETURN NULL;
-  END
+END
 $$;
 
 
@@ -287,26 +287,26 @@ $$;
 
 CREATE FUNCTION public.process_payment_order_audit() RETURNS trigger
     LANGUAGE plpgsql
-    AS $$
-  BEGIN
+AS $$
+BEGIN
     IF (TG_OP = 'INSERT') THEN
-      INSERT INTO audit.payment_orders
-      (object_id, action, recorded_at, old_value, new_value)
-      VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
-      RETURN NEW;
+        INSERT INTO audit.payment_orders
+        (object_id, action, recorded_at, old_value, new_value)
+        VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
+        RETURN NEW;
     ELSEIF (TG_OP = 'UPDATE') THEN
-      INSERT INTO audit.payment_orders
-      (object_id, action, recorded_at, old_value, new_value)
-      VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
-      RETURN NEW;
+        INSERT INTO audit.payment_orders
+        (object_id, action, recorded_at, old_value, new_value)
+        VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
+        RETURN NEW;
     ELSEIF (TG_OP = 'DELETE') THEN
-      INSERT INTO audit.payment_orders
-      (object_id, action, recorded_at, old_value, new_value)
-      VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
-      RETURN OLD;
+        INSERT INTO audit.payment_orders
+        (object_id, action, recorded_at, old_value, new_value)
+        VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
+        RETURN OLD;
     END IF;
     RETURN NULL;
-  END
+END
 $$;
 
 
@@ -316,26 +316,26 @@ $$;
 
 CREATE FUNCTION public.process_result_audit() RETURNS trigger
     LANGUAGE plpgsql
-    AS $$
-  BEGIN
+AS $$
+BEGIN
     IF (TG_OP = 'INSERT') THEN
-      INSERT INTO audit.results
-      (object_id, action, recorded_at, old_value, new_value)
-      VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
-      RETURN NEW;
+        INSERT INTO audit.results
+        (object_id, action, recorded_at, old_value, new_value)
+        VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
+        RETURN NEW;
     ELSEIF (TG_OP = 'UPDATE') THEN
-      INSERT INTO audit.results
-      (object_id, action, recorded_at, old_value, new_value)
-      VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
-      RETURN NEW;
+        INSERT INTO audit.results
+        (object_id, action, recorded_at, old_value, new_value)
+        VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
+        RETURN NEW;
     ELSEIF (TG_OP = 'DELETE') THEN
-      INSERT INTO audit.results
-      (object_id, action, recorded_at, old_value, new_value)
-      VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
-      RETURN OLD;
+        INSERT INTO audit.results
+        (object_id, action, recorded_at, old_value, new_value)
+        VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
+        RETURN OLD;
     END IF;
     RETURN NULL;
-  END
+END
 $$;
 
 
@@ -345,26 +345,26 @@ $$;
 
 CREATE FUNCTION public.process_setting_audit() RETURNS trigger
     LANGUAGE plpgsql
-    AS $$
-  BEGIN
+AS $$
+BEGIN
     IF (TG_OP = 'INSERT') THEN
-      INSERT INTO audit.settings
-      (object_id, action, recorded_at, old_value, new_value)
-      VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
-      RETURN NEW;
+        INSERT INTO audit.settings
+        (object_id, action, recorded_at, old_value, new_value)
+        VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
+        RETURN NEW;
     ELSEIF (TG_OP = 'UPDATE') THEN
-      INSERT INTO audit.settings
-      (object_id, action, recorded_at, old_value, new_value)
-      VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
-      RETURN NEW;
+        INSERT INTO audit.settings
+        (object_id, action, recorded_at, old_value, new_value)
+        VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
+        RETURN NEW;
     ELSEIF (TG_OP = 'DELETE') THEN
-      INSERT INTO audit.settings
-      (object_id, action, recorded_at, old_value, new_value)
-      VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
-      RETURN OLD;
+        INSERT INTO audit.settings
+        (object_id, action, recorded_at, old_value, new_value)
+        VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
+        RETURN OLD;
     END IF;
     RETURN NULL;
-  END
+END
 $$;
 
 
@@ -374,26 +374,26 @@ $$;
 
 CREATE FUNCTION public.process_user_audit() RETURNS trigger
     LANGUAGE plpgsql
-    AS $$
-  BEGIN
+AS $$
+BEGIN
     IF (TG_OP = 'INSERT') THEN
-      INSERT INTO audit.users
-      (object_id, action, recorded_at, old_value, new_value)
-      VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
-      RETURN NEW;
+        INSERT INTO audit.users
+        (object_id, action, recorded_at, old_value, new_value)
+        VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
+        RETURN NEW;
     ELSEIF (TG_OP = 'UPDATE') THEN
-      INSERT INTO audit.users
-      (object_id, action, recorded_at, old_value, new_value)
-      VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
-      RETURN NEW;
+        INSERT INTO audit.users
+        (object_id, action, recorded_at, old_value, new_value)
+        VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
+        RETURN NEW;
     ELSEIF (TG_OP = 'DELETE') THEN
-      INSERT INTO audit.users
-      (object_id, action, recorded_at, old_value, new_value)
-      VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
-      RETURN OLD;
+        INSERT INTO audit.users
+        (object_id, action, recorded_at, old_value, new_value)
+        VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
+        RETURN OLD;
     END IF;
     RETURN NULL;
-  END
+END
 $$;
 
 
@@ -403,26 +403,26 @@ $$;
 
 CREATE FUNCTION public.process_wishlist_item_audit() RETURNS trigger
     LANGUAGE plpgsql
-    AS $$
-  BEGIN
+AS $$
+BEGIN
     IF (TG_OP = 'INSERT') THEN
-      INSERT INTO audit.wishlist_items
-      (object_id, action, recorded_at, old_value, new_value)
-      VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
-      RETURN NEW;
+        INSERT INTO audit.wishlist_items
+        (object_id, action, recorded_at, old_value, new_value)
+        VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
+        RETURN NEW;
     ELSEIF (TG_OP = 'UPDATE') THEN
-      INSERT INTO audit.wishlist_items
-      (object_id, action, recorded_at, old_value, new_value)
-      VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
-      RETURN NEW;
+        INSERT INTO audit.wishlist_items
+        (object_id, action, recorded_at, old_value, new_value)
+        VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
+        RETURN NEW;
     ELSEIF (TG_OP = 'DELETE') THEN
-      INSERT INTO audit.wishlist_items
-      (object_id, action, recorded_at, old_value, new_value)
-      VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
-      RETURN OLD;
+        INSERT INTO audit.wishlist_items
+        (object_id, action, recorded_at, old_value, new_value)
+        VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
+        RETURN OLD;
     END IF;
     RETURN NULL;
-  END
+END
 $$;
 
 
@@ -431,17 +431,17 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: auctions; Type: TABLE; Schema: audit; Owner: -; Tablespace: 
+-- Name: auctions; Type: TABLE; Schema: audit; Owner: -; Tablespace:
 --
 
 CREATE TABLE audit.auctions (
-    id integer NOT NULL,
-    object_id bigint,
-    action text NOT NULL,
-    recorded_at timestamp without time zone,
-    old_value jsonb,
-    new_value jsonb,
-    CONSTRAINT auctions_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
+                                id integer NOT NULL,
+                                object_id bigint,
+                                action text NOT NULL,
+                                recorded_at timestamp without time zone,
+                                old_value jsonb,
+                                new_value jsonb,
+                                CONSTRAINT auctions_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
 );
 
 
@@ -465,17 +465,17 @@ ALTER SEQUENCE audit.auctions_id_seq OWNED BY audit.auctions.id;
 
 
 --
--- Name: bans; Type: TABLE; Schema: audit; Owner: -; Tablespace: 
+-- Name: bans; Type: TABLE; Schema: audit; Owner: -; Tablespace:
 --
 
 CREATE TABLE audit.bans (
-    id integer NOT NULL,
-    object_id bigint,
-    action text NOT NULL,
-    recorded_at timestamp without time zone,
-    old_value jsonb,
-    new_value jsonb,
-    CONSTRAINT bans_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
+                            id integer NOT NULL,
+                            object_id bigint,
+                            action text NOT NULL,
+                            recorded_at timestamp without time zone,
+                            old_value jsonb,
+                            new_value jsonb,
+                            CONSTRAINT bans_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
 );
 
 
@@ -499,17 +499,17 @@ ALTER SEQUENCE audit.bans_id_seq OWNED BY audit.bans.id;
 
 
 --
--- Name: billing_profiles; Type: TABLE; Schema: audit; Owner: -; Tablespace: 
+-- Name: billing_profiles; Type: TABLE; Schema: audit; Owner: -; Tablespace:
 --
 
 CREATE TABLE audit.billing_profiles (
-    id integer NOT NULL,
-    object_id bigint,
-    action text NOT NULL,
-    recorded_at timestamp without time zone,
-    old_value jsonb,
-    new_value jsonb,
-    CONSTRAINT billing_profiles_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
+                                        id integer NOT NULL,
+                                        object_id bigint,
+                                        action text NOT NULL,
+                                        recorded_at timestamp without time zone,
+                                        old_value jsonb,
+                                        new_value jsonb,
+                                        CONSTRAINT billing_profiles_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
 );
 
 
@@ -533,17 +533,17 @@ ALTER SEQUENCE audit.billing_profiles_id_seq OWNED BY audit.billing_profiles.id;
 
 
 --
--- Name: invoice_items; Type: TABLE; Schema: audit; Owner: -; Tablespace: 
+-- Name: invoice_items; Type: TABLE; Schema: audit; Owner: -; Tablespace:
 --
 
 CREATE TABLE audit.invoice_items (
-    id integer NOT NULL,
-    object_id bigint,
-    action text NOT NULL,
-    recorded_at timestamp without time zone,
-    old_value jsonb,
-    new_value jsonb,
-    CONSTRAINT invoice_items_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
+                                     id integer NOT NULL,
+                                     object_id bigint,
+                                     action text NOT NULL,
+                                     recorded_at timestamp without time zone,
+                                     old_value jsonb,
+                                     new_value jsonb,
+                                     CONSTRAINT invoice_items_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
 );
 
 
@@ -567,17 +567,17 @@ ALTER SEQUENCE audit.invoice_items_id_seq OWNED BY audit.invoice_items.id;
 
 
 --
--- Name: invoices; Type: TABLE; Schema: audit; Owner: -; Tablespace: 
+-- Name: invoices; Type: TABLE; Schema: audit; Owner: -; Tablespace:
 --
 
 CREATE TABLE audit.invoices (
-    id integer NOT NULL,
-    object_id bigint,
-    action text NOT NULL,
-    recorded_at timestamp without time zone,
-    old_value jsonb,
-    new_value jsonb,
-    CONSTRAINT invoices_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
+                                id integer NOT NULL,
+                                object_id bigint,
+                                action text NOT NULL,
+                                recorded_at timestamp without time zone,
+                                old_value jsonb,
+                                new_value jsonb,
+                                CONSTRAINT invoices_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
 );
 
 
@@ -601,17 +601,17 @@ ALTER SEQUENCE audit.invoices_id_seq OWNED BY audit.invoices.id;
 
 
 --
--- Name: offers; Type: TABLE; Schema: audit; Owner: -; Tablespace: 
+-- Name: offers; Type: TABLE; Schema: audit; Owner: -; Tablespace:
 --
 
 CREATE TABLE audit.offers (
-    id integer NOT NULL,
-    object_id bigint,
-    action text NOT NULL,
-    recorded_at timestamp without time zone,
-    old_value jsonb,
-    new_value jsonb,
-    CONSTRAINT offers_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
+                              id integer NOT NULL,
+                              object_id bigint,
+                              action text NOT NULL,
+                              recorded_at timestamp without time zone,
+                              old_value jsonb,
+                              new_value jsonb,
+                              CONSTRAINT offers_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
 );
 
 
@@ -635,17 +635,17 @@ ALTER SEQUENCE audit.offers_id_seq OWNED BY audit.offers.id;
 
 
 --
--- Name: payment_orders; Type: TABLE; Schema: audit; Owner: -; Tablespace: 
+-- Name: payment_orders; Type: TABLE; Schema: audit; Owner: -; Tablespace:
 --
 
 CREATE TABLE audit.payment_orders (
-    id integer NOT NULL,
-    object_id bigint,
-    action text NOT NULL,
-    recorded_at timestamp without time zone,
-    old_value jsonb,
-    new_value jsonb,
-    CONSTRAINT payment_orders_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
+                                      id integer NOT NULL,
+                                      object_id bigint,
+                                      action text NOT NULL,
+                                      recorded_at timestamp without time zone,
+                                      old_value jsonb,
+                                      new_value jsonb,
+                                      CONSTRAINT payment_orders_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
 );
 
 
@@ -669,17 +669,17 @@ ALTER SEQUENCE audit.payment_orders_id_seq OWNED BY audit.payment_orders.id;
 
 
 --
--- Name: results; Type: TABLE; Schema: audit; Owner: -; Tablespace: 
+-- Name: results; Type: TABLE; Schema: audit; Owner: -; Tablespace:
 --
 
 CREATE TABLE audit.results (
-    id integer NOT NULL,
-    object_id bigint,
-    action text NOT NULL,
-    recorded_at timestamp without time zone,
-    old_value jsonb,
-    new_value jsonb,
-    CONSTRAINT results_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
+                               id integer NOT NULL,
+                               object_id bigint,
+                               action text NOT NULL,
+                               recorded_at timestamp without time zone,
+                               old_value jsonb,
+                               new_value jsonb,
+                               CONSTRAINT results_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
 );
 
 
@@ -703,17 +703,17 @@ ALTER SEQUENCE audit.results_id_seq OWNED BY audit.results.id;
 
 
 --
--- Name: settings; Type: TABLE; Schema: audit; Owner: -; Tablespace: 
+-- Name: settings; Type: TABLE; Schema: audit; Owner: -; Tablespace:
 --
 
 CREATE TABLE audit.settings (
-    id integer NOT NULL,
-    object_id bigint,
-    action text NOT NULL,
-    recorded_at timestamp without time zone,
-    old_value jsonb,
-    new_value jsonb,
-    CONSTRAINT settings_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
+                                id integer NOT NULL,
+                                object_id bigint,
+                                action text NOT NULL,
+                                recorded_at timestamp without time zone,
+                                old_value jsonb,
+                                new_value jsonb,
+                                CONSTRAINT settings_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
 );
 
 
@@ -737,17 +737,17 @@ ALTER SEQUENCE audit.settings_id_seq OWNED BY audit.settings.id;
 
 
 --
--- Name: users; Type: TABLE; Schema: audit; Owner: -; Tablespace: 
+-- Name: users; Type: TABLE; Schema: audit; Owner: -; Tablespace:
 --
 
 CREATE TABLE audit.users (
-    id integer NOT NULL,
-    object_id bigint,
-    action text NOT NULL,
-    recorded_at timestamp without time zone,
-    old_value jsonb,
-    new_value jsonb,
-    CONSTRAINT users_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
+                             id integer NOT NULL,
+                             object_id bigint,
+                             action text NOT NULL,
+                             recorded_at timestamp without time zone,
+                             old_value jsonb,
+                             new_value jsonb,
+                             CONSTRAINT users_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
 );
 
 
@@ -771,17 +771,17 @@ ALTER SEQUENCE audit.users_id_seq OWNED BY audit.users.id;
 
 
 --
--- Name: wishlist_items; Type: TABLE; Schema: audit; Owner: -; Tablespace: 
+-- Name: wishlist_items; Type: TABLE; Schema: audit; Owner: -; Tablespace:
 --
 
 CREATE TABLE audit.wishlist_items (
-    id integer NOT NULL,
-    object_id bigint,
-    action text NOT NULL,
-    recorded_at timestamp without time zone,
-    old_value jsonb,
-    new_value jsonb,
-    CONSTRAINT wishlist_items_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
+                                      id integer NOT NULL,
+                                      object_id bigint,
+                                      action text NOT NULL,
+                                      recorded_at timestamp without time zone,
+                                      old_value jsonb,
+                                      new_value jsonb,
+                                      CONSTRAINT wishlist_items_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
 );
 
 
@@ -805,19 +805,19 @@ ALTER SEQUENCE audit.wishlist_items_id_seq OWNED BY audit.wishlist_items.id;
 
 
 --
--- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE public.ar_internal_metadata (
-    key character varying NOT NULL,
-    value character varying,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+                                             key character varying NOT NULL,
+                                             value character varying,
+                                             created_at timestamp without time zone NOT NULL,
+                                             updated_at timestamp without time zone NOT NULL
 );
 
 
 --
--- Name: auctions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: auctions; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE public.auctions (
@@ -854,18 +854,18 @@ ALTER SEQUENCE public.auctions_id_seq OWNED BY public.auctions.id;
 
 
 --
--- Name: bans; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: bans; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE public.bans (
-    id bigint NOT NULL,
-    user_id integer NOT NULL,
-    valid_from timestamp without time zone DEFAULT now() NOT NULL,
-    valid_until timestamp without time zone NOT NULL,
-    domain_name character varying,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    invoice_id integer
+                             id bigint NOT NULL,
+                             user_id integer NOT NULL,
+                             valid_from timestamp without time zone DEFAULT now() NOT NULL,
+                             valid_until timestamp without time zone NOT NULL,
+                             domain_name character varying,
+                             created_at timestamp without time zone NOT NULL,
+                             updated_at timestamp without time zone NOT NULL,
+                             invoice_id integer
 );
 
 
@@ -889,23 +889,23 @@ ALTER SEQUENCE public.bans_id_seq OWNED BY public.bans.id;
 
 
 --
--- Name: billing_profiles; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: billing_profiles; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE public.billing_profiles (
-    id bigint NOT NULL,
-    user_id integer,
-    name character varying,
-    vat_code character varying,
-    street character varying,
-    city character varying,
-    state character varying,
-    postal_code character varying,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    alpha_two_country_code character varying(2) NOT NULL,
-    uuid uuid DEFAULT public.gen_random_uuid(),
-    updated_by character varying
+                                         id bigint NOT NULL,
+                                         user_id integer,
+                                         name character varying,
+                                         vat_code character varying,
+                                         street character varying,
+                                         city character varying,
+                                         state character varying,
+                                         postal_code character varying,
+                                         created_at timestamp without time zone NOT NULL,
+                                         updated_at timestamp without time zone NOT NULL,
+                                         alpha_two_country_code character varying(2) NOT NULL,
+                                         uuid uuid DEFAULT public.gen_random_uuid(),
+                                         updated_by character varying
 );
 
 
@@ -929,22 +929,22 @@ ALTER SEQUENCE public.billing_profiles_id_seq OWNED BY public.billing_profiles.i
 
 
 --
--- Name: delayed_jobs; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: delayed_jobs; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE public.delayed_jobs (
-    id bigint NOT NULL,
-    priority integer DEFAULT 0 NOT NULL,
-    attempts integer DEFAULT 0 NOT NULL,
-    handler text NOT NULL,
-    last_error text,
-    run_at timestamp without time zone,
-    locked_at timestamp without time zone,
-    failed_at timestamp without time zone,
-    locked_by character varying,
-    queue character varying,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone
+                                     id bigint NOT NULL,
+                                     priority integer DEFAULT 0 NOT NULL,
+                                     attempts integer DEFAULT 0 NOT NULL,
+                                     handler text NOT NULL,
+                                     last_error text,
+                                     run_at timestamp without time zone,
+                                     locked_at timestamp without time zone,
+                                     failed_at timestamp without time zone,
+                                     locked_by character varying,
+                                     queue character varying,
+                                     created_at timestamp without time zone,
+                                     updated_at timestamp without time zone
 );
 
 
@@ -1004,13 +1004,13 @@ ALTER SEQUENCE public.directo_customers_id_seq OWNED BY public.directo_customers
 --
 
 CREATE TABLE public.invoice_items (
-    id bigint NOT NULL,
-    invoice_id integer,
-    name character varying NOT NULL,
-    cents integer NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    uuid uuid DEFAULT public.gen_random_uuid()
+                                      id bigint NOT NULL,
+                                      invoice_id integer,
+                                      name character varying NOT NULL,
+                                      cents integer NOT NULL,
+                                      created_at timestamp without time zone NOT NULL,
+                                      updated_at timestamp without time zone NOT NULL,
+                                      uuid uuid DEFAULT public.gen_random_uuid()
 );
 
 
@@ -1034,7 +1034,7 @@ ALTER SEQUENCE public.invoice_items_id_seq OWNED BY public.invoice_items.id;
 
 
 --
--- Name: invoices; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: invoices; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE public.invoices (
@@ -1111,20 +1111,20 @@ ALTER SEQUENCE public.invoices_number_seq OWNED BY public.invoices.number;
 
 
 --
--- Name: offers; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: offers; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE public.offers (
-    id bigint NOT NULL,
-    auction_id integer NOT NULL,
-    user_id integer,
-    cents integer NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    billing_profile_id integer NOT NULL,
-    uuid uuid DEFAULT public.gen_random_uuid(),
-    updated_by character varying,
-    CONSTRAINT offers_cents_are_positive CHECK ((cents > 0))
+                               id bigint NOT NULL,
+                               auction_id integer NOT NULL,
+                               user_id integer,
+                               cents integer NOT NULL,
+                               created_at timestamp without time zone NOT NULL,
+                               updated_at timestamp without time zone NOT NULL,
+                               billing_profile_id integer NOT NULL,
+                               uuid uuid DEFAULT public.gen_random_uuid(),
+                               updated_by character varying,
+                               CONSTRAINT offers_cents_are_positive CHECK ((cents > 0))
 );
 
 
@@ -1148,19 +1148,19 @@ ALTER SEQUENCE public.offers_id_seq OWNED BY public.offers.id;
 
 
 --
--- Name: payment_orders; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: payment_orders; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE public.payment_orders (
-    id bigint NOT NULL,
-    type character varying NOT NULL,
-    invoice_id integer NOT NULL,
-    user_id integer,
-    response jsonb,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    status public.payment_order_status DEFAULT 'issued'::public.payment_order_status,
-    uuid uuid DEFAULT public.gen_random_uuid()
+                                       id bigint NOT NULL,
+                                       type character varying NOT NULL,
+                                       invoice_id integer NOT NULL,
+                                       user_id integer,
+                                       response jsonb,
+                                       created_at timestamp without time zone NOT NULL,
+                                       updated_at timestamp without time zone NOT NULL,
+                                       status public.payment_order_status DEFAULT 'issued'::public.payment_order_status,
+                                       uuid uuid DEFAULT public.gen_random_uuid()
 );
 
 
@@ -1184,7 +1184,7 @@ ALTER SEQUENCE public.payment_orders_id_seq OWNED BY public.payment_orders.id;
 
 
 --
--- Name: remote_view_partials; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: remote_view_partials; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE public.remote_view_partials (
@@ -1217,23 +1217,23 @@ ALTER SEQUENCE public.remote_view_partials_id_seq OWNED BY public.remote_view_pa
 
 
 --
--- Name: results; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: results; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE public.results (
-    id bigint NOT NULL,
-    auction_id integer NOT NULL,
-    user_id integer,
-    offer_id integer,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    uuid uuid DEFAULT public.gen_random_uuid(),
-    status public.result_status,
-    last_remote_status public.result_status,
-    last_response jsonb,
-    registration_code character varying,
-    registration_due_date date NOT NULL,
-    registration_reminder_sent_at timestamp without time zone
+                                id bigint NOT NULL,
+                                auction_id integer NOT NULL,
+                                user_id integer,
+                                offer_id integer,
+                                created_at timestamp without time zone NOT NULL,
+                                updated_at timestamp without time zone NOT NULL,
+                                uuid uuid DEFAULT public.gen_random_uuid(),
+                                status public.result_status,
+                                last_remote_status public.result_status,
+                                last_response jsonb,
+                                registration_code character varying,
+                                registration_due_date date NOT NULL,
+                                registration_reminder_sent_at timestamp without time zone
 );
 
 
@@ -1257,7 +1257,7 @@ ALTER SEQUENCE public.results_id_seq OWNED BY public.results.id;
 
 
 --
--- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE public.schema_migrations (
@@ -1266,7 +1266,7 @@ CREATE TABLE public.schema_migrations (
 
 
 --
--- Name: settings; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: settings; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE public.settings (
@@ -1301,7 +1301,7 @@ ALTER SEQUENCE public.settings_id_seq OWNED BY public.settings.id;
 
 
 --
--- Name: statistics_report_invoices; Type: MATERIALIZED VIEW; Schema: public; Owner: -; Tablespace: 
+-- Name: statistics_report_invoices; Type: MATERIALIZED VIEW; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE MATERIALIZED VIEW public.statistics_report_invoices AS
@@ -1313,7 +1313,7 @@ CREATE MATERIALIZED VIEW public.statistics_report_invoices AS
 
 
 --
--- Name: users; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: users; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE public.users (
@@ -1369,16 +1369,16 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 
 --
--- Name: wishlist_items; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: wishlist_items; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE public.wishlist_items (
-    id bigint NOT NULL,
-    domain_name character varying NOT NULL,
-    user_id integer NOT NULL,
-    uuid uuid DEFAULT public.gen_random_uuid(),
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+                                       id bigint NOT NULL,
+                                       domain_name character varying NOT NULL,
+                                       user_id integer NOT NULL,
+                                       uuid uuid DEFAULT public.gen_random_uuid(),
+                                       created_at timestamp without time zone NOT NULL,
+                                       updated_at timestamp without time zone NOT NULL
 );
 
 
@@ -1584,7 +1584,7 @@ ALTER TABLE ONLY public.wishlist_items ALTER COLUMN id SET DEFAULT nextval('publ
 
 
 --
--- Name: auctions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: auctions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY public.auctions
@@ -1592,7 +1592,7 @@ ALTER TABLE ONLY public.auctions
 
 
 --
--- Name: statistics_report_auctions; Type: MATERIALIZED VIEW; Schema: public; Owner: -; Tablespace: 
+-- Name: statistics_report_auctions; Type: MATERIALIZED VIEW; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE MATERIALIZED VIEW public.statistics_report_auctions AS
@@ -1624,7 +1624,7 @@ CREATE MATERIALIZED VIEW public.statistics_report_auctions AS
 
 
 --
--- Name: results_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: results_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY public.results
@@ -1632,7 +1632,7 @@ ALTER TABLE ONLY public.results
 
 
 --
--- Name: statistics_report_results; Type: MATERIALIZED VIEW; Schema: public; Owner: -; Tablespace: 
+-- Name: statistics_report_results; Type: MATERIALIZED VIEW; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE MATERIALIZED VIEW public.statistics_report_results AS
@@ -1648,7 +1648,7 @@ CREATE MATERIALIZED VIEW public.statistics_report_results AS
 
 
 --
--- Name: auctions_pkey; Type: CONSTRAINT; Schema: audit; Owner: -; Tablespace: 
+-- Name: auctions_pkey; Type: CONSTRAINT; Schema: audit; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY audit.auctions
@@ -1656,7 +1656,7 @@ ALTER TABLE ONLY audit.auctions
 
 
 --
--- Name: bans_pkey; Type: CONSTRAINT; Schema: audit; Owner: -; Tablespace: 
+-- Name: bans_pkey; Type: CONSTRAINT; Schema: audit; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY audit.bans
@@ -1664,7 +1664,7 @@ ALTER TABLE ONLY audit.bans
 
 
 --
--- Name: billing_profiles_pkey; Type: CONSTRAINT; Schema: audit; Owner: -; Tablespace: 
+-- Name: billing_profiles_pkey; Type: CONSTRAINT; Schema: audit; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY audit.billing_profiles
@@ -1672,7 +1672,7 @@ ALTER TABLE ONLY audit.billing_profiles
 
 
 --
--- Name: invoice_items_pkey; Type: CONSTRAINT; Schema: audit; Owner: -; Tablespace: 
+-- Name: invoice_items_pkey; Type: CONSTRAINT; Schema: audit; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY audit.invoice_items
@@ -1680,7 +1680,7 @@ ALTER TABLE ONLY audit.invoice_items
 
 
 --
--- Name: invoices_pkey; Type: CONSTRAINT; Schema: audit; Owner: -; Tablespace: 
+-- Name: invoices_pkey; Type: CONSTRAINT; Schema: audit; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY audit.invoices
@@ -1688,7 +1688,7 @@ ALTER TABLE ONLY audit.invoices
 
 
 --
--- Name: offers_pkey; Type: CONSTRAINT; Schema: audit; Owner: -; Tablespace: 
+-- Name: offers_pkey; Type: CONSTRAINT; Schema: audit; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY audit.offers
@@ -1696,7 +1696,7 @@ ALTER TABLE ONLY audit.offers
 
 
 --
--- Name: payment_orders_pkey; Type: CONSTRAINT; Schema: audit; Owner: -; Tablespace: 
+-- Name: payment_orders_pkey; Type: CONSTRAINT; Schema: audit; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY audit.payment_orders
@@ -1704,7 +1704,7 @@ ALTER TABLE ONLY audit.payment_orders
 
 
 --
--- Name: results_pkey; Type: CONSTRAINT; Schema: audit; Owner: -; Tablespace: 
+-- Name: results_pkey; Type: CONSTRAINT; Schema: audit; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY audit.results
@@ -1712,7 +1712,7 @@ ALTER TABLE ONLY audit.results
 
 
 --
--- Name: settings_pkey; Type: CONSTRAINT; Schema: audit; Owner: -; Tablespace: 
+-- Name: settings_pkey; Type: CONSTRAINT; Schema: audit; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY audit.settings
@@ -1720,7 +1720,7 @@ ALTER TABLE ONLY audit.settings
 
 
 --
--- Name: users_pkey; Type: CONSTRAINT; Schema: audit; Owner: -; Tablespace: 
+-- Name: users_pkey; Type: CONSTRAINT; Schema: audit; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY audit.users
@@ -1728,7 +1728,7 @@ ALTER TABLE ONLY audit.users
 
 
 --
--- Name: wishlist_items_pkey; Type: CONSTRAINT; Schema: audit; Owner: -; Tablespace: 
+-- Name: wishlist_items_pkey; Type: CONSTRAINT; Schema: audit; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY audit.wishlist_items
@@ -1736,7 +1736,7 @@ ALTER TABLE ONLY audit.wishlist_items
 
 
 --
--- Name: ar_internal_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: ar_internal_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY public.ar_internal_metadata
@@ -1744,7 +1744,7 @@ ALTER TABLE ONLY public.ar_internal_metadata
 
 
 --
--- Name: bans_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: bans_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY public.bans
@@ -1752,7 +1752,7 @@ ALTER TABLE ONLY public.bans
 
 
 --
--- Name: billing_profiles_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: billing_profiles_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY public.billing_profiles
@@ -1760,7 +1760,7 @@ ALTER TABLE ONLY public.billing_profiles
 
 
 --
--- Name: delayed_jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: delayed_jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY public.delayed_jobs
@@ -1784,7 +1784,7 @@ ALTER TABLE ONLY public.invoice_items
 
 
 --
--- Name: invoices_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: invoices_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY public.invoices
@@ -1792,7 +1792,7 @@ ALTER TABLE ONLY public.invoices
 
 
 --
--- Name: offers_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: offers_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY public.offers
@@ -1800,7 +1800,7 @@ ALTER TABLE ONLY public.offers
 
 
 --
--- Name: payment_orders_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: payment_orders_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY public.payment_orders
@@ -1808,7 +1808,7 @@ ALTER TABLE ONLY public.payment_orders
 
 
 --
--- Name: remote_view_partials_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: remote_view_partials_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY public.remote_view_partials
@@ -1816,7 +1816,15 @@ ALTER TABLE ONLY public.remote_view_partials
 
 
 --
--- Name: schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
+--
+
+ALTER TABLE ONLY public.results
+    ADD CONSTRAINT results_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY public.schema_migrations
@@ -1824,7 +1832,7 @@ ALTER TABLE ONLY public.schema_migrations
 
 
 --
--- Name: settings_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: settings_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY public.settings
@@ -1832,7 +1840,7 @@ ALTER TABLE ONLY public.settings
 
 
 --
--- Name: unique_domain_name_per_auction_duration; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: unique_domain_name_per_auction_duration; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY public.auctions
@@ -1840,7 +1848,7 @@ ALTER TABLE ONLY public.auctions
 
 
 --
--- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY public.users
@@ -1848,7 +1856,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- Name: wishlist_items_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: wishlist_items_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY public.wishlist_items
@@ -1856,434 +1864,434 @@ ALTER TABLE ONLY public.wishlist_items
 
 
 --
--- Name: auctions_object_id_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
+-- Name: auctions_object_id_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace:
 --
 
 CREATE INDEX auctions_object_id_idx ON audit.auctions USING btree (object_id);
 
 
 --
--- Name: auctions_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
+-- Name: auctions_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace:
 --
 
 CREATE INDEX auctions_recorded_at_idx ON audit.auctions USING btree (recorded_at);
 
 
 --
--- Name: bans_object_id_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
+-- Name: bans_object_id_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace:
 --
 
 CREATE INDEX bans_object_id_idx ON audit.bans USING btree (object_id);
 
 
 --
--- Name: bans_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
+-- Name: bans_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace:
 --
 
 CREATE INDEX bans_recorded_at_idx ON audit.bans USING btree (recorded_at);
 
 
 --
--- Name: billing_profiles_object_id_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
+-- Name: billing_profiles_object_id_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace:
 --
 
 CREATE INDEX billing_profiles_object_id_idx ON audit.billing_profiles USING btree (object_id);
 
 
 --
--- Name: billing_profiles_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
+-- Name: billing_profiles_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace:
 --
 
 CREATE INDEX billing_profiles_recorded_at_idx ON audit.billing_profiles USING btree (recorded_at);
 
 
 --
--- Name: invoice_items_object_id_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
+-- Name: invoice_items_object_id_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace:
 --
 
 CREATE INDEX invoice_items_object_id_idx ON audit.invoice_items USING btree (object_id);
 
 
 --
--- Name: invoice_items_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
+-- Name: invoice_items_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace:
 --
 
 CREATE INDEX invoice_items_recorded_at_idx ON audit.invoice_items USING btree (recorded_at);
 
 
 --
--- Name: invoices_object_id_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
+-- Name: invoices_object_id_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace:
 --
 
 CREATE INDEX invoices_object_id_idx ON audit.invoices USING btree (object_id);
 
 
 --
--- Name: invoices_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
+-- Name: invoices_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace:
 --
 
 CREATE INDEX invoices_recorded_at_idx ON audit.invoices USING btree (recorded_at);
 
 
 --
--- Name: offers_object_id_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
+-- Name: offers_object_id_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace:
 --
 
 CREATE INDEX offers_object_id_idx ON audit.offers USING btree (object_id);
 
 
 --
--- Name: offers_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
+-- Name: offers_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace:
 --
 
 CREATE INDEX offers_recorded_at_idx ON audit.offers USING btree (recorded_at);
 
 
 --
--- Name: payment_orders_object_id_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
+-- Name: payment_orders_object_id_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace:
 --
 
 CREATE INDEX payment_orders_object_id_idx ON audit.payment_orders USING btree (object_id);
 
 
 --
--- Name: payment_orders_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
+-- Name: payment_orders_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace:
 --
 
 CREATE INDEX payment_orders_recorded_at_idx ON audit.payment_orders USING btree (recorded_at);
 
 
 --
--- Name: results_object_id_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
+-- Name: results_object_id_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace:
 --
 
 CREATE INDEX results_object_id_idx ON audit.results USING btree (object_id);
 
 
 --
--- Name: results_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
+-- Name: results_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace:
 --
 
 CREATE INDEX results_recorded_at_idx ON audit.results USING btree (recorded_at);
 
 
 --
--- Name: settings_object_id_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
+-- Name: settings_object_id_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace:
 --
 
 CREATE INDEX settings_object_id_idx ON audit.settings USING btree (object_id);
 
 
 --
--- Name: settings_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
+-- Name: settings_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace:
 --
 
 CREATE INDEX settings_recorded_at_idx ON audit.settings USING btree (recorded_at);
 
 
 --
--- Name: users_object_id_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
+-- Name: users_object_id_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace:
 --
 
 CREATE INDEX users_object_id_idx ON audit.users USING btree (object_id);
 
 
 --
--- Name: users_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
+-- Name: users_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace:
 --
 
 CREATE INDEX users_recorded_at_idx ON audit.users USING btree (recorded_at);
 
 
 --
--- Name: wishlist_items_object_id_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
+-- Name: wishlist_items_object_id_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace:
 --
 
 CREATE INDEX wishlist_items_object_id_idx ON audit.wishlist_items USING btree (object_id);
 
 
 --
--- Name: wishlist_items_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
+-- Name: wishlist_items_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace:
 --
 
 CREATE INDEX wishlist_items_recorded_at_idx ON audit.wishlist_items USING btree (recorded_at);
 
 
 --
--- Name: delayed_jobs_priority; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: delayed_jobs_priority; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX delayed_jobs_priority ON public.delayed_jobs USING btree (priority, run_at);
 
 
 --
--- Name: index_auctions_on_domain_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_auctions_on_domain_name; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_auctions_on_domain_name ON public.auctions USING btree (domain_name);
 
 
 --
--- Name: index_auctions_on_ends_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_auctions_on_ends_at; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_auctions_on_ends_at ON public.auctions USING btree (ends_at);
 
 
 --
--- Name: index_auctions_on_remote_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_auctions_on_remote_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE UNIQUE INDEX index_auctions_on_remote_id ON public.auctions USING btree (remote_id);
 
 
 --
--- Name: index_auctions_on_uuid; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_auctions_on_uuid; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE UNIQUE INDEX index_auctions_on_uuid ON public.auctions USING btree (uuid);
 
 
 --
--- Name: index_bans_on_domain_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_bans_on_domain_name; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_bans_on_domain_name ON public.bans USING btree (domain_name);
 
 
 --
--- Name: index_bans_on_invoice_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_bans_on_invoice_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_bans_on_invoice_id ON public.bans USING btree (invoice_id);
 
 
 --
--- Name: index_bans_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_bans_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_bans_on_user_id ON public.bans USING btree (user_id);
 
 
 --
--- Name: index_billing_profiles_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_billing_profiles_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_billing_profiles_on_user_id ON public.billing_profiles USING btree (user_id);
 
 
 --
--- Name: index_billing_profiles_on_uuid; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_billing_profiles_on_uuid; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE UNIQUE INDEX index_billing_profiles_on_uuid ON public.billing_profiles USING btree (uuid);
 
 
 --
--- Name: index_billing_profiles_on_vat_code_and_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_billing_profiles_on_vat_code_and_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE UNIQUE INDEX index_billing_profiles_on_vat_code_and_user_id ON public.billing_profiles USING btree (vat_code, user_id);
 
 
 --
--- Name: index_invoice_items_on_invoice_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_invoice_items_on_invoice_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_invoice_items_on_invoice_id ON public.invoice_items USING btree (invoice_id);
 
 
 --
--- Name: index_invoice_items_on_uuid; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_invoice_items_on_uuid; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE UNIQUE INDEX index_invoice_items_on_uuid ON public.invoice_items USING btree (uuid);
 
 
 --
--- Name: index_invoices_on_billing_profile_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_invoices_on_billing_profile_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_invoices_on_billing_profile_id ON public.invoices USING btree (billing_profile_id);
 
 
 --
--- Name: index_invoices_on_paid_with_payment_order_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_invoices_on_paid_with_payment_order_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_invoices_on_paid_with_payment_order_id ON public.invoices USING btree (paid_with_payment_order_id);
 
 
 --
--- Name: index_invoices_on_result_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_invoices_on_result_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_invoices_on_result_id ON public.invoices USING btree (result_id);
 
 
 --
--- Name: index_invoices_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_invoices_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_invoices_on_user_id ON public.invoices USING btree (user_id);
 
 
 --
--- Name: index_invoices_on_uuid; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_invoices_on_uuid; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE UNIQUE INDEX index_invoices_on_uuid ON public.invoices USING btree (uuid);
 
 
 --
--- Name: index_offers_on_auction_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_offers_on_auction_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_offers_on_auction_id ON public.offers USING btree (auction_id);
 
 
 --
--- Name: index_offers_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_offers_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_offers_on_user_id ON public.offers USING btree (user_id);
 
 
 --
--- Name: index_offers_on_uuid; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_offers_on_uuid; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE UNIQUE INDEX index_offers_on_uuid ON public.offers USING btree (uuid);
 
 
 --
--- Name: index_payment_orders_on_invoice_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_payment_orders_on_invoice_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_payment_orders_on_invoice_id ON public.payment_orders USING btree (invoice_id);
 
 
 --
--- Name: index_payment_orders_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_payment_orders_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_payment_orders_on_user_id ON public.payment_orders USING btree (user_id);
 
 
 --
--- Name: index_payment_orders_on_uuid; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_payment_orders_on_uuid; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE UNIQUE INDEX index_payment_orders_on_uuid ON public.payment_orders USING btree (uuid);
 
 
 --
--- Name: index_results_on_auction_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_results_on_auction_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_results_on_auction_id ON public.results USING btree (auction_id);
 
 
 --
--- Name: index_results_on_last_remote_status; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_results_on_last_remote_status; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_results_on_last_remote_status ON public.results USING btree (last_remote_status);
 
 
 --
--- Name: index_results_on_offer_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_results_on_offer_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_results_on_offer_id ON public.results USING btree (offer_id);
 
 
 --
--- Name: index_results_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_results_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_results_on_user_id ON public.results USING btree (user_id);
 
 
 --
--- Name: index_results_on_uuid; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_results_on_uuid; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE UNIQUE INDEX index_results_on_uuid ON public.results USING btree (uuid);
 
 
 --
--- Name: index_settings_on_code; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_settings_on_code; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE UNIQUE INDEX index_settings_on_code ON public.settings USING btree (code);
 
 
 --
--- Name: index_statistics_report_auctions_on_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_statistics_report_auctions_on_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE UNIQUE INDEX index_statistics_report_auctions_on_id ON public.statistics_report_auctions USING btree (id);
 
 
 --
--- Name: index_statistics_report_invoices_on_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_statistics_report_invoices_on_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE UNIQUE INDEX index_statistics_report_invoices_on_id ON public.statistics_report_invoices USING btree (id);
 
 
 --
--- Name: index_statistics_report_results_on_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_statistics_report_results_on_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE UNIQUE INDEX index_statistics_report_results_on_id ON public.statistics_report_results USING btree (id);
 
 
 --
--- Name: index_users_on_confirmation_token; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_users_on_confirmation_token; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE UNIQUE INDEX index_users_on_confirmation_token ON public.users USING btree (confirmation_token);
 
 
 --
--- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE UNIQUE INDEX index_users_on_email ON public.users USING btree (email);
 
 
 --
--- Name: index_users_on_provider_and_uid; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_users_on_provider_and_uid; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE UNIQUE INDEX index_users_on_provider_and_uid ON public.users USING btree (provider, uid);
 
 
 --
--- Name: index_users_on_reset_password_token; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_users_on_reset_password_token; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE UNIQUE INDEX index_users_on_reset_password_token ON public.users USING btree (reset_password_token);
 
 
 --
--- Name: index_users_on_uuid; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_users_on_uuid; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE UNIQUE INDEX index_users_on_uuid ON public.users USING btree (uuid);
 
 
 --
--- Name: index_wishlist_items_on_domain_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_wishlist_items_on_domain_name; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_wishlist_items_on_domain_name ON public.wishlist_items USING btree (domain_name);
 
 
 --
--- Name: users_by_identity_code_and_country; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: users_by_identity_code_and_country; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE UNIQUE INDEX users_by_identity_code_and_country ON public.users USING btree (alpha_two_country_code, identity_code) WHERE ((alpha_two_country_code)::text = 'EE'::text);
@@ -2592,5 +2600,4 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20191220131845'),
 ('20200110135003'),
 ('20200115145246');
-
 

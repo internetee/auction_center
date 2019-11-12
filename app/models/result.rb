@@ -37,11 +37,9 @@ class Result < ApplicationRecord
   scope :registered, -> { where(status: statuses[:domain_registered]) }
   scope :unregistered, -> { where(status: statuses[:domain_not_registered]) }
 
-  scope :grouped_by_auctions, lambda { |start_date:, end_date:|
-    joins(:auction)
-      .where(auctions: { ends_at: start_date.beginning_of_day..end_date.end_of_day })
-      .preload(:auction)
-      .group_by { |result| result.auction.ends_at.to_date }
+  scope :pending_registration_everyday_reminder, lambda {
+    where(status: Result.statuses[:payment_received])
+      .where('registration_due_date <= ?', Time.zone.today)
   }
 
   def self.create_from_auction(auction_id)

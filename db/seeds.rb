@@ -295,6 +295,19 @@ voog_site_fetching_enabled_setting = Setting.new(code: :voog_site_fetching_enabl
                                                 value_format: 'boolean')
 voog_site_fetching_enabled_setting.save
 
+# Daily reminder on paid but not registered domains flag
+remind_everyday_description = <<~TEXT.squish
+  Shall system send registration reminders on paid but not registered domains every day.
+  Can be either 'true' or 'false'
+TEXT
+
+remind_on_domain_registration_everyday = Setting.new(code: :remind_on_domain_registration_everyday,
+                                                     value: 'false',
+                                                     description: remind_everyday_description,
+                                                     value_format: 'boolean')
+
+remind_on_domain_registration_everyday.save!
+
 # Directo integration state boolean
 directo_integration_enabled_description = <<~TEXT.squish
 Enables or disables Directo Integration. Allowed values true / false. Defaults to false.

@@ -70,4 +70,59 @@ class Setting < ApplicationRecord
       value.to_i
     end
   end
+<<<<<<< HEAD
+=======
+
+  def self.ban_length
+    Setting.find_by(code: :ban_length).value.to_i
+  end
+
+  def self.ban_number_of_strikes
+    Setting.find_by(code: :ban_number_of_strikes).value.to_i
+  end
+
+  def self.domain_registration_reminder_day
+    Setting.find_by(code: :domain_registration_reminder).value.to_i
+  end
+
+  def self.invoice_issuer
+    Setting.find_by(code: :invoice_issuer).value
+  end
+
+  def self.invoice_reminder_in_days
+    Setting.find_by(code: :invoice_reminder_in_days).value.to_i
+  end
+
+  def self.wishlist_size
+    Setting.find_by(code: :wishlist_size).value.to_i
+  end
+
+  def self.check_api_url
+    Setting.find_by(code: :check_api_url)&.value
+  end
+
+  def self.check_sms_url
+    Setting.find_by(code: :check_sms_url)&.value
+  end
+
+  def self.check_tara_url
+    Setting.find_by(code: :check_tara_url)&.value
+  end
+
+  def self.violations_count_regulations_link
+    hash = Setting.find_by(code: :violations_count_regulations_link)&.value
+    hash.present? ? JSON.parse(hash).with_indifferent_access[I18n.locale] : nil
+  end
+
+  def self.wishlist_supported_domain_extensions
+    extensions = Setting.find_by(code: :wishlist_supported_domain_extensions)
+    extensions.present? ? JSON.parse(extensions.value) : []
+  end
+
+  def self.remind_on_domain_registration_everyday
+    value = Setting.find_by(code: :remind_on_domain_registration_everyday).value
+
+    value == 'true'
+  end
+>>>>>>> Add setting for remind on domain registration every day
 end
