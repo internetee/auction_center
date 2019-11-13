@@ -110,6 +110,13 @@ domain_registration_reminder:
   value: '5'
   value_format: integer
 
+remind_on_domain_registration_everyday:
+  code: 'remind_on_domain_registration_everyday'
+  description: |
+    Shall system send registration reminders on paid but not registered domains every day.
+    Can be either 'true' or 'false'
+  value: 'false'
+
 invoice_issuer:
   code: 'invoice_issuer'
   description: |
