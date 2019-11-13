@@ -39,7 +39,11 @@ class Result < ApplicationRecord
 
   scope :pending_registration_everyday_reminder, lambda {
     where(status: Result.statuses[:payment_received])
-      .where('registration_due_date <= ?', Time.zone.today)
+      .where('registration_due_date <= ?',
+             Time.zone.today + Setting.find_by(code: 'domain_registration_reminder_day')&.retrieve)
+      .where('registration_reminder_sent_at IS NULL '\
+             'OR registration_reminder_sent_at < ?', Time.zone.today)
+      .where('registration_due_date > ?', Time.zone.today)
   }
 
   def self.create_from_auction(auction_id)

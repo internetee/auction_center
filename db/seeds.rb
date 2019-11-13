@@ -171,6 +171,17 @@ domain_registration_setting = Setting.new(code: :domain_registration_reminder, v
 
 domain_registration_setting.save
 
+# Default everyday domain registration reminder time
+domain_registration_description_day = <<~TEXT.squish
+  Number of days before which the everyday registration reminder email is sent on. Default: 5
+TEXT
+
+domain_registration_setting_day = Setting.new(code: :domain_registration_reminder_day, value: '5',
+                                          description: domain_registration_description_day,
+                                          value_format: 'integer')
+
+domain_registration_setting_day.save
+
 # Default invoice issuer
 invoice_issuer_description = <<~TEXT.squish
       Text that should appear in invoice as issuer. Usually contains company name, VAT number and

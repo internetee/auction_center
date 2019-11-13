@@ -3,15 +3,19 @@ require 'test_helper'
 class DomainRegistrationReminderJobTest < ActiveJob::TestCase
   def setup
     super
+    set_remind_on_domain_registration_everyday_false
 
     @result = results(:with_invoice)
     @result.update!(status: 'payment_received')
+    clear_email_deliveries
   end
 
   def teardown
     super
+    set_remind_on_domain_registration_everyday_false
 
     travel_back
+    clear_email_deliveries
   end
 
   def test_reminders_are_sent_on_5th_day_before_registration_deadline
@@ -34,8 +38,8 @@ class DomainRegistrationReminderJobTest < ActiveJob::TestCase
     DomainRegistrationReminderJob.perform_now
 
     @result.reload
-    assert_not_equal(three_days_before, @result.registration_reminder_sent_at)
-    assert_equal(five_days_before, @result.registration_reminder_sent_at)
+    assert_not_equal(three_days_before, @result.registration_reminder_sent_at.to_date)
+    assert_equal(five_days_before, @result.registration_reminder_sent_at.to_date)
   end
 
   def test_reminders_are_not_sent_for_results_with_no_bids
@@ -85,5 +89,33 @@ class DomainRegistrationReminderJobTest < ActiveJob::TestCase
 
     @result.reload
     assert_not(@result.registration_reminder_sent_at)
+  end
+
+  def test_multiple_reminders_sent_if_everyday_remind
+    set_remind_on_domain_registration_everyday_true
+
+    five_days_before = @result.registration_due_date - 5
+    three_days_before = @result.registration_due_date - 3
+
+    travel_to five_days_before
+    DomainRegistrationReminderJob.perform_now
+    @result.reload
+    assert_equal(five_days_before, @result.registration_reminder_sent_at)
+
+    travel_to three_days_before
+    DomainRegistrationReminderJob.perform_now
+
+    @result.reload
+    assert_equal(three_days_before, @result.registration_reminder_sent_at)
+  end
+
+  def set_remind_on_domain_registration_everyday_true
+    setting = settings(:remind_on_domain_registration_everyday)
+    setting.update!(value: 'true')
+  end
+
+  def set_remind_on_domain_registration_everyday_false
+    setting = settings(:remind_on_domain_registration_everyday)
+    setting.update!(value: 'false')
   end
 end

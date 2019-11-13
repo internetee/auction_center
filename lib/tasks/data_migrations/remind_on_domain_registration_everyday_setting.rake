@@ -15,6 +15,18 @@ namespace :data_migrations do
 
       remind_on_domain_registration_everyday.save!
       puts "Remind on domain registration every day setting updated"
+
+      domain_registration_description_day = <<~TEXT.squish
+        Number of days before which the everyday registration reminder email is sent on. Default: 5
+      TEXT
+
+      domain_registration_setting_day = Setting.new(code: :domain_registration_reminder_day, value: '5',
+                                                    description: domain_registration_description_day,
+                                                    value_format: 'integer')
+
+      domain_registration_setting_day.save
+
+      puts "Number of days before which the everyday registration reminder email is sent updated"
     end
   end
 end

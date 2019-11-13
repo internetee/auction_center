@@ -78,7 +78,7 @@ CREATE TYPE public.invoice_status AS ENUM (
     'issued',
     'paid',
     'cancelled'
-    );
+);
 
 
 --
@@ -90,7 +90,7 @@ CREATE TYPE public.payment_order_status AS ENUM (
     'in_progress',
     'paid',
     'cancelled'
-    );
+);
 
 
 --
@@ -104,7 +104,7 @@ CREATE TYPE public.result_status AS ENUM (
     'payment_not_received',
     'domain_registered',
     'domain_not_registered'
-    );
+);
 
 
 --
@@ -113,26 +113,26 @@ CREATE TYPE public.result_status AS ENUM (
 
 CREATE FUNCTION public.process_auction_audit() RETURNS trigger
     LANGUAGE plpgsql
-AS $$
-BEGIN
+    AS $$
+  BEGIN
     IF (TG_OP = 'INSERT') THEN
-        INSERT INTO audit.auctions
-        (object_id, action, recorded_at, old_value, new_value)
-        VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
-        RETURN NEW;
+      INSERT INTO audit.auctions
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
+      RETURN NEW;
     ELSEIF (TG_OP = 'UPDATE') THEN
-        INSERT INTO audit.auctions
-        (object_id, action, recorded_at, old_value, new_value)
-        VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
-        RETURN NEW;
+      INSERT INTO audit.auctions
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
+      RETURN NEW;
     ELSEIF (TG_OP = 'DELETE') THEN
-        INSERT INTO audit.auctions
-        (object_id, action, recorded_at, old_value, new_value)
-        VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
-        RETURN OLD;
+      INSERT INTO audit.auctions
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
+      RETURN OLD;
     END IF;
     RETURN NULL;
-END
+  END
 $$;
 
 
@@ -142,26 +142,26 @@ $$;
 
 CREATE FUNCTION public.process_ban_audit() RETURNS trigger
     LANGUAGE plpgsql
-AS $$
-BEGIN
+    AS $$
+  BEGIN
     IF (TG_OP = 'INSERT') THEN
-        INSERT INTO audit.bans
-        (object_id, action, recorded_at, old_value, new_value)
-        VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
-        RETURN NEW;
+      INSERT INTO audit.bans
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
+      RETURN NEW;
     ELSEIF (TG_OP = 'UPDATE') THEN
-        INSERT INTO audit.bans
-        (object_id, action, recorded_at, old_value, new_value)
-        VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
-        RETURN NEW;
+      INSERT INTO audit.bans
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
+      RETURN NEW;
     ELSEIF (TG_OP = 'DELETE') THEN
-        INSERT INTO audit.bans
-        (object_id, action, recorded_at, old_value, new_value)
-        VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
-        RETURN OLD;
+      INSERT INTO audit.bans
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
+      RETURN OLD;
     END IF;
     RETURN NULL;
-END
+  END
 $$;
 
 
@@ -171,26 +171,26 @@ $$;
 
 CREATE FUNCTION public.process_billing_profile_audit() RETURNS trigger
     LANGUAGE plpgsql
-AS $$
-BEGIN
+    AS $$
+  BEGIN
     IF (TG_OP = 'INSERT') THEN
-        INSERT INTO audit.billing_profiles
-        (object_id, action, recorded_at, old_value, new_value)
-        VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
-        RETURN NEW;
+      INSERT INTO audit.billing_profiles
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
+      RETURN NEW;
     ELSEIF (TG_OP = 'UPDATE') THEN
-        INSERT INTO audit.billing_profiles
-        (object_id, action, recorded_at, old_value, new_value)
-        VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
-        RETURN NEW;
+      INSERT INTO audit.billing_profiles
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
+      RETURN NEW;
     ELSEIF (TG_OP = 'DELETE') THEN
-        INSERT INTO audit.billing_profiles
-        (object_id, action, recorded_at, old_value, new_value)
-        VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
-        RETURN OLD;
+      INSERT INTO audit.billing_profiles
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
+      RETURN OLD;
     END IF;
     RETURN NULL;
-END
+  END
 $$;
 
 
@@ -200,26 +200,26 @@ $$;
 
 CREATE FUNCTION public.process_invoice_audit() RETURNS trigger
     LANGUAGE plpgsql
-AS $$
-BEGIN
+    AS $$
+  BEGIN
     IF (TG_OP = 'INSERT') THEN
-        INSERT INTO audit.invoices
-        (object_id, action, recorded_at, old_value, new_value)
-        VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
-        RETURN NEW;
+      INSERT INTO audit.invoices
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
+      RETURN NEW;
     ELSEIF (TG_OP = 'UPDATE') THEN
-        INSERT INTO audit.invoices
-        (object_id, action, recorded_at, old_value, new_value)
-        VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
-        RETURN NEW;
+      INSERT INTO audit.invoices
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
+      RETURN NEW;
     ELSEIF (TG_OP = 'DELETE') THEN
-        INSERT INTO audit.invoices
-        (object_id, action, recorded_at, old_value, new_value)
-        VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
-        RETURN OLD;
+      INSERT INTO audit.invoices
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
+      RETURN OLD;
     END IF;
     RETURN NULL;
-END
+  END
 $$;
 
 
@@ -229,26 +229,26 @@ $$;
 
 CREATE FUNCTION public.process_invoice_item_audit() RETURNS trigger
     LANGUAGE plpgsql
-AS $$
-BEGIN
+    AS $$
+  BEGIN
     IF (TG_OP = 'INSERT') THEN
-        INSERT INTO audit.invoice_items
-        (object_id, action, recorded_at, old_value, new_value)
-        VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
-        RETURN NEW;
+      INSERT INTO audit.invoice_items
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
+      RETURN NEW;
     ELSEIF (TG_OP = 'UPDATE') THEN
-        INSERT INTO audit.invoice_items
-        (object_id, action, recorded_at, old_value, new_value)
-        VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
-        RETURN NEW;
+      INSERT INTO audit.invoice_items
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
+      RETURN NEW;
     ELSEIF (TG_OP = 'DELETE') THEN
-        INSERT INTO audit.invoice_items
-        (object_id, action, recorded_at, old_value, new_value)
-        VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
-        RETURN OLD;
+      INSERT INTO audit.invoice_items
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
+      RETURN OLD;
     END IF;
     RETURN NULL;
-END
+  END
 $$;
 
 
@@ -258,26 +258,26 @@ $$;
 
 CREATE FUNCTION public.process_offer_audit() RETURNS trigger
     LANGUAGE plpgsql
-AS $$
-BEGIN
+    AS $$
+  BEGIN
     IF (TG_OP = 'INSERT') THEN
-        INSERT INTO audit.offers
-        (object_id, action, recorded_at, old_value, new_value)
-        VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
-        RETURN NEW;
+      INSERT INTO audit.offers
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
+      RETURN NEW;
     ELSEIF (TG_OP = 'UPDATE') THEN
-        INSERT INTO audit.offers
-        (object_id, action, recorded_at, old_value, new_value)
-        VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
-        RETURN NEW;
+      INSERT INTO audit.offers
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
+      RETURN NEW;
     ELSEIF (TG_OP = 'DELETE') THEN
-        INSERT INTO audit.offers
-        (object_id, action, recorded_at, old_value, new_value)
-        VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
-        RETURN OLD;
+      INSERT INTO audit.offers
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
+      RETURN OLD;
     END IF;
     RETURN NULL;
-END
+  END
 $$;
 
 
@@ -287,26 +287,26 @@ $$;
 
 CREATE FUNCTION public.process_payment_order_audit() RETURNS trigger
     LANGUAGE plpgsql
-AS $$
-BEGIN
+    AS $$
+  BEGIN
     IF (TG_OP = 'INSERT') THEN
-        INSERT INTO audit.payment_orders
-        (object_id, action, recorded_at, old_value, new_value)
-        VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
-        RETURN NEW;
+      INSERT INTO audit.payment_orders
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
+      RETURN NEW;
     ELSEIF (TG_OP = 'UPDATE') THEN
-        INSERT INTO audit.payment_orders
-        (object_id, action, recorded_at, old_value, new_value)
-        VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
-        RETURN NEW;
+      INSERT INTO audit.payment_orders
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
+      RETURN NEW;
     ELSEIF (TG_OP = 'DELETE') THEN
-        INSERT INTO audit.payment_orders
-        (object_id, action, recorded_at, old_value, new_value)
-        VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
-        RETURN OLD;
+      INSERT INTO audit.payment_orders
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
+      RETURN OLD;
     END IF;
     RETURN NULL;
-END
+  END
 $$;
 
 
@@ -316,26 +316,26 @@ $$;
 
 CREATE FUNCTION public.process_result_audit() RETURNS trigger
     LANGUAGE plpgsql
-AS $$
-BEGIN
+    AS $$
+  BEGIN
     IF (TG_OP = 'INSERT') THEN
-        INSERT INTO audit.results
-        (object_id, action, recorded_at, old_value, new_value)
-        VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
-        RETURN NEW;
+      INSERT INTO audit.results
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
+      RETURN NEW;
     ELSEIF (TG_OP = 'UPDATE') THEN
-        INSERT INTO audit.results
-        (object_id, action, recorded_at, old_value, new_value)
-        VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
-        RETURN NEW;
+      INSERT INTO audit.results
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
+      RETURN NEW;
     ELSEIF (TG_OP = 'DELETE') THEN
-        INSERT INTO audit.results
-        (object_id, action, recorded_at, old_value, new_value)
-        VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
-        RETURN OLD;
+      INSERT INTO audit.results
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
+      RETURN OLD;
     END IF;
     RETURN NULL;
-END
+  END
 $$;
 
 
@@ -345,26 +345,26 @@ $$;
 
 CREATE FUNCTION public.process_setting_audit() RETURNS trigger
     LANGUAGE plpgsql
-AS $$
-BEGIN
+    AS $$
+  BEGIN
     IF (TG_OP = 'INSERT') THEN
-        INSERT INTO audit.settings
-        (object_id, action, recorded_at, old_value, new_value)
-        VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
-        RETURN NEW;
+      INSERT INTO audit.settings
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
+      RETURN NEW;
     ELSEIF (TG_OP = 'UPDATE') THEN
-        INSERT INTO audit.settings
-        (object_id, action, recorded_at, old_value, new_value)
-        VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
-        RETURN NEW;
+      INSERT INTO audit.settings
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
+      RETURN NEW;
     ELSEIF (TG_OP = 'DELETE') THEN
-        INSERT INTO audit.settings
-        (object_id, action, recorded_at, old_value, new_value)
-        VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
-        RETURN OLD;
+      INSERT INTO audit.settings
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
+      RETURN OLD;
     END IF;
     RETURN NULL;
-END
+  END
 $$;
 
 
@@ -374,26 +374,26 @@ $$;
 
 CREATE FUNCTION public.process_user_audit() RETURNS trigger
     LANGUAGE plpgsql
-AS $$
-BEGIN
+    AS $$
+  BEGIN
     IF (TG_OP = 'INSERT') THEN
-        INSERT INTO audit.users
-        (object_id, action, recorded_at, old_value, new_value)
-        VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
-        RETURN NEW;
+      INSERT INTO audit.users
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
+      RETURN NEW;
     ELSEIF (TG_OP = 'UPDATE') THEN
-        INSERT INTO audit.users
-        (object_id, action, recorded_at, old_value, new_value)
-        VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
-        RETURN NEW;
+      INSERT INTO audit.users
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
+      RETURN NEW;
     ELSEIF (TG_OP = 'DELETE') THEN
-        INSERT INTO audit.users
-        (object_id, action, recorded_at, old_value, new_value)
-        VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
-        RETURN OLD;
+      INSERT INTO audit.users
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
+      RETURN OLD;
     END IF;
     RETURN NULL;
-END
+  END
 $$;
 
 
@@ -403,26 +403,26 @@ $$;
 
 CREATE FUNCTION public.process_wishlist_item_audit() RETURNS trigger
     LANGUAGE plpgsql
-AS $$
-BEGIN
+    AS $$
+  BEGIN
     IF (TG_OP = 'INSERT') THEN
-        INSERT INTO audit.wishlist_items
-        (object_id, action, recorded_at, old_value, new_value)
-        VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
-        RETURN NEW;
+      INSERT INTO audit.wishlist_items
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
+      RETURN NEW;
     ELSEIF (TG_OP = 'UPDATE') THEN
-        INSERT INTO audit.wishlist_items
-        (object_id, action, recorded_at, old_value, new_value)
-        VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
-        RETURN NEW;
+      INSERT INTO audit.wishlist_items
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
+      RETURN NEW;
     ELSEIF (TG_OP = 'DELETE') THEN
-        INSERT INTO audit.wishlist_items
-        (object_id, action, recorded_at, old_value, new_value)
-        VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
-        RETURN OLD;
+      INSERT INTO audit.wishlist_items
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
+      RETURN OLD;
     END IF;
     RETURN NULL;
-END
+  END
 $$;
 
 
@@ -435,13 +435,13 @@ SET default_with_oids = false;
 --
 
 CREATE TABLE audit.auctions (
-                                id integer NOT NULL,
-                                object_id bigint,
-                                action text NOT NULL,
-                                recorded_at timestamp without time zone,
-                                old_value jsonb,
-                                new_value jsonb,
-                                CONSTRAINT auctions_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
+    id integer NOT NULL,
+    object_id bigint,
+    action text NOT NULL,
+    recorded_at timestamp without time zone,
+    old_value jsonb,
+    new_value jsonb,
+    CONSTRAINT auctions_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
 );
 
 
@@ -469,13 +469,13 @@ ALTER SEQUENCE audit.auctions_id_seq OWNED BY audit.auctions.id;
 --
 
 CREATE TABLE audit.bans (
-                            id integer NOT NULL,
-                            object_id bigint,
-                            action text NOT NULL,
-                            recorded_at timestamp without time zone,
-                            old_value jsonb,
-                            new_value jsonb,
-                            CONSTRAINT bans_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
+    id integer NOT NULL,
+    object_id bigint,
+    action text NOT NULL,
+    recorded_at timestamp without time zone,
+    old_value jsonb,
+    new_value jsonb,
+    CONSTRAINT bans_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
 );
 
 
@@ -503,13 +503,13 @@ ALTER SEQUENCE audit.bans_id_seq OWNED BY audit.bans.id;
 --
 
 CREATE TABLE audit.billing_profiles (
-                                        id integer NOT NULL,
-                                        object_id bigint,
-                                        action text NOT NULL,
-                                        recorded_at timestamp without time zone,
-                                        old_value jsonb,
-                                        new_value jsonb,
-                                        CONSTRAINT billing_profiles_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
+    id integer NOT NULL,
+    object_id bigint,
+    action text NOT NULL,
+    recorded_at timestamp without time zone,
+    old_value jsonb,
+    new_value jsonb,
+    CONSTRAINT billing_profiles_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
 );
 
 
@@ -537,13 +537,13 @@ ALTER SEQUENCE audit.billing_profiles_id_seq OWNED BY audit.billing_profiles.id;
 --
 
 CREATE TABLE audit.invoice_items (
-                                     id integer NOT NULL,
-                                     object_id bigint,
-                                     action text NOT NULL,
-                                     recorded_at timestamp without time zone,
-                                     old_value jsonb,
-                                     new_value jsonb,
-                                     CONSTRAINT invoice_items_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
+    id integer NOT NULL,
+    object_id bigint,
+    action text NOT NULL,
+    recorded_at timestamp without time zone,
+    old_value jsonb,
+    new_value jsonb,
+    CONSTRAINT invoice_items_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
 );
 
 
@@ -571,13 +571,13 @@ ALTER SEQUENCE audit.invoice_items_id_seq OWNED BY audit.invoice_items.id;
 --
 
 CREATE TABLE audit.invoices (
-                                id integer NOT NULL,
-                                object_id bigint,
-                                action text NOT NULL,
-                                recorded_at timestamp without time zone,
-                                old_value jsonb,
-                                new_value jsonb,
-                                CONSTRAINT invoices_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
+    id integer NOT NULL,
+    object_id bigint,
+    action text NOT NULL,
+    recorded_at timestamp without time zone,
+    old_value jsonb,
+    new_value jsonb,
+    CONSTRAINT invoices_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
 );
 
 
@@ -605,13 +605,13 @@ ALTER SEQUENCE audit.invoices_id_seq OWNED BY audit.invoices.id;
 --
 
 CREATE TABLE audit.offers (
-                              id integer NOT NULL,
-                              object_id bigint,
-                              action text NOT NULL,
-                              recorded_at timestamp without time zone,
-                              old_value jsonb,
-                              new_value jsonb,
-                              CONSTRAINT offers_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
+    id integer NOT NULL,
+    object_id bigint,
+    action text NOT NULL,
+    recorded_at timestamp without time zone,
+    old_value jsonb,
+    new_value jsonb,
+    CONSTRAINT offers_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
 );
 
 
@@ -639,13 +639,13 @@ ALTER SEQUENCE audit.offers_id_seq OWNED BY audit.offers.id;
 --
 
 CREATE TABLE audit.payment_orders (
-                                      id integer NOT NULL,
-                                      object_id bigint,
-                                      action text NOT NULL,
-                                      recorded_at timestamp without time zone,
-                                      old_value jsonb,
-                                      new_value jsonb,
-                                      CONSTRAINT payment_orders_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
+    id integer NOT NULL,
+    object_id bigint,
+    action text NOT NULL,
+    recorded_at timestamp without time zone,
+    old_value jsonb,
+    new_value jsonb,
+    CONSTRAINT payment_orders_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
 );
 
 
@@ -673,13 +673,13 @@ ALTER SEQUENCE audit.payment_orders_id_seq OWNED BY audit.payment_orders.id;
 --
 
 CREATE TABLE audit.results (
-                               id integer NOT NULL,
-                               object_id bigint,
-                               action text NOT NULL,
-                               recorded_at timestamp without time zone,
-                               old_value jsonb,
-                               new_value jsonb,
-                               CONSTRAINT results_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
+    id integer NOT NULL,
+    object_id bigint,
+    action text NOT NULL,
+    recorded_at timestamp without time zone,
+    old_value jsonb,
+    new_value jsonb,
+    CONSTRAINT results_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
 );
 
 
@@ -707,13 +707,13 @@ ALTER SEQUENCE audit.results_id_seq OWNED BY audit.results.id;
 --
 
 CREATE TABLE audit.settings (
-                                id integer NOT NULL,
-                                object_id bigint,
-                                action text NOT NULL,
-                                recorded_at timestamp without time zone,
-                                old_value jsonb,
-                                new_value jsonb,
-                                CONSTRAINT settings_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
+    id integer NOT NULL,
+    object_id bigint,
+    action text NOT NULL,
+    recorded_at timestamp without time zone,
+    old_value jsonb,
+    new_value jsonb,
+    CONSTRAINT settings_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
 );
 
 
@@ -741,13 +741,13 @@ ALTER SEQUENCE audit.settings_id_seq OWNED BY audit.settings.id;
 --
 
 CREATE TABLE audit.users (
-                             id integer NOT NULL,
-                             object_id bigint,
-                             action text NOT NULL,
-                             recorded_at timestamp without time zone,
-                             old_value jsonb,
-                             new_value jsonb,
-                             CONSTRAINT users_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
+    id integer NOT NULL,
+    object_id bigint,
+    action text NOT NULL,
+    recorded_at timestamp without time zone,
+    old_value jsonb,
+    new_value jsonb,
+    CONSTRAINT users_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
 );
 
 
@@ -775,13 +775,13 @@ ALTER SEQUENCE audit.users_id_seq OWNED BY audit.users.id;
 --
 
 CREATE TABLE audit.wishlist_items (
-                                      id integer NOT NULL,
-                                      object_id bigint,
-                                      action text NOT NULL,
-                                      recorded_at timestamp without time zone,
-                                      old_value jsonb,
-                                      new_value jsonb,
-                                      CONSTRAINT wishlist_items_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
+    id integer NOT NULL,
+    object_id bigint,
+    action text NOT NULL,
+    recorded_at timestamp without time zone,
+    old_value jsonb,
+    new_value jsonb,
+    CONSTRAINT wishlist_items_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
 );
 
 
@@ -809,10 +809,10 @@ ALTER SEQUENCE audit.wishlist_items_id_seq OWNED BY audit.wishlist_items.id;
 --
 
 CREATE TABLE public.ar_internal_metadata (
-                                             key character varying NOT NULL,
-                                             value character varying,
-                                             created_at timestamp without time zone NOT NULL,
-                                             updated_at timestamp without time zone NOT NULL
+    key character varying NOT NULL,
+    value character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
 );
 
 
@@ -858,14 +858,14 @@ ALTER SEQUENCE public.auctions_id_seq OWNED BY public.auctions.id;
 --
 
 CREATE TABLE public.bans (
-                             id bigint NOT NULL,
-                             user_id integer NOT NULL,
-                             valid_from timestamp without time zone DEFAULT now() NOT NULL,
-                             valid_until timestamp without time zone NOT NULL,
-                             domain_name character varying,
-                             created_at timestamp without time zone NOT NULL,
-                             updated_at timestamp without time zone NOT NULL,
-                             invoice_id integer
+    id bigint NOT NULL,
+    user_id integer NOT NULL,
+    valid_from timestamp without time zone DEFAULT now() NOT NULL,
+    valid_until timestamp without time zone NOT NULL,
+    domain_name character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    invoice_id integer
 );
 
 
@@ -893,19 +893,19 @@ ALTER SEQUENCE public.bans_id_seq OWNED BY public.bans.id;
 --
 
 CREATE TABLE public.billing_profiles (
-                                         id bigint NOT NULL,
-                                         user_id integer,
-                                         name character varying,
-                                         vat_code character varying,
-                                         street character varying,
-                                         city character varying,
-                                         state character varying,
-                                         postal_code character varying,
-                                         created_at timestamp without time zone NOT NULL,
-                                         updated_at timestamp without time zone NOT NULL,
-                                         alpha_two_country_code character varying(2) NOT NULL,
-                                         uuid uuid DEFAULT public.gen_random_uuid(),
-                                         updated_by character varying
+    id bigint NOT NULL,
+    user_id integer,
+    name character varying,
+    vat_code character varying,
+    street character varying,
+    city character varying,
+    state character varying,
+    postal_code character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    alpha_two_country_code character varying(2) NOT NULL,
+    uuid uuid DEFAULT public.gen_random_uuid(),
+    updated_by character varying
 );
 
 
@@ -933,18 +933,18 @@ ALTER SEQUENCE public.billing_profiles_id_seq OWNED BY public.billing_profiles.i
 --
 
 CREATE TABLE public.delayed_jobs (
-                                     id bigint NOT NULL,
-                                     priority integer DEFAULT 0 NOT NULL,
-                                     attempts integer DEFAULT 0 NOT NULL,
-                                     handler text NOT NULL,
-                                     last_error text,
-                                     run_at timestamp without time zone,
-                                     locked_at timestamp without time zone,
-                                     failed_at timestamp without time zone,
-                                     locked_by character varying,
-                                     queue character varying,
-                                     created_at timestamp without time zone,
-                                     updated_at timestamp without time zone
+    id bigint NOT NULL,
+    priority integer DEFAULT 0 NOT NULL,
+    attempts integer DEFAULT 0 NOT NULL,
+    handler text NOT NULL,
+    last_error text,
+    run_at timestamp without time zone,
+    locked_at timestamp without time zone,
+    failed_at timestamp without time zone,
+    locked_by character varying,
+    queue character varying,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
 );
 
 
@@ -1004,13 +1004,13 @@ ALTER SEQUENCE public.directo_customers_id_seq OWNED BY public.directo_customers
 --
 
 CREATE TABLE public.invoice_items (
-                                      id bigint NOT NULL,
-                                      invoice_id integer,
-                                      name character varying NOT NULL,
-                                      cents integer NOT NULL,
-                                      created_at timestamp without time zone NOT NULL,
-                                      updated_at timestamp without time zone NOT NULL,
-                                      uuid uuid DEFAULT public.gen_random_uuid()
+    id bigint NOT NULL,
+    invoice_id integer,
+    name character varying NOT NULL,
+    cents integer NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    uuid uuid DEFAULT public.gen_random_uuid()
 );
 
 
@@ -1115,16 +1115,16 @@ ALTER SEQUENCE public.invoices_number_seq OWNED BY public.invoices.number;
 --
 
 CREATE TABLE public.offers (
-                               id bigint NOT NULL,
-                               auction_id integer NOT NULL,
-                               user_id integer,
-                               cents integer NOT NULL,
-                               created_at timestamp without time zone NOT NULL,
-                               updated_at timestamp without time zone NOT NULL,
-                               billing_profile_id integer NOT NULL,
-                               uuid uuid DEFAULT public.gen_random_uuid(),
-                               updated_by character varying,
-                               CONSTRAINT offers_cents_are_positive CHECK ((cents > 0))
+    id bigint NOT NULL,
+    auction_id integer NOT NULL,
+    user_id integer,
+    cents integer NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    billing_profile_id integer NOT NULL,
+    uuid uuid DEFAULT public.gen_random_uuid(),
+    updated_by character varying,
+    CONSTRAINT offers_cents_are_positive CHECK ((cents > 0))
 );
 
 
@@ -1152,15 +1152,15 @@ ALTER SEQUENCE public.offers_id_seq OWNED BY public.offers.id;
 --
 
 CREATE TABLE public.payment_orders (
-                                       id bigint NOT NULL,
-                                       type character varying NOT NULL,
-                                       invoice_id integer NOT NULL,
-                                       user_id integer,
-                                       response jsonb,
-                                       created_at timestamp without time zone NOT NULL,
-                                       updated_at timestamp without time zone NOT NULL,
-                                       status public.payment_order_status DEFAULT 'issued'::public.payment_order_status,
-                                       uuid uuid DEFAULT public.gen_random_uuid()
+    id bigint NOT NULL,
+    type character varying NOT NULL,
+    invoice_id integer NOT NULL,
+    user_id integer,
+    response jsonb,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    status public.payment_order_status DEFAULT 'issued'::public.payment_order_status,
+    uuid uuid DEFAULT public.gen_random_uuid()
 );
 
 
@@ -1221,19 +1221,19 @@ ALTER SEQUENCE public.remote_view_partials_id_seq OWNED BY public.remote_view_pa
 --
 
 CREATE TABLE public.results (
-                                id bigint NOT NULL,
-                                auction_id integer NOT NULL,
-                                user_id integer,
-                                offer_id integer,
-                                created_at timestamp without time zone NOT NULL,
-                                updated_at timestamp without time zone NOT NULL,
-                                uuid uuid DEFAULT public.gen_random_uuid(),
-                                status public.result_status,
-                                last_remote_status public.result_status,
-                                last_response jsonb,
-                                registration_code character varying,
-                                registration_due_date date NOT NULL,
-                                registration_reminder_sent_at timestamp without time zone
+    id bigint NOT NULL,
+    auction_id integer NOT NULL,
+    user_id integer,
+    offer_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    uuid uuid DEFAULT public.gen_random_uuid(),
+    status public.result_status,
+    last_remote_status public.result_status,
+    last_response jsonb,
+    registration_code character varying,
+    registration_due_date date NOT NULL,
+    registration_reminder_sent_at timestamp without time zone
 );
 
 
@@ -1373,12 +1373,12 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 --
 
 CREATE TABLE public.wishlist_items (
-                                       id bigint NOT NULL,
-                                       domain_name character varying NOT NULL,
-                                       user_id integer NOT NULL,
-                                       uuid uuid DEFAULT public.gen_random_uuid(),
-                                       created_at timestamp without time zone NOT NULL,
-                                       updated_at timestamp without time zone NOT NULL
+    id bigint NOT NULL,
+    domain_name character varying NOT NULL,
+    user_id integer NOT NULL,
+    uuid uuid DEFAULT public.gen_random_uuid(),
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
 );
 
 
@@ -1813,14 +1813,6 @@ ALTER TABLE ONLY public.payment_orders
 
 ALTER TABLE ONLY public.remote_view_partials
     ADD CONSTRAINT remote_view_partials_pkey PRIMARY KEY (id);
-
-
---
--- Name: schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
---
-
-ALTER TABLE ONLY public.results
-    ADD CONSTRAINT results_pkey PRIMARY KEY (id);
 
 
 --
@@ -2600,4 +2592,5 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20191220131845'),
 ('20200110135003'),
 ('20200115145246');
+
 
