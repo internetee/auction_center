@@ -1,3 +1,6 @@
+14.11.2019
+* Upgrade Ruby to 2.6.5 [#212](https://github.com/internetee/auction_center/issues/212)
+
 11.11.2019
 * Imroved feedback on email address update in UI [#402](https://github.com/internetee/auction_center/issues/402)
 
