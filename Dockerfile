@@ -1,4 +1,4 @@
-FROM internetee/ruby:2.5
+FROM internetee/ruby:2.6
 
 RUN npm install -g yarn@latest
 WORKDIR /opt/webapps/app
