@@ -1,6 +1,7 @@
 14.11.2019
 * Upgrade Ruby to 2.6.5 [#212](https://github.com/internetee/auction_center/issues/212)
 * Added internal health check with API [#343](https://github.com/internetee/auction_center/issues/343)
+* Bumps json-jwt from 1.10.0 to 1.11.0 [#412](https://github.com/internetee/auction_center/pull/412)
 
 11.11.2019
 * Imroved feedback on email address update in UI [#402](https://github.com/internetee/auction_center/issues/402)
