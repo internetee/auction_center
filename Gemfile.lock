@@ -309,6 +309,7 @@ DEPENDENCIES
   recaptcha
   simplecov
   simpleidn
+  sprockets (~> 3.7)
   turbolinks (~> 5)
   web-console (>= 3.3.0)
   webdrivers
