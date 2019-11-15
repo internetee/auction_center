@@ -15,6 +15,8 @@ class Auction < ApplicationRecord
   scope :without_result, lambda {
     where('ends_at < ? and id NOT IN (SELECT results.auction_id FROM results)', Time.now.utc)
   }
+  scope :without_offers, -> { includes(:offers).where(offers: {auction_id: nil}) }
+  scope :with_offers, -> { includes(:offers).where.not(offers: {auction_id: nil}) }
 
   delegate :count, to: :offers, prefix: true
   delegate :size, to: :offers, prefix: true
