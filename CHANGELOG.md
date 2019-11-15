@@ -1,3 +1,6 @@
+15.11.2019
+* Bump loofah from 2.2.3 to 2.3.1 [#407](https://github.com/internetee/auction_center/pull/407)
+
 14.11.2019
 * Upgrade Ruby to 2.6.5 [#212](https://github.com/internetee/auction_center/issues/212)
 * Added internal health check with API [#343](https://github.com/internetee/auction_center/issues/343)
