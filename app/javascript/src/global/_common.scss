@@ -181,3 +181,10 @@ strong {
 .auction-domain-name {
     word-break: break-all;
 }
+
+p.violation-message {
+  font-weight: 900;
+  a {
+     color: #54c8ff;
+  }
+}

@@ -30,7 +30,7 @@ module ApplicationHelper
     content_tag(:div, class: 'ui message ban') do
       result = content_tag(:div, message, class: 'header')
       if domains && domains.count < Setting.ban_number_of_strikes
-        result << content_tag(:p, violation_message(domains.count))
+        result << content_tag(:p, violation_message(domains.count), class: 'violation-message')
       end
       result
     end
