@@ -13,10 +13,10 @@ class StatisticsReportTest < ActiveSupport::TestCase
 
     StatisticsReport.stub(:new, mock, [start_date: @start_date, end_date: @end_date]) do
       mock.expect(:gather_data, {})
-      mock.expect(:count_auctions, {})
-      mock.expect(:count_average_bids, {})
-      mock.expect(:count_paid_unregistered_domains, {})
-      mock.expect(:count_unpaid_invoice_percentage, {})
+      mock.expect(:auctions_count, {})
+      mock.expect(:average_bids, {})
+      mock.expect(:paid_unregistered_domains, {})
+      mock.expect(:unpaid_invoice_percentage, {})
 
       summary_report = StatisticsReport.new(start_date: @start_date, end_date: @end_date)
       summary_report.gather_data
