@@ -1241,7 +1241,7 @@ CREATE TABLE public.users (
     provider character varying,
     uid character varying,
     updated_by character varying,
-    daily_summary boolean DEFAULT false,
+    daily_summary boolean DEFAULT false NOT NULL,
     CONSTRAINT users_roles_are_known CHECK ((roles <@ ARRAY['participant'::character varying, 'administrator'::character varying]))
 );
 
