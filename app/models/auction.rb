@@ -15,6 +15,8 @@ class Auction < ApplicationRecord
     where('ends_at < ? and id NOT IN (SELECT results.auction_id FROM results)', Time.now.utc)
   }
 
+  scope :started_within, ->(period) { where(starts_at: period) }
+
   delegate :count, to: :offers, prefix: true
   delegate :size, to: :offers, prefix: true
 
@@ -106,9 +108,5 @@ class Auction < ApplicationRecord
     else
       false
     end
-  end
-
-  def self.started_within(period)
-    Auction.where(starts_at: period)
   end
 end
