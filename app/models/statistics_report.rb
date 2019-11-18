@@ -5,7 +5,8 @@ class StatisticsReport
              auctions_without_offers
              auctions_with_offers
              average_offers_per_auction
-             unregistered_domains].freeze
+             unregistered_domains
+             unpaid_invoice_percentage].freeze
 
   attr_accessor(*ATTRS)
 
@@ -20,6 +21,7 @@ class StatisticsReport
     count_auctions
     count_average_bids
     count_paid_unregistered_domains
+    count_unpaid_invoice_percentage
   end
 
   def count_auctions
@@ -53,6 +55,18 @@ class StatisticsReport
                       .joins(:auction)
                       .where(auctions: { created_at: date })
       @unregistered_domains[date] = results.count
+    end
+  end
+
+  def count_unpaid_invoice_percentage
+    (start_date..end_date).each do |date|
+      total_invoices_count = Invoice.where(issue_date: date).count
+      unpaid_invoices_count = Invoice.where(issue_date: date).where(status: 'issued').count
+      unpaid_invoice_percentage[date] = if total_invoices_count.positive?
+                                          unpaid_invoices_count * 100.0 / total_invoices_count
+                                        else
+                                          0
+                                        end
     end
   end
 end
