@@ -48,9 +48,16 @@ class UsersController < ApplicationController
   # PUT /users/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
   def update
     if valid_password?
+      @user.attributes = params_for_update
+      email_changed = @user.email_changed?
+
       respond_to do |format|
-        if @user.update(update_params)
-          format.html { redirect_to user_path(@user.uuid), notice: t(:updated) }
+        if @user.valid?
+          @user.save!
+
+          format.html do
+            redirect_to user_path(@user.uuid), notice: notification_for_update(email_changed)
+          end
           format.json { render :show, status: :ok, location: @user }
         else
           format.html { render :edit }
@@ -80,7 +87,7 @@ class UsersController < ApplicationController
                   :locale, :daily_summary)
   end
 
-  def update_params
+  def params_for_update
     update_params = params.require(:user)
                           .permit(:email, :password, :password_confirmation, :country_code,
                                   :given_names, :surname, :mobile_phone,
@@ -104,5 +111,9 @@ class UsersController < ApplicationController
 
   def authorize_user
     authorize! :manage, @user
+  end
+
+  def notification_for_update(email_changed)
+    email_changed ? t('.email_changed') : t(:updated)
   end
 end

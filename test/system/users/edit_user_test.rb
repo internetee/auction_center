@@ -27,7 +27,7 @@ class EditUserTest < ApplicationSystemTestCase
     fill_in('user[email]', with: 'updated-email@auction.test')
     fill_in('user[current_password]', with: 'password123')
     click_link_or_button('Update')
-    assert(page.has_css?('div.notice', text: 'Updated successfully.'))
+    assert_text 'Confirmation link was sent to new email address. Please confirm the address for the change to take an effect!'
 
     last_email = ActionMailer::Base.deliveries.last
     assert_equal('Confirmation instructions', last_email.subject)
@@ -53,7 +53,7 @@ class EditUserTest < ApplicationSystemTestCase
     fill_in('user[current_password]', with: 'password123')
     click_link_or_button('Update')
 
-    assert(page.has_css?('div.notice', text: 'Updated successfully.'))
+    assert_text 'Confirmation link was sent to new email address. Please confirm the address for the change to take an effect!'
 
     @user.reload
     assert_equal('New Surname', @user.surname)

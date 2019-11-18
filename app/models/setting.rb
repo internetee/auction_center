@@ -83,4 +83,16 @@ class Setting < ApplicationRecord
   def self.wishlist_size
     Setting.find_by(code: :wishlist_size).value.to_i
   end
+
+  def self.check_api_url
+    Setting.find_by(code: :check_api_url)&.value
+  end
+
+  def self.check_sms_url
+    Setting.find_by(code: :check_sms_url)&.value
+  end
+
+  def self.check_tara_url
+    Setting.find_by(code: :check_tara_url)&.value
+  end
 end

@@ -147,6 +147,6 @@ class TaraUsersTest < ApplicationSystemTestCase
     fill_in('user[email]', with: 'new-user@auction.test')
     click_link_or_button('Submit')
 
-    assert(page.has_css?('div.notice', text: 'Updated successfully.'))
+    assert_text 'Confirmation link was sent to new email address. Please confirm the address for the change to take an effect!'
   end
 end

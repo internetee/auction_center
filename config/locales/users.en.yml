@@ -19,6 +19,9 @@ en:
     remember_me: "Remember me"
     i_accept_terms_and_conditions_html: "I have read and agree with %{link}."
     terms_and_conditions_link: "auction portal user agreement"
+    email_changed: >-
+      Confirmation link was sent to new email address. Please confirm the address for the change to
+      take an effect!
 
     edit:
       title: "Edit your user profile"

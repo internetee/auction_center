@@ -1,3 +1,18 @@
+15.11.2019
+* Bump loofah from 2.2.3 to 2.3.1 [#407](https://github.com/internetee/auction_center/pull/407)
+
+14.11.2019
+* Upgrade Ruby to 2.6.5 [#212](https://github.com/internetee/auction_center/issues/212)
+* Added internal health check with API [#343](https://github.com/internetee/auction_center/issues/343)
+* Bumps json-jwt from 1.10.0 to 1.11.0 [#412](https://github.com/internetee/auction_center/pull/412)
+* Bumps rubyzip from 1.2.3 to 1.3.0 [#415](https://github.com/internetee/auction_center/pull/415)
+
+11.11.2019
+* Imroved feedback on email address update in UI [#402](https://github.com/internetee/auction_center/issues/402)
+
+08.11.2019
+* Improved test coverage for Estonian identity code validations [#393](https://github.com/internetee/auction_center/pull/393)
+
 06.11.2019
 * Fixed ET translation in password change request view [#389](https://github.com/internetee/auction_center/issues/389)
 * Fixed ET translation issues in password change form view [#390](https://github.com/internetee/auction_center/issues/390)
