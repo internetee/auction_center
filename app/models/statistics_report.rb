@@ -4,7 +4,7 @@ class StatisticsReport
   ATTRS = %i[auctions auctions_without_offers auctions_with_offers average_offers_per_auction
              unregistered_domains unpaid_invoice_percentage unregistered_domains_count_by_end
              registered_domains_count_by_end total_invoices_count unpaid_invoices_count
-             paid_invoices_count].freeze
+             paid_invoices_count users].freeze
 
   attr_accessor(*ATTRS)
 
@@ -98,5 +98,9 @@ class StatisticsReport
 
   def registered_domains_by_end(date)
     Result.registered.by_auction_end_date(date)
+  end
+
+  def auction_winners
+    @users = User.joins(:results).group('users.given_names').count.sort_by { |_key, value| value }.to_h
   end
 end
