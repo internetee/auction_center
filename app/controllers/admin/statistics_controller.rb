@@ -1,12 +1,16 @@
 module Admin
   class StatisticsController < BaseController
 
+    content_security_policy only: :index do |policy|
+      policy.style_src :self, :unsafe_inline
+    end
+
     before_action :authorize_user
 
     # GET /admin/statistics
     def index
-      start_date = index_params[:start_date] || Time.zone.yesterday
-      end_date = index_params[:start_date] || Time.zone.today
+      start_date = index_params[:start_date] || Time.parse('2010-07-05 10:30 +0000').to_date
+      end_date = index_params[:start_date] || Time.parse('2010-07-06 10:30 +0000').to_date
       report = StatisticsReport.new(start_date: start_date, end_date: end_date)
       report.gather_data
       @data = {}
