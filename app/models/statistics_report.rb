@@ -101,6 +101,10 @@ class StatisticsReport
   end
 
   def auction_winners
-    @users = User.joins(:results).group('users.given_names').count.sort_by { |_key, value| value }.to_h
+    @users = User.joins(:results)
+                 .group('users.given_names')
+                 .count
+                 .sort_by { |_key, value| value }
+                 .to_h
   end
 end
