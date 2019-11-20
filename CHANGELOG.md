@@ -1,3 +1,6 @@
+18.11.2019
+* Big gem versions update [#416](https://github.com/internetee/auction_center/pull/416)
+
 15.11.2019
 * Bump loofah from 2.2.3 to 2.3.1 [#407](https://github.com/internetee/auction_center/pull/407)
 
