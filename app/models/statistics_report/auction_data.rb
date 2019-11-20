@@ -2,7 +2,10 @@ class StatisticsReport
   class AuctionData
     attr_reader :start_date
     attr_reader :end_date
-    ATTRS = %i[auctions auctions_without_offers auctions_with_offers offers_per_day
+    ATTRS = %i[auctions
+               auctions_without_offers
+               auctions_with_offers
+               offers_per_day
                average_offers_per_auction].freeze
 
     attr_accessor(*ATTRS)

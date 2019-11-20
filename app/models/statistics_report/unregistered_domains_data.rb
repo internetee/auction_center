@@ -17,7 +17,7 @@ class StatisticsReport
                       .joins(:auction)
                       .group_by { |result| result.auction.created_at.to_date }
       (start_date..end_date).each do |date|
-        @unregistered_domains[date] = results[date].present? ? results[date].count : 0
+        @unregistered_domains[date] = results[date]&.count.to_i
       end
     end
   end

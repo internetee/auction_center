@@ -37,9 +37,6 @@ class Result < ApplicationRecord
   scope :registered, -> { where(status: statuses[:domain_registered]) }
   scope :unregistered, -> { where(status: statuses[:domain__not_registered]) }
 
-  scope :by_auction_end_date, ->(date) { joins(:auction).where(auctions: { ends_at: date }) }
-  scope :by_auction_created_date, ->(date) { joins(:auction).where(auctions: { created_at: date }) }
-
   def self.create_from_auction(auction_id)
     auction = Auction.find_by(id: auction_id)
 
