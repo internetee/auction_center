@@ -10,7 +10,9 @@ module Admin
     def index
       @start_date = index_params[:start_date] || Time.zone.yesterday.to_date
       @end_date = index_params[:end_date] || Time.zone.today.to_date
-      report = StatisticsReport.new(start_date: @start_date, end_date: @end_date).gather_data
+      
+      report = StatisticsReport.new(start_date: @start_date, end_date: @end_date)
+      report.gather_data
       @data = {}
 
       StatisticsReport::ATTRS.each do |attr|

@@ -25,11 +25,17 @@
                 <% end %>
             </div>
             <div class="ten wide column">
+                <h3>Auctions</h3>
                 <%= line_chart [
                     { name: 'Auctions total', data: @data[:auctions]},
                     { name: 'Auctions without bids', data: @data[:auctions_without_offers]},
                     { name: 'Auctions with bids', data: @data[:auctions_with_offers]},
                                ] %>
+            </div>
+
+            <div class="ten wide column">
+                <h3>Average number of bids per domain</h3>
+                <%= line_chart @data[:average_offers_per_auction] %>
             </div>
         </div>
     </div>
