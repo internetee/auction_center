@@ -63,4 +63,9 @@ class SettingTest < ActiveSupport::TestCase
 
     assert_equal(10, Setting.wishlist_size)
   end
+
+  def test_terms_and_conditions_parsing_and_multilocale
+    Setting.find_by(code: :terms_and_conditions_link).update!(value: "{\"en\":\"https://example.com\", \"et\":\"https://example.et\"}")
+    assert_equal('https://example.com', Setting.terms_and_conditions_link)
+  end
 end

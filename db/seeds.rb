@@ -35,12 +35,13 @@ auction_minimum_offer.save
 
 # Terms and condition link
 terms_and_conditions_description = <<~TEXT.squish
-  Link to terms and conditions document. Can be relative ('/public/terms_and_conditions.pdf')
-  or absolute ('https://example.com/terms_and_conditions.pdf'). Relative link must start with a
-  forward slash. Default is: https://example.com
+  Link to terms and conditions document. Must be single parsable hash of <locale>:<URL> elements.
+        URL can be relative ('/public/terms_and_conditions.pdf') 
+        or absolute ('https://example.com/terms_and_conditions.pdf'). Relative URL must start with a
+        forward slash. Default is: "{\"en\":\"https://example.com\", \"et\":\"https://example.et\"}"
 TEXT
 terms_and_conditions_setting = Setting.new(code: :terms_and_conditions_link,
-                                           value: "https://example.com",
+                                           value: "{\"en\":\"https://example.com\", \"et\":\"https://example.et\"}",
                                            description: terms_and_conditions_description)
 terms_and_conditions_setting.save
 
