@@ -1,58 +1,42 @@
 class StatisticsReport
   attr_reader :start_date
   attr_reader :end_date
-  ATTRS = %i[auctions auctions_without_offers auctions_with_offers average_offers_per_auction
-             unregistered_domains unpaid_invoice_percentage unregistered_domains_count_by_end
-             registered_domains_count_by_end total_invoices_count unpaid_invoices_count
-             paid_invoices_count users].freeze
+  ATTRS = %i[auctions auctions_without_offers auctions_with_offers offers_per_day
+             average_offers_per_auction unregistered_domains unpaid_invoice_percentage
+             unregistered_domains_count_by_end registered_domains_count_by_end
+             total_invoices_count unpaid_invoices_count paid_invoices_count users].freeze
 
   attr_accessor(*ATTRS)
 
   def initialize(start_date:, end_date:)
     @start_date = start_date
     @end_date = end_date
-    @auctions_per_day = {}
     ATTRS.each { |attr| send("#{attr}=", {}) }
   end
 
   def gather_data
     auctions_count
-    average_bids
     paid_unregistered_domains
-    count_invoices
-    domains_by_end
+    # count_invoices
+    # domains_by_end
   end
 
   def auctions_count
-    (start_date..end_date).each do |date|
-      auctions = Auction.where('starts_at <= ? AND ends_at >= ?', date, date)
-      @auctions[date] = auctions.count
-      @auctions_with_offers[date] = auctions.with_offers.count
-      @auctions_without_offers[date] = auctions.without_offers.count
-    end
-  end
-
-  def average_bids
-    (start_date..end_date).each do |date|
-      auctions = Auction.where('starts_at <= ? AND ends_at >= ?', date, date).with_offers
-      @average_offers_per_auction[date] = count_total_offers(auctions)
-    end
-  end
-
-  def count_total_offers(auctions)
-    if auctions.present?
-      total_offers = auctions.map { |auction| auction.offers.count }.sum
-      total_offers / (auctions.count * 1.0)
-    else
-      0
-    end
+    report = StatisticsReport::AuctionData.new(start_date: start_date, end_date: end_date)
+    report.gather_data
+    @auctions = report.auctions
+    @auctions_with_offers = report.auctions_with_offers
+    @auctions_without_offers = report.auctions_without_offers
+    @offers_per_day = report.offers_per_day
+    @average_offers_per_auction = report.average_offers_per_auction
   end
 
   def paid_unregistered_domains
-    (start_date..end_date).each do |date|
-      results = unregistered_domains_by_date(date)
-      @unregistered_domains[date] = results.count
-    end
+    report = StatisticsReport::UnregisteredDomainsData.new(start_date: start_date,
+                                                           end_date: end_date)
+
+    report.gather_data
+    @unregistered_domains = report.unregistered_domains
   end
 
   def count_invoices
@@ -86,10 +70,6 @@ class StatisticsReport
       unregistered_domains_count_by_end[date] = unregistered_domains_by_end(date).count
       registered_domains_count_by_end[date] = registered_domains_by_end(date).count
     end
-  end
-
-  def unregistered_domains_by_date(date)
-    Result.unregistered.by_auction_created_date(date)
   end
 
   def unregistered_domains_by_end(date)

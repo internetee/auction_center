@@ -37,6 +37,11 @@
                 <h3>Average number of bids per domain</h3>
                 <%= line_chart @data[:average_offers_per_auction] %>
             </div>
+
+            <div class="ten wide column">
+                <h3>Paid but unregistered domains</h3>
+                <%= line_chart @data[:unregistered_domains] %>
+            </div>
         </div>
     </div>
 </div>

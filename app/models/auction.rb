@@ -14,6 +14,14 @@ class Auction < ApplicationRecord
   scope :without_result, lambda {
     where('ends_at < ? and id NOT IN (SELECT results.auction_id FROM results)', Time.now.utc)
   }
+
+  scope :active_for_period, lambda { |start_date, end_date|
+    where('starts_at <= :start_date AND ends_at >= :start_date '\
+          'OR starts_at <= :start_date AND ends_at >= :end_date '\
+          'OR starts_at <= :end_date AND ends_at >= :end_date',
+          start_date: start_date, end_date: end_date)
+  }
+
   scope :without_offers, -> { includes(:offers).where(offers: { auction_id: nil }) }
   scope :with_offers, -> { includes(:offers).where.not(offers: { auction_id: nil }) }
 
@@ -100,5 +108,10 @@ class Auction < ApplicationRecord
     else
       false
     end
+  end
+
+  def in_progress_by_date?(date)
+    (starts_at <= date.end_of_day || starts_at <= date.beginning_of_day) &&
+      (ends_at >= date.end_of_day || ends_at >= date.beginning_of_day)
   end
 end
