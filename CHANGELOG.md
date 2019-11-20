@@ -1,3 +1,6 @@
+20.11.2019
+* Urls to auction terms and conditions are now localized [#372](https://github.com/internetee/auction_center/issues/372)
+
 18.11.2019
 * Big gem versions update [#416](https://github.com/internetee/auction_center/pull/416)
 
