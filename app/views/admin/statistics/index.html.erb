@@ -30,22 +30,23 @@
                     { name: 'Auctions total', data: @data[:auctions]},
                     { name: 'Auctions without bids', data: @data[:auctions_without_offers]},
                     { name: 'Auctions with bids', data: @data[:auctions_with_offers]},
-                               ] %>
+                               ], id: 'auctions-chart'%>
             </div>
 
             <div class="ten wide column">
                 <h3>Average number of bids per domain</h3>
-                <%= line_chart @data[:average_offers_per_auction] %>
+                <%= line_chart @data[:average_offers_per_auction], id: 'average-bids-chart' %>
             </div>
 
             <div class="ten wide column">
                 <h3>Paid but unregistered domains</h3>
-                <%= line_chart @data[:unregistered_domains] %>
+                <%= line_chart @data[:unregistered_domains], id: 'unregistered-domains-chart' %>
             </div>
 
             <div class="ten wide column">
                 <h3>Unpaid invoices percentage</h3>
-                <%= line_chart @data[:unpaid_invoice_percentage] %>
+                <%= line_chart @data[:unpaid_invoice_percentage],
+                               id: 'unpaid-invoices-percentage-chart' %>
             </div>
 
             <div class="ten wide column">
@@ -59,19 +60,19 @@
                       data: @data[:total_invoices_count] },
                     { name: 'Unpaid Invoices',
                       data: @data[:unpaid_invoices_count] }
-                               ] %>
+                               ], id: 'domains-invoices-chart' %>
             </div>
 
             <div class="ten wide column">
                 <h3>Auction wins per user</h3>
-                <%= pie_chart @data[:users] %>
+                <%= pie_chart @data[:users], id: 'users-chart' %>
             </div>
 
             <%= javascript_include_tag "https://www.gstatic.com/charts/loader.js" %>
 
             <div class="ten wide column">
                 <h3>Auction wins by country</h3>
-                <%= geo_chart @data[:winners_by_country] %>
+                <%= geo_chart @data[:winners_by_country], id: 'countries-chart' %>
             </div>
         </div>
     </div>
