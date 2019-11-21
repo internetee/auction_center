@@ -1,7 +1,10 @@
 class SharedComponentsFetcherJob < ApplicationJob
+  # extend ActiveSupport::Concern
+  include Concerns::HttpRequester
+
   def perform
-    api_token = '997bfb01389be0ea8ab300ec77618912'
-    main_site_path = 'https://www.internet.ee'
+    api_token = Setting.voog_api_key
+    main_site_path = Setting.voog_site_url
     storage_directory = 'storage/partials'
 
     translated_footers = {}
@@ -10,20 +13,26 @@ class SharedComponentsFetcherJob < ApplicationJob
       translated_footers[lang] = get_translated_footer(site: main_site_path, language_code: lang)
     end
 
+    return if translated_footers.empty?
+
     create_storage_directory(directory: storage_directory)
     write_localized_partials(partials: translated_footers, directory: storage_directory)
   end
 
   def remote_languages(site:, api_token:)
-    response = Http.get("#{site}/admin/api/languages?api_token=#{api_token}", {})
-    body = JSON.parse(response.body)
+    url = URI("#{site}/admin/api/languages?api_token=#{api_token}")
+    response = default_get_request_response(url: url)
+    return [] unless response[:status] == 200
+
+    body = response[:body]
     languages = []
     body.each { |language| languages.append(language['code']) }
     languages
   end
 
   def get_translated_footer(site:, language_code:)
-    page = Nokogiri::HTML(open("#{site}/#{language_code}"))
+    url = URI.parse("#{site}/#{language_code}")
+    page = Nokogiri::HTML(url.open)
     footer = page.css('.site-footer').to_html.to_s
     footer.gsub! 'href="/', "href=\"#{site}/"
     footer.gsub! 'src="/', "src=\"#{site}/"

@@ -98,6 +98,21 @@ class Setting < ApplicationRecord
     Setting.find_by(code: :check_tara_url)&.value
   end
 
+  def self.voog_site_url
+    Setting.find_by(code: :voog_site_url)&.value
+  end
+
+  def self.voog_api_key
+    Setting.find_by(code: :voog_api_key)&.value
+  end
+
+  def self.voog_site_fetching_enabled
+    value = Setting.find_by(code: :voog_site_fetching_enabled)&.value
+    return true if value == 'true'
+
+    false
+  end
+
   class << self
     private
 
