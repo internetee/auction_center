@@ -47,6 +47,25 @@
                 <h3>Unpaid invoices percentage</h3>
                 <%= line_chart @data[:unpaid_invoice_percentage] %>
             </div>
+
+            <div class="ten wide column">
+                <h3>Registered & unregistered domains vs number of paid & unpaid invoices</h3>
+                <%= line_chart [
+                    { name: 'Registered_domains',
+                      data: @data[:registered_domains_count_by_end] },
+                    { name: 'Unregistered_domains',
+                      data: @data[:unregistered_domains_count_by_end] },
+                    { name: 'Invoices total',
+                      data: @data[:total_invoices_count] },
+                    { name: 'Unpaid Invoices',
+                      data: @data[:unpaid_invoices_count] }
+                               ] %>
+            </div>
+
+            <div class="ten wide column">
+                <h3>Auction wins per user</h3>
+                <%= pie_chart @data[:users] %>
+            </div>
         </div>
     </div>
 </div>
