@@ -13,8 +13,8 @@ class StatisticsReport
   attr_accessor(*ATTRS)
 
   def initialize(start_date:, end_date:)
-    @start_date = start_date
-    @end_date = end_date
+    @start_date = start_date.to_date
+    @end_date = end_date.to_date
     ATTRS.each { |attr| send("#{attr}=", {}) }
   end
 
@@ -26,13 +26,5 @@ class StatisticsReport
         send("#{attr}=", report.send(attr))
       end
     end
-  end
-
-  def auction_winners
-    @users = User.joins(:results)
-                 .group('users.given_names')
-                 .count
-                 .sort_by { |_key, value| value }
-                 .to_h
   end
 end

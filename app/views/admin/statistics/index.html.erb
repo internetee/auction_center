@@ -42,6 +42,11 @@
                 <h3>Paid but unregistered domains</h3>
                 <%= line_chart @data[:unregistered_domains] %>
             </div>
+
+            <div class="ten wide column">
+                <h3>Unpaid invoices percentage</h3>
+                <%= line_chart @data[:unpaid_invoice_percentage] %>
+            </div>
         </div>
     </div>
 </div>
