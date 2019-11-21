@@ -1,5 +1,5 @@
-<% if File.exists? "storage/partials/footer_#{I18n.locale}.html" %>
-    <%= render file: "storage/partials/footer_#{I18n.locale}.html" %>
+<% if RemoteViewPartial.find_by(name: "footer_#{I18n.locale}").present? %>
+    <%= RemoteViewPartial.find_by(name: "footer_#{I18n.locale}").content.html_safe %>
 <% else %>
     <footer class="site-footer">
         <div class="footer-top">

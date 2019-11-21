@@ -1128,6 +1128,38 @@ ALTER SEQUENCE public.payment_orders_id_seq OWNED BY public.payment_orders.id;
 
 
 --
+-- Name: remote_view_partials; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE public.remote_view_partials (
+    id bigint NOT NULL,
+    name character varying,
+    content text,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: remote_view_partials_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.remote_view_partials_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: remote_view_partials_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.remote_view_partials_id_seq OWNED BY public.remote_view_partials.id;
+
+
+--
 -- Name: results; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1241,6 +1273,7 @@ CREATE TABLE public.users (
     provider character varying,
     uid character varying,
     updated_by character varying,
+    daily_summary boolean DEFAULT false NOT NULL,
     CONSTRAINT users_roles_are_known CHECK ((roles <@ ARRAY['participant'::character varying, 'administrator'::character varying]))
 );
 
@@ -1441,6 +1474,13 @@ ALTER TABLE ONLY public.payment_orders ALTER COLUMN id SET DEFAULT nextval('publ
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY public.remote_view_partials ALTER COLUMN id SET DEFAULT nextval('public.remote_view_partials_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY public.results ALTER COLUMN id SET DEFAULT nextval('public.results_id_seq'::regclass);
 
 
@@ -1623,6 +1663,14 @@ ALTER TABLE ONLY public.offers
 
 ALTER TABLE ONLY public.payment_orders
     ADD CONSTRAINT payment_orders_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: remote_view_partials_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY public.remote_view_partials
+    ADD CONSTRAINT remote_view_partials_pkey PRIMARY KEY (id);
 
 
 --
@@ -2374,6 +2422,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190521071232'),
 ('20190722100652'),
 ('20190915171050'),
-('20191025092912');
+('20191008124157'),
+('20191025092912'),
+('20191121162323');
 
 

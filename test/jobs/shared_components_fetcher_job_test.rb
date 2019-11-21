@@ -18,8 +18,8 @@ class SharedComponentsFetcherJobTest < ActiveJob::TestCase
     stub_request(:get, %r{/en}).to_return(body: en_footer_html, status: 200, headers: {})
 
     SharedComponentsFetcherJob.perform_now
-    assert File.exists? "storage/partials/footer_en.html"
-    assert File.exists? "storage/partials/footer_et.html"
+    assert RemoteViewPartial.find_by(name: "footer_et").present?
+    assert RemoteViewPartial.find_by(name: "footer_en").present?
   end
 
   def test_job_runnability_is_determined_by_setting_value

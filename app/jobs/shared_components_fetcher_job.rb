@@ -4,7 +4,6 @@ class SharedComponentsFetcherJob < ApplicationJob
   def perform
     api_token = Setting.voog_api_key
     main_site_path = Setting.voog_site_url
-    storage_directory = 'storage/partials'
 
     translated_footers = {}
 
@@ -14,8 +13,7 @@ class SharedComponentsFetcherJob < ApplicationJob
 
     return if translated_footers.empty?
 
-    create_storage_directory(directory: storage_directory)
-    write_localized_partials(partials: translated_footers, directory: storage_directory)
+    save_localized_partials(partials: translated_footers)
   end
 
   def remote_languages(site:, api_token:)
@@ -46,15 +44,11 @@ class SharedComponentsFetcherJob < ApplicationJob
     Setting.voog_site_fetching_enabled?
   end
 
-  def create_storage_directory(directory:)
-    FileUtils.mkdir_p(directory) unless File.exist?(directory)
-  end
-
-  def write_localized_partials(partials:, directory:)
+  def save_localized_partials(partials:)
     partials.keys.each do |localized_partial|
-      File.open("#{directory}/footer_#{localized_partial}.html", 'w') do |file|
-        file.write(partials[localized_partial])
-      end
+      remote_partial = RemoteViewPartial.where(name: "footer_#{localized_partial}").first_or_create
+      remote_partial.content = partials[localized_partial]
+      remote_partial.save!
     end
   end
 end
