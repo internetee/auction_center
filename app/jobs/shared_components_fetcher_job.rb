@@ -1,5 +1,4 @@
 class SharedComponentsFetcherJob < ApplicationJob
-  # extend ActiveSupport::Concern
   include Concerns::HttpRequester
 
   def perform
@@ -22,6 +21,7 @@ class SharedComponentsFetcherJob < ApplicationJob
   def remote_languages(site:, api_token:)
     url = URI("#{site}/admin/api/languages?api_token=#{api_token}")
     response = default_get_request_response(url: url)
+
     return [] unless response[:status] == 200
 
     body = response[:body]
@@ -43,7 +43,7 @@ class SharedComponentsFetcherJob < ApplicationJob
   end
 
   def self.needs_to_run?
-    Invoice.pending_payment_reminder.any?
+    Setting.voog_site_fetching_enabled?
   end
 
   def create_storage_directory(directory:)

@@ -7,12 +7,6 @@ class Setting < ApplicationRecord
 
   scope :voog_site_url, -> { find_by(code: :voog_site_url)&.value }
   scope :voog_api_key, -> { find_by(code: :voog_api_key)&.value }
-  scope :voog_site_fetching_enabled, lambda {
-    value = find_by(code: :voog_site_fetching_enabled)&.value
-    return true if value == 'true'
-
-    false
-  }
 
   def self.auction_currency
     Setting.find_by(code: :auction_currency).value
@@ -107,7 +101,7 @@ class Setting < ApplicationRecord
     Setting.find_by(code: :check_tara_url)&.value
   end
 
-  def self.voog_site_fetching_enabled
+  def self.voog_site_fetching_enabled?
     value = Setting.find_by(code: :voog_site_fetching_enabled)&.value
     return true if value == 'true'
 
