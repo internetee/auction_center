@@ -2,7 +2,7 @@ class StatisticsReport
   class UsersData
     attr_reader :start_date
     attr_reader :end_date
-    ATTRS = %i[users].freeze
+    ATTRS = %i[users winners_by_country].freeze
 
     attr_accessor(*ATTRS)
 
@@ -13,11 +13,20 @@ class StatisticsReport
     end
 
     def gather_data
+      users_data
+      geo_data
+    end
+
+    def users_data
       @users = User.joins(:results)
                    .group('users.given_names')
                    .count
                    .sort_by { |_key, value| value }
                    .to_h
+    end
+
+    def geo_data
+      @winners_by_country = User.joins(:results).group('alpha_two_country_code').count
     end
   end
 end

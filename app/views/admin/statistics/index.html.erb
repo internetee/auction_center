@@ -66,6 +66,13 @@
                 <h3>Auction wins per user</h3>
                 <%= pie_chart @data[:users] %>
             </div>
+
+            <%= javascript_include_tag "https://www.gstatic.com/charts/loader.js" %>
+
+            <div class="ten wide column">
+                <h3>Auction wins by country</h3>
+                <%= geo_chart @data[:winners_by_country] %>
+            </div>
         </div>
     </div>
 </div>

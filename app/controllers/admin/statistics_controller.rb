@@ -1,7 +1,7 @@
 module Admin
   class StatisticsController < BaseController
     content_security_policy only: :index do |policy|
-      policy.style_src :self, :unsafe_inline
+      policy.style_src :self, 'www.gstatic.com', :unsafe_inline
     end
 
     before_action :authorize_user

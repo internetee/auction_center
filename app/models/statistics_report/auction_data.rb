@@ -62,11 +62,12 @@ class StatisticsReport
 
     def average_offers
       (start_date..end_date).each do |date|
-        @average_offers_per_auction[date] = if @offers_per_day[date] && @auctions[date]
-                                              @offers_per_day[date] / @auctions[date] * 1.0
-                                            else
-                                              0
-                                            end
+        @average_offers_per_auction[date] = \
+          if @offers_per_day[date] && @auctions[date].to_i.positive?
+            @offers_per_day[date] / @auctions[date] * 1.0
+          else
+            0
+          end
       end
     end
   end
