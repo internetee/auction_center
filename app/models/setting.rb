@@ -5,6 +5,15 @@ class Setting < ApplicationRecord
   validates :value, presence: true
   validates :code, uniqueness: true
 
+  scope :voog_site_url, -> { find_by(code: :voog_site_url)&.value }
+  scope :voog_api_key, -> { find_by(code: :voog_api_key)&.value }
+  scope :voog_site_fetching_enabled, lambda {
+    value = find_by(code: :voog_site_fetching_enabled)&.value
+    return true if value == 'true'
+
+    false
+  }
+
   def self.auction_currency
     Setting.find_by(code: :auction_currency).value
   end
@@ -96,14 +105,6 @@ class Setting < ApplicationRecord
 
   def self.check_tara_url
     Setting.find_by(code: :check_tara_url)&.value
-  end
-
-  def self.voog_site_url
-    Setting.find_by(code: :voog_site_url)&.value
-  end
-
-  def self.voog_api_key
-    Setting.find_by(code: :voog_api_key)&.value
   end
 
   def self.voog_site_fetching_enabled
