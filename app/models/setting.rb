@@ -107,16 +107,9 @@ class Setting < ApplicationRecord
 
     false
   end
-
-  class << self
-    private
-
-    def json_hash?(text)
-      JSON.parse(text).is_a?(Hash)
-    rescue JSON::ParserError
-      false
-    rescue NoMethodError
-      false
-    end
+  
+  def self.violations_count_regulations_link
+    hash = Setting.find_by(code: :violations_count_regulations_link)&.value
+    hash.present? ? JSON.parse(hash).with_indifferent_access[I18n.locale] : nil
   end
 end

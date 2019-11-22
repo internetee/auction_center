@@ -48,6 +48,9 @@ en:
   banned_completely: |
     You are banned from participating in .ee domain auctions due to multiple overdue
     invoices until %{valid_until}.
+  violation_message_html: >-
+    Number of current <a href="%{violations_count_regulations_link}">violations</a>:
+    %{violations_count} of %{ban_number_of_strikes}
 
   my_offers: "My offers"
   my_invoices: "My invoices"
