@@ -107,7 +107,7 @@ class Setting < ApplicationRecord
 
     false
   end
-  
+
   def self.violations_count_regulations_link
     hash = Setting.find_by(code: :violations_count_regulations_link)&.value
     hash.present? ? JSON.parse(hash).with_indifferent_access[I18n.locale] : nil
