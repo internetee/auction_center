@@ -7,6 +7,7 @@ module Concerns
 
       FORMAT_VALIDATIONS = {
         terms_and_conditions_link: [:validate_json_hash],
+        violations_count_regulations_link: [:validate_json_hash],
       }.with_indifferent_access.freeze
     end
 
