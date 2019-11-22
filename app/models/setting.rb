@@ -1,4 +1,5 @@
 class Setting < ApplicationRecord
+  include Concerns::FormatValidator
   validates :code, presence: true
   validates :description, presence: true
   validates :value, presence: true
@@ -13,7 +14,8 @@ class Setting < ApplicationRecord
   end
 
   def self.terms_and_conditions_link
-    Setting.find_by(code: :terms_and_conditions_link).value
+    value = Setting.find_by(code: :terms_and_conditions_link).value
+    JSON.parse(value)[I18n.locale.to_s]
   end
 
   def self.default_country
@@ -94,5 +96,10 @@ class Setting < ApplicationRecord
 
   def self.check_tara_url
     Setting.find_by(code: :check_tara_url)&.value
+  end
+
+  def self.violations_count_regulations_link
+    hash = Setting.find_by(code: :violations_count_regulations_link)&.value
+    hash.present? ? JSON.parse(hash).with_indifferent_access[I18n.locale] : nil
   end
 end

@@ -79,3 +79,12 @@ en:
         If you no longer want to participate in an auction, you can withdraw your offer
         at any point, as long as the auction is still in progress. Once the action has ended,
         you cannot withdraw your offer.
+
+    banned: |
+      You are banned from participating in auctions for domain(s): %{domain_names}.
+    banned_completely: |
+      You are banned from participating in .ee domain auctions due to multiple overdue
+      invoices until %{valid_until}.
+    violation_message_html: >-
+      Number of current <a href="%{violations_count_regulations_link}">violations</a>:
+      %{violations_count} of %{ban_number_of_strikes}

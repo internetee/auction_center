@@ -1,3 +1,13 @@
+22.11.2019
+* Modified ban alert in auction ui to remove references to domain names if these are not being auctioned [#229](https://github.com/internetee/auction_center/issues/229)
+* Updated rails-html-sanitizer to 1.3.0 [#426](https://github.com/internetee/auction_center/pull/426)
+
+20.11.2019
+* Urls to auction terms and conditions are now localized [#372](https://github.com/internetee/auction_center/issues/372)
+
+18.11.2019
+* Big gem versions update [#416](https://github.com/internetee/auction_center/pull/416)
+
 15.11.2019
 * Bump loofah from 2.2.3 to 2.3.1 [#407](https://github.com/internetee/auction_center/pull/407)
 

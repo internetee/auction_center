@@ -18,10 +18,22 @@ auction_minimum_offer:
 terms_and_conditions_link:
   code: terms_and_conditions_link
   description: |
-    Link to terms and conditions document. Can be relative ('/public/terms_and_conditions.pdf')
-    or absolute ('https://example.com/terms_and_conditions.pdf'). Relative link must start with a
-    forward slash. Default is: https://example.com
-  value: 'https://example.com'
+    Link to terms and conditions document. Must be single parsable hash of <locale>:<URL> elements.
+    URL can be relative ('/public/terms_and_conditions.pdf')
+    or absolute ('https://example.com/terms_and_conditions.pdf'). Relative URL must start with a
+    forward slash. Default is: "{\"en\":\"https://example.com\"}"
+  value: "{\"en\":\"https://example.com\"}"
+
+violations_count_regulations_link:
+  code: violations_count_regulations_link
+  description: |
+    Link to ToC clause on user agreement termination, used in ban message banner.
+    Must be single URL or hash of <locale>:<URL> elements.
+    URL can be relative ('/public/terms_and_conditions.pdf')
+    or absolute ('https://example.com/terms_and_conditions.pdf'). Relative URL must start with a
+    forward slash.
+    Default: https://example.com#some_anchor
+  value: "{\"en\":\"https://example.com#some_anchor\"}"
 
 default_country:
   code: default_country

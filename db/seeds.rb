@@ -35,12 +35,13 @@ auction_minimum_offer.save
 
 # Terms and condition link
 terms_and_conditions_description = <<~TEXT.squish
-  Link to terms and conditions document. Can be relative ('/public/terms_and_conditions.pdf')
-  or absolute ('https://example.com/terms_and_conditions.pdf'). Relative link must start with a
-  forward slash. Default is: https://example.com
+  Link to terms and conditions document. Must be single parsable hash of <locale>:<URL> elements.
+        URL can be relative ('/public/terms_and_conditions.pdf')
+        or absolute ('https://example.com/terms_and_conditions.pdf'). Relative URL must start with a
+        forward slash. Default is: "{\"en\":\"https://example.com\", \"et\":\"https://example.et\"}"
 TEXT
 terms_and_conditions_setting = Setting.new(code: :terms_and_conditions_link,
-                                           value: "https://example.com",
+                                           value: "{\"en\":\"https://example.com\", \"et\":\"https://example.et\"}",
                                            description: terms_and_conditions_description)
 terms_and_conditions_setting.save
 
@@ -130,6 +131,23 @@ ban_number_of_strikes_setting = Setting.new(code: :ban_number_of_strikes, value:
                                             description: ban_number_of_strikes_description)
 
 ban_number_of_strikes_setting.save
+
+# Link to auction regulations on strikes
+violations_count_regulations_description = <<~TEXT.squish
+  Link to ToC clause on user agreement termination, used in ban message banner.
+  Must be parsable string containing hash of <locale>:<URL> elements.
+  URL can be relative ('/public/terms_and_conditions.pdf')
+  or absolute ('https://example.com/terms_and_conditions.pdf'). Relative URL must start with a
+  forward slash.
+  Default: "{\"en\":\"https://example.com#some_anchor\"}"
+TEXT
+
+violations_count_regulations_setting = Setting.new(code: :violations_count_regulations_link,
+                                            value: "{\"en\":\"https://example.com#some_anchor\"}",
+                                            description: violations_count_regulations_description)
+
+violations_count_regulations_setting.save!
+
 
 # Default domain registration reminder time
 domain_registration_description = <<~TEXT.squish
