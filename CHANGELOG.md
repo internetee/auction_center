@@ -1,3 +1,6 @@
+22.11.2019
+* Modified ban alert in auction ui to remove references to domain names if these are not being auctioned [#229](https://github.com/internetee/auction_center/issues/229)
+
 20.11.2019
 * Urls to auction terms and conditions are now localized [#372](https://github.com/internetee/auction_center/issues/372)
 
