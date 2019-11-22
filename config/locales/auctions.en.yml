@@ -19,6 +19,7 @@ en:
     index:
       title: "Current auctions"
       search: "Search by domain name"
+      auction_list_tooltip: "Send me daily auctioned domain list by email"
 
     search:
       title: "Auction search"
