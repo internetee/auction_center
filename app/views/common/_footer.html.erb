@@ -1,5 +1,5 @@
 <% if RemoteViewPartial.find_by(name: "footer_#{I18n.locale}").present? %>
-    <%= RemoteViewPartial.find_by(name: "footer_#{I18n.locale}").content.html_safe %>
+    <%= sanitize RemoteViewPartial.find_by(name: "footer_#{I18n.locale}").content, tags: %w(footer nav div ul li i strong a h3 img), attributes: %w(class title src href aria-hidden) %>
 <% else %>
     <footer class="site-footer">
         <div class="footer-top">
