@@ -1133,8 +1133,9 @@ ALTER SEQUENCE public.payment_orders_id_seq OWNED BY public.payment_orders.id;
 
 CREATE TABLE public.remote_view_partials (
     id bigint NOT NULL,
-    name character varying,
-    content text,
+    name character varying NOT NULL,
+    locale character varying NOT NULL,
+    content text NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );

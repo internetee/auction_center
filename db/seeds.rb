@@ -36,7 +36,7 @@ auction_minimum_offer.save
 # Terms and condition link
 terms_and_conditions_description = <<~TEXT.squish
   Link to terms and conditions document. Must be single parsable hash of <locale>:<URL> elements.
-        URL can be relative ('/public/terms_and_conditions.pdf') 
+        URL can be relative ('/public/terms_and_conditions.pdf')
         or absolute ('https://example.com/terms_and_conditions.pdf'). Relative URL must start with a
         forward slash. Default is: "{\"en\":\"https://example.com\", \"et\":\"https://example.et\"}"
 TEXT
@@ -178,3 +178,30 @@ TEXT
 wishlist_size_setting = Setting.new(code: :wishlist_size, value: '10',
                                     description: wishlist_size_description)
 wishlist_size_setting.save
+
+# Voog site default URL
+voog_site_url_description = <<~TEXT.squish
+VOOG site from which to fetch localized footer elements. Defaults to https://www.internet.ee.
+TEXT
+
+voog_site_url_setting = Setting.new(code: :voog_site_url, value: 'https://www.internet.ee',
+                                    description: voog_site_url_description)
+voog_site_url_setting.save
+
+# Voog site API token
+voog_api_key_description = <<~TEXT.squish
+VOOG site API key. Required to fetch footer content.
+TEXT
+
+voog_api_key_setting = Setting.new(code: :voog_api_key, value: 'changeme',
+                                   description: voog_api_key_description)
+voog_api_key_setting.save
+
+# Voog site API fetching enabled boolean
+voog_site_fetching_enabled_description = <<~TEXT.squish
+Boolean whether to enable fetching & showing footer element from VOOG site. Defaults to false.
+TEXT
+
+voog_site_fetching_enabled_setting = Setting.new(code: :voog_site_fetching_enabled, value: 'false',
+                                                 description: voog_site_fetching_enabled_description)
+voog_site_fetching_enabled_setting.save

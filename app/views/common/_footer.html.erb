@@ -1,5 +1,5 @@
-<% if RemoteViewPartial.find_by(name: "footer_#{I18n.locale}").present? %>
-    <%= sanitize RemoteViewPartial.find_by(name: "footer_#{I18n.locale}").content, tags: %w(footer nav div ul li i strong a h3 img), attributes: %w(class title src href aria-hidden) %>
+<% if Setting.voog_site_fetching_enabled? && RemoteViewPartial.find_by(name: "footer", locale: I18n.locale).present? %>
+    <%= RemoteViewPartial.sanitized(name: "footer", locale: I18n.locale) %>
 <% else %>
     <footer class="site-footer">
         <div class="footer-top">

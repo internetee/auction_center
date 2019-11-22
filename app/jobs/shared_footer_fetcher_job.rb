@@ -1,15 +1,13 @@
-class SharedComponentsFetcherJob < ApplicationJob
+class SharedFooterFetcherJob < ApplicationJob
   include Concerns::HttpRequester
 
   def perform
+    return unless SharedFooterFetcherJob.needs_to_run?
+
     api_token = Setting.voog_api_key
     main_site_path = Setting.voog_site_url
 
-    translated_footers = {}
-
-    remote_languages(site: main_site_path, api_token: api_token).each do |lang|
-      translated_footers[lang] = get_translated_footer(site: main_site_path, language_code: lang)
-    end
+    translated_footers = compose_localized_footers(site: main_site_path, api_token: api_token)
 
     return if translated_footers.empty?
 
@@ -40,15 +38,28 @@ class SharedComponentsFetcherJob < ApplicationJob
     footer
   end
 
+  def compose_localized_footers(site:, api_token:)
+    translated_footers = {}
+
+    remote_languages(site: site, api_token: api_token).each do |lang|
+      footer = get_translated_footer(site: site, language_code: lang)
+      if (footer.include? '<footer') && (footer.include? '</footer>')
+        translated_footers[lang] = footer
+      end
+    end
+    translated_footers
+  end
+
   def self.needs_to_run?
     Setting.voog_site_fetching_enabled?
   end
 
   def save_localized_partials(partials:)
     partials.keys.each do |localized_partial|
-      remote_partial = RemoteViewPartial.where(name: "footer_#{localized_partial}").first_or_create
+      remote_partial = RemoteViewPartial.where(name: 'footer',
+                                               locale: localized_partial).first_or_create
       remote_partial.content = partials[localized_partial]
-      remote_partial.save!
+      remote_partial.save
     end
   end
 end
