@@ -23,16 +23,22 @@ class StatisticsReport
     end
 
     def auctions_count
-      data = Auction.active_for_period(start_date, end_date).includes(:offers)
+      data = Auction.active_for_period(start_date, end_date).includes(:offers).preload(:offers)
 
       (start_date..end_date).each do |date|
         init_auction_report(date)
 
         data.each do |auction|
-          @auctions[date] += 1
-          increment_auction_report(auction: auction, date: date)
+          if date.beginning_of_day.between?(auction.starts_at, auction.ends_at)
+            @auctions[date] += 1
+            increment_auction_report(auction: auction, date: date)
+          end
         end
       end
+    end
+
+    def auction_sql
+
     end
 
     def init_auction_report(date)
@@ -42,7 +48,7 @@ class StatisticsReport
     end
 
     def increment_auction_report(auction:, date:)
-      if auction.offers.present?
+      if auction.offers.size.positive?
         @auctions_with_offers[date] += 1
       else
         @auctions_without_offers[date] += 1
@@ -50,12 +56,14 @@ class StatisticsReport
     end
 
     def daily_offers
-      data = Auction.active_for_period(start_date, end_date).includes(:offers)
+      data = Auction.active_for_period(start_date, end_date).includes(:offers).preload(:offers)
 
       (start_date..end_date).each do |date|
         @offers_per_day[date] ||= 0
         data.each do |auction|
-          @offers_per_day[date] += auction.offers.count if auction.in_progress_by_date?(date)
+          if date.beginning_of_day.between?(auction.starts_at, auction.ends_at)
+            @offers_per_day[date] += auction.offers.size
+          end
         end
       end
     end
@@ -64,7 +72,7 @@ class StatisticsReport
       (start_date..end_date).each do |date|
         @average_offers_per_auction[date] = \
           if @offers_per_day[date] && @auctions[date].to_i.positive?
-            @offers_per_day[date] / @auctions[date] * 1.0
+            @offers_per_day[date] / (@auctions[date] * 1.0)
           else
             0
           end
