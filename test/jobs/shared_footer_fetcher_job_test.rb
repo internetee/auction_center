@@ -10,7 +10,6 @@ class SharedFooterFetcherJobTest < ActiveJob::TestCase
     @voog_site_url.update!(code: 'voog_site_url', value: 'https://test.url')
     @voog_api_key.update!(code: 'voog_api_key', value: '123')
     @voog_site_fetching_enabled.update!(code: 'voog_site_fetching_enabled', value: 'true')
-
   end
 
   def test_perform_now
