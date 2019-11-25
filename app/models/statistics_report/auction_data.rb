@@ -23,7 +23,7 @@ class StatisticsReport
     end
 
     def auctions_count
-      data = Auction.active_for_period(start_date, end_date).includes(:offers).preload(:offers)
+      data = auctions_scoped
 
       (start_date..end_date).each do |date|
         init_auction_report(date)
@@ -37,8 +37,8 @@ class StatisticsReport
       end
     end
 
-    def auction_sql
-
+    def auctions_scoped
+      Auction.for_period(start_date, end_date).includes(:offers).preload(:offers)
     end
 
     def init_auction_report(date)
@@ -56,7 +56,7 @@ class StatisticsReport
     end
 
     def daily_offers
-      data = Auction.active_for_period(start_date, end_date).includes(:offers).preload(:offers)
+      data = auctions_scoped
 
       (start_date..end_date).each do |date|
         @offers_per_day[date] ||= 0
@@ -70,12 +70,32 @@ class StatisticsReport
 
     def average_offers
       (start_date..end_date).each do |date|
-        @average_offers_per_auction[date] = \
-          if @offers_per_day[date] && @auctions[date].to_i.positive?
-            @offers_per_day[date] / (@auctions[date] * 1.0)
-          else
-            0
-          end
+        week_start = date.beginning_of_week
+        next unless @prev_week_start.blank? || @prev_week_start != week_start
+
+        week_end = date.end_of_week
+        offers_per_week = offers_per_week(week_start: week_start, week_end: week_end)
+        auctions_per_week = auctions_per_week(week_start: week_start, week_end: week_end)
+
+        @average_offers_per_auction[week_start] = avg_bids_per_week(offers: offers_per_week,
+                                                                    auctions: auctions_per_week)
+        @prev_week_start = week_start
+      end
+    end
+
+    def offers_per_week(week_start:, week_end:)
+      @offers_per_day.select { |key, _value| key >= week_start && key <= week_end }.values.sum
+    end
+
+    def auctions_per_week(week_start:, week_end:)
+      @auctions.select { |key, _value| key >= week_start && key <= week_end }.values.sum
+    end
+
+    def avg_bids_per_week(offers:, auctions:)
+      if offers && auctions.to_i.positive?
+        offers / (auctions * 1.0)
+      else
+        0
       end
     end
   end

@@ -15,11 +15,8 @@ class Auction < ApplicationRecord
     where('ends_at < ? and id NOT IN (SELECT results.auction_id FROM results)', Time.now.utc)
   }
 
-  scope :active_for_period, lambda { |start_date, end_date|
-    where('starts_at <= :start_date AND ends_at >= :start_date '\
-          'OR starts_at <= :start_date AND ends_at >= :end_date '\
-          'OR starts_at <= :end_date AND ends_at >= :end_date '\
-          'OR starts_at >= :start_date AND ends_at <= :end_date',
+  scope :for_period, lambda { |start_date, end_date|
+    where('ends_at >= :start_date AND ends_at <= :end_date ',
           start_date: start_date.beginning_of_day, end_date: end_date.end_of_day)
   }
 
