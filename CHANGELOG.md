@@ -1,3 +1,6 @@
+25.11.2019
+* Added an option for the users to order daily auction list on email [#355](https://github.com/internetee/auction_center/issues/355)
+
 22.11.2019
 * Modified ban alert in auction ui to remove references to domain names if these are not being auctioned [#229](https://github.com/internetee/auction_center/issues/229)
 * Updated rails-html-sanitizer to 1.3.0 [#426](https://github.com/internetee/auction_center/pull/426)
