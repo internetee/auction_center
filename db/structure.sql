@@ -1241,6 +1241,7 @@ CREATE TABLE public.users (
     provider character varying,
     uid character varying,
     updated_by character varying,
+    daily_summary boolean DEFAULT false NOT NULL,
     CONSTRAINT users_roles_are_known CHECK ((roles <@ ARRAY['participant'::character varying, 'administrator'::character varying]))
 );
 
@@ -2374,6 +2375,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190521071232'),
 ('20190722100652'),
 ('20190915171050'),
+('20191008124157'),
 ('20191025092912');
 
 

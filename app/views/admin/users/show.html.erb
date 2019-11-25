@@ -60,6 +60,10 @@
                             <td><strong><%= t('created_at') %></strong></td>
                             <td><%= I18n.l(@user.created_at) %></td>
                         </tr>
+                        <tr>
+                            <td><strong><%= t('.daily_summary') %></strong></td>
+                            <td><%= @user.daily_summary? ? t('yes') : t('no')%></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>

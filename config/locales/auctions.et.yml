@@ -20,6 +20,7 @@ et:
     index:
       title: "Domeenioksjonid"
       search: "Domeeni otsing"
+      auction_list_tooltip: "Saada mulle iga päev värske oksjoninimekiri meilile"
 
     search:
       title: "Otsing"
