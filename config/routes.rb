@@ -19,6 +19,8 @@ Rails.application.routes.draw do
     end
   end
 
+  match 'profile/edit', via: :get, to: 'users#edit_authwall', as: :user_edit_authwall
+
   namespace :admin, constraints: Constraints::Administrator.new do
     resources :auctions, except: disallowed_auction_actions, concerns: %i[auditable searchable]
 

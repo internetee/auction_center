@@ -50,6 +50,7 @@ et:
       we_need_your_password: "(muudatuste kinnitamiseks vajame kehtivat salasõna)"
       you_can_leave_blank: "(kui ei soovi muuta, jäta tühjaks)"
       currently_pending_confirmation: "Currently pending confirmation for %{email}."
+      daily_summary: "Igapäevane oksjoninimekiri"
 
     update:
       incorrect_password: 'Vale salasõna'
@@ -58,6 +59,7 @@ et:
       title: "Kasutajaprofiil"
       delete: "Kustuta konto"
       review_terms_and_conditions: "Tutvu tingimustega"
+      daily_summary: "Igapäevane oksjoninimekiri meilile"
 
     destroy:
       deleted: "Oled välja logitud ja sinu konto on kustutatud."
@@ -75,3 +77,4 @@ et:
         password: "Salasõna"
         password_confirmation: "Salasõna kinnitus"
         identity_code: "Isikukood"
+        daily_summary: "Soovin saada iga päev oksjonil olevate domeenide nimekirja meilile"
