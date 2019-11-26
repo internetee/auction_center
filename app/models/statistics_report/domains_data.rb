@@ -4,8 +4,10 @@ class StatisticsReport
     attr_reader :end_date
     ATTRS = %i[unregistered_domains_daily
                registered_domains_daily
-               registered_month
-               unregistered_month
+               registered_monthly
+               unregistered_monthly
+               registered_weekly
+               unregistered_weekly
                auctions_by_end_month
                auctions_by_end_daily
                registered_monthly_percent].freeze
@@ -22,6 +24,7 @@ class StatisticsReport
       daily_domains
       daily_auctions
       monthly_domains
+      weekly_domains
     end
 
     def daily_domains
@@ -47,7 +50,7 @@ class StatisticsReport
 
         assign_monthly_data(month_start: month_start, month_end: month_end)
 
-        registered_percent(registered_month: @registered_month[month(month_start)],
+        registered_percent(registered_month: @registered_monthly[month(month_start)],
                            auctions_month: @auctions_by_end_month[month(month_start)],
                            month_start: month_start)
 
@@ -55,27 +58,47 @@ class StatisticsReport
       end
     end
 
-    def assign_monthly_data(month_start:, month_end:)
-      @registered_month[month(month_start)] = registered_by_month(month_start: month_start,
-                                                                  month_end: month_end)
-      @auctions_by_end_month[month(month_start)] = auctions_by_month(month_start: month_start,
-                                                                     month_end: month_end)
-      @unregistered_month[month(month_start)] = unregistered_by_month(month_start: month_start,
-                                                                      month_end: month_end)
+    def weekly_domains
+      (start_date..end_date).each do |date|
+        week_start = date.beginning_of_week
+        next unless @prev_week_start.blank? || @prev_week_start != week_start
+
+        week_end = date.end_of_week
+
+        assign_weekly_data(week_start: week_start, week_end: week_end)
+
+        @prev_week_start = week_start
+      end
     end
 
-    def registered_by_month(month_start:, month_end:)
-      @registered_domains_daily.select { |key, _value| key >= month_start && key <= month_end }
+    def assign_monthly_data(month_start:, month_end:)
+      @registered_monthly[month(month_start)] = registered_by_period(period_start: month_start,
+                                                                   period_end: month_end)
+      @auctions_by_end_month[month(month_start)] = auctions_by_period(period_start: month_start,
+                                                                      period_end: month_end)
+      @unregistered_monthly[month(month_start)] = unregistered_by_period(period_start: month_start,
+                                                                       period_end: month_end)
+    end
+
+    def assign_weekly_data(week_start:, week_end:)
+      @registered_weekly[week_start] = registered_by_period(period_start: week_start,
+                                                            period_end: week_end)
+      @unregistered_weekly[week_start] = unregistered_by_period(period_start: week_start,
+                                                                period_end: week_end)
+    end
+
+    def registered_by_period(period_start:, period_end:)
+      @registered_domains_daily.select { |key, _value| key >= period_start && key <= period_end }
                                .values.sum || 0
     end
 
-    def auctions_by_month(month_start:, month_end:)
-      @auctions_by_end_daily.select { |key, _value| key >= month_start && key <= month_end }
+    def auctions_by_period(period_start:, period_end:)
+      @auctions_by_end_daily.select { |key, _value| key >= period_start && key <= period_end }
                             .values.sum || 0
     end
 
-    def unregistered_by_month(month_start:, month_end:)
-      @unregistered_domains_daily.select { |key, _value| key >= month_start && key <= month_end }
+    def unregistered_by_period(period_start:, period_end:)
+      @unregistered_domains_daily.select { |key, _value| key >= period_start && key <= period_end }
                                  .values.sum || 0
     end
 

@@ -35,7 +35,7 @@ class Result < ApplicationRecord
   }
 
   scope :registered, -> { where(status: statuses[:domain_registered]) }
-  scope :unregistered, -> { where(status: statuses[:domain__not_registered]) }
+  scope :unregistered, -> { where(status: statuses[:domain_not_registered]) }
 
   scope :grouped_by_auctions, lambda { |start_date:, end_date:|
     joins(:auction)

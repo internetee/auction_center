@@ -55,16 +55,17 @@
             </div>
 
             <div class="ten wide column">
-                <h3>Registered & unregistered domains vs number of paid & unpaid invoices</h3>
+                <h3>Registered & unregistered domains vs number of paid & unpaid invoices by week
+                </h3>
                 <%= line_chart [
                     { name: 'Registered_domains',
-                      data: @data[:registered_domains_daily] },
+                      data: @data[:registered_weekly] },
                     { name: 'Unregistered_domains',
-                      data: @data[:unregistered_domains_daily] },
+                      data: @data[:unregistered_weekly] },
                     { name: 'Invoices total',
-                      data: @data[:total_invoices_count] },
+                      data: @data[:paid_invoices_weekly] },
                     { name: 'Unpaid Invoices',
-                      data: @data[:unpaid_invoices_count] }
+                      data: @data[:unpaid_invoices_weekly] }
                                ], id: 'domains-invoices-chart' %>
             </div>
 

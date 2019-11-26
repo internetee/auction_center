@@ -20,11 +20,11 @@ class StatisticsReport
     end
 
     def gather_data
-      count_daily_data
-      count_weekly_data
+      daily_data
+      weekly_data
     end
 
-    def count_daily_data
+    def daily_data
       invoices_by_date = Invoice.where(issue_date: start_date..end_date).group_by(&:issue_date)
       (start_date..end_date).each do |date|
         invoices = invoices_by_date[date]
@@ -39,7 +39,7 @@ class StatisticsReport
       end
     end
 
-    def count_weekly_data
+    def weekly_data
       (start_date..end_date).each do |date|
         week_start = date.beginning_of_week
         next unless @prev_week_start.blank? || @prev_week_start != week_start
