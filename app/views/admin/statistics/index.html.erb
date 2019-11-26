@@ -49,9 +49,9 @@
             </div>
 
             <div class="ten wide column">
-                <h3>Unpaid invoices percentage</h3>
-                <%= line_chart @data[:unpaid_invoice_percentage],
-                               id: 'unpaid-invoices-percentage-chart' %>
+                <h3>Unpaid invoices percentage by week</h3>
+                <%= line_chart @data[:unpaid_invoice_percentage_weekly],
+                               id: 'unpaid-invoices-percentage-weekly-chart' %>
             </div>
 
             <div class="ten wide column">

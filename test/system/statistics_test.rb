@@ -21,7 +21,7 @@ class StatisticsTest < ApplicationSystemTestCase
     assert(page.has_css?('#average-bids-chart'))
     assert(page.has_css?('#unregistered-monthly-chart'))
     assert(page.has_css?('#paid-domains-monthly-chart'))
-    assert(page.has_css?('#unpaid-invoices-percentage-chart'))
+    assert(page.has_css?('#unpaid-invoices-percentage-weekly-chart'))
     assert(page.has_css?('#domains-invoices-chart'))
     assert(page.has_css?('#users-chart'))
     assert(page.has_css?('#countries-chart'))
