@@ -1,5 +1,7 @@
 class StatisticsReport
   class DomainsData
+    include Concerns::WeeklyData
+
     attr_reader :start_date
     attr_reader :end_date
     ATTRS = %i[unregistered_domains_daily
@@ -59,32 +61,21 @@ class StatisticsReport
     end
 
     def weekly_domains
-      (start_date..end_date).each do |date|
-        week_start = date.beginning_of_week
-        next unless @prev_week_start.blank? || @prev_week_start != week_start
-
-        week_end = date.end_of_week
-
-        assign_weekly_data(week_start: week_start, week_end: week_end)
-
-        @prev_week_start = week_start
+      form_weekly_data do |week_start, week_end|
+        @registered_weekly[week_start] = registered_by_period(period_start: week_start,
+                                                              period_end: week_end)
+        @unregistered_weekly[week_start] = unregistered_by_period(period_start: week_start,
+                                                                  period_end: week_end)
       end
     end
 
     def assign_monthly_data(month_start:, month_end:)
       @registered_monthly[month(month_start)] = registered_by_period(period_start: month_start,
-                                                                   period_end: month_end)
+                                                                     period_end: month_end)
       @auctions_by_end_month[month(month_start)] = auctions_by_period(period_start: month_start,
                                                                       period_end: month_end)
       @unregistered_monthly[month(month_start)] = unregistered_by_period(period_start: month_start,
-                                                                       period_end: month_end)
-    end
-
-    def assign_weekly_data(week_start:, week_end:)
-      @registered_weekly[week_start] = registered_by_period(period_start: week_start,
-                                                            period_end: week_end)
-      @unregistered_weekly[week_start] = unregistered_by_period(period_start: week_start,
-                                                                period_end: week_end)
+                                                                         period_end: month_end)
     end
 
     def registered_by_period(period_start:, period_end:)

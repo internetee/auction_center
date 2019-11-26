@@ -1,5 +1,6 @@
 class StatisticsReport
   class InvoiceData
+    include Concerns::WeeklyData
     attr_reader :start_date
     attr_reader :end_date
     ATTRS = %i[unpaid_invoice_percentage
@@ -40,26 +41,15 @@ class StatisticsReport
     end
 
     def weekly_data
-      (start_date..end_date).each do |date|
-        week_start = date.beginning_of_week
-        next unless @prev_week_start.blank? || @prev_week_start != week_start
-
-        week_end = date.end_of_week
-
-        assign_weekly_data(week_start: week_start, week_end: week_end)
-
-        @prev_week_start = week_start
-      end
-    end
-
-    def assign_weekly_data(week_start:, week_end:)
-      @total_invoices_weekly[week_start] = total_by_week(week_start: week_start,
-                                                         week_end: week_end)
-      @paid_invoices_weekly[week_start] = paid_by_week(week_start: week_start,
-                                                       week_end: week_end)
-      @unpaid_invoices_weekly[week_start] = unpaid_by_week(week_start: week_start,
+      form_weekly_data do |week_start, week_end|
+        @total_invoices_weekly[week_start] = total_by_week(week_start: week_start,
                                                            week_end: week_end)
-      calculate_unpaid_percentage_weekly(week_start)
+        @paid_invoices_weekly[week_start] = paid_by_week(week_start: week_start,
+                                                         week_end: week_end)
+        @unpaid_invoices_weekly[week_start] = unpaid_by_week(week_start: week_start,
+                                                             week_end: week_end)
+        calculate_unpaid_percentage_weekly(week_start)
+      end
     end
 
     def total_by_week(week_start:, week_end:)
