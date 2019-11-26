@@ -20,6 +20,7 @@ class StatisticsTest < ApplicationSystemTestCase
     visit admin_statistics_path
     assert(page.has_css?('#average-bids-chart'))
     assert(page.has_css?('#unregistered-domains-chart'))
+    assert(page.has_css?('#paid-domains-monthly-chart'))
     assert(page.has_css?('#unpaid-invoices-percentage-chart'))
     assert(page.has_css?('#domains-invoices-chart'))
     assert(page.has_css?('#users-chart'))

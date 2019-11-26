@@ -39,6 +39,11 @@
             </div>
 
             <div class="ten wide column">
+                <h3>Paid domains monthly percentage</h3>
+                <%= line_chart @data[:registered_monthly_percent], id: 'paid-domains-monthly-chart' %>
+            </div>
+
+            <div class="ten wide column">
                 <h3>Paid but unregistered domains</h3>
                 <%= line_chart @data[:unregistered_domains], id: 'unregistered-domains-chart' %>
             </div>
@@ -53,9 +58,9 @@
                 <h3>Registered & unregistered domains vs number of paid & unpaid invoices</h3>
                 <%= line_chart [
                     { name: 'Registered_domains',
-                      data: @data[:registered_domains_count_by_end] },
+                      data: @data[:registered_domains_daily] },
                     { name: 'Unregistered_domains',
-                      data: @data[:unregistered_domains_count_by_end] },
+                      data: @data[:unregistered_domains_daily] },
                     { name: 'Invoices total',
                       data: @data[:total_invoices_count] },
                     { name: 'Unpaid Invoices',
