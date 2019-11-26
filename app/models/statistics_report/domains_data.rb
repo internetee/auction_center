@@ -4,6 +4,9 @@ class StatisticsReport
     attr_reader :end_date
     ATTRS = %i[unregistered_domains_daily
                registered_domains_daily
+               registered_month
+               unregistered_month
+               auctions_by_end_month
                auctions_by_end_daily
                registered_monthly_percent].freeze
 
@@ -18,7 +21,7 @@ class StatisticsReport
     def gather_data
       daily_domains
       daily_auctions
-      monthly_registered_domains
+      monthly_domains
     end
 
     def daily_domains
@@ -29,62 +32,71 @@ class StatisticsReport
     end
 
     def daily_auctions
-      auctions = Auction.all.joins(:result).group_by{ |auction| auction.ends_at.to_date }
+      auctions = Auction.all.joins(:result).group_by { |auction| auction.ends_at.to_date }
       (start_date..end_date).each do |date|
         @auctions_by_end_daily[date] = auctions[date]&.count.to_i
       end
     end
 
-    def monthly_registered_domains
+    def monthly_domains
       (start_date..end_date).each do |date|
         month_start = date.beginning_of_month
         next unless @prev_month_start.blank? || @prev_month_start != month_start
 
         month_end = date.end_of_month
 
-        registered_month = registered_month(month_start: month_start, month_end: month_end)
-        auctions_month = auctions_month(month_start: month_start, month_end: month_end)
+        assign_monthly_data(month_start: month_start, month_end: month_end)
 
-        registered_percent(registered_month: registered_month,
-                           auctions_month: auctions_month,
+        registered_percent(registered_month: @registered_month[month(month_start)],
+                           auctions_month: @auctions_by_end_month[month(month_start)],
                            month_start: month_start)
 
         @prev_month_start = month_start
       end
     end
 
-    def registered_month(month_start:, month_end:)
+    def assign_monthly_data(month_start:, month_end:)
+      @registered_month[month(month_start)] = registered_by_month(month_start: month_start,
+                                                                  month_end: month_end)
+      @auctions_by_end_month[month(month_start)] = auctions_by_month(month_start: month_start,
+                                                                     month_end: month_end)
+      @unregistered_month[month(month_start)] = unregistered_by_month(month_start: month_start,
+                                                                      month_end: month_end)
+    end
+
+    def registered_by_month(month_start:, month_end:)
       @registered_domains_daily.select { |key, _value| key >= month_start && key <= month_end }
                                .values.sum || 0
     end
 
-    def auctions_month(month_start:, month_end:)
+    def auctions_by_month(month_start:, month_end:)
       @auctions_by_end_daily.select { |key, _value| key >= month_start && key <= month_end }
                             .values.sum || 0
     end
 
+    def unregistered_by_month(month_start:, month_end:)
+      @unregistered_domains_daily.select { |key, _value| key >= month_start && key <= month_end }
+                                 .values.sum || 0
+    end
+
     def registered_percent(registered_month:, auctions_month:, month_start:)
-      month = month_start.strftime("%B")
-      @registered_monthly_percent[month] = if auctions_month.positive?
-                                             registered_month * 100.0 / auctions_month
-                                           else
-                                             0
-                                           end
+      @registered_monthly_percent[month(month_start)] = if auctions_month.positive?
+                                                          registered_month * 100.0 / auctions_month
+                                                        else
+                                                          0
+                                                        end
     end
 
     def unregistered_domains
-      Result.unregistered
-            .joins(:auction)
-            .where(auctions: { ends_at: start_date.beginning_of_day..end_date.end_of_day })
-            .preload(:auction)
-            .group_by { |result| result.auction.ends_at.to_date }
+      Result.unregistered.grouped_by_auctions(start_date: start_date, end_date: end_date)
     end
 
     def registered_domains
-      Result.registered.joins(:auction)
-            .where(auctions: { ends_at: start_date.beginning_of_day..end_date.end_of_day })
-            .preload(:auction)
-            .group_by { |result| result.auction.ends_at.to_date }
+      Result.registered.grouped_by_auctions(start_date: start_date, end_date: end_date)
+    end
+
+    def month(date)
+      date.strftime('%B')
     end
   end
 end
