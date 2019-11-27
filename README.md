@@ -24,6 +24,9 @@ password: password
 
 ## API
 
+System provides auction API endpoint & self-health check API endpoint.
+
+### Auction API
 Auction center exposes list of current auctions as JSON api. Time reported in `ends_at` and `starts_at` are always in UTC.
 
 ```
@@ -45,6 +48,9 @@ Content-Type: application/json
 ]
 ```
 
+### Health check API
+
+Documentation on health check API is available at project WiKi [here](https://github.com/internetee/auction_center/wiki/Health-check-API).
 ## Settings
 
 There are certain settings stored in the database that are used for the application logic. For example, the currency in which all auctions are conducted. An administrator can change these settings in /admin/settings page.
