@@ -1,3 +1,6 @@
+27.11.2019
+* Limited the wishlist records to domain extensions registry is responsible for. Partially solves issue #271 [#384](https://github.com/internetee/auction_center/pull/384)
+
 26.11.2019
 * Fixes response bug if registry integration disabled [#430](https://github.com/internetee/auction_center/pull/430)
 
