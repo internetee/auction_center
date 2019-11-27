@@ -1,9 +1,8 @@
 class Setting < ApplicationRecord
   include Concerns::FormatValidator
-  validates :code, presence: true
+  validates :code, presence: true, uniqueness: true
   validates :description, presence: true
   validates :value, presence: true
-  validates :code, uniqueness: true
 
   def self.auction_currency
     Setting.find_by(code: :auction_currency).value
@@ -101,5 +100,10 @@ class Setting < ApplicationRecord
   def self.violations_count_regulations_link
     hash = Setting.find_by(code: :violations_count_regulations_link)&.value
     hash.present? ? JSON.parse(hash).with_indifferent_access[I18n.locale] : nil
+  end
+
+  def self.wishlist_supported_domain_extensions
+    extensions = Setting.find_by(code: :wishlist_supported_domain_extensions)
+    extensions.present? ? JSON.parse(extensions.value) : []
   end
 end
