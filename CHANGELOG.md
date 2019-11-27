@@ -1,3 +1,6 @@
+26.11.2019
+* Fixes response bug if registry integration disabled [#430](https://github.com/internetee/auction_center/pull/430)
+
 25.11.2019
 * Added an option for the users to order daily auction list on email [#355](https://github.com/internetee/auction_center/issues/355)
 
