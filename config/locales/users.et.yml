@@ -64,6 +64,9 @@ et:
     destroy:
       deleted: "Oled välja logitud ja sinu konto on kustutatud."
 
+    toggle_subscription:
+      subscription_status_toggled_flash: "Igapäevase oksjoninimekirja saatmise seaded muudetud"
+
   activerecord:
     attributes:
       user:
@@ -78,3 +81,4 @@ et:
         password_confirmation: "Salasõna kinnitus"
         identity_code: "Isikukood"
         daily_summary: "Soovin saada iga päev oksjonil olevate domeenide nimekirja meilile"
+
