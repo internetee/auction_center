@@ -24,7 +24,7 @@ module DailyAuctionEmailHelper
 
   def link_hint(user = nil)
     if user&.daily_summary
-      'Toggle summary'
+      t('.auction_list_unsubscribe_tooltip')
     else
       t('.auction_list_tooltip')
     end

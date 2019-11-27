@@ -26,7 +26,7 @@ class UsersController < ApplicationController
     @user = current_user
     @user.daily_summary = !@user.daily_summary
     @user.save!
-    redirect_to :auctions, notice: 'Subscription status changed'
+    redirect_to :auctions, notice: t('.subscription_status_toggled_flash')
   end
 
   # POST /users/new
