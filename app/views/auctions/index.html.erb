@@ -19,9 +19,15 @@
                 <% end %>
             <% end %>
         </div>
-            <%= link_to user_edit_authwall_path, :'data-tooltip' => t('.auction_list_tooltip'), :'data-inverted' => "", :'data-position' => "right center", class: 'daily-summary-link ui icon primary basic button' do %>
-                <i class="mail icon"></i>
-            <% end %>
+            <%= daily_summary_link %>
+            <%#= link_to user_edit_authwall_path, :'data-tooltip' => t('.auction_list_tooltip'), :'data-inverted' => "", :'data-position' => "right center", class: 'daily-summary-link ui icon primary basic button' do %>
+<!--                <i class="icons">-->
+<!--                    <i class="mail icon"></i>-->
+                    <%# if current_user && current_user.daily_summary %>
+<!--                      <i class="top right corner huge green check icon"></i>-->
+                    <%# end %>
+<!--                </i>-->
+            <%# end %>
     </div>
 </div>
 
