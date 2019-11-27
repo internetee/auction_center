@@ -37,7 +37,8 @@ class StatisticsReport
     end
 
     def daily_auctions
-      auctions = Auction.all.joins(:result).group_by { |auction| auction.ends_at.to_date }
+      auctions = Auction.for_period(start_date, end_date).joins(:result)
+                        .group_by { |auction| auction.ends_at.to_date }
       (start_date..end_date).each do |date|
         @auctions_by_end_daily[date] = auctions[date]&.count.to_i
       end

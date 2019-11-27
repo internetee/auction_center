@@ -16,8 +16,7 @@ class Auction < ApplicationRecord
   }
 
   scope :for_period, lambda { |start_date, end_date|
-    where('ends_at >= :start_date AND ends_at <= :end_date ',
-          start_date: start_date.beginning_of_day, end_date: end_date.end_of_day)
+    where(ends_at: start_date.beginning_of_day..end_date.end_of_day)
   }
 
   scope :without_offers, -> { includes(:offers).where(offers: { auction_id: nil }) }

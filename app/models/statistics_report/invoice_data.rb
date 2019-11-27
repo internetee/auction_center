@@ -26,7 +26,6 @@ class StatisticsReport
     end
 
     def daily_data
-      invoices_by_date = Invoice.where(issue_date: start_date..end_date).group_by(&:issue_date)
       (start_date..end_date).each do |date|
         invoices = invoices_by_date[date]
         init_invoices_data(date)
@@ -38,6 +37,11 @@ class StatisticsReport
 
         unpaid_invoice_percentage[date] = calculate_unpaid_percentage(date)
       end
+    end
+
+    def invoices_by_date
+      Invoice.where(issue_date: start_date.beginning_of_day..end_date.end_of_day)
+             .group_by(&:issue_date)
     end
 
     def weekly_data
