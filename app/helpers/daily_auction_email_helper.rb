@@ -32,7 +32,7 @@ module DailyAuctionEmailHelper
 
   def mail_icon_with_check
     content_tag(:i, '', class: 'big icons') do
-      concat(content_tag(:i, '', class: 'mail icon'))
+      concat(content_tag(:i, '', class: 'mail icon no_margin'))
       concat(content_tag(:i, '',
                          class: 'top right corner green check icon'))
     end
