@@ -15,8 +15,7 @@ module DailyAuctionEmailHelper
     hint = link_hint(current_user)
     link_to(path,
             data: { tooltip: hint,
-                    inverted: '',
-                    position: 'right-center' },
+                    inverted: '' },
             class: 'daily-summary-link ui icon primary basic button') do
       yield
     end
