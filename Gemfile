@@ -25,7 +25,7 @@ gem 'simpleidn'
 gem 'sprockets', '~> 3.7'
 gem 'turbolinks', '~> 5'
 gem 'webpacker', '~> 4.0'
-gem 'wkhtmltopdf-binary'
+gem 'wkhtmltopdf-binary', '~> 0.12.5'
 
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]

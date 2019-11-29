@@ -314,7 +314,7 @@ DEPENDENCIES
   web-console (>= 3.3.0)
   webdrivers
   webpacker (~> 4.0)
-  wkhtmltopdf-binary
+  wkhtmltopdf-binary (~> 0.12.5)
 
 BUNDLED WITH
    2.0.2
