@@ -1,3 +1,6 @@
+29.11.2019
+* Upgrade to Rails 6 [#335](https://github.com/internetee/auction_center/issues/335)
+
 27.11.2019
 * Limited the wishlist records to domain extensions registry is responsible for. Partially solves issue #271 [#384](https://github.com/internetee/auction_center/pull/384)
 
