@@ -201,4 +201,13 @@ class UserTest < ActiveSupport::TestCase
     user.given_names = 'Given Names'
     user
   end
+
+  def test_user_can_be_discarded
+    users_count = User.all.count
+    user = User.find_by(email: 'user@auction.test')
+    assert(user.discard!)
+
+    assert_equal(users_count - 1, User.all.count)
+    assert_equal(users_count, User.all.with_discarded.count)
+  end
 end

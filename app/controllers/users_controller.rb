@@ -84,10 +84,12 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    @user.destroy
+    @user.discard if @user.discardable?
+
+    notice = @user.discarded? ? t('.deleted') : t('.cannot_delete')
 
     respond_to do |format|
-      format.html { redirect_to :root, notice: t('.deleted') }
+      format.html { redirect_to :root, notice: notice }
       format.json { head :no_content }
     end
   end

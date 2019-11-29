@@ -2129,6 +2129,13 @@ CREATE UNIQUE INDEX index_users_on_confirmation_token ON public.users USING btre
 
 
 --
+-- Name: index_users_on_discarded_at; Type: INDEX; Schema: public; Owner: -; Tablespace:
+--
+
+CREATE INDEX index_users_on_discarded_at ON public.users USING btree (discarded_at);
+
+
+--
 -- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 

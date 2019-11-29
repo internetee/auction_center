@@ -21,6 +21,8 @@ class Invoice < ApplicationRecord
 
   validate :user_id_must_be_the_same_as_on_billing_profile_or_nil
 
+  scope :issued, -> { where(status: statuses[:issued]) }
+
   scope :overdue, lambda {
     where('due_date < ? AND status = ?', Time.zone.today, statuses[:issued])
   }

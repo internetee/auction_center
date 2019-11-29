@@ -1,6 +1,8 @@
 require 'identity_code'
 
 class User < ApplicationRecord
+  include Discard::Model
+  default_scope -> { kept }
   PARTICIPANT_ROLE = 'participant'.freeze
   ADMINISTATOR_ROLE = 'administrator'.freeze
   ROLES = %w[administrator participant].freeze
@@ -34,6 +36,14 @@ class User < ApplicationRecord
   has_many :wishlist_items, dependent: :destroy
 
   scope :subscribed_to_daily_summary, -> { where(daily_summary: true) }
+
+  def active_for_authentication?
+    super && !discarded?
+  end
+
+  def discardable?
+    invoices.issued.blank?
+  end
 
   def identity_code_must_be_valid_for_estonia
     return if IdentityCode.new(country_code, identity_code).valid?
