@@ -70,18 +70,10 @@ class Auction < ApplicationRecord
 
   def overlaping_auctions
     dates_order = [starts_at, ends_at].sort
-    if persisted?
-      sql = <<~SQL.squish
-        id <> ? and domain_name = ?
-        AND tsrange(starts_at, ends_at, '[]') && tsrange(?, ?, '[]')
-      SQL
-
-      Auction.where(sql, id, domain_name, dates_order.first, dates_order.second)
-    else
-      sql = "domain_name = ? AND tsrange(starts_at, ends_at, '[]') && tsrange(?, ?, '[]')"
-
-      Auction.where(sql, domain_name, dates_order.first, dates_order.second)
-    end
+    sql = "domain_name = ? AND tsrange(starts_at, ends_at, '[]') && tsrange(?, ?, '[]')"
+    auctions = Auction.unscoped.where(sql, domain_name, dates_order.first, dates_order.second)
+    auctions = auctions.where.not(id: id) if persisted?
+    auctions
   end
 
   def can_be_deleted?

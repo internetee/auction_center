@@ -13,11 +13,11 @@ end
 Airbrake::SyncSender.prepend(::Patches::Airbrake::SyncSender)
 
 Airbrake.configure do |config|
-  config.host = Rails.application.config.customization.dig('airbrake', 'host')
-  config.project_id = Rails.application.config.customization.dig('airbrake', 'project_id')
-  config.project_key = Rails.application.config.customization.dig('airbrake', 'project_key')
+  config.host = Rails.application.config.customization.dig(:airbrake, :host)
+  config.project_id = Rails.application.config.customization.dig(:airbrake, :project_id)
+  config.project_key = Rails.application.config.customization.dig(:airbrake, :project_key)
 
-  config.environment = Rails.application.config.customization.dig('airbrake', 'environment') || Rails.env
+  config.environment = Rails.application.config.customization.dig(:airbrake, :environment) || Rails.env
   config.ignore_environments = %w(development test)
 
   config.blacklist_keys = [:password, :password_confirmation, 'password', 'password_confirmation']
