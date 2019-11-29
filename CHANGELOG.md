@@ -1,4 +1,5 @@
 29.11.2019
+* Daily auction list subscription option on auction list view subscribes and unsubscribes now without redirecting user to profile edit view [#428](https://github.com/internetee/auction_center/issues/428)
 * Upgrade to Rails 6 [#335](https://github.com/internetee/auction_center/issues/335)
 
 27.11.2019
