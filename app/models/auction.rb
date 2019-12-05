@@ -1,4 +1,5 @@
 class Auction < ApplicationRecord
+  searchkick
   validates :domain_name, presence: true
   validates :ends_at, presence: true
   validates :starts_at, presence: true
@@ -110,5 +111,18 @@ class Auction < ApplicationRecord
   def in_progress_by_date?(date)
     (starts_at <= date.end_of_day || starts_at <= date.beginning_of_day) &&
       (ends_at >= date.end_of_day || ends_at >= date.beginning_of_day)
+  end
+
+  def search_data
+    {
+      id: id,
+      domain_name: domain_name,
+      created_at: created_at,
+      starts_at: starts_at,
+      ends_at: ends_at,
+      active_dates: (starts_at.to_datetime..ends_at.to_datetime).map(&:to_s),
+      offers_count: offers.count,
+      completed: result.present?,
+    }
   end
 end

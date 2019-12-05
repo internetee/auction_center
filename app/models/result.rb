@@ -2,6 +2,7 @@ require 'auction_not_finished'
 require 'auction_not_found'
 
 class Result < ApplicationRecord
+  searchkick
   enum status: { no_bids: 'no_bids',
                  awaiting_payment: 'awaiting_payment',
                  payment_received: 'payment_received',
@@ -67,5 +68,15 @@ class Result < ApplicationRecord
     return unless awaiting_payment?
 
     ResultMailer.winner_email(self).deliver_later
+  end
+
+  def search_data
+    {
+      id: id,
+      domain_name: auction.domain_name,
+      created_at: created_at,
+      auction_ends_at: auction.ends_at.to_date,
+      status: status,
+    }
   end
 end

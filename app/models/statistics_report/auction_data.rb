@@ -1,5 +1,6 @@
 class StatisticsReport
   class AuctionData
+    include Concerns::SearchQueries
     attr_reader :start_date
     attr_reader :end_date
     ATTRS = %i[auctions
@@ -38,7 +39,7 @@ class StatisticsReport
     end
 
     def auctions_scoped
-      Auction.for_period(start_date, end_date).includes(:offers).preload(:offers)
+      Auction.search(where: { active_dates: (start_date..end_date).map(&:to_s) }, load: false)
     end
 
     def init_auction_report(date)
@@ -48,7 +49,7 @@ class StatisticsReport
     end
 
     def increment_auction_report(auction:, date:)
-      if auction.offers.size.positive?
+      if auction.offers_count.to_i.positive?
         @auctions_with_offers[date] += 1
       else
         @auctions_without_offers[date] += 1
@@ -62,7 +63,7 @@ class StatisticsReport
         @offers_per_day[date] ||= 0
         data.each do |auction|
           if date.beginning_of_day.between?(auction.starts_at, auction.ends_at)
-            @offers_per_day[date] += auction.offers.size
+            @offers_per_day[date] += auction.offers_count
           end
         end
       end

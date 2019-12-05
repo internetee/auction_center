@@ -1,6 +1,7 @@
 class StatisticsReport
   class DomainsData
     include Concerns::WeeklyData
+    include Concerns::SearchQueries
 
     attr_reader :start_date
     attr_reader :end_date
@@ -30,15 +31,17 @@ class StatisticsReport
     end
 
     def daily_domains
+      unreg_domains = domains_query('domain_not_registered')
+      reg_domains = domains_query('domain_registered')
       (start_date..end_date).each do |date|
-        @unregistered_domains_daily[date] = unregistered_domains[date]&.count.to_i
-        @registered_domains_daily[date] = registered_domains[date]&.count.to_i
+        @unregistered_domains_daily[date] = unreg_domains[date]&.count.to_i
+        @registered_domains_daily[date] = reg_domains[date]&.count.to_i
       end
     end
 
     def daily_auctions
-      auctions = Auction.for_period(start_date, end_date).joins(:result)
-                        .group_by { |auction| auction.ends_at.to_date }
+      auctions = auctions_query
+
       (start_date..end_date).each do |date|
         @auctions_by_end_daily[date] = auctions[date]&.count.to_i
       end
@@ -102,12 +105,12 @@ class StatisticsReport
                                                         end
     end
 
-    def unregistered_domains
-      Result.unregistered.grouped_by_auctions(start_date: start_date, end_date: end_date)
+    def domains_query(status)
+      query_by_date(klass: Result, query: result_query(status), date_field: 'auction_ends_at')
     end
 
-    def registered_domains
-      Result.registered.grouped_by_auctions(start_date: start_date, end_date: end_date)
+    def auctions_query
+      query_by_date(klass: auction, query: active_dates_query, date_field: '\ends_at')
     end
 
     def month(date)

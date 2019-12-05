@@ -2,6 +2,7 @@ require 'result_not_found'
 require 'result_not_sold'
 
 class Invoice < ApplicationRecord
+  searchkick
   enum status: { issued: 'issued',
                  paid: 'paid',
                  cancelled: 'cancelled' }
@@ -109,5 +110,13 @@ class Invoice < ApplicationRecord
 
   def overdue?
     due_date < Time.zone.today && issued?
+  end
+
+  def search_data
+    {
+      id: id,
+      issue_date: issue_date,
+      status: status,
+    }
   end
 end

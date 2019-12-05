@@ -1,6 +1,7 @@
 class StatisticsReport
   class InvoiceData
     include Concerns::WeeklyData
+    include Concerns::SearchQueries
     attr_reader :start_date
     attr_reader :end_date
     ATTRS = %i[unpaid_invoice_percentage
@@ -26,22 +27,17 @@ class StatisticsReport
     end
 
     def daily_data
+      invoices = query_by_date(klass: Invoice, query: issue_date_query, date_field: 'issue_date')
       (start_date..end_date).each do |date|
-        invoices = invoices_by_date[date]
         init_invoices_data(date)
-        next unless invoices
+        next unless invoices[date]
 
-        invoices.each do |invoice|
+        invoices[date].each do |invoice|
           increment_invoice_data(invoice: invoice, date: date)
         end
 
         unpaid_invoice_percentage[date] = calculate_unpaid_percentage(date)
       end
-    end
-
-    def invoices_by_date
-      Invoice.where(issue_date: start_date.beginning_of_day..end_date.end_of_day)
-             .group_by(&:issue_date)
     end
 
     def weekly_data
@@ -78,7 +74,7 @@ class StatisticsReport
 
     def increment_invoice_data(invoice:, date:)
       total_invoices_count[date] += 1
-      case invoice.status
+      case invoice['_source']['status']
       when Invoice.statuses[:paid]
         paid_invoices_count[date] += 1
       else
