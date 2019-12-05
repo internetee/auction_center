@@ -110,7 +110,7 @@ class StatisticsReport
     end
 
     def auctions_query
-      query_by_date(klass: auction, query: active_dates_query, date_field: '\ends_at')
+      query_by_date(klass: Auction, query: active_dates_query, date_field: '\ends_at')
     end
 
     def month(date)
