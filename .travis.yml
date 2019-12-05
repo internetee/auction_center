@@ -15,6 +15,7 @@ install:
   - nvm install
   - npm i -g yarn
 before_script:
+  - sleep 10
   - "cp config/database.yml.sample config/database.yml"
   - "cp config/customization.yml.sample config/customization.yml"
   - "bundle exec rake db:setup"
@@ -29,6 +30,7 @@ after_script:
   - "./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT"
 services:
   - postgresql
+  - elasticsearch
 addons:
   postgresql: "9.6"
   chrome: stable
