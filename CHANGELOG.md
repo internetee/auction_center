@@ -1,3 +1,7 @@
+06.12.2019
+* Cancelled invoices are now accessible to users [#424](https://github.com/internetee/auction_center/issues/424)
+* Removed multi column sorting  in Admin [#408](https://github.com/internetee/auction_center/pull/408)
+
 29.11.2019
 * Daily auction list subscription option on auction list view subscribes and unsubscribes now without redirecting user to profile edit view [#428](https://github.com/internetee/auction_center/issues/428)
 * Upgrade to Rails 6 [#335](https://github.com/internetee/auction_center/issues/335)
