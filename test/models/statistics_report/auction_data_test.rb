@@ -5,6 +5,14 @@ class AuctionDataTest < ActiveSupport::TestCase
     super
     @start_date = Auction.first.starts_at.to_date
     @end_date = Auction.last.ends_at.to_date
+    [Auction, Result, Invoice].each do |klass|
+      klass.reindex
+    end
+    Searchkick.enable_callbacks
+  end
+
+  def teardown
+    Searchkick.disable_callbacks
   end
 
   def test_gather_data_calls_required_methods
