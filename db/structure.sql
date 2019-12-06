@@ -791,6 +791,38 @@ ALTER SEQUENCE audit.wishlist_items_id_seq OWNED BY audit.wishlist_items.id;
 
 
 --
+-- Name: application_setting_formats; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE public.application_setting_formats (
+    id bigint NOT NULL,
+    data_type character varying NOT NULL,
+    settings jsonb[] DEFAULT '{}'::jsonb[] NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: application_setting_formats_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.application_setting_formats_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: application_setting_formats_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.application_setting_formats_id_seq OWNED BY public.application_setting_formats.id;
+
+
+--
 -- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1379,6 +1411,13 @@ ALTER TABLE ONLY audit.wishlist_items ALTER COLUMN id SET DEFAULT nextval('audit
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY public.application_setting_formats ALTER COLUMN id SET DEFAULT nextval('public.application_setting_formats_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY public.auctions ALTER COLUMN id SET DEFAULT nextval('public.auctions_id_seq'::regclass);
 
 
@@ -1552,6 +1591,14 @@ ALTER TABLE ONLY audit.users
 
 ALTER TABLE ONLY audit.wishlist_items
     ADD CONSTRAINT wishlist_items_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: application_setting_formats_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY public.application_setting_formats
+    ADD CONSTRAINT application_setting_formats_pkey PRIMARY KEY (id);
 
 
 --
@@ -2374,8 +2421,10 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190517073827'),
 ('20190521071232'),
 ('20190722100652'),
+('20190831131431'),
 ('20190915171050'),
 ('20191008124157'),
-('20191025092912');
+('20191025092912'),
+('20191205154107');
 
 

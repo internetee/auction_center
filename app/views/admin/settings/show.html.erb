@@ -24,7 +24,7 @@
             </div>
         </div>
 
-        <%= link_to t(:edit), edit_admin_setting_path(@setting), class: "ui button primary" %>
-        <%= link_to t(:versions_name), admin_setting_versions_path(@setting), class: "ui button primary" %>
+        <%= link_to t(:edit), edit_admin_setting_path(@setting.code), class: "ui button primary" %>
+        <%= link_to t(:versions_name), admin_setting_versions_path(@setting.code), class: "ui button primary" %>
     </div>
 </div>

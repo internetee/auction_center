@@ -7,7 +7,7 @@ module Admin
 
     # GET /admin/settings
     def index
-      @settings = Setting.accessible_by(current_ability)
+      @settings = ApplicationSetting.all
     end
 
     # GET /admin/settings/1
@@ -19,9 +19,9 @@ module Admin
     # PUT /admin/settings/1
     def update
       respond_to do |format|
-        if @setting.update!(update_params)
-          format.html { redirect_to admin_setting_path(@setting), notice: t(:updated) }
-          format.json { render :show, status: :ok, location: admin_setting_path(@setting) }
+        if @setting.test_update(update_params)
+          format.html { redirect_to admin_setting_path(@setting.code), notice: t(:updated) }
+          format.json { render :show, status: :ok, location: admin_setting_path(@setting.code) }
         else
           format.html { render :edit }
           format.json { render json: @setting.errors, status: :unprocessable_entity }
@@ -32,12 +32,12 @@ module Admin
     private
 
     def update_params
-      update_params = params.require(:setting).permit(:description, :value)
+      update_params = params.require(:application_setting).permit(:description, :value)
       merge_updated_by(update_params)
     end
 
     def set_setting
-      @setting = Setting.accessible_by(current_ability).find(params[:id])
+      @setting = ApplicationSetting.find_by_code(params[:id])
     end
 
     def authorize_user

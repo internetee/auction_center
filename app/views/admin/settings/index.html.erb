@@ -19,7 +19,7 @@
                     <% @settings.each do |setting| %>
                         <tr class="settings-table-row">
                             <td class="setting-code">
-                                <%=link_to setting.code, admin_setting_path(setting) %>
+                                <%=link_to setting.code, admin_setting_path(setting.code) %>
                             </td>
                             <td><%= setting.description %></td>
                             <td><%= formatted_setting_value(setting.value) %></td>

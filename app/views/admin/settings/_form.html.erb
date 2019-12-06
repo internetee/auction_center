@@ -1,4 +1,4 @@
-<%= form_with(model: setting, local: true, url: url, class: "ui form big") do |f| %>
+<%= form_with(model: setting, local: true, url: url, method: 'put', class: "ui form big") do |f| %>
     <div class="field">
         <%= f.label :code, t('settings.code') %>
         <%= f.text_field :code, class: "form-control", value: setting.code, disabled: true %>
