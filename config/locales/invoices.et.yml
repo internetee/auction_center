@@ -27,6 +27,7 @@ et:
 
     outstanding: "tasumata arved"
     paid: "tasutud arved"
+    cancelled: "tühistatud arved"
     mark_as_paid: "Märgi makstuks."
     marked_as_paid: "Arve makstuks märgitud."
     already_paid: "Arve on juba makstud."
