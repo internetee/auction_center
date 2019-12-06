@@ -120,7 +120,6 @@ class Auction < ApplicationRecord
       created_at: created_at,
       starts_at: starts_at,
       ends_at: ends_at,
-      active_dates: (starts_at.to_datetime..ends_at.to_datetime).map(&:to_s),
       offers_count: offers.count,
       completed: result.present?,
     }

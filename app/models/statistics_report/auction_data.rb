@@ -39,7 +39,8 @@ class StatisticsReport
     end
 
     def auctions_scoped
-      Auction.search(where: { active_dates: (start_date..end_date).map(&:to_s) }, load: false)
+      Auction.search(where: { starts_at: { lte: end_date }, ends_at: { gte: start_date } },
+                     load: false)
     end
 
     def init_auction_report(date)

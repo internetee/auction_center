@@ -22,7 +22,8 @@ class StatisticsReportTest < ActiveSupport::TestCase
   def test_count_auctions
     report = StatisticsReport.new(start_date: @start_date, end_date: @end_date)
     report.gather_data
-    asserted_count = Auction.search(where: { active_dates: (@end_date..@end_date).map(&:to_s) })
+    asserted_count = Auction.search(where: { starts_at: { lte: @end_date },
+                                             ends_at: { gte: @end_date } })
                             .count
     assert(report.auctions.is_a?(Hash))
     assert_equal(report.auctions[@end_date], asserted_count)

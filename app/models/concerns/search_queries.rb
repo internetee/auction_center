@@ -9,7 +9,7 @@ module Concerns
     end
 
     def active_dates_query
-      { active_dates: (start_date..end_date).map(&:to_s) }
+      { starts_at: { lte: end_date }, ends_at: { gte: start_date } }
     end
 
     def issue_date_query
