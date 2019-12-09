@@ -2,7 +2,6 @@ require 'result_not_found'
 require 'result_not_sold'
 
 class Invoice < ApplicationRecord
-  searchkick
   enum status: { issued: 'issued',
                  paid: 'paid',
                  cancelled: 'cancelled' }

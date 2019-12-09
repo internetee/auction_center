@@ -20,11 +20,9 @@ class StatisticsReport
     end
 
     def results_query
-      Result.search(where: { auction_ends_at: (start_date..end_date).map(&:to_s),
-                             status: 'domain_not_registered' },
-                    load: false)
-            .hits
-            .group_by { |result| result['_source']['auction_ends_at'].to_date }
+      StatisticsReport::Result.where(status: 'domain_not_registered')
+                              .where(auction_ends_at: start_date..end_date)
+                              .group_by { |result| result.auction_ends_at.to_date }
     end
   end
 end

@@ -90,8 +90,8 @@
 
             <div class="ten wide column">
                 <h3>Auction wins by country</h3>
-                <p><%= "Entries: #{@data[:winners_by_country].count}"%></p>
-                <%= geo_chart @data[:winners_by_country], id: 'countries-chart' %>
+                <%= geo_chart @data[:winners_by_country], id: 'countries-chart',
+                              library: { width:'500', height:'400'} %>
             </div>
         </div>
     </div>

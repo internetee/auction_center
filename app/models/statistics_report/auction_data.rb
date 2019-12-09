@@ -1,6 +1,5 @@
 class StatisticsReport
   class AuctionData
-    include Concerns::SearchQueries
     attr_reader :start_date
     attr_reader :end_date
     ATTRS = %i[auctions
@@ -39,8 +38,7 @@ class StatisticsReport
     end
 
     def auctions_scoped
-      Auction.search(where: { starts_at: { lte: end_date }, ends_at: { gte: start_date } },
-                     load: false)
+      StatisticsReport::Auction.where('starts_at <= ? AND ends_at >= ?', end_date, start_date)
     end
 
     def init_auction_report(date)

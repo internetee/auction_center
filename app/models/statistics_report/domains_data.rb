@@ -1,7 +1,6 @@
 class StatisticsReport
   class DomainsData
     include Concerns::WeeklyData
-    include Concerns::SearchQueries
 
     attr_reader :start_date
     attr_reader :end_date
@@ -41,7 +40,6 @@ class StatisticsReport
 
     def daily_auctions
       auctions = auctions_query
-
       (start_date..end_date).each do |date|
         @auctions_by_end_daily[date] = auctions[date]&.count.to_i
       end
@@ -106,11 +104,14 @@ class StatisticsReport
     end
 
     def domains_query(status)
-      query_by_date(klass: Result, query: result_query(status), date_field: 'auction_ends_at')
+      StatisticsReport::Result.where(status: status)
+                              .where(auction_ends_at: start_date..end_date)
+                              .group_by { |result| result.auction_ends_at.to_date }
     end
 
     def auctions_query
-      query_by_date(klass: Auction, query: active_dates_query, date_field: '\ends_at')
+      StatisticsReport::Auction.where('starts_at <= ? AND ends_at >= ?', end_date, start_date)
+                               .group_by { |auction| auction.ends_at.to_date }
     end
 
     def month(date)

@@ -1,5 +1,4 @@
 class Auction < ApplicationRecord
-  searchkick
   validates :domain_name, presence: true
   validates :ends_at, presence: true
   validates :starts_at, presence: true

@@ -2,7 +2,6 @@ require 'auction_not_finished'
 require 'auction_not_found'
 
 class Result < ApplicationRecord
-  searchkick
   enum status: { no_bids: 'no_bids',
                  awaiting_payment: 'awaiting_payment',
                  payment_received: 'payment_received',
