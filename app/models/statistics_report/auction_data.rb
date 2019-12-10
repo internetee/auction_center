@@ -38,7 +38,9 @@ class StatisticsReport
     end
 
     def auctions_scoped
-      StatisticsReport::Auction.where('starts_at <= ? AND ends_at >= ?', end_date, start_date)
+      StatisticsReport::Auction.where('starts_at <= ? AND ends_at >= ?',
+                                      end_date.to_date.end_of_day,
+                                      start_date.to_date.beginning_of_day)
     end
 
     def init_auction_report(date)

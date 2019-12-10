@@ -24,6 +24,8 @@
                     </div>
                 <% end %>
             </div>
+            <p><%= @start_date %><%= @start_date.class %></p>
+            <p><%= @end_date %><%= @end_date.class %></p>
             <div class="ten wide column">
                 <h3>Auctions by end date</h3>
                 <p><%= "Auctions total #{@data[:auctions].values.sum}"%></p>
