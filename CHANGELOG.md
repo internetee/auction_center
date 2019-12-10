@@ -1,3 +1,6 @@
+09.12.2019
+* Added Health check API documentation [#429](https://github.com/internetee/auction_center/issues/429)
+
 06.12.2019
 * Cancelled invoices are now accessible to users [#424](https://github.com/internetee/auction_center/issues/424)
 * Removed multi column sorting  in Admin [#408](https://github.com/internetee/auction_center/pull/408)
