@@ -1,5 +1,5 @@
 module Concerns
-  module WeeklyData
+  module ReportData
     extend ActiveSupport::Concern
 
     def form_weekly_data
@@ -13,6 +13,11 @@ module Concerns
 
         @prev_week_start = week_start
       end
+    end
+
+    def auctions_query
+      StatisticsReport::Auction.where('starts_at <= ? AND ends_at >= ?', end_date, start_date)
+                               .group_by { |auction| auction.ends_at.to_date }
     end
   end
 end

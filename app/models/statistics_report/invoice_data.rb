@@ -1,6 +1,6 @@
 class StatisticsReport
   class InvoiceData
-    include Concerns::WeeklyData
+    include Concerns::ReportData
     attr_reader :start_date
     attr_reader :end_date
     ATTRS = %i[unpaid_invoice_percentage

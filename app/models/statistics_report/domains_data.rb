@@ -1,6 +1,6 @@
 class StatisticsReport
   class DomainsData
-    include Concerns::WeeklyData
+    include Concerns::ReportData
 
     attr_reader :start_date
     attr_reader :end_date
@@ -107,11 +107,6 @@ class StatisticsReport
       StatisticsReport::Result.where(status: status)
                               .where(auction_ends_at: start_date..end_date)
                               .group_by { |result| result.auction_ends_at.to_date }
-    end
-
-    def auctions_query
-      StatisticsReport::Auction.where('starts_at <= ? AND ends_at >= ?', end_date, start_date)
-                               .group_by { |auction| auction.ends_at.to_date }
     end
 
     def month(date)

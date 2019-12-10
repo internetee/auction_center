@@ -1,5 +1,6 @@
 class StatisticsReport
   class AuctionData
+    include Concerns::ReportData
     attr_reader :start_date
     attr_reader :end_date
     ATTRS = %i[auctions
@@ -18,55 +19,36 @@ class StatisticsReport
 
     def gather_data
       auctions_count
-      daily_offers
       average_offers
     end
 
     def auctions_count
-      data = auctions_scoped
+      data = auctions_query
 
       (start_date..end_date).each do |date|
-        init_auction_report(date)
+        next if data[date].blank?
 
-        data.each do |auction|
-          if date.beginning_of_day.between?(auction.starts_at, auction.ends_at)
-            @auctions[date] += 1
-            increment_auction_report(auction: auction, date: date)
-          end
+        init_auction_report(date)
+        data[date].each do |auction|
+          @auctions[date] += 1
+          increment_auction_report(auction: auction, date: date)
         end
       end
-    end
-
-    def auctions_scoped
-      StatisticsReport::Auction.where('starts_at <= ? AND ends_at >= ?',
-                                      end_date.to_date.end_of_day,
-                                      start_date.to_date.beginning_of_day)
     end
 
     def init_auction_report(date)
       @auctions[date] ||= 0
       @auctions_with_offers[date] ||= 0
       @auctions_without_offers[date] ||= 0
+      @offers_per_day[date] ||= 0
     end
 
     def increment_auction_report(auction:, date:)
       if auction.offers_count.to_i.positive?
         @auctions_with_offers[date] += 1
+        @offers_per_day[date] += auction.offers_count
       else
         @auctions_without_offers[date] += 1
-      end
-    end
-
-    def daily_offers
-      data = auctions_scoped
-
-      (start_date..end_date).each do |date|
-        @offers_per_day[date] ||= 0
-        data.each do |auction|
-          if date.beginning_of_day.between?(auction.starts_at, auction.ends_at)
-            @offers_per_day[date] += auction.offers_count
-          end
-        end
       end
     end
 

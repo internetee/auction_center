@@ -17,4 +17,16 @@ class DBViewTest < ActiveSupport::TestCase
   def test_instance_responses
     assert(@object.respond_to?(:readonly?))
   end
+
+  def test_instance_readonly
+    assert(@object.readonly?)
+  end
+
+  def test_primary_key
+    assert_equal('id', @klass.primary_key)
+  end
+
+  def test_concern_included
+    assert(@klass.included_modules.include?(Concerns::DBView))
+  end
 end
