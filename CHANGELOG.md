@@ -1,3 +1,7 @@
+10.12.2019
+* Fixed rounding mode warning for Money gem [#442](https://github.com/internetee/auction_center/issues/442)
+* Health check API settings are seeded now [#443](https://github.com/internetee/auction_center/issues/443)
+
 09.12.2019
 * Added Health check API documentation [#429](https://github.com/internetee/auction_center/issues/429)
 
