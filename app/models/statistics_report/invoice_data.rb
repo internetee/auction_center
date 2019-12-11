@@ -10,7 +10,7 @@ class StatisticsReport
                total_invoices_weekly
                paid_invoices_weekly
                unpaid_invoices_weekly
-               unpaid_invoice_percentage_weekly].freeze
+               unpaid_invoice_percent_weekly].freeze
 
     attr_accessor(*ATTRS)
 
@@ -35,7 +35,7 @@ class StatisticsReport
           increment_invoice_data(invoice: invoice, date: date)
         end
 
-        unpaid_invoice_percentage[date] = calculate_unpaid_percentage(date)
+        @unpaid_invoice_percentage[date] = calculate_unpaid_percentage(date)
       end
     end
 
@@ -47,7 +47,7 @@ class StatisticsReport
                                                          week_end: week_end)
         @unpaid_invoices_weekly[week_start] = unpaid_by_week(week_start: week_start,
                                                              week_end: week_end)
-        calculate_unpaid_percentage_weekly(week_start)
+        @unpaid_invoice_percent_weekly[week_start] = calculate_unpaid_percentage_weekly(week_start)
       end
     end
 

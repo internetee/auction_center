@@ -58,8 +58,8 @@
 
             <div class="ten wide column">
                 <h3>Unpaid invoices percentage by week</h3>
-                <p><%= "Entries: #{@data[:unpaid_invoice_percentage_weekly].count}"%></p>
-                <%= line_chart @data[:unpaid_invoice_percentage_weekly],
+                <p><%= "Entries: #{@data[:unpaid_invoice_percent_weekly].count}"%></p>
+                <%= line_chart @data[:unpaid_invoice_percent_weekly],
                                id: 'unpaid-invoices-percentage-weekly-chart' %>
             </div>
 
