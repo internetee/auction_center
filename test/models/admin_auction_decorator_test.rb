@@ -41,4 +41,12 @@ class AdminAuctionDecoratorTest < ActiveSupport::TestCase
     )
     assert_equal(Money.new(5000, Setting.auction_currency), decorated_auction.highest_price)
   end
+
+  def test_instance_implements_turns_count_method
+    auctions = AdminAuctionDecorator.with_highest_offers
+    decorated_auction = AdminAuctionDecorator.new(
+        auctions.find_by(auctions: { domain_name: 'with-offers.test' })
+    )
+    assert_equal(@persisted_auction.turns_count, decorated_auction.turns_count)
+  end
 end

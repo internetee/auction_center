@@ -107,20 +107,12 @@ class Auction < ApplicationRecord
     end
   end
 
-  def in_progress_by_date?(date)
-    (starts_at <= date.end_of_day || starts_at <= date.beginning_of_day) &&
-      (ends_at >= date.end_of_day || ends_at >= date.beginning_of_day)
-  end
-
-  def search_data
-    {
-      id: id,
-      domain_name: domain_name,
-      created_at: created_at,
-      starts_at: starts_at,
-      ends_at: ends_at,
-      offers_count: offers.count,
-      completed: result.present?,
-    }
+  def turns_count
+    auctions = Auction.where(domain_name: domain_name)
+    result_statuses = auctions.order(:ends_at).map{ |auction| auction.result&.status }
+    return 0 unless result_statuses.present? && result_statuses.first.present?
+    result_statuses.reduce(0) do |count, status|
+      status == ::Result.statuses[:domain_registered] ? count = 1 : count += 1
+    end
   end
 end

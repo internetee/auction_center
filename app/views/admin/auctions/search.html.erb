@@ -47,6 +47,9 @@
                                 <%= t('auctions.offers') %>
                                 <%= order_buttons('admin_auction_decorators.number_of_offers') %>
                             </th>
+                            <th scope="col">
+                                <%= t('auctions.turns_count') %>
+                            </th>
                             <th scope="col"><%= clear_order_button %></th>
                         </tr>
                     </thead>
@@ -61,6 +64,7 @@
                                 <td><%= I18n.l(auction.ends_at) %></td>
                                 <td class="auction-highest-offer"><%= auction.highest_price %></td>
                                 <td class="auction-offers-count"><%= auction.number_of_offers %></td>
+                                <td class="auction-turns-count"><%= auction.turns_count %></td>
                                 <td></td>
                             </tr>
                         <% end %>

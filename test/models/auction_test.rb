@@ -123,6 +123,34 @@ class AuctionTest < ActiveSupport::TestCase
     assert_overlap_error_messages(finishes_earlier_starts_later)
   end
 
+  def test_turns_count_set_if_no_domain_registered
+    asserted_count_results_total = 2
+    invoiceable_result = results(:expired_participant)
+    invoiceable_result.update(auction: @with_invoice_auction,
+                              status: Result.statuses[:domain_not_registered])
+    noninvoiceable_result = results(:without_offers_nobody)
+    @other_persisted_auction.update!(domain_name: @with_invoice_auction.domain_name,
+                                     starts_at: @with_invoice_auction.starts_at + 1.month,
+                                     ends_at: @with_invoice_auction.ends_at + 1.month)
+    noninvoiceable_result.update(auction: @other_persisted_auction,
+                                 status: Result.statuses[:domain_not_registered])
+    assert_equal(@with_invoice_auction.turns_count, asserted_count_results_total)
+  end
+
+  def test_turns_count_drops_if_domain_registered
+    asserted_count_after_domain_registration = 1
+    invoiceable_result = results(:expired_participant)
+    invoiceable_result.update(auction: @with_invoice_auction,
+                              status: Result.statuses[:domain_not_registered])
+    noninvoiceable_result = results(:without_offers_nobody)
+    @other_persisted_auction.update!(domain_name: @with_invoice_auction.domain_name,
+                                     starts_at: @with_invoice_auction.starts_at + 1.month,
+                                     ends_at: @with_invoice_auction.ends_at + 1.month)
+    noninvoiceable_result.update(auction: @other_persisted_auction,
+                                 status: Result.statuses[:domain_registered])
+    assert_equal(@with_invoice_auction.turns_count, asserted_count_after_domain_registration)
+  end
+
   def assert_overlap_error_messages(object)
     assert(object.errors[:ends_at].include?('overlaps with another auction'))
     assert(object.errors[:starts_at].include?('overlaps with another auction'))
