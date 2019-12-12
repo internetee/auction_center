@@ -109,10 +109,15 @@ class Auction < ApplicationRecord
 
   def turns_count
     auctions = Auction.where(domain_name: domain_name)
-    result_statuses = auctions.order(:ends_at).map{ |auction| auction.result&.status }
+    result_statuses = auctions.order(:ends_at).map { |auction| auction.result&.status }
     return 0 unless result_statuses.present? && result_statuses.first.present?
-    result_statuses.reduce(0) do |count, status|
-      status == ::Result.statuses[:domain_registered] ? count = 1 : count += 1
+
+    calculate_count(result_statuses)
+  end
+
+  def calculate_count(result_statuses)
+    result_statuses.reduce(0) do |sum, status|
+      status == ::Result.statuses[:domain_registered] ? 1 : sum + 1
     end
   end
 end
