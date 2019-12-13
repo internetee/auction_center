@@ -73,3 +73,5 @@ en:
 
     destroy:
       deleted: "You have been logged out and your account has been deleted."
+    toggle_subscription:
+      subscription_status_toggled_flash: "Subscription status changed."

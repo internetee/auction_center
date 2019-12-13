@@ -2,19 +2,19 @@ OpenIDConnect.logger = Rails.logger
 OpenIDConnect.debug!
 
 OpenIDConnect.http_config do |config|
-  config.proxy  = AuctionCenter::Application.config.customization.dig('tara', 'proxy')
+  config.proxy  = AuctionCenter::Application.config.customization.dig(:tara, :proxy)
 end
 
 OmniAuth.config.logger = Rails.logger
 # Block GET requests to avoid exposing self to CVE-2015-9284
 OmniAuth.config.allowed_request_methods = [:post]
 
-signing_keys = AuctionCenter::Application.config.customization.dig('tara', 'keys').to_json
-issuer = AuctionCenter::Application.config.customization.dig('tara', 'issuer')
-host = AuctionCenter::Application.config.customization.dig('tara', 'host')
-identifier = AuctionCenter::Application.config.customization.dig('tara', 'identifier')
-secret = AuctionCenter::Application.config.customization.dig('tara', 'secret')
-redirect_uri = AuctionCenter::Application.config.customization.dig('tara', 'redirect_uri')
+signing_keys = AuctionCenter::Application.config.customization.dig(:tara, :keys).to_json
+issuer = AuctionCenter::Application.config.customization.dig(:tara, :issuer)
+host = AuctionCenter::Application.config.customization.dig(:tara, :host)
+identifier = AuctionCenter::Application.config.customization.dig(:tara, :identifier)
+secret = AuctionCenter::Application.config.customization.dig(:tara, :secret)
+redirect_uri = AuctionCenter::Application.config.customization.dig(:tara, :redirect_uri)
 
 Rails.application.config.middleware.use OmniAuth::Builder do
   provider "tara", {

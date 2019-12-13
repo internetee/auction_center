@@ -52,6 +52,15 @@ class AdminOrderableTest < ApplicationSystemTestCase
     assert_appears_before('Orphan Profile', 'ACME Inc.')
   end
 
+  def test_order_links_are_with_single_parameter
+    visit admin_auctions_path
+
+    sorting_href = '/admin/auctions?order%5Badmin_auction_decorators.highest_offer_cents%5D=desc'
+
+    click_link(id: 'admin_auction_decorators.domain_name_desc_button')
+    assert(page.has_link?(href: sorting_href))
+  end
+
   def assert_appears_before(earlier_element, later_element)
     assert(page.text.index(earlier_element) < page.text.index(later_element))
   end

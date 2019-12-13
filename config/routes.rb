@@ -20,11 +20,14 @@ Rails.application.routes.draw do
   end
 
   match 'profile/edit', via: :get, to: 'users#edit_authwall', as: :user_edit_authwall
+  match '/profile/toggle_subscription', via: :get, to: 'users#toggle_subscription',
+        as: :user_toggle_sub
 
   namespace :admin, constraints: Constraints::Administrator.new do
     resources :auctions, except: disallowed_auction_actions, concerns: %i[auditable searchable]
 
     resources :bans, except: %i[new show edit update], concerns: [:auditable]
+    resources :statistics, only: :index
     resources :billing_profiles, only: %i[index show], concerns: %i[auditable searchable]
     resources :invoices, except: %i[new create destroy], concerns: %i[auditable searchable] do
       member do

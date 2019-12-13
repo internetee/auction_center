@@ -15,6 +15,13 @@ class Auction < ApplicationRecord
     where('ends_at < ? and id NOT IN (SELECT results.auction_id FROM results)', Time.now.utc)
   }
 
+  scope :for_period, lambda { |start_date, end_date|
+    where(ends_at: start_date.beginning_of_day..end_date.end_of_day)
+  }
+
+  scope :without_offers, -> { includes(:offers).where(offers: { auction_id: nil }) }
+  scope :with_offers, -> { includes(:offers).where.not(offers: { auction_id: nil }) }
+
   delegate :count, to: :offers, prefix: true
   delegate :size, to: :offers, prefix: true
 
@@ -70,18 +77,10 @@ class Auction < ApplicationRecord
 
   def overlaping_auctions
     dates_order = [starts_at, ends_at].sort
-    if persisted?
-      sql = <<~SQL.squish
-        id <> ? and domain_name = ?
-        AND tsrange(starts_at, ends_at, '[]') && tsrange(?, ?, '[]')
-      SQL
-
-      Auction.where(sql, id, domain_name, dates_order.first, dates_order.second)
-    else
-      sql = "domain_name = ? AND tsrange(starts_at, ends_at, '[]') && tsrange(?, ?, '[]')"
-
-      Auction.where(sql, domain_name, dates_order.first, dates_order.second)
-    end
+    sql = "domain_name = ? AND tsrange(starts_at, ends_at, '[]') && tsrange(?, ?, '[]')"
+    auctions = Auction.unscoped.where(sql, domain_name, dates_order.first, dates_order.second)
+    auctions = auctions.where.not(id: id) if persisted?
+    auctions
   end
 
   def can_be_deleted?
@@ -106,5 +105,22 @@ class Auction < ApplicationRecord
     else
       false
     end
+  end
+
+  def in_progress_by_date?(date)
+    (starts_at <= date.end_of_day || starts_at <= date.beginning_of_day) &&
+      (ends_at >= date.end_of_day || ends_at >= date.beginning_of_day)
+  end
+
+  def search_data
+    {
+      id: id,
+      domain_name: domain_name,
+      created_at: created_at,
+      starts_at: starts_at,
+      ends_at: ends_at,
+      offers_count: offers.count,
+      completed: result.present?,
+    }
   end
 end

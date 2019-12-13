@@ -22,8 +22,9 @@ class AdminJobsTest < ApplicationSystemTestCase
     assert_text('InvoiceCancellationJob')
     assert_text('DailySummaryJob')
     assert_text('DailyBroadcastAuctionsJob')
+    assert_text('DailyViewRefreshJob')
 
-    assert(page.has_button?('Run', count: 5))
+    assert(page.has_button?('Run', count: 6))
 
     within('tr.ResultCreationJob') do
       assert_enqueued_with(job: ResultCreationJob) do

@@ -78,9 +78,20 @@ class InvoicesTest < ApplicationSystemTestCase
   def test_invoice_list_contains_issued_invoices
     visit invoices_path
 
-    within('tbody.invoices-table-body') do
+    within('tbody.invoices-table-body.issued') do
       assert_text('Domain transfer code for with-invoice.test')
       assert_text('10.00 €')
+    end
+  end
+
+  def test_invoice_list_contains_cancelled_invoices
+    @invoice.update(status: Invoice.statuses[:cancelled])
+    @invoice.reload
+    visit invoices_path
+
+    within('tbody.invoices-table-body.cancelled') do
+      assert_text('Domain transfer code for with-invoice.test')
+      assert_text('10.00')
     end
   end
 

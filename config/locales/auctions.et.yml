@@ -21,10 +21,13 @@ et:
       title: "Domeenioksjonid"
       search: "Domeeni otsing"
       auction_list_tooltip: "Saada mulle iga päev värske oksjoninimekiri meilile"
+      auction_list_unsubscribe_tooltip: "Ära saada mulle igal päeval oksjoninimekirja meilile"
 
     search:
       title: "Otsing"
       search: "Domeeni otsing"
+      auction_list_tooltip: "Saada mulle iga päev värske oksjoninimekiri meilile"
+      auction_list_unsubscribe_tooltip: "Ära saada mulle igal päeval oksjoninimekirja meilile"
 
     top_grid:
       title: "Oksjonil olevad domeenid:"

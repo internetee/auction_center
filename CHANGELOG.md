@@ -1,3 +1,24 @@
+13.12.2019
+* Added basic stats to admin [#174](https://github.com/internetee/auction_center/issues/174)
+
+10.12.2019
+* Fixed rounding mode warning for Money gem [#442](https://github.com/internetee/auction_center/issues/442)
+* Health check API settings are seeded now [#443](https://github.com/internetee/auction_center/issues/443)
+
+09.12.2019
+* Added Health check API documentation [#429](https://github.com/internetee/auction_center/issues/429)
+
+06.12.2019
+* Cancelled invoices are now accessible to users [#424](https://github.com/internetee/auction_center/issues/424)
+* Removed multi column sorting  in Admin [#408](https://github.com/internetee/auction_center/pull/408)
+
+29.11.2019
+* Daily auction list subscription option on auction list view subscribes and unsubscribes now without redirecting user to profile edit view [#428](https://github.com/internetee/auction_center/issues/428)
+* Upgrade to Rails 6 [#335](https://github.com/internetee/auction_center/issues/335)
+
+27.11.2019
+* Limited the wishlist records to domain extensions registry is responsible for. Partially solves issue #271 [#384](https://github.com/internetee/auction_center/pull/384)
+
 26.11.2019
 * Fixes response bug if registry integration disabled [#430](https://github.com/internetee/auction_center/pull/430)
 

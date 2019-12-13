@@ -34,6 +34,16 @@ class Result < ApplicationRecord
       .where('registration_reminder_sent_at IS NULL')
   }
 
+  scope :registered, -> { where(status: statuses[:domain_registered]) }
+  scope :unregistered, -> { where(status: statuses[:domain_not_registered]) }
+
+  scope :grouped_by_auctions, lambda { |start_date:, end_date:|
+    joins(:auction)
+      .where(auctions: { ends_at: start_date.beginning_of_day..end_date.end_of_day })
+      .preload(:auction)
+      .group_by { |result| result.auction.ends_at.to_date }
+  }
+
   def self.create_from_auction(auction_id)
     auction = Auction.find_by(id: auction_id)
 
@@ -57,5 +67,15 @@ class Result < ApplicationRecord
     return unless awaiting_payment?
 
     ResultMailer.winner_email(self).deliver_later
+  end
+
+  def search_data
+    {
+      id: id,
+      domain_name: auction.domain_name,
+      created_at: created_at,
+      auction_ends_at: auction.ends_at.to_date,
+      status: status,
+    }
   end
 end
