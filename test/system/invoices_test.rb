@@ -52,8 +52,9 @@ class InvoicesTest < ApplicationSystemTestCase
     visit invoice_path(@invoice.uuid)
     assert_text('Eesti Interneti SA, VAT number EE101286464')
 
-    setting = settings(:invoice_issuer)
-    setting.update!(value: 'foo bar baz')
+    settings_format = application_setting_formats(:string)
+    settings_format.update_setting!(code: 'invoice_issuer', value: 'foo bar baz')
+    settings_format.reload
 
     visit invoice_path(@invoice.uuid)
     assert_text('foo bar baz')

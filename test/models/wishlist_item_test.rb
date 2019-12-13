@@ -21,9 +21,10 @@ class WishlistItemTest < ActiveSupport::TestCase
   end
 
   def test_cannot_exceed_the_limit
-    setting = settings(:wishlist_size)
+    setting_format = application_setting_formats(:integer)
+    setting_format.update_setting!(code: 'wishlist_size', value: 1)
+    setting_format.reload
 
-    setting.update!(value: '1')
     WishlistItem.create!(user: @user, domain_name: 'dupe.test')
 
     item = WishlistItem.new(user: @user, domain_name: 'invalid.test')
@@ -75,8 +76,9 @@ class WishlistItemTest < ActiveSupport::TestCase
 
   def test_domain_has_valid_extension
     supported_extensions = ["ee"]
-    setting = settings(:application_name)
-    setting.update!(code: :wishlist_supported_domain_extensions, value: supported_extensions)
+    setting_format = application_setting_formats(:array)
+    setting_format.update_setting!(code: 'wishlist_supported_domain_extensions', value: supported_extensions)
+    setting_format.reload
 
     item = WishlistItem.new(user: @user, domain_name: 'dupe.ee')
     assert(item.valid?)

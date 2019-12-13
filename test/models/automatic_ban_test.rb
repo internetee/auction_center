@@ -65,8 +65,9 @@ class AutomaticBanTest < ActiveSupport::TestCase
   end
 
   def test_number_of_ban_offences_before_long_ban_is_configurable_in_settings
-    setting = settings(:ban_number_of_strikes)
-    setting.update!(value: '1')
+    setting_format = application_setting_formats(:integer)
+    setting_format.update_setting!(code: 'ban_number_of_strikes', value: 1)
+    setting_format.reload
 
     invoice, domain_name = create_bannable_offence(@user)
     ban = AutomaticBan.new(invoice: invoice, user: @user, domain_name: domain_name).create
@@ -126,7 +127,7 @@ class AutomaticBanTest < ActiveSupport::TestCase
     travel_back
     travel_to(auction.starts_at + 1) do
       Offer.create!(auction: auction,
-                    cents: rand(1000) + Setting.auction_minimum_offer,
+                    cents: rand(1000) + ApplicationSetting.auction_minimum_offer,
                     user: user, billing_profile: user.billing_profiles.sample)
     end
 

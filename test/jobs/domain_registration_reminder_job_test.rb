@@ -75,8 +75,9 @@ class DomainRegistrationReminderJobTest < ActiveJob::TestCase
   end
 
   def test_time_is_configurable_via_setting
-    setting = settings(:domain_registration_reminder)
-    setting.update!(value: 2)
+    setting_format = application_setting_formats(:integer)
+    setting_format.update_setting!(code: 'domain_registration_reminder', value: 2)
+    setting_format.reload
 
     three_days_before = @result.registration_due_date - 3
     travel_to three_days_before

@@ -69,7 +69,8 @@ class PhoneConfirmationsTest < ApplicationSystemTestCase
   end
 
   def enable_phone_confirmation
-    setting = settings(:require_phone_confirmation)
-    setting.update!(value: 'true')
+    setting_format = application_setting_formats(:boolean)
+    setting_format.update_setting!(code: 'require_phone_confirmation', value: true)
+    setting_format.reload
   end
 end

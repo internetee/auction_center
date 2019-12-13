@@ -1,9 +1,176 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  data_type: MyString
-  settings: 
+integer:
+  data_type: integer
+  settings:
+    ban_length:
+      value: 100
+      created_at: '2019-12-12T17:07:45.947Z'
+      updated_at: '2019-12-12T17:07:45.947Z'
+      updated_by:
+      description: 'Number of months for which a repeated offender is banned for.
+        Default: 100'
+    payment_term:
+      value: 7
+      created_at: '2019-12-12T17:07:45.935Z'
+      updated_at: '2019-12-12T17:07:45.935Z'
+      updated_by:
+      description: 'Number of full days after the issue date the recipient has time
+        to pay for the invoice. If invoices are generated at the start of a day you
+        might want to substract 1 from the setting to achieve desired invoice due
+        date. Default: 7'
+    wishlist_size:
+      value: 10
+      created_at: '2019-12-12T17:07:45.961Z'
+      updated_at: '2019-12-12T17:07:45.961Z'
+      updated_by:
+      description: 'Number of domains a single user can keep in their wishlist. Default:
+        10'
+    registration_term:
+      value: 14
+      created_at: '2019-12-12T17:07:45.938Z'
+      updated_at: '2019-12-12T17:07:45.938Z'
+      updated_by:
+      description: 'Number of days before the auctioned domain must be registered,
+        starting from release of registration code. Default: 14'
+    auction_minimum_offer:
+      value: 500
+      created_at: '2019-12-12T17:07:45.928Z'
+      updated_at: '2019-12-12T17:07:45.928Z'
+      updated_by:
+      description: 'Minimum amount in cents that a user can offer for a domain. Default
+        is: 500 (5.00 EUR)'
+    ban_number_of_strikes:
+      value: 3
+      created_at: '2019-12-12T17:07:45.949Z'
+      updated_at: '2019-12-12T17:07:45.949Z'
+      updated_by:
+      description: 'Number of strikes (unpaid invoices) at which a long ban is applied.
+        Default: 3'
+    invoice_reminder_in_days:
+      value: 1
+      created_at: '2019-12-12T17:07:45.959Z'
+      updated_at: '2019-12-12T17:07:45.959Z'
+      updated_by:
+      description: 'Number of days before due date on which reminders about unpaid
+        invoices are sent. Use 0 to send reminders on due date. Default: 1'
+    domain_registration_reminder:
+      value: 5
+      created_at: '2019-12-12T17:07:45.954Z'
+      updated_at: '2019-12-12T17:07:45.954Z'
+      updated_by:
+      description: 'Number of days before which the registration reminder email is
+        sent on. Default: 5'
 
-two:
-  data_type: MyString
-  settings: 
+string:
+  data_type: string
+  settings:
+    check_api_url:
+      value: http://localhost/auctions.json
+      created_at: '2019-12-12T17:08:01.799Z'
+      updated_at: '2019-12-12T17:08:01.799Z'
+      updated_by:
+      description: URL to our own auction API endpoint for health checking. Must be
+        absolute, default is http://localhost/auctions.json.
+    check_sms_url:
+      value: https://status.messente.com/api/v1/components/1
+      created_at: '2019-12-12T17:08:01.805Z'
+      updated_at: '2019-12-12T17:08:01.805Z'
+      updated_by:
+      description: URL of SMS service provider for health checking. Must be absolute.
+    check_tara_url:
+      value: https://tara-test.ria.ee/oidc/jwks
+      created_at: '2019-12-12T17:08:01.808Z'
+      updated_at: '2019-12-12T17:08:01.808Z'
+      updated_by:
+      description: URL of OAUTH Tara provider for health checking. Must be absolute.
+    invoice_issuer:
+      value: Eesti Interneti SA, VAT number EE101286464
+      created_at: '2019-12-12T17:07:45.957Z'
+      updated_at: '2019-12-12T17:07:45.957Z'
+      updated_by:
+      description: Text that should appear in invoice as issuer. Usually contains
+        company name, VAT number and local court registration number.
+    default_country:
+      value: EE
+      created_at: '2019-12-12T17:07:45.933Z'
+      updated_at: '2019-12-12T17:07:45.933Z'
+      updated_by:
+      description: 'Alpha two code for default country, used for example in user and
+        billing profile dropdowns. Example values: "EE", "GB", "US", "CA"'
+    auction_currency:
+      value: EUR
+      created_at: '2019-12-12T17:07:45.924Z'
+      updated_at: '2019-12-12T17:07:45.924Z'
+      updated_by:
+      description: 'Currency in which all invoices and offers are to be made. Allowed
+        values are EUR, USD, CAD, AUD, GBP, PLN, SEK. Default is: EUR'
+    auction_duration:
+      value: '24'
+      created_at: '2019-12-12T17:07:45.940Z'
+      updated_at: '2019-12-12T17:07:45.940Z'
+      updated_by:
+      description: 'Number of hours for which an auction is created. You can also
+        use ''end_of_day'' for auctions to end at the end of the same calendar day.
+        Default: 24.'
+    auctions_start_at:
+      value: '0'
+      created_at: '2019-12-12T17:07:45.945Z'
+      updated_at: '2019-12-12T17:07:45.945Z'
+      updated_by:
+      description: Whole hour at which auctions should start. Allowed values are anything
+        between 0 and 23 or 'false'. In case 'false' is used, auctions are started
+        as soon as possible.
+    application_name:
+      value: EIS Auction Center
+      created_at: '2019-12-12T17:07:45.945Z'
+      updated_at: '2019-12-12T17:07:45.945Z'
+      updated_by:
+      description: Application name, as displayed in the header
+
+boolean:
+  data_type: boolean
+  settings:
+    require_phone_confirmation:
+      value: false
+      created_at: '2019-12-12T17:07:45.943Z'
+      updated_at: '2019-12-12T17:07:45.943Z'
+      updated_by:
+      description: Require mobile numbers to be confirmed by SMS before user can place
+        offers. Can be either 'true' or 'false'
+
+array:
+  data_type: array
+  settings:
+    wishlist_supported_domain_extensions:
+      value: []
+      created_at: '2019-12-12T17:07:45.963Z'
+      updated_at: '2019-12-12T17:07:45.963Z'
+      updated_by:
+      description: Supported domain extensions for wishlist domain monitoring.
+
+hash:
+  data_type: hash
+  settings:
+    terms_and_conditions_link:
+      value:
+        en: https://example.com
+        et: https://example.et
+      created_at: '2019-12-12T17:07:45.930Z'
+      updated_at: '2019-12-12T17:07:45.930Z'
+      updated_by:
+      description: 'Link to terms and conditions document. Must be single parsable
+        hash of <locale>:<URL> elements. URL can be relative (''/public/terms_and_conditions.pdf'')
+        or absolute (''https://example.com/terms_and_conditions.pdf''). Relative URL
+        must start with a forward slash. Default is: "{"en":"https://example.com",
+        "et":"https://example.et"}"'
+    violations_count_regulations_link:
+      value:
+        en: https://example.com#some_anchor
+      created_at: '2019-12-12T17:07:45.952Z'
+      updated_at: '2019-12-12T17:07:45.952Z'
+      updated_by:
+      description: 'Link to ToC clause on user agreement termination, used in ban
+        message banner. Must be parsable string containing hash of <locale>:<URL>
+        elements. URL can be relative (''/public/terms_and_conditions.pdf'') or absolute
+        (''https://example.com/terms_and_conditions.pdf''). Relative URL must start
+        with a forward slash. Default: "{"en":"https://example.com#some_anchor"}"'

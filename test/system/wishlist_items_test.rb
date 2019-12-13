@@ -57,8 +57,9 @@ class WishlistItemsTest < ApplicationSystemTestCase
   end
 
   def test_must_not_exceed_total_list_capacity
-    setting = settings(:wishlist_size)
-    setting.update!(value: '1')
+    setting_format = application_setting_formats(:integer)
+    setting_format.update_setting!(code: 'wishlist_size', value: 1)
+    setting_format.reload
 
     fill_in('wishlist_item[domain_name]', with: 'new-item.test')
     click_link_or_button('Submit')

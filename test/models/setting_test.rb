@@ -56,7 +56,7 @@ class SettingTest < ActiveSupport::TestCase
     assert_equal(100, Setting.ban_length)
     assert_equal(3, Setting.ban_number_of_strikes)
 
-    assert_equal(5, Setting.domain_registration_reminder_day)
+    assert_equal(5, Setting.domain_registration_reminder)
     assert_equal(1, Setting.invoice_reminder_in_days)
 
     assert_equal('Eesti Interneti SA, VAT number EE101286464', Setting.invoice_issuer)

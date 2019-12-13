@@ -67,11 +67,10 @@ class RegistryAuctionCreatorTest < ActiveSupport::TestCase
   end
 
   def test_call_creates_auctions_that_end_at_the_end_of_day
-    setting = settings(:auctions_start_at)
-    setting.update!(value: 'false')
-
-    auction_duration = settings(:auction_duration)
-    auction_duration.update!(value: 'end_of_day')
+    format_setting = application_setting_formats(:string)
+    format_setting.update_setting!(code: 'auctions_start_at', value: 'false')
+    format_setting.update_setting!(code: 'auction_duration', value: 'end_of_day')
+    format_setting.reload
 
     instance = Registry::AuctionCreator.new
 
@@ -100,8 +99,9 @@ class RegistryAuctionCreatorTest < ActiveSupport::TestCase
     end end
 
   def test_call_creates_auctions_that_start_in_1_minute
-    setting = settings(:auctions_start_at)
-    setting.update!(value: 'false')
+    format_setting = application_setting_formats(:string)
+    format_setting.update_setting!(code: 'auctions_start_at', value: 'false')
+    format_setting.reload
 
     instance = Registry::AuctionCreator.new
 

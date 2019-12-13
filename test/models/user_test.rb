@@ -121,7 +121,10 @@ class UserTest < ActiveSupport::TestCase
     user = User.new
     assert_not(user.requires_phone_number_confirmation?)
 
-    Setting.find_by(code: :require_phone_confirmation).update!(value: 'true')
+    setting_format = application_setting_formats(:boolean)
+    setting_format.update_setting!(code: 'require_phone_confirmation', value: true)
+    setting_format.reload
+
     assert(user.requires_phone_number_confirmation?)
 
     user.mobile_phone_confirmed_at = Time.now.in_time_zone

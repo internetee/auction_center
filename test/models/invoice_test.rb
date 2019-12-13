@@ -22,10 +22,10 @@ class InvoiceTest < ActiveSupport::TestCase
   def test_price_is_a_money_object
     invoice = Invoice.new(cents: 1000)
 
-    assert_equal(Money.new(1000, Setting.auction_currency), invoice.price)
+    assert_equal(Money.new(1000, ApplicationSetting.auction_currency), invoice.price)
 
     invoice.cents = nil
-    assert_equal(Money.new(0, Setting.auction_currency), invoice.price)
+    assert_equal(Money.new(0, ApplicationSetting.auction_currency), invoice.price)
   end
 
   def test_required_fields
@@ -42,7 +42,7 @@ class InvoiceTest < ActiveSupport::TestCase
     invoice.billing_profile = @company_billing_profile
     invoice.user = @user
     invoice.issue_date = Time.zone.today
-    invoice.due_date = Time.zone.today + Setting.payment_term
+    invoice.due_date = Time.zone.today + ApplicationSetting.payment_term
     invoice.cents = 1000
 
     assert(invoice.valid?)
@@ -184,7 +184,7 @@ class InvoiceTest < ActiveSupport::TestCase
     invoice.billing_profile = @company_billing_profile
     invoice.user = @user
     invoice.issue_date = Time.zone.today
-    invoice.due_date = Time.zone.today + Setting.payment_term
+    invoice.due_date = Time.zone.today + ApplicationSetting.payment_term
     invoice.cents = 1000
 
     invoice

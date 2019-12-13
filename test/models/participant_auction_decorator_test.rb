@@ -40,6 +40,6 @@ class ParticipantAuctionDecoratorTest < ActiveSupport::TestCase
     decorated_auction = ParticipantAuctionDecorator.new(
       auctions.find_by(auctions: { domain_name: 'with-offers.test' })
     )
-    assert_equal(Money.new(5000, Setting.auction_currency), decorated_auction.users_price)
+    assert_equal(Money.new(5000, ApplicationSetting.auction_currency), decorated_auction.users_price)
   end
 end

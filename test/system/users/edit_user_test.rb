@@ -161,6 +161,6 @@ class EditUserTest < ApplicationSystemTestCase
 
   def test_profile_page_has_a_link_to_terms_and_conditions
     visit user_path(@user.uuid)
-    assert(page.has_link?('Review terms and condition', href: Setting.terms_and_conditions_link))
+    assert(page.has_link?('Review terms and condition', href: ApplicationSetting.terms_and_conditions_link))
   end
 end

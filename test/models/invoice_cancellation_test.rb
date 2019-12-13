@@ -24,7 +24,7 @@ class InvoiceCancellationTest < ActiveSupport::TestCase
     invoice.billing_profile = @company_billing_profile
     invoice.user = @user
     invoice.issue_date = Time.zone.today
-    invoice.due_date = Time.zone.today + Setting.payment_term
+    invoice.due_date = Time.zone.today + ApplicationSetting.payment_term
     invoice.cents = 1000
 
     invoice

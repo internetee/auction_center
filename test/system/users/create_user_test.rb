@@ -51,19 +51,22 @@ class CreateUserTest < ApplicationSystemTestCase
 
   def test_form_has_terms_and_conditions_link
     visit new_user_path
-    assert(page.has_link?('auction portal user agreement', href: Setting.terms_and_conditions_link))
+    assert(page.has_link?('auction portal user agreement', href: ApplicationSetting.terms_and_conditions_link))
   end
 
   def test_terms_and_conditions_link_can_also_be_relative
-    setting = Setting.find_by(code: :terms_and_conditions_link)
-    setting.update!(value: "{\"en\":\"/terms_and_conditions.pdf\", \"et\":\"/another_terms_and_conditions.pdf\"}")
+    setting_format = application_setting_formats(:hash)
+    setting_format.update_setting!(code: 'terms_and_conditions_link', value: {"en": "/terms_and_conditions.pdf", "et": "/another_terms_and_conditions.pdf"})
+    setting_format.reload
+
     visit new_user_path
     assert(page.has_link?('auction portal user agreement', href: '/terms_and_conditions.pdf'))
   end
 
   def test_terms_and_conditions_link_can_be_stored_as_hash
-    setting = Setting.find_by(code: :terms_and_conditions_link)
-    setting.update(value: "{\"en\":\"https://example.com\", \"et\":\"https://example.et\"}")
+    setting_format = application_setting_formats(:hash)
+    setting_format.update_setting!(code: 'terms_and_conditions_link', value: {"en": "https://example.com", "et": "https://example.et"})
+    setting_format.reload
 
     I18n.with_locale(:en) do
       visit new_user_path
