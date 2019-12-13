@@ -68,5 +68,4 @@ class Result < ApplicationRecord
 
     ResultMailer.winner_email(self).deliver_later
   end
-  
 end

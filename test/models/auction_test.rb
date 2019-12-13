@@ -134,7 +134,7 @@ class AuctionTest < ActiveSupport::TestCase
                                      ends_at: @with_invoice_auction.ends_at + 1.month)
     noninvoiceable_result.update(auction: @other_persisted_auction,
                                  status: Result.statuses[:domain_not_registered])
-    assert_equal(@with_invoice_auction.turns_count, asserted_count_results_total)
+    assert_equal(asserted_count_results_total, @other_persisted_auction.calculate_turns_count)
   end
 
   def test_turns_count_drops_if_domain_registered
@@ -148,7 +148,21 @@ class AuctionTest < ActiveSupport::TestCase
                                      ends_at: @with_invoice_auction.ends_at + 1.month)
     noninvoiceable_result.update(auction: @other_persisted_auction,
                                  status: Result.statuses[:domain_registered])
-    assert_equal(@with_invoice_auction.turns_count, asserted_count_after_domain_registration)
+    assert_equal(asserted_count_after_domain_registration,
+                 @with_invoice_auction.calculate_turns_count)
+
+  end
+
+  def test_auction_creation_uses_callbacks
+    @with_invoice_auction._run_create_callbacks
+
+    asserted_count_after_domain_registration = 1
+    invoiceable_result = results(:expired_participant)
+    invoiceable_result.update(auction: @with_invoice_auction,
+                              status: Result.statuses[:domain_not_registered])
+
+    assert_equal(asserted_count_after_domain_registration,
+                 @with_invoice_auction.turns_count)
   end
 
   def assert_overlap_error_messages(object)

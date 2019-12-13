@@ -110,5 +110,4 @@ class Invoice < ApplicationRecord
   def overdue?
     due_date < Time.zone.today && issued?
   end
-
 end
