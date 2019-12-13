@@ -72,7 +72,7 @@ class StatisticsReport
     end
 
     def auctions_per_week(week_start:, week_end:)
-      @auctions.select { |key, _value| key >= week_start && key <= week_end }.values.sum
+      @auctions_with_offers.select { |key, _value| key >= week_start && key <= week_end }.values.sum
     end
 
     def avg_bids_per_week(offers:, auctions:)
