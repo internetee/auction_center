@@ -24,8 +24,6 @@
                     </div>
                 <% end %>
             </div>
-            <p><%= @start_date %><%= @start_date.class %></p>
-            <p><%= @end_date %><%= @end_date.class %></p>
             <div class="ten wide column">
                 <h3>Auctions by end date</h3>
                 <p><%= "Auctions total #{@data[:auctions].values.sum}"%></p>
@@ -66,10 +64,6 @@
             <div class="ten wide column">
                 <h3>Registered & unregistered domains vs number of paid & unpaid invoices by week
                 </h3>
-                <p><%= "Registered domains entries: #{@data[:registered_weekly].count}"%></p>
-                <p><%= "Registered domains entries: #{@data[:unregistered_weekly].count}"%></p>
-                <p><%= "Total invoice entries: #{@data[:total_invoices_weekly].count}"%></p>
-                <p><%= "Unpaid invoice entries: #{@data[:unpaid_invoices_weekly].count}"%></p>
                 <%= line_chart [
                     { name: 'Registered_domains',
                       data: @data[:registered_weekly] },
