@@ -94,6 +94,35 @@ CREATE TYPE public.result_status AS ENUM (
 
 
 --
+-- Name: process_application_setting_format_audit(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.process_application_setting_format_audit() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+  BEGIN
+    IF (TG_OP = 'INSERT') THEN
+      INSERT INTO audit.application_setting_formats
+      (object_id, data_type, action, recorded_at, old_value, new_value)
+      VALUES (NEW.id, NEW.data_type, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
+      RETURN NEW;
+    ELSEIF (TG_OP = 'UPDATE') THEN
+      INSERT INTO audit.application_setting_formats
+      (object_id, data_type, action, recorded_at, old_value, new_value)
+      VALUES (NEW.id, NEW.data_type, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
+      RETURN NEW;
+    ELSEIF (TG_OP = 'DELETE') THEN
+      INSERT INTO audit.application_setting_formats
+      (object_id, data_type, action, recorded_at, old_value, new_value)
+      VALUES (OLD.id, OLD.data_type, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
+      RETURN OLD;
+    END IF;
+    RETURN NULL;
+  END
+$$;
+
+
+--
 -- Name: process_auction_audit(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -415,6 +444,41 @@ $$;
 SET default_tablespace = '';
 
 SET default_with_oids = false;
+
+--
+-- Name: application_setting_formats; Type: TABLE; Schema: audit; Owner: -; Tablespace: 
+--
+
+CREATE TABLE audit.application_setting_formats (
+    id integer NOT NULL,
+    object_id bigint,
+    data_type text,
+    action text NOT NULL,
+    recorded_at timestamp without time zone,
+    old_value jsonb,
+    new_value jsonb,
+    CONSTRAINT application_setting_formats_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
+);
+
+
+--
+-- Name: application_setting_formats_id_seq; Type: SEQUENCE; Schema: audit; Owner: -
+--
+
+CREATE SEQUENCE audit.application_setting_formats_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: application_setting_formats_id_seq; Type: SEQUENCE OWNED BY; Schema: audit; Owner: -
+--
+
+ALTER SEQUENCE audit.application_setting_formats_id_seq OWNED BY audit.application_setting_formats.id;
+
 
 --
 -- Name: auctions; Type: TABLE; Schema: audit; Owner: -; Tablespace: 
@@ -797,7 +861,7 @@ ALTER SEQUENCE audit.wishlist_items_id_seq OWNED BY audit.wishlist_items.id;
 CREATE TABLE public.application_setting_formats (
     id bigint NOT NULL,
     data_type character varying NOT NULL,
-    settings jsonb[] DEFAULT '{}'::jsonb[] NOT NULL,
+    settings jsonb DEFAULT '{}'::jsonb NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -1334,6 +1398,13 @@ ALTER SEQUENCE public.wishlist_items_id_seq OWNED BY public.wishlist_items.id;
 -- Name: id; Type: DEFAULT; Schema: audit; Owner: -
 --
 
+ALTER TABLE ONLY audit.application_setting_formats ALTER COLUMN id SET DEFAULT nextval('audit.application_setting_formats_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: audit; Owner: -
+--
+
 ALTER TABLE ONLY audit.auctions ALTER COLUMN id SET DEFAULT nextval('audit.auctions_id_seq'::regclass);
 
 
@@ -1503,6 +1574,14 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 --
 
 ALTER TABLE ONLY public.wishlist_items ALTER COLUMN id SET DEFAULT nextval('public.wishlist_items_id_seq'::regclass);
+
+
+--
+-- Name: application_setting_formats_pkey; Type: CONSTRAINT; Schema: audit; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY audit.application_setting_formats
+    ADD CONSTRAINT application_setting_formats_pkey PRIMARY KEY (id);
 
 
 --
@@ -1719,6 +1798,20 @@ ALTER TABLE ONLY public.users
 
 ALTER TABLE ONLY public.wishlist_items
     ADD CONSTRAINT wishlist_items_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: application_setting_formats_object_id_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
+--
+
+CREATE INDEX application_setting_formats_object_id_idx ON audit.application_setting_formats USING btree (object_id);
+
+
+--
+-- Name: application_setting_formats_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
+--
+
+CREATE INDEX application_setting_formats_recorded_at_idx ON audit.application_setting_formats USING btree (recorded_at);
 
 
 --
@@ -2135,6 +2228,13 @@ CREATE UNIQUE INDEX users_by_identity_code_and_country ON public.users USING btr
 
 
 --
+-- Name: process_application_setting_format_audit; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER process_application_setting_format_audit AFTER INSERT OR DELETE OR UPDATE ON public.application_setting_formats FOR EACH ROW EXECUTE PROCEDURE public.process_application_setting_format_audit();
+
+
+--
 -- Name: process_auction_audit; Type: TRIGGER; Schema: public; Owner: -
 --
 
@@ -2425,6 +2525,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190915171050'),
 ('20191008124157'),
 ('20191025092912'),
-('20191205154107');
+('20191205154107'),
+('20191211132748');
 
 
