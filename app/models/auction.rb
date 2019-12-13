@@ -1,5 +1,5 @@
 class Auction < ApplicationRecord
-  before_create :find_auction_turns
+  after_create :find_auction_turns
   validates :domain_name, presence: true
   validates :ends_at, presence: true
   validates :starts_at, presence: true
@@ -109,7 +109,7 @@ class Auction < ApplicationRecord
   end
 
   def find_auction_turns
-    self.turns_count = calculate_turns_count
+    update(turns_count: calculate_turns_count)
   end
 
   def calculate_turns_count
