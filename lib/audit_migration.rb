@@ -25,6 +25,61 @@ class AuditMigration
     sql
   end
 
+  def create_application_setting_format_table
+    sql = <<~SQL
+      CREATE TABLE IF NOT EXISTS audit.#{model_name.pluralize} (
+           id                 serial NOT NULL,
+           object_id          bigint,
+           data_type          text,
+           action TEXT NOT NULL CHECK (action IN ('INSERT', 'UPDATE', 'DELETE', 'TRUNCATE')),
+           recorded_at        timestamp without time zone,
+           old_value          jsonb,
+           new_value          jsonb
+        );
+
+
+        ALTER TABLE audit.#{model_name.pluralize} ADD PRIMARY KEY (id);
+        CREATE INDEX ON audit.#{model_name.pluralize} USING btree (object_id);
+        CREATE INDEX ON audit.#{model_name.pluralize} USING btree (recorded_at)
+    SQL
+
+    sql
+  end
+
+  def create_application_setting_format_trigger
+    sql = <<~SQL
+      CREATE OR REPLACE FUNCTION process_#{model_name}_audit()
+      RETURNS TRIGGER AS $process_#{model_name}_audit$
+        BEGIN
+          IF (TG_OP = 'INSERT') THEN
+            INSERT INTO audit.#{model_name.pluralize}
+            (object_id, action, data_type, recorded_at, old_value, new_value)
+            VALUES (NEW.id, 'INSERT', NEW.data_type, now(), '{}', to_json(NEW)::jsonb);
+            RETURN NEW;
+          ELSEIF (TG_OP = 'UPDATE') THEN
+            INSERT INTO audit.#{model_name.pluralize}
+            (object_id, action, data_type, recorded_at, old_value, new_value)
+            VALUES (NEW.id, 'UPDATE', NEW.data_type, now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
+            RETURN NEW;
+          ELSEIF (TG_OP = 'DELETE') THEN
+            INSERT INTO audit.#{model_name.pluralize}
+            (object_id, action, data_type, recorded_at, old_value, new_value)
+            VALUES (OLD.id, 'DELETE', OLD.data_type, now(), to_json(OLD)::jsonb, '{}');
+            RETURN OLD;
+          END IF;
+          RETURN NULL;
+        END
+      $process_#{model_name}_audit$ LANGUAGE plpgsql;
+
+      --- Create the actual trigger
+      CREATE TRIGGER process_#{model_name}_audit
+      AFTER INSERT OR UPDATE OR DELETE ON #{model_name.pluralize}
+      FOR EACH ROW EXECUTE PROCEDURE process_#{model_name}_audit();
+    SQL
+
+    sql
+  end
+
   def create_trigger
     sql = <<~SQL
       CREATE OR REPLACE FUNCTION process_#{model_name}_audit()
