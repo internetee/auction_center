@@ -29,7 +29,7 @@ module ApplicationHelper
 
     content_tag(:div, class: 'ui message ban') do
       result = content_tag(:div, message, class: 'header')
-      if domains && domains.count < Setting.ban_number_of_strikes
+      if domains && domains.count < ApplicationSetting.ban_number_of_strikes
         result << content_tag(:p, violation_message(domains.count), class: 'violation-message')
       end
       result
@@ -53,14 +53,15 @@ module ApplicationHelper
 
   def check_active_auctions_for(domains)
     active_auction_domains = Auction.active.pluck(:domain_name)
-    domains.reject { |element| !active_auction_domains.include?(element) }
+    domains.select { |element| active_auction_domains.include?(element) }
   end
 
   def violation_message(domains_count)
-    link = Setting.violations_count_regulations_link
-    t('auctions.violation_message_html', violations_count_regulations_link: link,
-                                         violations_count: domains_count,
-                                         ban_number_of_strikes: Setting.ban_number_of_strikes)
+    link = ApplicationSetting.violations_count_regulations_link
+    t('auctions.violation_message_html',
+      violations_count_regulations_link: link,
+      violations_count: domains_count,
+      ban_number_of_strikes: ApplicationSetting.ban_number_of_strikes)
   end
 
   def links(links_list)

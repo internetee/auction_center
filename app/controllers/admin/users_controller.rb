@@ -115,7 +115,7 @@ module Admin
     end
 
     def set_phone_confirmation_toggle
-      @phone_confirmation_toggle = Setting.require_phone_confirmation
+      @phone_confirmation_toggle = ApplicationSetting.require_phone_confirmation
     end
 
     def default_order_params

@@ -16,7 +16,7 @@
                 <% @winning_offers.each do |offer| %>
                     <tr>
                         <td><%= offer['domain_name'] %></td>
-                        <td><%= Money.new(offer['cents'], Setting.auction_currency) %></td>
+                        <td><%= Money.new(offer['cents'], ApplicationSetting.auction_currency) %></td>
                         <td><%= link_to(t('result_name'), admin_result_url(offer['result_id'])) %>
                     </tr>
                 <% end %>

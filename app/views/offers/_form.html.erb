@@ -12,8 +12,8 @@
                 <br>
                 <em>
                     <%= t('.minimum_offer',
-                          minimum: Money.new(Setting.auction_minimum_offer,
-                                             Setting.auction_currency)) %>
+                          minimum: Money.new(ApplicationSetting.auction_minimum_offer,
+                                             ApplicationSetting.auction_currency)) %>
                     <%= t('offers.price_is_without_vat') %>
                 </em>
                 <br>
