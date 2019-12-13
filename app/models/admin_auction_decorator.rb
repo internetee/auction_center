@@ -25,7 +25,7 @@ class AdminAuctionDecorator
   end
 
   def highest_price
-    Money.new(auction.highest_offer_cents, Setting.auction_currency)
+    Money.new(auction.highest_offer_cents, ApplicationSetting.auction_currency)
   end
 
   delegate :number_of_offers, to: :auction

@@ -22,11 +22,11 @@ module Registry
     private
 
     def auction_duration_in_seconds
-      Setting.auction_duration * 60 * 60
+      ApplicationSetting.auction_duration * 60 * 60
     end
 
     def auction_starts_at
-      setting = Setting.auctions_start_at
+      setting = ApplicationSetting.auctions_start_at
       if setting
         (Date.current + Rational(24 + setting, 24)).in_time_zone
       else
@@ -35,12 +35,12 @@ module Registry
     end
 
     def auction_ends_at
-      setting = Setting.auction_duration
+      setting = ApplicationSetting.auction_duration
 
       if setting == :end_of_day
         (auction_starts_at.to_date + 1).in_time_zone - 1
       else
-        Time.at(auction_starts_at.to_i + Setting.auction_duration * 60 * 60).in_time_zone
+        Time.at(auction_starts_at.to_i + ApplicationSetting.auction_duration * 60 * 60).in_time_zone
       end
     end
 

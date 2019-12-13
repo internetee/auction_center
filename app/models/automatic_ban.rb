@@ -36,11 +36,11 @@ class AutomaticBan
   def assign_ban_length
     now = Time.zone.now.to_datetime
 
-    if unpaid_invoices < Setting.ban_number_of_strikes
+    if unpaid_invoices < ApplicationSetting.ban_number_of_strikes
       @ban.update!(domain_name: domain_name, valid_from: now,
                    valid_until: now >> SHORT_BAN_PERIOD_IN_MONTHS)
-    elsif unpaid_invoices >= Setting.ban_number_of_strikes
-      @ban.update!(valid_until: now >> Setting.ban_length)
+    elsif unpaid_invoices >= ApplicationSetting.ban_number_of_strikes
+      @ban.update!(valid_until: now >> ApplicationSetting.ban_length)
     end
   end
 

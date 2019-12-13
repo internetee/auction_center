@@ -69,7 +69,7 @@ class Setting < ApplicationRecord
     Setting.find_by(code: :ban_number_of_strikes).value.to_i
   end
 
-  def self.domain_registration_reminder_day
+  def self.domain_registration_reminder
     Setting.find_by(code: :domain_registration_reminder).value.to_i
   end
 

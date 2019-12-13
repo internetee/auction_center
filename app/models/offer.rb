@@ -17,10 +17,10 @@ class Offer < ApplicationRecord
   end
 
   def must_be_higher_than_minimum_offer
-    minimum_offer = Setting.auction_minimum_offer
+    minimum_offer = ApplicationSetting.auction_minimum_offer
     return if minimum_offer <= cents.to_i
 
-    currency = Setting.auction_currency
+    currency = ApplicationSetting.auction_currency
     minimum_offer_as_money = Money.new(minimum_offer, currency)
 
     errors.add(:price, I18n.t('offers.must_be_higher_than', minimum: minimum_offer_as_money))
@@ -31,12 +31,12 @@ class Offer < ApplicationRecord
   end
 
   def price
-    Money.new(cents, Setting.auction_currency)
+    Money.new(cents, ApplicationSetting.auction_currency)
   end
 
   def price=(value)
     number = value.to_d
-    price = Money.from_amount(number, Setting.auction_currency)
+    price = Money.from_amount(number, ApplicationSetting.auction_currency)
     self.cents = price.cents
   end
 

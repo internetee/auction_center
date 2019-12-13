@@ -25,7 +25,7 @@ class Invoice < ApplicationRecord
     where('due_date < ? AND status = ?', Time.zone.today, statuses[:issued])
   }
 
-  scope :pending_payment_reminder, lambda { |number_of_days = Setting.invoice_reminder_in_days|
+  scope :pending_payment_reminder, lambda { |number_of_days = ApplicationSetting.invoice_reminder_in_days|
     where('due_date = ? AND status = ?',
           Time.zone.today + number_of_days,
           statuses[:issued])
@@ -58,7 +58,7 @@ class Invoice < ApplicationRecord
   end
 
   def price
-    Money.new(cents, Setting.auction_currency)
+    Money.new(cents, ApplicationSetting.auction_currency)
   end
 
   def total

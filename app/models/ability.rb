@@ -56,6 +56,7 @@ class Ability
     can %i[read create], Job
     can :manage, User
     can %i[read update], Setting
+    can %i[read update], ApplicationSettingFormat
     can :read, Offer
     can :read, Result
     can :read, PaymentOrder
@@ -73,5 +74,6 @@ class Ability
     can :read, Audit::Setting
     can :read, Audit::Result
     can :read, Audit::PaymentOrder
+    can :read, Audit::ApplicationSettingFormat
   end
 end
