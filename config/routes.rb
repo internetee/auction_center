@@ -27,6 +27,7 @@ Rails.application.routes.draw do
     resources :auctions, except: disallowed_auction_actions, concerns: %i[auditable searchable]
 
     resources :bans, except: %i[new show edit update], concerns: [:auditable]
+    resources :statistics, only: :index
     resources :billing_profiles, only: %i[index show], concerns: %i[auditable searchable]
     resources :invoices, except: %i[new create destroy], concerns: %i[auditable searchable] do
       member do

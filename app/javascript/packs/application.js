@@ -9,6 +9,7 @@
 
 // Default Rails javascript and turbolinks
 import Rails from 'rails-ujs';
+require("chartkick").use(require("highcharts"))
 import Turbolinks from 'turbolinks';
 Rails.start();
 Turbolinks.start();

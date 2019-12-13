@@ -1211,6 +1211,18 @@ ALTER SEQUENCE public.settings_id_seq OWNED BY public.settings.id;
 
 
 --
+-- Name: statistics_report_invoices; Type: MATERIALIZED VIEW; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE MATERIALIZED VIEW public.statistics_report_invoices AS
+ SELECT invoices.id,
+    invoices.issue_date,
+    invoices.status
+   FROM public.invoices
+  WITH NO DATA;
+
+
+--
 -- Name: users; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1242,6 +1254,7 @@ CREATE TABLE public.users (
     uid character varying,
     updated_by character varying,
     daily_summary boolean DEFAULT false NOT NULL,
+    discarded_at timestamp without time zone,
     CONSTRAINT users_roles_are_known CHECK ((roles <@ ARRAY['participant'::character varying, 'administrator'::character varying]))
 );
 
@@ -1467,6 +1480,70 @@ ALTER TABLE ONLY public.wishlist_items ALTER COLUMN id SET DEFAULT nextval('publ
 
 
 --
+-- Name: auctions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY public.auctions
+    ADD CONSTRAINT auctions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: statistics_report_auctions; Type: MATERIALIZED VIEW; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE MATERIALIZED VIEW public.statistics_report_auctions AS
+ SELECT auctions.id,
+    auctions.domain_name,
+    auctions.created_at,
+    auctions.starts_at,
+    auctions.ends_at,
+    count(offers.*) AS offers_count,
+    (EXISTS ( SELECT results.id,
+            results.auction_id,
+            results.user_id,
+            results.offer_id,
+            results.created_at,
+            results.updated_at,
+            results.uuid,
+            results.status,
+            results.last_remote_status,
+            results.last_response,
+            results.registration_code,
+            results.registration_due_date,
+            results.registration_reminder_sent_at
+           FROM public.results
+          WHERE (results.auction_id = auctions.id))) AS completed
+   FROM (public.auctions
+     LEFT JOIN public.offers ON ((auctions.id = offers.auction_id)))
+  GROUP BY auctions.id
+  WITH NO DATA;
+
+
+--
+-- Name: results_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY public.results
+    ADD CONSTRAINT results_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: statistics_report_results; Type: MATERIALIZED VIEW; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE MATERIALIZED VIEW public.statistics_report_results AS
+ SELECT results.id,
+    auctions.domain_name,
+    results.created_at,
+    auctions.ends_at AS auction_ends_at,
+    results.status
+   FROM (public.results
+     JOIN public.auctions ON ((results.auction_id = auctions.id)))
+  GROUP BY results.id, auctions.domain_name, auctions.ends_at
+  WITH NO DATA;
+
+
+--
 -- Name: auctions_pkey; Type: CONSTRAINT; Schema: audit; Owner: -; Tablespace: 
 --
 
@@ -1563,14 +1640,6 @@ ALTER TABLE ONLY public.ar_internal_metadata
 
 
 --
--- Name: auctions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY public.auctions
-    ADD CONSTRAINT auctions_pkey PRIMARY KEY (id);
-
-
---
 -- Name: bans_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1624,14 +1693,6 @@ ALTER TABLE ONLY public.offers
 
 ALTER TABLE ONLY public.payment_orders
     ADD CONSTRAINT payment_orders_pkey PRIMARY KEY (id);
-
-
---
--- Name: results_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY public.results
-    ADD CONSTRAINT results_pkey PRIMARY KEY (id);
 
 
 --
@@ -2039,6 +2100,27 @@ CREATE UNIQUE INDEX index_settings_on_code ON public.settings USING btree (code)
 
 
 --
+-- Name: index_statistics_report_auctions_on_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_statistics_report_auctions_on_id ON public.statistics_report_auctions USING btree (id);
+
+
+--
+-- Name: index_statistics_report_invoices_on_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_statistics_report_invoices_on_id ON public.statistics_report_invoices USING btree (id);
+
+
+--
+-- Name: index_statistics_report_results_on_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_statistics_report_results_on_id ON public.statistics_report_results USING btree (id);
+
+
+--
 -- Name: index_users_on_confirmation_token; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2377,6 +2459,11 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190831131431'),
 ('20190915171050'),
 ('20191008124157'),
-('20191025092912');
+('20191025092912'),
+('20191129102035'),
+('20191206123023'),
+('20191209073454'),
+('20191209083000'),
+('20191209085222');
 
 

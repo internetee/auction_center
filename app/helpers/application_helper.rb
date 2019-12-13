@@ -67,7 +67,7 @@ module ApplicationHelper
     links_list.each do |item|
       concat(
         content_tag(:li) do
-          link_to(item[:name], item[:path], method: item[:method], class: 'item')
+          link_to(item[:name], item[:path], method: item[:method], class: 'item', data: item[:data])
         end
       )
     end
@@ -100,6 +100,7 @@ module ApplicationHelper
      { name: t(:bans_name), path: admin_bans_path },
      { name: t(:invoices_name), path: admin_invoices_path },
      { name: t(:jobs_name), path: admin_jobs_path },
-     { name: t(:settings_name), path: admin_settings_path }]
+     { name: t(:settings_name), path: admin_settings_path },
+     { name: t(:statistics_name), path: admin_statistics_path, data: { turbolinks: false } }]
   end
 end

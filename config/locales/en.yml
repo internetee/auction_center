@@ -40,6 +40,7 @@ en:
   jobs_name: "Jobs"
   bans_name: "Bans"
   errors_name: "Errors"
+  statistics_name: "Statistics"
 
   user: "User"
   deleted_user: "User was deleted"
