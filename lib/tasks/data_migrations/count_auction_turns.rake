@@ -4,7 +4,7 @@ namespace :data_migrations do
     Auction.transaction do
       Auction.all.find_each do |auction|
         puts "Processing auction #{auction.id}"
-        auction._run_create_callbacks
+        auction.find_auction_turns
       end
     end
     puts 'All auctions processed.'
