@@ -56,7 +56,9 @@ class WishlistItem < ApplicationRecord
   # Validate that FQDN has supported extension
   def valid_domain_extension
     return if ApplicationSetting.wishlist_supported_domain_extensions.empty?
-    return if ApplicationSetting.wishlist_supported_domain_extensions.include?(domain_name.split('.', 2).last)
+
+    extensions = ApplicationSetting.wishlist_supported_domain_extensions
+    return if extensions.include?(domain_name.split('.', 2).last)
 
     errors.add(:domain_name, :invalid) if errors[:domain_name].blank?
   end

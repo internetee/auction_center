@@ -33,7 +33,8 @@ class ApplicationSetting
     return false unless unique_setting_code?
 
     setting_format = ApplicationSettingFormat.find_by(data_type: data_type)
-    setting_format.settings[code] = as_json(only: %w[description value created_at updated_at updated_by])
+    setting_format.settings[code] = as_json(only: %w[description value created_at updated_at
+                                                     updated_by])
     setting_format.save!
   end
 
