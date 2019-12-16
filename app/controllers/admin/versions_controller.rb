@@ -7,7 +7,7 @@ module Admin
       @items = @audit_class.where(object_id: @resource_id).order(recorded_at: :desc)
       return unless @audit_class == ('Audit::' + 'ApplicationSettingFormat'.classify).constantize
 
-      @items = @audit_class.where("new_value->>'settings' like '%\"#{@resource_id}\"%'")
+      @items = @audit_class.where("new_value->>'settings' like ?", "%#{@resource_id}%")
                            .order(recorded_at: :desc)
       @items.each do |item|
         item.new_value = ApplicationSetting.new(item.new_value['settings'][@resource_id])

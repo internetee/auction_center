@@ -5,7 +5,7 @@ class ApplicationSettingFormat < ApplicationRecord
   validates :settings, json_uniq: true
 
   scope :with_application_setting, lambda { |setting_code|
-    where("(settings->'#{setting_code}') IS NOT NULL")
+    where('(settings->:setting_code) IS NOT NULL', setting_code: setting_code)
   }
 
   FORMAT_VALIDATIONS = {
