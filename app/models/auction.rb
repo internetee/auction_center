@@ -123,6 +123,7 @@ class Auction < ApplicationRecord
   def calculate_count(result_statuses)
     statuses_to_drop_count = [::Result.statuses[:domain_registered],
                               ::Result.statuses[:no_bids]]
+    result_statuses = result_statuses.take(result_statuses.size - 1).insert(0, nil)
     result_statuses.reduce(0) do |sum, status|
       statuses_to_drop_count.include?(status) ? 1 : sum + 1
     end
