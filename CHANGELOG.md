@@ -1,3 +1,6 @@
+16.12.2019
+* Added auction turn count to admin [#289](https://github.com/internetee/auction_center/issues/289)
+
 13.12.2019
 * Added basic stats to admin [#174](https://github.com/internetee/auction_center/issues/174)
 
