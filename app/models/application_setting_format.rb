@@ -10,11 +10,14 @@ class ApplicationSettingFormat < ApplicationRecord
 
   FORMAT_VALIDATIONS = {
     boolean: [:validate_boolean_format],
-    integer: [:validate_integer_format],
-    string: [:validate_string_format],
-    hash: [:validate_hash_format],
-    array: [:validate_array_format],
+    string: [:validate_data_format],
+    hash: [:validate_data_format],
+    array: [:validate_data_format],
+    integer: [:validate_data_format],
   }.with_indifferent_access.freeze
+
+  DATA_TYPES = { integer: Integer, hash: Hash, array: Array, string: String }
+               .with_indifferent_access.freeze
 
   def update_setting!(code:, value: nil, description: nil)
     return NoMethodError unless settings.keys.any? code
@@ -35,41 +38,18 @@ class ApplicationSettingFormat < ApplicationRecord
     end
   end
 
+  def validate_data_format
+    error = false
+    settings.keys.each do |code|
+      error = true unless settings[code]['value'].is_a? DATA_TYPES[data_type]
+    end
+    errors.add(:settings, :invalid) if error == true
+  end
+
   def validate_boolean_format
     error = false
     settings.keys.each do |code|
       error = true unless [true, false].include? settings[code]['value']
-    end
-    errors.add(:settings, :invalid) if error == true
-  end
-
-  def validate_integer_format
-    error = false
-    settings.keys.each do |code|
-      error = true unless settings[code]['value'].is_a? Integer
-    end
-    errors.add(:settings, :invalid) if error == true
-  end
-
-  def validate_string_format
-    settings.keys.each do |code|
-      settings[code]['value'].to_s
-      errors.add(:settings, :invalid) unless settings[code]['value'].is_a? String
-    end
-  end
-
-  def validate_hash_format
-    error = false
-    settings.keys.each do |code|
-      error = true unless settings[code]['value'].is_a? Hash
-    end
-    errors.add(:settings, :invalid) if error == true
-  end
-
-  def validate_array_format
-    error = false
-    settings.keys.each do |code|
-      error = true unless settings[code]['value'].is_a? Array
     end
     errors.add(:settings, :invalid) if error == true
   end

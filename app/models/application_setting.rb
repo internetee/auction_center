@@ -5,7 +5,7 @@ class ApplicationSetting
 
   validates :code, presence: true
   validates :description, :created_at, presence: true
-  validates :value, presence: true, exclusion: { in: [nil, ''] } # allow false boolean
+  validates :value, exclusion: { in: [nil, ''] } # allow false boolean
   validate :correct_value_type
 
   def unique_setting_code?
@@ -19,7 +19,7 @@ class ApplicationSetting
     return true if data_type == 'integer' && value !~ /\D/
     return true if (%w[hash array].include? data_type) && ([Hash, Array].include? value.class)
     return true if data_type == 'boolean' && [FalseClass, TrueClass].include?(value.class)
-    return true if data_type == 'string'
+    return true if data_type == 'string' && (value.is_a? String)
 
     errors.add(:value, :invalid)
     false
