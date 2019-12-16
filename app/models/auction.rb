@@ -1,4 +1,5 @@
 class Auction < ApplicationRecord
+  after_create :find_auction_turns
   validates :domain_name, presence: true
   validates :ends_at, presence: true
   validates :starts_at, presence: true
@@ -107,20 +108,24 @@ class Auction < ApplicationRecord
     end
   end
 
-  def in_progress_by_date?(date)
-    (starts_at <= date.end_of_day || starts_at <= date.beginning_of_day) &&
-      (ends_at >= date.end_of_day || ends_at >= date.beginning_of_day)
+  def find_auction_turns
+    update(turns_count: calculate_turns_count)
   end
 
-  def search_data
-    {
-      id: id,
-      domain_name: domain_name,
-      created_at: created_at,
-      starts_at: starts_at,
-      ends_at: ends_at,
-      offers_count: offers.count,
-      completed: result.present?,
-    }
+  def calculate_turns_count
+    auctions = Auction.unscoped.where(domain_name: domain_name).where('starts_at <= ?', starts_at)
+    result_statuses = auctions.order(:ends_at).map { |auction| auction.result&.status }
+    return 1 unless result_statuses.present? && result_statuses.first.present?
+
+    calculate_count(result_statuses)
+  end
+
+  def calculate_count(result_statuses)
+    statuses_to_drop_count = [::Result.statuses[:domain_registered],
+                              ::Result.statuses[:no_bids]]
+    result_statuses = result_statuses.take(result_statuses.size - 1).insert(0, nil)
+    result_statuses.reduce(0) do |sum, status|
+      statuses_to_drop_count.include?(status) ? 1 : sum + 1
+    end
   end
 end

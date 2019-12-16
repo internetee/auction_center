@@ -68,14 +68,4 @@ class Result < ApplicationRecord
 
     ResultMailer.winner_email(self).deliver_later
   end
-
-  def search_data
-    {
-      id: id,
-      domain_name: auction.domain_name,
-      created_at: created_at,
-      auction_ends_at: auction.ends_at.to_date,
-      status: status,
-    }
-  end
 end
