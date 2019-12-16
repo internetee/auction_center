@@ -40,7 +40,6 @@ module Admin
 
     def authorize_user
       authorize! :edit, ApplicationSettingFormat
-      authorize! :edit, Setting
     end
   end
 end

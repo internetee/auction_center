@@ -19,7 +19,7 @@ class AdministratorAbilityTest < ActiveSupport::TestCase
     assert(@administrator_ability.can?(:read, Audit::BillingProfile))
     assert(@administrator_ability.can?(:read, Audit::Ban))
     assert(@administrator_ability.can?(:read, Audit::User))
-    assert(@administrator_ability.can?(:read, Audit::Setting))
+    assert(@administrator_ability.can?(:read, Audit::ApplicationSettingFormat))
     assert(@administrator_ability.can?(:read, Audit::Invoice))
     assert(@administrator_ability.can?(:read, Audit::InvoiceItem))
     assert(@administrator_ability.can?(:read, Audit::Result))
@@ -29,7 +29,7 @@ class AdministratorAbilityTest < ActiveSupport::TestCase
     assert_not(@administrator_ability.can?(:create, Audit::BillingProfile))
     assert_not(@administrator_ability.can?(:create, Audit::Ban))
     assert_not(@administrator_ability.can?(:create, Audit::User))
-    assert_not(@administrator_ability.can?(:create, Audit::Setting))
+    assert_not(@administrator_ability.can?(:create, Audit::ApplicationSettingFormat))
     assert_not(@administrator_ability.can?(:create, Audit::Invoice))
     assert_not(@administrator_ability.can?(:create, Audit::InvoiceItem))
     assert_not(@administrator_ability.can?(:create, Audit::Result))
@@ -37,11 +37,11 @@ class AdministratorAbilityTest < ActiveSupport::TestCase
   end
 
   def test_administrator_can_edit_settings
-    assert(@administrator_ability.can?(:read, Setting))
-    assert(@administrator_ability.can?(:update, Setting))
+    assert(@administrator_ability.can?(:read, ApplicationSettingFormat))
+    assert(@administrator_ability.can?(:update, ApplicationSettingFormat))
 
-    assert_not(@administrator_ability.can?(:create, Setting))
-    assert_not(@administrator_ability.can?(:destroy, Setting))
+    assert_not(@administrator_ability.can?(:create, ApplicationSettingFormat))
+    assert_not(@administrator_ability.can?(:destroy, ApplicationSettingFormat))
   end
 
   def test_administrator_can_manage_auctions
