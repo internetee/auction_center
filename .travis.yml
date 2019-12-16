@@ -7,9 +7,6 @@ cache:
     - node_modules
   yarn: true
 bundler_args: --without development staging production
-before_install:
-  - gem update --system
-  - gem install bundler
 install:
   - bundle install
   - nvm install
@@ -17,6 +14,7 @@ install:
 before_script:
   - "cp config/database.yml.sample config/database.yml"
   - "cp config/customization.yml.sample config/customization.yml"
+  - "yarn install --check-files"
   - "bundle exec rake db:setup"
   - "curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter"
   - "chmod +x ./cc-test-reporter"
