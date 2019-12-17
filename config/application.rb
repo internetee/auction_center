@@ -9,7 +9,8 @@ Bundler.require(*Rails.groups)
 module AuctionCenter
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 5.2
+    config.load_defaults 6.0
+    config.autoloader = :classic
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers
@@ -35,19 +36,21 @@ module AuctionCenter
     # Default to UTC if not set
     config.time_zone = config.customization['time_zone'] || 'UTC'
 
+    config.action_mailer.delivery_job = 'ActionMailer::MailDeliveryJob'
+
     config.action_mailer.smtp_settings = {
-      address:              config.customization.dig('mailer', 'address'),
-      port:                 config.customization.dig('mailer', 'port'),
-      enable_starttls_auto: config.customization.dig('mailer', 'enable_starttls_auto'),
-      user_name:            config.customization.dig('mailer', 'user_name'),
-      password:             config.customization.dig('mailer', 'password'),
-      authentication:       config.customization.dig('mailer', 'authentication'),
-      domain:               config.customization.dig('mailer', 'domain'),
-      openssl_verify_mode:  config.customization.dig('mailer', 'openssl_verify_mode')
+      address:              config.customization.dig(:mailer, :address),
+      port:                 config.customization.dig(:mailer, :port),
+      enable_starttls_auto: config.customization.dig(:mailer, :enable_starttls_auto),
+      user_name:            config.customization.dig(:mailer, :user_name),
+      password:             config.customization.dig(:mailer, :password),
+      authentication:       config.customization.dig(:mailer, :authentication),
+      domain:               config.customization.dig(:mailer, :domain),
+      openssl_verify_mode:  config.customization.dig(:mailer, :openssl_verify_mode)
     }
 
     config.action_mailer.default_url_options = {
-      host: config.customization.dig('mailer', 'host'),
+      host: config.customization.dig(:mailer, :host),
     }
   end
 end

@@ -48,7 +48,13 @@
                     <% end %>
                 </div>
             </div>
-
+            <h3 class="p3"><%= t('.daily_summary') %></h3>
+            <div class="field">
+                <div class="ui checkbox">
+                    <%= f.check_box :daily_summary %>
+                    <%= f.label :daily_summary %>
+                </div>
+            </div>
             <h3 class="p3"><%= t('.roles') %></h3>
             <%- User::ROLES.each do |role| %>
                 <div class="field">

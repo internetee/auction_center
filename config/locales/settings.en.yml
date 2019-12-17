@@ -3,3 +3,11 @@ en:
     code: "code"
     description: "description"
     value: "value"
+  activerecord:
+    errors:
+      models:
+        setting:
+          attributes:
+            value:
+              not_a_json_hash: 'Error parsing hash from value'
+              not_a_json_array: 'Error parsing array from value'

@@ -63,4 +63,30 @@ class SettingTest < ActiveSupport::TestCase
 
     assert_equal(10, Setting.wishlist_size)
   end
+
+  def test_terms_and_conditions_parsing_and_multilocale
+    Setting.find_by(code: :terms_and_conditions_link).update!(value: "{\"en\":\"https://example.com\", \"et\":\"https://example.et\"}")
+    assert_equal('https://example.com', Setting.terms_and_conditions_link)
+  end
+
+  def test_multilocale_violations_count_regulations_link
+    Setting.find_by(code: :violations_count_regulations_link).update!(value: "{\"en\":\"https://regulations.test#some_anchor\"}")
+    assert_equal('https://regulations.test#some_anchor', Setting.violations_count_regulations_link)
+  end
+
+  def test_valid_format_for_wishlist_domain_extension_setting
+    @setting = settings(:application_name)
+    @setting.code = 'wishlist_supported_domain_extensions'
+    @setting.value = '["ee", "pri.ee"]'
+    assert @setting.valid?
+
+    @setting.value = '["pri.ee"]'
+    assert @setting.valid?
+
+    @setting.value = '[".ee"]'
+    assert @setting.invalid?
+
+    @setting.value = '["pri.ee.ee"]'
+    assert @setting.invalid?
+  end
 end

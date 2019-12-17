@@ -52,6 +52,10 @@
                             <td><strong><%= t('users.terms_and_conditions') %></strong></td>
                             <td><%= link_to t('.review_terms_and_conditions'), Setting.terms_and_conditions_link %></td>
                         </tr>
+                        <tr>
+                            <td><strong><%= t('.daily_summary') %></strong></td>
+                            <td><%= @user.daily_summary? ? I18n.t('yes') : I18n.t('no')%></td>
+                        </tr>
                     </tbody>
                 </table>
 

@@ -1,0 +1,94 @@
+<% content_for :hero do %>
+    <div class="hero orange">
+        <h1><%= t('.title') %></h1>
+    </div>
+<% end %>
+
+<div class="ui container">
+    <div class="margin-block">
+        <div class="ui centered grid">
+            <div class="ten wide column ui form">
+                <%= form_with(url: admin_statistics_path, local: true, method: :get) do |f| %>
+                    <div class="ui centered grid ">
+                        <div class="five wide column">
+                            <div class="field">
+                                <%= f.date_field :start_date, value: @start_date %>
+                            </div>
+                        </div>
+                        <div class="five wide column">
+                            <%= f.date_field :end_date, value: @end_date %>
+                        </div>
+                        <div class="four wide column">
+                            <%= f.submit t(:submit), class: "ui button primary" %>
+                        </div>
+                    </div>
+                <% end %>
+            </div>
+            <div class="ten wide column">
+                <h3>Auctions by end date</h3>
+                <p><%= "Auctions total #{@data[:auctions].values.sum}"%></p>
+                <p><%= "Auctions without bids #{@data[:auctions_without_offers].values.sum}"%></p>
+                <p><%= "Auctions with bids #{@data[:auctions_with_offers].values.sum}"%></p>
+                <%= line_chart [
+                    { name: 'Auctions total', data: @data[:auctions]},
+                    { name: 'Auctions without bids', data: @data[:auctions_without_offers]},
+                    { name: 'Auctions with bids', data: @data[:auctions_with_offers]},
+                               ], id: 'auctions-chart'%>
+            </div>
+
+            <div class="ten wide column">
+                <h3>Weekly average number of bids</h3>
+                <p><%= "Entries: #{@data[:average_offers_per_auction].count}"%></p>
+                <%= line_chart @data[:average_offers_per_auction], id: 'average-bids-chart' %>
+            </div>
+
+            <div class="ten wide column">
+                <h3>Paid domains monthly percentage</h3>
+                <p><%= "Entries: #{@data[:registered_monthly_percent].count}"%></p>
+                <%= line_chart @data[:registered_monthly_percent], id: 'paid-domains-monthly-chart' %>
+            </div>
+
+            <div class="ten wide column">
+                <h3>Paid but unregistered domains</h3>
+                <p><%= "Entries: #{@data[:unregistered_monthly].count}"%></p>
+                <%= line_chart @data[:unregistered_monthly], id: 'unregistered-monthly-chart' %>
+            </div>
+
+            <div class="ten wide column">
+                <h3>Unpaid invoices percentage by week</h3>
+                <p><%= "Entries: #{@data[:unpaid_invoice_percent_weekly].count}"%></p>
+                <%= line_chart @data[:unpaid_invoice_percent_weekly],
+                               id: 'unpaid-invoices-percentage-weekly-chart' %>
+            </div>
+
+            <div class="ten wide column">
+                <h3>Registered & unregistered domains vs number of paid & unpaid invoices by week
+                </h3>
+                <%= line_chart [
+                    { name: 'Registered_domains',
+                      data: @data[:registered_weekly] },
+                    { name: 'Unregistered_domains',
+                      data: @data[:unregistered_weekly] },
+                    { name: 'Invoices total',
+                      data: @data[:total_invoices_weekly] },
+                    { name: 'Unpaid Invoices',
+                      data: @data[:unpaid_invoices_weekly] }
+                               ], id: 'domains-invoices-chart' %>
+            </div>
+
+            <div class="ten wide column">
+                <h3>Auction wins per user</h3>
+                <p><%= "Entries: #{@data[:users].count}"%></p>
+                <%= pie_chart @data[:users], id: 'users-chart' %>
+            </div>
+
+            <%= javascript_include_tag "https://www.gstatic.com/charts/loader.js" %>
+
+            <div class="ten wide column">
+                <h3>Auction wins by country</h3>
+                <%= geo_chart @data[:winners_by_country], id: 'countries-chart',
+                              library: { width:'500', height:'400'} %>
+            </div>
+        </div>
+    </div>
+</div>

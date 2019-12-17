@@ -35,12 +35,13 @@ auction_minimum_offer.save
 
 # Terms and condition link
 terms_and_conditions_description = <<~TEXT.squish
-  Link to terms and conditions document. Can be relative ('/public/terms_and_conditions.pdf')
-  or absolute ('https://example.com/terms_and_conditions.pdf'). Relative link must start with a
-  forward slash. Default is: https://example.com
+  Link to terms and conditions document. Must be single parsable hash of <locale>:<URL> elements.
+        URL can be relative ('/public/terms_and_conditions.pdf')
+        or absolute ('https://example.com/terms_and_conditions.pdf'). Relative URL must start with a
+        forward slash. Default is: "{\"en\":\"https://example.com\", \"et\":\"https://example.et\"}"
 TEXT
 terms_and_conditions_setting = Setting.new(code: :terms_and_conditions_link,
-                                           value: "https://example.com",
+                                           value: "{\"en\":\"https://example.com\", \"et\":\"https://example.et\"}",
                                            description: terms_and_conditions_description)
 terms_and_conditions_setting.save
 
@@ -131,6 +132,23 @@ ban_number_of_strikes_setting = Setting.new(code: :ban_number_of_strikes, value:
 
 ban_number_of_strikes_setting.save
 
+# Link to auction regulations on strikes
+violations_count_regulations_description = <<~TEXT.squish
+  Link to ToC clause on user agreement termination, used in ban message banner.
+  Must be parsable string containing hash of <locale>:<URL> elements.
+  URL can be relative ('/public/terms_and_conditions.pdf')
+  or absolute ('https://example.com/terms_and_conditions.pdf'). Relative URL must start with a
+  forward slash.
+  Default: "{\"en\":\"https://example.com#some_anchor\"}"
+TEXT
+
+violations_count_regulations_setting = Setting.new(code: :violations_count_regulations_link,
+                                            value: "{\"en\":\"https://example.com#some_anchor\"}",
+                                            description: violations_count_regulations_description)
+
+violations_count_regulations_setting.save!
+
+
 # Default domain registration reminder time
 domain_registration_description = <<~TEXT.squish
   Number of days before which the registration reminder email is sent on. Default: 5
@@ -177,3 +195,53 @@ TEXT
 wishlist_size_setting = Setting.new(code: :wishlist_size, value: '10',
                                     description: wishlist_size_description)
 wishlist_size_setting.save
+
+# Wishlist allowed domain extensions
+domain_extensions_description = <<~TEXT.squish
+  Supported domain extensions for wishlist domain monitoring.
+TEXT
+
+extensions = ['ee', 'pri.ee', 'com.ee', 'med.ee', 'fie.ee']
+
+domain_extensions = Setting.new(code: :wishlist_supported_domain_extensions, value: extensions,
+                                    description: domain_extensions_description)
+domain_extensions.save
+
+check_api_url_description = <<~TEXT.squish,
+          URL to our own auction API endpoint for health checking.
+          Must be absolute, default is http://localhost/auctions.json.
+TEXT
+
+check_api_url_value = 'http://localhost/auctions.json'
+
+check_api_url = Setting.new(code: :check_api_url,
+                            value: check_api_url_value,
+                            description: check_api_url_description)
+
+check_api_url.save!
+
+check_sms_url_description = <<~TEXT.squish,
+          URL of SMS service provider for health checking.
+          Must be absolute.
+TEXT
+
+check_sms_url_value = 'https://status.messente.com/api/v1/components/1'
+
+check_sms_url = Setting.new(code: :check_sms_url,
+                            value: check_sms_url_value,
+                            description: check_sms_url_description)
+
+check_sms_url.save!
+
+check_tara_url_description = <<~TEXT.squish,
+          URL of OAUTH Tara provider for health checking.
+          Must be absolute.
+TEXT
+
+check_tara_url_value = 'https://tara-test.ria.ee/oidc/jwks'
+
+check_tara_url = Setting.new(code: :check_tara_url,
+                            value: check_tara_url_value,
+                            description: check_tara_url_description)
+
+check_tara_url.save!

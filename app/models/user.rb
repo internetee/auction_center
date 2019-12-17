@@ -33,6 +33,8 @@ class User < ApplicationRecord
   has_many :bans, dependent: :destroy
   has_many :wishlist_items, dependent: :destroy
 
+  scope :subscribed_to_daily_summary, -> { where(daily_summary: true) }
+
   def identity_code_must_be_valid_for_estonia
     return if IdentityCode.new(country_code, identity_code).valid?
 

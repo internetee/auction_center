@@ -7,6 +7,7 @@ en:
     finished: "This auction has finished"
     highest_price: "Highest price"
     offers: "Offers"
+    turns_count: "Turns count"
     offer_actions: "Offer actions"
     your_current_price: "Your current offer"
 
@@ -19,11 +20,15 @@ en:
     index:
       title: "Current auctions"
       search: "Search by domain name"
+      auction_list_tooltip: "Send me daily auctioned domain list by email"
+      auction_list_unsubscribe_tooltip: "Unsubscribe me from daily auctioned domain lists"
 
     search:
       title: "Auction search"
       search: "Search by domain name"
       limit: "Search results are limited to first %{limit} hits."
+      auction_list_tooltip: "Send me daily auctioned domain list by email"
+      auction_list_unsubscribe_tooltip: "Unsubscribe me from daily auctioned domain lists"
 
     show:
       title: "Auction details"
@@ -78,3 +83,12 @@ en:
         If you no longer want to participate in an auction, you can withdraw your offer
         at any point, as long as the auction is still in progress. Once the action has ended,
         you cannot withdraw your offer.
+
+    banned: |
+      You are banned from participating in auctions for domain(s): %{domain_names}.
+    banned_completely: |
+      You are banned from participating in .ee domain auctions due to multiple overdue
+      invoices until %{valid_until}.
+    violation_message_html: >-
+      Number of current <a href="%{violations_count_regulations_link}">violations</a>:
+      %{violations_count} of %{ban_number_of_strikes}

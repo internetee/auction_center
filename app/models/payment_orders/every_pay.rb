@@ -4,19 +4,20 @@ module PaymentOrders
 
     USER = AuctionCenter::Application.config
                                      .customization
-                                     .dig('payment_methods', CONFIG_NAMESPACE, 'user')
+                                     .dig(:payment_methods, CONFIG_NAMESPACE.to_sym, :user)
     KEY = AuctionCenter::Application.config
                                     .customization
-                                    .dig('payment_methods', CONFIG_NAMESPACE, 'key')
+                                    .dig(:payment_methods, CONFIG_NAMESPACE.to_sym, :key)
     ACCOUNT_ID = AuctionCenter::Application.config
                                            .customization
-                                           .dig('payment_methods', CONFIG_NAMESPACE, 'account_id')
+                                           .dig(:payment_methods,
+                                                CONFIG_NAMESPACE.to_sym, :account_id)
     URL = AuctionCenter::Application.config
                                     .customization
-                                    .dig('payment_methods', CONFIG_NAMESPACE, 'url')
+                                    .dig(:payment_methods, CONFIG_NAMESPACE.to_sym, :url)
     ICON = AuctionCenter::Application.config
                                      .customization
-                                     .dig('payment_methods', CONFIG_NAMESPACE, 'icon')
+                                     .dig(:payment_methods, CONFIG_NAMESPACE.to_sym, :icon)
 
     SUCCESSFUL_PAYMENT = %w[settled authorized].freeze
 
@@ -44,7 +45,7 @@ module PaymentOrders
     def self.icon
       AuctionCenter::Application.config
                                 .customization
-                                .dig('payment_methods', config_namespace_name, 'icon')
+                                .dig(:payment_methods, config_namespace_name.to_sym, :icon)
     end
 
     # Where to send the POST request with payment creation.
