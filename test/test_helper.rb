@@ -17,8 +17,4 @@ class ActiveSupport::TestCase
   def clear_email_deliveries
     ActionMailer::Base.deliveries.clear
   end
-
-  def assert_appears_before(earlier_element, later_element)
-    assert(page.text.index(earlier_element) < page.text.index(later_element))
-  end
 end
