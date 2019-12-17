@@ -1,5 +1,4 @@
 class ApplicationSettingFormat < ApplicationRecord
-  store_accessor :settings
   validates :data_type, presence: true, uniqueness: true
   validate :in_json_format, :validate_value
   validates :settings, json_uniq: true
