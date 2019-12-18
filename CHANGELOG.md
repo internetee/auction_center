@@ -1,3 +1,6 @@
+18.12.2019
+* Updated email address change email template [#456](https://github.com/internetee/auction_center/issues/456)
+
 16.12.2019
 * Added auction turn count to admin [#289](https://github.com/internetee/auction_center/issues/289)
 * Updated serialize-javascript [#447](https://github.com/internetee/auction_center/issues/447)
