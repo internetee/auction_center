@@ -51,6 +51,15 @@ en:
         salutation: "Hello, %{email}"
         first_para: "We're contacting you to notify you that your password has been changed."
 
+      email_changed:
+        subject: "Email address has been changed"
+        salutation: "Dear %{email},"
+        first_para: "Your email address has been changed to %{email}."
+        footer_html: |
+          <p>If you have any further questions, please contact the Estonian Internet Foundation at info@internet.ee or +372 727 1000.</p>
+          <p>Respectfully,<br>
+          Estonian Internet Foundation</p>
+
     omniauth_callbacks:
       failure: "Could not authenticate you from %{kind} because \"%{reason}\"."
       success: "Successfully authenticated from %{kind} account."
