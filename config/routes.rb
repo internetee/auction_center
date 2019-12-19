@@ -58,6 +58,7 @@ Rails.application.routes.draw do
   match '*auctions', controller: 'auctions', action: 'cors_preflight_check', via: [:options]
 
   resources :billing_profiles, param: :uuid
+  match '/status', via: :get, to: 'health_checks#index'
 
   resources :invoices, only: %i[show edit update index], param: :uuid do
     member do
