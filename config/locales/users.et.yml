@@ -63,6 +63,7 @@ et:
 
     destroy:
       deleted: "Oled välja logitud ja sinu konto on kustutatud."
+      cannot_delete: "Kontot ei ole võimalik tasumata arvete tõttu kustutada."
 
     toggle_subscription:
       subscription_status_toggled_flash: "Igapäevase oksjoninimekirja saatmise seaded muudetud"

@@ -73,5 +73,6 @@ en:
 
     destroy:
       deleted: "You have been logged out and your account has been deleted."
+      cannot_delete: "Your account cannot be deleted because you got unpaid invoices."
     toggle_subscription:
       subscription_status_toggled_flash: "Subscription status changed."
