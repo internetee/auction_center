@@ -1,4 +1,5 @@
 19.12.2019
+* Bump rack from 2.0.7 to 2.0.8 [#463](https://github.com/internetee/auction_center/pull/463)
 * Removed reindex_statistics data migration [#460](https://github.com/internetee/auction_center/pull/460)
 
 18.12.2019
