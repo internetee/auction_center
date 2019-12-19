@@ -67,6 +67,10 @@ class User < ApplicationRecord
     roles.include?(role)
   end
 
+  def deletable?
+    invoices&.issued&.blank?
+  end
+
   def signed_in_with_identity_document?
     provider == TARA_PROVIDER && uid.present?
   end
