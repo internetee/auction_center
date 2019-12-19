@@ -1,3 +1,6 @@
+19.12.2019
+* Removed reindex_statistics data migration [#460](https://github.com/internetee/auction_center/pull/460)
+
 18.12.2019
 * Updated email address change email template [#456](https://github.com/internetee/auction_center/issues/456)
 
