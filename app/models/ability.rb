@@ -55,7 +55,7 @@ class Ability
     can :read, InvoiceItem
     can %i[read create], Job
     can :manage, User
-    can %i[read update], ApplicationSettingFormat
+    can %i[read update], ApplicationSetting
     can :read, Offer
     can :read, Result
     can :read, PaymentOrder

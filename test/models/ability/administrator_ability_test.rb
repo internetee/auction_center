@@ -37,11 +37,11 @@ class AdministratorAbilityTest < ActiveSupport::TestCase
   end
 
   def test_administrator_can_edit_settings
-    assert(@administrator_ability.can?(:read, ApplicationSettingFormat))
-    assert(@administrator_ability.can?(:update, ApplicationSettingFormat))
+    assert(@administrator_ability.can?(:read, ApplicationSetting))
+    assert(@administrator_ability.can?(:update, ApplicationSetting))
 
-    assert_not(@administrator_ability.can?(:create, ApplicationSettingFormat))
-    assert_not(@administrator_ability.can?(:destroy, ApplicationSettingFormat))
+    assert_not(@administrator_ability.can?(:create, ApplicationSetting))
+    assert_not(@administrator_ability.can?(:destroy, ApplicationSetting))
   end
 
   def test_administrator_can_manage_auctions
