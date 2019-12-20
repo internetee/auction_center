@@ -19,10 +19,11 @@ class ApplicationSettingFormat < ApplicationRecord
                .with_indifferent_access.freeze
 
   def update_setting!(code:, value: nil, description: nil)
-    return NoMethodError unless settings.keys.any? code
+    return false unless settings.keys.any? code
 
-    settings[code]['value'] = value unless value.nil? || value == ''
-    settings[code]['description'] = description unless description.nil? || description == ''
+    unallowed_values = [nil, '']
+    settings[code]['value'] = value unless unallowed_values.include? value
+    settings[code]['description'] = description if description.present?
     save
   end
 

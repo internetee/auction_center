@@ -5,25 +5,7 @@ class ApplicationSetting
 
   validates :code, presence: true
   validates :description, :created_at, presence: true
-  validates :value, exclusion: { in: [nil, ''] } # allow false boolean
-  validate :correct_value_type
-
-  def unique_setting_code?
-    return true unless ApplicationSettingFormat.with_application_setting(code).any?
-
-    errors.add(:code, :taken)
-    false
-  end
-
-  def correct_value_type
-    return true if data_type == 'integer' && value !~ /\D/
-    return true if (%w[hash array].include? data_type) && ([Hash, Array].include? value.class)
-    return true if data_type == 'boolean' && [FalseClass, TrueClass].include?(value.class)
-    return true if data_type == 'string' && (value.is_a? String)
-
-    errors.add(:value, :invalid)
-    false
-  end
+  validate :validate_value_presence
 
   def create
     self.created_at = Time.zone.now
@@ -56,7 +38,7 @@ class ApplicationSetting
     self.updated_at = Time.zone.now
     self.updated_by = params[:updated_by] if params[:updated_by].present?
     self.value = params[:value] if params[:value].present?
-    self.value = value_in_format if correct_value_type
+    self.value = value_in_format
     self
   end
 
@@ -89,6 +71,17 @@ class ApplicationSetting
     setting.code = code
 
     setting
+  end
+
+  def unique_setting_code?
+    return true unless ApplicationSettingFormat.with_application_setting(code).any?
+
+    errors.add(:code, :taken)
+    false
+  end
+
+  def validate_value_presence
+    errors.add(:value, :invalid) if [nil, ''].include? value
   end
 
   ApplicationSettingFormat.find_each do |inst|

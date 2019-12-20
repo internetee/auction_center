@@ -4,10 +4,39 @@ module Concerns
 
     included do
       validate :validate_value
+      validate :valid_value_type
 
       FORMAT_VALIDATIONS = {
         wishlist_supported_domain_extensions: [:validate_domain_extension_elements],
       }.with_indifferent_access.freeze
+
+      VALUE_TYPE_VALIDATIONS = {
+        boolean: [:validate_boolean_format],
+        string: [:validate_data_format],
+        hash: [:validate_data_format],
+        array: [:validate_data_format],
+        integer: [:validate_data_format],
+      }.freeze
+
+      DATA_TYPES = { integer: Integer, hash: Hash, array: Array, string: String }
+                   .with_indifferent_access.freeze
+    end
+
+    def valid_value_type
+      methods = VALUE_TYPE_VALIDATIONS[data_type]
+      return unless methods
+
+      methods.each do |method|
+        send(method)
+      end
+    end
+
+    def validate_data_format
+      errors.add(:value, :invalid) unless value.is_a? DATA_TYPES[data_type]
+    end
+
+    def validate_boolean_format
+      errors.add(:value, :invalid) unless [true, false].include? value
     end
 
     def validate_value
