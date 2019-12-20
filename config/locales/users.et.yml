@@ -11,7 +11,7 @@ et:
     country_code: "Riigikood"
     identity_code: "Isikukood"
     terms_and_conditions: "Kasutaja tingimused"
-    must_accept_terms_and_conditions: "tuleb nõustuda"
+    must_accept_terms_and_conditions: "Kasutajatingimustega peab nõustuma"
     terms_and_conditions_accepted_at: "Tingimustega nõustunud"
     password: "Salasõna"
     password_confirmation: "Salasõna kinnitus"
@@ -71,6 +71,13 @@ et:
       subscription_status_toggled_flash: "Igapäevase oksjoninimekirja saatmise seaded muudetud"
 
   activerecord:
+    errors:
+      models:
+        user:
+          attributes:
+            terms_and_conditions:
+              format: "%{message}"
+
     attributes:
       user:
         display_name: "Kuva nimi"
