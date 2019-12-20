@@ -11,7 +11,7 @@ en:
     country_code: "Country code"
     identity_code: "Identity code"
     terms_and_conditions: "Terms and conditions"
-    must_accept_terms_and_conditions: "must be accepted"
+    must_accept_terms_and_conditions: "Terms and conditions must be accepted"
     terms_and_conditions_accepted_at: "Terms and conditions accepted at"
     password: "Password"
     password_confirmation: "Password confirmation"
@@ -77,3 +77,24 @@ en:
       cannot_delete: "Your account cannot be deleted because you got unpaid invoices."
     toggle_subscription:
       subscription_status_toggled_flash: "Subscription status changed."
+
+  activerecord:
+    errors:
+      models:
+        user:
+          attributes:
+            terms_and_conditions:
+              format: "%{message}"
+
+    attributes:
+      user:
+        display_name: "Display name"
+        given_names: "Given names"
+        surname: "Surname"
+        country: "Country"
+        email: "Email"
+        mobile_phone: "Mobile phone"
+        terms_and_conditions: "Terms and conditions"
+        password: "Password"
+        password_confirmation: "Password confirmation"
+        identity_code: "Identity code"
