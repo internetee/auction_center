@@ -72,7 +72,7 @@ class User < ApplicationRecord
   end
 
   def requires_phone_number_confirmation?
-    if Setting.require_phone_confirmation
+    if Setting.find_by(code: 'require_phone_confirmation').retrieve
       return false if signed_in_with_identity_document?
       return false if phone_number_confirmed?
 

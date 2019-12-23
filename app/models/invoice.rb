@@ -25,11 +25,12 @@ class Invoice < ApplicationRecord
     where('due_date < ? AND status = ?', Time.zone.today, statuses[:issued])
   }
 
-  scope :pending_payment_reminder, lambda { |number_of_days = Setting.invoice_reminder_in_days|
-    where('due_date = ? AND status = ?',
-          Time.zone.today + number_of_days,
-          statuses[:issued])
-  }
+  scope :pending_payment_reminder,
+        lambda { |number_of_days = Setting.find_by(code: 'invoice_reminder_in_days').retrieve|
+          where('due_date = ? AND status = ?',
+                Time.zone.today + number_of_days,
+                statuses[:issued])
+        }
 
   def self.create_from_result(result_id)
     result = Result.find_by(id: result_id)
@@ -58,7 +59,7 @@ class Invoice < ApplicationRecord
   end
 
   def price
-    Money.new(cents, Setting.auction_currency)
+    Money.new(cents, Setting.find_by(code: 'auction_currency').retrieve)
   end
 
   def total

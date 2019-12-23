@@ -50,7 +50,7 @@
                 <div class="ui list">
                     <div class="item">
                         <div class="header"><%= t('invoices.issuer') %></div>
-                        <%= Setting.invoice_issuer %>
+                        <%= Setting.find_by(code: 'invoice_issuer').retrieve %>
                     </div>
 
                     <div class="item">

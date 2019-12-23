@@ -7,7 +7,7 @@
 <div class="features-grid top green">
     <div class="overview">
         <div class="u-container">
-            <span class="title"><%= t('.limit_html', limit: Setting.wishlist_size) %></span>
+            <span class="title"><%= t('.limit_html', limit: Setting.find_by(code: 'wishlist_size').retrieve) %></span>
         </div>
     </div>
     <div class="u-container">

@@ -9,6 +9,7 @@ namespace :data_migrations do
     domain_extensions = Setting.new(
       code: :wishlist_supported_domain_extensions,
       value: extensions,
+      value_format: 'array',
       description: domain_extensions_description
     )
     domain_extensions.save!

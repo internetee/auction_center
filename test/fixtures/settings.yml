@@ -2,6 +2,7 @@ application_name:
   code: application_name
   description: Application name, as displayed in the header
   value: EIS Auction Center
+  value_format: string
 
 auction_currency:
   code: auction_currency
@@ -9,11 +10,13 @@ auction_currency:
     Currency in which all invoices and offers are to be made. Allowed values are
     EUR, USD, CAD, AUD, GBP, PLN, SEK. Default is: EUR
   value: EUR
+  value_format: string
 
 auction_minimum_offer:
   code: auction_minimum_offer
   description: 'Minimum amount in cents that a user can offer for a domain. Default is: 500 (5.00 EUR)'
   value: '500'
+  value_format: integer
 
 terms_and_conditions_link:
   code: terms_and_conditions_link
@@ -23,6 +26,7 @@ terms_and_conditions_link:
     or absolute ('https://example.com/terms_and_conditions.pdf'). Relative URL must start with a
     forward slash. Default is: "{\"en\":\"https://example.com\"}"
   value: "{\"en\":\"https://example.com\"}"
+  value_format: hash
 
 violations_count_regulations_link:
   code: violations_count_regulations_link
@@ -34,6 +38,7 @@ violations_count_regulations_link:
     forward slash.
     Default: https://example.com#some_anchor
   value: "{\"en\":\"https://example.com#some_anchor\"}"
+  value_format: hash
 
 default_country:
   code: default_country
@@ -41,6 +46,7 @@ default_country:
     Alpha two code for default country, used for example in user and billing profile dropdowns.
     Example values: "EE", "GB", "US", "CA"
   value: EE
+  value_format: string
 
 payment_term:
   code: payment_term
@@ -49,6 +55,7 @@ payment_term:
     If invoices are generated at the start of a day you might want to substract 1 from the
     setting to achieve desired invoice due date. Default: 7
   value: 7
+  value_format: integer
 
 require_phone_confirmation:
   code: require_phone_confirmation
@@ -56,6 +63,7 @@ require_phone_confirmation:
     Require mobile numbers to be confirmed by SMS before user can place offers. Can be either 'true'
     or 'false'
   value: "false"
+  value_format: boolean
 
 auction_duration:
   code: auction_duration
@@ -63,6 +71,7 @@ auction_duration:
     Number of hours for which an auction is created. You can also use 'end_of_day'
     for auctions to end at the end of the same calendar day. Default: 24.
   value: '24'
+  value_format: string
 
 registration_term:
   code: registration_term
@@ -70,6 +79,7 @@ registration_term:
     Number of days before the auctioned domain must be registered, starting from release of
     registration code. Default: 14
   value: '14'
+  value_format: integer
 
 auctions_start_at:
   code: 'auctions_start_at'
@@ -77,24 +87,28 @@ auctions_start_at:
     Whole hour at which auctions should start. Allowed values are anything between 0 and 23 or
     'false'. In case 'false' is used, auctions are started as soon as possible.
   value: '0'
+  value_format: string
 
 ban_length:
   code: 'ban_length'
   description: |
     Number of months for which a repeated offender is banned for. Default: 100
   value: '100'
+  value_format: integer
 
 ban_number_of_strikes:
   code: 'ban_number_of_strikes'
   description: |
     Number of strikes (unpaid invoices) at which a long ban is applied. Default: 3
   value: '3'
+  value_format: integer
 
 domain_registration_reminder:
   code: 'domain_registration_reminder'
   description: |
     Number of days before which the registration reminder email is sent on. Default: 5
   value: '5'
+  value_format: integer
 
 invoice_issuer:
   code: 'invoice_issuer'
@@ -102,6 +116,7 @@ invoice_issuer:
     Text that should appear in invoice as issuer. Usually contains company name, VAT number and
     local court registration number.e which the registration reminder email is sent on. Default: 5
   value: 'Eesti Interneti SA, VAT number EE101286464'
+  value_format: string
 
 invoice_reminder_in_days:
   code: 'invoice_reminder_in_days'
@@ -109,9 +124,42 @@ invoice_reminder_in_days:
     Number of days before due date on which reminders about unpaid invoices are sent.
     Use 0 to send reminders on due date. Default: 1
   value: '1'
+  value_format: integer
 
 wishlist_size:
   code: 'wishlist_size'
   description: |
     Number of domains a single user can keep in their wishlist. Default: 10
   value: '10'
+  value_format: integer
+
+wishlist_supported_domain_extensions:
+  code: 'wishlist_supported_domain_extensions'
+  description: |
+    Supported domain extensions for wishlist domain monitoring.
+  value: '[]'
+  value_format: array
+
+check_api_url:
+  code: 'check_api_url'
+  description: |
+    URL to our own auction API endpoint for health checking.
+    Must be absolute, default is http://localhost/auctions.json.
+  value: 'http://localhost/auctions.json'
+  value_format: string
+
+check_sms_url:
+  code: 'check_sms_url'
+  description: |
+    URL of SMS service provider for health checking.
+    Must be absolute.
+  value: 'https://status.messente.com/api/v1/components/1'
+  value_format: string
+
+check_tara_url:
+  code: 'check_tara_url'
+  description: |
+    URL of OAUTH Tara provider for health checking.
+    Must be absolute.
+  value: 'https://tara-test.ria.ee/oidc/jwks'
+  value_format: string
