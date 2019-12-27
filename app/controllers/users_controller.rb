@@ -1,6 +1,7 @@
 require 'countries'
 
 class UsersController < ApplicationController
+  include Concerns::UserNotices
   before_action :authenticate_user!, only: %i[show edit update destroy edit_authwall]
   before_action :set_user, only: %i[show edit update destroy]
   before_action :set_minimum_password_length, only: %i[new edit]
@@ -84,10 +85,12 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    @user.destroy
-
     respond_to do |format|
-      format.html { redirect_to :root, notice: t('.deleted') }
+      if @user.deletable? && @user.destroy!
+        format.html { redirect_to :root, notice: notification_for_delete(@user) }
+      else
+        format.html { redirect_to user_path(@user.uuid), notice: notification_for_delete(@user) }
+      end
       format.json { head :no_content }
     end
   end
@@ -125,9 +128,5 @@ class UsersController < ApplicationController
 
   def authorize_user
     authorize! :manage, @user
-  end
-
-  def notification_for_update(email_changed)
-    email_changed ? t('.email_changed') : t(:updated)
   end
 end
