@@ -1,3 +1,6 @@
+27.12.2019
+* Accounts with unpaid invoices cannot be deleted [#385](https://github.com/internetee/auction_center/issues/385)
+
 19.12.2019
 * Added public health check page [#449](https://github.com/internetee/auction_center/pull/449)
 * Bump rack from 2.0.7 to 2.0.8 [#463](https://github.com/internetee/auction_center/pull/463)
