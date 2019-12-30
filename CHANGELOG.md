@@ -1,3 +1,7 @@
+30.12.2019
+* Registration form UI issues and translation fixes [#462](https://github.com/internetee/auction_center/issues/462)
+* Fixed missing auction list checkbox issue in user profile [#465](https://github.com/internetee/auction_center/issues/465)
+
 27.12.2019
 * Accounts with unpaid invoices cannot be deleted [#385](https://github.com/internetee/auction_center/issues/385)
 
