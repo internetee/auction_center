@@ -9,7 +9,8 @@
 
 // Default Rails javascript and turbolinks
 import Rails from 'rails-ujs';
-require("chartkick").use(require("highcharts"))
+require("chartkick").use(require("highcharts"));
+import dt from 'datatables.net';
 import Turbolinks from 'turbolinks';
 Rails.start();
 Turbolinks.start();
@@ -26,6 +27,8 @@ import '../src/semantic-ui/semantic.less';
 import 'typeface-raleway';
 
 $(document).on('turbolinks:load', function() {
+    $('#auctions-table').DataTable();
+
     $('.ui.dropdown').dropdown();
 
     $('.btn-menu').on('click', function(e) {
