@@ -11,7 +11,7 @@ et:
     country_code: "Riigikood"
     identity_code: "Isikukood"
     terms_and_conditions: "Kasutaja tingimused"
-    must_accept_terms_and_conditions: "tuleb nõustuda"
+    must_accept_terms_and_conditions: "Kasutajatingimustega peab nõustuma"
     terms_and_conditions_accepted_at: "Tingimustega nõustunud"
     password: "Salasõna"
     password_confirmation: "Salasõna kinnitus"
@@ -52,6 +52,9 @@ et:
       currently_pending_confirmation: "Currently pending confirmation for %{email}."
       daily_summary: "Igapäevane oksjoninimekiri"
 
+    tara_form:
+      daily_summary: "Igapäevane oksjoninimekiri"
+
     update:
       incorrect_password: 'Vale salasõna'
 
@@ -69,6 +72,13 @@ et:
       subscription_status_toggled_flash: "Igapäevase oksjoninimekirja saatmise seaded muudetud"
 
   activerecord:
+    errors:
+      models:
+        user:
+          attributes:
+            terms_and_conditions:
+              format: "%{message}"
+
     attributes:
       user:
         display_name: "Kuva nimi"
@@ -77,7 +87,7 @@ et:
         country: "Riik"
         email: "E-post"
         mobile_phone: "Mobiil"
-        terms_and_conditions: "kasutaja tingimused"
+        terms_and_conditions: "Kasutaja tingimused"
         password: "Salasõna"
         password_confirmation: "Salasõna kinnitus"
         identity_code: "Isikukood"
