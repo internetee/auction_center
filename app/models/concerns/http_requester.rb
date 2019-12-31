@@ -7,16 +7,33 @@ module Concerns
       post: Net::HTTP::Post,
     }.freeze
 
+    HTTP_ERRORS = [
+      EOFError,
+      Errno::ECONNRESET,
+      Errno::EINVAL,
+      Net::HTTPBadResponse,
+      Net::HTTPHeaderSyntaxError,
+      Net::ProtocolError,
+      Timeout::Error,
+    ].freeze
+
     def default_request_response(url:, body:, headers:, type: :post)
       uri = URI(url)
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = (url.scheme == 'https')
-      request = HTTP_METHODS[type].new(uri.request_uri)
-      headers&.each { |key, val| request[key] = val }
-      request.body = body.to_json if body
-      success_result(response: http.request(request))
-    rescue Errno::ECONNREFUSED, Errno::EHOSTUNREACH, SocketError, Errno::EADDRNOTAVAIL
-      failed_result
+
+      generate_request(body: body, headers: headers, http: http, type: type, uri: uri)
+    rescue *HTTP_ERRORS => e
+      failed_result(e)
+    end
+
+    def generate_request(body:, headers:, http:, type:, uri:)
+      Timeout.timeout(10) do
+        request = HTTP_METHODS[type].new(uri.request_uri)
+        headers&.each { |key, val| request[key] = val }
+        request.body = body.to_json if body
+        success_result(response: http.request(request))
+      end
     end
 
     def success_result(response:)
@@ -26,10 +43,10 @@ module Concerns
       }
     end
 
-    def failed_result
+    def failed_result(exception)
       error_code = Rack::Utils::SYMBOL_TO_STATUS_CODE[:service_unavailable]
       {
-        body: 'Error occured',
+        body: "Error occured - #{exception.message}",
         status: error_code,
       }
     end
