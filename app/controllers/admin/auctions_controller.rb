@@ -29,7 +29,6 @@ module Admin
     def index
       @collection = AdminAuctionDecorator.with_highest_offers
                                          .order(orderable_array)
-                                         .page(params[:page])
 
       @auctions = @collection.map { |auction| AdminAuctionDecorator.new(auction) }
     end
