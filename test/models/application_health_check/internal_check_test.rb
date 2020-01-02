@@ -3,7 +3,7 @@ require 'test_helper'
 class InternalCheckTest < ActiveSupport::TestCase
 
   def test_check_list
-    asserted_checks = %w[default database api email registry sms tara]
+    asserted_checks = %w[default database email registry sms tara]
     assert_equal(asserted_checks, ApplicationHealthCheck::InternalCheck::CHECK_NAMES)
   end
 
