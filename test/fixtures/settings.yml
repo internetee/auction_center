@@ -140,14 +140,6 @@ wishlist_supported_domain_extensions:
   value: '[]'
   value_format: array
 
-check_api_url:
-  code: 'check_api_url'
-  description: |
-    URL to our own auction API endpoint for health checking.
-    Must be absolute, default is http://localhost/auctions.json.
-  value: 'http://localhost/auctions.json'
-  value_format: string
-
 check_sms_url:
   code: 'check_sms_url'
   description: |
