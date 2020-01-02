@@ -34,7 +34,7 @@
                 <%= f.select :country_code,
                 options_for_select(
                     Countries.for_selection,
-                    user.country_code || Setting.default_country
+                    user.country_code || Setting.find_by(code: 'default_country').retrieve
                 ),
                 { readonly: false },
                 class: "ui dropdown" %>
@@ -45,7 +45,7 @@
                     <%= f.check_box :accepts_terms_and_conditions, { value: user.accepts_terms_and_conditions }, "true", "false" %>
                     <%= f.label :accepts_terms_and_conditions do %>
                         <%= t('users.i_accept_terms_and_conditions_html',
-                              link: link_to(t('users.terms_and_conditions_link'), Setting.terms_and_conditions_link)) %>
+                              link: link_to(t('users.terms_and_conditions_link'), Setting.find_by(code: 'terms_and_conditions_link').retrieve)) %>
                     <% end %>
                 </div>
             </div>
