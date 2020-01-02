@@ -1,6 +1,6 @@
 module ApplicationHealthCheck
   class InternalCheck
-    CHECK_NAMES = %w[default database api email registry sms tara].freeze
+    CHECK_NAMES = %w[default database email registry sms tara].freeze
 
     def run
       result = {}
