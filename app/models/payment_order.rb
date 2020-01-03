@@ -3,7 +3,7 @@ require 'expected_payment_order'
 class PaymentOrder < ApplicationRecord
   ENABLED_METHODS = AuctionCenter::Application.config
                                               .customization
-                                              .dig('payment_methods', 'enabled_methods')
+                                              .dig(:payment_methods, :enabled_methods)
 
   enum status: { issued: 'issued',
                  paid: 'paid',

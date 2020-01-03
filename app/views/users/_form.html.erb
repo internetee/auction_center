@@ -34,7 +34,7 @@
                 <%= f.select :country_code,
                 options_for_select(
                     Countries.for_selection,
-                    user.country_code || Setting.default_country
+                    user.country_code || Setting.find_by(code: 'default_country').retrieve
                 ),
                 { readonly: false },
                 class: "ui dropdown" %>
@@ -45,8 +45,15 @@
                     <%= f.check_box :accepts_terms_and_conditions, { value: user.accepts_terms_and_conditions }, "true", "false" %>
                     <%= f.label :accepts_terms_and_conditions do %>
                         <%= t('users.i_accept_terms_and_conditions_html',
-                              link: link_to(t('users.terms_and_conditions_link'), Setting.terms_and_conditions_link)) %>
+                              link: link_to(t('users.terms_and_conditions_link'), Setting.find_by(code: 'terms_and_conditions_link').retrieve)) %>
                     <% end %>
+                </div>
+            </div>
+            <h3 class="p3"><%= t('.daily_summary') %></h3>
+            <div class="field">
+                <div class="ui checkbox">
+                    <%= f.check_box :daily_summary %>
+                    <%= f.label :daily_summary %>
                 </div>
             </div>
         </div>
@@ -58,7 +65,7 @@
                 <h3 class="p3"><%= t('users.password') %></h3>
             <% end %>
             <div class="field">
-                <%= f.label :password, t('users.password') %>
+                <%= f.label :password, t('users.password'), class: 'label-password' %>
                 <%= f.password_field :password, autocomplete: "new-password" %>
                 <% if user.persisted? %>
                     <br><em><%= t('.you_can_leave_blank') %></em><br>
@@ -69,7 +76,7 @@
                 <br />
             </div>
             <div class="field">
-                <%= f.label :password_confirmation, t('users.password_confirmation') %><br />
+                <%= f.label :password_confirmation, t('users.password_confirmation') %>
                 <%= f.password_field :password_confirmation, autocomplete: "off" %>
             </div>
         </div>

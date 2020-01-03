@@ -60,40 +60,21 @@ module OrderableHelper
   end
 
   def order_button_desc(table_with_column)
-    requested_order = { table_with_column => descending_order }
-    new_hash = append_or_create_sort_hash(requested_order)
+    requested_order = { order: { table_with_column => descending_order } }
 
-    map_of_values = { 'params' => new_hash, 'id' => "#{table_with_column}_desc_button",
+    map_of_values = { 'params' => requested_order, 'id' => "#{table_with_column}_desc_button",
                       'icon_class' => 'sort alphabet up icon' }
 
     link_with_icon(map_of_values)
   end
 
   def order_button_asc(table_with_column)
-    requested_order = { table_with_column => ascending_order }
-    new_hash = append_or_create_sort_hash(requested_order)
+    requested_order = { order: { table_with_column => ascending_order } }
 
-    map_of_values = { 'params' => new_hash, 'id' => "#{table_with_column}_asc_button",
+    map_of_values = { 'params' => requested_order, 'id' => "#{table_with_column}_asc_button",
                       'icon_class' => 'sort alphabet down icon' }
 
     link_with_icon(map_of_values)
-  end
-
-  # Prepends new order to existing order. In case existing order is on the same column as the new
-  # one, it is replaced in place, without prepending it to the beginning of the hash.
-  #
-  # Behaviour of this method is determined by Hash.merge method's idea of prepending the argument to
-  # the caller of the method.
-  def append_or_create_sort_hash(requested_order)
-    new_params = duplicate_params
-    input_hash = new_params.to_unsafe_h
-
-    if input_hash['order']
-      input_hash['order'].merge!(requested_order)
-      input_hash
-    else
-      input_hash.merge(order: requested_order)
-    end
   end
 
   def link_with_icon(map_of_values)

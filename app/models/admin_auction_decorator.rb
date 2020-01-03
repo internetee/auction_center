@@ -25,7 +25,7 @@ class AdminAuctionDecorator
   end
 
   def highest_price
-    Money.new(auction.highest_offer_cents, Setting.auction_currency)
+    Money.new(auction.highest_offer_cents, Setting.find_by(code: 'auction_currency').retrieve)
   end
 
   delegate :number_of_offers, to: :auction
@@ -37,6 +37,7 @@ class AdminAuctionDecorator
   delegate :remote_id, to: :auction
   delegate :ends_at, to: :auction
   delegate :starts_at, to: :auction
+  delegate :turns_count, to: :auction
 
   # Use window functions to find the winning offer, and then append those fields to
   # the auction dataset. It is considerably slower than original query, but does not contain any

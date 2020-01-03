@@ -40,7 +40,7 @@
             <p><strong><%= t(".please_note") %></strong></p>
             <p><%= t(".footer_html",
                      terms_and_conditions_link: link_to(t(".terms_and_conditions_link"),
-                                                        Setting.terms_and_conditions_link),
+                                                        Setting.find_by(code: 'terms_and_conditions_link').retrieve),
                      faq_link: link_to(t(".faq_link"), faq_link)) %></p>
         </div>
     </div>

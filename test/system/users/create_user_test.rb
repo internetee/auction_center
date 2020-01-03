@@ -51,13 +51,23 @@ class CreateUserTest < ApplicationSystemTestCase
 
   def test_form_has_terms_and_conditions_link
     visit new_user_path
-    assert(page.has_link?('auction portal user agreement', href: Setting.terms_and_conditions_link))
+    assert(page.has_link?('auction portal user agreement', href: Setting.find_by(code: 'terms_and_conditions_link').retrieve))
   end
 
   def test_terms_and_conditions_link_can_also_be_relative
     setting = Setting.find_by(code: :terms_and_conditions_link)
-    setting.update!(value: '/terms_and_conditions.pdf')
+    setting.update!(value: "{\"en\":\"/terms_and_conditions.pdf\", \"et\":\"/another_terms_and_conditions.pdf\"}")
     visit new_user_path
     assert(page.has_link?('auction portal user agreement', href: '/terms_and_conditions.pdf'))
+  end
+
+  def test_terms_and_conditions_link_can_be_stored_as_hash
+    setting = Setting.find_by(code: :terms_and_conditions_link)
+    setting.update(value: "{\"en\":\"https://example.com\", \"et\":\"https://example.et\"}")
+
+    I18n.with_locale(:en) do
+      visit new_user_path
+      assert(page.has_link?('auction portal user agreement', href: 'https://example.com'))
+    end
   end
 end

@@ -33,6 +33,8 @@ class User < ApplicationRecord
   has_many :bans, dependent: :destroy
   has_many :wishlist_items, dependent: :destroy
 
+  scope :subscribed_to_daily_summary, -> { where(daily_summary: true) }
+
   def identity_code_must_be_valid_for_estonia
     return if IdentityCode.new(country_code, identity_code).valid?
 
@@ -65,12 +67,16 @@ class User < ApplicationRecord
     roles.include?(role)
   end
 
+  def deletable?
+    invoices&.issued&.blank?
+  end
+
   def signed_in_with_identity_document?
     provider == TARA_PROVIDER && uid.present?
   end
 
   def requires_phone_number_confirmation?
-    if Setting.require_phone_confirmation
+    if Setting.find_by(code: 'require_phone_confirmation').retrieve
       return false if signed_in_with_identity_document?
       return false if phone_number_confirmed?
 

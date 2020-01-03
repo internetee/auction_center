@@ -1,3 +1,62 @@
+30.12.2019
+* Registration form UI issues and translation fixes [#462](https://github.com/internetee/auction_center/issues/462)
+* Fixed missing auction list checkbox issue in user profile [#465](https://github.com/internetee/auction_center/issues/465)
+
+27.12.2019
+* Accounts with unpaid invoices cannot be deleted [#385](https://github.com/internetee/auction_center/issues/385)
+
+19.12.2019
+* Added public health check page [#449](https://github.com/internetee/auction_center/pull/449)
+* Bump rack from 2.0.7 to 2.0.8 [#463](https://github.com/internetee/auction_center/pull/463)
+* Removed reindex_statistics data migration [#460](https://github.com/internetee/auction_center/pull/460)
+
+18.12.2019
+* Updated email address change email template [#456](https://github.com/internetee/auction_center/issues/456)
+
+16.12.2019
+* Added auction turn count to admin [#289](https://github.com/internetee/auction_center/issues/289)
+* Updated serialize-javascript [#447](https://github.com/internetee/auction_center/issues/447)
+
+13.12.2019
+* Added basic stats to admin [#174](https://github.com/internetee/auction_center/issues/174)
+
+10.12.2019
+* Fixed rounding mode warning for Money gem [#442](https://github.com/internetee/auction_center/issues/442)
+* Health check API settings are seeded now [#443](https://github.com/internetee/auction_center/issues/443)
+
+09.12.2019
+* Added Health check API documentation [#429](https://github.com/internetee/auction_center/issues/429)
+
+06.12.2019
+* Cancelled invoices are now accessible to users [#424](https://github.com/internetee/auction_center/issues/424)
+* Removed multi column sorting  in Admin [#408](https://github.com/internetee/auction_center/pull/408)
+
+29.11.2019
+* Daily auction list subscription option on auction list view subscribes and unsubscribes now without redirecting user to profile edit view [#428](https://github.com/internetee/auction_center/issues/428)
+* Upgrade to Rails 6 [#335](https://github.com/internetee/auction_center/issues/335)
+
+27.11.2019
+* Limited the wishlist records to domain extensions registry is responsible for. Partially solves issue #271 [#384](https://github.com/internetee/auction_center/pull/384)
+
+26.11.2019
+* Fixes response bug if registry integration disabled [#430](https://github.com/internetee/auction_center/pull/430)
+
+25.11.2019
+* Added an option for the users to order daily auction list on email [#355](https://github.com/internetee/auction_center/issues/355)
+
+22.11.2019
+* Modified ban alert in auction ui to remove references to domain names if these are not being auctioned [#229](https://github.com/internetee/auction_center/issues/229)
+* Updated rails-html-sanitizer to 1.3.0 [#426](https://github.com/internetee/auction_center/pull/426)
+
+20.11.2019
+* Urls to auction terms and conditions are now localized [#372](https://github.com/internetee/auction_center/issues/372)
+
+18.11.2019
+* Big gem versions update [#416](https://github.com/internetee/auction_center/pull/416)
+
+15.11.2019
+* Bump loofah from 2.2.3 to 2.3.1 [#407](https://github.com/internetee/auction_center/pull/407)
+
 14.11.2019
 * Upgrade Ruby to 2.6.5 [#212](https://github.com/internetee/auction_center/issues/212)
 * Added internal health check with API [#343](https://github.com/internetee/auction_center/issues/343)

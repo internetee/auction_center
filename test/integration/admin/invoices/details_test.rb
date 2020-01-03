@@ -13,7 +13,7 @@ class AdminInvoiceDetailsTest < ActionDispatch::IntegrationTest
 
     assert_response :ok
     assert_equal 'application/pdf', response.headers['content-type']
-    assert_equal %(attachment; filename="#{@invoice.filename}"), response.headers['content-disposition']
+    assert_equal %(attachment; filename="#{@invoice.filename}"; filename*=UTF-8''#{@invoice.filename}), response.headers['content-disposition']
     assert_not_empty response.body
   end
 end

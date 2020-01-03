@@ -30,8 +30,18 @@ class Result < ApplicationRecord
   scope :pending_registration_reminder, lambda {
     where(status: Result.statuses[:payment_received])
       .where('registration_due_date <= ?',
-             Time.zone.today + Setting.domain_registration_reminder_day)
+             Time.zone.today + Setting.find_by(code: 'domain_registration_reminder').retrieve)
       .where('registration_reminder_sent_at IS NULL')
+  }
+
+  scope :registered, -> { where(status: statuses[:domain_registered]) }
+  scope :unregistered, -> { where(status: statuses[:domain_not_registered]) }
+
+  scope :grouped_by_auctions, lambda { |start_date:, end_date:|
+    joins(:auction)
+      .where(auctions: { ends_at: start_date.beginning_of_day..end_date.end_of_day })
+      .preload(:auction)
+      .group_by { |result| result.auction.ends_at.to_date }
   }
 
   def self.create_from_auction(auction_id)
@@ -48,7 +58,7 @@ class Result < ApplicationRecord
   end
 
   def mark_as_payment_received(time)
-    date = time.to_date + Setting.registration_term
+    date = time.to_date + Setting.find_by(code: 'registration_term').retrieve
     update!(status: Result.statuses[:payment_received],
             registration_due_date: date)
   end

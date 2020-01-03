@@ -22,7 +22,7 @@
                 <%= f.select :country_code,
                 options_for_select(
                     Countries.for_selection,
-                    billing_profile.country_code || Setting.default_country
+                    billing_profile.country_code || Setting.find_by(code: 'default_country').retrieve
                 ),
                 {},
                 class: "ui selectable searchable dropdown" %>

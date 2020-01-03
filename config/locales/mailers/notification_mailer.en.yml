@@ -1,5 +1,4 @@
-et:
-  # needs translation at a point
+en:
   notification_mailer:
     daily_summary_email:
       subject: "Daily summary for %{date}"
@@ -10,3 +9,10 @@ et:
 
       registration_due_dates: "Domains due to be registered tomorrow:"
       bans: "Bans issued yesterday:"
+    daily_auctions_broadcast_email:
+      subject: "Today's .EE domain auction list is available!"
+      salutation: "Daily summary for .EE auctions happening today"
+      action: "Action"
+      submit_offer: "Submit offer"
+      domain_name: "Domain name"
+      ends_at: "Ends at"

@@ -27,8 +27,8 @@ class PaymentOrderEstonianBankLinkTest < ActiveSupport::TestCase
   end
 
   def test_form_fields
-    @orphaned_invoice.cents = Money.from_amount(1000.00, Setting.auction_currency).cents
-    assert_equal Money.from_amount(1200.00, Setting.auction_currency), @orphaned_invoice.total
+    @orphaned_invoice.cents = Money.from_amount(1000.00, Setting.find_by(code: 'auction_currency').retrieve).cents
+    assert_equal Money.from_amount(1200.00, Setting.find_by(code: 'auction_currency').retrieve), @orphaned_invoice.total
 
     expected_fields = {
       'VK_SERVICE': '1012',
@@ -70,8 +70,8 @@ class PaymentOrderEstonianBankLinkTest < ActiveSupport::TestCase
 
   def test_user_locale_is_mapped_to_vk_lang
     @new_bank_link.user = @user
-    @orphaned_invoice.cents = Money.from_amount(1234.56, Setting.auction_currency).cents
-    assert_equal Money.from_amount(1481.47, Setting.auction_currency), @orphaned_invoice.total
+    @orphaned_invoice.cents = Money.from_amount(1234.56, Setting.find_by(code: 'auction_currency').retrieve).cents
+    assert_equal Money.from_amount(1481.47, Setting.find_by(code: 'auction_currency').retrieve), @orphaned_invoice.total
     @user.update!(locale: :et)
 
     expected_fields = {

@@ -1,0 +1,45 @@
+<% content_for :hero do %>
+    <div class="hero green">
+        <h1><%= t('.title') %></h1>
+    </div>
+<% end %>
+
+<div class="u-container">
+    <div class="margin-block narrow">
+        <div class="grid one column">
+            <div class="column">
+                <table class="ui table selectable stackable" id="health-check-table">
+                    <thead>
+                    <tr>
+                        <th>
+                            <%= t('.test') %>
+                        </th>
+                        <th>
+                            <%= t('.status') %>
+                        </th>
+                        <th>
+                            <%= t('.message') %>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody id="health-check-table-body">
+                        <% @check_results.each do |result_key, result_value| %>
+                            <tr class="health-check-table-row">
+                                <td>
+                                  <%= t(".#{result_key}") %>
+                                </td>
+                                <% success_state = result_value[:success] ? 'positive' : 'negative' %>
+                                <td class=<%= success_state %> >
+                                    <%= result_value[:success] ? t('.status_ok') : t('.status_fail') %>
+                                </td>
+                                <td>
+                                    <%= result_value[:message] unless result_value[:success] %>
+                                </td>
+                            </tr>
+                        <% end %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

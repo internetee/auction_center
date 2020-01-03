@@ -93,14 +93,15 @@ module Admin
     def create_params
       params.require(:user)
             .permit(:email, :password, :password_confirmation, :identity_code, :country_code,
-                    :given_names, :surname, :mobile_phone, :accepts_terms_and_conditions, roles: [])
+                    :given_names, :surname, :mobile_phone, :accepts_terms_and_conditions,
+                    :daily_summary, roles: [])
     end
 
     def update_params
       update_params = params.require(:user)
                             .permit(:email, :password, :password_confirmation, :identity_code,
                                     :country_code, :given_names, :surname, :mobile_phone,
-                                    :accepts_terms_and_conditions, roles: [])
+                                    :accepts_terms_and_conditions, :daily_summary, roles: [])
       update_params.reject! { |_k, v| v.empty? }
       merge_updated_by(update_params)
     end
@@ -114,7 +115,7 @@ module Admin
     end
 
     def set_phone_confirmation_toggle
-      @phone_confirmation_toggle = Setting.require_phone_confirmation
+      @phone_confirmation_toggle = Setting.find_by(code: 'require_phone_confirmation').retrieve
     end
 
     def default_order_params

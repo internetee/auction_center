@@ -63,6 +63,8 @@ class Ability
       user.id == phone_confirmation.user.id
     end
 
+    can :read, StatisticsReport
+
     can :read, Audit::Auction
     can :read, Audit::BillingProfile
     can :read, Audit::Ban

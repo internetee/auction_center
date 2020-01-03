@@ -4,6 +4,6 @@ class InvoiceItem < ApplicationRecord
   validates :name, presence: true
 
   def price
-    Money.new(cents, Setting.auction_currency)
+    Money.new(cents, Setting.find_by(code: 'auction_currency').retrieve)
   end
 end
