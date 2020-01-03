@@ -12,6 +12,8 @@ import Rails from 'rails-ujs';
 require("chartkick").use(require("highcharts"));
 require( 'jquery' );
 import dt from 'datatables.net';
+import 'datatables.net-buttons';
+import 'datatables.net-buttons-se';
 import Turbolinks from 'turbolinks';
 Rails.start();
 Turbolinks.start();
@@ -29,6 +31,8 @@ import 'typeface-raleway';
 
 $(document).on('turbolinks:load', function() {
     $('#auctions-table').DataTable({
+        "paging": "true",
+        "pagingType": "full_numbers"
     });
 
     $('.ui.dropdown').dropdown();

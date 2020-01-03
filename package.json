@@ -7,6 +7,8 @@
    "dependencies": {
       "@rails/webpacker": "^4.0.7",
       "chartkick": "^3.2.0",
+      "datatables.net-buttons": "^1.6.1",
+      "datatables.net-buttons-se": "^1.6.1",
       "datatables.net-se": "^1.10.20",
       "highcharts": "^7.2.1",
       "jquery": "^3.4.1",
