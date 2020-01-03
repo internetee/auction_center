@@ -12,7 +12,8 @@ en:
     country: "Country"
     orphaned: 'Orphaned'
     errors: "prohibited this billing profile from being saved"
-    in_use_by_offer: "Billing profile can't be deleted, because it is linked with an active offer"
+    in_use_by_offer_short: "In use by an active offer"
+    in_use_by_offer: "Billing profile is already being used with an active offer"
 
     edit:
       title: "Edit billing profile"
@@ -25,3 +26,11 @@ en:
 
     show:
       title: "Billing profile"
+
+  activerecord:
+    errors:
+      models:
+        billing_profile:
+          attributes:
+            name:
+              format: "%{message}"

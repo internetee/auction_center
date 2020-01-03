@@ -12,7 +12,8 @@ et:
     country: "Riik"
     orphaned: 'Tühistatud'
     errors: "seda arve aadressi ei saa salvestada"
-    in_use_by_offer: "Arve aadressit ei saa kustutada, kuna see on seotud mõne aktiivse pakkumisega."
+    in_use_by_offer_short: "Seotud mõne aktiivse pakkumisega"
+    in_use_by_offer: "Antud profiil on juba seotud mõne aktiivse pakkumisega"
 
     edit:
       title: "Muuda arve aadressi"
@@ -39,3 +40,9 @@ et:
         state: "Vald"
         postal_code: "Sihtnumber"
         country: "Riik"
+      errors:
+        models:
+          billing_profile:
+            attributes:
+              name:
+                format: "%{message}"

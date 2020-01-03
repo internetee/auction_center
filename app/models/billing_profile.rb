@@ -9,7 +9,6 @@ class BillingProfile < ApplicationRecord
   validates :vat_code, uniqueness: { scope: :user_id }, allow_blank: true
 
   belongs_to :user, optional: true
-  before_destroy :check_no_active_offers_associated
   after_update :mirror_address_to_attached_invoices
 
   def user_name
@@ -31,19 +30,18 @@ class BillingProfile < ApplicationRecord
     billing_profile
   end
 
-  def check_no_active_offers_associated
-    return unless active_offers?
-
-    errors.add(:base, I18n.t('billing_profiles.in_use_by_offer'))
-    throw :abort
+  def unfinished_offers
+    offers = []
+    Offer.where(billing_profile_id: id).find_each do |offer|
+      offers << offer if offer.auction.result&.invoice.blank?
+    end
+    offers
   end
 
-  def active_offers?
-    return false unless Offer.where(billing_profile_id: id).any?
+  def deletable?
+    return true unless unfinished_offers.any?
 
-    Offer.where(billing_profile_id: id).find_each do |offer|
-      return true if offer.auction.result&.invoice.blank?
-    end
+    errors.add :name, I18n.t('billing_profiles.in_use_by_offer')
     false
   end
 
