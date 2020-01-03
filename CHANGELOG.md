@@ -1,3 +1,7 @@
+02.01.2020
+* Refactored settings [#382](https://github.com/internetee/auction_center/issues/382)
+* Fixed timeout error and removed redundant internal API check [#473](https://github.com/internetee/auction_center/issues/473)
+
 30.12.2019
 * Registration form UI issues and translation fixes [#462](https://github.com/internetee/auction_center/issues/462)
 * Fixed missing auction list checkbox issue in user profile [#465](https://github.com/internetee/auction_center/issues/465)
