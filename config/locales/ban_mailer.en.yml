@@ -1,7 +1,7 @@
 en:
   ban_mailer:
     short_ban_mail:
-      salutation: "Dear .ee auction participant"
+      salutation: "Dear %{display_name},"
       subject: "Participation in %{domain_name} auction prohibited"
       introduction: |
         The invoice for the preferential right to register %{domain_name} purchased from the .ee
@@ -12,7 +12,7 @@ en:
       number_of_strikes: "This is your %{number} invoice overdue."
 
     long_ban_mail:
-      salutation: "Dear .ee auction participant"
+      salutation: "Dear %{display_name},"
       subject: "Participation in auctions prohibited"
       introduction: |
         The invoice for the preferential right to register %{domain_name} purchased from the .ee

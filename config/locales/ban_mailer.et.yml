@@ -1,7 +1,7 @@
 et:
   ban_mailer:
     short_ban_mail:
-      salutation: "Lugupeetud .ee oksjonil osaleja"
+      salutation: "Lugupeetud, %{display_name}"
       subject: "%{domain_name} oksjonil osalemise keeld"
       introduction: |
         .ee domeeni oksjonilt soetatud domeeni %{domain_name} registreerimise
@@ -12,7 +12,7 @@ et:
       number_of_strikes: "See on %{number}. tasumata arve."
 
     long_ban_mail:
-      salutation: "Lugupeetud .ee oksjonil osaleja"
+      salutation: "Lugupeetud, %{display_name}"
       subject: "Oksjonitel osalemise keeld"
       introduction: |
         .ee domeenioksjonilt soetatud domeeni %{domain_name} registreerimise eelisõiguse arve on

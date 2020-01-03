@@ -2,7 +2,7 @@ en:
   result_mailer:
     winner_email:
       subject: "Bid for the %{domain_name} domain was successful"
-      salutation: "Dear .ee auction participant"
+      salutation: "Dear %{display_name},"
       introduction: |
         Congratulations! Your bid in the domain registration priority
         auction for the %{domain_name} domain was successful.
@@ -27,7 +27,7 @@ en:
 
     registration_code_email:
       subject: "%{domain_name} registration code available"
-      salutation: "Dear %{domain_name} auction winner"
+      salutation: "Dear %{display_name},"
       introduction_html: |
         Please find the registration code for %{domain_name} in .ee auction portal %{link}.
       details: |
@@ -42,7 +42,7 @@ en:
 
     participant_email:
       subject: "Bid for the %{domain_name} domain was unsuccessful"
-      salutation: "Dear .ee domain auction participant"
+      salutation: "Dear %{display_name},"
       first_para: |
         Your bid in the domain registration priority auction for
         the %{domain_name} domain was not successful.

@@ -2,7 +2,7 @@ en:
   domain_registration_mailer:
     registration_reminder_email:
       subject: "Deadline to register the %{domain_name} domain"
-      salutation: "Dear .ee auction winner"
+      salutation: "Dear %{display_name},"
       first_para: |
         The domain name registration priority is reserved for you as the winner of
         the %{domain_name} domain auction. You have 5 days to contact an accredited
