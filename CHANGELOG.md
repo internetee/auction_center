@@ -1,3 +1,18 @@
+30.12.2019
+* Registration form UI issues and translation fixes [#462](https://github.com/internetee/auction_center/issues/462)
+* Fixed missing auction list checkbox issue in user profile [#465](https://github.com/internetee/auction_center/issues/465)
+
+27.12.2019
+* Accounts with unpaid invoices cannot be deleted [#385](https://github.com/internetee/auction_center/issues/385)
+
+19.12.2019
+* Added public health check page [#449](https://github.com/internetee/auction_center/pull/449)
+* Bump rack from 2.0.7 to 2.0.8 [#463](https://github.com/internetee/auction_center/pull/463)
+* Removed reindex_statistics data migration [#460](https://github.com/internetee/auction_center/pull/460)
+
+18.12.2019
+* Updated email address change email template [#456](https://github.com/internetee/auction_center/issues/456)
+
 16.12.2019
 * Added auction turn count to admin [#289](https://github.com/internetee/auction_center/issues/289)
 * Updated serialize-javascript [#447](https://github.com/internetee/auction_center/issues/447)

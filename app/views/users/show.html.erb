@@ -50,7 +50,7 @@
 
                         <tr>
                             <td><strong><%= t('users.terms_and_conditions') %></strong></td>
-                            <td><%= link_to t('.review_terms_and_conditions'), Setting.terms_and_conditions_link %></td>
+                            <td><%= link_to t('.review_terms_and_conditions'), Setting.find_by(code: 'terms_and_conditions_link').retrieve %></td>
                         </tr>
                         <tr>
                             <td><strong><%= t('.daily_summary') %></strong></td>

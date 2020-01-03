@@ -28,7 +28,7 @@ class WishlistItem < ApplicationRecord
   # A user can only have limited number to discourage people from putting the whole zone into
   # the wishlist.
   def must_fit_in_wishlist_size
-    return if number_of_items_for_user < Setting.wishlist_size
+    return if number_of_items_for_user < Setting.find_by(code: 'wishlist_size').retrieve
 
     errors.add(:wishlist, I18n.t('wishlist_items.too_many_items'))
   end
@@ -55,8 +55,12 @@ class WishlistItem < ApplicationRecord
 
   # Validate that FQDN has supported extension
   def valid_domain_extension
-    return if Setting.wishlist_supported_domain_extensions.empty?
-    return if Setting.wishlist_supported_domain_extensions.include?(domain_name.split('.', 2).last)
+    return if Setting.find_by(code: 'wishlist_supported_domain_extensions').retrieve.empty?
+    if Setting.find_by(code: 'wishlist_supported_domain_extensions').retrieve.include?(
+      domain_name.split('.', 2).last
+    )
+      return
+    end
 
     errors.add(:domain_name, :invalid) if errors[:domain_name].blank?
   end

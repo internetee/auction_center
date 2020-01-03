@@ -14,7 +14,7 @@
             <div class="field">
                 <%= f.label :country, t('users.country_code') %>
                 <div class="ui disabled input">
-                    <%= f.text_field :country_code, value: user.country_code || Setting.default_country,
+                    <%= f.text_field :country_code, value: user.country_code || Setting.find_by(code: 'default_country').retrieve,
                                      readonly: true %>
                 </div>
             </div>
@@ -45,7 +45,7 @@
                     <%= f.check_box :accepts_terms_and_conditions, { value: false }, "true", "false" %>
                     <%= f.label :accepts_terms_and_conditions do %>
                         <%= t('users.i_accept_terms_and_conditions_html',
-                              link: link_to(t('users.terms_and_conditions_link'), Setting.terms_and_conditions_link)) %>
+                              link: link_to(t('users.terms_and_conditions_link'), Setting.find_by(code: 'terms_and_conditions_link').retrieve)) %>
                     <% end %>
                 </div>
             </div>

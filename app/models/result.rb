@@ -30,7 +30,7 @@ class Result < ApplicationRecord
   scope :pending_registration_reminder, lambda {
     where(status: Result.statuses[:payment_received])
       .where('registration_due_date <= ?',
-             Time.zone.today + Setting.domain_registration_reminder_day)
+             Time.zone.today + Setting.find_by(code: 'domain_registration_reminder').retrieve)
       .where('registration_reminder_sent_at IS NULL')
   }
 
@@ -58,7 +58,7 @@ class Result < ApplicationRecord
   end
 
   def mark_as_payment_received(time)
-    date = time.to_date + Setting.registration_term
+    date = time.to_date + Setting.find_by(code: 'registration_term').retrieve
     update!(status: Result.statuses[:payment_received],
             registration_due_date: date)
   end

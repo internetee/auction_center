@@ -75,8 +75,8 @@ class WishlistItemTest < ActiveSupport::TestCase
 
   def test_domain_has_valid_extension
     supported_extensions = ["ee"]
-    setting = settings(:application_name)
-    setting.update!(code: :wishlist_supported_domain_extensions, value: supported_extensions)
+    setting = settings(:wishlist_supported_domain_extensions)
+    setting.update!(value: supported_extensions)
 
     item = WishlistItem.new(user: @user, domain_name: 'dupe.ee')
     assert(item.valid?)

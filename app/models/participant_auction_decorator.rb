@@ -25,7 +25,7 @@ class ParticipantAuctionDecorator
   end
 
   def users_price
-    Money.new(auction.users_offer_cents, Setting.auction_currency)
+    Money.new(auction.users_offer_cents, Setting.find_by(code: 'auction_currency').retrieve)
   end
 
   delegate :users_offer_id, to: :auction

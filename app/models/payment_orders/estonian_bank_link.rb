@@ -67,7 +67,7 @@ module PaymentOrders
       hash['VK_STAMP']    = invoice.number
       hash['VK_AMOUNT'] = invoice.total.format(symbol: nil, thousands_separator: false,
                                                decimal_mark: '.')
-      hash['VK_CURR']     = Setting.auction_currency
+      hash['VK_CURR']     = Setting.find_by(code: 'auction_currency').retrieve
       hash['VK_REF']      = ''
       hash['VK_MSG']      = invoice.title
       hash['VK_RETURN']   = return_url
@@ -138,7 +138,7 @@ module PaymentOrders
     end
 
     def valid_currency?
-      Setting.auction_currency == response['VK_CURR']
+      Setting.find_by(code: 'auction_currency').retrieve == response['VK_CURR']
     end
 
     def verify_mac(data, mac)

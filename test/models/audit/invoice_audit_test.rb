@@ -21,7 +21,7 @@ class InvoiceAuditTest < ActiveSupport::TestCase
                           billing_profile: @billing_profile,
                           user: @user,
                           issue_date: Time.zone.today,
-                          due_date: Time.zone.today + Setting.payment_term,
+                          due_date: Time.zone.today + Setting.find_by(code: 'payment_term').retrieve,
                           cents: 1000)
 
     invoice.save!

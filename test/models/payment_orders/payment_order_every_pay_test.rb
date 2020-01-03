@@ -51,8 +51,8 @@ class PaymentOrderEveryPayTest < ActiveSupport::TestCase
   end
 
   def test_form_fields_are_filled_according_to_schema
-    @orphaned_invoice.cents = Money.from_amount(1000.00, Setting.auction_currency).cents
-    assert_equal Money.from_amount(1200.00, Setting.auction_currency), @orphaned_invoice.total
+    @orphaned_invoice.cents = Money.from_amount(1000.00, Setting.find_by(code: 'auction_currency').retrieve).cents
+    assert_equal Money.from_amount(1200.00, Setting.find_by(code: 'auction_currency').retrieve), @orphaned_invoice.total
 
     expected_fields = {
       api_username: 'api_user',
@@ -71,8 +71,8 @@ class PaymentOrderEveryPayTest < ActiveSupport::TestCase
 
   def test_form_fields_with_estonian_locale
     @every_pay.user = @user
-    @orphaned_invoice.cents = Money.from_amount(1234.56, Setting.auction_currency).cents
-    assert_equal Money.from_amount(1481.47, Setting.auction_currency), @orphaned_invoice.total
+    @orphaned_invoice.cents = Money.from_amount(1234.56, Setting.find_by(code: 'auction_currency').retrieve).cents
+    assert_equal Money.from_amount(1481.47, Setting.find_by(code: 'auction_currency').retrieve), @orphaned_invoice.total
     @user.update!(locale: :et)
 
     expected_fields = {

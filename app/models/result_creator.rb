@@ -70,7 +70,9 @@ class ResultCreator
   end
 
   def assign_registration_due_date
-    result.registration_due_date = Time.zone.today + Setting.registration_term
+    result.registration_due_date = Time.zone.today + Setting.find_by(
+      code: 'registration_term'
+    ).retrieve
   end
 
   def create_result
