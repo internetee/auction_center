@@ -4,6 +4,7 @@ class WishlistItem < ApplicationRecord
   belongs_to :user, optional: false
 
   before_validation :set_domain_name_to_unicode
+  before_validation :autocomplete_domain_extension
 
   validates :domain_name, uniqueness: { scope: :user_id }
 
@@ -52,6 +53,15 @@ class WishlistItem < ApplicationRecord
   end
 
   private
+
+  # Appends first domain extension in supported extension list in case no extension
+  # was defined by customer beforehand.
+  def autocomplete_domain_extension
+    extensions = Setting.find_by(code: 'wishlist_supported_domain_extensions').retrieve
+    return if extensions.empty?
+
+    self.domain_name = "#{domain_name}.#{extensions.first}" unless domain_name.include?('.')
+  end
 
   # Validate that FQDN has supported extension
   def valid_domain_extension
