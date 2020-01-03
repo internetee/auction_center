@@ -67,6 +67,7 @@ class AdminOrderableTest < ApplicationSystemTestCase
     visit admin_invoices_path
 
     click_link(id: 'invoices.billing_profile_id_desc_button')
+    sleep 1
     assert_appears_before('Orphan Profile', 'ACME Inc.')
   end
 
