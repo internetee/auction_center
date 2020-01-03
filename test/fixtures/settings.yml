@@ -155,3 +155,24 @@ check_tara_url:
     Must be absolute.
   value: 'https://tara-test.ria.ee/oidc/jwks'
   value_format: string
+
+voog_site_fetching_enabled:
+  code: 'voog_site_fetching_enabled'
+  description: |
+    Boolean whether to enable fetching & showing footer element from VOOG site. Defaults to false.
+  value: 'false'
+  value_format: boolean
+
+voog_api_key:
+  code: 'voog_api_key'
+  description: |
+    VOOG site API key. Required to fetch footer content.
+  value: 'changeme'
+  value_format: string
+
+voog_site_url:
+  code: 'voog_site_url'
+  description: |
+    VOOG site from which to fetch localized footer elements. Defaults to https://www.internet.ee
+  value: 'https://www.internet.ee'
+  value_format: string

@@ -3,13 +3,13 @@ require 'test_helper'
 class SharedFooterFetcherJobTest < ActiveJob::TestCase
   def setup
     super
-    @voog_site_url = settings(:application_name)
-    @voog_api_key = settings(:auction_currency)
-    @voog_site_fetching_enabled = settings(:auction_minimum_offer)
+    @voog_site_url = settings(:voog_site_url)
+    @voog_api_key = settings(:voog_api_key)
+    @voog_site_fetching_enabled = settings(:voog_site_fetching_enabled)
 
-    @voog_site_url.update!(code: 'voog_site_url', value: 'https://test.url')
-    @voog_api_key.update!(code: 'voog_api_key', value: '123')
-    @voog_site_fetching_enabled.update!(code: 'voog_site_fetching_enabled', value: 'true')
+    @voog_site_url.update!(value: 'https://test.url')
+    @voog_api_key.update!(value: '123')
+    @voog_site_fetching_enabled.update!(value: 'true')
   end
 
   def test_perform_now
