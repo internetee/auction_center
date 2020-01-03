@@ -1,3 +1,8 @@
+03.01.2020
+* Added autocomplete to whishlist that appends domain extension automatically if none is added [#271](https://github.com/internetee/auction_center/issues/271)
+* Changed default sort order to desc at admin interface [#397](https://github.com/internetee/auction_center/issues/397)
+* Added integration to Voog for shared page footer [#203](https://github.com/internetee/auction_center/issues/203)
+
 02.01.2020
 * Refactored settings [#382](https://github.com/internetee/auction_center/issues/382)
 * Fixed timeout error and removed redundant internal API check [#473](https://github.com/internetee/auction_center/issues/473)
