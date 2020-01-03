@@ -1,3 +1,6 @@
+03.01.2020
+* Added integration to Voog for shared page footer [#203](https://github.com/internetee/auction_center/issues/203)
+
 02.01.2020
 * Refactored settings [#382](https://github.com/internetee/auction_center/issues/382)
 * Fixed timeout error and removed redundant internal API check [#473](https://github.com/internetee/auction_center/issues/473)
