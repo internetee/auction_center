@@ -1,4 +1,5 @@
 03.01.2020
+* Changed default sort order to desc at admin interface [#397](https://github.com/internetee/auction_center/issues/397)
 * Added integration to Voog for shared page footer [#203](https://github.com/internetee/auction_center/issues/203)
 
 02.01.2020
