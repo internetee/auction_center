@@ -1,0 +1,4 @@
+en_xss:
+  name: 'xss'
+  locale: 'en'
+  content: '<img src=`javascript:alert("RSnake says, XSS")`>'

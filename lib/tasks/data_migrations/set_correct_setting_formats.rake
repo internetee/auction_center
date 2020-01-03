@@ -1,12 +1,13 @@
 namespace :data_migrations do
   desc 'Set correct format attribute for existing settings'
   task set_correct_setting_formats: :environment do
-    boolean_settings = %w[require_phone_confirmation]
+    boolean_settings = %w[require_phone_confirmation voog_site_fetching_enabled]
     integer_settings = %w[auction_minimum_offer payment_term registration_term
                           ban_length ban_number_of_strikes
                           invoice_reminder_in_days wishlist_size domain_registration_reminder]
     string_settings = %w[auction_currency default_country invoice_issuer check_api_url check_sms_url
-                         check_tara_url auction_duration auctions_start_at]
+                         check_tara_url auction_duration auctions_start_at voog_api_key
+                         voog_site_url]
     hash_settings = %w[violations_count_regulations_link terms_and_conditions_link]
     arr_settings = %w[wishlist_supported_domain_extensions]
 

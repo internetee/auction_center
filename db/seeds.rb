@@ -264,3 +264,33 @@ check_tara_url = Setting.new(code: :check_tara_url,
                             value_format: 'string')
 
 check_tara_url.save!
+
+# Voog site default URL
+voog_site_url_description = <<~TEXT.squish
+VOOG site from which to fetch localized footer elements. Defaults to https://www.internet.ee.
+TEXT
+
+voog_site_url_setting = Setting.new(code: :voog_site_url, value: 'https://www.internet.ee',
+                                    description: voog_site_url_description,
+                                    value_format: 'string')
+voog_site_url_setting.save
+
+# Voog site API token
+voog_api_key_description = <<~TEXT.squish
+VOOG site API key. Required to fetch footer content.
+TEXT
+
+voog_api_key_setting = Setting.new(code: :voog_api_key, value: 'changeme',
+                                   description: voog_api_key_description,
+                                   value_format: 'string')
+voog_api_key_setting.save
+
+# Voog site API fetching enabled boolean
+voog_site_fetching_enabled_description = <<~TEXT.squish
+Boolean whether to enable fetching & showing footer element from VOOG site. Defaults to false.
+TEXT
+
+voog_site_fetching_enabled_setting = Setting.new(code: :voog_site_fetching_enabled, value: 'false',
+                                                 description: voog_site_fetching_enabled_description,
+                                                value_format: 'boolean')
+voog_site_fetching_enabled_setting.save
