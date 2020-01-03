@@ -10,3 +10,4 @@ en:
           attributes:
             value:
               not_a_json_hash: 'Error parsing hash from value'
+              not_a_json_array: 'Error parsing array from value'

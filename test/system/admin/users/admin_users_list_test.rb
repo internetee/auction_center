@@ -56,7 +56,7 @@ class AdminUsersListTest < ApplicationSystemTestCase
 
   def test_form_has_terms_and_conditions_link
     visit new_admin_user_path
-    assert(page.has_link?('auction portal user agreement', href: Setting.terms_and_conditions_link))
+    assert(page.has_link?('auction portal user agreement', href: Setting.find_by(code: 'terms_and_conditions_link').retrieve))
   end
 
   def test_certain_fields_are_required

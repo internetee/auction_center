@@ -18,6 +18,7 @@ en:
       show:
         title: User
         ban_this_user: "Ban this user"
+        daily_summary: "Daily summary subscription"
 
       form:
         password_requirements: "at least %{minimum} characters"
@@ -28,6 +29,7 @@ en:
         you_can_leave_blank: "leave blank if you don't want to change it"
         we_need_your_password: "we need your current password to confirm your changes)"
         roles: 'Roles'
+        daily_summary: "Daily summary"
 
       edit:
         title: "Edit user"
@@ -37,3 +39,7 @@ en:
         you_can_leave_blank: "You can leave this field blank"
         roles: "Roles"
         errors: "prohibited this user from being saved"
+  activerecord:
+    attributes:
+      user:
+        daily_summary: "I wish to receive daily summary about currently auctioned domains."

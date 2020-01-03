@@ -2,7 +2,8 @@ class Job
   ALLOWED_JOB_NAMES = %w[ResultCreationJob InvoiceCancellationJob InvoiceCreationJob
                          AuctionCreationJob DomainRegistrationCheckJob ResultStatusUpdateJob
                          DomainRegistrationReminderJob UnpaidInvoiceReminderJob
-                         DailySummaryJob SharedFooterFetcherJob].freeze
+                         DailySummaryJob DailyBroadcastAuctionsJob DailyViewRefreshJob
+                         SharedFooterFetcherJob].freeze
 
   include ActiveModel::Model
 

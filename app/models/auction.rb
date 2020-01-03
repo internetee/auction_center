@@ -1,4 +1,5 @@
 class Auction < ApplicationRecord
+  after_create :find_auction_turns
   validates :domain_name, presence: true
   validates :ends_at, presence: true
   validates :starts_at, presence: true
@@ -14,6 +15,13 @@ class Auction < ApplicationRecord
   scope :without_result, lambda {
     where('ends_at < ? and id NOT IN (SELECT results.auction_id FROM results)', Time.now.utc)
   }
+
+  scope :for_period, lambda { |start_date, end_date|
+    where(ends_at: start_date.beginning_of_day..end_date.end_of_day)
+  }
+
+  scope :without_offers, -> { includes(:offers).where(offers: { auction_id: nil }) }
+  scope :with_offers, -> { includes(:offers).where.not(offers: { auction_id: nil }) }
 
   delegate :count, to: :offers, prefix: true
   delegate :size, to: :offers, prefix: true
@@ -70,18 +78,10 @@ class Auction < ApplicationRecord
 
   def overlaping_auctions
     dates_order = [starts_at, ends_at].sort
-    if persisted?
-      sql = <<~SQL.squish
-        id <> ? and domain_name = ?
-        AND tsrange(starts_at, ends_at, '[]') && tsrange(?, ?, '[]')
-      SQL
-
-      Auction.where(sql, id, domain_name, dates_order.first, dates_order.second)
-    else
-      sql = "domain_name = ? AND tsrange(starts_at, ends_at, '[]') && tsrange(?, ?, '[]')"
-
-      Auction.where(sql, domain_name, dates_order.first, dates_order.second)
-    end
+    sql = "domain_name = ? AND tsrange(starts_at, ends_at, '[]') && tsrange(?, ?, '[]')"
+    auctions = Auction.unscoped.where(sql, domain_name, dates_order.first, dates_order.second)
+    auctions = auctions.where.not(id: id) if persisted?
+    auctions
   end
 
   def can_be_deleted?
@@ -105,6 +105,27 @@ class Auction < ApplicationRecord
       Time.now.utc > starts_at && !finished?
     else
       false
+    end
+  end
+
+  def find_auction_turns
+    update(turns_count: calculate_turns_count)
+  end
+
+  def calculate_turns_count
+    auctions = Auction.unscoped.where(domain_name: domain_name).where('starts_at <= ?', starts_at)
+    result_statuses = auctions.order(:ends_at).map { |auction| auction.result&.status }
+    return 1 unless result_statuses.present? && result_statuses.first.present?
+
+    calculate_count(result_statuses)
+  end
+
+  def calculate_count(result_statuses)
+    statuses_to_drop_count = [::Result.statuses[:domain_registered],
+                              ::Result.statuses[:no_bids]]
+    result_statuses = result_statuses.take(result_statuses.size - 1).insert(0, nil)
+    result_statuses.reduce(0) do |sum, status|
+      statuses_to_drop_count.include?(status) ? 1 : sum + 1
     end
   end
 end

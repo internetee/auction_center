@@ -1,0 +1,19 @@
+<h1><%= t('.salutation') %></h1>
+ <table>
+    <thead>
+        <th><%= t('.domain_name') %></th>
+        <th><%= t('.ends_at') %></th>
+        <th><%= t('.action') %></th>
+    </thead>
+    <tbody>
+        <% @auctions.each do |auction| %>
+            <tr>
+                <td><%= auction.domain_name %></td>
+                <td><%= auction.ends_at %></td>
+                <td><%= link_to(t('.submit_offer'), auction_url(auction.uuid)) %>
+            </tr>
+        <% end %>
+    </tbody>
+</table>
+
+<%= t('common_mailer.footer_html') %>

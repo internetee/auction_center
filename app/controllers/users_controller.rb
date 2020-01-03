@@ -1,10 +1,12 @@
 require 'countries'
 
 class UsersController < ApplicationController
-  before_action :authenticate_user!, only: %i[show edit update destroy]
+  include Concerns::UserNotices
+  before_action :authenticate_user!, only: %i[show edit update destroy edit_authwall]
   before_action :set_user, only: %i[show edit update destroy]
   before_action :set_minimum_password_length, only: %i[new edit]
-  before_action :authorize_user, except: %i[new index create show]
+  before_action :authorize_user, except: %i[new index create show edit_authwall
+                                            toggle_subscription]
 
   # GET /users
   def index; end
@@ -13,6 +15,19 @@ class UsersController < ApplicationController
   def new
     redirect_to user_path(current_user.uuid), notice: t('.already_signed_in') if current_user
     @user = User.new
+  end
+
+  # GET /profile/edit
+  def edit_authwall
+    redirect_to edit_user_path(current_user.uuid)
+  end
+
+  # GET /profile/toggle_daily_subscription
+  def toggle_subscription
+    @user = current_user
+    @user.daily_summary = !@user.daily_summary
+    @user.save!
+    redirect_to :auctions, notice: t('.subscription_status_toggled_flash')
   end
 
   # POST /users/new
@@ -70,10 +85,12 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    @user.destroy
-
     respond_to do |format|
-      format.html { redirect_to :root, notice: t('.deleted') }
+      if @user.deletable? && @user.destroy!
+        format.html { redirect_to :root, notice: notification_for_delete(@user) }
+      else
+        format.html { redirect_to user_path(@user.uuid), notice: notification_for_delete(@user) }
+      end
       format.json { head :no_content }
     end
   end
@@ -83,14 +100,15 @@ class UsersController < ApplicationController
   def create_params
     params.require(:user)
           .permit(:email, :password, :password_confirmation, :country_code,
-                  :given_names, :surname, :mobile_phone, :accepts_terms_and_conditions, :locale)
+                  :given_names, :surname, :mobile_phone, :accepts_terms_and_conditions,
+                  :locale, :daily_summary)
   end
 
   def params_for_update
     update_params = params.require(:user)
                           .permit(:email, :password, :password_confirmation, :country_code,
                                   :given_names, :surname, :mobile_phone,
-                                  :accepts_terms_and_conditions)
+                                  :accepts_terms_and_conditions, :daily_summary)
     update_params.reject! { |_k, v| v.empty? }
     merge_updated_by(update_params)
   end
@@ -110,9 +128,5 @@ class UsersController < ApplicationController
 
   def authorize_user
     authorize! :manage, @user
-  end
-
-  def notification_for_update(email_changed)
-    email_changed ? t('.email_changed') : t(:updated)
   end
 end

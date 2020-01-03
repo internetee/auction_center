@@ -4,7 +4,7 @@ module ApplicationHelper
   end
 
   def google_analytics
-    tracking_id = Rails.configuration.customization.dig('google_analytics', 'tracking_id')
+    tracking_id = Rails.configuration.customization.dig(:google_analytics, :tracking_id)
     GoogleAnalytics.new(tracking_id: tracking_id)
   end
 
@@ -29,7 +29,7 @@ module ApplicationHelper
 
     content_tag(:div, class: 'ui message ban') do
       result = content_tag(:div, message, class: 'header')
-      if domains && domains.count < Setting.ban_number_of_strikes
+      if eligible_violations_present?(domains: domains)
         result << content_tag(:p, violation_message(domains.count), class: 'violation-message')
       end
       result
@@ -53,21 +53,30 @@ module ApplicationHelper
 
   def check_active_auctions_for(domains)
     active_auction_domains = Auction.active.pluck(:domain_name)
-    domains.reject { |element| !active_auction_domains.include?(element) }
+    domains.select { |element| active_auction_domains.include?(element) }
   end
 
   def violation_message(domains_count)
-    link = Setting.violations_count_regulations_link
+    link = Setting.find_by(code: 'violations_count_regulations_link').retrieve
     t('auctions.violation_message_html', violations_count_regulations_link: link,
                                          violations_count: domains_count,
-                                         ban_number_of_strikes: Setting.ban_number_of_strikes)
+                                         ban_number_of_strikes: Setting.find_by(
+                                           code: 'ban_number_of_strikes'
+                                         ).retrieve)
+  end
+
+  def eligible_violations_present?(domains: nil)
+    num_of_strikes = Setting.find_by(code: 'ban_number_of_strikes').retrieve
+    return true if domains && domains.count < num_of_strikes
+
+    false
   end
 
   def links(links_list)
     links_list.each do |item|
       concat(
         content_tag(:li) do
-          link_to(item[:name], item[:path], method: item[:method], class: 'item')
+          link_to(item[:name], item[:path], method: item[:method], class: 'item', data: item[:data])
         end
       )
     end
@@ -100,6 +109,7 @@ module ApplicationHelper
      { name: t(:bans_name), path: admin_bans_path },
      { name: t(:invoices_name), path: admin_invoices_path },
      { name: t(:jobs_name), path: admin_jobs_path },
-     { name: t(:settings_name), path: admin_settings_path }]
+     { name: t(:settings_name), path: admin_settings_path },
+     { name: t(:statistics_name), path: admin_statistics_path, data: { turbolinks: false } }]
   end
 end

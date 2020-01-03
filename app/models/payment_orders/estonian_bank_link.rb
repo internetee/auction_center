@@ -22,41 +22,41 @@ module PaymentOrders
     def self.icon
       AuctionCenter::Application.config
                                 .customization
-                                .dig('payment_methods',
-                                     config_namespace_name,
-                                     'icon')
+                                .dig(:payment_methods,
+                                     config_namespace_name.to_sym,
+                                     :icon)
     end
 
     def seller_account
       AuctionCenter::Application.config
                                 .customization
-                                .dig('payment_methods',
-                                     self.class.config_namespace_name,
-                                     'seller_account')
+                                .dig(:payment_methods,
+                                     self.class.config_namespace_name.to_sym,
+                                     :seller_account)
     end
 
     def seller_private_key
       AuctionCenter::Application.config
                                 .customization
-                                .dig('payment_methods',
-                                     self.class.config_namespace_name,
-                                     'seller_private_key')
+                                .dig(:payment_methods,
+                                     self.class.config_namespace_name.to_sym,
+                                     :seller_private_key)
     end
 
     def bank_certificate
       AuctionCenter::Application.config
                                 .customization
-                                .dig('payment_methods',
-                                     self.class.config_namespace_name,
-                                     'bank_certificate')
+                                .dig(:payment_methods,
+                                     self.class.config_namespace_name.to_sym,
+                                     :bank_certificate)
     end
 
     def form_url
       AuctionCenter::Application.config
                                 .customization
-                                .dig('payment_methods',
-                                     self.class.config_namespace_name,
-                                     'url')
+                                .dig(:payment_methods,
+                                     self.class.config_namespace_name.to_sym,
+                                     :url)
     end
 
     def form_fields
@@ -67,7 +67,7 @@ module PaymentOrders
       hash['VK_STAMP']    = invoice.number
       hash['VK_AMOUNT'] = invoice.total.format(symbol: nil, thousands_separator: false,
                                                decimal_mark: '.')
-      hash['VK_CURR']     = Setting.auction_currency
+      hash['VK_CURR']     = Setting.find_by(code: 'auction_currency').retrieve
       hash['VK_REF']      = ''
       hash['VK_MSG']      = invoice.title
       hash['VK_RETURN']   = return_url
@@ -138,7 +138,7 @@ module PaymentOrders
     end
 
     def valid_currency?
-      Setting.auction_currency == response['VK_CURR']
+      Setting.find_by(code: 'auction_currency').retrieve == response['VK_CURR']
     end
 
     def verify_mac(data, mac)

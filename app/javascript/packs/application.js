@@ -9,6 +9,7 @@
 
 // Default Rails javascript and turbolinks
 import Rails from 'rails-ujs';
+require("chartkick").use(require("highcharts"))
 import Turbolinks from 'turbolinks';
 Rails.start();
 Turbolinks.start();
@@ -18,6 +19,7 @@ import '../src/semantic-ui/definitions/modules/transition.js';
 import '../src/semantic-ui/definitions/modules/checkbox.js';
 import '../src/semantic-ui/definitions/modules/dropdown.js';
 import '../src/semantic-ui/definitions/modules/sidebar.js';
+import '../src/semantic-ui/definitions/modules/popup.js';
 import '../src/semantic-ui/semantic.less';
 
 // Fonts

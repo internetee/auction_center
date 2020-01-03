@@ -18,14 +18,6 @@ class HealthCheckTest < ActionDispatch::IntegrationTest
     assert_health_check_keys(keys)
   end
 
-  def test_api_check_passed
-    get('/healthcheck/api', as: :json)
-
-    keys = parse_keys(response: response, endpoint: 'api')
-
-    assert_health_check_keys(keys)
-  end
-
   def test_registry_check_passed
     get('/healthcheck/registry', as: :json)
 

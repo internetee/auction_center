@@ -4,8 +4,8 @@ class SharedFooterFetcherJob < ApplicationJob
   def perform
     return unless SharedFooterFetcherJob.needs_to_run?
 
-    api_token = Setting.voog_api_key
-    main_site_path = Setting.voog_site_url
+    api_token = Setting.find_by(code: 'voog_api_key').retrieve
+    main_site_path = Setting.find_by(code: 'voog_site_url').retrieve
 
     translated_footers = compose_localized_footers(site: main_site_path, api_token: api_token)
 
@@ -51,7 +51,7 @@ class SharedFooterFetcherJob < ApplicationJob
   end
 
   def self.needs_to_run?
-    Setting.voog_site_fetching_enabled?
+    Setting.find_by(code: 'voog_site_fetching_enabled').retrieve
   end
 
   def save_localized_partials(partials:)

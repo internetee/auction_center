@@ -5,8 +5,8 @@ module Messente
     BASE_URL = URI('https://api.messente.com/v1/omnimessage')
     HTTP_SUCCESS = '201'
 
-    USERNAME = AuctionCenter::Application.config.customization.dig('messente', 'username')
-    PASSWORD = AuctionCenter::Application.config.customization.dig('messente', 'password')
+    USERNAME = AuctionCenter::Application.config.customization.dig(:messente, :username)
+    PASSWORD = AuctionCenter::Application.config.customization.dig(:messente, :password)
     CHANNEL = 'sms'
 
     attr_reader :recipient

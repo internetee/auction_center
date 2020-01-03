@@ -1,0 +1,16 @@
+en:
+  health_checks:
+    index:
+      title: Site health check
+      test: Check name
+      status: Check status
+      message: Message
+      default: Application
+      database: Database
+      api: Auctions API
+      email: Email integration
+      registry: Registry integration
+      sms: SMS service integration
+      tara: TARA service integration
+      status_ok: OK
+      status_fail: FAIL

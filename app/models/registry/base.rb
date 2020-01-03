@@ -1,8 +1,8 @@
 module Registry
   class Base
     HTTP_SUCCESS = '200'.freeze
-    BASE_URL = URI(AuctionCenter::Application.config.customization.dig('registry_integration',
-                                                                       'url'))
+    BASE_URL = URI(AuctionCenter::Application.config.customization.dig(:registry_integration,
+                                                                       :url))
 
     attr_reader :body_as_string
     attr_reader :code_as_string

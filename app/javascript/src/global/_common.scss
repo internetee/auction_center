@@ -182,9 +182,24 @@ strong {
     word-break: break-all;
 }
 
+.daily-summary-link {
+    margin-left: 0.75em !important;
+}
+
+@media only screen and (max-width: 767px) {
+    .ui.search input {
+        width: 19.5em;
+    }
+}
+
 p.violation-message {
   font-weight: 900;
   a {
      color: #54c8ff;
   }
+
+}
+
+.no_margin {
+  margin: 0;
 }

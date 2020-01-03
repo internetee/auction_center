@@ -72,7 +72,7 @@ class AuctionsTest < ApplicationSystemTestCase
                      href: 'https://www.internet.ee/help-and-info/faq#III__ee_domain_auctions')
     )
 
-    assert(page.has_link?('terms and conditions', href: Setting.terms_and_conditions_link))
+    assert(page.has_link?('terms and conditions', href: Setting.find_by(code: 'terms_and_conditions_link').retrieve))
   end
 
   def test_auctions_index_does_not_contain_auctions_that_are_finished
