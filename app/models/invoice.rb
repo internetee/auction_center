@@ -3,9 +3,7 @@ require 'result_not_sold'
 
 class Invoice < ApplicationRecord
   alias_attribute :country_code, :alpha_two_country_code
-  enum status: { issued: 'issued',
-                 paid: 'paid',
-                 cancelled: 'cancelled' }
+  enum status: { issued: 'issued', paid: 'paid', cancelled: 'cancelled' }
 
   belongs_to :result, optional: false
   belongs_to :user, optional: true
@@ -15,8 +13,7 @@ class Invoice < ApplicationRecord
   belongs_to :paid_with_payment_order, class_name: 'PaymentOrder', optional: true
 
   validates :user_id, presence: true, on: :create
-  validates :issue_date, presence: true
-  validates :due_date, presence: true
+  validates :issue_date, :due_date, presence: true
   validates :paid_at, presence: true, if: proc { |invoice| invoice.paid? }
   validates :cents, numericality: { only_integer: true, greater_than: 0 }
   validates :billing_profile, presence: true, on: :create
@@ -24,9 +21,7 @@ class Invoice < ApplicationRecord
   validate :user_id_must_be_the_same_as_on_billing_profile_or_nil
   before_update :update_billing_address
 
-  scope :overdue, lambda {
-    where('due_date < ? AND status = ?', Time.zone.today, statuses[:issued])
-  }
+  scope :overdue, -> { where('due_date < ? AND status = ?', Time.zone.today, statuses[:issued]) }
 
   scope :pending_payment_reminder,
         lambda { |number_of_days = Setting.find_by(code: 'invoice_reminder_in_days').retrieve|
