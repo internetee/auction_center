@@ -9,6 +9,8 @@ class Offer < ApplicationRecord
   validate :auction_must_be_active
   validate :must_be_higher_than_minimum_offer
 
+  DEFAULT_PRICE_VALUE = 1
+
   def auction_must_be_active
     active_auction = Auction.active.find_by(id: auction_id)
     return if active_auction
@@ -41,10 +43,8 @@ class Offer < ApplicationRecord
   end
 
   def total
-    if billing_profile.present?
-      price * (1 + billing_profile.vat_rate)
-    else
-      price * (1 + Invoice.find_by(result: result).vat_rate)
-    end
+    return price * (DEFAULT_PRICE_VALUE + billing_profile.vat_rate) if billing_profile.present?
+
+    price * (DEFAULT_PRICE_VALUE + Invoice.find_by(result: result).vat_rate)
   end
 end
