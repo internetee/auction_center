@@ -16,7 +16,7 @@ module Admin
     def index
       @invoices = Invoice.accessible_by(current_ability)
                          .includes(:billing_profile, :user)
-                         .order(orderable_array)
+                         .order(orderable_array(default_order_params))
                          .page(params[:page])
     end
 
@@ -112,6 +112,10 @@ module Admin
 
     def create_invoice_if_needed
       InvoiceCreationJob.perform_later if InvoiceCreationJob.needs_to_run?
+    end
+
+    def default_order_params
+      { 'invoices.due_date' => 'desc' }
     end
   end
 end

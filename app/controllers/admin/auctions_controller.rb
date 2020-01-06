@@ -28,7 +28,7 @@ module Admin
     # GET /admin/auctions
     def index
       @collection = AdminAuctionDecorator.with_highest_offers
-                                         .order(orderable_array)
+                                         .order(orderable_array(default_order_params))
                                          .page(params[:page])
 
       @auctions = @collection.map { |auction| AdminAuctionDecorator.new(auction) }
@@ -82,6 +82,10 @@ module Admin
 
     def set_auction
       @auction = Auction.find(params[:id])
+    end
+
+    def default_order_params
+      { 'auctions.starts_at' => 'desc' }
     end
   end
 end

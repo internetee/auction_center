@@ -93,6 +93,8 @@ GEM
     childprocess (3.0.0)
     coderay (1.1.2)
     concurrent-ruby (1.1.5)
+    crack (0.4.3)
+      safe_yaml (~> 1.0.0)
     crass (1.0.5)
     delayed_job (4.1.8)
       activesupport (>= 3.0, < 6.1)
@@ -110,6 +112,7 @@ GEM
     ffi (1.11.3)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
+    hashdiff (1.0.0)
     hashie (3.6.0)
     httpclient (2.8.3)
     i18n (1.7.0)
@@ -234,6 +237,7 @@ GEM
       railties (>= 5.0)
     ruby_dep (1.5.0)
     rubyzip (2.0.0)
+    safe_yaml (1.0.5)
     scenic (1.5.1)
       activerecord (>= 4.0.0)
       railties (>= 4.0.0)
@@ -288,6 +292,10 @@ GEM
     webfinger (1.1.0)
       activesupport
       httpclient (>= 2.4)
+    webmock (3.7.6)
+      addressable (>= 2.3.6)
+      crack (>= 0.3.2)
+      hashdiff (>= 0.4.0, < 2.0.0)
     webpacker (4.2.0)
       activesupport (>= 4.2)
       rack-proxy (>= 0.6.1)
@@ -334,6 +342,7 @@ DEPENDENCIES
   turbolinks (~> 5)
   web-console (>= 3.3.0)
   webdrivers
+  webmock
   webpacker (~> 4.0)
   wkhtmltopdf-binary
 

@@ -6,7 +6,7 @@ module Admin
     def index
       @results = Result.includes(:auction, :offer, :invoice, :user)
                        .all
-                       .order(orderable_array)
+                       .order(orderable_array(default_order_params))
                        .page(params[:page])
 
       @auctions_needing_results = Auction.without_result
@@ -56,6 +56,10 @@ module Admin
       return @result.offer.billing_profile.name if @result.offer.billing_profile.present?
 
       Invoice.find_by(result: @result.offer).recipient
+    end
+
+    def default_order_params
+      { 'results.created_at' => 'desc' }
     end
   end
 end

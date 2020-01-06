@@ -43,4 +43,5 @@ group :test do
   gem 'capybara', '>= 2.15'
   gem 'simplecov', require: false
   gem 'webdrivers'
+  gem 'webmock'
 end
