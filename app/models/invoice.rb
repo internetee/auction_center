@@ -2,7 +2,6 @@ require 'result_not_found'
 require 'result_not_sold'
 
 class Invoice < ApplicationRecord
-  include BillingHelpers
   alias_attribute :country_code, :alpha_two_country_code
   enum status: { issued: 'issued',
                  paid: 'paid',
@@ -78,6 +77,19 @@ class Invoice < ApplicationRecord
     return unless persisted?
 
     I18n.t('invoices.title', number: number)
+  end
+
+  def address
+    country_name = Countries.name_from_alpha2_code(country_code)
+    postal_code_with_city = [postal_code, city].join(' ')
+    [street, postal_code_with_city, country_name].compact.join(', ')
+  end
+
+  def vat_rate
+    return Countries.vat_rate_from_alpha2_code(country_code) if country_code == 'EE'
+    return BigDecimal('0') if vat_code.present?
+
+    Countries.vat_rate_from_alpha2_code(country_code)
   end
 
   def filename
