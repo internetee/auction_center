@@ -1,5 +1,6 @@
 require 'result_not_found'
 require 'result_not_sold'
+require 'countries'
 
 class Invoice < ApplicationRecord
   alias_attribute :country_code, :alpha_two_country_code
