@@ -9,7 +9,7 @@ module Concerns
         terms_and_conditions_link: [:validate_json_hash],
         violations_count_regulations_link: [:validate_json_hash],
         wishlist_supported_domain_extensions: [:validate_domain_extension_elements],
-        remind_on_domain_registration_everyday: [:validate_string_boolean],
+        domain_registration_daily_reminder: [:validate_lte_zero],
       }.with_indifferent_access.freeze
     end
 
@@ -59,8 +59,8 @@ module Concerns
       false
     end
 
-    def validate_string_boolean
-      errors.add(:value, :invalid) unless %w[true false].include?(value)
+    def validate_lte_zero
+      errors.add(:value, :invalid) unless value.to_i >= 0 && value.to_i.is_a?(Integer)
     end
   end
 end

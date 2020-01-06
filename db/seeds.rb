@@ -171,17 +171,6 @@ domain_registration_setting = Setting.new(code: :domain_registration_reminder, v
 
 domain_registration_setting.save
 
-# Default everyday domain registration reminder time
-domain_registration_description_day = <<~TEXT.squish
-  Number of days before which the everyday registration reminder email is sent on. Default: 5
-TEXT
-
-domain_registration_setting_day = Setting.new(code: :domain_registration_reminder_day, value: '5',
-                                          description: domain_registration_description_day,
-                                          value_format: 'integer')
-
-domain_registration_setting_day.save
-
 # Default invoice issuer
 invoice_issuer_description = <<~TEXT.squish
       Text that should appear in invoice as issuer. Usually contains company name, VAT number and
@@ -307,15 +296,16 @@ voog_site_fetching_enabled_setting = Setting.new(code: :voog_site_fetching_enabl
 voog_site_fetching_enabled_setting.save
 
 # Daily reminder on paid but not registered domains flag
-remind_everyday_description = <<~TEXT.squish
-  Shall system send registration reminders on paid but not registered domains every day.
-  Can be either 'true' or 'false'
+daily_reminder_description = <<~TEXT.squish
+  Days remaining to the registration deadline that triggers daily reminder email until
+  deadline is reached or domain is registered. This is in addition
+  to domain_registration_reminder setting that send reminder just once. Default: 0
 TEXT
 
-remind_on_domain_registration_everyday = Setting.new(code: :remind_on_domain_registration_everyday,
-                                                     value: 'false',
-                                                     description: remind_everyday_description,
-                                                     value_format: 'boolean')
+remind_on_domain_registration_everyday = Setting.new(code: :domain_registration_daily_reminder,
+                                                     value: '0',
+                                                     description: daily_reminder_description,
+                                                     value_format: 'integer')
 
 remind_on_domain_registration_everyday.save!
 

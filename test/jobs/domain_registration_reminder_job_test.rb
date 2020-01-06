@@ -3,7 +3,6 @@ require 'test_helper'
 class DomainRegistrationReminderJobTest < ActiveJob::TestCase
   def setup
     super
-    set_remind_on_domain_registration_everyday_false
 
     @result = results(:with_invoice)
     @result.update!(status: 'payment_received')
@@ -12,7 +11,6 @@ class DomainRegistrationReminderJobTest < ActiveJob::TestCase
 
   def teardown
     super
-    set_remind_on_domain_registration_everyday_false
 
     travel_back
     clear_email_deliveries
@@ -110,12 +108,7 @@ class DomainRegistrationReminderJobTest < ActiveJob::TestCase
   end
 
   def set_remind_on_domain_registration_everyday_true
-    setting = settings(:remind_on_domain_registration_everyday)
-    setting.update!(value: 'true')
-  end
-
-  def set_remind_on_domain_registration_everyday_false
-    setting = settings(:remind_on_domain_registration_everyday)
-    setting.update!(value: 'false')
+    setting = settings(:domain_registration_daily_reminder)
+    setting.update!(value: '5')
   end
 end

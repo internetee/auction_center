@@ -4,29 +4,18 @@ namespace :data_migrations do
 
     Setting.transaction do
       remind_everyday_description = <<~TEXT.squish
-        Shall system send registration reminders on paid but not registered domains every day.
-        Can be either 'true' or 'false'
+        Days remaining to the registration deadline that triggers daily reminder email until
+        deadline is reached or domain is registered. This is in addition
+        to domain_registration_reminder setting that send reminder just once. Default: 0
       TEXT
 
-      remind_on_domain_registration_everyday = Setting.new(code: :remind_on_domain_registration_everyday,
-                                                           value: 'false',
-                                                           value_format: 'boolean',
+      remind_on_domain_registration_everyday = Setting.new(code: :t,
+                                                           value: '0',
+                                                           value_format: 'integer',
                                                            description: remind_everyday_description)
 
       remind_on_domain_registration_everyday.save!
       puts "Remind on domain registration every day setting updated"
-
-      domain_registration_description_day = <<~TEXT.squish
-        Number of days before which the everyday registration reminder email is sent on. Default: 5
-      TEXT
-
-      domain_registration_setting_day = Setting.new(code: :domain_registration_reminder_day, value: '5',
-                                                    description: domain_registration_description_day,
-                                                    value_format: 'integer')
-
-      domain_registration_setting_day.save
-
-      puts "Number of days before which the everyday registration reminder email is sent updated"
     end
   end
 end

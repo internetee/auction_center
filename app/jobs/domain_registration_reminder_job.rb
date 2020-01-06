@@ -10,8 +10,12 @@ class DomainRegistrationReminderJob < ApplicationJob
   end
 
   def self.scope
-    setting = Setting.find_by(code: 'remind_on_domain_registration_everyday').retrieve
-    setting ? Result.pending_registration_everyday_reminder : Result.pending_registration_reminder
+    setting = Setting.find_by(code: :domain_registration_daily_reminder).retrieve
+    if setting.positive?
+      Result.pending_registration_everyday_reminder
+    else
+      Result.pending_registration_reminder
+    end
   end
 
   def scope

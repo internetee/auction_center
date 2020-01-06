@@ -213,9 +213,11 @@ directo_default_payment_terms:
   value: 'R'
   value_format: string
 
-domain_registration_reminder_day:
-  code: 'domain_registration_reminder_day'
+domain_registration_setting:
+  code: 'domain_registration_setting'
   description: |
-    Number of days before which the everyday registration reminder email is sent on. Default: 5
-  value: '5'
+    Days remaining to the registration deadline that triggers daily reminder email until
+    deadline is reached or domain is registered. This is in addition
+    to domain_registration_reminder setting that send reminder just once. Default: 0
+  value: '0'
   value_format: integer
