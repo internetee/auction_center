@@ -9,9 +9,7 @@ namespace :data_migrations do
       next if invoice.billing_profile.blank?
       next unless invoice.recipient.nil?
 
-      invoice.update_billing_address
-
-      if invoice.save
+      if invoice.update_billing_address && invoice.save
         migrated_invoice_count += 1
       else
         failed_invoices << invoice.id
