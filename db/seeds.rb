@@ -11,6 +11,7 @@ end
 
 Seeder.seed('setting')
 Seeder.seed('admin')
+Seeder.seed('auction')
 
 # Minimum offer for the auction
 auction_minimum_offer = Setting.new(
