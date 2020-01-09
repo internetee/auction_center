@@ -1,24 +1,19 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
-
-module Seeder
-  def self.seed file
-    puts "Seeding #{file.titleize}"
-      path = File.expand_path(File.join(Rails.root, 'db', 'seed', "#{file}.rb"))
-      require path
-  end
-end
-
-Seeder.seed('setting')
-Seeder.seed('admin')
+# Currency
+currency_description = <<~TEXT.squish
+  Currency in which all invoices and offers are to be made. Allowed values are
+  EUR, USD, CAD, AUD, GBP, PLN, SEK. Default is: EUR
+TEXT
+currency_setting = Setting.new(code: :auction_currency, value: 'EUR',
+                               description: currency_description, value_format: 'string')
+currency_setting.save
 
 # Minimum offer for the auction
 auction_minimum_offer = Setting.new(
-  code: :auction_minimum_offer,
-  value: '500',
-  description:
-  'Minimum amount in cents that a user can offer for a domain. Default is: 500 (5.00 EUR)',
-  value_format: 'integer'
+    code: :auction_minimum_offer,
+    value: '500',
+    description:
+        'Minimum amount in cents that a user can offer for a domain. Default is: 500 (5.00 EUR)',
+    value_format: 'integer'
 )
 auction_minimum_offer.save
 
@@ -141,9 +136,9 @@ violations_count_regulations_description = <<~TEXT.squish
 TEXT
 
 violations_count_regulations_setting = Setting.new(code: :violations_count_regulations_link,
-                                            value: "{\"en\":\"https://example.com#some_anchor\"}",
-                                            description: violations_count_regulations_description,
-                                            value_format: 'hash')
+                                                   value: "{\"en\":\"https://example.com#some_anchor\"}",
+                                                   description: violations_count_regulations_description,
+                                                   value_format: 'hash')
 
 violations_count_regulations_setting.save!
 
@@ -163,12 +158,12 @@ domain_registration_setting.save
 invoice_issuer_description = <<~TEXT.squish
       Text that should appear in invoice as issuer. Usually contains company name, VAT number and
       local court registration number.
-    TEXT
+TEXT
 
 invoice_issuer_value = <<~TEXT.squish
       Eesti Interneti SA Paldiski mnt 80, Tallinn, Harjumaa, 10617 Estonia,
       Reg. no 90010019, VAT number EE101286464
-    TEXT
+TEXT
 
 invoice_issuer_setting = Setting.new(code: :invoice_issuer, value: invoice_issuer_value,
                                      description: invoice_issuer_description,
@@ -207,8 +202,8 @@ TEXT
 extensions = ['ee', 'pri.ee', 'com.ee', 'med.ee', 'fie.ee']
 
 domain_extensions = Setting.new(code: :wishlist_supported_domain_extensions, value: extensions,
-                                    description: domain_extensions_description,
-                                    value_format: 'array')
+                                description: domain_extensions_description,
+                                value_format: 'array')
 domain_extensions.save
 
 check_api_url_description = <<~TEXT.squish,
@@ -247,9 +242,9 @@ TEXT
 check_tara_url_value = 'https://tara-test.ria.ee/oidc/jwks'
 
 check_tara_url = Setting.new(code: :check_tara_url,
-                            value: check_tara_url_value,
-                            description: check_tara_url_description,
-                            value_format: 'string')
+                             value: check_tara_url_value,
+                             description: check_tara_url_description,
+                             value_format: 'string')
 
 check_tara_url.save!
 
@@ -280,59 +275,5 @@ TEXT
 
 voog_site_fetching_enabled_setting = Setting.new(code: :voog_site_fetching_enabled, value: 'false',
                                                  description: voog_site_fetching_enabled_description,
-                                                value_format: 'boolean')
+                                                 value_format: 'boolean')
 voog_site_fetching_enabled_setting.save
-
-# Daily reminder on paid but not registered domains flag
-daily_reminder_description = <<~TEXT.squish
-  Days remaining to the registration deadline that triggers daily reminder email until
-  deadline is reached or domain is registered. This is in addition
-  to domain_registration_reminder setting that send reminder just once. Default: 0
-TEXT
-
-remind_on_domain_registration_everyday = Setting.new(code: :domain_registration_daily_reminder,
-                                                     value: '0',
-                                                     description: daily_reminder_description,
-                                                     value_format: 'integer')
-
-remind_on_domain_registration_everyday.save!
-
-# Directo integration state boolean
-directo_integration_enabled_description = <<~TEXT.squish
-Enables or disables Directo Integration. Allowed values true / false. Defaults to false.
-TEXT
-
-directo_integration_enabled_setting = Setting.new(code: :directo_integration_enabled, value: 'false',
-                                                 description: directo_integration_enabled_description,
-                                                value_format: 'boolean')
-directo_integration_enabled_setting.save
-
-# Directo API URL
-directo_api_url_description = <<~TEXT.squish
-API URL for Directo backend
-TEXT
-
-directo_api_url_setting = Setting.new(code: :directo_api_url, value: 'http://directo.test',
-                                                 description: directo_api_url_description,
-                                                value_format: 'string')
-directo_api_url_setting.save
-
-# Directo Sales Agent
-directo_sales_agent_description = <<~TEXT.squish
-Directo SalesAgent value. Retrieve it from Directo.
-TEXT
-
-directo_sales_agent_setting = Setting.new(code: :directo_sales_agent, value: 'AUCTION',
-                                                 description: directo_sales_agent_description,
-                                                value_format: 'string')
-directo_sales_agent_setting.save
-
-# Directo default payment terms
-directo_default_payment_terms_description = <<~TEXT.squish
-Default payment term for creating invoices for Directo. Defaults to net10
-TEXT
-
-directo_default_payment_terms_setting = Setting.new(code: :directo_default_payment_terms, value: 'R',
-                                                 description: directo_default_payment_terms_description,
-                                                value_format: 'string')
-directo_default_payment_terms_setting.save
