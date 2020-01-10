@@ -294,3 +294,43 @@ voog_site_fetching_enabled_setting = Setting.new(code: :voog_site_fetching_enabl
                                                  description: voog_site_fetching_enabled_description,
                                                 value_format: 'boolean')
 voog_site_fetching_enabled_setting.save
+
+# Directo integration state boolean
+directo_integration_enabled_description = <<~TEXT.squish
+Enables or disables Directo Integration. Allowed values true / false. Defaults to false.
+TEXT
+
+directo_integration_enabled_setting = Setting.new(code: :directo_integration_enabled, value: 'false',
+                                                 description: directo_integration_enabled_description,
+                                                value_format: 'boolean')
+directo_integration_enabled_setting.save
+
+# Directo API URL
+directo_api_url_description = <<~TEXT.squish
+API URL for Directo backend
+TEXT
+
+directo_api_url_setting = Setting.new(code: :directo_api_url, value: 'http://directo.test',
+                                                 description: directo_api_url_description,
+                                                value_format: 'string')
+directo_api_url_setting.save
+
+# Directo Sales Agent
+directo_sales_agent_description = <<~TEXT.squish
+Directo SalesAgent value. Retrieve it from Directo.
+TEXT
+
+directo_sales_agent_setting = Setting.new(code: :directo_sales_agent, value: 'AUCTION',
+                                                 description: directo_sales_agent_description,
+                                                value_format: 'string')
+directo_sales_agent_setting.save
+
+# Directo default payment terms
+directo_default_payment_terms_description = <<~TEXT.squish
+Default payment term for creating invoices for Directo. Defaults to net10
+TEXT
+
+directo_default_payment_terms_setting = Setting.new(code: :directo_default_payment_terms, value: 'net10',
+                                                 description: directo_default_payment_terms_description,
+                                                value_format: 'string')
+directo_default_payment_terms_setting.save
