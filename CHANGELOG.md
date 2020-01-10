@@ -1,3 +1,6 @@
+10.01.2020
+* Improved billing profile management for invoices and active auctions [#313](https://github.com/internetee/auction_center/issues/313)
+
 03.01.2020
 * Added autocomplete to wishlist that appends domain extension automatically if none is added [#271](https://github.com/internetee/auction_center/issues/271)
 * Changed default sort order to desc at admin interface [#397](https://github.com/internetee/auction_center/issues/397)
