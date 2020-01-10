@@ -23,6 +23,7 @@ class UserGenerator
       terms_and_conditions_accepted_at: Time.zone.now - 6.months,
       uuid: SecureRandom.uuid,
       locale: 'en',
+      provider: PROVIDER_ARRAY.sample
     )
   end
 
