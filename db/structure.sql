@@ -1018,6 +1018,7 @@ CREATE TABLE public.invoices (
     state character varying,
     postal_code character varying,
     alpha_two_country_code character varying,
+    in_directo boolean DEFAULT false NOT NULL,
     CONSTRAINT invoices_cents_are_positive CHECK ((cents > 0)),
     CONSTRAINT invoices_due_date_is_not_before_issue_date CHECK ((issue_date <= due_date)),
     CONSTRAINT paid_at_is_filled_when_status_is_paid CHECK ((NOT ((status = 'paid'::public.invoice_status) AND (paid_at IS NULL)))),
@@ -2527,6 +2528,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20191209083000'),
 ('20191209085222'),
 ('20191213082941'),
-('20191220131845');
+('20191220131845'),
+('20200110135003');
 
 
