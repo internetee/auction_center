@@ -1,5 +1,4 @@
 class OfferGenerator
-  RANGE_START = Time.zone.now - 6.months
 
   def self.generate! count
     count.times do
