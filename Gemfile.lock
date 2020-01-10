@@ -1,4 +1,13 @@
 GIT
+  remote: https://github.com/internetee/directo.git
+  revision: 3dc3b881d838cb061af09b8d36b8fdfbb60d04d1
+  branch: evaluate-master
+  specs:
+    directo (0.1.0)
+      money (~> 6.13)
+      nokogiri (~> 1.10)
+
+GIT
   remote: https://github.com/internetee/omniauth-tara.git
   revision: cec845ec3794532144c4976104a07e206d759aa6
   specs:
@@ -321,6 +330,7 @@ DEPENDENCIES
   delayed_job
   delayed_job_active_record
   devise
+  directo!
   jbuilder (~> 2.5)
   kaminari
   listen (>= 3.0.5, < 3.2)
