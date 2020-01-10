@@ -11,6 +11,7 @@ et:
   created: "Loodud."
   updated: "Uuendatud."
   deleted: "Kustutatud."
+  something_went_wrong: "Midagi läks valesti."
   are_you_sure: "Oled kindel?"
   confirm: "Kinnita"
 

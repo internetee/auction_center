@@ -51,11 +51,11 @@ class BillingProfilesController < ApplicationController
 
   # DELETE /billing_profiles/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
   def destroy
-    @billing_profile.destroy
-
-    respond_to do |format|
-      format.html { redirect_to billing_profiles_path, notice: t(:deleted) }
-      format.json { head :no_content }
+    if @billing_profile.deletable?
+      @billing_profile.destroy!
+      redirect_to billing_profiles_path, notice: t(:deleted)
+    else
+      redirect_to billing_profiles_path, notice: @billing_profile.errors[:base].to_sentence
     end
   end
 

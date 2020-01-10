@@ -102,4 +102,13 @@ class BillingProfileTest < ActiveSupport::TestCase
     assert_equal(billing_profile.country_code, user_without_billing_profile.country_code)
     assert_equal(billing_profile.name, user_without_billing_profile.display_name)
   end
+
+  def invoice_with_billing_profile
+    billing_profile_recipient = 'New Company Ltd'
+    invoice = invoices(:payable)
+    @billing_profile.update(name: billing_profile_recipient)
+    invoice.reload
+
+    assert_equal(billing_profile_recipient, invoice.recipient)
+  end
 end

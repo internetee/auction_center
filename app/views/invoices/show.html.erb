@@ -20,8 +20,8 @@
             <div class="column">
                 <div class="ui list">
                     <div class="item">
-                        <div class="header"><%= @invoice.billing_profile.name %></div>
-                        <%= @invoice.billing_profile.address %>
+                        <div class="header"><%= @invoice.recipient %></div>
+                        <%= @invoice.address %>
                     </div>
                 </div>
             </div>
@@ -84,7 +84,7 @@
                             <td scope="col"></td>
                             <td scope="col"><%= t('invoices.vat_rate', price: @invoice.price) %></td>
                             <td scope="col">
-                                <%= number_to_percentage(@invoice.billing_profile.vat_rate * 100, precision: 0) %>
+                                <%= number_to_percentage(@invoice.vat_rate * 100, precision: 0) %>
                             </td>
                         </tr>
                         <tr>

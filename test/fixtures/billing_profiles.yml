@@ -28,6 +28,15 @@ orphaned:
   uuid: "700707da-b638-4357-ae1e-34edf832654b"
   created_at: <%= Time.parse('2010-07-06 10:28 +0000') %>
 
+unused:
+  user: participant
+  name: "Unused Profile"
+  street: "Baker Street 221B"
+  city: "London"
+  postal_code: "NW1 6XE"
+  alpha_two_country_code: "GB"
+  uuid: "ea91cb74-5ef2-441c-9f2e-075d3e0d622d"
+
 omniauth_company:
   user: signed_in_with_omniauth
   name: "ACME Inc."

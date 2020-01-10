@@ -3,6 +3,13 @@ payable:
   user: participant
   billing_profile: company
   cents: 1000
+  recipient: "ACME Inc."
+  vat_code: "12234567890"
+  street: "Baker Street 221B"
+  city: "London"
+  state: nil
+  postal_code: "NW1 6XE"
+  alpha_two_country_code: "GB"
   status: <%= Invoice.statuses[:issued] %>
   issue_date: <%= Time.parse('1999-07-05 11:30 +0000') %>
   due_date: <%= Time.parse('2010-07-13 10:30 +0000') %>
@@ -12,6 +19,11 @@ orphaned:
   result: orphaned
   billing_profile: orphaned
   cents: 1000
+  recipient: "Orphan Profile"
+  street: "Baker Street 221B"
+  city: "London"
+  postal_code: "NW1 6XE"
+  alpha_two_country_code: "GB"
   status: <%= Invoice.statuses[:issued] %>
   issue_date: <%= Time.parse('2010-07-06 10:30 +0000') %>
   due_date: <%= Time.parse('2010-07-13 10:30 +0000') %>

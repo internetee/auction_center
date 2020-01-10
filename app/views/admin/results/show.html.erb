@@ -47,7 +47,7 @@
                             <%- unless @result.no_bids? %>
                                 <tr>
                                     <td><strong><%= t('results.buyer') %></strong></td>
-                                    <td><%= @result.offer.billing_profile.name %></td>
+                                    <td><%= @buyer %></td>
                                 </tr>
                             <% end %>
                     </tbody>
@@ -77,7 +77,7 @@
                     <% @offers.each do |offer| %>
                         <tr class="offers-table-row">
                             <td><%= t('offers.price_in_currency', price: offer.price) %></td>
-                            <td><%= offer.billing_profile.name %></td>
+                            <td><%= offer.billing_profile.present? ? offer.billing_profile.name : offer.user.display_name %></td>
                             <td><%= I18n.l(offer.created_at) %></td>
                             <td><%= I18n.l(offer.updated_at) %></td>
                             <td><%= link_to t(:versions_name), admin_offer_versions_path(offer) %></td>

@@ -8,12 +8,7 @@ class BillingProfile < ApplicationRecord
   validates :vat_code, uniqueness: { scope: :user_id }, allow_blank: true
 
   belongs_to :user, optional: true
-
-  def address
-    country_name = Countries.name_from_alpha2_code(country_code)
-    postal_code_with_city = [postal_code, city].join(' ')
-    [street, postal_code_with_city, state, country_name].compact.join(', ')
-  end
+  after_update :mirror_address_to_attached_invoices
 
   def user_name
     if user
@@ -23,15 +18,17 @@ class BillingProfile < ApplicationRecord
     end
   end
 
+  def address
+    country_name = Countries.name_from_alpha2_code(country_code)
+    postal_code_with_city = [postal_code, city].join(' ')
+    [street, postal_code_with_city, country_name].compact.join(', ')
+  end
+
   def vat_rate
-    if country_code == 'EE'
-      Countries.vat_rate_from_alpha2_code(country_code)
-    elsif vat_code.present?
-      BigDecimal('0')
-    else
-      # We only supply VAT values for EU countries, otherwise it is always 0.
-      Countries.vat_rate_from_alpha2_code(country_code)
-    end
+    return Countries.vat_rate_from_alpha2_code(country_code) if country_code == 'EE'
+    return BigDecimal('0') if vat_code.present?
+
+    Countries.vat_rate_from_alpha2_code(country_code)
   end
 
   def self.create_default_for_user(user_id)
@@ -43,5 +40,31 @@ class BillingProfile < ApplicationRecord
     billing_profile.save!
 
     billing_profile
+  end
+
+  def unfinished_offers
+    offers = []
+    Offer.where(billing_profile_id: id).find_each do |offer|
+      offers << offer if offer.auction.result&.invoice.blank?
+    end
+    offers
+  end
+
+  def deletable?
+    return true unless unfinished_offers.any?
+
+    errors.add :name, I18n.t('billing_profiles.in_use_by_offer')
+    false
+  end
+
+  def mirror_address_to_attached_invoices
+    return unless Invoice.with_billing_profile(billing_profile_id: id).any?
+
+    Invoice.with_billing_profile(billing_profile_id: id).find_each do |invoice|
+      next if invoice.paid?
+
+      invoice.update_billing_address
+      invoice.save!
+    end
   end
 end

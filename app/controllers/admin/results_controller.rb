@@ -39,6 +39,10 @@ module Admin
     def show
       @result = Result.includes(:auction).find(params[:id])
       @offers = Offer.where(auction_id: @result.auction_id)
+
+      return if @result.no_bids?
+
+      @buyer = buyer_name
     end
 
     private
@@ -46,6 +50,12 @@ module Admin
     def search_params
       search_params_copy = params.dup
       search_params_copy.permit(:domain_name)
+    end
+
+    def buyer_name
+      return @result.offer.billing_profile.name if @result.offer.billing_profile.present?
+
+      Invoice.find_by(result: @result.offer).recipient
     end
 
     def default_order_params

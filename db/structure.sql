@@ -1010,6 +1010,14 @@ CREATE TABLE public.invoices (
     updated_by character varying,
     notes character varying,
     paid_with_payment_order_id bigint,
+    recipient character varying,
+    vat_code character varying,
+    legal_entity boolean,
+    street character varying,
+    city character varying,
+    state character varying,
+    postal_code character varying,
+    alpha_two_country_code character varying,
     CONSTRAINT invoices_cents_are_positive CHECK ((cents > 0)),
     CONSTRAINT invoices_due_date_is_not_before_issue_date CHECK ((issue_date <= due_date)),
     CONSTRAINT paid_at_is_filled_when_status_is_paid CHECK ((NOT ((status = 'paid'::public.invoice_status) AND (paid_at IS NULL)))),
@@ -2405,7 +2413,7 @@ ALTER TABLE ONLY public.payment_orders
 --
 
 ALTER TABLE ONLY public.invoices
-    ADD CONSTRAINT fk_rails_ff50c5defa FOREIGN KEY (billing_profile_id) REFERENCES public.billing_profiles(id);
+    ADD CONSTRAINT fk_rails_ff50c5defa FOREIGN KEY (billing_profile_id) REFERENCES public.billing_profiles(id) ON DELETE SET NULL;
 
 
 --
@@ -2509,7 +2517,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190831131431'),
 ('20190915171050'),
 ('20191008124157'),
+('20191022125038'),
 ('20191025092912'),
+('20191028092316'),
 ('20191121162323'),
 ('20191129102035'),
 ('20191206123023'),
