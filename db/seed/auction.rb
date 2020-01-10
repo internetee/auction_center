@@ -1,5 +1,5 @@
 class AuctionGenerator
-  RANGE_START = Time.zone.now - 1.year
+  RANGE_START = Time.zone.now - 6.months
 
   def self.generate! count
     count.times do
@@ -37,4 +37,4 @@ class AuctionGenerator
 end
 
 Faker::Internet.unique.clear
-AuctionGenerator.generate! 1000
+AuctionGenerator.generate! 5000
