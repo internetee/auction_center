@@ -1,3 +1,6 @@
+13.01.2020
+* Added personal salutaion to automatic emails [#475](https://github.com/internetee/auction_center/issues/475)
+
 10.01.2020
 * Improved billing profile management for invoices and active auctions [#313](https://github.com/internetee/auction_center/issues/313)
 
