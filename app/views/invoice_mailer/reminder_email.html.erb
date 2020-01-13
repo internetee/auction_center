@@ -4,7 +4,7 @@
         <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
     </head>
     <body>
-        <h1><%= t('.salutation', display_name: @user.display_name) %></h1>
+        <p><%= t('.salutation', display_name: @user.display_name) %></p>
         <p>
             <%= t('.introduction', domain_name: @auction.domain_name, due_date: @invoice.due_date) %>
         </p>

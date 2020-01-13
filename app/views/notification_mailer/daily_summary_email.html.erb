@@ -4,8 +4,8 @@
         <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
     </head>
     <body>
-        <h1><%= t('.salutation', display_name: @user.display_name) %></h1>
-        <h2><%= t('.auctions') %></h2>
+        <p><%= t('.salutation', display_name: @user.display_name) %></p>
+        <p><%= t('.auctions') %></p>
         <table>
             <thead>
                 <th><%= t('auctions.domain_name') %></th>
@@ -26,7 +26,7 @@
         <p><%= t('.there_were_auctions_with_no_offers', number: @results_with_no_bids.size) %></p>
 
 
-        <h2><%= t('.registration_due_dates') %></h2>
+        <p><%= t('.registration_due_dates') %></p>
         <table>
             <thead>
                 <th><%= t('auctions.domain_name') %></th>
@@ -48,7 +48,7 @@
         </table>
 
 
-        <h2><%= t('.bans')%></h2>
+        <p><%= t('.bans')%></p>
 
         <table>
             <thead>
