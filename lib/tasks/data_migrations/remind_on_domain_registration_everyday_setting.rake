@@ -9,7 +9,7 @@ namespace :data_migrations do
         to domain_registration_reminder setting that send reminder just once. Default: 0
       TEXT
 
-      remind_on_domain_registration_everyday = Setting.new(code: :t,
+      remind_on_domain_registration_everyday = Setting.new(code: :domain_registration_daily_reminder,
                                                            value: '0',
                                                            value_format: 'integer',
                                                            description: remind_everyday_description)
