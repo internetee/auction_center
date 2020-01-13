@@ -7,11 +7,11 @@
 
     <body>
         <% if @resource.unconfirmed_email && @resource.confirmed_at %>
-            <p><%= t('.reconfirmation_salutation') %></p>
+            <p><%= t('.reconfirmation_salutation', display_name: @resource.display_name) %></p>
             <p><%= t('.reconfirmation_first_para', email: @resource.unconfirmed_email) %></p>
             <p><%= link_to t('.reconfirmation_link'), confirmation_url(@resource, confirmation_token: @token) %></p>
         <% else %>
-            <p><%= t('.salutation', email: @email) %></p>
+            <p><%= t('.salutation', display_name: @resource.display_name) %></p>
             <p><%= t('.first_para', email: @email) %></p>
             <p><%= t('.second_para') %></p>
             <p><%= link_to t('.link'), confirmation_url(@resource, confirmation_token: @token) %></p>

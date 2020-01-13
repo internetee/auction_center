@@ -2,7 +2,7 @@ et:
   result_mailer:
     winner_email:
       subject: "Pakkumine domeenile %{domain_name} oli edukas"
-      salutation: "Lugupeetud .ee oksjonil osaleja"
+      salutation: "Lugupeetud, %{display_name}"
       introduction: |
         Palju õnne! Pakkumine domeeni eelisõiguse oksjonil domeenile
         %{domain_name} oli edukas.
@@ -26,7 +26,7 @@ et:
 
     registration_code_email:
       subject: "%{domain_name} registreerimise kood on nüüd kättesaadav"
-      salutation: "Lugupeetud %{domain_name} oksjoni võitja"
+      salutation: "Lugupeetud, %{display_name}"
       introduction_html: |
         Domeeni %{domain_name} registreerimise koodi leiad .ee oksjonikeskkonnast %{link}.
       details: |
@@ -42,7 +42,7 @@ et:
 
     participant_email:
       subject: "Domeeni %{domain_name} pakkumine ei olnud edukas"
-      salutation: "Lugupeetud .ee oksjonil osaleja"
+      salutation: "Lugupeetud, %{display_name}"
       first_para: |
         Teie pakkumine domeeni eelisõiguse oksjonil domeenile %{domain_name}
         ei olnud edukas.

@@ -10,6 +10,7 @@ class ResultMailer < ApplicationMailer
 
   def participant_email(recipient, auction)
     @auction = auction
+    @user = recipient
     I18n.locale = recipient.locale
 
     mail(to: recipient.email, subject: t('.subject', domain_name: @auction.domain_name))

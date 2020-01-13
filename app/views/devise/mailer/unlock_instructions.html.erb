@@ -4,7 +4,7 @@
         <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
     </head>
     <body>
-        <p><%= t('.salutation', email: @email) %>!</p>
+        <p><%= t('.salutation', display_name: @resource.display_name) %>!</p>
         <p><%= t(".first_para")%></p>
         <p><%= t(".second_para")%></p>
         <p><%= link_to t('.third_para'), unlock_url(@resource, unlock_token: @token) %></p>

@@ -2,7 +2,7 @@ en:
   invoice_mailer:
     reminder_email:
       subject: "%{domain_name} invoice due date"
-      salutation: "Dear %{domain_name} auction winner"
+      salutation: "Dear %{display_name},"
       introduction: |
         Please note that the invoice due date for the preferential right to register
         the %{domain_name} domain you have bought from .ee domain auction is on %{due_date}.

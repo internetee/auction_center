@@ -4,7 +4,7 @@
         <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
     </head>
     <body>
-        <h1><%= t('.salutation', domain_name: @auction.domain_name) %></h1>
+        <h1><%= t('.salutation', display_name: @user.display_name) %></h1>
         <p>
             <%= t('.introduction_html', domain_name: @auction.domain_name,
                   link: link_to(t('.link_title'), result_url(@result.uuid))) %>

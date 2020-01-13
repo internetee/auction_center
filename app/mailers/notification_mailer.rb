@@ -7,6 +7,7 @@ class NotificationMailer < ApplicationMailer
     @results_with_no_bids = summary_report.results_with_no_bids
     @registration_deadlines = summary_report.registration_deadlines
     @bans = summary_report.bans
+    @user = addressee
 
     mail(to: addressee.email, subject: t('.subject', date: Date.yesterday))
   end

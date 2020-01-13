@@ -2,7 +2,7 @@ et:
   domain_registration_mailer:
     registration_reminder_email:
       subject: "Domeeni %{domain_name} registreerimistähtaeg"
-      salutation: "Lugupeetud .ee oksjoni võitja"
+      salutation: "Lugupeetud, %{display_name}"
       first_para: |
         Teile kui domeeni %{domain_name} enampakkumise võitjale on reserveeritud domeeninime
         eelisõigus. Teil on jäänud 5 päeva pöörduda .ee akrediteeritud registripidaja poole

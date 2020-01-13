@@ -22,17 +22,17 @@ et:
     mailer:
       confirmation_instructions:
         subject: "E-posti aadressi kinnitamine"
-        salutation: "Tere tulemast Eesti Interneti SA .ee domeenide oksjonikeskkonda!"
+        salutation: "Tere tulemast Eesti Interneti SA .ee domeenide oksjonikeskkonda, %{display_name}!"
         first_para: "Oled loonud uue kasutaja e-posti aadressiga  %{email}"
         second_para: "Domeeni oksjonil osalemiseks pead esmalt kinnitama oma e-posti aadressi. Seda saad teha klõpsates järgnevale lingile:"
         link: "Kinnita minu konto"
-        reconfirmation_salutation: "Lugupeetud .ee oksjonil osaleja"
+        reconfirmation_salutation: "Lugupeetud, %{display_name}"
         reconfirmation_first_para: "Sinu e-posti aadress on muudetud. Uus e-posti aadress on %{email}."
         reconfirmation_link: "Kinnita uus e-posti aadress"
 
       reset_password_instructions:
         subject: "Salasõna lähtestamise juhised"
-        salutation: "Lugupeetud, %{email}"
+        salutation: "Lugupeetud, %{display_name}"
         first_para: "Soovisid muuta parooli. Parooli saad muuta klõpsates järgnevale lingile:"
         second_para: "Muuda parool"
         third_para: "Kui see ei olnud Sina, siis jäta see e-kiri tähelepanuta."
@@ -40,19 +40,19 @@ et:
 
       unlock_instructions:
         subject: "Ava juhised"
-        salutation: "Tere, %{email}"
+        salutation: "Tere, %{display_name}"
         first_para: "Sinu konto on lukustatud ülemääraste ebaõnnestunud sisselogimise katsete tõttu."
         second_para: "Klõpsa allolevale lingile oma konto lahti lukustamiseks:"
         third_para: "Lukusta konto lahti"
 
       password_change:
         subject: "Salasõna muudetud"
-        salutation: "Lugupeetud, %{email}!"
+        salutation: "Lugupeetud, %{display_name}!"
         first_para: "Sinu salasõna on muudetud."
 
       email_changed:
         subject: "E-posti aadress muudetud"
-        salutation: "Lugupeetud, %{email}!"
+        salutation: "Lugupeetud, %{display_name}!"
         first_para: "Sinu e-posti aadress on muudetud. Uus e-posti aadress on %{email}."
         footer_html: |
           <p>Lisaküsimuste korral võtke palun ühendust Eesti Interneti Sihtasutusega aadressil info@internet.ee või +372 727 1000.</p>

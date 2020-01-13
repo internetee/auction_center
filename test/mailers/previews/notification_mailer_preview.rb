@@ -2,7 +2,8 @@ require_relative '../../support/mock_summary_report'
 
 class NotificationMailerPreview < ActionMailer::Preview
   def daily_summary_email_english
-    user = User.new(email: 'some@email.com', locale: :en)
+    user = User.new(email: 'some@email.com', locale: :en,
+                    given_names: 'GivenNames', surname: 'Surname')
     NotificationMailer.daily_summary_email(user, daily_summary_report)
   end
 

@@ -8,7 +8,7 @@ class DeviseMailerPreview < ActionMailer::Preview
   end
 
   def unlock_instructions
-    Devise::Mailer.unlock_instructions(User.first, {})
+    Devise::Mailer.unlock_instructions(User.second, {})
   end
 
   def email_changed
