@@ -24,10 +24,7 @@ stages:
         include:
         - push
   when:
-    branch:
-      include:
-      - master
-      - rancher-pipeline
+    branch: {}
     event:
       include:
       - push
