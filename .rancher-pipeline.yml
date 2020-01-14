@@ -1,46 +1,9 @@
 stages:
-- name: Build something
-  steps:
-  - runScriptConfig:
-      image: busybox
-      shellScript: echo ${FIRST_KEY} && echo ${ALIAS_ENV}
-    env:
-      FIRST_KEY: VALUE
-      SECOND_KEY: VALUE2
-    envFrom:
-    - sourceName: my-secret
-      sourceKey: secret-key
-      targetKey: ALIAS_ENV
-  - runScriptConfig:
-      image: busybox
-      shellScript: date -R
-    when:
-      branch:
-        include:
-        - master
-        - dev
-        - rancher-pipeline
-      event:
-        include:
-        - push
-  when:
-    branch: {}
-    event:
-      include:
-      - push
-      - pull_request
-- name: Publish my image
-  steps:
-  - publishImageConfig:
-      dockerfilePath: ./Dockerfile
-      buildContext: .
-      tag: rancher/rancher:v2.0.0
-      pushRemote: true
-      registry: reg.example.com
 - name: Deploy some workloads
   steps:
-  - applyYamlConfig:
-      path: ./deployment.yaml
+  - runScriptConfig:
+      image: python:latest
+      shellScript: echo "hello"
 timeout: 30
 branch:
   include:
