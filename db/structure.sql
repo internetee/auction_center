@@ -954,6 +954,38 @@ ALTER SEQUENCE public.delayed_jobs_id_seq OWNED BY public.delayed_jobs.id;
 
 
 --
+-- Name: directo_customers; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE public.directo_customers (
+    id bigint NOT NULL,
+    vat_number character varying,
+    customer_code integer,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: directo_customers_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.directo_customers_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: directo_customers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.directo_customers_id_seq OWNED BY public.directo_customers.id;
+
+
+--
 -- Name: invoice_items; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1464,6 +1496,13 @@ ALTER TABLE ONLY public.delayed_jobs ALTER COLUMN id SET DEFAULT nextval('public
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY public.directo_customers ALTER COLUMN id SET DEFAULT nextval('public.directo_customers_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY public.invoice_items ALTER COLUMN id SET DEFAULT nextval('public.invoice_items_id_seq'::regclass);
 
 
@@ -1712,6 +1751,14 @@ ALTER TABLE ONLY public.billing_profiles
 
 ALTER TABLE ONLY public.delayed_jobs
     ADD CONSTRAINT delayed_jobs_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: directo_customers_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY public.directo_customers
+    ADD CONSTRAINT directo_customers_pkey PRIMARY KEY (id);
 
 
 --
@@ -2529,6 +2576,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20191209085222'),
 ('20191213082941'),
 ('20191220131845'),
-('20200110135003');
+('20200110135003'),
+('20200115145246');
 
 

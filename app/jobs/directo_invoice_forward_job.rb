@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class DirectoInvoiceForwardJob < ApplicationJob
   def perform
     @client = init_directo_client
@@ -49,7 +51,10 @@ class DirectoInvoiceForwardJob < ApplicationJob
   def create_invoice_customer(invoice:)
     customer = Directo::Customer.new
     customer.code = 'ERA'
-    customer.code = '1111111' if invoice.vat_code.present?
+    if invoice.vat_code.present?
+      customer.code = DirectoCustomer.find_or_create(vat_number:
+        invoice.vat_code).customer_code
+    end
     customer.name = invoice.recipient
 
     customer
@@ -58,7 +63,7 @@ class DirectoInvoiceForwardJob < ApplicationJob
   def create_invoice_line(invoice:, directo_invoice:)
     line = directo_invoice.lines.new
     line.code = 'OKSJON'
-    line.description = invoice.result.auction.domain_name + ' - API TEST INVOICE'
+    line.description = invoice.result.auction.domain_name
     line.vat_number = 10
     line.quantity = 1
     line.unit = 1
