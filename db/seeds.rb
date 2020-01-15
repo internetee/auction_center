@@ -330,7 +330,7 @@ directo_default_payment_terms_description = <<~TEXT.squish
 Default payment term for creating invoices for Directo. Defaults to net10
 TEXT
 
-directo_default_payment_terms_setting = Setting.new(code: :directo_default_payment_terms, value: 'net10',
+directo_default_payment_terms_setting = Setting.new(code: :directo_default_payment_terms, value: 'R',
                                                  description: directo_default_payment_terms_description,
                                                 value_format: 'string')
 directo_default_payment_terms_setting.save

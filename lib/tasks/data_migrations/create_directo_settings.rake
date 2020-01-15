@@ -27,7 +27,7 @@ namespace :data_migrations do
         description: <<~TEXT.squish,
           Default payment term for creating invoices for Directo. Defaults to net10
         TEXT
-        value: 'net10',
+        value: 'R',
         value_format: 'string',
       },
     }

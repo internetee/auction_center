@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/internetee/directo.git
-  revision: 3dc3b881d838cb061af09b8d36b8fdfbb60d04d1
+  revision: d661a0fd8d27cb0777a696f4cac2b06a7b8bc57d
   branch: evaluate-master
   specs:
     directo (0.1.0)

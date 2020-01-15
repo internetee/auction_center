@@ -3,7 +3,7 @@ class Job
                          AuctionCreationJob DomainRegistrationCheckJob ResultStatusUpdateJob
                          DomainRegistrationReminderJob UnpaidInvoiceReminderJob
                          DailySummaryJob DailyBroadcastAuctionsJob DailyViewRefreshJob
-                         SharedFooterFetcherJob].freeze
+                         SharedFooterFetcherJob DirectoInvoiceForwardJob].freeze
 
   include ActiveModel::Model
 

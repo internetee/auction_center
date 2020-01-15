@@ -5,19 +5,67 @@ class DirectoInvoiceForwardJob < ApplicationJob
 
     invoices = Invoice.where(status: 'paid', in_directo: false).all
     invoices.each do |invoice|
-      c = Directo::Customer.new
-      c.code = 123
-
-      inv = @client.invoices.new
-      inv.customer = c
-      inv.date = invoice.issue_date
-      inv.number = invoice.number
-      inv.currency = @currency
-      @client.invoices.add(inv)
+      @client.invoices.add(generate_directo_invoice(invoice: invoice, client: @client))
     end
 
-    puts "Attempting to send invoices"
-    @client.invoices.deliver
+    res = @client.invoices.deliver(ssl_verify: false)
+    update_invoice_directo_state(res.body)
+  end
+
+  def update_invoice_directo_state(xml)
+    pushed_invoices = []
+    Nokogiri::XML(xml).css('Result').each do |result|
+      if result.attributes['Type'].value.to_i.zero?
+        pushed_invoices << result.attributes['docid'].value.to_i
+      end
+    end
+    mark_invoices_as_synced(invoice_ids: pushed_invoices)
+  end
+
+  def mark_invoices_as_synced(invoice_ids:)
+    Invoice.where(number: invoice_ids).update(in_directo: true)
+  end
+
+  def generate_directo_invoice(invoice:, client:)
+    inv = client.invoices.new
+    inv = create_invoice_meta(directo_invoice: inv, invoice: invoice)
+    inv = create_invoice_line(invoice: invoice, directo_invoice: inv)
+
+    inv
+  end
+
+  def create_invoice_meta(directo_invoice:, invoice:)
+    directo_invoice.customer = create_invoice_customer(invoice: invoice)
+    directo_invoice.date = invoice.issue_date
+    directo_invoice.number = invoice.number
+    directo_invoice.currency = @currency
+    directo_invoice.vat_amount = invoice.vat
+    directo_invoice.total_wo_vat = invoice.price
+    directo_invoice.language = 'ENG'
+
+    directo_invoice
+  end
+
+  def create_invoice_customer(invoice:)
+    customer = Directo::Customer.new
+    customer.code = 'ERA'
+    customer.code = '1111111' if invoice.vat_code.present?
+    customer.name = invoice.recipient
+
+    customer
+  end
+
+  def create_invoice_line(invoice:, directo_invoice:)
+    line = directo_invoice.lines.new
+    line.code = 'OKSJON'
+    line.description = invoice.result.auction.domain_name + ' - API TEST INVOICE'
+    line.vat_number = 10
+    line.quantity = 1
+    line.unit = 1
+    line.price = invoice.price
+    directo_invoice.lines.add(line)
+
+    directo_invoice
   end
 
   def init_directo_client
