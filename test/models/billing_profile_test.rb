@@ -24,6 +24,17 @@ class BillingProfileTest < ActiveSupport::TestCase
     assert(billing_profile.valid?)
   end
 
+  def test_does_not_accept_invalid_values
+    billing_profile = BillingProfile.new
+    billing_profile.name = '"><svg/onload=confirm(1)>'
+    billing_profile.vat_code = "'-sleep(10)#"
+    billing_profile.street = '{7*7}23x23${7*7}'
+    billing_profile.city = '{{7*7}}'
+    billing_profile.postal_code = '{{7*7}}'
+    billing_profile.country_code = 'GB'
+    assert_not(billing_profile.valid?)
+  end
+
   def test_vat_codes_must_be_unique_per_user
     duplicate = @billing_profile.dup
 

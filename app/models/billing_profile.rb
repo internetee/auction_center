@@ -7,6 +7,8 @@ class BillingProfile < ApplicationRecord
   validates :country_code, presence: true
   validates :vat_code, uniqueness: { scope: :user_id }, allow_blank: true
 
+  validates :name, :vat_code, :street, :city, :postal_code, safe_value: true
+
   belongs_to :user, optional: true
   after_update :mirror_address_to_attached_invoices
 

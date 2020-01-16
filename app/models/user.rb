@@ -24,6 +24,8 @@ class User < ApplicationRecord
     user.provider == TARA_PROVIDER
   }
 
+  validates :given_names, :surname, safe_value: true
+
   validates :given_names, presence: true
   validates :surname, presence: true
   validate :participant_must_accept_terms_and_conditions

@@ -78,6 +78,21 @@ class UserTest < ActiveSupport::TestCase
     assert(user.valid?)
   end
 
+  def test_does_not_accept_invalid_values
+    user = User.new
+
+    user.surname = '"><svg/onload=confirm(1)>'
+    user.given_names = '-sleep(10)#'
+    user.email = 'email@example.com'
+    user.password = 'email@example.com'
+    user.password_confirmation = 'email@example.com'
+    user.mobile_phone = '+372500100300'
+    user.country_code = 'PL'
+    user.accepts_terms_and_conditions = 'true'
+
+    assert_not(user.valid?)
+  end
+
   def test_can_be_banned
     Ban.create(user_id: @administrator.id, valid_until: Date.tomorrow)
     longer_ban = Ban.create(user_id: @administrator.id, valid_until: Date.today + 6)
