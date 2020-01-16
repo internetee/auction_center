@@ -6,12 +6,27 @@ class DirectoInvoiceForwardJob < ApplicationJob
     @currency = Setting.find_by(code: 'auction_currency').retrieve
 
     invoices = Invoice.where(status: 'paid', in_directo: false).all
+    return unless invoices.any?
+
     invoices.each do |invoice|
-      @client.invoices.add(generate_directo_invoice(invoice: invoice, client: @client))
+      @client.invoices.add(generate_directo_invoice(invoice: invoice,
+                                                    client: @client))
     end
 
+    sync_with_directo
+  end
+
+  def sync_with_directo
     res = @client.invoices.deliver(ssl_verify: false)
-    update_invoice_directo_state(res.body)
+    if res.code == '200'
+      update_invoice_directo_state(res.body)
+    else
+      logger.info("Directo responded with code #{res.code} instead of 200")
+    end
+  rescue SocketError, Errno::ECONNREFUSED, Timeout::Error, Errno::EINVAL,
+         Errno::ECONNRESET, EOFError, Net::HTTPBadResponse,
+         Net::HTTPHeaderSyntaxError, Net::ProtocolError
+    logger.info('Exception when connecting to Directo')
   end
 
   def update_invoice_directo_state(xml)
@@ -52,8 +67,9 @@ class DirectoInvoiceForwardJob < ApplicationJob
     customer = Directo::Customer.new
     customer.code = 'ERA'
     if invoice.vat_code.present?
-      customer.code = DirectoCustomer.find_or_create(vat_number:
-        invoice.vat_code).customer_code
+      customer.code = DirectoCustomer.first_or_create(
+        vat_number: invoice.vat_code
+      ).customer_code
     end
     customer.name = invoice.recipient
 
