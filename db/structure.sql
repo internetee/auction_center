@@ -43,6 +43,20 @@ COMMENT ON EXTENSION btree_gist IS 'support for indexing common datatypes in GiS
 
 
 --
+-- Name: citext; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS citext WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION citext; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION citext IS 'data type for case-insensitive character strings';
+
+
+--
 -- Name: pgcrypto; Type: EXTENSION; Schema: -; Owner: -
 --
 
@@ -959,8 +973,8 @@ ALTER SEQUENCE public.delayed_jobs_id_seq OWNED BY public.delayed_jobs.id;
 
 CREATE TABLE public.directo_customers (
     id bigint NOT NULL,
-    vat_number character varying,
-    customer_code integer,
+    vat_number public.citext NOT NULL,
+    customer_code integer NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
