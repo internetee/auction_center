@@ -34,7 +34,7 @@ class UserTest < ActiveSupport::TestCase
   def test_identity_code_can_be_empty_if_not_estonian
     user = User.new
 
-    user.surname = 'Surname'
+    user.surname = 'Surname ÄÖÜÕÜÖöäüüäö'
     user.given_names = 'Given Names'
     user.email = 'email@example.com'
     user.password = 'email@example.com'

@@ -5,7 +5,7 @@ class SafeValueValidatorTest < ActiveSupport::TestCase
   def setup
     @user = User.new
     @user.surname = '"><svg/onload=confirm(1)>'
-    @user.given_names = 'Given Names'
+    @user.given_names = 'Given Names ÖÄÕÜüõöä'
   end
 
   def test_false_on_invalid_values
