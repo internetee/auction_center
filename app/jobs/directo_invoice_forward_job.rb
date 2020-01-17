@@ -54,6 +54,7 @@ class DirectoInvoiceForwardJob < ApplicationJob
   def create_invoice_meta(directo_invoice:, invoice:)
     directo_invoice.customer = create_invoice_customer(invoice: invoice)
     directo_invoice.date = invoice.issue_date
+    directo_invoice.transaction_date = invoice.paid_at
     directo_invoice.number = invoice.number
     directo_invoice.currency = @currency
     directo_invoice.vat_amount = invoice.vat
