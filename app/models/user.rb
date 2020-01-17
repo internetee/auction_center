@@ -40,6 +40,12 @@ class User < ApplicationRecord
 
   scope :subscribed_to_daily_summary, -> { where(daily_summary: true) }
 
+  def identity_code_must_be_valid_for_estonia
+    return if IdentityCode.new(country_code, identity_code).valid?
+
+    errors.add(:identity_code, I18n.t(:is_invalid))
+  end
+
   def participant_must_accept_terms_and_conditions
     return if terms_and_conditions_accepted_at.present?
 
