@@ -80,6 +80,9 @@ en:
 
   is_invalid: "is invalid"
   invalid: "invalid"
+  value_is_not_safe: |
+    Please, note, what the only characters allowed is utf-characters of english/estonian alphabet,
+    numbers, forward slashes, apostrophes, dots and hyphens
   not_accepted: "Not accepted"
   details: "Details"
   updated_by: "Updated by"

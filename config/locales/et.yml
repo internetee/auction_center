@@ -67,6 +67,9 @@ et:
 
   is_invalid: "vale"
   invalid: "vale"
+  value_is_not_safe: |
+    Nime ja aadressi andmetes on lubatud kasutada vaid inglise ja eesti tähestiku tähti, numbreid,
+    punkti, ülakoma ning kald- ja sidekriipsu
   not_accepted: "Tagasi lükatud"
   details: "Detailid"
 

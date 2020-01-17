@@ -22,6 +22,7 @@ en:
     email_changed: >-
       Confirmation link was sent to new email address. Please confirm the address for the change to
       take an effect!
+    invalid_user_data: "We have detected some invalid characters in your user account data or billing profile. Please review and fix your profile data!"
 
     edit:
       title: "Edit your user profile"
