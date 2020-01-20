@@ -176,3 +176,31 @@ voog_site_url:
     VOOG site from which to fetch localized footer elements. Defaults to https://www.internet.ee
   value: 'https://www.internet.ee'
   value_format: string
+
+directo_integration_enabled:
+  code: 'directo_integration_enabled'
+  description: |
+    Enables or disables Directo Integration. Allowed values true / false. Defaults to false.
+  value: 'true'
+  value_format: boolean
+
+directo_api_url:
+  code: 'directo_api_url'
+  description: |
+    API URL for Directo backend
+  value: 'http://directo.test'
+  value_format: string
+
+directo_sales_agent:
+  code: 'directo_sales_agent'
+  description: |
+    Directo SalesAgent value. Retrieve it from Directo.
+  value: 'AUCTION'
+  value_format: string
+
+directo_default_payment_terms:
+  code: 'directo_default_payment_terms'
+  description: |
+    Default payment term for creating invoices for Directo. Defaults to R
+  value: 'R'
+  value_format: string
