@@ -14,6 +14,9 @@ class User < ApplicationRecord
   alias_attribute :country_code, :alpha_two_country_code
 
   validates :identity_code, uniqueness: { scope: :alpha_two_country_code }, allow_blank: true
+  validate :identity_code_must_be_valid_for_estonia, if: proc { |user|
+    user.country_code.present? && user.identity_code.present?
+  }
   validates :mobile_phone, presence: true, unless: proc { |user|
     user.provider == TARA_PROVIDER
   }
