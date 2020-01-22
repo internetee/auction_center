@@ -7,7 +7,7 @@ module InvoicesHelper
       return 'OK' if response['transaction_result'] == 'completed'
 
       fetch_everypay_errors(response)
-    when 'seb', 'lhv', 'swedbank'
+    when 'SEB', 'LHV', 'Swedbank'
       fetch_banklink_errors(response)
     end
   end
