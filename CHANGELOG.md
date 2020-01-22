@@ -1,3 +1,10 @@
+21.01.2020
+* Restructured email locales [#395](https://github.com/internetee/auction_center/issues/395)
+* Enabled Estonian personal identity code validation [#490](https://github.com/internetee/auction_center/issues/490)
+
+20.01.2020
+* Directo integration [#148](https://github.com/internetee/auction_center/issues/148)
+
 13.01.2020
 * Added personal salutaion to automatic emails [#475](https://github.com/internetee/auction_center/issues/475)
 * Removed heading tag from salutation of auction emails [#485](https://github.com/internetee/auction_center/pull/485)

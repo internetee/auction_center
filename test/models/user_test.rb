@@ -46,6 +46,38 @@ class UserTest < ActiveSupport::TestCase
     assert(user.valid?)
   end
 
+  def test_identity_code_invalid_if_estonian_and_wrong
+    user = User.new
+
+    user.surname = 'Surname'
+    user.given_names = 'Given Names'
+    user.email = 'email@example.com'
+    user.password = 'email@example.com'
+    user.password_confirmation = 'email@example.com'
+    user.mobile_phone = '+372500100300'
+    user.country_code = 'EE'
+    user.identity_code = '97812120009'
+    user.accepts_terms_and_conditions = 'true'
+
+    assert_not(user.valid?)
+  end
+
+  def test_identity_code_valid_if_estonian_and_correct
+    user = User.new
+
+    user.surname = 'Surname'
+    user.given_names = 'Given Names'
+    user.email = 'email@example.com'
+    user.password = 'email@example.com'
+    user.password_confirmation = 'email@example.com'
+    user.mobile_phone = '+372500100300'
+    user.country_code = 'EE'
+    user.identity_code = '37812120009'
+    user.accepts_terms_and_conditions = 'true'
+
+    assert(user.valid?)
+  end
+
   def test_can_be_banned
     Ban.create(user_id: @administrator.id, valid_until: Date.tomorrow)
     longer_ban = Ban.create(user_id: @administrator.id, valid_until: Date.today + 6)
