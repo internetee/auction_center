@@ -44,7 +44,7 @@ class Result < ApplicationRecord
              Time.zone.today + Setting.find_by(code: 'domain_registration_daily_reminder').retrieve)
       .where('registration_reminder_sent_at IS NULL '\
              'OR registration_reminder_sent_at < ?', Time.zone.today)
-      .where('registration_due_date > ?', Time.zone.today).uniq
+      .where('registration_due_date >= ?', Time.zone.today).uniq
   }
 
   def self.create_from_auction(auction_id)

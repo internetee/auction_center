@@ -26,6 +26,18 @@ class DomainRegistrationReminderJobTest < ActiveJob::TestCase
     assert_equal(five_days_before, @result.registration_reminder_sent_at)
   end
 
+  def test_reminders_are_sent_on_registration_deadline
+    sent_date = @result.registration_due_date
+    travel_to sent_date
+
+    assert(DomainRegistrationReminderJob.needs_to_run?)
+
+    DomainRegistrationReminderJob.perform_now
+
+    @result.reload
+    assert_equal(sent_date, @result.registration_reminder_sent_at)
+  end
+
   def test_reminders_are_not_sent_multiple_times
     five_days_before = @result.registration_due_date - 5
     three_days_before = @result.registration_due_date - 3

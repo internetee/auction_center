@@ -213,8 +213,8 @@ directo_default_payment_terms:
   value: 'R'
   value_format: string
 
-domain_registration_setting:
-  code: 'domain_registration_setting'
+domain_registration_daily_reminder:
+  code: 'domain_registration_daily_reminder'
   description: |
     Days remaining to the registration deadline that triggers daily reminder email until
     deadline is reached or domain is registered. This is in addition

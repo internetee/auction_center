@@ -5,7 +5,7 @@ en:
       salutation: "Dear %{display_name},"
       first_para: |
         The domain name registration priority is reserved for you as the winner of
-        the %{domain_name} domain auction. You have 5 days to contact an accredited
+        the %{domain_name} domain auction. %{days_count} to contact an accredited
         .ee registrar to register the %{domain_name} domain.
       second_para_html: |
         Contact an <a href="https://www.internet.ee/registrars/accredited-registrars">
@@ -16,3 +16,6 @@ en:
         If you do not contact the registrar in time to register the %{domain_name}
         domain, your priority will be cancelled. The fee paid for the auction will
         not be reimbursed and the domain name priority will be returned to auction.
+      more_days: "You have %{days} days"
+      one_day: "You have 1 day"
+      last_day: "Today is the last day"

@@ -5,10 +5,9 @@
     </head>
     <body>
         <p><%= t('.salutation', display_name: @user.display_name) %></p>
-        <p><%= t('.first_para', domain_name: @domain_name) %></p>
+        <p><%= t('.first_para', domain_name: @domain_name, days_count: @days_count) %></p>
         <p><%= t('.second_para_html', domain_name: @domain_name) %></p>
         <p><%= t('.third_para', domain_name: @domain_name) %></p>
-pc
         <%= t('common_mailer.footer_html') %>
     </body>
 </html>
