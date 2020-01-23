@@ -101,6 +101,51 @@ class DomainRegistrationReminderJobTest < ActiveJob::TestCase
     assert_not(@result.registration_reminder_sent_at)
   end
 
+  def test_mail_is_not_sent_between_threshold_dates
+    setting = settings(:domain_registration_reminder)
+    setting.update!(value: 6)
+    setting = settings(:domain_registration_daily_reminder)
+    setting.update!(value: 3)
+
+    four_days_before = @result.registration_due_date - 4
+    travel_to four_days_before
+
+    DomainRegistrationReminderJob.perform_now
+
+    @result.reload
+    assert_not(@result.registration_reminder_sent_at)
+  end
+
+  def test_mail_is_not_sent_after_dates
+    setting = settings(:domain_registration_reminder)
+    setting.update!(value: 6)
+    setting = settings(:domain_registration_daily_reminder)
+    setting.update!(value: 3)
+
+    seven_days_after = @result.registration_due_date + 7
+    travel_to seven_days_after
+
+    DomainRegistrationReminderJob.perform_now
+
+    @result.reload
+    assert_not(@result.registration_reminder_sent_at)
+  end
+
+  def test_mail_is_not_sent_before_dates
+    setting = settings(:domain_registration_reminder)
+    setting.update!(value: 6)
+    setting = settings(:domain_registration_daily_reminder)
+    setting.update!(value: 3)
+
+    eight_days_before = @result.registration_due_date - 8
+    travel_to eight_days_before
+
+    DomainRegistrationReminderJob.perform_now
+
+    @result.reload
+    assert_not(@result.registration_reminder_sent_at)
+  end
+
   def test_multiple_reminders_sent_if_everyday_remind
     set_remind_on_domain_registration_everyday_true
 
