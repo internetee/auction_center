@@ -295,6 +295,20 @@ voog_site_fetching_enabled_setting = Setting.new(code: :voog_site_fetching_enabl
                                                 value_format: 'boolean')
 voog_site_fetching_enabled_setting.save
 
+# Daily reminder on paid but not registered domains flag
+daily_reminder_description = <<~TEXT.squish
+  Days remaining to the registration deadline that triggers daily reminder email until
+  deadline is reached or domain is registered. This is in addition
+  to domain_registration_reminder setting that send reminder just once. Default: 0
+TEXT
+
+remind_on_domain_registration_everyday = Setting.new(code: :domain_registration_daily_reminder,
+                                                     value: '0',
+                                                     description: daily_reminder_description,
+                                                     value_format: 'integer')
+
+remind_on_domain_registration_everyday.save!
+
 # Directo integration state boolean
 directo_integration_enabled_description = <<~TEXT.squish
 Enables or disables Directo Integration. Allowed values true / false. Defaults to false.

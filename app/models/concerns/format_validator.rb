@@ -9,6 +9,7 @@ module Concerns
         terms_and_conditions_link: [:validate_json_hash],
         violations_count_regulations_link: [:validate_json_hash],
         wishlist_supported_domain_extensions: [:validate_domain_extension_elements],
+        domain_registration_daily_reminder: [:validate_lte_zero],
       }.with_indifferent_access.freeze
     end
 
@@ -56,6 +57,10 @@ module Concerns
     rescue JSON::ParserError
       errors.add(:value, :not_a_json_array)
       false
+    end
+
+    def validate_lte_zero
+      errors.add(:value, :invalid) unless value.to_i >= 0 && value.to_i.is_a?(Integer)
     end
   end
 end

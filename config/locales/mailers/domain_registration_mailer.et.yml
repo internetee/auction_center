@@ -5,8 +5,8 @@ et:
       salutation: "Lugupeetud, %{display_name}"
       first_para: |
         Teile kui domeeni %{domain_name} enampakkumise võitjale on reserveeritud domeeninime
-        eelisõigus. Teil on jäänud 5 päeva pöörduda .ee akrediteeritud registripidaja poole
-        domeeni <timo-nons3> registreerimiseks.
+        eelisõigus. %{days_count} pöörduda .ee akrediteeritud registripidaja poole
+        domeeni %{domain_name} registreerimiseks.
       second_para_html: |
         Pöörduge .ee <a href="https://www.internet.ee/registripidajad/akrediteeritud-registripidajad">
         akrediteeritud registripidaja</a> poole domeeni %{domain_name} registreerimiseks
@@ -16,3 +16,6 @@ et:
         Juhul, kui Te õigeaegselt registripidaja poole domeeni %{domain_name} registreerimiseks
         ei pöördu, eelisõigus tühistatakse. Enampakkumisel makstud tasu ei hüvitata ja
         domeeninime eelisõigus läheb tagasi oksjonile.
+      more_days: "Teil on jäänud %{days} päeva"
+      one_day: "Teil on jäänud 1 päev"
+      last_day: "Täna on viimane päev"

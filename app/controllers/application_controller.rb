@@ -1,6 +1,9 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :set_locale
+  content_security_policy do |policy|
+    policy.style_src :self, 'www.gstatic.com', :unsafe_inline
+  end
 
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to root_url, alert: exception.message

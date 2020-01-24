@@ -110,6 +110,14 @@ domain_registration_reminder:
   value: '5'
   value_format: integer
 
+remind_on_domain_registration_everyday:
+  code: 'remind_on_domain_registration_everyday'
+  description: |
+    Shall system send registration reminders on paid but not registered domains every day.
+    Can be either 'true' or 'false'
+  value: 'false'
+  value_format: boolean
+
 invoice_issuer:
   code: 'invoice_issuer'
   description: |
@@ -204,3 +212,12 @@ directo_default_payment_terms:
     Default payment term for creating invoices for Directo. Defaults to R
   value: 'R'
   value_format: string
+
+domain_registration_daily_reminder:
+  code: 'domain_registration_daily_reminder'
+  description: |
+    Days remaining to the registration deadline that triggers daily reminder email until
+    deadline is reached or domain is registered. This is in addition
+    to domain_registration_reminder setting that send reminder just once. Default: 0
+  value: '0'
+  value_format: integer
