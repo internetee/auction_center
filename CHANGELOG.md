@@ -1,3 +1,6 @@
+24.01.2020
+* Option to send daily registration reminders [#266](https://github.com/internetee/auction_center/issues/266)
+
 21.01.2020
 * Restructured email locales [#395](https://github.com/internetee/auction_center/issues/395)
 * Enabled Estonian personal identity code validation [#490](https://github.com/internetee/auction_center/issues/490)
