@@ -26,7 +26,7 @@ env:
   GKE_ZONE: europe-north1
   GKE_CLUSTER: gh-auction-center
   #IMAGE: debian-10-buster-v20191210
-  IMAGE: debian
+  IMAGE: gke-test
 
 jobs:
   setup-build-publish-deploy:
@@ -57,7 +57,7 @@ jobs:
     # Build the Docker image
     - name: Build
       run: |
-        docker build -t "gcr.io/$GKE_PROJECT/$IMAGE:$GITHUB_SHA" \
+        docker build -t gcr.io/"$GKE_PROJECT"/"$IMAGE":"$GITHUB_SHA
           --build-arg GITHUB_SHA="$GITHUB_SHA" \
           --build-arg GITHUB_REF="$GITHUB_REF" .
 
