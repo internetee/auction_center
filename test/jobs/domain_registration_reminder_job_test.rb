@@ -107,13 +107,15 @@ class DomainRegistrationReminderJobTest < ActiveJob::TestCase
     setting = settings(:domain_registration_daily_reminder)
     setting.update!(value: 3)
 
+    @result.update(registration_reminder_sent_at: @result.registration_due_date - 6)
+
     four_days_before = @result.registration_due_date - 4
     travel_to four_days_before
 
     DomainRegistrationReminderJob.perform_now
 
     @result.reload
-    assert_not(@result.registration_reminder_sent_at)
+    assert_not_equal(four_days_before, @result.registration_reminder_sent_at)
   end
 
   def test_mail_is_not_sent_after_dates
@@ -144,6 +146,21 @@ class DomainRegistrationReminderJobTest < ActiveJob::TestCase
 
     @result.reload
     assert_not(@result.registration_reminder_sent_at)
+  end
+
+  def test_mail_is_sent_later_if_first_sending_fails
+    setting = settings(:domain_registration_reminder)
+    setting.update!(value: 6)
+    setting = settings(:domain_registration_daily_reminder)
+    setting.update!(value: 3)
+
+    five_days_before = @result.registration_due_date - 5
+    travel_to five_days_before
+
+    DomainRegistrationReminderJob.perform_now
+
+    @result.reload
+    assert_equal(five_days_before, @result.registration_reminder_sent_at)
   end
 
   def test_multiple_reminders_sent_if_everyday_remind
