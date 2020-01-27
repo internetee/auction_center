@@ -30,7 +30,7 @@ spec:
     spec:
       containers:
         - name: gke-test
-          image: gke-test:TAG
+          image: gke-test
           ports:
             - containerPort: 3000
           resources:
