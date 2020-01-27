@@ -30,7 +30,7 @@ spec:
     spec:
       containers:
         - name: gke-test
-          image: gcr.io/$GKE_PROJECT/gke-test:TAG
+          image: gke-test:TAG
           ports:
             - containerPort: 3000
           resources:
