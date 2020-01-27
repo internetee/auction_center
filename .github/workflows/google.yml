@@ -62,7 +62,7 @@ jobs:
       run: |
         echo $GITHUB_SHA
         echo $GKE_PROJECT
-        docker build -t gcr.io/"$GKE_PROJECT"/"$IMAGE":latest"\
+        docker build -t gcr.io/"$GKE_PROJECT"/"$IMAGE":latest\
           --build-arg GITHUB_SHA="$GITHUB_SHA" \
           --build-arg GITHUB_REF="$GITHUB_REF" .
 
