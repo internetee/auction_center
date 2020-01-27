@@ -14,7 +14,10 @@ on:
   push:
     branches:
     - master
-
+  
+  pull_request:
+    branches:
+      - master
 # Environment variables available to all jobs and steps in this workflow
 env:
   GKE_PROJECT: ${{ secrets.GKE_PROJECT }}
@@ -45,10 +48,10 @@ jobs:
         # Set up docker to authenticate
         # via gcloud command-line tool.
         gcloud auth configure-docker
-      
+
     # Build the Docker image
     - name: Build
-      run: |        
+      run: |
         docker build -t gcr.io/"$GKE_PROJECT"/"$IMAGE":"$GITHUB_SHA" \
           --build-arg GITHUB_SHA="$GITHUB_SHA" \
           --build-arg GITHUB_REF="$GITHUB_REF" .
@@ -57,7 +60,7 @@ jobs:
     - name: Publish
       run: |
         docker push gcr.io/$GKE_PROJECT/$IMAGE:$GITHUB_SHA
-        
+
     # Set up kustomize
     - name: Set up Kustomize
       run: |
