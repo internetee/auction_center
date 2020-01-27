@@ -30,7 +30,7 @@ spec:
     spec:
       containers:
         - name: gke-test
-          image: gke-test:latest
+          #image: gke-test:latest
           ports:
             - containerPort: 3000
           resources:
