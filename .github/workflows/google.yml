@@ -25,12 +25,13 @@ env:
   GITHUB_SHA: ${{ github.sha }}
   GKE_ZONE: europe-north1
   GKE_CLUSTER: gh-auction-center
-  IMAGE: debian-10-buster-v20191210
+  #IMAGE: debian-10-buster-v20191210
+  IMAGE: debian
 
 jobs:
   setup-build-publish-deploy:
     name: Setup, Build, Publish, and Deploy
-    runs-on: ubuntu-latest
+    runs-on: debian
     steps:
 
     - name: Checkout
