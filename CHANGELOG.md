@@ -1,3 +1,6 @@
+27.01.2020
+* Resending registraion reminder if last try failed [#496](https://github.com/internetee/auction_center/issues/496)
+
 24.01.2020
 * Option to send daily registration reminders [#266](https://github.com/internetee/auction_center/issues/266)
 
