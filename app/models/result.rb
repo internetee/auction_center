@@ -38,14 +38,22 @@ class Result < ApplicationRecord
   scope :unregistered, -> { where(status: statuses[:domain_not_registered]) }
 
   scope :pending_registration_everyday_reminder, lambda {
-    where(status: Result.statuses[:payment_received])
-      .where('registration_due_date = ? OR registration_due_date <= ?',
+    without_current_reminders
+      .before_registration_date
+      .where(status: Result.statuses[:payment_received])
+      .where('registration_due_date = ? OR registration_due_date <= ?'\
+             'OR (registration_due_date <= ? AND registration_reminder_sent_at IS NULL)',
              Time.zone.today + Setting.find_by(code: 'domain_registration_reminder').retrieve,
-             Time.zone.today + Setting.find_by(code: 'domain_registration_daily_reminder').retrieve)
-      .where('registration_reminder_sent_at IS NULL '\
-             'OR registration_reminder_sent_at < ?', Time.zone.today)
-      .where('registration_due_date >= ?', Time.zone.today).uniq
+             Time.zone.today + Setting.find_by(code: 'domain_registration_daily_reminder').retrieve,
+             Time.zone.today + Setting.find_by(code: 'domain_registration_reminder').retrieve).uniq
   }
+
+  scope :without_current_reminders, lambda {
+    where('registration_reminder_sent_at IS NULL '\
+          'OR registration_reminder_sent_at < ?', Time.zone.today)
+  }
+
+  scope :before_registration_date, -> { where('registration_due_date >= ?', Time.zone.today) }
 
   def self.create_from_auction(auction_id)
     auction = Auction.find_by(id: auction_id)
