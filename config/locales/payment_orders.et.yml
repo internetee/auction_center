@@ -1,9 +1,17 @@
 et:
   payment_orders:
+    title: 'Maksekorraldused'
+    channel: 'Makseviis'
+    status: 'Staatus'
+    initiated: 'Alustamise aeg'
+    response: 'Vastus'
+    responses:
+      empty_response: 'Server vastust ei saatnud'
+      bank_failed_code: "Pank vastas koodiga %{code} (ebaõnnestunud)"
     show:
       you_are_being_redirected: "Sind suunatakse maksma"
       please_wait: "Palun oota"
 
     return:
-      not_successful: "Makse ebaõnnestus!"
+      not_successful: "Makse ebaõnnestus. Veenduge, et kontol on piisavalt raha ning proovige uuesti. Kui probleem on pidev, siis võtke meiega ühendust aadressil info@internet.ee või helistage +372 727 1000"
       already_paid: "Arve on juba makstud."

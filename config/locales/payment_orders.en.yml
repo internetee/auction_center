@@ -1,9 +1,17 @@
 en:
   payment_orders:
+    title: 'Payment Orders'
+    channel: 'Channel'
+    status: 'Status'
+    initiated: 'Initiated'
+    response: 'Response'
+    responses:
+      empty_response: 'No response from server'
+      bank_failed_code: "Bank responded with code %{code} (failed)"
     show:
       you_are_being_redirected: "You are being redirected to the payment gateway"
       please_wait: "Please wait"
 
     return:
-      not_successful: "The payment was not successful."
+      not_successful: "Payment failed, please make sure there are enough funds on the account and try again. If the problem persists please contact us by email info@internet.ee or call to +372 727 1000"
       already_paid: "This invoice has already been paid."

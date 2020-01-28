@@ -10,7 +10,9 @@ module Admin
     before_action :authorize_for_update, only: %i[edit update]
 
     # GET /admin/invoices/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
-    def show; end
+    def show
+      @payment_orders = @invoice.payment_orders
+    end
 
     # GET /admin/invoices
     def index
@@ -82,7 +84,8 @@ module Admin
     private
 
     def set_invoice
-      @invoice = Invoice.includes(:billing_profile, :invoice_items, :user).find(params[:id])
+      @invoice = Invoice.includes(:billing_profile, :invoice_items, :user,
+                                  :payment_orders).find(params[:id])
     end
 
     def update_params

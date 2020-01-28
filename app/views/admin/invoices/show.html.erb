@@ -133,6 +133,32 @@
                     </tfoot>
                 </table>
             </div>
+            <div class="column sixteen wide">
+                <h2><%= t('payment_orders.title') %></h2>
+                <table class="ui table" id="invoice-items-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col"><%= t('payment_orders.channel') %></th>
+                            <th scope="col"><%= t('payment_orders.status') %></th>
+                            <th scope="col"><%= t('payment_orders.initiated') %></th>
+                            <th scope="col"><%= t('payment_orders.response') %></th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="invoice-items-table-body">
+                        <% @payment_orders.each do |payment_order| %>
+                            <tr>
+                                <td><%= payment_order.id %></td>
+                                <td><%= payment_order.channel %></td>
+                                <td><%= payment_order.status %></td>
+                                <td><%= payment_order.created_at %></td>
+                                <td><%= fetch_errors_from_response(channel: payment_order.channel, response: payment_order.response) %></td>
+                            </tr>
+                        <% end %>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
