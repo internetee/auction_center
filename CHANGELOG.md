@@ -1,3 +1,7 @@
+28.01.2020
+* Improved feedback to user on failed payment attempt [#207](https://github.com/internetee/auction_center/issues/207)
+* Logging failed payment attempts [#421](https://github.com/internetee/auction_center/issues/421)
+
 27.01.2020
 * Resending registraion reminder if last try failed [#496](https://github.com/internetee/auction_center/issues/496)
 
