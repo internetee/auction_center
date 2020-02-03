@@ -45,4 +45,12 @@ et:
           billing_profile:
             attributes:
               name:
-                format: "%{message}"
+                format: "%{attribute}: %{message}"
+              vat_code:
+                format: "%{attribute}: %{message}"
+              city:
+                format: "%{attribute}: %{message}"
+              street:
+                format: "%{attribute}: %{message}"
+              postal_code:
+                format: "%{attribute}: %{message}"

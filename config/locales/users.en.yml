@@ -86,6 +86,10 @@ en:
           attributes:
             terms_and_conditions:
               format: "%{message}"
+            given_names:
+              format: "%{attribute}: %{message}"
+            surname:
+              format: "%{attribute}: %{message}"
 
     attributes:
       user:
