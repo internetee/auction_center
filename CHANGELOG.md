@@ -1,3 +1,6 @@
+04.02.2020
+* Restricted list of allowed characters in user and profile forms [#486](https://github.com/internetee/auction_center/issues/486)
+
 28.01.2020
 * Improved feedback to user on failed payment attempt [#207](https://github.com/internetee/auction_center/issues/207)
 * Logging failed payment attempts [#421](https://github.com/internetee/auction_center/issues/421)
