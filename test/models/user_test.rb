@@ -34,7 +34,7 @@ class UserTest < ActiveSupport::TestCase
   def test_identity_code_can_be_empty_if_not_estonian
     user = User.new
 
-    user.surname = 'Surname'
+    user.surname = 'Surname ÄÖÜÕÜÖöäüüäö'
     user.given_names = 'Given Names'
     user.email = 'email@example.com'
     user.password = 'email@example.com'
@@ -76,6 +76,21 @@ class UserTest < ActiveSupport::TestCase
     user.accepts_terms_and_conditions = 'true'
 
     assert(user.valid?)
+  end
+
+  def test_does_not_accept_invalid_values
+    user = User.new
+
+    user.surname = '"><svg/onload=confirm(1)>'
+    user.given_names = '-sleep(10)#'
+    user.email = 'email@example.com'
+    user.password = 'email@example.com'
+    user.password_confirmation = 'email@example.com'
+    user.mobile_phone = '+372500100300'
+    user.country_code = 'PL'
+    user.accepts_terms_and_conditions = 'true'
+
+    assert_not(user.valid?)
   end
 
   def test_can_be_banned

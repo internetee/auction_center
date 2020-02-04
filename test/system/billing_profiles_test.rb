@@ -64,8 +64,7 @@ class BillingProfilesTest < ApplicationSystemTestCase
     assert_no_changes('BillingProfile.count') do
       click_link_or_button('Submit')
     end
-
-    assert(page.has_text?('Vat code has already been taken'))
+    assert(page.has_text?('Vat code: has already been taken'))
   end
 
   def test_a_user_can_create_company_billing_profile_witout_vat_code

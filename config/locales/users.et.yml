@@ -22,6 +22,7 @@ et:
     email_changed: >-
       Palun kinnita eposti aadressi muutus klõpsates uuele aadressile saadetud ekirjas olevale
       kinnituse lingile.
+    invalid_user_data: "Tuvastasime teie kasutajakonto või arve profiili väärtustes lubamatuid märke. Palun parandage oma andmed!"
 
     edit:
       title: "Muuda kasutajaprofiili"
@@ -78,6 +79,10 @@ et:
           attributes:
             terms_and_conditions:
               format: "%{message}"
+            given_names:
+              format: "%{attribute}: %{message}"
+            surname:
+              format: "%{attribute}: %{message}"
 
     attributes:
       user:
