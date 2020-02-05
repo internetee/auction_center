@@ -2087,6 +2087,20 @@ CREATE UNIQUE INDEX index_billing_profiles_on_vat_code_and_user_id ON public.bil
 
 
 --
+-- Name: index_directo_customers_on_customer_code; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_directo_customers_on_customer_code ON public.directo_customers USING btree (customer_code);
+
+
+--
+-- Name: index_directo_customers_on_vat_number; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_directo_customers_on_vat_number ON public.directo_customers USING btree (vat_number);
+
+
+--
 -- Name: index_invoice_items_on_invoice_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2592,6 +2606,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20191220131845'),
 ('20200109093043'),
 ('20200110135003'),
-('20200115145246');
+('20200115145246'),
+('20200205092158');
 
 
