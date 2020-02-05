@@ -1,3 +1,6 @@
+05.02.2020
+* Accounting customer codes and vat codes must now be unique in the reference db table [#504](https://github.com/internetee/auction_center/pull/504)
+
 04.02.2020
 * Restricted list of allowed characters in user and profile forms [#486](https://github.com/internetee/auction_center/issues/486)
 
