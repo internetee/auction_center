@@ -1,5 +1,5 @@
 06.02.2020
-* DirectoCustomer: Changed CustomerCode db column in DirectoCustomer to string [#506](https://github.com/internetee/auction_center/pull/506)
+* Changed CustomerCode db column in DirectoCustomer to string [#506](https://github.com/internetee/auction_center/pull/506)
 
 05.02.2020
 * Accounting customer codes and vat codes must now be unique in the reference db table [#504](https://github.com/internetee/auction_center/pull/504)
