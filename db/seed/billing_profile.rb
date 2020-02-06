@@ -36,14 +36,15 @@ class BiilingProfileGenerator
   end
 
   def create_billing_profile!(user: nil, name: 'Orphan profile')
-    BillingProfile.create!(user: user,
-                           name: name,
-                           vat_code: Faker::Company.ein,
-                           street: Faker::Address.street_address,
-                           city: Faker::Address.city,
-                           postal_code: Faker::Address.zip,
-                           alpha_two_country_code: Faker::Address.country_code,
-                           uuid: SecureRandom.uuid)
+    profile = BillingProfile.new(user: user,
+                                 name: name,
+                                 vat_code: Faker::Company.ein,
+                                 street: Faker::Address.street_address,
+                                 city: Faker::Address.city,
+                                 postal_code: Faker::Address.zip,
+                                 alpha_two_country_code: Faker::Address.country_code,
+                                 uuid: SecureRandom.uuid)
+    profile.save(validate: false)
   end
 end
 

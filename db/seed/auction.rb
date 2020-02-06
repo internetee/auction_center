@@ -30,7 +30,6 @@ class AuctionGenerator
       uuid: SecureRandom.uuid,
       remote_id: SecureRandom.uuid
     }
-    puts attrs
     auction = Auction.new(attrs)
     auction.save(validate: false)
   end
