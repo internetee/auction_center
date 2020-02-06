@@ -974,7 +974,7 @@ ALTER SEQUENCE public.delayed_jobs_id_seq OWNED BY public.delayed_jobs.id;
 CREATE TABLE public.directo_customers (
     id bigint NOT NULL,
     vat_number public.citext NOT NULL,
-    customer_code integer NOT NULL,
+    customer_code character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -2607,6 +2607,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200109093043'),
 ('20200110135003'),
 ('20200115145246'),
-('20200205092158');
+('20200205092158'),
+('20200206090106');
 
 
