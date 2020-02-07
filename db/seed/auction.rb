@@ -36,4 +36,4 @@ class AuctionGenerator
 end
 
 Faker::Internet.unique.clear
-AuctionGenerator.generate! 1000
+AuctionGenerator.generate! 500

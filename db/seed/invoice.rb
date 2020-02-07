@@ -46,4 +46,4 @@ class InvoiceGenerator
   end
 end
 
-InvoiceGenerator.generate! 500
+InvoiceGenerator.generate! 250
