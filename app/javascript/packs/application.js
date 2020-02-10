@@ -31,8 +31,8 @@ import 'typeface-raleway';
 
 $(document).on('turbolinks:load', function() {
     $('#auctions-table').DataTable({
-        "paging": "true",
-        "pagingType": "full_numbers"
+        "paging": false,
+        "info":   false,
     });
 
     $('.ui.dropdown').dropdown();
