@@ -1,3 +1,6 @@
+10.02.2020
+* Removed wkhtmltopdf-binary gem [#509](https://github.com/internetee/auction_center/pull/509)
+
 06.02.2020
 * Changed CustomerCode db column in DirectoCustomer to string [#506](https://github.com/internetee/auction_center/pull/506)
 
