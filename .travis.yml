@@ -7,6 +7,10 @@ cache:
     - node_modules
   yarn: true
 bundler_args: --without development staging production
+before_install:
+  - wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.xenial_amd64.deb
+  - sudo apt-get install -y gdebi
+  - sudo gdebi --non-interactive wkhtmltox_0.12.5-1.xenial_amd64.deb
 install:
   - bundle install
   - nvm install
