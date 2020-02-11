@@ -3,7 +3,7 @@ module ApplicationHealthCheck
     include Concerns::HealthChecker
 
     def check
-      if integration_disabled
+      if integration_disabled?
         report_failure 'Registry integration disabled'
       else
         simple_check_endpoint(url: ::Registry::Base::BASE_URL,
@@ -13,8 +13,8 @@ module ApplicationHealthCheck
       end
     end
 
-    def integration_disabled
-      !AuctionCenter::Application.config.customization.dig('registry_integration', 'enabled')
+    def integration_disabled?
+      !Feature.registry_integration_enabled?
     end
   end
 end
