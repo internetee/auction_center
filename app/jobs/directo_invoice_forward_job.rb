@@ -68,7 +68,7 @@ class DirectoInvoiceForwardJob < ApplicationJob
     customer = Directo::Customer.new
     customer.code = 'ERA'
     if invoice.vat_code.present?
-      customer.code = DirectoCustomer.first_or_create(
+      customer.code = DirectoCustomer.find_or_create_by(
         vat_number: invoice.vat_code
       ).customer_code
     end

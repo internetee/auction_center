@@ -4,7 +4,6 @@ class DirectoCustomer < ApplicationRecord
   validates :vat_number, presence: true, uniqueness: true, case_sensitive: false
   validates :customer_code, uniqueness: true
   before_validation :generate_customer_code, :upcase_vat_number
-  # before_save :capitalize_vat_number
 
   private
 
