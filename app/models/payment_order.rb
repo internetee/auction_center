@@ -28,7 +28,7 @@ class PaymentOrder < ApplicationRecord
   def self.config_namespace_name; end
 
   def invoice_cannot_be_already_paid
-    return unless invoice&.paid?
+    return unless invoices.any?(&:paid?)
 
     errors.add(:invoice, 'is already paid')
   end

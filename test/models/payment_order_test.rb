@@ -13,9 +13,7 @@ class PaymentOrderTest < ActiveSupport::TestCase
     payment_order = PaymentOrder.new
     assert_not(payment_order.valid?)
 
-    assert_equal(['must exist'], payment_order.errors[:invoice], payment_order.errors.full_messages)
-
-    payment_order.invoice = @payable_invoice
+    payment_order.invoices << @payable_invoice
     payment_order.user = @user
     payment_order.type = 'PaymentOrders::EveryPay'
 
@@ -46,7 +44,7 @@ class PaymentOrderTest < ActiveSupport::TestCase
   def test_payment_method_must_be_supported_for_the_object_to_be_valid
     payment_order = PaymentOrder.new
 
-    payment_order.invoice = @payable_invoice
+    payment_order.invoices << @payable_invoice
     payment_order.user = @user
     payment_order.type = 'PaymentOrders::EveryPay'
 
@@ -59,7 +57,7 @@ class PaymentOrderTest < ActiveSupport::TestCase
   def test_invoice_cannot_be_already_paid
     payment_order = PaymentOrder.new
 
-    payment_order.invoice = @payable_invoice
+    payment_order.invoices << @payable_invoice
     payment_order.user = @user
     payment_order.type = 'PaymentOrders::EveryPay'
 

@@ -71,9 +71,7 @@ class Invoice < ApplicationRecord
   end
 
   def title
-    return unless persisted?
-
-    I18n.t('invoices.title', number: number)
+    persisted? ? I18n.t('invoices.title', number: number) : nil
   end
 
   def address

@@ -59,7 +59,11 @@ module PaymentOrders
 
       paid!
       time = Time.strptime(response['timestamp'], '%s')
-      invoice.mark_as_paid_at_with_payment_order(time, self)
+      Invoice.transaction do
+        invoices.each do |invoice|
+          invoice.mark_as_paid_at_with_payment_order(time, self)
+        end
+      end
     end
 
     # Check if response is there and if basic security methods are fullfilled.
@@ -98,7 +102,11 @@ module PaymentOrders
     end
 
     def valid_amount?
-      invoice.total.to_d == BigDecimal(response['amount'])
+      invoices_total.to_d == BigDecimal(response['amount'])
+    end
+
+    def invoices_total
+      invoices.map(&:total).reduce(:+)
     end
 
     def valid_account?
@@ -112,7 +120,7 @@ module PaymentOrders
         timestamp: Time.now.to_i.to_s,
         callback_url: callback_url,
         customer_url: return_url,
-        amount: invoice.total.format(symbol: nil, thousands_separator: false, decimal_mark: '.'),
+        amount: invoices_total&.format(symbol: nil, thousands_separator: false, decimal_mark: '.'),
         order_reference: SecureRandom.hex(15),
         transaction_type: 'charge',
         locale: language,

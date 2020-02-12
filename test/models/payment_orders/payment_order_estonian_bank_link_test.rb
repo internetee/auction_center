@@ -12,7 +12,7 @@ class PaymentOrderEstonianBankLinkTest < ActiveSupport::TestCase
     @orphaned_invoice = invoices(:orphaned)
     @user = users(:participant)
 
-    @new_bank_link = PaymentOrders::SEB.new(invoice: @orphaned_invoice)
+    @new_bank_link = PaymentOrders::SEB.new(invoices: [@orphaned_invoice])
     @new_bank_link.return_url = 'return.url'
 
     create_completed_bank_link
@@ -34,7 +34,7 @@ class PaymentOrderEstonianBankLinkTest < ActiveSupport::TestCase
       'VK_SERVICE': '1012',
       'VK_VERSION': '008',
       'VK_SND_ID': 'testvpos',
-      'VK_STAMP': 1,
+      'VK_STAMP': '1',
       'VK_AMOUNT': '1200.00',
       'VK_CURR': 'EUR',
       'VK_REF': '',
@@ -78,7 +78,7 @@ class PaymentOrderEstonianBankLinkTest < ActiveSupport::TestCase
       'VK_SERVICE': '1012',
       'VK_VERSION': '008',
       'VK_SND_ID': 'testvpos',
-      'VK_STAMP': 1,
+      'VK_STAMP': '1',
       'VK_AMOUNT': '1481.47',
       'VK_CURR': 'EUR',
       'VK_REF': '',
@@ -104,8 +104,8 @@ class PaymentOrderEstonianBankLinkTest < ActiveSupport::TestCase
     assert(@completed_bank_link.valid_response?)
     assert(@completed_bank_link.mark_invoice_as_paid)
 
-    assert_equal(Invoice.statuses[:paid], @completed_bank_link.invoice.status)
-    assert(@completed_bank_link.invoice.paid_at)
+    assert(@completed_bank_link.invoices.all? { |invoice| invoice.status == Invoice.statuses[:paid] })
+    assert(@completed_bank_link.invoices.all? { |invoice| invoice.paid_at.present? })
   end
 
   def test_cancelled_bank_link
@@ -113,8 +113,8 @@ class PaymentOrderEstonianBankLinkTest < ActiveSupport::TestCase
     assert_not(@cancelled_bank_link.mark_invoice_as_paid)
     assert_equal(PaymentOrder.statuses[:cancelled], @cancelled_bank_link.status)
 
-    assert_equal(Invoice.statuses[:issued], @cancelled_bank_link.invoice.status)
-    assert_not(@cancelled_bank_link.invoice.paid_at)
+    assert(@cancelled_bank_link.invoices.all? { |invoice| invoice.status == Invoice.statuses[:issued] })
+    assert_not(@cancelled_bank_link.invoices.all? { |invoice| invoice.paid_at.present? })
   end
 
   def test_config_namespace
@@ -137,7 +137,7 @@ class PaymentOrderEstonianBankLinkTest < ActiveSupport::TestCase
       'VK_LANG': 'ENG',
     }
 
-    @cancelled_bank_link = PaymentOrders::SEB.new(invoice: @orphaned_invoice, response: params,
+    @cancelled_bank_link = PaymentOrders::SEB.new(invoices: [@orphaned_invoice], response: params,
                                                   user: @user)
   end
 
@@ -163,7 +163,7 @@ class PaymentOrderEstonianBankLinkTest < ActiveSupport::TestCase
       'VK_LANG': 'ENG',
     }
 
-    @completed_bank_link = PaymentOrders::SEB.new(invoice: @orphaned_invoice, response: params,
+    @completed_bank_link = PaymentOrders::SEB.new(invoices: [@orphaned_invoice], response: params,
                                                   user: @user)
   end
 end

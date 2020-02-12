@@ -31,7 +31,7 @@ class PaymentOrdersController < ApplicationController
     if @payment_order.paid?
       respond_to do |format|
         format.html do
-          redirect_to invoice_path(@payment_order.invoice.uuid),
+          redirect_to invoices_path,
             notice: t('.already_paid') and return
         end
 
@@ -45,11 +45,11 @@ class PaymentOrdersController < ApplicationController
 
     respond_to do |format|
       if @payment_order.mark_invoice_as_paid
-        format.html { redirect_to invoice_path(@payment_order.invoice.uuid), notice: t(:updated) }
-        format.json { redirect_to invoice_path(@payment_order.invoice.uuid), notice: t(:updated) }
+        format.html { redirect_to invoices_path, notice: t(:updated) }
+        format.json { redirect_to invoices_path, notice: t(:updated) }
       else
         format.html do
-          redirect_to invoice_path(@payment_order.invoice.uuid),
+          redirect_to invoices_path,
                       notice: t('.not_successful')
         end
         format.json { render json: @payment_order.errors, status: :unprocessable_entity }
