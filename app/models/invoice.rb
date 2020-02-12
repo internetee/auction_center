@@ -10,7 +10,8 @@ class Invoice < ApplicationRecord
   belongs_to :user, optional: true
   belongs_to :billing_profile, optional: true
   has_many :invoice_items, dependent: :destroy
-  has_many :payment_orders, dependent: :destroy
+  has_many :invoice_payment_orders, dependent: :destroy
+  has_many :payment_orders, through: :invoice_payment_orders
   belongs_to :paid_with_payment_order, class_name: 'PaymentOrder', optional: true
 
   validates :user_id, presence: true, on: :create

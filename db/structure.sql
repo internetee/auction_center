@@ -1034,6 +1034,36 @@ ALTER SEQUENCE public.invoice_items_id_seq OWNED BY public.invoice_items.id;
 
 
 --
+-- Name: invoice_payment_orders; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE public.invoice_payment_orders (
+    id bigint NOT NULL,
+    invoice_id bigint NOT NULL,
+    payment_order_id bigint NOT NULL
+);
+
+
+--
+-- Name: invoice_payment_orders_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.invoice_payment_orders_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: invoice_payment_orders_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.invoice_payment_orders_id_seq OWNED BY public.invoice_payment_orders.id;
+
+
+--
 -- Name: invoices; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1524,6 +1554,13 @@ ALTER TABLE ONLY public.invoice_items ALTER COLUMN id SET DEFAULT nextval('publi
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY public.invoice_payment_orders ALTER COLUMN id SET DEFAULT nextval('public.invoice_payment_orders_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY public.invoices ALTER COLUMN id SET DEFAULT nextval('public.invoices_id_seq'::regclass);
 
 
@@ -1781,6 +1818,14 @@ ALTER TABLE ONLY public.directo_customers
 
 ALTER TABLE ONLY public.invoice_items
     ADD CONSTRAINT invoice_items_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: invoice_payment_orders_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY public.invoice_payment_orders
+    ADD CONSTRAINT invoice_payment_orders_pkey PRIMARY KEY (id);
 
 
 --
@@ -2112,6 +2157,20 @@ CREATE INDEX index_invoice_items_on_invoice_id ON public.invoice_items USING btr
 --
 
 CREATE UNIQUE INDEX index_invoice_items_on_uuid ON public.invoice_items USING btree (uuid);
+
+
+--
+-- Name: index_invoice_payment_orders_on_invoice_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_invoice_payment_orders_on_invoice_id ON public.invoice_payment_orders USING btree (invoice_id);
+
+
+--
+-- Name: index_invoice_payment_orders_on_payment_order_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_invoice_payment_orders_on_payment_order_id ON public.invoice_payment_orders USING btree (payment_order_id);
 
 
 --
@@ -2608,6 +2667,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200110135003'),
 ('20200115145246'),
 ('20200205092158'),
-('20200206090106');
+('20200206090106'),
+('20200212081434');
 
 

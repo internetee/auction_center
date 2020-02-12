@@ -14,7 +14,8 @@ class PaymentOrder < ApplicationRecord
 
   validate :invoice_cannot_be_already_paid, on: :create
 
-  belongs_to :invoice, optional: false
+  has_many :invoice_payment_orders, dependent: :destroy
+  has_many :invoices, through: :invoice_payment_orders
   belongs_to :user, optional: true
 
   attr_writer :callback_url
