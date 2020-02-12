@@ -29,10 +29,12 @@ class InvoicesTest < ApplicationSystemTestCase
     select_from_dropdown('Joe John Participant', from: 'invoice[billing_profile_id]')
     click_link_or_button('Submit')
 
-    assert_text('Updated successfully')
-    assert_text('Joe John Participant')
-
     @invoice.reload
+
+    page.find :css, '#flash', wait: 10
+    assert_text('Updated successfully')
+    page.html.include? 'Joe John Participant'
+
     assert_equal("#{@user.id} - Joe John Participant", @invoice.updated_by)
   end
 
