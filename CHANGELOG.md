@@ -1,3 +1,7 @@
+12.02.2020
+* Fixed customercode assigning and improved logging [#514](https://github.com/internetee/auction_center/issues/514)
+* Fixed invoice test [#511](https://github.com/internetee/auction_center/pull/511)
+
 10.02.2020
 * Removed wkhtmltopdf-binary gem [#509](https://github.com/internetee/auction_center/pull/509)
 
