@@ -5,7 +5,7 @@ class PaymentOrdersController < ApplicationController
   # POST /invoices/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/payment_orders
   def create
     @payment_order = PaymentOrder.new(create_params)
-    update_invoice
+    bind_invoices
 
     respond_to do |format|
       if create_predicate
@@ -69,12 +69,12 @@ class PaymentOrdersController < ApplicationController
     @payment_order.save && @payment_order.reload
   end
 
-  def update_invoice
-    @payment_order.invoices << Invoice.find(create_params[:invoice_id])
+  def bind_invoices
+    @payment_order.invoices = Invoice.where(id: create_params[:invoice_ids].split(','))
   end
 
   def create_params
-    params.require(:payment_order).permit(:user_id, :invoice_id, :type)
+    params.require(:payment_order).permit(:user_id, :invoice_id, :invoice_ids, :type)
   end
 
   def authorize_user

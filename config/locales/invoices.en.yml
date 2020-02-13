@@ -41,6 +41,7 @@ en:
 
     index:
       title: "Your invoices"
+      pay: "Pay all issued invoices"
 
   activerecord:
     enums:
