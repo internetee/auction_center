@@ -5,13 +5,14 @@ class PaymentOrdersController < ApplicationController
   # POST /invoices/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/payment_orders
   def create
     @payment_order = PaymentOrder.new(create_params)
+    update_invoice
 
     respond_to do |format|
       if create_predicate
         format.html { redirect_to payment_order_path(@payment_order.uuid) }
         format.json { render :show, status: :created, location: @payment_order }
       else
-        format.html { redirect_to invoice_path(@payment_order.invoice), notice: t(:error) }
+        format.html { redirect_to invoices_path(@payment_order.invoice), notice: t(:error) }
         format.json { render json: @payment_order.errors, status: :unprocessable_entity }
       end
     end
@@ -66,6 +67,10 @@ class PaymentOrdersController < ApplicationController
 
   def create_predicate
     @payment_order.save && @payment_order.reload
+  end
+
+  def update_invoice
+    @payment_order.invoices << Invoice.find(create_params[:invoice_id])
   end
 
   def create_params
