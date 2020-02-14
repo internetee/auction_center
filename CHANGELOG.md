@@ -1,3 +1,7 @@
+14.02.2020
+* Added an option to pay all outstanding invoices at once [#508](https://github.com/internetee/auction_center/issues/508)
+* Fixed registry integration test for healtcheck [#512](https://github.com/internetee/auction_center/pull/512)
+
 12.02.2020
 * Fixed customercode assigning and improved logging [#514](https://github.com/internetee/auction_center/issues/514)
 * Fixed invoice test [#511](https://github.com/internetee/auction_center/pull/511)
