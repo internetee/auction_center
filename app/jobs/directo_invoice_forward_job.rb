@@ -64,8 +64,8 @@ class DirectoInvoiceForwardJob < ApplicationJob
     directo_invoice.transaction_date = invoice.paid_at
     directo_invoice.number = invoice.number
     directo_invoice.currency = @currency
-    directo_invoice.vat_amount = invoice.vat
-    directo_invoice.total_wo_vat = invoice.price
+    directo_invoice.vat_amount = invoice.vat / 100.0
+    directo_invoice.total_wo_vat = invoice.price / 100.0
     directo_invoice.language = 'ENG'
 
     directo_invoice
@@ -91,7 +91,7 @@ class DirectoInvoiceForwardJob < ApplicationJob
     line.vat_number = 10
     line.quantity = 1
     line.unit = 1
-    line.price = invoice.price
+    line.price = invoice.price / 100.0
     directo_invoice.lines.add(line)
 
     directo_invoice
