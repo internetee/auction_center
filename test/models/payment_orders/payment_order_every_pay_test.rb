@@ -34,11 +34,11 @@ class PaymentOrderEveryPayTest < ActiveSupport::TestCase
       invoice_id: '1',
     }
 
-    @every_pay = PaymentOrders::EveryPay.new(status: :issued, invoice: @orphaned_invoice,
+    @every_pay = PaymentOrders::EveryPay.new(status: :issued, invoices: [@orphaned_invoice],
                                              user: @user, response: response)
 
     @fake_every_pay = PaymentOrders::EveryPay.new(status: :issued,
-                                                  invoice: @payable_invoice,
+                                                  invoices: [@payable_invoice],
                                                   user: @user,
                                                   response: { "payment_state": 'cancelled',
                                                               "hmac_fields": '' })
@@ -101,14 +101,14 @@ class PaymentOrderEveryPayTest < ActiveSupport::TestCase
   def test_mark_invoice_as_paid_works_when_response_is_valid
     @every_pay.mark_invoice_as_paid
 
-    assert(@every_pay.invoice.paid?)
+    assert(@every_pay.invoices.all?(&:paid?))
     assert(@every_pay.valid_response?)
   end
 
   def test_mark_invoice_as_paid_does_not_work_when_response_is_invalid
     @fake_every_pay.mark_invoice_as_paid
 
-    assert_not(@fake_every_pay.invoice.paid?)
+    assert_not(@fake_every_pay.invoices.all?(&:paid?))
     assert_not(@fake_every_pay.valid_response?)
   end
 end

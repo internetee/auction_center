@@ -64,12 +64,13 @@ module PaymentOrders
       hash['VK_SERVICE']  = NEW_TRANSACTION_SERVICE_NUMBER
       hash['VK_VERSION']  = BANK_LINK_VERSION
       hash['VK_SND_ID']   = seller_account
-      hash['VK_STAMP']    = invoice.number
-      hash['VK_AMOUNT'] = invoice.total.format(symbol: nil, thousands_separator: false,
-                                               decimal_mark: '.')
+      hash['VK_STAMP']    = invoices.map(&:number).join(',')
+      hash['VK_AMOUNT'] = invoices_total.format(symbol: nil,
+                                                thousands_separator: false,
+                                                decimal_mark: '.')
       hash['VK_CURR']     = Setting.find_by(code: 'auction_currency').retrieve
       hash['VK_REF']      = ''
-      hash['VK_MSG']      = invoice.title
+      hash['VK_MSG']      = invoices.map(&:title).join(',')
       hash['VK_RETURN']   = return_url
       hash['VK_CANCEL']   = return_url
       hash['VK_DATETIME'] = Time.zone.now.strftime('%Y-%m-%dT%H:%M:%S%z')
@@ -83,7 +84,11 @@ module PaymentOrders
       if valid_response? && valid_success_notice?
         time = Time.zone.parse(response['VK_T_DATETIME'])
         paid!
-        invoice.mark_as_paid_at_with_payment_order(time, self)
+        Invoice.transaction do
+          invoices.each do |invoice|
+            invoice.mark_as_paid_at_with_payment_order(time, self)
+          end
+        end
       elsif valid_response? && valid_cancel_notice?
         cancelled!
         false
@@ -132,7 +137,7 @@ module PaymentOrders
 
     def valid_amount?
       source = BigDecimal(response['VK_AMOUNT'])
-      target = invoice.total.to_d
+      target = invoices_total.to_d
 
       source == target
     end
@@ -164,6 +169,10 @@ module PaymentOrders
       signed_data = private_key.sign(OpenSSL::Digest::SHA1.new, data)
       signed_data = Base64.encode64(signed_data).gsub(/\n|\r/, '')
       signed_data
+    end
+
+    def invoices_total
+      invoices.map(&:total).reduce(:+)
     end
   end
 end

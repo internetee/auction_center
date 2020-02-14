@@ -253,6 +253,35 @@ $$;
 
 
 --
+-- Name: process_invoice_payment_order_audit(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.process_invoice_payment_order_audit() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+  BEGIN
+    IF (TG_OP = 'INSERT') THEN
+      INSERT INTO audit.invoice_payment_orders
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (NEW.id, 'INSERT', now(), '{}', to_json(NEW)::jsonb);
+      RETURN NEW;
+    ELSEIF (TG_OP = 'UPDATE') THEN
+      INSERT INTO audit.invoice_payment_orders
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (NEW.id, 'UPDATE', now(), to_json(OLD)::jsonb, to_json(NEW)::jsonb);
+      RETURN NEW;
+    ELSEIF (TG_OP = 'DELETE') THEN
+      INSERT INTO audit.invoice_payment_orders
+      (object_id, action, recorded_at, old_value, new_value)
+      VALUES (OLD.id, 'DELETE', now(), to_json(OLD)::jsonb, '{}');
+      RETURN OLD;
+    END IF;
+    RETURN NULL;
+  END
+$$;
+
+
+--
 -- Name: process_offer_audit(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -564,6 +593,40 @@ CREATE SEQUENCE audit.invoice_items_id_seq
 --
 
 ALTER SEQUENCE audit.invoice_items_id_seq OWNED BY audit.invoice_items.id;
+
+
+--
+-- Name: invoice_payment_orders; Type: TABLE; Schema: audit; Owner: -; Tablespace: 
+--
+
+CREATE TABLE audit.invoice_payment_orders (
+    id integer NOT NULL,
+    object_id bigint,
+    action text NOT NULL,
+    recorded_at timestamp without time zone,
+    old_value jsonb,
+    new_value jsonb,
+    CONSTRAINT invoice_payment_orders_action_check CHECK ((action = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text, 'TRUNCATE'::text])))
+);
+
+
+--
+-- Name: invoice_payment_orders_id_seq; Type: SEQUENCE; Schema: audit; Owner: -
+--
+
+CREATE SEQUENCE audit.invoice_payment_orders_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: invoice_payment_orders_id_seq; Type: SEQUENCE OWNED BY; Schema: audit; Owner: -
+--
+
+ALTER SEQUENCE audit.invoice_payment_orders_id_seq OWNED BY audit.invoice_payment_orders.id;
 
 
 --
@@ -1034,6 +1097,36 @@ ALTER SEQUENCE public.invoice_items_id_seq OWNED BY public.invoice_items.id;
 
 
 --
+-- Name: invoice_payment_orders; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE public.invoice_payment_orders (
+    id bigint NOT NULL,
+    invoice_id bigint NOT NULL,
+    payment_order_id bigint NOT NULL
+);
+
+
+--
+-- Name: invoice_payment_orders_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.invoice_payment_orders_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: invoice_payment_orders_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.invoice_payment_orders_id_seq OWNED BY public.invoice_payment_orders.id;
+
+
+--
 -- Name: invoices; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1154,7 +1247,7 @@ ALTER SEQUENCE public.offers_id_seq OWNED BY public.offers.id;
 CREATE TABLE public.payment_orders (
     id bigint NOT NULL,
     type character varying NOT NULL,
-    invoice_id integer NOT NULL,
+    invoice_id integer,
     user_id integer,
     response jsonb,
     created_at timestamp without time zone NOT NULL,
@@ -1433,6 +1526,13 @@ ALTER TABLE ONLY audit.invoice_items ALTER COLUMN id SET DEFAULT nextval('audit.
 -- Name: id; Type: DEFAULT; Schema: audit; Owner: -
 --
 
+ALTER TABLE ONLY audit.invoice_payment_orders ALTER COLUMN id SET DEFAULT nextval('audit.invoice_payment_orders_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: audit; Owner: -
+--
+
 ALTER TABLE ONLY audit.invoices ALTER COLUMN id SET DEFAULT nextval('audit.invoices_id_seq'::regclass);
 
 
@@ -1518,6 +1618,13 @@ ALTER TABLE ONLY public.directo_customers ALTER COLUMN id SET DEFAULT nextval('p
 --
 
 ALTER TABLE ONLY public.invoice_items ALTER COLUMN id SET DEFAULT nextval('public.invoice_items_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.invoice_payment_orders ALTER COLUMN id SET DEFAULT nextval('public.invoice_payment_orders_id_seq'::regclass);
 
 
 --
@@ -1680,6 +1787,14 @@ ALTER TABLE ONLY audit.invoice_items
 
 
 --
+-- Name: invoice_payment_orders_pkey; Type: CONSTRAINT; Schema: audit; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY audit.invoice_payment_orders
+    ADD CONSTRAINT invoice_payment_orders_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: invoices_pkey; Type: CONSTRAINT; Schema: audit; Owner: -; Tablespace: 
 --
 
@@ -1781,6 +1896,14 @@ ALTER TABLE ONLY public.directo_customers
 
 ALTER TABLE ONLY public.invoice_items
     ADD CONSTRAINT invoice_items_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: invoice_payment_orders_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY public.invoice_payment_orders
+    ADD CONSTRAINT invoice_payment_orders_pkey PRIMARY KEY (id);
 
 
 --
@@ -1909,6 +2032,20 @@ CREATE INDEX invoice_items_object_id_idx ON audit.invoice_items USING btree (obj
 --
 
 CREATE INDEX invoice_items_recorded_at_idx ON audit.invoice_items USING btree (recorded_at);
+
+
+--
+-- Name: invoice_payment_orders_object_id_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
+--
+
+CREATE INDEX invoice_payment_orders_object_id_idx ON audit.invoice_payment_orders USING btree (object_id);
+
+
+--
+-- Name: invoice_payment_orders_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
+--
+
+CREATE INDEX invoice_payment_orders_recorded_at_idx ON audit.invoice_payment_orders USING btree (recorded_at);
 
 
 --
@@ -2112,6 +2249,20 @@ CREATE INDEX index_invoice_items_on_invoice_id ON public.invoice_items USING btr
 --
 
 CREATE UNIQUE INDEX index_invoice_items_on_uuid ON public.invoice_items USING btree (uuid);
+
+
+--
+-- Name: index_invoice_payment_orders_on_invoice_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_invoice_payment_orders_on_invoice_id ON public.invoice_payment_orders USING btree (invoice_id);
+
+
+--
+-- Name: index_invoice_payment_orders_on_payment_order_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_invoice_payment_orders_on_payment_order_id ON public.invoice_payment_orders USING btree (payment_order_id);
 
 
 --
@@ -2336,6 +2487,13 @@ CREATE TRIGGER process_invoice_audit AFTER INSERT OR DELETE OR UPDATE ON public.
 --
 
 CREATE TRIGGER process_invoice_item_audit AFTER INSERT OR DELETE OR UPDATE ON public.invoice_items FOR EACH ROW EXECUTE PROCEDURE public.process_invoice_item_audit();
+
+
+--
+-- Name: process_invoice_payment_order_audit; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER process_invoice_payment_order_audit AFTER INSERT OR DELETE OR UPDATE ON public.invoice_payment_orders FOR EACH ROW EXECUTE PROCEDURE public.process_invoice_payment_order_audit();
 
 
 --
@@ -2608,6 +2766,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200110135003'),
 ('20200115145246'),
 ('20200205092158'),
-('20200206090106');
+('20200206090106'),
+('20200212081434');
 
 

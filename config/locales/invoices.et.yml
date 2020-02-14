@@ -41,6 +41,7 @@ et:
 
     index:
       title: "Sinu arved"
+      pay: "Tasu kõik maksmata arved"
 
   activerecord:
     enums:

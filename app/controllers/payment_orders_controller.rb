@@ -5,13 +5,14 @@ class PaymentOrdersController < ApplicationController
   # POST /invoices/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/payment_orders
   def create
     @payment_order = PaymentOrder.new(create_params)
+    bind_invoices
 
     respond_to do |format|
       if create_predicate
         format.html { redirect_to payment_order_path(@payment_order.uuid) }
         format.json { render :show, status: :created, location: @payment_order }
       else
-        format.html { redirect_to invoice_path(@payment_order.invoice), notice: t(:error) }
+        format.html { redirect_to invoices_path(@payment_order.invoice), notice: t(:error) }
         format.json { render json: @payment_order.errors, status: :unprocessable_entity }
       end
     end
@@ -31,7 +32,7 @@ class PaymentOrdersController < ApplicationController
     if @payment_order.paid?
       respond_to do |format|
         format.html do
-          redirect_to invoice_path(@payment_order.invoice.uuid),
+          redirect_to invoices_path,
             notice: t('.already_paid') and return
         end
 
@@ -45,11 +46,11 @@ class PaymentOrdersController < ApplicationController
 
     respond_to do |format|
       if @payment_order.mark_invoice_as_paid
-        format.html { redirect_to invoice_path(@payment_order.invoice.uuid), notice: t(:updated) }
-        format.json { redirect_to invoice_path(@payment_order.invoice.uuid), notice: t(:updated) }
+        format.html { redirect_to invoices_path, notice: t(:updated) }
+        format.json { redirect_to invoices_path, notice: t(:updated) }
       else
         format.html do
-          redirect_to invoice_path(@payment_order.invoice.uuid),
+          redirect_to invoices_path,
                       notice: t('.not_successful')
         end
         format.json { render json: @payment_order.errors, status: :unprocessable_entity }
@@ -68,8 +69,12 @@ class PaymentOrdersController < ApplicationController
     @payment_order.save && @payment_order.reload
   end
 
+  def bind_invoices
+    @payment_order.invoices = Invoice.where(id: create_params[:invoice_ids].split(','))
+  end
+
   def create_params
-    params.require(:payment_order).permit(:user_id, :invoice_id, :type)
+    params.require(:payment_order).permit(:user_id, :invoice_id, :invoice_ids, :type)
   end
 
   def authorize_user
