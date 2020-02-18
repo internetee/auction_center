@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class DirectoInvoiceForwardJob < ApplicationJob
+  I18n.locale = :en
+
   def perform
     @client = init_directo_client
     @currency = Setting.find_by(code: 'auction_currency').retrieve
@@ -64,8 +66,8 @@ class DirectoInvoiceForwardJob < ApplicationJob
     directo_invoice.transaction_date = invoice.paid_at
     directo_invoice.number = invoice.number
     directo_invoice.currency = @currency
-    directo_invoice.vat_amount = invoice.vat
-    directo_invoice.total_wo_vat = invoice.price
+    directo_invoice.vat_amount = invoice.vat.amount
+    directo_invoice.total_wo_vat = invoice.price.amount
     directo_invoice.language = 'ENG'
 
     directo_invoice
@@ -91,7 +93,7 @@ class DirectoInvoiceForwardJob < ApplicationJob
     line.vat_number = 10
     line.quantity = 1
     line.unit = 1
-    line.price = invoice.price
+    line.price = invoice.price.amount
     directo_invoice.lines.add(line)
 
     directo_invoice
