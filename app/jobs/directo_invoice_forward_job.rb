@@ -19,16 +19,20 @@ class DirectoInvoiceForwardJob < ApplicationJob
   end
 
   def sync_with_directo
+    logger.info @client.invoices.as_xml
     res = @client.invoices.deliver(ssl_verify: false)
     logger.info "Directo responded with code #{res.code}"
-    update_invoice_directo_state(res.body) if res.code == '200'
+    update_invoice_directo_state(res.body, res.code)
   rescue SocketError, Errno::ECONNREFUSED, Timeout::Error, Errno::EINVAL,
          Errno::ECONNRESET, EOFError, Net::HTTPBadResponse,
          Net::HTTPHeaderSyntaxError, Net::ProtocolError
     logger.info('Network exception when connecting to Directo')
   end
 
-  def update_invoice_directo_state(xml)
+  def update_invoice_directo_state(xml, code)
+    logger.info "Directo responded with body: #{xml}"
+    return if code != '200'
+
     pushed_invoices = []
     Nokogiri::XML(xml).css('Result').each do |result|
       inv_no = result.attributes['docid'].value.to_i
