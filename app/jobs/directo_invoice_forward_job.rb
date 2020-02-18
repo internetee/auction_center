@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class DirectoInvoiceForwardJob < ApplicationJob
+  I18n.locale = :en
+
   def perform
     @client = init_directo_client
     @currency = Setting.find_by(code: 'auction_currency').retrieve
@@ -17,16 +19,20 @@ class DirectoInvoiceForwardJob < ApplicationJob
   end
 
   def sync_with_directo
+    logger.info @client.invoices.as_xml
     res = @client.invoices.deliver(ssl_verify: false)
     logger.info "Directo responded with code #{res.code}"
-    update_invoice_directo_state(res.body) if res.code == '200'
+    update_invoice_directo_state(res.body, res.code)
   rescue SocketError, Errno::ECONNREFUSED, Timeout::Error, Errno::EINVAL,
          Errno::ECONNRESET, EOFError, Net::HTTPBadResponse,
          Net::HTTPHeaderSyntaxError, Net::ProtocolError
     logger.info('Network exception when connecting to Directo')
   end
 
-  def update_invoice_directo_state(xml)
+  def update_invoice_directo_state(xml, code)
+    logger.info "Directo responded with body: #{xml}"
+    return if code != '200'
+
     pushed_invoices = []
     Nokogiri::XML(xml).css('Result').each do |result|
       inv_no = result.attributes['docid'].value.to_i
@@ -64,8 +70,8 @@ class DirectoInvoiceForwardJob < ApplicationJob
     directo_invoice.transaction_date = invoice.paid_at
     directo_invoice.number = invoice.number
     directo_invoice.currency = @currency
-    directo_invoice.vat_amount = invoice.vat
-    directo_invoice.total_wo_vat = invoice.price
+    directo_invoice.vat_amount = invoice.vat.amount
+    directo_invoice.total_wo_vat = invoice.price.amount
     directo_invoice.language = 'ENG'
 
     directo_invoice
@@ -91,7 +97,7 @@ class DirectoInvoiceForwardJob < ApplicationJob
     line.vat_number = 10
     line.quantity = 1
     line.unit = 1
-    line.price = invoice.price
+    line.price = invoice.price.amount
     directo_invoice.lines.add(line)
 
     directo_invoice
