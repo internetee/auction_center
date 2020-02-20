@@ -1,5 +1,5 @@
 18.02.2020
-* FOrced en locale for accounting integration to avoid issues with monetary values [#518](https://github.com/internetee/auction_center/issues/518)
+* Forced en locale for accounting integration to avoid issues with monetary values [#518](https://github.com/internetee/auction_center/issues/518)
 
 14.02.2020
 * Added an option to pay all outstanding invoices at once [#508](https://github.com/internetee/auction_center/issues/508)
