@@ -1,3 +1,6 @@
+21.02.2020
+* Added data-migrate gem for automation of data migrations [#513](https://github.com/internetee/auction_center/issues/513)
+
 18.02.2020
 * Forced en locale for accounting integration to avoid issues with monetary values [#518](https://github.com/internetee/auction_center/issues/518)
 
