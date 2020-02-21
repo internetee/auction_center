@@ -1,7 +1,6 @@
-namespace :data_migrations do
-  desc 'Seeds API, Tara & SMS healthcheck endpoints'
-  task create_healthcheck_endpoint_settings: :environment do
-
+class AddHealthcheckSettings < ActiveRecord::Migration[6.0]
+  def up
+    puts 'Seeds API, Tara & SMS healthcheck endpoints'
     hash = {
       check_api_url: {
         description: <<~TEXT.squish,
@@ -38,5 +37,9 @@ namespace :data_migrations do
       end
       puts "Healthcheck API endpoints settings are set"
     end
+  end
+
+  def down
+    raise ActiveRecord::IrreversibleMigration
   end
 end
