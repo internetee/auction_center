@@ -7,6 +7,7 @@ gem 'airbrake'
 gem 'bootsnap', '>= 1.1.0', require: false
 gem 'cancancan'
 gem 'chartkick'
+gem 'data_migrate'
 gem 'delayed_job'
 gem 'delayed_job_active_record'
 gem 'devise'
