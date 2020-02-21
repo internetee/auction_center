@@ -40,6 +40,5 @@ class AddHealthcheckSettings < ActiveRecord::Migration[6.0]
   end
 
   def down
-    raise ActiveRecord::IrreversibleMigration
   end
 end
