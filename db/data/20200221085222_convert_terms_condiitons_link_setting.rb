@@ -9,6 +9,8 @@ class ConvertTermsCondiitonsLinkSetting < ActiveRecord::Migration[6.0]
         forward slash. Default is: "{\"en\":\"https://example.com\", \"et\":\"https://example.et\"}"
       TEXT
       value = "{\"en\":\"https://example.com\", \"et\":\"https://example.et\"}"
+      return if setting.value.present?
+
       setting.update(value: value,
                      description: terms_and_conditions_description,
                      value_format: 'hash')

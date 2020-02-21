@@ -9,6 +9,7 @@ class CreateRemindOnDomainRegistrationSetting < ActiveRecord::Migration[6.0]
       value = '0'
 
       setting = Setting.find_or_create_by(code: :domain_registration_daily_reminder)
+      return if setting.value.present?
 
       setting.update(value: value,
                      description: remind_everyday_description,

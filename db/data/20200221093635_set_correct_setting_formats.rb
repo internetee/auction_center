@@ -11,6 +11,8 @@ class SetCorrectSettingFormats < ActiveRecord::Migration[6.0]
     arr_settings = %w[wishlist_supported_domain_extensions]
 
     Setting.all.each do |stng|
+      next if stng.value_format.present?
+
       stng.value_format = 'boolean' if boolean_settings.include? stng.code
       stng.value_format = 'integer' if integer_settings.include? stng.code
       stng.value_format = 'string' if string_settings.include? stng.code

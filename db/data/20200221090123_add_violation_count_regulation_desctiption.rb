@@ -12,6 +12,7 @@ class AddViolationCountRegulationDesctiption < ActiveRecord::Migration[6.0]
       value = "{\"en\":\"https://example.com#some_anchor\"}"
 
       setting = Setting.find_or_create_by(code: :violations_count_regulations_link)
+      return if setting.value.present?
 
       setting.update(value: value,
                      description: violations_count_regulations_description,

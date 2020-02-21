@@ -31,6 +31,8 @@ class AddHealthcheckSettings < ActiveRecord::Migration[6.0]
     Setting.transaction do
       hash.each do |key, value_hash|
         setting = Setting.find_or_create_by(code: key)
+        next if setting.value.present?
+
         setting.update!(value: value_hash[:value],
                         description: value_hash[:description],
                         value_format: value_hash[:value_format])
