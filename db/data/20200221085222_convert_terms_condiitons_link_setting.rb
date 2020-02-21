@@ -1,7 +1,7 @@
 class ConvertTermsCondiitonsLinkSetting < ActiveRecord::Migration[6.0]
   def up
     Setting.transaction do
-      setting = Setting.find_by(code: :terms_and_conditions_link)
+      setting = Setting.find_or_create_by(code: :terms_and_conditions_link)
       terms_and_conditions_description = <<~TEXT.squish
         Link to terms and conditions document. Must be single parsable hash of <locale>:<URL> elements.
         URL can be relative ('/public/terms_and_conditions.pdf')
