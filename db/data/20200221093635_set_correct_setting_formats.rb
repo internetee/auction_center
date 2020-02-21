@@ -1,6 +1,5 @@
-namespace :data_migrations do
-  desc 'Set correct format attribute for existing settings'
-  task set_correct_setting_formats: :environment do
+class SetCorrectSettingFormats < ActiveRecord::Migration[6.0]
+  def up
     boolean_settings = %w[require_phone_confirmation voog_site_fetching_enabled]
     integer_settings = %w[auction_minimum_offer payment_term registration_term
                           ban_length ban_number_of_strikes
@@ -12,6 +11,8 @@ namespace :data_migrations do
     arr_settings = %w[wishlist_supported_domain_extensions]
 
     Setting.all.each do |stng|
+      next if stng.value_format.present?
+
       stng.value_format = 'boolean' if boolean_settings.include? stng.code
       stng.value_format = 'integer' if integer_settings.include? stng.code
       stng.value_format = 'string' if string_settings.include? stng.code
@@ -24,5 +25,8 @@ namespace :data_migrations do
         puts "Failed to set data format for '#{stng.code}'"
       end
     end
+  end
+
+  def down
   end
 end

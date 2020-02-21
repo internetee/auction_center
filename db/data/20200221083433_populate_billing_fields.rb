@@ -1,6 +1,6 @@
-namespace :data_migrations do
-  desc 'Copy associated BillingProfile address to Invoice'
-  task populate_billing_fields: :environment do
+class PopulateBillingFields < ActiveRecord::Migration[6.0]
+  def up
+    puts 'Copy associated BillingProfile address to Invoice'
     @invoices = Invoice.all
     migrated_invoice_count = 0
     failed_invoices = []
@@ -21,5 +21,8 @@ namespace :data_migrations do
       puts "Failed to migrate #{failed_invoices.count} invoices."
       puts "Failed invoice id's = #{failed_invoices}"
     end
+  end
+
+  def down
   end
 end

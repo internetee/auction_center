@@ -1,8 +1,5 @@
-# frozen_string_literal: true
-
-namespace :data_migrations do
-  desc 'Creates Directo integration settings'
-  task create_directo_settings: :environment do
+class CreateDirectoSettings < ActiveRecord::Migration[6.0]
+  def up
     hash = {
       directo_integration_enabled: {
         description: <<~TEXT.squish,
@@ -37,11 +34,16 @@ namespace :data_migrations do
     Setting.transaction do
       hash.each do |key, value_hash|
         setting = Setting.find_or_create_by(code: key)
+        next if setting.value.present?
+
         setting.update!(value: value_hash[:value],
                         description: value_hash[:description],
                         value_format: value_hash[:value_format])
       end
       puts 'Directo integration settings are initialized.'
     end
+  end
+
+  def down
   end
 end

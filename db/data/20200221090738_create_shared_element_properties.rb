@@ -1,6 +1,5 @@
-namespace :data_migrations do
-  desc 'Creates settings to fetch shared footer from VOOG site'
-  task create_shared_footer_fetcher_settings: :environment do
+class CreateSharedElementProperties < ActiveRecord::Migration[6.0]
+  def up
     hash = {
       voog_site_url: {
         description: <<~TEXT.squish,
@@ -28,9 +27,16 @@ namespace :data_migrations do
     Setting.transaction do
       hash.each do |key, value_hash|
         setting = Setting.find_or_create_by(code: key)
-        setting.update!(value: value_hash[:value], description: value_hash[:description])
+        next if setting.value.present?
+
+        setting.update!(value: value_hash[:value],
+                        description: value_hash[:description],
+                        value_format: value_hash[:value_format])
       end
       puts 'VOOG site fetching settings are set'
     end
+  end
+
+  def down
   end
 end
