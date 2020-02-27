@@ -1,3 +1,6 @@
+27.02.2020
+* Reference newer directo gem SHA1 commit [#528](https://github.com/internetee/auction_center/pull/528)
+
 21.02.2020
 * Added data-migrate gem for automation of data migrations [#513](https://github.com/internetee/auction_center/issues/513)
 
