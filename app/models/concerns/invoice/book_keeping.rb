@@ -28,7 +28,7 @@ module Concerns
           'name': recipient,
           'code': DirectoCustomer.find_or_create_by(
             vat_number: vat_code
-          ).customer_code
+          ).customer_code,
         }.as_json
       end
 

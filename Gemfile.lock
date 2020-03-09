@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/internetee/directo.git
-  revision: c660cb800bf63cb5642dfe263cfbd3f062bd907e
+  revision: 897afb179628e417106a9e60ff0e44c4a32d6337
   branch: directo-api
   specs:
     directo (0.1.0)
@@ -193,7 +193,7 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
     public_suffix (4.0.1)
-    puma (4.3.1)
+    puma (4.3.3)
       nio4r (~> 2.0)
     rack (2.0.8)
     rack-oauth2 (1.10.1)
@@ -343,7 +343,7 @@ DEPENDENCIES
   pdfkit
   pg (>= 0.18, < 2.0)
   pry
-  puma (~> 4.3.0)
+  puma (~> 4.3.3)
   rails (~> 6.0.0)
   rails-i18n
   recaptcha
