@@ -3,6 +3,8 @@ require 'result_not_sold'
 require 'countries'
 
 class Invoice < ApplicationRecord
+  include Concerns::Invoice::BookKeeping
+
   alias_attribute :country_code, :alpha_two_country_code
   enum status: { issued: 'issued', paid: 'paid', cancelled: 'cancelled' }
 

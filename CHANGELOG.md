@@ -1,3 +1,6 @@
+28.02.2020
+* Fixed header link to regsitrar portal [#530](https://github.com/internetee/auction_center/issues/530)
+
 27.02.2020
 * Reference newer directo gem SHA1 commit [#528](https://github.com/internetee/auction_center/pull/528)
 
