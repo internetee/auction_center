@@ -1,3 +1,6 @@
+09.03.2020
+* Bumped puma gem to version 4.3.3 [#533](https://github.com/internetee/auction_center/pull/533)
+
 28.02.2020
 * Fixed header link to regsitrar portal [#530](https://github.com/internetee/auction_center/issues/530)
 
