@@ -1,3 +1,6 @@
+12.03.2020
+* Fixed banklink for multi invoice payments [#537](https://github.com/internetee/auction_center/issues/537)
+
 09.03.2020
 * Bumped puma gem to version 4.3.3 [#533](https://github.com/internetee/auction_center/pull/533)
 
