@@ -64,7 +64,7 @@ module PaymentOrders
       hash['VK_SERVICE']  = NEW_TRANSACTION_SERVICE_NUMBER
       hash['VK_VERSION']  = BANK_LINK_VERSION
       hash['VK_SND_ID']   = seller_account
-      hash['VK_STAMP']    = invoices.map(&:number).join(',')
+      hash['VK_STAMP']    = id.to_s
       hash['VK_AMOUNT'] = invoices_total.format(symbol: nil,
                                                 thousands_separator: false,
                                                 decimal_mark: '.')

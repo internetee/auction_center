@@ -48,6 +48,7 @@ class PaymentOrderEstonianBankLinkTest < ActiveSupport::TestCase
     }.with_indifferent_access
 
     @orphaned_invoice.stub(:number, 1) do
+      @new_bank_link.id = 1
       form_fields = @new_bank_link.form_fields
 
       expected_fields.each do |k, v|
@@ -92,6 +93,7 @@ class PaymentOrderEstonianBankLinkTest < ActiveSupport::TestCase
     }.with_indifferent_access
 
     @orphaned_invoice.stub(:number, 1) do
+      @new_bank_link.id = 1
       form_fields = @new_bank_link.form_fields
 
       expected_fields.each do |k, v|
