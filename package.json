@@ -12,6 +12,7 @@
       "less": "^3.0.0",
       "less-loader": "^5.0.0",
       "libphonenumber-js": "^1.5.1",
+      "minimist": "^1.2.2",
       "punycode": "^2.1.1",
       "rails-ujs": "^5.2.1",
       "resolve-url-loader": "^3.0.0",
