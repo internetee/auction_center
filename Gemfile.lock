@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/internetee/directo.git
-  revision: 897afb179628e417106a9e60ff0e44c4a32d6337
-  branch: directo-api
+  revision: 8cb63d2fb91c640b264d5af05f4a6afbcfd46979
+  branch: master
   specs:
-    directo (0.1.0)
+    directo (1.0.0)
       money (~> 6.13)
       nokogiri (~> 1.10)
 
