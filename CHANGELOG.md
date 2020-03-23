@@ -1,3 +1,6 @@
+20.03.2020
+* Rails 6.0.2.2 updated with related gems due to actionview security update [#542](https://github.com/internetee/auction_center/issues/542)
+
 12.03.2020
 * Fixed banklink for multi invoice payments [#537](https://github.com/internetee/auction_center/issues/537)
 
