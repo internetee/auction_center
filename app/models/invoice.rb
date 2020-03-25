@@ -3,6 +3,8 @@ require 'result_not_sold'
 require 'countries'
 
 class Invoice < ApplicationRecord
+  include Concerns::Invoice::BookKeeping
+
   alias_attribute :country_code, :alpha_two_country_code
   enum status: { issued: 'issued', paid: 'paid', cancelled: 'cancelled' }
 
@@ -28,8 +30,7 @@ class Invoice < ApplicationRecord
   scope :pending_payment_reminder,
         lambda { |number_of_days = Setting.find_by(code: 'invoice_reminder_in_days').retrieve|
           where('due_date = ? AND status = ?',
-                Time.zone.today + number_of_days,
-                statuses[:issued])
+                Time.zone.today + number_of_days, statuses[:issued])
         }
 
   def self.create_from_result(result_id)
