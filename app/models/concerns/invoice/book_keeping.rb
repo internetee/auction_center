@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Concerns
   module Invoice
     module BookKeeping
@@ -26,9 +28,13 @@ module Concerns
       def compose_directo_customer
         {
           'name': recipient,
-          'code': DirectoCustomer.find_or_create_by(
-            vat_number: vat_code
-          ).customer_code,
+          'code': if vat_code
+                    DirectoCustomer.find_or_create_by(
+                      vat_number: vat_code
+                    ).customer_code
+                  else
+                    'ERA'
+                  end,
         }.as_json
       end
 
