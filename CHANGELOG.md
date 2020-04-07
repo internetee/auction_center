@@ -1,3 +1,6 @@
+07.04.2020
+* Fixed bug with sending invoices without vat code to the accounting system [#544](https://github.com/internetee/auction_center/pull/544)
+
 25.03.2020
 * Implemented new Directo gem [#535](https://github.com/internetee/auction_center/pull/535)
 
