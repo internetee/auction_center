@@ -56,7 +56,17 @@ module Registry
     end
 
     def request_body
-      { status: result.status }.to_json
+      { status: result.status,
+        registration_deadline: registration_deadline }.to_json
+    end
+
+    def registration_deadline
+      case result.status
+      when 'awaiting_payment'
+        result.invoice.due_date.end_of_day
+      when 'payment_received'
+        (result.registration_due_date + 1.day).end_of_day
+      end
     end
   end
 end
