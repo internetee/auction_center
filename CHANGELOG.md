@@ -1,3 +1,9 @@
+11.05.2020
+* Auction process due dates are now available over whois and rest-whois [#547](https://github.com/internetee/auction_center/pull/547)
+
+14.04.2020
+* Update to Yarn packages due to security vulnerability in minimist [#541](https://github.com/internetee/auction_center/issues/541)
+
 07.04.2020
 * Fixed bug with sending invoices without vat code to the accounting system [#544](https://github.com/internetee/auction_center/pull/544)
 

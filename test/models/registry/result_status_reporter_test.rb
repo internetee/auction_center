@@ -77,6 +77,42 @@ class ResultStatusReporterTest < ActiveSupport::TestCase
     end
   end
 
+  def test_call_sends_registration_deadline_if_payment_received
+    @awaiting_payment.update(status: Result.statuses[:payment_received])
+    result_deadline = (@awaiting_payment.registration_due_date + 1.day).end_of_day
+
+    instance = Registry::StatusReporter.new(@awaiting_payment)
+
+    body = { "status"=>"payment_received", "registration_deadline"=> result_deadline}
+
+    with_successful_request(instance, body) do
+      instance.call
+      body = JSON.parse(instance.request.body)
+      deadline = body['registration_deadline'].to_datetime
+
+      assert_equal(deadline.to_s, result_deadline.to_datetime.to_s)
+      assert_equal(@awaiting_payment.last_response, body)
+    end
+  end
+
+  def test_call_sends_registration_deadline_if_awaiting_payment
+    @awaiting_payment.update(last_remote_status: Result.statuses[:no_bids])
+    result_deadline = @awaiting_payment.invoice.due_date.end_of_day
+
+    instance = Registry::StatusReporter.new(@awaiting_payment)
+
+    body = { "status"=>"awaiting_payment", "registration_deadline"=> result_deadline}
+
+    with_successful_request(instance, body) do
+      instance.call
+      body = JSON.parse(instance.request.body)
+      deadline = body['registration_deadline'].to_datetime
+
+      assert_equal(deadline.to_s, result_deadline.to_datetime.to_s)
+      assert_equal(@awaiting_payment.last_response, body)
+    end
+  end
+
   def test_call_updates_result_record
     instance = Registry::StatusReporter.new(@no_bids)
 
