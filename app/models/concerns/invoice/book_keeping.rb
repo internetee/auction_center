@@ -26,16 +26,15 @@ module Concerns
       end
 
       def compose_directo_customer
-        {
-          'name': recipient,
+        { 'name': recipient, 'destination': alpha_two_country_code,
+          'vat_reg_no': vat_code,
           'code': if vat_code
                     DirectoCustomer.find_or_create_by(
                       vat_number: vat_code
                     ).customer_code
                   else
                     'ERA'
-                  end,
-        }.as_json
+                  end }.as_json
       end
 
       def compose_directo_product
@@ -45,8 +44,7 @@ module Concerns
            'unit': 1,
            'price': ActionController::Base.helpers.number_with_precision(
              price.amount, precision: 2, separator: '.'
-           ),
-           'vat_number': '10' }].as_json
+           ) }].as_json
       end
     end
   end
