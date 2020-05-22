@@ -53,30 +53,23 @@ module OrderableHelper
 
   def order_button(table_with_column, order, origin)
     if order == descending_order
-      order_button_desc(table_with_column, origin)
+      order_button_with_type('desc', table_with_column, origin)
     elsif order == ascending_order
-      order_button_asc(table_with_column, origin)
+      order_button_with_type('asc', table_with_column, origin)
     end
   end
 
-  def order_button_desc(table_with_column, origin)
-    requested_order = { order: { table_with_column => descending_order } }
-    requested_order[:order][:origin] = origin unless origin.blank?
+  def order_button_with_type(method, table_with_column, origin)
+    desc = method == 'desc'
+    requested_order = { order: {
+      table_with_column => (desc ? descending_order : ascending_order)
+    } }
+    requested_order[:order][:origin] = origin if origin.present?
 
-    map_of_values = { 'params' => requested_order, 'id' => "#{table_with_column}_desc_button",
-                      'icon_class' => 'sort alphabet up icon' }
+    values = { 'params' => requested_order, 'id' => "#{table_with_column}_#{method}_button",
+               'icon_class' => "sort alphabet #{desc ? 'up' : 'down'} icon" }
 
-    link_with_icon(map_of_values)
-  end
-
-  def order_button_asc(table_with_column, origin)
-    requested_order = { order: { table_with_column => ascending_order } }
-    requested_order[:order][:origin] = origin unless origin.blank?
-
-    map_of_values = { 'params' => requested_order, 'id' => "#{table_with_column}_asc_button",
-                      'icon_class' => 'sort alphabet down icon' }
-
-    link_with_icon(map_of_values)
+    link_with_icon(values)
   end
 
   def link_with_icon(map_of_values)
