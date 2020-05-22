@@ -27,15 +27,15 @@
                 <tr>
                     <th scope="col">
                         <%= t('users.display_name') %>
-                        <%= order_buttons('users.surname') %>
+                        <%= order_buttons('users.surname', origin: @origin) %>
                     </th>
                     <th scope="col">
                         <%= t('users.mobile_phone') %>
-                        <%= order_buttons('users.mobile_phone') %>
+                        <%= order_buttons('users.mobile_phone', origin: @origin) %>
                     </th>
                     <th scope="col" class="six wide">
                         <%= t('users.email') %>
-                        <%= order_buttons('users.email') %>
+                        <%= order_buttons('users.email', origin: @origin) %>
                     </th>
                     <th scope="col"><%= t('users.roles') %></th>
                     <th scope="col"><%= clear_order_button %></th>
