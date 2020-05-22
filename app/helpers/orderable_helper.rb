@@ -60,7 +60,8 @@ module OrderableHelper
   end
 
   def order_button_desc(table_with_column, origin)
-    requested_order = { order: { table_with_column => descending_order, origin: origin } }
+    requested_order = { order: { table_with_column => descending_order } }
+    requested_order[:order][:origin] = origin unless origin.blank?
 
     map_of_values = { 'params' => requested_order, 'id' => "#{table_with_column}_desc_button",
                       'icon_class' => 'sort alphabet up icon' }
@@ -69,7 +70,8 @@ module OrderableHelper
   end
 
   def order_button_asc(table_with_column, origin)
-    requested_order = { order: { table_with_column => ascending_order, origin: origin } }
+    requested_order = { order: { table_with_column => ascending_order } }
+    requested_order[:order][:origin] = origin unless origin.blank?
 
     map_of_values = { 'params' => requested_order, 'id' => "#{table_with_column}_asc_button",
                       'icon_class' => 'sort alphabet down icon' }
