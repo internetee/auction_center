@@ -70,7 +70,7 @@ module Admin
 
     def search_params
       search_params_copy = params.dup
-      search_params_copy.permit(:domain_name, :order => :origin)
+      search_params_copy.permit(:domain_name, order: :origin)
     end
 
     def create_params
