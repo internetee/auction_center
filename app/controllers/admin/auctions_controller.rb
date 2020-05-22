@@ -37,9 +37,10 @@ module Admin
     # GET /admin/auctions/search
     def search
       domain_name = search_params[:domain_name]
+      @origin = domain_name || search_params.dig(:order, :origin)
 
       collection = AdminAuctionDecorator.with_highest_offers
-                                        .where('domain_name ILIKE ?', "%#{domain_name}%")
+                                        .where('domain_name ILIKE ?', "%#{@origin}%")
                                         .order(orderable_array)
                                         .page(1)
 
@@ -69,7 +70,7 @@ module Admin
 
     def search_params
       search_params_copy = params.dup
-      search_params_copy.permit(:domain_name)
+      search_params_copy.permit(:domain_name, :order => :origin)
     end
 
     def create_params
