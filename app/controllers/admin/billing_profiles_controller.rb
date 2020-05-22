@@ -15,16 +15,16 @@ module Admin
     # GET /admin/billing_profiles/search
     def search
       search_string = search_params[:search_string]
-
+      @origin = search_string || search_params.dig(:order, :origin)
       @billing_profiles = BillingProfile.accessible_by(current_ability)
                                         .joins(:user)
                                         .includes(:user)
                                         .where(
                                           'billing_profiles.name ILIKE ? OR ' \
                                           'users.email ILIKE ? OR users.surname ILIKE ?',
-                                          "%#{search_string}%",
-                                          "%#{search_string}%",
-                                          "%#{search_string}%"
+                                          "%#{@origin}%",
+                                          "%#{@origin}%",
+                                          "%#{@origin}%"
                                         )
                                         .order(orderable_array)
                                         .page(1)
@@ -39,7 +39,7 @@ module Admin
 
     def search_params
       search_params_copy = params.dup
-      search_params_copy.permit(:search_string)
+      search_params_copy.permit(:search_string, order: :origin)
     end
 
     def authorize_user
