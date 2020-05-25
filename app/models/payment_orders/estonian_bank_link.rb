@@ -179,7 +179,7 @@ module PaymentOrders
       description = invoices.map(&:title).join(',')
       return description if description.length < 95
 
-      'Mass payment of auction center invoices'
+      description.truncate(95, omission: '...')
     end
   end
 end

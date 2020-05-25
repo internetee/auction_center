@@ -32,8 +32,7 @@ class PaymentOrdersController < ApplicationController
     if @payment_order.paid?
       respond_to do |format|
         format.html do
-          redirect_to invoices_path,
-            notice: t('.already_paid') and return
+          redirect_to invoices_path, notice: t('.already_paid') and return
         end
 
         format.json { render json: @payment_order.errors, status: :unprocessable_entity and return }
@@ -45,9 +44,15 @@ class PaymentOrdersController < ApplicationController
     ResultStatusUpdateJob.perform_later
 
     respond_to do |format|
+      invoice_ids = @payment_order.invoices.map(&:id).join(', ')
+      alert_text = if @payment_order.invoices.count > 1
+                     t('.bulk_update', ids: invoice_ids)
+                   else
+                     t(:updated)
+                   end
       if @payment_order.mark_invoice_as_paid
-        format.html { redirect_to invoices_path, notice: t(:updated) }
-        format.json { redirect_to invoices_path, notice: t(:updated) }
+        format.html { redirect_to invoices_path, notice: alert_text }
+        format.json { redirect_to invoices_path, notice: alert_text }
       else
         format.html do
           redirect_to invoices_path,
