@@ -39,6 +39,7 @@ class User < ApplicationRecord
   has_many :wishlist_items, dependent: :destroy
 
   scope :subscribed_to_daily_summary, -> { where(daily_summary: true) }
+  scope :with_confirmed_phone, -> { where.not(mobile_phone_confirmed_at: nil) }
 
   def identity_code_must_be_valid_for_estonia
     return if IdentityCode.new(country_code, identity_code).valid?
@@ -97,6 +98,20 @@ class User < ApplicationRecord
 
   def phone_number_confirmed?
     mobile_phone_confirmed_at.present?
+  end
+
+  def phone_number_confirmed_unique?
+    return true if provider == TARA_PROVIDER
+    return true unless Setting.find_by(code: 'require_phone_confirmation').retrieve
+
+    phone_number_confirmed? && !phone_number_was_already_confirmed?
+  end
+
+  def phone_number_was_already_confirmed?
+    User.where(mobile_phone: mobile_phone)
+        .where.not(id: id)
+        .with_confirmed_phone
+        .present?
   end
 
   def banned?
