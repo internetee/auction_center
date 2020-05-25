@@ -44,15 +44,9 @@ class PaymentOrdersController < ApplicationController
     ResultStatusUpdateJob.perform_later
 
     respond_to do |format|
-      invoice_ids = @payment_order.invoices.map(&:id).join(', ')
-      alert_text = if @payment_order.invoices.count > 1
-                     t('.bulk_update', ids: invoice_ids)
-                   else
-                     t(:updated)
-                   end
       if @payment_order.mark_invoice_as_paid
-        format.html { redirect_to invoices_path, notice: alert_text }
-        format.json { redirect_to invoices_path, notice: alert_text }
+        format.html { redirect_to invoices_path, notice: successful_update_notice }
+        format.json { redirect_to invoices_path, notice: successful_update_notice }
       else
         format.html do
           redirect_to invoices_path,
@@ -80,6 +74,13 @@ class PaymentOrdersController < ApplicationController
 
   def create_params
     params.require(:payment_order).permit(:user_id, :invoice_id, :invoice_ids, :type)
+  end
+
+  def successful_update_notice
+    invoice_ids = @payment_order.invoices.map(&:id).join(', ')
+    return t('.bulk_update', ids: invoice_ids) if @payment_order.invoices.count > 1
+
+    t(:updated)
   end
 
   def authorize_user
