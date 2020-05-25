@@ -70,7 +70,7 @@ module PaymentOrders
                                                 decimal_mark: '.')
       hash['VK_CURR']     = Setting.find_by(code: 'auction_currency').retrieve
       hash['VK_REF']      = ''
-      hash['VK_MSG']      = invoices.map(&:title).join(',')
+      hash['VK_MSG']      = transaction_description
       hash['VK_RETURN']   = return_url
       hash['VK_CANCEL']   = return_url
       hash['VK_DATETIME'] = Time.zone.now.strftime('%Y-%m-%dT%H:%M:%S%z')
@@ -173,6 +173,13 @@ module PaymentOrders
 
     def invoices_total
       invoices.map(&:total).reduce(:+)
+    end
+
+    def transaction_description
+      description = invoices.map(&:title).join(',')
+      return description if description.length < 95
+
+      'Mass payment of auction center invoices'
     end
   end
 end
