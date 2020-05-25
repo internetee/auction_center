@@ -1,3 +1,6 @@
+22.05.2020
+* Bump puma to 4.3.5 [#552](https://github.com/internetee/auction_center/pull/552)
+
 11.05.2020
 * Auction process due dates are now available over whois and rest-whois [#547](https://github.com/internetee/auction_center/pull/547)
 

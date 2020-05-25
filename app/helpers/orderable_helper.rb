@@ -62,7 +62,7 @@ module OrderableHelper
   def order_button_with_type(method, table_with_column, origin)
     desc = method == 'desc'
     requested_order = { order: {
-      table_with_column => (desc ? descending_order : ascending_order)
+      table_with_column => (desc ? descending_order : ascending_order),
     } }
     requested_order[:order][:origin] = origin if origin.present?
 
