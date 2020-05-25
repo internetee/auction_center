@@ -25,6 +25,8 @@ class Ability
 
     if user.banned?
       restrictions_from_bans
+    elsif user.phone_number_confirmed_not_unique?
+      phone_not_unique_restrictions
     else
       no_restrictions_on_offers_and_users
     end
@@ -40,6 +42,12 @@ class Ability
          .where('domain_name IS NULL OR domain_name = ?', offer.auction.domain_name)
          .any?
     end
+  end
+
+  def phone_not_unique_restrictions
+    can :read, User, id: user.id
+
+    can :read, Offer, user_id: user.id
   end
 
   def no_restrictions_on_offers_and_users
