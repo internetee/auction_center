@@ -24,6 +24,10 @@ class User < ApplicationRecord
     user.provider == TARA_PROVIDER
   }
 
+  validate :mobile_phone_must_not_be_already_confirmed, unless: proc { |user|
+    user.provider == TARA_PROVIDER
+  }
+
   validates :given_names, :surname, safe_value: true
 
   validates :given_names, presence: true
@@ -155,5 +159,9 @@ class User < ApplicationRecord
         user.identity_code = uid.slice(2..-1)
       end
     end
+  end
+
+  def mobile_phone_must_not_be_already_confirmed
+    errors.add(:mobile_phone, I18n.t(:already_confirmed)) if phone_number_was_already_confirmed?
   end
 end
