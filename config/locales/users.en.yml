@@ -86,6 +86,8 @@ en:
           attributes:
             terms_and_conditions:
               format: "%{message}"
+            mobile_phone:
+              format: "%{message}"
             given_names:
               format: "%{attribute}: %{message}"
             surname:

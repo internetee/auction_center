@@ -87,7 +87,7 @@ en:
   details: "Details"
   updated_by: "Updated by"
   already_confirmed: |
-    Phone number you've entered is already confirmed by somebody else.
+    Phone number you've entered is already in use by somebody else.
     Please, use another phone number
 
   search: "Search"

@@ -25,7 +25,7 @@ class Ability
 
     if user.banned?
       restrictions_from_bans
-    elsif user.phone_number_confirmed_not_unique?
+    elsif user.not_phone_number_confirmed_unique?
       phone_not_unique_restrictions
     else
       no_restrictions_on_offers_and_users

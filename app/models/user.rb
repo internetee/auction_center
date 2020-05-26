@@ -104,7 +104,7 @@ class User < ApplicationRecord
     mobile_phone_confirmed_at.present?
   end
 
-  def phone_number_confirmed_not_unique?
+  def not_phone_number_confirmed_unique?
     !phone_number_confirmed_unique?
   end
 
@@ -112,7 +112,7 @@ class User < ApplicationRecord
     return true if provider == TARA_PROVIDER
     return true unless Setting.find_by(code: 'require_phone_confirmation').retrieve
 
-    phone_number_confirmed? && !phone_number_was_already_confirmed?
+    !phone_number_was_already_confirmed?
   end
 
   def phone_number_was_already_confirmed?

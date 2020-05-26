@@ -72,7 +72,7 @@ et:
     punkti, ülakoma ning kald- ja sidekriipsu
   not_accepted: "Tagasi lükatud"
   details: "Detailid"
-  already_confirmed: "Sisestatud telefoninumber on juba kasutuses. Palun sisestage teine number"
+  already_confirmed: "Mobiiltelefoninumber on juba kasutuses. Palun sisestage teine number"
 
   search: "Otsi"
   search_by_domain_name: "Otsi domeeni nime järgi"

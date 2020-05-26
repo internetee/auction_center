@@ -8,7 +8,7 @@ module InvalidUserDataHelper
   def invalid_data_banner
     return unless session['user.invalid_user_data']
 
-    if current_user.phone_number_confirmed_not_unique?
+    if current_user.not_phone_number_confirmed_unique?
       content_tag(:div, class: 'ui message flash') do
         content_tag(:div, t('already_confirmed'), class: 'header')
       end
