@@ -72,6 +72,7 @@ et:
     punkti, ülakoma ning kald- ja sidekriipsu
   not_accepted: "Tagasi lükatud"
   details: "Detailid"
+  already_confirmed: "Mobiiltelefoninumber on juba kasutuses. Palun sisestage teine number"
 
   search: "Otsi"
   search_by_domain_name: "Otsi domeeni nime järgi"
@@ -102,3 +103,4 @@ et:
       user:
         update: "Muuda mu parool"
         create: "Muuda mu parool"
+

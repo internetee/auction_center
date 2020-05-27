@@ -24,6 +24,10 @@ class User < ApplicationRecord
     user.provider == TARA_PROVIDER
   }
 
+  validate :mobile_phone_must_not_be_already_confirmed, unless: proc { |user|
+    user.provider == TARA_PROVIDER
+  }
+
   validates :given_names, :surname, safe_value: true
 
   validates :given_names, presence: true
@@ -39,6 +43,7 @@ class User < ApplicationRecord
   has_many :wishlist_items, dependent: :destroy
 
   scope :subscribed_to_daily_summary, -> { where(daily_summary: true) }
+  scope :with_confirmed_phone, -> { where.not(mobile_phone_confirmed_at: nil) }
 
   def identity_code_must_be_valid_for_estonia
     return if IdentityCode.new(country_code, identity_code).valid?
@@ -99,6 +104,24 @@ class User < ApplicationRecord
     mobile_phone_confirmed_at.present?
   end
 
+  def not_phone_number_confirmed_unique?
+    !phone_number_confirmed_unique?
+  end
+
+  def phone_number_confirmed_unique?
+    return true if provider == TARA_PROVIDER
+    return true unless Setting.find_by(code: 'require_phone_confirmation').retrieve
+
+    !phone_number_was_already_confirmed?
+  end
+
+  def phone_number_was_already_confirmed?
+    User.where(mobile_phone: mobile_phone)
+        .where.not(id: id)
+        .with_confirmed_phone
+        .present?
+  end
+
   def banned?
     Ban.where(user_id: id).valid.any?
   end
@@ -140,5 +163,9 @@ class User < ApplicationRecord
         user.identity_code = uid.slice(2..-1)
       end
     end
+  end
+
+  def mobile_phone_must_not_be_already_confirmed
+    errors.add(:mobile_phone, I18n.t(:already_confirmed)) if phone_number_was_already_confirmed?
   end
 end

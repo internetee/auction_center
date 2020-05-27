@@ -32,6 +32,14 @@ class PhoneConfirmationTest < ActiveSupport::TestCase
     assert_not(@phone_confirmation.generate_and_send_code)
   end
 
+  def test_when_phone_confirmed_by_other_code_not_set
+    another_user = users(:second_place_participant)
+    @user.update!(mobile_phone_confirmed_at: Time.zone.now - 1.day)
+    confirmation = PhoneConfirmation.new(another_user)
+
+    assert_not(confirmation.generate_and_send_code)
+  end
+
   def test_confirm_exits_early_if_already_confirmed
     @user.mobile_phone_confirmed_at = Time.zone.now
     @user.save

@@ -180,6 +180,16 @@ class UserTest < ActiveSupport::TestCase
     assert_not(user.requires_phone_number_confirmation?)
   end
 
+  def test_phone_nr_confirmed_if_unique
+    current_value = Setting.find_by(code: :require_phone_confirmation).retrieve
+    Setting.find_by(code: :require_phone_confirmation).update!(value: 'true')
+    _first_user = users(:participant)
+    second_user = users(:second_place_participant)
+
+    assert_not(second_user.valid?)
+    Setting.find_by(code: :require_phone_confirmation).update!(value: current_value)
+  end
+
   def test_country_code_must_be_two_letters_long
     @administrator.country_code = 'EST'
     assert_raise ActiveRecord::ValueTooLong do
