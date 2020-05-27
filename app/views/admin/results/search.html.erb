@@ -44,7 +44,7 @@
                         </th>
                         <th scope="col">
                             <%= t('billing_profiles.name') %>
-                            <%= order_buttons('users.id', origin: @origin) %>
+                            <%= order_buttons('invoices.recipient', origin: @origin) %>
                         </th>
                         <th scope="col"><%= clear_order_button %></th>
                     </tr>
