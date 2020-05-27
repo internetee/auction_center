@@ -27,15 +27,15 @@
                 <tr>
                     <th scope="col">
                         <%= t('billing_profiles.user') %>
-                        <%= order_buttons('users.surname') %>
+                        <%= order_buttons('users.surname', origin: @origin) %>
                     </th>
                     <th scope="col">
                         <%= t('billing_profiles.name') %>
-                        <%= order_buttons('billing_profiles.name') %>
+                        <%= order_buttons('billing_profiles.name', origin: @origin) %>
                     </th>
                     <th scope="col">
                         <%= t('billing_profiles.vat_code') %>
-                        <%= order_buttons('billing_profiles.vat_code') %>
+                        <%= order_buttons('billing_profiles.vat_code', origin: @origin) %>
                     </th>
                     <th scope="col"><%= t('billing_profiles.address') %></th>
                     <th scope="col"><%= clear_order_button %></th>

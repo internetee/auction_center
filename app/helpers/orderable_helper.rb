@@ -13,9 +13,9 @@ module OrderableHelper
   end
 
   # A button to create order buttons, ascending first. To be used in templates.
-  def order_buttons(table_with_column)
-    order_button(table_with_column, ascending_order) +
-      order_button(table_with_column, descending_order)
+  def order_buttons(table_with_column, origin: nil)
+    order_button(table_with_column, ascending_order, origin) +
+      order_button(table_with_column, descending_order, origin)
   end
 
   # Chain this with order(orderable_array) in controller actions
@@ -51,30 +51,25 @@ module OrderableHelper
     'desc'
   end
 
-  def order_button(table_with_column, order)
+  def order_button(table_with_column, order, origin)
     if order == descending_order
-      order_button_desc(table_with_column)
+      order_button_with_type('desc', table_with_column, origin)
     elsif order == ascending_order
-      order_button_asc(table_with_column)
+      order_button_with_type('asc', table_with_column, origin)
     end
   end
 
-  def order_button_desc(table_with_column)
-    requested_order = { order: { table_with_column => descending_order } }
+  def order_button_with_type(method, table_with_column, origin)
+    desc = method == 'desc'
+    requested_order = { order: {
+      table_with_column => (desc ? descending_order : ascending_order),
+    } }
+    requested_order[:order][:origin] = origin if origin.present?
 
-    map_of_values = { 'params' => requested_order, 'id' => "#{table_with_column}_desc_button",
-                      'icon_class' => 'sort alphabet up icon' }
+    values = { 'params' => requested_order, 'id' => "#{table_with_column}_#{method}_button",
+               'icon_class' => "sort alphabet #{desc ? 'up' : 'down'} icon" }
 
-    link_with_icon(map_of_values)
-  end
-
-  def order_button_asc(table_with_column)
-    requested_order = { order: { table_with_column => ascending_order } }
-
-    map_of_values = { 'params' => requested_order, 'id' => "#{table_with_column}_asc_button",
-                      'icon_class' => 'sort alphabet down icon' }
-
-    link_with_icon(map_of_values)
+    link_with_icon(values)
   end
 
   def link_with_icon(map_of_values)

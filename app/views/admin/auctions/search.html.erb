@@ -29,27 +29,27 @@
                         <tr>
                             <th scope="col">
                                 <%= t('auctions.domain_name') %>
-                                <%= order_buttons('admin_auction_decorators.domain_name') %>
+                                <%= order_buttons('admin_auction_decorators.domain_name', origin: @origin) %>
                             </th>
                             <th scope="col">
                                 <%= t('auctions.starts_at') %>
-                                <%= order_buttons('admin_auction_decorators.starts_at') %>
+                                <%= order_buttons('admin_auction_decorators.starts_at', origin: @origin) %>
                             </th>
                             <th scope="col">
                                 <%= t('auctions.ends_at') %>
-                                <%= order_buttons('admin_auction_decorators.ends_at') %>
+                                <%= order_buttons('admin_auction_decorators.ends_at', origin: @origin) %>
                             </th>
                             <th scope="col">
                                 <%= t('auctions.highest_price') %>
-                                <%= order_buttons('admin_auction_decorators.highest_offer_cents') %>
+                                <%= order_buttons('admin_auction_decorators.highest_offer_cents', origin: @origin) %>
                             </th>
                             <th scope="col">
                                 <%= t('auctions.offers') %>
-                                <%= order_buttons('admin_auction_decorators.number_of_offers') %>
+                                <%= order_buttons('admin_auction_decorators.number_of_offers', origin: @origin) %>
                             </th>
                             <th scope="col">
                                 <%= t('auctions.turns_count') %>
-                                <%= order_buttons('admin_auction_decorators.turns_count') %>
+                                <%= order_buttons('admin_auction_decorators.turns_count', origin: @origin) %>
                             </th>
                             <th scope="col"><%= clear_order_button %></th>
                         </tr>

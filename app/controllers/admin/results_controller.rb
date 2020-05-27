@@ -26,10 +26,11 @@ module Admin
     # GET /admin/results/search
     def search
       domain_name = search_params[:domain_name]
+      @origin = domain_name || search_params.dig(:order, :origin)
 
       @results = Result.joins(:auction)
                        .includes(:offer, :invoice)
-                       .where('auctions.domain_name ILIKE ?', "%#{domain_name}%")
+                       .where('auctions.domain_name ILIKE ?', "%#{@origin}%")
                        .accessible_by(current_ability)
                        .order(orderable_array)
                        .page(1)
@@ -49,7 +50,7 @@ module Admin
 
     def search_params
       search_params_copy = params.dup
-      search_params_copy.permit(:domain_name)
+      search_params_copy.permit(:domain_name, order: :origin)
     end
 
     def buyer_name

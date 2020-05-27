@@ -23,11 +23,12 @@ module Admin
     # GET /admin/users/search
     def search
       search_string = search_params[:search_string]
+      @origin = search_string || search_params.dig(:order, :origin)
 
       @users = User.where('email ILIKE ? OR surname ILIKE ? OR given_names ILIKE ? ' \
                           'OR mobile_phone ILIKE ?',
-                          "%#{search_string}%", "%#{search_string}%", "%#{search_string}%",
-                          "%#{search_string}%")
+                          "%#{@origin}%", "%#{@origin}%", "%#{@origin}%",
+                          "%#{@origin}%")
                    .accessible_by(current_ability)
                    .order(orderable_array)
                    .page(1)
@@ -87,7 +88,7 @@ module Admin
 
     def search_params
       search_params_copy = params.dup
-      search_params_copy.permit(:search_string)
+      search_params_copy.permit(:search_string, order: :origin)
     end
 
     def create_params
