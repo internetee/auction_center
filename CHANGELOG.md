@@ -1,5 +1,6 @@
 27.05.2020
 * Enforced confirmed mobile nr uniqueness checking [#550](https://github.com/internetee/auction_center/issues/550)
+* Fixed sorting issue in admin with search criteria applied [#454 ](https://github.com/internetee/auction_center/issues/454)
 
 22.05.2020
 * Bump puma to 4.3.5 [#552](https://github.com/internetee/auction_center/pull/552)
