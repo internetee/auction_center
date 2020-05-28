@@ -1,5 +1,6 @@
 28.05.2020
-* Sending correct client country code, vat code and vat reg number with invoice info to accounting [#524](https://github.com/internetee/auction_center/issues/524) 
+* Sending correct client country code, vat code and vat reg number with invoice info to accounting [#524](https://github.com/internetee/auction_center/issues/524)
+* Fix for nomethord error from Process_payments job [#549](https://github.com/internetee/auction_center/issues/549)
 * Upgraded Rails gemset to 6.0.3.1 [#556](https://github.com/internetee/auction_center/pull/556)
 * Directo gem update [#557](https://github.com/internetee/auction_center/pull/557)
 
