@@ -1,6 +1,7 @@
 28.05.2020
 * Sending correct client country code, vat code and vat reg number with invoice info to accounting [#524](https://github.com/internetee/auction_center/issues/524) 
 * Upgraded Rails gemset to 6.0.3.1 [#556](https://github.com/internetee/auction_center/pull/556)
+* Directo gem update [#557](https://github.com/internetee/auction_center/pull/557)
 
 27.05.2020
 * Enforced confirmed mobile nr uniqueness checking [#550](https://github.com/internetee/auction_center/issues/550)
