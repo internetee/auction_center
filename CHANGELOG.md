@@ -1,3 +1,6 @@
+28.05.2020
+* Sending correct client country code, vat code and vat reg number with invoice info to accounting [#524](https://github.com/internetee/auction_center/issues/524) 
+
 27.05.2020
 * Enforced confirmed mobile nr uniqueness checking [#550](https://github.com/internetee/auction_center/issues/550)
 * Fixed sorting issue in admin with search criteria applied [#454 ](https://github.com/internetee/auction_center/issues/454)
