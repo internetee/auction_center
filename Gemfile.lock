@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/internetee/directo.git
-  revision: 9244c2dcfb1c7f8b7b52d7c451f89e55e544b1bb
-  branch: eu-vat-rates
+  revision: bdfab4be20803c666dcefc9a9c607f915a056ac5
+  branch: master
   specs:
     directo (1.0.1)
       money (~> 6.13)
