@@ -126,10 +126,10 @@ class PaymentOrderEstonianBankLinkTest < ActiveSupport::TestCase
   end
 
   def test_too_long_payment_description_gets_truncated
-    long_string = 'This is way longer than 95 characters This is way longer than 95 characters This is way longer than 95 characters This is way longer than 95 characters'
+    long_string = 'This is way longer than 94 characters This is way longer than 94 characters This is way longer than 94 characters This is way longer than 94 characters'
 
     @orphaned_invoice.stub(:title, long_string) do
-      assert_equal 95, @new_bank_link.form_fields['VK_MSG'].length
+      assert_equal 94, @new_bank_link.form_fields['VK_MSG'].length
     end
   end
 
