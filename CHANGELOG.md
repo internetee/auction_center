@@ -1,3 +1,6 @@
+29.05.2020
+* Bump kaminari gem to 1.2.1 [#558](https://github.com/internetee/auction_center/pull/558)
+
 28.05.2020
 * Sending correct client country code, vat code and vat reg number with invoice info to accounting [#524](https://github.com/internetee/auction_center/issues/524)
 * Fix for nomethord error from Process_payments job [#549](https://github.com/internetee/auction_center/issues/549)
