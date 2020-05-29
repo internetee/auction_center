@@ -2,6 +2,7 @@ require 'test_helper'
 
 class PaymentOrdersTest < ActionDispatch::IntegrationTest
   include ActiveJob::TestHelper
+  include Devise::Test::IntegrationHelpers
 
   def setup
     @invoice = invoices(:payable)
@@ -34,6 +35,21 @@ class PaymentOrdersTest < ActionDispatch::IntegrationTest
 
     assert_equal(302, response.status)
     assert_not @payment_order.response
+  end
+
+  def test_invoice_ids_are_shown_after_successful_mass_payment
+    @user = users(:participant)
+    sign_in @user
+
+    PaymentOrder.stub(:find_by, @payment_order) do
+      @payment_order.stub(:invoices, [invoices(:payable), invoices(:orphaned)]) do
+        @payment_order.stub(:mark_invoice_as_paid, true) do
+          post return_payment_order_path(@payment_order.uuid), params: request_params
+          follow_redirect!
+          assert_includes response.body, "Payment successful! Following invoices were marked as paid: #{invoices(:payable).number}, #{invoices(:orphaned).number}"
+        end
+      end
+    end
   end
 
   def request_params

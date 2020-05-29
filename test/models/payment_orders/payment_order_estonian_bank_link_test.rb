@@ -125,6 +125,14 @@ class PaymentOrderEstonianBankLinkTest < ActiveSupport::TestCase
     assert_equal('lhv', PaymentOrders::LHV.config_namespace_name)
   end
 
+  def test_too_long_payment_description_gets_truncated
+    long_string = 'This is way longer than 94 characters This is way longer than 94 characters This is way longer than 94 characters This is way longer than 94 characters'
+
+    @orphaned_invoice.stub(:title, long_string) do
+      assert_equal 94, @new_bank_link.form_fields['VK_MSG'].length
+    end
+  end
+
   def create_cancelled_bank_link
     params = {
       'VK_SERVICE': '1911',

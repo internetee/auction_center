@@ -15,3 +15,4 @@ et:
     return:
       not_successful: "Makse ebaõnnestus. Veenduge, et kontol on piisavalt raha ning proovige uuesti. Kui probleem on pidev, siis võtke meiega ühendust aadressil info@internet.ee või helistage +372 727 1000"
       already_paid: "Arve on juba makstud."
+      bulk_update: "Aitäh eduka makse eest! Märgitud makstuks järgnevad arved: %{ids}"

@@ -15,3 +15,4 @@ en:
     return:
       not_successful: "Payment failed, please make sure there are enough funds on the account and try again. If the problem persists please contact us by email info@internet.ee or call to +372 727 1000"
       already_paid: "This invoice has already been paid."
+      bulk_update: "Payment successful! Following invoices were marked as paid: %{ids}"
