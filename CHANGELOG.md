@@ -1,3 +1,6 @@
+02.06.2020
+* Fixed healthcheck error handling on http-requests [#560](https://github.com/internetee/auction_center/pull/560)
+
 29.05.2020
 * Long payment description are truncated to 94 chars [#546](https://github.com/internetee/auction_center/issues/546)
 * Bump kaminari gem to 1.2.1 [#558](https://github.com/internetee/auction_center/pull/558)
