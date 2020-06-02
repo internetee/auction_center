@@ -7,7 +7,6 @@ module ApplicationHealthCheck
         report_failure 'Registry integration disabled'
       else
         simple_check_endpoint(url: ::Registry::Base::BASE_URL,
-                              no_url_message: 'No Registry url set',
                               fail_message: 'Cannot connect to Registry API',
                               success_message: 'Registry integration is up and running')
       end
