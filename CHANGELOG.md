@@ -1,3 +1,6 @@
+08.06.2020
+* Bump websocket-extensions to 0.1.5 [#563](https://github.com/internetee/auction_center/pull/563)
+
 02.06.2020
 * Fixed healthcheck error handling on http-requests [#560](https://github.com/internetee/auction_center/pull/560)
 
