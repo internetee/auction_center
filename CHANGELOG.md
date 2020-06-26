@@ -1,3 +1,6 @@
+26.06.2020
+* Bump rack to 2.2.3 [#569](https://github.com/internetee/auction_center/pull/569)
+
 08.06.2020
 * Bump websocket-extensions to 0.1.5 [#563](https://github.com/internetee/auction_center/pull/563)
 
