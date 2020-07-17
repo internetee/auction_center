@@ -1,3 +1,6 @@
+17.07.2020
+* Bump lodash to 4.17.19 [#571](https://github.com/internetee/auction_center/pull/571)
+
 26.06.2020
 * Bump rack to 2.2.3 [#569](https://github.com/internetee/auction_center/pull/569)
 
