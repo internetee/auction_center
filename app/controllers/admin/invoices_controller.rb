@@ -27,19 +27,26 @@ module Admin
       search_string = search_params[:search_string]
       @origin = search_string || search_params.dig(:order, :origin)
 
-      @invoices = Invoice.joins(:user)
-                         .joins(:billing_profile)
-                         .joins(:invoice_items)
-                         .where('billing_profiles.name ILIKE ? OR ' \
-                                'users.email ILIKE ? OR users.surname ILIKE ? OR ' \
-                                'invoice_items.name ILIKE ?',
-                                "%#{@origin}%",
-                                "%#{@origin}%",
-                                "%#{@origin}%",
-                                "%#{@origin}%")
-                         .accessible_by(current_ability)
-                         .order(orderable_array)
-                         .page(1)
+      @invoices = search_scope(@origin).accessible_by(current_ability)
+                                       .order(orderable_array)
+                                       .page(1)
+    end
+
+    def search_scope(origin)
+      if origin.to_i.positive?
+        Invoice.where('number = ?', origin)
+      else
+        Invoice.joins(:user)
+               .joins(:billing_profile)
+               .joins(:invoice_items)
+               .where('billing_profiles.name ILIKE ? OR ' \
+                      'users.email ILIKE ? OR users.surname ILIKE ? OR ' \
+                      'invoice_items.name ILIKE ?',
+                      "%#{origin}%",
+                      "%#{origin}%",
+                      "%#{origin}%",
+                      "%#{origin}%")
+      end
     end
 
     # GET /admin/invoices/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/download

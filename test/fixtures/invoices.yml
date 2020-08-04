@@ -15,6 +15,7 @@ payable:
   due_date: <%= Time.parse('2010-07-13 10:30 +0000') %>
   uuid: "92f2d552-4270-4d08-8687-b332432c872f"
   in_directo: false
+  number: '12345678'
 
 orphaned:
   result: orphaned
@@ -30,3 +31,4 @@ orphaned:
   due_date: <%= Time.parse('2010-07-13 10:30 +0000') %>
   uuid: "cec1de76-164f-4c9a-922d-dacde5e99f99"
   in_directo: false
+  number: '87654321'

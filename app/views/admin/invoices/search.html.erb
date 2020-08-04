@@ -34,6 +34,10 @@
                         <%= order_buttons('invoices.due_date', origin: @origin) %>
                     </th>
                     <th scope="col">
+                        <%= t('invoices.number') %>
+                        <%= order_buttons('invoices.number') %>
+                    </th>
+                    <th scope="col">
                         <%= t('invoices.status') %>
                         <%= order_buttons('invoices.status', origin: @origin) %>
                     </th>
@@ -66,6 +70,7 @@
                     <tr class="invoices-table-row">
                         <td><%= link_to invoice.billing_profile.name, admin_invoice_path(invoice) %></td>
                         <td><%= I18n.l(invoice.due_date) %></td>
+                        <td><%= invoice.number %></td>
                         <td><%= invoice.status %></td>
                         <td><%= invoice.notes %></td>
                         <td><%= t('offers.price_in_currency', price: invoice.total) %></td>
