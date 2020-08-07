@@ -1,3 +1,6 @@
+07.08.2020
+* Bump json to 2.3.1 [#572](https://github.com/internetee/auction_center/pull/572)
+
 17.07.2020
 * Bump lodash to 4.17.19 [#571](https://github.com/internetee/auction_center/pull/571)
 
