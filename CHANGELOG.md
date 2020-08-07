@@ -1,3 +1,6 @@
+08.08.2020
+* Invoice search by invoice nr in admin [#523](https://github.com/internetee/auction_center/issues/523)
+
 07.08.2020
 * Bump json to 2.3.1 [#572](https://github.com/internetee/auction_center/pull/572)
 * Bump elliptic to 6.5.3 [#573](https://github.com/internetee/auction_center/pull/573)
