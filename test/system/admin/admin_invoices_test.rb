@@ -31,6 +31,25 @@ class AdminInvoicesTest < ApplicationSystemTestCase
     assert(page.has_text?('Search results are limited to first 20 hits.'))
   end
 
+  def test_search_by_invoice_nr
+    visit admin_invoices_path
+
+    fill_in('search_string', with: '12345678')
+    find(:css, "i.arrow.right.icon").click
+
+    assert(page.has_link?('ACME Inc.'))
+    assert(page.has_text?('Search results are limited to first 20 hits.'))
+  end
+
+  def test_search_by_alphanumeric_string
+    visit admin_invoices_path
+
+    fill_in('search_string', with: '1n')
+    assert_nothing_raised do
+      find(:css, "i.arrow.right.icon").click
+    end
+  end
+
   def test_search_by_domain_name
     visit admin_invoices_path
 
