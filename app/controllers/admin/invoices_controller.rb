@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/ClassLength
 require 'invoice_already_paid'
 
 module Admin
@@ -33,7 +34,7 @@ module Admin
     end
 
     def search_scope(origin)
-      if origin.to_i.positive?
+      if numeric?(origin)
         Invoice.where('number = ?', origin)
       else
         Invoice.joins(:user)
@@ -46,6 +47,16 @@ module Admin
                       "%#{origin}%",
                       "%#{origin}%",
                       "%#{origin}%")
+      end
+    end
+
+    def numeric?(string)
+      return true if string =~ /\A\d+\Z/
+
+      begin
+        true if Float(string)
+      rescue StandardError
+        false
       end
     end
 
@@ -130,3 +141,4 @@ module Admin
     end
   end
 end
+# rubocop:enable Metrics/ClassLength
