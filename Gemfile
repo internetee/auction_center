@@ -28,7 +28,7 @@ gem 'scenic'
 gem 'simpleidn'
 gem 'sprockets', '~> 3.7'
 gem 'turbolinks', '~> 5'
-gem 'webpacker', '~> 4.0'
+gem 'webpacker', github: 'rails/webpacker', branch: 'master'
 
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
