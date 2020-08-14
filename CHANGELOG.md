@@ -1,3 +1,6 @@
+14.08.2020
+* Bump chartkick to 3.4.0 [#575](https://github.com/internetee/auction_center/pull/575)
+
 08.08.2020
 * Invoice search by invoice nr in admin [#523](https://github.com/internetee/auction_center/issues/523)
 
