@@ -1,3 +1,6 @@
+26.08.2020
+* Bump highcharts to 7.2.2 [#577](https://github.com/internetee/auction_center/pull/577)
+
 14.08.2020
 * Bump chartkick to 3.4.0 [#575](https://github.com/internetee/auction_center/pull/575)
 
