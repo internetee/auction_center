@@ -1,3 +1,6 @@
+27.08.2020
+* Upgraded webpacker to 5.2 [#576](https://github.com/internetee/auction_center/pull/576)
+
 26.08.2020
 * Bump highcharts to 7.2.2 [#577](https://github.com/internetee/auction_center/pull/577)
 
