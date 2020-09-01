@@ -1,3 +1,6 @@
+01.09.2020
+* Fix for webpackers memory leakage issue [#579](https://github.com/internetee/auction_center/pull/579)
+
 27.08.2020
 * Upgraded webpacker to 5.2 [#576](https://github.com/internetee/auction_center/pull/576)
 
