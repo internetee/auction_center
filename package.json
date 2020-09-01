@@ -5,16 +5,19 @@
       "test": "NODE_ENV=test karma start"
    },
    "dependencies": {
-      "@rails/webpacker": "https://github.com/rails/webpacker.git",
+      "@rails/webpacker": "^5.2.1",
       "chartkick": "^3.2.0",
       "highcharts": "^7.2.2",
       "jquery": "^3.3.1",
-      "less": "^3.0.0",
+      "less": "3.9.0",
       "less-loader": "^5.0.0",
       "libphonenumber-js": "^1.5.1",
+      "optimize-css-assets-webpack-plugin": "^5.0.4",
       "punycode": "^2.1.1",
       "rails-ujs": "^5.2.1",
       "resolve-url-loader": "^3.0.0",
+      "sass-loader": "^10.0.1",
+      "terser-webpack-plugin": "^4.1.0",
       "turbolinks": "^5.2.0",
       "typeface-raleway": "^0.0.75"
    },
