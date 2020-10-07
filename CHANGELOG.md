@@ -1,3 +1,6 @@
+07.10.2020
+* Updated Rails to 6.0.3.3 [#580](https://github.com/internetee/auction_center/pull/580)
+
 01.09.2020
 * Fix for webpackers memory leakage issue [#579](https://github.com/internetee/auction_center/pull/579)
 
