@@ -1,3 +1,6 @@
+21.10.2020
+* Security update on yarn modules [#581](https://github.com/internetee/auction_center/pull/581)
+
 07.10.2020
 * Updated Rails to 6.0.3.3 [#580](https://github.com/internetee/auction_center/pull/580)
 
