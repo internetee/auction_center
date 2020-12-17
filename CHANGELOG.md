@@ -1,3 +1,6 @@
+17.12.2020
+* Bump ini to 1.3.7 [#582](https://github.com/internetee/auction_center/pull/582)
+
 21.10.2020
 * Security update on yarn modules [#581](https://github.com/internetee/auction_center/pull/581)
 
