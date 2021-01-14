@@ -1,5 +1,6 @@
 14.01.2021
 * Fixed typos in et footer [#585](https://github.com/internetee/auction_center/pull/585)
+* Bump Nokogiri to 1.11.1 [#586](https://github.com/internetee/auction_center/pull/586)
 
 17.12.2020
 * Bump ini to 1.3.7 [#582](https://github.com/internetee/auction_center/pull/582)
