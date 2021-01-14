@@ -23,12 +23,12 @@ et:
       list_of_accredited_registrars: "Akrediteeritud registripidajate nimekiri"
       terms_and_conditions_for_registrars: "Akrediteeritud registripidajaks saamine"
       partner_programme: |
-        "Elite Partner" programm"
+        "Elite Partner" programm
 
       estonian_internet: "Meist"
       contact_us: "Võta meiega ühendust!"
       management: "Juhtimine"
-      documents: "Dokumentid"
+      documents: "Dokumendid"
 
     pdf:
       payment_information: "Arvet saab maksta vaid Eesti Interneti Sihtasutuse .ee domeenioksjoni keskkonnas %{link}"
