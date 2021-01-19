@@ -60,6 +60,7 @@ development:
 test:
   <<: *default
   database: auction_center_test
+  password: password
 
 # Database to use in staging environment
 staging:
