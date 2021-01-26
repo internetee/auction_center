@@ -1,3 +1,6 @@
+26.01.2021
+* Switched to GitHub Actions for running autotests [#583](https://github.com/internetee/auction_center/issues/583)
+
 14.01.2021
 * Fixed typos in et footer [#585](https://github.com/internetee/auction_center/pull/585)
 * Bump Nokogiri to 1.11.1 [#586](https://github.com/internetee/auction_center/pull/586)
