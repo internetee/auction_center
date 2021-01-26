@@ -1,6 +1,7 @@
 26.01.2021
 * Updated Ruby to 2.7.2 [#584](https://github.com/internetee/auction_center/issues/584)
-* Switched to GitHub Actions for running autotests [#583](https://github.com/internetee/auction_center/issues/583)
+* Bumped socket.io to 2.4.1 [#589](https://github.com/internetee/auction_center/pull/589)
+* Switched to GitHub Actions to run autotests [#583](https://github.com/internetee/auction_center/issues/583)
 
 14.01.2021
 * Fixed typos in et footer [#585](https://github.com/internetee/auction_center/pull/585)
