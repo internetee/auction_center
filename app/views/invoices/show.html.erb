@@ -101,9 +101,12 @@
                 </table>
             </div>
 
-            <% if @invoice.issued? %>
+            <% if @invoice.payable?  %>
                 <div class="column sixteen wide">
                     <h3><%= t('.pay') %></h3>
+                    <% if @invoice.cancelled? %>
+                        <p><%= t('.redeem') %></p>
+                    <% end %>
                     <% PaymentOrder.supported_methods.each do |method| %>
                         <%= form_with(model: PaymentOrder, local: true,
                                       url: invoice_payment_orders_path(@invoice.uuid),

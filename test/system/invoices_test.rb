@@ -108,10 +108,17 @@ class InvoicesTest < ApplicationSystemTestCase
     assert(page.has_text?('You are being redirected to the payment gateway'))
   end
 
-  def test_a_user_cannot_pay_for_cancelled_invoice
+  def test_a_user_can_pay_for_cancelled_invoice
     @invoice.update!(status: Invoice.statuses[:cancelled])
     visit invoice_path(@invoice.uuid)
-    assert_not(page.has_css?('form#every_pay'))
+    assert(page.has_css?('form#every_pay'))
+    assert(page.has_text?('Paying for cancelled invoice will redeem the violation but will not grant priority right to register that domain'))
+
+    within('form#every_pay') do
+      click_link_or_button('Submit')
+    end
+
+    assert(page.has_text?('You are being redirected to the payment gateway'))
   end
 
   def test_a_user_cannot_pay_for_paid_invoice

@@ -35,6 +35,7 @@ en:
     show:
       change_billing_profile: "Change billing profile"
       pay: "Pay"
+      redeem: Paying for cancelled invoice will redeem the violation but will not grant priority right to register that domain
 
     edit:
       title: "Edit your invoice"
