@@ -10,6 +10,12 @@ class InvoiceTest < ActiveSupport::TestCase
     @orphan_billing_profile = billing_profiles(:orphaned)
     @company_billing_profile = billing_profiles(:company)
     @payable_invoice = invoices(:payable)
+    @cancelled_invoice = @payable_invoice.dup
+    @cancelled_invoice.update(status: :cancelled, uuid: SecureRandom.uuid)
+    @ban = Ban.create!(valid_from: Time.zone.now - 1,
+                       valid_until: Time.zone.now + 60,
+                       user: @user,
+                       invoice: @cancelled_invoice)
     @orphaned_invoice = invoices(:orphaned)
   end
 
@@ -134,6 +140,20 @@ class InvoiceTest < ActiveSupport::TestCase
     assert_equal(time, @payable_invoice.paid_at)
   end
 
+  def test_cancelled_mark_as_paid_at
+    time = Time.parse('2010-07-06 10:30 +0000')
+    @cancelled_invoice.result.update(status: 'payment_not_received')
+    ban = Ban.find_by(invoice_id: @cancelled_invoice.id)
+    assert(ban.valid?)
+
+    @cancelled_invoice.mark_as_paid_at(time)
+    assert(@cancelled_invoice.paid?)
+    assert(@cancelled_invoice.result.payment_not_received?)
+    ban.reload
+    assert(ban.valid_until < Time.zone.now)
+    assert_equal(time, @cancelled_invoice.paid_at)
+  end
+
   def test_mark_as_paid_at_with_payment_order
     time = Time.parse('2010-07-06 10:30 +0000')
     payment_order = payment_orders(:issued)
@@ -144,6 +164,24 @@ class InvoiceTest < ActiveSupport::TestCase
     assert_equal(time.to_date + 14, @payable_invoice.result.registration_due_date)
     assert_equal(time, @payable_invoice.paid_at)
     assert_equal(payment_order, @payable_invoice.paid_with_payment_order)
+  end
+
+  def test_cancelled_mark_as_paid_at_with_payment_order
+    time = Time.parse('2010-07-06 10:30 +0000')
+    payment_order = payment_orders(:issued)
+
+    payment_order.update(invoice_id: @cancelled_invoice.id)
+    @cancelled_invoice.result.update(status: 'payment_not_received')
+    ban = Ban.find_by(invoice_id: @cancelled_invoice.id)
+    assert(ban.valid?)
+    @cancelled_invoice.mark_as_paid_at_with_payment_order(time, payment_order)
+
+    assert(@cancelled_invoice.paid?)
+    assert(@cancelled_invoice.result.payment_not_received?)
+    ban.reload
+    assert(ban.valid_until < Time.zone.now)
+    assert_equal(time, @cancelled_invoice.paid_at)
+    assert_equal(payment_order, @cancelled_invoice.paid_with_payment_order)
   end
 
   def test_mark_as_paid_populates_vat_rate_and_paid_amount

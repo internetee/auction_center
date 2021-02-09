@@ -110,8 +110,10 @@ class Invoice < ApplicationRecord
       self.vat_rate = billing_profile.present? ? billing_profile.vat_rate : vat_rate
       self.paid_amount = total
 
+      result.mark_as_payment_received(time) unless cancelled?
+      ban = Ban.find_by(invoice_id: id)
+      ban.lift if ban.present?
       paid!
-      result.mark_as_payment_received(time)
     end
   end
 
@@ -122,8 +124,10 @@ class Invoice < ApplicationRecord
       self.paid_amount = total
       self.paid_with_payment_order = payment_order
 
+      result.mark_as_payment_received(time) unless cancelled?
+      ban = Ban.find_by(invoice_id: id)
+      ban.lift if ban.present?
       paid!
-      result.mark_as_payment_received(time)
     end
   end
 

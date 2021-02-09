@@ -15,4 +15,8 @@ class Ban < ApplicationRecord
   scope :valid, lambda {
     where('valid_until >= ? AND valid_from <= ?', Time.now.utc, Time.now.utc)
   }
+
+  def lift
+    update(valid_until: valid_from + 1.second )
+  end
 end
