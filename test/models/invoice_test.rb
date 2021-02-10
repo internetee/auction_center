@@ -144,6 +144,8 @@ class InvoiceTest < ActiveSupport::TestCase
     time = Time.parse('2010-07-06 10:30 +0000')
     @cancelled_invoice.result.update(status: 'payment_not_received')
     ban = Ban.find_by(invoice_id: @cancelled_invoice.id)
+    bans = Ban.valid.where(user: @user).order(valid_until: :desc)
+    assert_not bans.empty?
     assert(ban.valid?)
 
     @cancelled_invoice.mark_as_paid_at(time)
@@ -151,6 +153,8 @@ class InvoiceTest < ActiveSupport::TestCase
     assert(@cancelled_invoice.result.payment_not_received?)
     ban.reload
     assert(ban.valid_until < Time.zone.now)
+    bans.reload
+    assert bans.empty?
     assert_equal(time, @cancelled_invoice.paid_at)
   end
 
@@ -174,12 +178,16 @@ class InvoiceTest < ActiveSupport::TestCase
     @cancelled_invoice.result.update(status: 'payment_not_received')
     ban = Ban.find_by(invoice_id: @cancelled_invoice.id)
     assert(ban.valid?)
+    bans = Ban.valid.where(user: @user).order(valid_until: :desc)
+    assert_not bans.empty?
     @cancelled_invoice.mark_as_paid_at_with_payment_order(time, payment_order)
 
     assert(@cancelled_invoice.paid?)
     assert(@cancelled_invoice.result.payment_not_received?)
     ban.reload
     assert(ban.valid_until < Time.zone.now)
+    bans.reload
+    assert bans.empty?
     assert_equal(time, @cancelled_invoice.paid_at)
     assert_equal(payment_order, @cancelled_invoice.paid_with_payment_order)
   end

@@ -87,4 +87,4 @@ et:
       peatatud kuni %{valid_until}.
     violation_message_html: >-
       Oksjoni reeglite <a href="%{violations_count_regulations_link}">rikkumisi</a>:
-      %{violations_count} '%{ban_number_of_strikes}'st
+      %{violations_count}.Tulenevalt Kasutajalepingu punktist 7.3.3. saab Teenuse kasutaja oksjonikeskkonna teenuseid kasutada, kui maksmata arveid on vähem kui %{ban_number_of_strikes}.

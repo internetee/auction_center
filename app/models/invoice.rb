@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/ClassLength
 require 'result_not_found'
 require 'result_not_sold'
 require 'countries'
@@ -106,9 +107,7 @@ class Invoice < ApplicationRecord
   # paid in the user interface.
   def mark_as_paid_at(time)
     ActiveRecord::Base.transaction do
-      self.paid_at = time
-      self.vat_rate = billing_profile.present? ? billing_profile.vat_rate : vat_rate
-      self.paid_amount = total
+      prepare_payment_fields(time)
 
       result.mark_as_payment_received(time) unless cancelled?
       ban = Ban.find_by(invoice_id: id)
@@ -119,9 +118,7 @@ class Invoice < ApplicationRecord
 
   def mark_as_paid_at_with_payment_order(time, payment_order)
     ActiveRecord::Base.transaction do
-      self.paid_at = time
-      self.vat_rate = billing_profile.present? ? billing_profile.vat_rate : vat_rate
-      self.paid_amount = total
+      prepare_payment_fields(time)
       self.paid_with_payment_order = payment_order
 
       result.mark_as_payment_received(time) unless cancelled?
@@ -149,4 +146,13 @@ class Invoice < ApplicationRecord
   def self.with_billing_profile(billing_profile_id:)
     Invoice.where(billing_profile_id: billing_profile_id)
   end
+
+  private
+
+  def prepare_payment_fields(time)
+    self.paid_at = time
+    self.vat_rate = billing_profile.present? ? billing_profile.vat_rate : vat_rate
+    self.paid_amount = total
+  end
 end
+# rubocop:enable Metrics/ClassLength

@@ -116,11 +116,16 @@ class BansTest < ApplicationSystemTestCase
     sign_in_manually
 
     expected_notification = <<~TEXT.squish
-      Number of current violations: 2 of 3
+      Number of current violations: 2
+    TEXT
+
+    expected_clause = <<~TEXT.squish
+      According to clause 7.3.3 of the .ee Auction Environment User Agreement a user can use the service of the environment if there are less than 3 unpaid invoices under their user account.
     TEXT
 
     visit auctions_path
     assert_text expected_notification
+    assert_text expected_clause
   end
 
   def test_banned_user_can_see_the_ban_notification_for_longest_repetitive_ban
@@ -136,7 +141,7 @@ class BansTest < ApplicationSystemTestCase
     TEXT
 
     violations_notification = <<~TEXT.squish
-      Number of current violations: 2 of 3
+      Number of current violations: 2
     TEXT
 
     visit auctions_path
