@@ -54,12 +54,5 @@ module AuctionCenter
     config.action_mailer.default_url_options = {
       host: config.customization.dig(:mailer, :host),
     }
-
-    config.middleware.insert_before 0, Rack::Cors do
-      allow do
-        origins '*'
-        resource '*', :headers => :any, :methods => [:get, :post, :options]
-      end
-    end
   end
 end
