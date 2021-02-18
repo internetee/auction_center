@@ -15,8 +15,7 @@ module Admin
 
     # GET /admin/users
     def index
-      @users = User.all
-                   .order(orderable_array(default_order_params))
+      @users = User.order(orderable_array(default_order_params))
                    .page(params[:page])
     end
 
