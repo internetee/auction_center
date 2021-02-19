@@ -1,3 +1,6 @@
+19.02.2021
+* E-mail template and notification update on failure to pay auction invoices on time [#592](https://github.com/internetee/auction_center/issues/592)
+
 26.01.2021
 * Updated Ruby to 2.7.2 [#584](https://github.com/internetee/auction_center/issues/584)
 * Bumped socket.io to 2.4.1 [#589](https://github.com/internetee/auction_center/pull/589)
