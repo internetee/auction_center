@@ -14,11 +14,15 @@ class Setting < ApplicationRecord
     array: :array_format,
   }.with_indifferent_access.freeze
 
-  def retrieve
-    Rails.cache.fetch(cache_key_with_version, expires_in: 12.hours) do
-      method = VALUE_FORMATS[value_format]
-      send(method)
+  def self.find_in_cache(code:)
+    Rails.cache.fetch("#{code}_setting", expires_in: 12.hours) do
+      find_by(code: code)
     end
+  end
+
+  def retrieve
+    method = VALUE_FORMATS[value_format]
+    send(method)
   end
 
   def valid_value_format

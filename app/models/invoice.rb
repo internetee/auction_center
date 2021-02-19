@@ -60,8 +60,7 @@ class Invoice < ApplicationRecord
   end
 
   def auction_currency
-    Rails.cache.fetch("#{cache_key_with_version}/auction_currency",
-                      expires_in: 12.hours) do
+    Rails.cache.fetch(cache_key_with_version, expires_in: 12.hours) do
       Setting.find_by(code: 'auction_currency').retrieve
     end
   end
