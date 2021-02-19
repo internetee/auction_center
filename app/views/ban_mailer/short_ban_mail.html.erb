@@ -4,11 +4,10 @@
         <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
     </head>
     <body>
-        <p><%= t('.salutation', display_name: @user.display_name) %></p>
+        <p><%= t('.salutation') %></p>
 
         <p><%= t('.introduction', domain_name: @domain_name) %></p>
-        <p><%= t('.details') %></p>
         <p><%= t('.number_of_strikes', number: @past_due_invoices) %></p>
-        <%= t('common_mailer.footer_html') %>
+        <%= t('.footer_html') %>
     </body>
 </html>

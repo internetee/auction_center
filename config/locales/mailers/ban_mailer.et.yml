@@ -1,22 +1,38 @@
 et:
   ban_mailer:
     short_ban_mail:
-      salutation: "Lugupeetud, %{display_name}"
+      salutation: "Lugupeetud .ee oksjonil osaleja"
       subject: "%{domain_name} oksjonil osalemise keeld"
       introduction: |
-        .ee domeeni oksjonilt soetatud domeeni %{domain_name} registreerimise
-        eelisõiguse arve on tähtajaks tasumata. Sa ei saa domeeni %{domain_name} oksjonitel edaspidi osaleda.
-      details: |
-        Pärast kolmandat tasumata arvet ei ole Sul võimalik järgneva
-        aasta jooksul .ee domeenioksjonitel osaleda.
-      number_of_strikes: "See on %{number}. tasumata arve."
+        juhime teie tähelepanu asjaolule, et domeenioksjonilt soetatud domeeni %{domain_name} registreerimise
+        eelisõiguse arve on tähtajaks tasumata. Sel põhjusel ei saa te domeeni %{domain_name} oksjonitel edaspidi osaleda.
+      number_of_strikes: |
+        See on %{number}. tasumata arve. Tulenevalt Kasutajalepingu punktist 7.3.3. saab Teenuse
+        kasutaja oksjonikeskkonna teenuseid kasutada, kui maksmata arveid on vähem kui kolm.
+      footer_html: |
+        <p>Täiendavate küsimuste korral võtke palun ühendust Eesti Interneti Sihtasutusega aadressil
+        info@internet.ee või +372 727 1000.</p>
+
+        <p>Lugupidamisega</br>
+        Eesti Interneti SA</br>
+        <a href="https://internet.ee">https://internet.ee</a></p>
 
     long_ban_mail:
-      salutation: "Lugupeetud, %{display_name}"
+      salutation: "Lugupeetud .ee oksjonil osaleja"
       subject: "Oksjonitel osalemise keeld"
       introduction: |
-        .ee domeenioksjonilt soetatud domeeni %{domain_name} registreerimise eelisõiguse arve on
+        domeenioksjonilt soetatud domeeni %{domain_name} registreerimise eelisõiguse arve on
         tähtajaks tasumata.
-      details: |
-        See on %{number}. tasumata arve .ee oksjonikeskkonnas, Sa ei saa kuni %{valid_until}
-        osaleda .ee domeenioksjonitel.
+      details_html: |
+        See on %{number}. tasumata arve .ee oksjonikeskkonnas. Tulenevalt Kasutajalepingu punktist
+        7.3.3. saab Teenuse kasutaja oksjonikeskkonna teenuseid kasutada, kui maksmata arveid on
+        vähem kui kolm.</p>
+        </p>Te ei saa osaleda .ee domeenioksjonitel kuni %{valid_until} või piirangu aluseks oleva(te)
+        ettemaksuarve(te) tasumiseni.
+      footer_html: |
+        <p>Täiendavate küsimuste korral võtke palun ühendust Eesti Interneti Sihtasutusega aadressil
+        info@internet.ee või +372 727 1000.</p>
+
+        <p>Lugupidamisega</br>
+        Eesti Interneti SA</br>
+        <a href="https://internet.ee">https://internet.ee</a></p>
