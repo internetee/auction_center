@@ -15,8 +15,10 @@ class Setting < ApplicationRecord
   }.with_indifferent_access.freeze
 
   def retrieve
-    method = VALUE_FORMATS[value_format]
-    send(method)
+    Rails.cache.fetch(cache_key_with_version, expires_in: 12.hours) do
+      method = VALUE_FORMATS[value_format]
+      send(method)
+    end
   end
 
   def valid_value_format

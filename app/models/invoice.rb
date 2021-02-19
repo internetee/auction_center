@@ -59,8 +59,15 @@ class Invoice < ApplicationRecord
     errors.add(:billing_profile, I18n.t('invoices.billing_profile_must_belong_to_user'))
   end
 
+  def auction_currency
+    Rails.cache.fetch("#{cache_key_with_version}/auction_currency",
+                      expires_in: 12.hours) do
+      Setting.find_by(code: 'auction_currency').retrieve
+    end
+  end
+
   def price
-    Money.new(cents, Setting.find_by(code: 'auction_currency').retrieve)
+    Money.new(cents, auction_currency)
   end
 
   def total

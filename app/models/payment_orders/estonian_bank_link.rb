@@ -20,11 +20,13 @@ module PaymentOrders
                               VK_REF VK_MSG].freeze
 
     def self.icon
-      AuctionCenter::Application.config
-                                .customization
-                                .dig(:payment_methods,
-                                     config_namespace_name.to_sym,
-                                     :icon)
+      with_cache do
+        AuctionCenter::Application.config
+                                  .customization
+                                  .dig(:payment_methods,
+                                       config_namespace_name.to_sym,
+                                       :icon)
+      end
     end
 
     def seller_account
