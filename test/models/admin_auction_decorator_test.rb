@@ -36,8 +36,11 @@ class AdminAuctionDecoratorTest < ActiveSupport::TestCase
 
   def test_instance_implements_highest_price_method
     auctions = AdminAuctionDecorator.with_highest_offers
+    auction_currency = Setting.find_by(code: 'auction_currency').retrieve
+
     decorated_auction = AdminAuctionDecorator.new(
-      auctions.find_by(auctions: { domain_name: 'with-offers.test' })
+      auctions.find_by(auctions: { domain_name: 'with-offers.test' }),
+      auction_currency
     )
     assert_equal(Money.new(5000, Setting.find_by(code: 'auction_currency').retrieve), decorated_auction.highest_price)
   end

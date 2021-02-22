@@ -1,4 +1,4 @@
-<% if Setting.find_in_cache(code: 'voog_site_fetching_enabled').retrieve && cached_footer.present? %>
+<% if Setting.find_by(code: 'voog_site_fetching_enabled').retrieve && cached_footer.present? %>
     <%= RemoteViewPartial.sanitized(name: "footer", locale: I18n.locale) %>
 <% else %>
     <footer class="site-footer">
