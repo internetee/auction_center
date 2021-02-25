@@ -1,3 +1,6 @@
+25.02.2021
+* Optimisation for overuse of memory [#596](https://github.com/internetee/auction_center/pull/596)
+
 19.02.2021
 * E-mail template and notification update on failure to pay auction invoices on time [#592](https://github.com/internetee/auction_center/issues/592)
 
