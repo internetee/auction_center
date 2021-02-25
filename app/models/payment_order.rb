@@ -43,6 +43,13 @@ class PaymentOrder < ApplicationRecord
     end
   end
 
+  def self.with_cache
+    Rails.cache.fetch("#{new.cache_key}/#{config_namespace_name}_icon",
+                      expires_in: 12.hours) do
+      yield if block_given?
+    end
+  end
+
   def channel
     type.gsub('PaymentOrders::', '')
   end

@@ -1,6 +1,7 @@
 # Query decorator for Auctions. Implements Orderable interface
 class AdminAuctionDecorator
   attr_reader :auction
+  attr_accessor :auction_currency
 
   def self.column_names
     # ApplicationRecord.column_names is a mutable object.
@@ -16,8 +17,9 @@ class AdminAuctionDecorator
   # Any object of this class works properly only with the new query with additional fields.
   # Passing a traditional auction object will produce errors on #highest_price as well as
   # other delegate methods.
-  def initialize(auction_with_additional_fields)
+  def initialize(auction_with_additional_fields, auction_currency)
     @auction = auction_with_additional_fields
+    @auction_currency = auction_currency
   end
 
   def self.with_highest_offers
@@ -25,7 +27,7 @@ class AdminAuctionDecorator
   end
 
   def highest_price
-    Money.new(auction.highest_offer_cents, Setting.find_by(code: 'auction_currency').retrieve)
+    Money.new(auction.highest_offer_cents, @auction_currency)
   end
 
   delegate :number_of_offers, to: :auction

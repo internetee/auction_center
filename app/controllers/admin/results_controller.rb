@@ -4,8 +4,7 @@ module Admin
 
     # GET /admin/results
     def index
-      @results = Result.includes(:auction, :offer, :invoice, :user)
-                       .all
+      @results = Result.includes(:auction, offer: [:billing_profile])
                        .order(orderable_array(default_order_params))
                        .page(params[:page])
 

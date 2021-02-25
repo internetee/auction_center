@@ -26,11 +26,13 @@ gem 'rails-i18n'
 gem 'recaptcha'
 gem 'scenic'
 gem 'simpleidn'
+gem 'skylight'
 gem 'sprockets', '~> 3.7'
 gem 'turbolinks', '~> 5'
 gem 'webpacker', '~> 5.2'
 
 group :development, :test do
+  gem 'bullet'
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'pry'
 end

@@ -18,7 +18,7 @@ module Admin
     # GET /admin/invoices
     def index
       @invoices = Invoice.accessible_by(current_ability)
-                         .includes(:billing_profile, :user)
+                         .includes(:paid_with_payment_order)
                          .order(orderable_array(default_order_params))
                          .page(params[:page])
     end
@@ -103,8 +103,7 @@ module Admin
     private
 
     def set_invoice
-      @invoice = Invoice.includes(:billing_profile, :invoice_items, :user,
-                                  :payment_orders).find(params[:id])
+      @invoice = Invoice.includes(:invoice_items).find(params[:id])
     end
 
     def update_params

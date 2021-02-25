@@ -14,6 +14,16 @@ class Setting < ApplicationRecord
     array: :array_format,
   }.with_indifferent_access.freeze
 
+  def self.default_scope
+    Rails.cache.fetch(['cached_', name.underscore.to_s, 's']) { all.load }
+  end
+
+  after_commit :clear_cache
+
+  def clear_cache
+    Rails.cache.delete(['cached_', self.class.name.underscore.to_s, 's'])
+  end
+
   def retrieve
     method = VALUE_FORMATS[value_format]
     send(method)

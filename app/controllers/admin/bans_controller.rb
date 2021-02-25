@@ -22,7 +22,7 @@ module Admin
 
     # GET /admin/bans
     def index
-      @bans = Ban.includes(:user).all.order(orderable_array(default_order_params))
+      @bans = Ban.includes(:user).order(orderable_array(default_order_params))
                  .page(params[:page])
     end
 

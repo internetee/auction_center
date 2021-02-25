@@ -31,20 +31,21 @@ module Admin
                                          .order(orderable_array(default_order_params))
                                          .page(params[:page])
 
-      @auctions = @collection.map { |auction| AdminAuctionDecorator.new(auction) }
+      auction_currency = Setting.find_by(code: 'auction_currency').retrieve
+      @auctions = @collection.map { |auction| AdminAuctionDecorator.new(auction, auction_currency) }
     end
 
     # GET /admin/auctions/search
     def search
       domain_name = search_params[:domain_name]
       @origin = domain_name || search_params.dig(:order, :origin)
-
+      auction_currency = Setting.find_by(code: 'auction_currency').retrieve
       collection = AdminAuctionDecorator.with_highest_offers
                                         .where('domain_name ILIKE ?', "%#{@origin}%")
                                         .order(orderable_array)
                                         .page(1)
 
-      @auctions = collection.map { |auction| AdminAuctionDecorator.new(auction) }
+      @auctions = collection.map { |auction| AdminAuctionDecorator.new(auction, auction_currency) }
     end
 
     # GET /admin/auctions/1

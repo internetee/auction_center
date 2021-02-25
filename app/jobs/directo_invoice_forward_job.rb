@@ -7,10 +7,10 @@ class DirectoInvoiceForwardJob < ApplicationJob
     @client = init_directo_client
     @currency = Setting.find_by(code: 'auction_currency').retrieve
 
-    invoices = Invoice.where(status: 'paid', in_directo: false).all
+    invoices = Invoice.where(status: 'paid', in_directo: false)
     return unless invoices.any?
 
-    invoices.each do |invoice|
+    invoices.find_each do |invoice|
       @client.invoices.add_with_schema(schema: 'auction',
                                        invoice: invoice.as_directo_json)
     end
