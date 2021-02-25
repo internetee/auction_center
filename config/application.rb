@@ -55,6 +55,6 @@ module AuctionCenter
       host: config.customization.dig(:mailer, :host),
     }
 
-    config.skylight.environments << "staging"
+    config.skylight.environments = ["development", "staging"]
   end
 end
