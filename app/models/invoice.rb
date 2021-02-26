@@ -110,8 +110,7 @@ class Invoice < ApplicationRecord
       prepare_payment_fields(time)
 
       result.mark_as_payment_received(time) unless cancelled?
-      ban = Ban.find_by(invoice_id: id)
-      ban.lift if ban.present?
+      clear_linked_ban
       paid!
     end
   end
@@ -122,8 +121,7 @@ class Invoice < ApplicationRecord
       self.paid_with_payment_order = payment_order
 
       result.mark_as_payment_received(time) unless cancelled?
-      ban = Ban.find_by(invoice_id: id)
-      ban.lift if ban.present?
+      clear_linked_ban
       paid!
     end
   end
@@ -148,6 +146,11 @@ class Invoice < ApplicationRecord
   end
 
   private
+
+  def clear_linked_ban
+    ban = Ban.find_by(invoice_id: id)
+    ban.destroy if ban.present?
+  end
 
   def prepare_payment_fields(time)
     self.paid_at = time

@@ -151,8 +151,9 @@ class InvoiceTest < ActiveSupport::TestCase
     @cancelled_invoice.mark_as_paid_at(time)
     assert(@cancelled_invoice.paid?)
     assert(@cancelled_invoice.result.payment_not_received?)
-    ban.reload
-    assert(ban.valid_until < Time.zone.now)
+    assert_raises ActiveRecord::RecordNotFound do
+      ban.reload
+    end
     bans.reload
     assert bans.empty?
     assert_equal(time, @cancelled_invoice.paid_at)
@@ -184,8 +185,9 @@ class InvoiceTest < ActiveSupport::TestCase
 
     assert(@cancelled_invoice.paid?)
     assert(@cancelled_invoice.result.payment_not_received?)
-    ban.reload
-    assert(ban.valid_until < Time.zone.now)
+    assert_raises ActiveRecord::RecordNotFound do
+      ban.reload
+    end
     bans.reload
     assert bans.empty?
     assert_equal(time, @cancelled_invoice.paid_at)
