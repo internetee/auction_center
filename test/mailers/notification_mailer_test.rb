@@ -9,6 +9,7 @@ class NotificationMailerTest < ActionMailer::TestCase
     travel_to @time
 
     @user = users(:administrator)
+    @local = @user.locale
     @mock_summary = MockSummaryReport.new(Date.yesterday, Date.today)
 
     @participant = users(:participant)
@@ -18,6 +19,8 @@ class NotificationMailerTest < ActionMailer::TestCase
   def teardown
     super
 
+    @user.update(locale: @local)
+    @user.reload
     clear_email_deliveries
     travel_back
   end

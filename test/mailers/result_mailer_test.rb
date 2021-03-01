@@ -9,6 +9,7 @@ class ResultMailerTest < ActionMailer::TestCase
     travel_to @time
 
     @user = users(:participant)
+    @local = @user.locale
     @auction = auctions(:valid_with_offers)
     @result = Result.new(user: @user, auction: @auction, registration_code: 'registration code',
                         uuid: SecureRandom.uuid)
@@ -17,6 +18,8 @@ class ResultMailerTest < ActionMailer::TestCase
   def teardown
     super
 
+    @user.update(locale: @local)
+    @user.reload
     clear_email_deliveries
     travel_back
   end

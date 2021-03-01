@@ -9,6 +9,7 @@ class BanMailerTest < ActionMailer::TestCase
     travel_to @time
 
     @user = users(:participant)
+    @local = @user.locale
     @ban_short = Ban.new(user: @user)
     @ban_long = Ban.new(user: @user, valid_until: Date.today >> 12)
   end
@@ -16,6 +17,8 @@ class BanMailerTest < ActionMailer::TestCase
   def teardown
     super
 
+    @user.update(locale: @local)
+    @user.reload
     clear_email_deliveries
     travel_back
   end
