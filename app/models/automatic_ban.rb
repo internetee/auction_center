@@ -30,14 +30,17 @@ class AutomaticBan
   end
 
   def create_ban
-    @ban = Ban.new(user: user, valid_from: Time.zone.now.to_datetime, invoice: invoice)
+    @ban = Ban.new(user: user,
+                   valid_from: Time.zone.now.to_datetime,
+                   invoice: invoice,
+                   domain_name: domain_name)
   end
 
   def assign_ban_length
     now = Time.zone.now.to_datetime
     setting = Setting.find_by(code: 'ban_number_of_strikes').retrieve
     if unpaid_invoices < setting
-      @ban.update!(domain_name: domain_name, valid_from: now,
+      @ban.update!(valid_from: now,
                    valid_until: now >> SHORT_BAN_PERIOD_IN_MONTHS)
     elsif unpaid_invoices >= setting
       @ban.update!(valid_until: now >> Setting.find_by(code: 'ban_length').retrieve)

@@ -39,7 +39,7 @@ class Ability
     cannot :manage, Offer do |offer|
       Ban.valid
          .where(user_id: user.id)
-         .where('domain_name IS NULL OR domain_name = ?', offer.auction.domain_name)
+         .where(domain_name: offer.auction.domain_name)
          .any?
     end
   end

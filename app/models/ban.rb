@@ -17,6 +17,7 @@ class Ban < ApplicationRecord
   }
 
   def lift
-    update(valid_until: valid_from + 1.second)
+    # update(valid_until: valid_from + 1.second)
+    destroy!
   end
 end

@@ -149,7 +149,7 @@ class Invoice < ApplicationRecord
 
   def clear_linked_ban
     ban = Ban.find_by(invoice_id: id)
-    ban.destroy if ban.present?
+    ban.lift if ban.present?
   end
 
   def prepare_payment_fields(time)
