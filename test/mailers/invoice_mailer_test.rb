@@ -1,7 +1,7 @@
 require 'test_helper'
 require 'support/mock_summary_report'
 
-class WishlistMailerTest < ActionMailer::TestCase
+class InvoiceMailerTest < ActionMailer::TestCase
   def setup
     super
 
@@ -10,7 +10,10 @@ class WishlistMailerTest < ActionMailer::TestCase
 
     @user = users(:participant)
     @auction = auctions(:valid_with_offers)
-    @item = WishlistItem.new(user: @user, domain_name: @auction.domain_name)
+    @billing_profile = billing_profiles(:private_person)
+    @result = Result.new(user: @user, auction: @auction, registration_code: 'registration code',
+                        uuid: SecureRandom.uuid)
+    @invoice = invoices(:payable)
   end
 
   def teardown
@@ -20,28 +23,27 @@ class WishlistMailerTest < ActionMailer::TestCase
     travel_back
   end
 
-  def test_wishlist_mail_notification_english
-    
-    email = WishlistMailer.auction_notification_mail(@item, @auction)
+  def test_reminder_email_english
+    email = InvoiceMailer.reminder_email(@invoice)
 
     assert_emails 1 do
       email.deliver_now
     end
     assert_equal ["noreply@internet.ee"], email.from
     assert_equal ["user@auction.test"], email.to
-    assert_equal "with-offers.test is now on auction", email.subject
+    assert_equal "with-invoice.test invoice due date", email.subject
   end
 
-  def test_wishlist_mail_notification_estonian
+  def test_reminder_email_estonian
     @user.update(locale: 'et')
     @user.reload
-    email = WishlistMailer.auction_notification_mail(@item, @auction)
+    email = InvoiceMailer.reminder_email(@invoice)
 
     assert_emails 1 do
       email.deliver_now
     end
     assert_equal ["noreply@internet.ee"], email.from
     assert_equal ["user@auction.test"], email.to
-    assert_equal "with-offers.test on nüüd oksjonil", email.subject
+    assert_equal "with-invoice.test arve tasumise tähtaeg", email.subject
   end
 end

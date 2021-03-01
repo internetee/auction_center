@@ -9,6 +9,8 @@ class BanMailerTest < ActionMailer::TestCase
     travel_to @time
 
     @user = users(:participant)
+    @ban_short = Ban.new(user: @user)
+    @ban_long = Ban.new(user: @user, valid_until: Date.today >> 12)
   end
 
   def teardown
@@ -19,8 +21,7 @@ class BanMailerTest < ActionMailer::TestCase
   end
 
   def test_short_ban_mail_english
-    ban = Ban.new(user: @user)
-    email = BanMailer.short_ban_mail(ban, 2, 'banned.test')
+    email = BanMailer.short_ban_mail(@ban_short, 2, 'banned.test')
 
     assert_emails 1 do
       email.deliver_now
@@ -33,8 +34,7 @@ class BanMailerTest < ActionMailer::TestCase
   def test_short_ban_mail_estonian
     @user.update(locale: 'et')
     @user.reload
-    ban = Ban.new(user: @user)
-    email = BanMailer.short_ban_mail(ban, 2, 'banned.test')
+    email = BanMailer.short_ban_mail(@ban_short, 2, 'banned.test')
     
     assert_emails 1 do
       email.deliver_now
@@ -45,8 +45,7 @@ class BanMailerTest < ActionMailer::TestCase
   end
 
   def test_long_ban_mail_english
-    ban = Ban.new(user: @user, valid_until: Date.today >> 12)
-    email = BanMailer.long_ban_mail(ban, 2, 'banned.test')
+    email = BanMailer.long_ban_mail(@ban_long, 2, 'banned.test')
 
     assert_emails 1 do
       email.deliver_now
@@ -59,8 +58,7 @@ class BanMailerTest < ActionMailer::TestCase
   def test_long_ban_mail_estonian
     @user.update(locale: 'et')
     @user.reload
-    ban = Ban.new(user: @user, valid_until: Date.today >> 12)
-    email = BanMailer.long_ban_mail(ban, 2, 'banned.test')
+    email = BanMailer.long_ban_mail(@ban_long, 2, 'banned.test')
 
     assert_emails 1 do
       email.deliver_now
