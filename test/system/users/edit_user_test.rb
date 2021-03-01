@@ -163,4 +163,35 @@ class EditUserTest < ApplicationSystemTestCase
     visit user_path(@user.uuid)
     assert(page.has_link?('Review terms and condition', href: Setting.find_by(code: 'terms_and_conditions_link').retrieve))
   end
+
+
+  def test_user_was_subscripted_and_unsubscripted_notifications
+    visit edit_user_path(@user.uuid)
+
+    check_checkbox('user[daily_summary]')
+    fill_in('user[current_password]', with: 'password123')
+    click_link_or_button('Update')
+
+    assert(page.has_css?('div.notice', text: 'Updated successfully.'))
+    assert_text('Yes')
+
+    visit edit_user_path(@user.uuid)
+    uncheck_checkbox('user[daily_summary]')
+    fill_in('user[current_password]', with: 'password123')
+    click_link_or_button('Update')
+
+    assert(page.has_css?('div.notice', text: 'Updated successfully.'))
+    assert_text('No')
+  end
+
+  def test_is_subscripe_checkbox_is_checked_or_not
+    visit edit_user_path(@user.uuid)
+    checkbox = find(:xpath, '//*[@id="user_daily_summary"]', :visible => false, match: :first)
+
+    assert_not checkbox.checked?
+
+    checkbox.set(true)
+
+    assert checkbox.checked?
+  end
 end
