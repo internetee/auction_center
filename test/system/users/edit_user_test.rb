@@ -166,6 +166,9 @@ class EditUserTest < ApplicationSystemTestCase
 
 
   def test_user_was_subscripted_and_unsubscripted_notifications
+    local = @user.locale
+    @user.update(locale: :en)
+    @user.reload
     visit edit_user_path(@user.uuid)
 
     check_checkbox('user[daily_summary]')
@@ -182,6 +185,8 @@ class EditUserTest < ApplicationSystemTestCase
 
     assert(page.has_css?('div.notice', text: 'Updated successfully.'))
     assert_text('No')
+    @user.update(locale: :et)
+    @user.reload
   end
 
   def test_is_subscripe_checkbox_is_checked_or_not

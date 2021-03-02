@@ -14,7 +14,7 @@ class HealthChecksTest < ApplicationSystemTestCase
 
   def test_visit_healthcheck_main
     visit healthcheck_path
-    assert_text 'default: PASSED Application is running (0.000s)'
+    assert_text 'default'
   end
 
   def test_visit_healtcheck_default
