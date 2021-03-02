@@ -45,6 +45,7 @@ class Offer < ApplicationRecord
   def total
     return price * (DEFAULT_PRICE_VALUE + billing_profile.vat_rate) if billing_profile.present?
 
-    price * (DEFAULT_PRICE_VALUE + Invoice.find_by(result: result).vat_rate)
+    default_vat = Countries.vat_rate_from_alpha2_code(user&.country_code || 'EE')
+    price * (DEFAULT_PRICE_VALUE + (Invoice.find_by(result: result)&.vat_rate || default_vat))
   end
 end
