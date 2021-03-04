@@ -1,5 +1,6 @@
 04.03.2021
 * Fixed offer total price with no billing profile [#601](https://github.com/internetee/auction_center/issues/601)
+* Improved test coverage [#598](https://github.com/internetee/auction_center/issues/598)
 
 25.02.2021
 * Optimisation for overuse of memory [#596](https://github.com/internetee/auction_center/pull/596)
