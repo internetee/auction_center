@@ -124,11 +124,33 @@ class TaraUsersTest < ApplicationSystemTestCase
 
   def test_banned_user_can_log_in_and_pay_for_cancelled_invoice
     travel_to Time.parse('2010-07-05 10:31 +0000').in_time_zone
-    Ban.create!(user: @user,
-                valid_from: Time.zone.today - 1, valid_until: Time.zone.today + 1.year)
-    create_cancelled_invoices_with_bans
+
+    invoice, domain_name = create_bannable_offence(@user)
+    AutomaticBan.new(invoice: invoice, user: @user, domain_name: domain_name).create
     test_existing_user_gets_signed_in
-    invoice = @user.invoices.where(status: Invoice.statuses[:cancelled]).first
+
+    visit invoice_path(invoice.uuid)
+    assert(page.has_css?('form#every_pay'))
+    assert(page.has_text?('Paying for cancelled invoice will redeem the violation but will not grant priority right to register that domain'))
+
+    within('form#every_pay') do
+      click_link_or_button('Submit')
+    end
+
+    assert(page.has_text?('You are being redirected to the payment gateway'))
+  end
+
+  def test_complete_ban_allows_tara_to_log_in
+    travel_to Time.parse('2010-07-05 10:31 +0000').in_time_zone
+    setting = Setting.find_or_create_by(code: 'ban_number_of_strikes')
+    setting.update!(value: '1')
+
+    invoice, domain_name = create_bannable_offence(@user)
+    ban = AutomaticBan.new(invoice: invoice, user: @user, domain_name: domain_name).create
+    assert(ban.persisted?)
+    assert(@user.completely_banned?)
+
+    test_existing_user_gets_signed_in
 
     visit invoice_path(invoice.uuid)
     assert(page.has_css?('form#every_pay'))
@@ -167,17 +189,5 @@ class TaraUsersTest < ApplicationSystemTestCase
     click_link_or_button('Submit')
 
     assert_text 'Confirmation link was sent to new email address. Please confirm the address for the change to take an effect!'
-  end
-
-  def create_cancelled_invoices_with_bans
-    (1..2).each do
-      invoice = invoices(:payable)
-      invoice.status = Invoice.statuses[:cancelled]
-      invoice.user = @user
-      invoice.billing_profile = @user.billing_profiles.first
-      invoice.save!
-      auto_ban = AutomaticBan.new(invoice: invoice, user: @user, domain_name: 'with-invoice.test')
-      auto_ban.create
-    end
   end
 end

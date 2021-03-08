@@ -1,6 +1,6 @@
 en:
   ban_mailer:
-    short_ban_mail:
+    ban_mail:
       salutation: "Dear .ee auction participant,"
       subject: "Participation in %{domain_name} auction prohibited"
       introduction: |

@@ -44,10 +44,6 @@ class AutomaticBan
   end
 
   def send_email
-    if ban.domain_name
-      BanMailer.short_ban_mail(@ban, unpaid_invoices, @domain_name).deliver_later
-    else
-      BanMailer.long_ban_mail(@ban, unpaid_invoices, @domain_name).deliver_later
-    end
+    BanMailer.ban_mail(@ban, unpaid_invoices, @domain_name).deliver_later
   end
 end

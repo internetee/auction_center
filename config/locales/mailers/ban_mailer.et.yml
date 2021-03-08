@@ -1,6 +1,6 @@
 et:
   ban_mailer:
-    short_ban_mail:
+    ban_mail:
       salutation: "Lugupeetud .ee oksjonil osaleja"
       subject: "%{domain_name} oksjonil osalemise keeld"
       introduction: |
