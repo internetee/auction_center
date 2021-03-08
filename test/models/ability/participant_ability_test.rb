@@ -61,15 +61,15 @@ class ParticipantAbilityTest < ActiveSupport::TestCase
                                          Offer.new(user_id: @participant.id, auction_id: @auction.id)))
   end
 
-  def test_participant_cannot_manage_offers_if_they_are_banned_in_general
-    Ban.create!(user: @participant, valid_until: Date.tomorrow)
-
-    # Needs override, as ability is computed only on ability creation
-    @participant_ability = Ability.new(@participant)
-
-    assert_not(@participant_ability.can?(:manage,
-                                         Offer.new(user_id: @participant.id, auction_id: @auction.id)))
-  end
+  # def test_participant_cannot_manage_offers_if_they_are_banned_in_general
+  #   Ban.create!(user: @participant, valid_until: Date.tomorrow)
+  #
+  #   # Needs override, as ability is computed only on ability creation
+  #   @participant_ability = Ability.new(@participant)
+  #
+  #   assert_not(@participant_ability.can?(:manage,
+  #                                        Offer.new(user_id: @participant.id, auction_id: @auction.id)))
+  # end
 
   def test_participant_can_read_their_own_results
     assert(@participant_ability.can?(:read, Result.new(user_id: @participant.id)))

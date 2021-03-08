@@ -5,6 +5,7 @@ class AutomaticBan
   # that uses the same time should abusers from participating in the most
   # immediate rounds of auctions for a domain name.
   SHORT_BAN_PERIOD_IN_MONTHS = 3
+  BAN_PERIOD_IN_MONTHS = Setting.find_by(code: 'ban_length').retrieve
 
   attr_reader :invoice
   attr_reader :user
@@ -38,13 +39,8 @@ class AutomaticBan
 
   def assign_ban_length
     now = Time.zone.now.to_datetime
-    setting = Setting.find_by(code: 'ban_number_of_strikes').retrieve
-    if unpaid_invoices < setting
-      @ban.update!(valid_from: now,
-                   valid_until: now >> SHORT_BAN_PERIOD_IN_MONTHS)
-    elsif unpaid_invoices >= setting
-      @ban.update!(valid_until: now >> Setting.find_by(code: 'ban_length').retrieve)
-    end
+    @ban.update!(valid_from: now,
+                 valid_until: now >> BAN_PERIOD_IN_MONTHS)
   end
 
   def send_email

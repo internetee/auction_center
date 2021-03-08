@@ -126,6 +126,10 @@ class User < ApplicationRecord
     Ban.where(user_id: id).valid.any?
   end
 
+  def completely_banned?
+    Ban.where(user_id: id).valid.count >= Setting.find_by(code: 'ban_number_of_strikes').retrieve
+  end
+
   def longest_ban
     Ban.valid.where(user_id: id).order(valid_until: :desc).first
   end
