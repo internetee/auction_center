@@ -42,6 +42,7 @@ class Ability
          .where(domain_name: offer.auction.domain_name)
          .any?
     end
+    cannot :manage, Offer if user.completely_banned?
   end
 
   def phone_not_unique_restrictions

@@ -163,6 +163,24 @@ class TaraUsersTest < ApplicationSystemTestCase
     assert(page.has_text?('You are being redirected to the payment gateway'))
   end
 
+  def test_complete_ban_doesnt_allow_to_manage_offers
+    travel_to Time.parse('2010-07-05 10:31 +0000').in_time_zone
+    setting = Setting.find_or_create_by(code: 'ban_number_of_strikes')
+    setting.update!(value: '1')
+
+    invoice, domain_name = create_bannable_offence(@user)
+    ban = AutomaticBan.new(invoice: invoice, user: @user, domain_name: domain_name).create
+    assert(ban.persisted?)
+    assert(@user.completely_banned?)
+
+    test_existing_user_gets_signed_in
+
+    auction = auctions(:valid_with_offers)
+    user_ability = Ability.new(@user)
+
+    assert_not(user_ability.can?(:manage, Offer.new(user_id: @user.id, auction_id: auction.id)))
+  end
+
   def test_tampering_raises_an_error
     OmniAuth.config.mock_auth[:tara] = OmniAuth::AuthHash.new(@new_user_hash)
 
