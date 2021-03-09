@@ -20,6 +20,12 @@ class ActiveSupport::TestCase
     ActionMailer::Base.deliveries.clear
   end
 
+  def create_ban_with_offence(user)
+    invoice, domain_name = create_bannable_offence(user)
+    ban = AutomaticBan.new(invoice: invoice, user: @user, domain_name: domain_name).create
+    [invoice, domain_name, ban]
+  end
+
   def create_bannable_offence(user)
     result = create_result_for_ended_auction_with_offers(user)
     invoice = create_overdue_invoice(result)

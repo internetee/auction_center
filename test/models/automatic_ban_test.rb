@@ -30,9 +30,18 @@ class AutomaticBanTest < ActiveSupport::TestCase
     end
   end
 
-  def test_bans_are_based_on_number_of_cancelled_invoices
+  def test_automatic_ban_creates_one_ban_per_invoice
     invoice, domain_name = create_bannable_offence(@user)
-    ban = AutomaticBan.new(invoice: invoice, user: @user, domain_name: domain_name).create
+    AutomaticBan.new(invoice: invoice, user: @user, domain_name: domain_name).create
+    ban = AutomaticBan.new(invoice: Invoice.new, user: @user, domain_name: domain_name)
+
+    assert_raises(Errors::NoCancelledInvoices) do
+      ban.create
+    end
+  end
+
+  def test_bans_are_based_on_number_of_cancelled_invoices
+    invoice, domain_name, ban = create_ban_with_offence(@user)
 
     assert(ban.persisted?)
     assert_equal(invoice, ban.invoice)
@@ -41,9 +50,8 @@ class AutomaticBanTest < ActiveSupport::TestCase
   end
 
   def test_ban_for_second_invoice_is_also_long
-    create_bannable_offence(@user)
-    invoice, domain_name = create_bannable_offence(@user)
-    ban = AutomaticBan.new(invoice: invoice, user: @user, domain_name: domain_name).create
+    create_ban_with_offence(@user)
+    invoice, domain_name, ban = create_ban_with_offence(@user)
 
     assert(ban.persisted?)
     assert_equal(invoice, ban.invoice)
@@ -52,11 +60,10 @@ class AutomaticBanTest < ActiveSupport::TestCase
   end
 
   def test_third_ban_is_long_and_have_domain_name
-    create_bannable_offence(@user)
-    create_bannable_offence(@user)
+    create_ban_with_offence(@user)
+    create_ban_with_offence(@user)
 
-    invoice, domain_name = create_bannable_offence(@user)
-    ban = AutomaticBan.new(invoice: invoice, user: @user, domain_name: domain_name).create
+    invoice, domain_name, ban = create_ban_with_offence(@user)
 
     assert(ban.persisted?)
     assert_equal(invoice, ban.invoice)

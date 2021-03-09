@@ -11,7 +11,8 @@ class AutomaticBan
   attr_reader :user
   attr_reader :domain_name
   attr_reader :ban
-  attr_reader :unpaid_invoices
+  attr_reader :unpaid_invoices_ids
+  attr_reader :existing_bans_ids
 
   def initialize(invoice:, user:, domain_name:)
     @invoice = invoice
@@ -20,9 +21,13 @@ class AutomaticBan
   end
 
   def create
-    @unpaid_invoices = Invoice.where(user_id: user, status: Invoice.statuses[:cancelled]).count
+    @unpaid_invoices_ids = Invoice.where(user_id: user, status: Invoice.statuses[:cancelled])
+                                  .pluck(:id)
+    @existing_bans_ids = Ban.where(invoice_id: @unpaid_invoices_ids).pluck(:id)
 
-    raise Errors::NoCancelledInvoices.new(user.id, domain_name) if unpaid_invoices.zero?
+    if @unpaid_invoices_ids.count == @existing_bans_ids.count
+      raise Errors::NoCancelledInvoices.new(user.id, domain_name)
+    end
 
     create_ban
     assign_ban_length
@@ -44,6 +49,6 @@ class AutomaticBan
   end
 
   def send_email
-    BanMailer.ban_mail(@ban, unpaid_invoices, @domain_name).deliver_later
+    BanMailer.ban_mail(@ban, unpaid_invoices_ids.count, @domain_name).deliver_later
   end
 end
