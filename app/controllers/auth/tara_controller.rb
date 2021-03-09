@@ -5,6 +5,7 @@ module Auth
   class TaraController < ApplicationController
     include BansHelper
     after_action :set_ban_in_session, only: [:callback]
+    skip_before_action :verify_authenticity_token, only: :callback
 
     rescue_from Errors::TamperingDetected do |e|
       redirect_to root_url, alert: t('auth.tara.tampering')
@@ -13,13 +14,15 @@ module Auth
 
     def callback
       session[:omniauth_hash] = user_hash
-
       @user = User.from_omniauth(user_hash)
-
       return unless @user.persisted?
 
-      sign_in(User, @user)
-      redirect_to user_path(@user.uuid), notice: t('devise.sessions.signed_in')
+      flash[:notice] = t('devise.sessions.signed_in')
+      sign_in_and_redirect @user, event: :authentication
+    end
+
+    def after_sign_in_path_for(resource)
+      user_path(resource.uuid) if resource.is_a?(User)
     end
 
     def create

@@ -129,10 +129,13 @@ class BansTest < ApplicationSystemTestCase
   end
 
   def test_banned_user_can_see_the_ban_notification_for_longest_repetitive_ban
-    Ban.create!(user: @participant,
-                valid_from: Time.zone.today - 1, valid_until: Time.zone.today + 5)
-    Ban.create!(user: @participant,
-                valid_from: Time.zone.today - 1, valid_until: Time.zone.today + 2)
+    create_ban_with_offence(@participant)
+    create_ban_with_offence(@participant)
+
+    # Ban.create!(user: @participant,
+    #             valid_from: Time.zone.today - 1, valid_until: Time.zone.today + 5)
+    # Ban.create!(user: @participant,
+    #             valid_from: Time.zone.today - 1, valid_until: Time.zone.today + 2)
     sign_in_manually
 
     expected_notification = <<~TEXT.squish
