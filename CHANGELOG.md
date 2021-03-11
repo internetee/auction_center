@@ -1,5 +1,6 @@
 11.03.2021
 * Fix for Tara cookie overflow error and airbrake update to 11.0.1 [#604](https://github.com/internetee/auction_center/pull/604)
+* Bump elliptic to 5.6.4 [#602](https://github.com/internetee/auction_center/pull/602)
 
 04.03.2021
 * Fixed offer total price with no billing profile [#601](https://github.com/internetee/auction_center/issues/601)
