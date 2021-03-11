@@ -35,13 +35,14 @@ class Ability
   def restrictions_from_bans
     can :read, User, id: user.id
 
-    can :manage, Offer, user_id: user.id
+    can :manage, Offer, user_id: user.id unless user.completely_banned?
     cannot :manage, Offer do |offer|
       Ban.valid
          .where(user_id: user.id)
-         .where('domain_name IS NULL OR domain_name = ?', offer.auction.domain_name)
+         .where(domain_name: offer.auction.domain_name)
          .any?
     end
+    cannot :manage, Offer if user.completely_banned?
   end
 
   def phone_not_unique_restrictions

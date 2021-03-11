@@ -62,7 +62,9 @@ class ParticipantAbilityTest < ActiveSupport::TestCase
   end
 
   def test_participant_cannot_manage_offers_if_they_are_banned_in_general
-    Ban.create!(user: @participant, valid_until: Date.tomorrow)
+    setting = Setting.find_by(code: 'ban_number_of_strikes')
+    setting.update(value: '1')
+    Ban.create!(user: @participant, valid_until: Date.tomorrow, domain_name: 'test.test')
 
     # Needs override, as ability is computed only on ability creation
     @participant_ability = Ability.new(@participant)

@@ -105,6 +105,8 @@ class TaraUsersTest < ApplicationSystemTestCase
   end
 
   def test_banned_user_can_see_the_ban_notification_for_many_domains
+    setting = settings(:ban_number_of_strikes)
+    setting.update!(value: '1')
     travel_to Time.parse('2010-07-05 10:31 +0000').in_time_zone
     Ban.create!(user: @user,
                 valid_from: Time.zone.today - 1, valid_until: Time.zone.today + 2)
