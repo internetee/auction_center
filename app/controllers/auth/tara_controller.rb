@@ -12,7 +12,7 @@ module Auth
     end
 
     def callback
-      session[:omniauth_hash] = user_hash
+      session[:omniauth_hash] = user_hash.delete_if { |key, _| key == 'credentials' }
 
       @user = User.from_omniauth(user_hash)
 
