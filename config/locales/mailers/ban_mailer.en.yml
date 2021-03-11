@@ -1,6 +1,6 @@
 en:
   ban_mailer:
-    short_ban_mail:
+    ban_mail:
       salutation: "Dear .ee auction participant,"
       subject: "Participation in %{domain_name} auction prohibited"
       introduction: |
@@ -17,24 +17,3 @@ en:
         <p>Respectfully,</br>
         Estonian Internet Foundation</br>
         <a href="https://internet.ee">https://internet.ee</a></p>
-
-    long_ban_mail:
-      salutation: "Dear .ee auction participant"
-      subject: "Participation in auctions prohibited"
-      introduction: |
-        The invoice for the preferential right to register %{domain_name} domain purchased from the .ee
-        auction is overdue.
-      details_html: |
-        This the %{number} unpaid invoice in the .ee auction portal. According to clause 7.3.3 of the .ee
-        Auction Environment User Agreement a user can use the service of the environment if there are
-        less than 3 unpaid invoices under their user account.</p>
-        </p>It is not possible for you to participate in .ee domain auctions until %{valid_until} or
-        until paying the prepayment invoice(s) on which the restriction is based.
-      footer_html: |
-        <p>If you have any further questions, please contact the Estonian Internet Foundation at
-        info@internet.ee or +372 727 1000.</p>
-
-        <p>Respectfully,</br>
-        Estonian Internet Foundation</br>
-        <a href="https://internet.ee">https://internet.ee</a></p>
-
