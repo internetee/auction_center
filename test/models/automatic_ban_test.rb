@@ -18,10 +18,6 @@ class AutomaticBanTest < ActiveSupport::TestCase
     travel_back
   end
 
-  def test_constant
-    assert_equal(3, AutomaticBan::SHORT_BAN_PERIOD_IN_MONTHS)
-  end
-
   def test_automatic_ban_on_user_without_overdue_invoices_fails
     ban = AutomaticBan.new(invoice: Invoice.new, user: @user, domain_name: 'some-domain.test')
 
@@ -30,17 +26,27 @@ class AutomaticBanTest < ActiveSupport::TestCase
     end
   end
 
-  def test_bans_are_based_on_number_of_cancelled_invoices
+  def test_bans_are_based_on_number_of_cancelled_invoices_without_bans
     invoice, domain_name = create_bannable_offence(@user)
     ban = AutomaticBan.new(invoice: invoice, user: @user, domain_name: domain_name).create
 
     assert(ban.persisted?)
     assert_equal(invoice, ban.invoice)
     assert_equal(domain_name, ban.domain_name)
-    assert_equal(@time >> 3, ban.valid_until)
+    assert_equal(@time >> Setting.find_by(code: 'ban_length').retrieve, ban.valid_until)
   end
 
-  def test_ban_for_second_invoice_is_also_short
+  def test_ban_without_bannable_invoice_fails
+    invoice, domain_name = create_bannable_offence(@user)
+    AutomaticBan.new(invoice: invoice, user: @user, domain_name: domain_name).create
+    ban = AutomaticBan.new(invoice: Invoice.new, user: @user, domain_name: 'some-domain.test')
+
+    assert_raises(Errors::NoCancelledInvoices) do
+      ban.create
+    end
+  end
+
+  def test_ban_for_second_invoice_is_also_long
     create_bannable_offence(@user)
     invoice, domain_name = create_bannable_offence(@user)
     ban = AutomaticBan.new(invoice: invoice, user: @user, domain_name: domain_name).create
@@ -48,7 +54,7 @@ class AutomaticBanTest < ActiveSupport::TestCase
     assert(ban.persisted?)
     assert_equal(invoice, ban.invoice)
     assert_equal(domain_name, ban.domain_name)
-    assert_equal(@time >> 3, ban.valid_until)
+    assert_equal(@time >> Setting.find_by(code: 'ban_length').retrieve, ban.valid_until)
   end
 
   def test_third_ban_is_long
@@ -60,8 +66,8 @@ class AutomaticBanTest < ActiveSupport::TestCase
 
     assert(ban.persisted?)
     assert_equal(invoice, ban.invoice)
-    assert_nil(ban.domain_name)
-    assert_equal(@time >> 100, ban.valid_until)
+    assert_equal(domain_name, ban.domain_name)
+    assert_equal(@time >> Setting.find_by(code: 'ban_length').retrieve, ban.valid_until)
   end
 
   def test_number_of_ban_offences_before_long_ban_is_configurable_in_settings
@@ -72,7 +78,6 @@ class AutomaticBanTest < ActiveSupport::TestCase
     ban = AutomaticBan.new(invoice: invoice, user: @user, domain_name: domain_name).create
 
     assert(ban.persisted?)
-    assert_nil(ban.domain_name)
     assert_equal(@time >> 100, ban.valid_until)
   end
 
@@ -101,7 +106,7 @@ class AutomaticBanTest < ActiveSupport::TestCase
     assert_not(ActionMailer::Base.deliveries.empty?)
     last_email = ActionMailer::Base.deliveries.last
 
-    assert_equal('Participation in auctions prohibited', last_email.subject)
+    assert_equal("Participation in #{domain_name} auction prohibited", last_email.subject)
     assert_equal(['user@auction.test'], last_email.to)
   end
 

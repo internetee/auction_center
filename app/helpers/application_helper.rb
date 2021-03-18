@@ -26,6 +26,7 @@ module ApplicationHelper
 
     domains, valid_until = session['auction.bans']
     message = ban_error_message(domains, valid_until)
+    return unless message
 
     content_tag(:div, class: 'ui message ban') do
       result = content_tag(:div, message, class: 'header')
@@ -39,8 +40,11 @@ module ApplicationHelper
   private
 
   def ban_error_message(domains, valid_until)
-    if valid_until
-      t('auctions.banned_completely', valid_until: valid_until.to_date)
+    if current_user.completely_banned?
+      t('auctions.banned_completely', valid_until: valid_until.to_date,
+                                      ban_number_of_strikes: Setting.find_by(
+                                        code: 'ban_number_of_strikes'
+                                      ).retrieve)
     else
       active_domains = check_active_auctions_for(domains)
       if active_domains.count.positive?

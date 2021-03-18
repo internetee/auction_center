@@ -35,6 +35,7 @@ et:
     show:
       change_billing_profile: "Muuda arve aadressi"
       pay: "Maksa"
+      redeem: Tühistatud arve tasumine eemaldab vastava arvega seotud rikkumise, kuid ei anna vastava domeeni registreerimiseks eelisõigust.
 
     edit:
       title: "Muuda arvet"

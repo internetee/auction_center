@@ -100,6 +100,12 @@ class User < ApplicationRecord
     !signed_in_with_identity_document?
   end
 
+  def completely_banned?
+    num_of_strikes = Setting.find_by(code: 'ban_number_of_strikes').retrieve
+    bans_count = bans.valid.count
+    bans_count >= num_of_strikes
+  end
+
   def phone_number_confirmed?
     mobile_phone_confirmed_at.present?
   end
@@ -127,7 +133,8 @@ class User < ApplicationRecord
   end
 
   def longest_ban
-    Ban.valid.where(user_id: id).order(valid_until: :desc).first
+    strikes = Setting.find_by(code: 'ban_number_of_strikes').retrieve
+    Ban.valid.where(user_id: id).order(valid_until: :desc).limit(strikes).last
   end
 
   # Make sure that notifications are send asynchronously

@@ -108,10 +108,10 @@ class InvoicesTest < ApplicationSystemTestCase
     assert(page.has_text?('You are being redirected to the payment gateway'))
   end
 
-  def test_a_user_cannot_pay_for_cancelled_invoice
+  def test_a_user_can_pay_for_cancelled_invoice
     @invoice.update!(status: Invoice.statuses[:cancelled])
     visit invoice_path(@invoice.uuid)
-    assert_not(page.has_css?('form#every_pay'))
+    assert(page.has_css?('form#every_pay'))
   end
 
   def test_a_user_cannot_pay_for_paid_invoice
