@@ -137,7 +137,7 @@ class BansTest < ApplicationSystemTestCase
 
     expected_notification = <<~TEXT.squish
       You are banned from participating in .ee domain auctions due to multiple overdue
-      invoices until 2010-07-10.
+      invoices until 2010-07-07.
     TEXT
 
     violations_notification = <<~TEXT.squish

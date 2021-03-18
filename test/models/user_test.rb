@@ -94,11 +94,12 @@ class UserTest < ActiveSupport::TestCase
   end
 
   def test_can_be_banned
-    Ban.create(user_id: @administrator.id, valid_until: Date.tomorrow)
-    longer_ban = Ban.create(user_id: @administrator.id, valid_until: Date.today + 6)
+    first_ban = Ban.create(user_id: @administrator.id, valid_until: Date.tomorrow)
+    Ban.create(user_id: @administrator.id, valid_until: Date.today + 3.days)
+    Ban.create(user_id: @administrator.id, valid_until: Date.today + 6.days)
 
     assert(@administrator.banned?)
-    assert_equal(longer_ban, @administrator.longest_ban)
+    assert_equal(first_ban, @administrator.longest_ban)
 
     user = User.new
     assert_not(user.banned?)
