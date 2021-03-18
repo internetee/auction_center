@@ -1,3 +1,6 @@
+18.03.2021
+* Added option to redeem invoice due date violations by paying for the invoice after due and releasing the ban [#590](https://github.com/internetee/auction_center/issues/590)
+
 11.03.2021
 * Fix for Tara cookie overflow error and airbrake update to 11.0.1 [#604](https://github.com/internetee/auction_center/pull/604)
 * Bump elliptic to 5.6.4 [#602](https://github.com/internetee/auction_center/pull/602)
