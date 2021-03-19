@@ -5,6 +5,11 @@ module Concerns
     module Payable
       extend ActiveSupport::Concern
 
+      included do
+        scope :with_ban, -> { where(id: Ban.valid.pluck(:invoice_id)) }
+        scope :without_ban, -> { where.not(id: Ban.valid.pluck(:invoice_id)) }
+      end
+
       def payable?
         issued? || cancelled_and_have_valid_ban?
       end

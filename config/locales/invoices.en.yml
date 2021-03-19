@@ -27,7 +27,8 @@ en:
 
     outstanding: "Outstanding invoices"
     paid: "Paid invoices"
-    cancelled: "Cancelled invoices"
+    cancelled: "Overdue invoices (banned auctions)"
+    cancelled_expired: "Cancelled invoices"
     mark_as_paid: "Mark as paid"
     marked_as_paid: "Invoice marked as paid."
     already_paid: "Invoice is already paid."

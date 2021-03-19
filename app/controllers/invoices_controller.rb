@@ -26,7 +26,8 @@ class InvoicesController < ApplicationController
   def index
     @issued_invoices = invoices_list_by_status(Invoice.statuses[:issued])
     @paid_invoices = invoices_list_by_status(Invoice.statuses[:paid])
-    @cancelled_invoices = invoices_list_by_status(Invoice.statuses[:cancelled])
+    @cancelled_payable_invoices = invoices_list_by_status(Invoice.statuses[:cancelled]).with_ban
+    @cancelled_expired_invoices = invoices_list_by_status(Invoice.statuses[:cancelled]).without_ban
   end
 
   # GET /invoices/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/download
