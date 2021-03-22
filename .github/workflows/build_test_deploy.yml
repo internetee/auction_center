@@ -39,3 +39,24 @@ jobs:
         run: |
           docker build -t $(cat TAG) .
           docker images
+
+      - name: Test
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+        run: |
+          docker network create --driver bridge test-net
+          docker run -d -e POSTGRES_HOST_AUTH_METHOD=trust -e POSTGERS_DB=postgres -p 5433:5432 --name db --network=test-net postgres:13.2
+          sleep 5
+          docker run -d \
+          -e RAILS_ENV=test \
+          -e APP_DBHOST=db \
+          -e GIT_COMMIT_SHA="$(cat GIT_COMMIT_SHA)" \
+          -e GIT_BRANCH=$(cat GIT_BRANCH) \
+          -e CC_TEST_REPORTER_ID \
+          --name auction --network=test-net $(cat TAG) tail -f /dev/null
+          yarn install --check-files
+          bundle exec rake db:setup
+          bundle exec rake data:migrate
+          bundle exec rails assets:precompile
+          bundle exec rails test test/*
+          yarn test
