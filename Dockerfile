@@ -1,5 +1,7 @@
 FROM internetee/ruby:2.7
 
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install wkhtmlpdf -y > /dev/null
+
 RUN npm install -g yarn@latest
 WORKDIR /opt/webapps/app
 COPY Gemfile Gemfile.lock ./
