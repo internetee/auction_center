@@ -50,7 +50,11 @@ jobs:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         run: |
           docker network create --driver bridge test-net
-          docker run -d -e POSTGRES_HOST_AUTH_METHOD=trust -e POSTGERS_DB=postgres -p 5433:5432 --name db --network=test-net postgres:13.2
+          docker run -d \
+          -e POSTGRES_PASSWORD=password \
+          -e POSTGRES_USERNAME=postgres \
+          -e POSTGERS_DB=postgres \
+          -p 5433:5432 --name db --network=test-net postgres:13.2
           sleep 5
           docker run -d \
           -e RAILS_ENV=test \
@@ -59,10 +63,13 @@ jobs:
           -e GIT_BRANCH=$(cat GIT_BRANCH) \
           -e CC_TEST_REPORTER_ID \
           -e DISABLE_SPRING=1 \
-          -e HEALTHCHECK_USER=healthcheck \
-          -e HEALTHCHECK_PASSWORD=healthcheck \
+          -e PG_USER=postgres \
+          -e PG_PASSWORD=password \
+          -e PGPASSWORD='password' \
+          -e PG_DATABASE=postgres \
           --mount type=bind,source="$(pwd)"/config,target=/opt/webapps/app/config \
           --name auction --network=test-net $(cat TAG) tail -f /dev/null
+          docker exec -i auction psql -h db postgres -U postgres -c '\l'
           docker exec -i auction bundle exec rake db:setup
           docker exec -i auction bundle exec rake data:migrate
           docker exec -i auction bundle exec rails assets:precompile
