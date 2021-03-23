@@ -53,10 +53,10 @@ jobs:
           -e GIT_COMMIT_SHA="$(cat GIT_COMMIT_SHA)" \
           -e GIT_BRANCH=$(cat GIT_BRANCH) \
           -e CC_TEST_REPORTER_ID \
+          -e DISABLE_SPRING=1 \
           --name auction --network=test-net $(cat TAG) tail -f /dev/null
-          yarn install --check-files
-          bundle exec rake db:setup
-          bundle exec rake data:migrate
-          bundle exec rails assets:precompile
-          bundle exec rails test test/*
-          yarn test
+          docker exec -i auction bundle exec rake db:setup
+          docker exec -i auction bundle exec rake data:migrate
+          docker exec -i auction bundle exec rails assets:precompile
+          docker exec -i auction bundle exec rails test test/*
+          docker exec -i auction yarn test
