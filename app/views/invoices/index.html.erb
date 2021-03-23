@@ -70,7 +70,7 @@
             </table>
         <% end %>
 
-        <% if @cancelled_invoices.any? %>
+        <% if @cancelled_payable_invoices.any? %>
             <h2>
                 <%= t('invoices.cancelled') %>
             </h2>
@@ -84,7 +84,32 @@
                 </thead>
 
                 <tbody class="invoices-table-body cancelled">
-                <% @cancelled_invoices.each do |invoice| %>
+                <% @cancelled_payable_invoices.each do |invoice| %>
+                    <tr class="invoices-table-row">
+                        <td><%= link_to invoice.items.first.name, invoice_path(invoice.uuid) %></td>
+                        <td><%= I18n.l(invoice.due_date) %></td>
+                        <td><%= invoice.total %></td>
+                    </tr>
+                <% end %>
+                </tbody>
+            </table>
+        <% end %>
+
+        <% if @cancelled_expired_invoices.any? %>
+            <h2>
+                <%= t('invoices.cancelled_expired') %>
+            </h2>
+            <table class="ui selectable stackable table" id="my-cancelled-invoices-table mt-4">
+                <thead>
+                <tr>
+                    <th scope="col"><%= t('invoices.item') %></th>
+                    <th scope="col"><%= t('invoices.due_date') %></th>
+                    <th scope="col"><%= t('invoices.total') %></th>
+                </tr>
+                </thead>
+
+                <tbody class="invoices-table-body cancelled">
+                <% @cancelled_expired_invoices.each do |invoice| %>
                     <tr class="invoices-table-row">
                         <td><%= link_to invoice.items.first.name, invoice_path(invoice.uuid) %></td>
                         <td><%= I18n.l(invoice.due_date) %></td>
