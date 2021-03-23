@@ -1,3 +1,6 @@
+23.03.2021
+* Overdue invoices are split into active bans and cancelled groups [#607](https://github.com/internetee/auction_center/issues/607)
+
 18.03.2021
 * Added option to redeem invoice due date violations by paying for the invoice after due and releasing the ban [#590](https://github.com/internetee/auction_center/issues/590)
 
