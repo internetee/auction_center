@@ -50,7 +50,7 @@ jobs:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         run: |
           docker network create --driver bridge test-net
-          docker run -d -e POSTGRES_HOST_AUTH_METHOD=trust -e POSTGERS_DB=postgres -p 5433:5432 --name db --network=test-net postgres:13.2
+          docker run -d -e POSTGRES_HOST_AUTH_METHOD=trust -e POSTGERS_DB=postgres -p 5433:5432 --name db --network=test-net postgres:12
           sleep 5
           docker run -d \
           -e RAILS_ENV=test \
