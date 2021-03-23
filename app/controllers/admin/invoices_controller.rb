@@ -4,7 +4,6 @@ require 'invoice_already_paid'
 module Admin
   class InvoicesController < BaseController
     include OrderableHelper
-    include BansHelper
 
     before_action :authorize_user
     before_action :create_invoice_if_needed
@@ -117,7 +116,6 @@ module Admin
       raise(Errors::InvoiceAlreadyPaid, @invoice.id) if @invoice.paid?
 
       @invoice.mark_as_paid_at(Time.zone.now)
-      set_ban_in_session
     end
 
     def search_params
