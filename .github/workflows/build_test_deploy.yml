@@ -82,3 +82,11 @@ jobs:
           docker exec -i auction ./cc-test-reporter format-coverage --output coverage/codeclimate.json
           docker exec -i auction ./cc-test-reporter sum-coverage coverage/codeclimate.json
           docker exec -i auction ./cc-test-reporter upload-coverage
+      
+      - name: Push Docker image to Docker hub
+        env:
+          USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: |
+          echo $PASSWORD | docker login -u "$USERNAME" --password-stdin
+          docker push $(cat TAG)
