@@ -46,16 +46,8 @@ module ApplicationHelper
                                         code: 'ban_number_of_strikes'
                                       ).retrieve)
     else
-      active_domains = check_active_auctions_for(domains)
-      if active_domains.count.positive?
-        I18n.t('auctions.banned', domain_names: active_domains.join(', '))
-      end
+      I18n.t('auctions.banned', domain_names: domains.join(', '))
     end
-  end
-
-  def check_active_auctions_for(domains)
-    active_auction_domains = Auction.active.pluck(:domain_name)
-    domains.select { |element| active_auction_domains.include?(element) }
   end
 
   def violation_message(domains_count)
