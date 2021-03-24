@@ -66,6 +66,7 @@ jobs:
           -e PG_USER=postgres \
           -e PG_PASSWORD=password \
           -e PG_DATABASE=postgres \
+          -e LANG=en_US.UTF-8 \
           --mount type=bind,source="$(pwd)"/config,target=/opt/webapps/app/config \
           --name auction --network=test-net $(cat TAG) tail -f /dev/null
           docker exec -i auction bundle exec rake db:setup
