@@ -74,3 +74,9 @@ jobs:
           docker exec -i auction bundle exec rails assets:precompile
           docker exec -i auction bundle exec rails test test/*
           docker exec -i auction yarn test
+
+      - name: Get and upload test results
+        run: |
+          docker auction -i whois ./cc-test-reporter format-coverage --output coverage/codeclimate.json
+          docker auction -i whois ./cc-test-reporter sum-coverage coverage/codeclimate.json
+          docker auction -i whois ./cc-test-reporter upload-coverage
