@@ -67,6 +67,7 @@ jobs:
           -e PG_PASSWORD=password \
           -e PG_DATABASE=postgres \
           -e LANG=en_US.UTF-8 \
+          -e COVERAGE=true \
           --mount type=bind,source="$(pwd)"/config,target=/opt/webapps/app/config \
           --name auction --network=test-net $(cat TAG) tail -f /dev/null
           docker exec -i auction bundle exec rake db:setup
@@ -78,6 +79,6 @@ jobs:
       - name: Get and upload test results
         if: always()
         run: |
-          docker auction -i whois ./cc-test-reporter format-coverage --output coverage/codeclimate.json
-          docker auction -i whois ./cc-test-reporter sum-coverage coverage/codeclimate.json
-          docker auction -i whois ./cc-test-reporter upload-coverage
+          docker exec -i auction ./cc-test-reporter format-coverage --output coverage/codeclimate.json
+          docker exec -i auction ./cc-test-reporter sum-coverage coverage/codeclimate.json
+          docker exec -i auction ./cc-test-reporter upload-coverage
