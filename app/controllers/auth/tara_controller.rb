@@ -3,9 +3,6 @@ require 'countries'
 
 module Auth
   class TaraController < ApplicationController
-    include BansHelper
-    after_action :set_ban_in_session, only: [:callback]
-
     rescue_from Errors::TamperingDetected do |e|
       redirect_to root_url, alert: t('auth.tara.tampering')
       notify_airbrake(e)

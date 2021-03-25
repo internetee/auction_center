@@ -1,5 +1,4 @@
 class PaymentOrdersController < ApplicationController
-  include BansHelper
   skip_before_action :verify_authenticity_token, only: %i[return callback]
   before_action :authorize_user, only: %i[create show]
 
@@ -46,7 +45,6 @@ class PaymentOrdersController < ApplicationController
 
     respond_to do |format|
       if @payment_order.mark_invoice_as_paid
-        set_ban_in_session
         format.html { redirect_to invoices_path, notice: successful_update_notice }
         format.json { redirect_to invoices_path, notice: successful_update_notice }
       else
