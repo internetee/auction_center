@@ -1,3 +1,6 @@
+24.03.2021
+* Fixed ban message on redeeming the last violation [#609](https://github.com/internetee/auction_center/issues/609)
+
 23.03.2021
 * Overdue invoices are split into active bans and cancelled groups [#607](https://github.com/internetee/auction_center/issues/607)
 
