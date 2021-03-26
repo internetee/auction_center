@@ -90,10 +90,10 @@ module PaymentOrders
       SUCCESSFUL_PAYMENT.include?(response['payment_state'])
     end
 
-    def url_builder
+    def linkpay_builder
       total = invoices_total&.format(symbol: nil, thousands_separator: false, decimal_mark: '.')
       params = {'transaction_amount' => "#{total}",
-                'order_reference' => uuid,
+                'order_reference' => id,
                 'linkpay_token' => LINKPAY_TOKEN}
 
       data = params.to_query
