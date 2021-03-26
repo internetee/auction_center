@@ -18,6 +18,15 @@ module PaymentOrders
     ICON = AuctionCenter::Application.config
                                      .customization
                                      .dig(:payment_methods, CONFIG_NAMESPACE.to_sym, :icon)
+    LINKPAY_PREFIX = AuctionCenter::Application.config
+                                               .customization
+                                               .dig(:payment_methods,
+                                                    CONFIG_NAMESPACE.to_sym, :linkpay_prefix)
+
+    LINKPAY_TOKEN = AuctionCenter::Application.config
+                                              .customization
+                                              .dig(:payment_methods,
+                                                   CONFIG_NAMESPACE.to_sym, :linkpay_token)
 
     SUCCESSFUL_PAYMENT = %w[settled authorized].freeze
 
@@ -79,6 +88,18 @@ module PaymentOrders
     # our accounts
     def settled_payment?
       SUCCESSFUL_PAYMENT.include?(response['payment_state'])
+    end
+
+    def url_builder
+      total = invoices_total&.format(symbol: nil, thousands_separator: false, decimal_mark: '.')
+      params = {'transaction_amount' => "#{total}",
+                'order_reference' => uuid,
+                'linkpay_token' => LINKPAY_TOKEN}
+
+      data = params.to_query
+
+      hmac = OpenSSL::HMAC.hexdigest('sha256', KEY, data)
+      "#{LINKPAY_PREFIX}?#{data}&hmac=#{hmac}"
     end
 
     private
