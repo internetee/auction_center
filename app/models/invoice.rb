@@ -145,6 +145,13 @@ class Invoice < ApplicationRecord
     Invoice.where(billing_profile_id: billing_profile_id)
   end
 
+  def linkpay_url
+    return unless PaymentOrder.supported_methods.include?('PaymentOrders::EveryPay'.constantize)
+
+    payment_order = PaymentOrders::EveryPay.create(invoices: [self])
+    payment_order.linkpay_url_builder
+  end
+
   private
 
   def clear_linked_ban

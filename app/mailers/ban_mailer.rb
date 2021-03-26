@@ -3,6 +3,8 @@ class BanMailer < ApplicationMailer
     @ban = ban
     @user = @ban.user
     @domain_name = domain_name
+    invoice = @ban.invoice
+    @linkpay_url = invoice.linkpay_url
 
     I18n.locale = @user.locale
     @past_due_invoices = if I18n.locale == :en

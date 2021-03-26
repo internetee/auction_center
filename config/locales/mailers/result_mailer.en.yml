@@ -8,10 +8,11 @@ en:
         auction for the %{domain_name} domain was successful.
       details_html: |
         In order to acquire the priority for the %{domain_name} domain,
-        a prepayment invoice must be paid within 7 days. You can also
+        a prepayment invoice must be %{payment_link} within 7 days. You can also
         assign another person to be the receiver of the prepayment
         invoice in the %{link}.
       auction_link: ".ee auction environment"
+      payment_link: "paid"
       details_second_para_html: |
         If you pay the invoice on time, you can find the appropriate registration
         code in your user account that will allow you to register the %{domain_name}

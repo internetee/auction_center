@@ -9,6 +9,7 @@
         <p>
             <%= t('.details_html',
                   domain_name: @auction.domain_name,
+                  payment_link: link_to(t('.payment_link'), @linkpay_url),
                   link: link_to(t('.auction_link'), result_url(@result.uuid))) %>
         </p>
         <p><%= t('.details_second_para_html', domain_name: @auction.domain_name) %></p>
