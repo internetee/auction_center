@@ -6,9 +6,10 @@ en:
       introduction: |
         Please note that the invoice due date for the preferential right to register
         the %{domain_name} domain you have bought from .ee domain auction is on %{due_date}.
-      details: |
+      details_html: |
         If you fail to pay, you will lose the right to the auctioned priority and
         priority for the %{domain_name} domain will be returned to auction. You will
         not be able to participate in the same auction again. After a third unpaid
         invoice it will not be possible for you to participate in .ee domain auctions
         for one year.
+        You can pay for this invoice using following link: <a href=%{linkpay_url}> .
