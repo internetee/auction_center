@@ -148,7 +148,7 @@ class Invoice < ApplicationRecord
   def linkpay_url
     return unless PaymentOrder.supported_methods.include?('PaymentOrders::EveryPay'.constantize)
 
-    payment_order = PaymentOrders::EveryPay.create(invoices: [self], user_id: self.user_id)
+    payment_order = PaymentOrders::EveryPay.create(invoices: [self], user_id: user_id)
     payment_order.linkpay_url_builder
   end
 

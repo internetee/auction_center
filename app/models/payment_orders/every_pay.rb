@@ -6,7 +6,9 @@ module PaymentOrders
     USER = AuctionCenter::Application.config
                                      .customization
                                      .dig(:payment_methods, CONFIG_NAMESPACE.to_sym, :user)
-    KEY = AuctionCenter::Application.config.customization.dig(:payment_methods, CONFIG_NAMESPACE.to_sym, :key)
+    KEY = AuctionCenter::Application.config
+                                    .customization
+                                    .dig(:payment_methods, CONFIG_NAMESPACE.to_sym, :key)
     ACCOUNT_ID = AuctionCenter::Application.config
                                            .customization
                                            .dig(:payment_methods,
@@ -111,9 +113,9 @@ module PaymentOrders
 
     def linkpay_url_builder
       total = invoices_total&.format(symbol: nil, thousands_separator: false, decimal_mark: '.')
-      params = {'transaction_amount' => "#{total}",
-                'order_reference' => id,
-                'linkpay_token' => LINKPAY_TOKEN}
+      params = { 'transaction_amount' => total.to_s,
+                 'order_reference' => id,
+                 'linkpay_token' => LINKPAY_TOKEN }
 
       data = params.to_query
 

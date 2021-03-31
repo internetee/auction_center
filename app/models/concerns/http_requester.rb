@@ -64,16 +64,14 @@ module Concerns
       uri = URI(url)
 
       Net::HTTP.start(uri.host, uri.port,
-                      :use_ssl => uri.scheme == 'https',
-                      :verify_mode => OpenSSL::SSL::VERIFY_NONE) do |http|
-
+                      use_ssl: uri.scheme == 'https',
+                      verify_mode: OpenSSL::SSL::VERIFY_NONE) do |http|
         request = Net::HTTP::Get.new uri.request_uri
         request.basic_auth username, password
         response = http.request request
 
         JSON.parse(response.body)
       end
-
     rescue JSON::ParserError, *HTTP_ERRORS
       nil
     end
