@@ -1,7 +1,7 @@
 <% content_for :hero do %>
-    <div class="hero green">
-        <h1><%= t('.title') %></h1>
-    </div>
+<div class="hero green">
+    <h1><%= t('.title') %></h1>
+</div>
 <% end %>
 
 <div class="u-container">
@@ -26,11 +26,6 @@
                         <tr>
                             <td><strong><%= t('billing_profiles.city') %></strong></td>
                             <td><%= @billing_profile.city %></td>
-                        </tr>
-
-                        <tr>
-                            <td><strong><%= t('billing_profiles.state') %></strong></td>
-                            <td><%= @billing_profile.state %></td>
                         </tr>
 
                         <tr>
