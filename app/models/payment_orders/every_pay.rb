@@ -1,13 +1,12 @@
 module PaymentOrders
   class EveryPay < PaymentOrder
+    include Concerns::HttpRequester
     CONFIG_NAMESPACE = 'every_pay'.freeze
 
     USER = AuctionCenter::Application.config
                                      .customization
                                      .dig(:payment_methods, CONFIG_NAMESPACE.to_sym, :user)
-    KEY = AuctionCenter::Application.config
-                                    .customization
-                                    .dig(:payment_methods, CONFIG_NAMESPACE.to_sym, :key)
+    KEY = AuctionCenter::Application.config.customization.dig(:payment_methods, CONFIG_NAMESPACE.to_sym, :key)
     ACCOUNT_ID = AuctionCenter::Application.config
                                            .customization
                                            .dig(:payment_methods,
@@ -22,7 +21,11 @@ module PaymentOrders
                                                .customization
                                                .dig(:payment_methods,
                                                     CONFIG_NAMESPACE.to_sym, :linkpay_prefix)
-
+    LINKPAY_CHECK_PREFIX = AuctionCenter::Application.config
+                                                     .customization
+                                                     .dig(:payment_methods,
+                                                          CONFIG_NAMESPACE.to_sym,
+                                                          :linkpay_check_prefix)
     LINKPAY_TOKEN = AuctionCenter::Application.config
                                               .customization
                                               .dig(:payment_methods,
@@ -32,6 +35,7 @@ module PaymentOrders
 
     LANGUAGE_CODE_ET = 'et'.freeze
     LANGUAGE_CODE_EN = 'en'.freeze
+    TRUSTED_DATA = 'trusted_data'.freeze
 
     # Base interface for creating payments.
     def form_fields
@@ -78,10 +82,25 @@ module PaymentOrders
     end
 
     # Check if response is there and if basic security methods are fullfilled.
+    # Skip the check if data was previously requested by us from EveryPay
+    # (response['type'] == TRUSTED_DATA) e.g. we know data was originated from trusted source
     def valid_response?
       return false unless response
+      return true if response['type'] == TRUSTED_DATA
 
       valid_hmac? && valid_amount? && valid_account?
+    end
+
+    def check_linkpay_status
+      return if paid?
+
+      url = "#{LINKPAY_CHECK_PREFIX}#{response['payment_reference']}?api_username=#{USER}"
+      body = basic_auth_get(url: url, username: USER, password: KEY)
+      return unless body
+
+      self.response = body.merge(type: TRUSTED_DATA, timestamp: Time.zone.now)
+      save
+      mark_invoice_as_paid
     end
 
     # Check if the intermediary reports payment as settled and we can expect money on

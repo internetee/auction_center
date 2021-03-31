@@ -76,7 +76,7 @@ Rails.application.routes.draw do
     end
   end
 
-  match '/linkpay_callback', via: %i[post put], to: 'linkpay#callback', as: :linkpay_callback
+  match '/linkpay_callback', via: %i[get], to: 'linkpay#callback', as: :linkpay_callback
 
   resource :locale, only: :update
   resources :offers, only: :index
