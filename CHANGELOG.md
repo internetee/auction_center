@@ -1,3 +1,6 @@
+31.03.2021
+* Bump y18n to 4.0.1 [#613](https://github.com/internetee/auction_center/pull/613)
+
 24.03.2021
 * Fixed ban message on redeeming the last violation [#609](https://github.com/internetee/auction_center/issues/609)
 
