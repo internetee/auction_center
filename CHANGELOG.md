@@ -1,4 +1,5 @@
 31.03.2021
+* Removed redundant state field from the payment profile view [#612](https://github.com/internetee/auction_center/issues/612)
 * Bump y18n to 4.0.1 [#613](https://github.com/internetee/auction_center/pull/613)
 
 24.03.2021
