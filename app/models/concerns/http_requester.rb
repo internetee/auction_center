@@ -60,6 +60,7 @@ module Concerns
       default_request_response(url: url, body: body, headers: headers, type: :get)
     end
 
+    # :nocov:
     def basic_auth_get(url:, username:, password:)
       uri = URI(url)
 
@@ -75,5 +76,6 @@ module Concerns
     rescue JSON::ParserError, *HTTP_ERRORS
       nil
     end
+    # :nocov:
   end
 end
