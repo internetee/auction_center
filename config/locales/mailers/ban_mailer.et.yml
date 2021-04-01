@@ -6,10 +6,11 @@ et:
       introduction: |
         juhime teie tähelepanu asjaolule, et domeenioksjonilt soetatud domeeni %{domain_name} registreerimise
         eelisõiguse arve on tähtajaks tasumata. Sel põhjusel ei saa te domeeni %{domain_name} oksjonitel edaspidi osaleda.
-      number_of_strikes_html: |
+      number_of_strikes: |
         See on %{number}. tasumata arve. Tulenevalt Kasutajalepingu punktist 7.3.3. saab Teenuse
         kasutaja oksjonikeskkonna teenuseid kasutada, kui maksmata arveid on vähem kui kolm.
-        Saad arve koheselt tasuda selle lingi abil: <a href=%{linkpay_url}> .
+      linkpay_html: |
+        Saad arve koheselt tasuda selle <a href=%{linkpay_url}>lingi</a> abil.
       footer_html: |
         <p>Täiendavate küsimuste korral võtke palun ühendust Eesti Interneti Sihtasutusega aadressil
         info@internet.ee või +372 727 1000.</p>

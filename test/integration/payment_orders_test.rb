@@ -17,6 +17,20 @@ class PaymentOrdersTest < ActionDispatch::IntegrationTest
     assert_equal(200, response.status)
   end
 
+  def test_response_from_linkpay_callback_endpoint
+    params = {
+      order_reference: @payment_order.id.to_s,
+      payment_reference: SecureRandom.uuid.to_s,
+    }
+    get linkpay_callback_path(params)
+    response_json = JSON.parse(response.body)
+
+    assert_equal({ 'status' => 'ok' }, response_json)
+    assert_equal(200, response.status)
+    @payment_order.reload
+    assert_equal @payment_order.response.with_indifferent_access, params.with_indifferent_access
+  end
+
   def test_response_from_return_payment_redirects_to_invoice
     post return_payment_order_path(@payment_order.uuid), params: request_params
 

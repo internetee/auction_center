@@ -6,11 +6,12 @@ en:
       introduction: |
         The invoice for the preferential right to register %{domain_name} purchased from the .ee
         auction is currently overdue. Thereby You can not participate in future %{domain_name} auctions.
-      number_of_strikes_html: |
+      number_of_strikes: |
         This is your %{number} invoice overdue. According to clause 7.3.3 of the .ee Auction Environment
         User Agreement, a user can use the service of the environment if there are less than 3 unpaid
         invoices under their user account.
-        You can pay for this invoice using following link: <a href=%{linkpay_url}> .
+      linkpay_html: |
+        You can pay for this invoice using following <a href=%{linkpay_url}>link</a>.
       footer_html: |
         <p>If you have any further questions, please contact the Estonian Internet Foundation at
         info@internet.ee or +372 727 1000.</p>

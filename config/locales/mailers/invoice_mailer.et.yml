@@ -6,9 +6,10 @@ et:
       introduction: |
         Tuletame meelde, et .ee domeeni oksjonilt soetatud domeeni %{domain_name}
         registreerimise eelisõiguse arve tasumise tähtaeg on %{due_date}.
-      details_html: |
+      details: |
         Tasumata jätmisel te enampakkumisel olnud eelisõigust endale ei saa ja domeeni
         %{domain_name} eelisõigus läheb tagasi oksjonile. Teie samal oksjonil uuesti
         osaleda ei saa. Pärast kolmandat tasumata arvet ei ole teil võimalik järgneva
         aasta jooksul .ee domeeni oksjonitel osaleda.
-        Saad arve koheselt tasuda selle lingi abil: <a href=%{linkpay_url}> .
+      linkpay_html: |
+        Saad arve koheselt tasuda selle <a href=%{linkpay_url}>lingi</a> abil.

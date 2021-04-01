@@ -178,6 +178,29 @@ class InvoiceTest < ActiveSupport::TestCase
                  Invoice.pending_payment_reminder(0).to_set)
   end
 
+  def test_linkpay_url
+    total = invoices_total([@payable_invoice]).to_s
+    linkpay_token = PaymentOrders::EveryPay::LINKPAY_TOKEN
+    url = @payable_invoice.linkpay_url
+
+    assert(url.include? total)
+    assert(url.include? linkpay_token)
+    assert(url.include? @payable_invoice.payment_orders.last.id.to_s)
+  end
+
+  def test_linkpay_url_nil_if_paid
+    time = Time.parse('2010-07-06 10:30 +0000').in_time_zone
+    @payable_invoice.mark_as_paid_at(time)
+
+    assert_nil @payable_invoice.linkpay_url
+  end
+
+  def invoices_total(invoices)
+    invoices.map(&:total)
+            .reduce(:+)
+            &.format(symbol: nil, thousands_separator: false, decimal_mark: '.')
+  end
+
   def prefill_invoice
     invoice = Invoice.new
     invoice.result = @result

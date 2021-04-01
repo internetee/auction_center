@@ -64,6 +64,9 @@ default: &default
       key: ''
       account_id: ''
       icon: '/images/payment_methods/every_pay.png'
+      linkpay_prefix: 'https://igw-demo.every-pay.com/lp'
+      linkpay_check_prefix: 'https://igw-demo.every-pay.com/api/v3/payments/'
+      linkpay_token: 'rucd4v'
 
     seb:
       url: ''
@@ -116,6 +119,9 @@ test:
       key: 'api_key'
       account_id: 'EUR3D1'
       icon: '/images/payment_methods/every_pay.png'
+      linkpay_prefix: 'https://igw-demo.every-pay.com/lp'
+      linkpay_check_prefix: 'https://igw-demo.every-pay.com/api/v3/payments/'
+      linkpay_token: 'rucd4v'
 
     seb:
       url: 'https://www.seb.ee/cgi-bin/dv.sh/ipank.r'

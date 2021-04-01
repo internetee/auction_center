@@ -8,10 +8,11 @@ et:
         %{domain_name} oli edukas.
       details_html: |
         Domeeni %{domain_name} eelisõiguse soetamiseks tuleb 7 päeva
-        jooksul %{payment_link} ettemaksuarve. Ettemaksuarve saajaks saad määrata
+        jooksul tasuda ettemaksuarve. Ettemaksuarve saajaks saad määrata
         ka muu isiku %{link}.
+      linkpay_html: |
+        Saad arve koheselt tasuda selle <a href=%{linkpay_url}>lingi</a> abil.
       auction_link: ".ee oksjonikeskkonnas"
-      payment_link: "tasuda"
       details_second_para_html: |
         Arve õigeaegsel tasumisel leiate oma kasutajakonto alt vastava reserveerimiskoodi,
         millega saate 14. päeva jooksul enampakkumisel võidetud %{domain_name}

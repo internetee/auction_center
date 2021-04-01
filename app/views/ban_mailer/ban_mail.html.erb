@@ -7,7 +7,8 @@
         <p><%= t('.salutation') %></p>
 
         <p><%= t('.introduction', domain_name: @domain_name) %></p>
-        <p><%= t('.number_of_strikes_html', number: @past_due_invoices, linkpay_url: @linkpay_url) %></p>
+        <p><%= t('.number_of_strikes', number: @past_due_invoices) %></p>
+        <p><%= t('.linkpay_html', linkpay_url: @linkpay_url) if @linkpay_url %></p>
         <%= t('.footer_html') %>
     </body>
 </html>
