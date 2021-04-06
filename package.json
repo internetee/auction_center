@@ -32,6 +32,7 @@
    ],
    "devDependencies": {
       "karma": "^5.0.0",
+      "webpack": "^4.0.0",
       "karma-chrome-launcher": "^3.0.0",
       "karma-coverage": "^1.1.2",
       "karma-jquery": "^0.2.3",
