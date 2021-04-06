@@ -19,7 +19,7 @@
       "sass-loader": "^10.0.1",
       "terser-webpack-plugin": "^4.1.0",
       "turbolinks": "^5.2.0",
-      "typeface-raleway": "^0.0.75"
+      "typeface-raleway": "^1.1.13"
    },
    "version": "0.0.1",
    "description": "Domain auction software",
