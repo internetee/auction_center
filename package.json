@@ -19,7 +19,8 @@
       "sass-loader": "^10.0.1",
       "terser-webpack-plugin": "^4.1.0",
       "turbolinks": "^5.2.0",
-      "typeface-raleway": "^0.0.75"
+      "typeface-raleway": "^0.0.75",
+      "webpack": "^5.30.0"
    },
    "version": "0.0.1",
    "description": "Domain auction software",
@@ -37,7 +38,9 @@
       "karma-jquery": "^0.2.3",
       "karma-qunit": "^4.0.0",
       "karma-webpack": "^4.0.2",
+      "mini-css-extract-plugin": "^1.4.0",
       "qunit": "^2.6.2",
+      "webpack-cli": "^4.6.0",
       "webpack-dev-server": "^3.1.14"
    }
 }
