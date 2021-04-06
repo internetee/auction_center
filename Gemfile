@@ -30,7 +30,7 @@ gem 'simpleidn'
 gem 'skylight'
 gem 'sprockets', '~> 3.7'
 gem 'turbolinks', '~> 5'
-gem 'webpacker', '~> 5.2'
+gem 'webpacker', '~> 6.0.0.beta.6'
 
 group :development, :test do
   gem 'bullet'
