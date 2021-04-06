@@ -17,7 +17,7 @@
       "rails-ujs": "^5.2.1",
       "resolve-url-loader": "^3.0.0",
       "sass-loader": "^10.0.1",
-      "terser-webpack-plugin": "^4.1.0",
+      "terser-webpack-plugin": "^5.1.1",
       "turbolinks": "^5.2.0",
       "typeface-raleway": "^0.0.75"
    },
