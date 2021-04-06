@@ -1,3 +1,17 @@
+06.04.2021
+* Dependabot and github actions to keep gems updated [#617](https://github.com/internetee/auction_center/pull/617)
+* Bump upload-artifact to 2.2.2 [#618](https://github.com/internetee/auction_center/pull/618)
+* Bump download-artifact to 2.0.8 [#619](https://github.com/internetee/auction_center/pull/619)
+* Bump byebug to 11.1.3 [#620](https://github.com/internetee/auction_center/pull/620)
+* Bump web-console to 4.1.0 [#621](https://github.com/internetee/auction_center/pull/621)
+* Bump pry to 0.14.0 [#622](https://github.com/internetee/auction_center/pull/622)
+* Bump cancancan to 3.2.1 [#623](https://github.com/internetee/auction_center/pull/623)
+* Bump webdrivers to 4.6.0 [#624](https://github.com/internetee/auction_center/pull/624)
+* Bump typeface-raleway to 1.1.13 [#626](https://github.com/internetee/auction_center/pull/626)
+* Bump terser-webpack-plugin to 5.1.1 [#627](https://github.com/internetee/auction_center/pull/627)
+* Bump karma-coverage to 2.0.3 [#628](https://github.com/internetee/auction_center/pull/628)
+* Added webpack [#630](https://github.com/internetee/auction_center/pull/630)
+
 31.03.2021
 * Removed redundant state field from the payment profile view [#612](https://github.com/internetee/auction_center/issues/612)
 * Bump y18n to 4.0.1 [#613](https://github.com/internetee/auction_center/pull/613)
