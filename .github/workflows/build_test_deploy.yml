@@ -21,72 +21,16 @@ jobs:
       - name: Set image tag
         run: |
           SHORT_SHA=$(git describe --always)
-          echo "internetee/auction:RC_$SHORT_SHA" > TAG
-
-      - name: Set ENV for codeclimate (push)
-        if: github.event_name == 'push'
-        run: |
-          echo "$GITHUB_REF" > GIT_BRANCH
-          echo "$GITHUB_SHA" > GIT_COMMIT_SHA
-
-      - name: Set ENV for codeclimate (pull request)
-        if: github.event_name == 'pull_request'
-        run: |
-          echo "$GITHUB_HEAD_REF" > GIT_BRANCH
-          echo "$(git rev-parse origin/$GITHUB_HEAD_REF)" > GIT_COMMIT_SHA
+          echo "ghcr.io/internetee/auction_center:RC_$SHORT_SHA" > TAG
 
       - name: Build image
         run: |
           docker build -t $(cat TAG) -f Dockerfile.generic .
           docker images
 
-      - name: Copy conf files for testing
-        run: |
-          cp config/database.yml.sample config/database.yml
-          cp config/customization.yml.sample config/customization.yml
-
-      - name: Test
+      - name: Push Docker image to gh container registry
         env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+          PASSWORD: ${{ secrets.GHCR_PAT }}
         run: |
-          docker network create --driver bridge test-net
-          docker run -d \
-          -e POSTGRES_PASSWORD=password \
-          -e POSTGRES_USERNAME=postgres \
-          -e POSTGERS_DB=postgres \
-          -p 5433:5432 --name db --network=test-net postgres:13.2
-          sleep 5
-          docker run -d \
-          -e RAILS_ENV=test \
-          -e APP_DBHOST=db \
-          -e GIT_COMMIT_SHA="$(cat GIT_COMMIT_SHA)" \
-          -e GIT_BRANCH=$(cat GIT_BRANCH) \
-          -e CC_TEST_REPORTER_ID \
-          -e DISABLE_SPRING=1 \
-          -e PG_USER=postgres \
-          -e PG_PASSWORD=password \
-          -e PG_DATABASE=postgres \
-          -e LANG=en_US.UTF-8 \
-          -e COVERAGE=true \
-          --mount type=bind,source="$(pwd)"/config,target=/opt/webapps/app/config \
-          --name auction --network=test-net $(cat TAG) tail -f /dev/null
-          docker exec -i auction bundle exec rake db:setup
-          docker exec -i auction bundle exec rake data:migrate
-          docker exec -i auction bundle exec rails assets:precompile
-          docker exec -i auction bundle exec rails test test/*
-          docker exec -i auction yarn test
-
-      - name: Get and upload test results
-        if: always()
-        run: |
-          docker exec -i auction ./cc-test-reporter format-coverage --output coverage/codeclimate.json
-          docker exec -i auction ./cc-test-reporter sum-coverage coverage/codeclimate.json
-          docker exec -i auction ./cc-test-reporter upload-coverage
-      
-      - name: Push Docker image to Docker hub
-        env:
-          USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-        run: |
-          echo $PASSWORD | docker login -u "$USERNAME" --password-stdin
+          echo $PASSWORD | docker login -u internetee --password-stdin
           docker push $(cat TAG)
