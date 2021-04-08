@@ -44,7 +44,7 @@ jobs:
       #     tag_with_ref: true
       - name: Push Docker image to gh container registry
         env:
-          PASSWORD: ${{ secrets.GHCR_PAT }}
+          PASSWORD: ${{ secrets.GHCR }}
         run: |
-          echo $PASSWORD | docker login ghcr.io -u keijoraamat --password-stdin
+          echo $PASSWORD | docker login ghcr.io -u eisbot --password-stdin
           docker push $(cat TAG)
