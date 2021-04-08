@@ -35,20 +35,27 @@ class OfferTest < ActiveSupport::TestCase
   end
 
   def test_all_bind_should_be_cancelled_if_user_has_long_ban
-    auctions(:with_invoice).update(ends_at: Time.now + 1.day)
+    auctions(:with_invoice).update(starts_at: Time.now - 2.days, ends_at: Time.now + 1.day)
+    auctions(:valid_with_offers).update(starts_at: Time.now - 2.days, ends_at: Time.now + 1.day)
+    auctions(:expired).update(starts_at: Time.now - 2.days, ends_at: Time.now + 1.day)
 
-    auctions_arr = [auctions(:valid_with_offers), auctions(:valid_without_offers), auctions(:with_invoice)]
+    auctions_arr = [auctions(:valid_with_offers), auctions(:expired), auctions(:with_invoice)]
 
-    @ban_number_of_strikes.to_i.times do |i|
+    3.times do |i|
       # do auctions active? 
-      assert auctions_arr[i].ends_at > Time.now
+      assert auctions_arr[i].in_progress?
 
       Ban.create!(valid_from: Time.zone.now - 1, valid_until: Time.zone.now + 60,
       user: @user, domain_name: auctions_arr[i].domain_name)
     end
 
+    assert @user.banned?
+
+    @user.clear_active_bids_after_long_ban
+    @user.reload
+
     assert_equal @user.bans.count, 3
-    assert_equal @user.offers, 0
+    assert_equal @user.offers.count, 0
   end
 
   def test_required_fields
