@@ -1,4 +1,4 @@
-name: build, test and deploy test environment on pr
+name: build and deploy test environment on pr
 
 on:
   pull_request:
@@ -39,8 +39,8 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GHCR_PAT }}
           registry: docker.pkg.github.com
-          repository: internetee/auction_center/auction_center
-          tag_with_ref: true
+          repository: internetee/auction_center
+          tag_with_ref: false
 
       # - name: Push Docker image to gh container registry
       #   env:
