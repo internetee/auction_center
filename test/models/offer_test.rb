@@ -19,6 +19,38 @@ class OfferTest < ActiveSupport::TestCase
     travel_back
   end
 
+  def test_bind_should_be_cancelled
+    auction_related_to_user = Auction.find_by(id: '303038671')
+
+    # do auction active?
+    assert auction_related_to_user.ends_at > Time.now
+
+    assert @user.offers.find_by(auction_id: auction_related_to_user.id).present?
+
+    Ban.create!(valid_from: Time.zone.now - 1, valid_until: Time.zone.now + 60,
+    user: @user, domain_name: auction_related_to_user.domain_name)
+
+    assert_equal @user.bans.count, 1
+    assert_not @user.offers.find_by(auction_id: auction_related_to_user.id).present?
+  end
+
+  def test_all_bind_should_be_cancelled_if_user_has_long_ban
+    auctions(:with_invoice).update(ends_at: Time.now + 1.day)
+
+    auctions_arr = [auctions(:valid_with_offers), auctions(:valid_without_offers), auctions(:with_invoice)]
+
+    @ban_number_of_strikes.to_i.times do |i|
+      # do auctions active? 
+      assert auctions_arr[i].ends_at > Time.now
+
+      Ban.create!(valid_from: Time.zone.now - 1, valid_until: Time.zone.now + 60,
+      user: @user, domain_name: auctions_arr[i].domain_name)
+    end
+
+    assert_equal @user.bans.count, 3
+    assert_equal @user.offers, 0
+  end
+
   def test_required_fields
     offer = Offer.new
 
