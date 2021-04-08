@@ -23,6 +23,11 @@ jobs:
           SHORT_SHA=$(git describe --always)
           echo "ghcr.io/internetee/auction_center:RC_$SHORT_SHA" > TAG
 
+      - name: Set config files for build
+        run: |
+          cp config/database.yml.sample config/database.yml
+          ls -l config/
+
       - name: Build image
         run: |
           docker build -t $(cat TAG) -f Dockerfile.generic .
