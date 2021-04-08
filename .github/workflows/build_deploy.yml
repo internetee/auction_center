@@ -33,18 +33,18 @@ jobs:
           docker build -t $(cat TAG) -f Dockerfile.generic .
           docker images
 
-      - name: Push to GitHub Packages
-        uses: docker/build-push-action@v1
-        with:
-          username: ${{ github.actor }}
-          password: ${{ secrets.GHCR_PAT }}
-          registry: docker.pkg.github.com
-          repository: internetee/auction_center
-          tag_with_ref: false
-
-      # - name: Push Docker image to gh container registry
-      #   env:
-      #     PASSWORD: ${{ secrets.GHCR_PAT }}
-      #   run: |
-      #     echo $PASSWORD | docker login -u internetee --password-stdin
-      #     docker push $(cat TAG)
+      # - name: Push to GitHub Packages
+      #   uses: docker/build-push-action@v1
+      #   with:
+      #     username: ${{ github.actor }}
+      #     password: ${{ secrets.GHCR_PAT }}
+      #     registry: docker.pkg.github.com
+      #     repository: internetee/auction_center
+      #     tags: 
+      #     tag_with_ref: true
+      - name: Push Docker image to gh container registry
+        env:
+          PASSWORD: ${{ secrets.GHCR_PAT }}
+        run: |
+          echo $PASSWORD | docker login ghcr.io -u eisbot --password-stdin
+          docker push $(cat TAG)
