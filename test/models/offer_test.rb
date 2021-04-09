@@ -19,46 +19,6 @@ class OfferTest < ActiveSupport::TestCase
     travel_back
   end
 
-  def test_bind_for_active_auctions_should_be_cancelled
-    auctions(:valid_with_offers).update(starts_at: Time.now - 2.days, ends_at: Time.now + 1.day)
-    auction_related_to_user = auctions(:valid_with_offers)
-
-    # do auction active?
-    assert auction_related_to_user.in_progress?
-
-    assert @user.offers.find_by(auction_id: auction_related_to_user.id).present?
-
-    Ban.create!(valid_from: Time.zone.now - 1, valid_until: Time.zone.now + 60,
-    user: @user, domain_name: auction_related_to_user.domain_name)
-
-    assert_equal @user.bans.count, 1
-    offer = @user.offers.find_by(auction_id: auction_related_to_user.id)
-    assert_not offer.present?
-  end
-
-  def test_all_bind_for_active_auctions_should_be_cancelled_if_user_has_long_ban
-    auctions(:with_invoice).update(starts_at: Time.now - 2.days, ends_at: Time.now + 1.day)
-    auctions(:valid_with_offers).update(starts_at: Time.now - 2.days, ends_at: Time.now + 1.day)
-    auctions(:expired).update(starts_at: Time.now - 2.days, ends_at: Time.now + 1.day)
-
-    auctions_arr = [auctions(:valid_with_offers), auctions(:expired), auctions(:with_invoice)]
-
-    3.times do |i|
-      # do auctions active? 
-      assert auctions_arr[i].in_progress?
-
-      Ban.create!(valid_from: Time.zone.now - 1, valid_until: Time.zone.now + 60,
-      user: @user, domain_name: auctions_arr[i].domain_name)
-    end
-
-    assert @user.banned?
-    @user.reload
-
-    assert_equal @user.bans.count, 3
-
-    assert_not @user.offers.present?
-  end
-
   def test_required_fields
     offer = Offer.new
 

@@ -5,6 +5,7 @@ class AutomaticBan
   # that uses the same time should abusers from participating in the most
   # immediate rounds of auctions for a domain name.
   BAN_PERIOD_IN_MONTHS = Setting.find_by(code: 'ban_length').retrieve
+  BAN_NUMBER_OF_STRIKES = Setting.find_by(code: 'ban_number_of_strikes')
 
   attr_reader :invoice
   attr_reader :user
@@ -31,6 +32,8 @@ class AutomaticBan
     create_ban
     assign_ban_length
     send_email
+    remove_offer_from_active_auction
+    remove_offers_from_active_auctions
     ban
   end
 
@@ -49,5 +52,26 @@ class AutomaticBan
 
   def send_email
     BanMailer.ban_mail(@ban, unpaid_invoices_ids.count, @domain_name).deliver_later
+  end
+
+  def remove_offer_from_active_auction
+    auction = Auction.find_by(domain_name: @domain_name)
+
+    return unless auction.present?
+    return unless auction.in_progress?
+    
+    offer = @user.offers.find_by(auction_id: auction.id)
+    offer.destroy if offer.present?
+  end
+
+  def remove_offers_from_active_auctions
+    ban_number_of_strikes = Setting.find_by(code: 'ban_number_of_strikes')
+    return unless ban_number_of_strikes.value.to_i <= @user.bans.count
+    
+    @user.offers.each do |offer|
+      auction_id = offer.auction_id
+      auction = Auction.find(auction_id)
+      offer.destroy
+    end
   end
 end
