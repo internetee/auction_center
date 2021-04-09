@@ -25,8 +25,7 @@ class Ban < ApplicationRecord
 
   def remove_offer_from_active_auction
     auction = Auction.find_by(domain_name: domain_name)
-    
-    return unless auction.present?
+    return if auction.blank?
     return unless auction.in_progress?
 
     user = User.find(user_id)
@@ -37,12 +36,12 @@ class Ban < ApplicationRecord
   def remove_offers_from_active_auctions
     ban_number_of_strikes = Setting.find_by(code: 'ban_number_of_strikes')
     user = User.find(user_id)
-    if ban_number_of_strikes.value.to_i <= user.bans.count
-      user.offers.each do |offer|
-        auction_id = offer.auction_id
-        auction = Auction.find(auction_id)
-        offer.destroy if auction.in_progress?
-      end
+    return unless ban_number_of_strikes.value.to_i <= user.bans.count
+
+    user.offers.each do |offer|
+      auction_id = offer.auction_id
+      auction = Auction.find(auction_id)
+      offer.destroy if auction.blank?
     end
   end
 end
