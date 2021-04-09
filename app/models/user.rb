@@ -107,15 +107,6 @@ class User < ApplicationRecord
     bans_count >= num_of_strikes
   end
 
-  def clear_active_bids_after_long_ban
-    return unless completely_banned?
-
-    offers.each do |off| 
-      a = Auction.find_by(id: off.auction_id)
-      off.destroy if a.in_progress?
-    end
-  end
-
   def phone_number_confirmed?
     mobile_phone_confirmed_at.present?
   end

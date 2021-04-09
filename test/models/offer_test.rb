@@ -19,11 +19,12 @@ class OfferTest < ActiveSupport::TestCase
     travel_back
   end
 
-  def test_bind_should_be_cancelled
-    auction_related_to_user = Auction.find_by(id: '303038671')
+  def test_bind_for_active_auctions_should_be_cancelled
+    auctions(:valid_with_offers).update(starts_at: Time.now - 2.days, ends_at: Time.now + 1.day)
+    auction_related_to_user = auctions(:valid_with_offers)
 
     # do auction active?
-    assert auction_related_to_user.ends_at > Time.now
+    assert auction_related_to_user.in_progress?
 
     assert @user.offers.find_by(auction_id: auction_related_to_user.id).present?
 
@@ -31,10 +32,11 @@ class OfferTest < ActiveSupport::TestCase
     user: @user, domain_name: auction_related_to_user.domain_name)
 
     assert_equal @user.bans.count, 1
-    assert_not @user.offers.find_by(auction_id: auction_related_to_user.id).present?
+    offer = @user.offers.find_by(auction_id: auction_related_to_user.id)
+    assert_not offer.present?
   end
 
-  def test_all_bind_should_be_cancelled_if_user_has_long_ban
+  def test_all_bind_for_active_auctions_should_be_cancelled_if_user_has_long_ban
     auctions(:with_invoice).update(starts_at: Time.now - 2.days, ends_at: Time.now + 1.day)
     auctions(:valid_with_offers).update(starts_at: Time.now - 2.days, ends_at: Time.now + 1.day)
     auctions(:expired).update(starts_at: Time.now - 2.days, ends_at: Time.now + 1.day)
@@ -50,12 +52,11 @@ class OfferTest < ActiveSupport::TestCase
     end
 
     assert @user.banned?
-
-    @user.clear_active_bids_after_long_ban
     @user.reload
 
     assert_equal @user.bans.count, 3
-    assert_equal @user.offers.count, 0
+
+    assert_not @user.offers.present?
   end
 
   def test_required_fields
