@@ -6,7 +6,7 @@
    },
    "dependencies": {
       "@rails/webpacker": "^5.2.1",
-      "chartkick": "^3.2.0",
+      "chartkick": "^4.0.3",
       "highcharts": "^9.0.1",
       "jquery": "^3.3.1",
       "less": "3.13.1",
