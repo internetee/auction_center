@@ -28,7 +28,7 @@ gem 'recaptcha'
 gem 'scenic'
 gem 'simpleidn'
 gem 'skylight'
-gem 'sprockets', '~> 3.7'
+gem 'sprockets', '~> 4.0'
 gem 'turbolinks', '~> 5'
 gem 'webpacker', '~> 6.0.0.beta.6'
 
