@@ -1,3 +1,18 @@
+12.04.2021
+* Banned users' bids are cancelled [#610](https://github.com/internetee/auction_center/issues/610)
+* Bump bootsnap to 1.7.3 [#634](https://github.com/internetee/auction_center/pull/634)
+* Bump scenic to 1.5.4 [#635](https://github.com/internetee/auction_center/pull/635)
+* Bump chartkick to 4.0.3 [#636](https://github.com/internetee/auction_center/pull/636)
+* Bump sprocets to 4.0.2 [#637](https://github.com/internetee/auction_center/pull/637)
+* Bump pg to 1.2.3 [#638](https://github.com/internetee/auction_center/pull/638)
+* Bump karma to 6.3.2 [#639](https://github.com/internetee/auction_center/pull/639)
+* Bump highcharts to 9.0.1 [#640](https://github.com/internetee/auction_center/pull/640)
+* Bump chartkick to 4.0.3 [#641](https://github.com/internetee/auction_center/pull/641)
+* Bump less to 3.13.1 [#642](https://github.com/internetee/auction_center/pull/642)
+* Bump less-loader to 7.3.0 [#643](https://github.com/internetee/auction_center/pull/643)
+* Bump upload-artifacts to 2.2.3 [#644](https://github.com/internetee/auction_center/pull/644)
+* Bump download-artifacts to 2.0.9 [#645](https://github.com/internetee/auction_center/pull/645)
+
 06.04.2021
 * Dependabot and github actions to keep gems updated [#617](https://github.com/internetee/auction_center/pull/617)
 * Bump upload-artifact to 2.2.2 [#618](https://github.com/internetee/auction_center/pull/618)
