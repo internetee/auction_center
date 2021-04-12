@@ -91,7 +91,9 @@
                                 <td><%= result.status.humanize %></td>
                                 <td>
                                     <%- unless result.no_bids? %>
-                                        <%= result.offer.billing_profile&.name %>
+                                        <%- unless result.offer.nil? %>
+                                            <%= result.offer.billing_profile&.name %>
+                                        <% end %>
                                     <% end %>
                                 </td>
                                 <td></td>
