@@ -5,6 +5,13 @@ module Admin
     before_action :authorize_user
     before_action :set_ban, only: %i[show destroy]
 
+    def search
+      search_string = search_params[:search_string]
+      @users = User.where("given_names ILIKE ? OR surname ILIKE ?", "%#{search_string}%", "%#{search_string}%").all
+      # @users = User.where(given_names: search_string)
+      @bans = Ban.where(user_id: @users.ids)
+    end
+
     # POST /admin/bans
     def create
       @ban = Ban.new(create_params)
@@ -36,6 +43,11 @@ module Admin
     end
 
     private
+
+    def search_params
+      search_params_copy = params.dup
+      search_params_copy.permit(:search_string, order: :origin)
+    end
 
     def set_ban
       @ban = Ban.find(params[:id])
