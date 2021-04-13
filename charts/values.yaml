@@ -5,12 +5,12 @@
 replicaCount: 1
 
 image:
-  repository: internetee/auction
+  repository: ghcr.io/internetee/auction_center
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
 
-imagePullSecrets: []
+imagePullSecrets: regcred-eisbot
 nameOverride: "auction"
 fullnameOverride: "auction-st"
 

@@ -33,15 +33,13 @@ jobs:
           docker build -t $(cat TAG) -f Dockerfile.generic .
           docker images
 
-      # - name: Push to GitHub Packages
-      #   uses: docker/build-push-action@v1
-      #   with:
-      #     username: ${{ github.actor }}
-      #     password: ${{ secrets.GHCR_PAT }}
-      #     registry: docker.pkg.github.com
-      #     repository: internetee/auction_center
-      #     tags: 
-      #     tag_with_ref: true
+      - name: Build static content image
+        run: |
+          docker create -ti --name rails $(cat TAG) bash
+          docker cp rails:/opt/webapps/app/public/ ./public/
+          ls -l
+          ls -l public/
+
       - name: Push Docker image to gh container registry
         env:
           PASSWORD: ${{ secrets.GHCR }}
