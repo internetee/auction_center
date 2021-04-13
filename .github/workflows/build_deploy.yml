@@ -22,6 +22,7 @@ jobs:
         run: |
           SHORT_SHA=$(git describe --always)
           echo "ghcr.io/internetee/auction_center:RC_$SHORT_SHA" > TAG
+          echo "ghcr.io/internetee/auction_center:RC_STATIC_$SHORT_SHA" > STATIC_TAG
 
       - name: Set config files for build
         run: |
@@ -31,14 +32,12 @@ jobs:
       - name: Build image
         run: |
           docker build -t $(cat TAG) -f Dockerfile.generic .
-          docker images
 
-      - name: Build static content image
+      - name: Build proxy image with static content
         run: |
           docker create -ti --name rails $(cat TAG) bash
           docker cp rails:/opt/webapps/app/public/ ./public/
-          ls -l
-          ls -l public/
+          docker build -t $(cat STATIC_TAG) -f Dockerfile.generic-static .
 
       - name: Push Docker image to gh container registry
         env:
@@ -46,3 +45,4 @@ jobs:
         run: |
           echo $PASSWORD | docker login ghcr.io -u eisbot --password-stdin
           docker push $(cat TAG)
+          docker push $(cat STATIC_TAG)
