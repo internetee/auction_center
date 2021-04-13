@@ -53,10 +53,10 @@ spec:
             - bash
             - -c 
             - "bundle exec rails server -b 0.0.0.0"
-          # volumeMounts:
-          # - name: database-config
-          #   mountPath: "/opt/webapps/app/config/database.yml"
-          #   subPath: "database.yml"
+          volumeMounts:
+          - name: database-config
+            mountPath: "/opt/webapps/app/config/database.yml"
+            subPath: "database.yml"
           # - name: customization-config
           #   mountPath: /opt/webapps/app/config/customization.yml
           #   subPath: customization.yml

@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "charts.fullname" . }}
+  name: {{ include "charts.fullname" . }}-static
   labels:
     {{- include "charts.labels" . | nindent 4 }}
     auction: static

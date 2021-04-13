@@ -39,6 +39,8 @@ securityContext: {}
 service:
   type: NodePort
   port: 80
+  rails:
+    port: 3000
 
 
 ingress:
@@ -52,7 +54,7 @@ ingress:
       paths:
       - path: /
         backend:
-          serviceName: auction-st
+          serviceName: auction-st-static
           servicePort: 80
   tls:
     - secretName: st-auction-cert
