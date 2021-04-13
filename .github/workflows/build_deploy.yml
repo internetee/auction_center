@@ -34,15 +34,15 @@ jobs:
           docker build -t $(cat TAG) -f Dockerfile.generic .
 
       - name: Build proxy image with static content
+        env:
+          PASSWORD: ${{ secrets.GHCR }}
         run: |
+          echo $PASSWORD | docker login ghcr.io -u eisbot --password-stdin
           docker create -ti --name rails $(cat TAG) bash
           docker cp rails:/opt/webapps/app/public/ ./public/
           docker build -t $(cat STATIC_TAG) -f Dockerfile.generic-static .
 
       - name: Push Docker image to gh container registry
-        env:
-          PASSWORD: ${{ secrets.GHCR }}
         run: |
-          echo $PASSWORD | docker login ghcr.io -u eisbot --password-stdin
           docker push $(cat TAG)
           docker push $(cat STATIC_TAG)
