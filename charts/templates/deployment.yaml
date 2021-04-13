@@ -21,7 +21,7 @@ spec:
         auction: rails
     spec:
       containers:
-        - name: {{ .Chart.Name }}.rails
+        - name: {{ .Chart.Name }}-rails
           tty: true
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
