@@ -38,7 +38,7 @@ securityContext: {}
 
 service:
   type: NodePort
-  port: 3000
+  port: 80
 
 
 ingress:
@@ -53,7 +53,7 @@ ingress:
       - path: /
         backend:
           serviceName: auction-st
-          servicePort: 3000
+          servicePort: 80
   tls:
     - secretName: st-auction-cert
       hosts:

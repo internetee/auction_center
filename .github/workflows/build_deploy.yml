@@ -22,7 +22,7 @@ jobs:
         run: |
           SHORT_SHA=$(git describe --always)
           echo "ghcr.io/internetee/auction_center:RC_$SHORT_SHA" > TAG
-          echo "ghcr.io/internetee/auction_center:RC_STATIC_$SHORT_SHA" > STATIC_TAG
+          echo "ghcr.io/internetee/auction_center:STATIC_RC_$SHORT_SHA" > STATIC_TAG
 
       - name: Set config files for build
         run: |

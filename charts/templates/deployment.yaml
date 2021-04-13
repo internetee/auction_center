@@ -4,10 +4,12 @@ metadata:
   name: {{ include "charts.fullname" . }}
   labels:
     {{- include "charts.labels" . | nindent 4 }}
+    auction: rails
 spec:
   selector:
     matchLabels:
       {{- include "charts.selectorLabels" . | nindent 6 }}
+      auction: rails
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -16,9 +18,10 @@ spec:
       {{- end }}
       labels:
         {{- include "charts.selectorLabels" . | nindent 8 }}
+        auction: rails
     spec:
       containers:
-        - name: {{ .Chart.Name }}
+        - name: {{ .Chart.Name }}.rails
           tty: true
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}

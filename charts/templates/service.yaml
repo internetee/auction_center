@@ -4,6 +4,7 @@ metadata:
   name: {{ include "charts.fullname" . }}
   labels:
     {{- include "charts.labels" . | nindent 4 }}
+    auction: static
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -13,3 +14,4 @@ spec:
        name: http
   selector:
     {{- include "charts.selectorLabels" . | nindent 4 }}
+    auction: static
