@@ -24,15 +24,22 @@ module Admin
 
     # GET /admin/results/search
     def search
-      domain_name = search_params[:domain_name]
-      @origin = domain_name || search_params.dig(:order, :origin)
+      search_string = search_params[:domain_name]
+      statuses_contains = params[:statuses_contains]
 
-      @results = Result.joins(:auction)
-                       .includes(:offer, :invoice)
-                       .where('auctions.domain_name ILIKE ?', "%#{@origin}%")
-                       .accessible_by(current_ability)
-                       .order(orderable_array)
-                       .page(1)
+      @origin = search_string || search_params.dig(:order, :origin)
+      @users = User.where("given_names ILIKE ? OR surname ILIKE ? OR email ILIKE ?", 
+                          "%#{search_string}%", "%#{search_string}%", "%#{search_string}%").all
+      @billing_profile = BillingProfile.where("name ILIKE ?", "%#{search_string}%").all
+      user_ids = (@users.ids + [@billing_profile.select(:user_id)]).uniq
+
+      @results = (Result.joins(:auction)
+                      .includes(:offer, :invoice)
+                      .where('auctions.domain_name ILIKE ?', "%#{@origin}%")
+                      .accessible_by(current_ability)
+                      .order(orderable_array) + Result.where(user_id: user_ids).page(1)).uniq
+      return if statuses_contains.nil?
+      @results = @results.select { |result| statuses_contains.include? result.status }
     end
 
     # GET /admin/results/1
@@ -49,7 +56,7 @@ module Admin
 
     def search_params
       search_params_copy = params.dup
-      search_params_copy.permit(:domain_name, order: :origin)
+      search_params_copy.permit(:domain_name, :statuses_contains, order: :origin)
     end
 
     def buyer_name
