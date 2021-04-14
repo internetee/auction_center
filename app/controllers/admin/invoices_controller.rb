@@ -25,18 +25,16 @@ module Admin
 
     # GET /admin/invoices/search
     def search
-      full_list = search_params[:full_list]
       search_string = search_params[:search_string]
       statuses_contains = params[:statuses_contains]
       @origin = search_string || search_params.dig(:order, :origin)
 
-      @invoices = search_scope(@origin).accessible_by(current_ability)
-                                       .order(orderable_array)
+      set_invoices_search_scope
 
-      return @invoices = Kaminari.paginate_array(@invoices).page(params[:page]) if statuses_contains.nil?
+      return reform_array_to_paginate_array if statuses_contains.nil?
 
-      @invoices = @invoices.select { |invoice| statuses_contains.include? invoice.status }
-      @invoices = Kaminari.paginate_array(@invoices).page(params[:page]).per(10)
+      statuses_filter(statuses_contains)
+      reform_array_to_paginate_array
     end
 
     def search_scope(origin)
@@ -107,6 +105,19 @@ module Admin
     end
 
     private
+
+    def set_invoices_search_scope
+      @invoices = search_scope(@origin).accessible_by(current_ability)
+                                       .order(orderable_array)
+    end
+
+    def statuses_filter(statuses)
+      @invoices = @invoices.select { |invoice| statuses.include? invoice.status }
+    end
+
+    def reform_array_to_paginate_array
+      @invoices = Kaminari.paginate_array(@invoices).page(params[:page])
+    end
 
     def set_invoice
       @invoice = Invoice.includes(:invoice_items).find(params[:id])

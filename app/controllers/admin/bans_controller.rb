@@ -7,11 +7,12 @@ module Admin
 
     def search
       search_string = search_params[:search_string]
-      @users = User.where("given_names ILIKE ? OR surname ILIKE ? OR email ILIKE ?", 
+      @users = User.where('given_names ILIKE ? OR surname ILIKE ? OR email ILIKE ?',
                           "%#{search_string}%", "%#{search_string}%", "%#{search_string}%").all
-      @billing_profile = BillingProfile.where("name ILIKE ?", "%#{search_string}%").all
-      
-      @bans = (Ban.where(user_id: @users.ids) + Ban.where(user_id: @billing_profile.select(:user_id))).uniq
+      @billing_profile = BillingProfile.where('name ILIKE ?', "%#{search_string}%").all
+      user_ids = (@users.ids + [@billing_profile.select(:user_id)]).uniq
+
+      @bans = Ban.where(user_id: user_ids).uniq
     end
 
     # POST /admin/bans

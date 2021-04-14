@@ -25,7 +25,7 @@
 
                 .input {
                     flex: 1 1 auto;
-                    font-size: 1.143em;
+                    font-size: 3em;
 
                     input {
                         font-size: 16px;
@@ -282,11 +282,13 @@
 
         &.selection {
             &.dropdown {
-                padding-top: 13px;
-                padding-bottom: 13px;
+                padding-top: 5px;
+                padding-bottom: 5px;
+                padding-right: 55px;
                 font-size: 18px;
                 line-height: 20px;
                 font-weight: 500;
+                margin-right: 20px;
 
                 & > .delete.icon,
                 & > .dropdown.icon,
