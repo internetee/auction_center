@@ -1,3 +1,6 @@
+15.04.2021
+* Improved search and filtering option in admin [#597](https://github.com/internetee/auction_center/issues/597)
+
 12.04.2021
 * Banned users' bids are cancelled [#610](https://github.com/internetee/auction_center/issues/610)
 * Bump bootsnap to 1.7.3 [#634](https://github.com/internetee/auction_center/pull/634)
