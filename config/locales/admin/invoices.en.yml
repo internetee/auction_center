@@ -3,9 +3,13 @@ en:
     invoices:
       index:
         title: "Invoices"
+        status: "Select status"
+        full_list: "Full list"
 
       search:
         title: "Invoice search"
+        status: "Select status"
+        full_list: "Full list"
 
       show:
         title: "Invoice no. %{invoice_number}"

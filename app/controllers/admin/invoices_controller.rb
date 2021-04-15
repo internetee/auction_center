@@ -26,11 +26,15 @@ module Admin
     # GET /admin/invoices/search
     def search
       search_string = search_params[:search_string]
+      statuses_contains = params[:statuses_contains]
       @origin = search_string || search_params.dig(:order, :origin)
 
-      @invoices = search_scope(@origin).accessible_by(current_ability)
-                                       .order(orderable_array)
-                                       .page(1)
+      set_invoices_search_scope
+
+      return paginate_result if statuses_contains.nil?
+
+      statuses_filter(statuses_contains)
+      paginate_result
     end
 
     def search_scope(origin)
@@ -102,6 +106,19 @@ module Admin
 
     private
 
+    def set_invoices_search_scope
+      @invoices = search_scope(@origin).accessible_by(current_ability)
+                                       .order(orderable_array)
+    end
+
+    def statuses_filter(statuses)
+      @invoices = @invoices.select { |invoice| statuses.include? invoice.status }
+    end
+
+    def paginate_result
+      @invoices = Kaminari.paginate_array(@invoices).page(params[:page])
+    end
+
     def set_invoice
       @invoice = Invoice.includes(:invoice_items).find(params[:id])
     end
@@ -120,7 +137,7 @@ module Admin
 
     def search_params
       search_params_copy = params.dup
-      search_params_copy.permit(:search_string, order: :origin)
+      search_params_copy.permit(:search_string, :statuses_contains, order: :origin)
     end
 
     def authorize_user

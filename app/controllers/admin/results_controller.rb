@@ -24,15 +24,15 @@ module Admin
 
     # GET /admin/results/search
     def search
-      domain_name = search_params[:domain_name]
-      @origin = domain_name || search_params.dig(:order, :origin)
+      search_string = search_params[:domain_name]
+      statuses_contains = params[:statuses_contains]
 
-      @results = Result.joins(:auction)
-                       .includes(:offer, :invoice)
-                       .where('auctions.domain_name ILIKE ?', "%#{@origin}%")
-                       .accessible_by(current_ability)
-                       .order(orderable_array)
-                       .page(1)
+      @origin = search_string || search_params.dig(:order, :origin)
+      @results = return_search_results(search_string)
+
+      return if statuses_contains.nil?
+
+      statuses_filter(statuses_contains)
     end
 
     # GET /admin/results/1
@@ -47,9 +47,46 @@ module Admin
 
     private
 
+    def return_search_results(search_string)
+      user_ids = return_uniq_user_ids(search_string)
+      (search_domain_names_result + search_by_users_ids(user_ids)).uniq
+    end
+
+    def return_uniq_user_ids(search_string)
+      users = find_users(search_string)
+      billing_profile_user_ids = find_users_from_billing_profile(search_string)
+      (users.ids + [billing_profile_user_ids]).uniq
+    end
+
+    def find_users_from_billing_profile(search_string)
+      billing_profile = BillingProfile.where('name ILIKE ?', "%#{search_string}%").all
+      billing_profile.select(:user_id)
+    end
+
+    def find_users(search_string)
+      User.where('given_names ILIKE ? OR surname ILIKE ? OR email ILIKE ?',
+                 "%#{search_string}%", "%#{search_string}%", "%#{search_string}%").all
+    end
+
+    def statuses_filter(statuses)
+      @results = @results.select { |result| statuses.include? result.status }
+    end
+
+    def search_by_users_ids(user_ids)
+      Result.where(user_id: user_ids).page(1)
+    end
+
+    def search_domain_names_result
+      Result.joins(:auction)
+            .includes(:offer, :invoice)
+            .where('auctions.domain_name ILIKE ?', "%#{@origin}%")
+            .accessible_by(current_ability)
+            .order(orderable_array)
+    end
+
     def search_params
       search_params_copy = params.dup
-      search_params_copy.permit(:domain_name, order: :origin)
+      search_params_copy.permit(:domain_name, :statuses_contains, order: :origin)
     end
 
     def buyer_name
