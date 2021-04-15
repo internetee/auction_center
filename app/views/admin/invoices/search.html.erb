@@ -9,7 +9,7 @@
         <%= form_with(url: search_admin_invoices_path, local: true, method: :get, class: 'ui big form') do |f| %>
             <div class="inline fields">
                 <div class="field">
-                    <%= label_tag :full_list, "Full list?" =%>
+                    <%= label_tag :full_list, t('admin.invoices.search.full_list') =%>
                     <%= check_box_tag :full_list %>
                 </div>
                 <div class="field">
@@ -18,7 +18,7 @@
                 <div class="field">
                     <%= select_tag :statuses_contains,
                     options_for_select(Invoice.statuses, params[:statuses_contains]), 
-                    { multiple: true, class: 'ui selection dropdown', prompt: 'Select status' } %> 
+                    { multiple: true, class: 'ui selection dropdown', prompt: t('admin.invoices.search.status') } %> 
                 </div>
                 <div class="field">
                     <%= f.button(class: "ui icon primary button") do %>

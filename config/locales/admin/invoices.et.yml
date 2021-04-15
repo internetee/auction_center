@@ -3,9 +3,13 @@ et:
     invoices:
       index:
         title: "Arved"
+        status: "Valige olek"
+        full_list: "Täielik nimekiri"
 
       search:
         title: "Arve otsing"
+        status: "Valige olek"
+        full_list: "Täielik nimekiri"
 
       show:
         title: "Arve nr. %{invoice_number}"

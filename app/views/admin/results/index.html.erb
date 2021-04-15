@@ -14,7 +14,7 @@
                 <div class="field">
                     <%= select_tag :statuses_contains,
                     options_for_select(Result.statuses, params[:statuses_contains]), 
-                    { multiple: true, class: 'ui selection dropdown', prompt: 'Select status' } %> 
+                    { multiple: true, class: 'ui selection dropdown', prompt: t('admin.results.index.status') } %> 
                 </div>
 
                 <div class="field">

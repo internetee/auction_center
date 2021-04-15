@@ -1,5 +1,7 @@
 et:
   admin:
     bans:
+      search:
+        title: "Otsige keeldusid"
       index:
         title: "Keelud"

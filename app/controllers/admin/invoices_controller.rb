@@ -31,10 +31,10 @@ module Admin
 
       set_invoices_search_scope
 
-      return reform_array_to_paginate_array if statuses_contains.nil?
+      return paginate_result if statuses_contains.nil?
 
       statuses_filter(statuses_contains)
-      reform_array_to_paginate_array
+      paginate_result
     end
 
     def search_scope(origin)
@@ -115,7 +115,7 @@ module Admin
       @invoices = @invoices.select { |invoice| statuses.include? invoice.status }
     end
 
-    def reform_array_to_paginate_array
+    def paginate_result
       @invoices = Kaminari.paginate_array(@invoices).page(params[:page])
     end
 
