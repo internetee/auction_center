@@ -1,4 +1,4 @@
-name: build and deploy test environment on pr
+name: build and deploy on pullrequest
 
 on:
   pull_request:
@@ -11,7 +11,7 @@ on:
 
 jobs:
   
-  build_and_test:
+  build:
     runs-on: ubuntu-20.04
 
     steps:
@@ -29,11 +29,11 @@ jobs:
           cp config/database.yml.sample config/database.yml
           ls -l config/
 
-      - name: Build image
+      - name: Build rails image
         run: |
           docker build -t $(cat TAG) -f Dockerfile.generic .
 
-      - name: Build proxy image with static content
+      - name: Build static content image
         env:
           PASSWORD: ${{ secrets.GHCR }}
         run: |
@@ -42,13 +42,13 @@ jobs:
           docker cp rails:/opt/webapps/app/public/ ./public/
           docker build -t $(cat STATIC_TAG) -f Dockerfile.generic-static .
 
-      - name: Push Docker image to gh container registry
+      - name: Push Docker images to gh container registry
         run: |
           docker push $(cat TAG)
           docker push $(cat STATIC_TAG)
 
   deploy:
-    needs: build_and_test
+    needs: build
     runs-on: [self-hosted, helm-kubectl]
     env:
       K_CONFIG: ${{ secrets.KUBE_CONFIG }}
