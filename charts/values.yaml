@@ -41,7 +41,9 @@ service:
   port: 80
   rails:
     port: 3000
-
+    
+scheduler:
+  enabled: false
 
 ingress:
   enabled: true
@@ -53,6 +55,10 @@ ingress:
     - host: riigipilv.tld.ee
       paths:
       - path: /
+        backend:
+          serviceName: auction-st-rails
+          servicePort: 3000
+      - path: /packs
         backend:
           serviceName: auction-st-static
           servicePort: 80
