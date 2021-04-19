@@ -1,4 +1,4 @@
-FROM ghcr.io/internetee/auction_center:static_base-v0.1
+FROM nginx:1.19.9-alpine
 LABEL org.opencontainers.image.source=https://github.com/internetee/auction_center
 
 COPY ./public/ /opt/webapps/app/public/
