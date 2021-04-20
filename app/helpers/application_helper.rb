@@ -22,9 +22,9 @@ module ApplicationHelper
   end
 
   def banned_banner
-    return unless session['auction.bans']
+    return unless current_user&.current_bans
 
-    domains, valid_until = session['auction.bans']
+    domains, valid_until = current_user&.current_bans
     message = ban_error_message(domains, valid_until)
     return unless message
 
@@ -40,24 +40,14 @@ module ApplicationHelper
   private
 
   def ban_error_message(domains, valid_until)
-    if current_user.completely_banned?
+    if current_user&.completely_banned?
       t('auctions.banned_completely', valid_until: valid_until.to_date,
                                       ban_number_of_strikes: Setting.find_by(
                                         code: 'ban_number_of_strikes'
                                       ).retrieve)
     else
-      active_domains = check_active_auctions_for(domains)
-      if active_domains.count.positive?
-        I18n.t('auctions.banned', domain_names: active_domains.join(', '))
-      else
-        ''
-      end
+      I18n.t('auctions.banned', domain_names: domains.join(', '))
     end
-  end
-
-  def check_active_auctions_for(domains)
-    active_auction_domains = Auction.active.pluck(:domain_name)
-    domains.select { |element| active_auction_domains.include?(element) }
   end
 
   def violation_message(domains_count)

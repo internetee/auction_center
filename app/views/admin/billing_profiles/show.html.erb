@@ -1,7 +1,7 @@
 <% content_for :hero do %>
-    <div class="hero orange">
-        <h1><%= t('.title') %></h1>
-    </div>
+<div class="hero orange">
+    <h1><%= t('.title') %></h1>
+</div>
 <% end %>
 
 <div class="u-container">
@@ -12,7 +12,7 @@
             </h2>
             <div class="body">
                 <% unless @billing_profile.user %>
-                    <p><%= t('billing_profiles.orphaned') %></p>
+                <p><%= t('billing_profiles.orphaned') %></p>
                 <% end %>
                 <table class="ui table very basic padded">
                     <tbody>
@@ -32,11 +32,6 @@
                         </tr>
 
                         <tr>
-                            <td><strong><%= t('billing_profiles.state') %></strong></td>
-                            <td><%= @billing_profile.state %></td>
-                        </tr>
-
-                        <tr>
                             <td><strong><%= t('billing_profiles.postal_code') %></strong></td>
                             <td><%= @billing_profile.postal_code %></td>
                         </tr>
@@ -51,7 +46,7 @@
 
             <div class="buttons">
                 <%- if @billing_profile.user %>
-                    <%= link_to t(:user), admin_user_path(@billing_profile.user), class: "ui button primary" %>
+                <%= link_to t(:user), admin_user_path(@billing_profile.user), class: "ui button primary" %>
                 <% end %>
             </div>
         </div>

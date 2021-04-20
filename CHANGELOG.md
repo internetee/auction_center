@@ -1,3 +1,45 @@
+15.04.2021
+* Improved search and filtering option in admin [#597](https://github.com/internetee/auction_center/issues/597)
+
+12.04.2021
+* Banned users' bids are cancelled [#610](https://github.com/internetee/auction_center/issues/610)
+* Bump bootsnap to 1.7.3 [#634](https://github.com/internetee/auction_center/pull/634)
+* Bump scenic to 1.5.4 [#635](https://github.com/internetee/auction_center/pull/635)
+* Bump chartkick to 4.0.3 [#636](https://github.com/internetee/auction_center/pull/636)
+* Bump sprocets to 4.0.2 [#637](https://github.com/internetee/auction_center/pull/637)
+* Bump pg to 1.2.3 [#638](https://github.com/internetee/auction_center/pull/638)
+* Bump karma to 6.3.2 [#639](https://github.com/internetee/auction_center/pull/639)
+* Bump highcharts to 9.0.1 [#640](https://github.com/internetee/auction_center/pull/640)
+* Bump chartkick to 4.0.3 [#641](https://github.com/internetee/auction_center/pull/641)
+* Bump less to 3.13.1 [#642](https://github.com/internetee/auction_center/pull/642)
+* Bump less-loader to 7.3.0 [#643](https://github.com/internetee/auction_center/pull/643)
+* Bump upload-artifacts to 2.2.3 [#644](https://github.com/internetee/auction_center/pull/644)
+* Bump download-artifacts to 2.0.9 [#645](https://github.com/internetee/auction_center/pull/645)
+
+06.04.2021
+* Dependabot and github actions to keep gems updated [#617](https://github.com/internetee/auction_center/pull/617)
+* Bump upload-artifact to 2.2.2 [#618](https://github.com/internetee/auction_center/pull/618)
+* Bump download-artifact to 2.0.8 [#619](https://github.com/internetee/auction_center/pull/619)
+* Bump byebug to 11.1.3 [#620](https://github.com/internetee/auction_center/pull/620)
+* Bump web-console to 4.1.0 [#621](https://github.com/internetee/auction_center/pull/621)
+* Bump pry to 0.14.0 [#622](https://github.com/internetee/auction_center/pull/622)
+* Bump cancancan to 3.2.1 [#623](https://github.com/internetee/auction_center/pull/623)
+* Bump webdrivers to 4.6.0 [#624](https://github.com/internetee/auction_center/pull/624)
+* Bump typeface-raleway to 1.1.13 [#626](https://github.com/internetee/auction_center/pull/626)
+* Bump terser-webpack-plugin to 5.1.1 [#627](https://github.com/internetee/auction_center/pull/627)
+* Bump karma-coverage to 2.0.3 [#628](https://github.com/internetee/auction_center/pull/628)
+* Added webpack [#630](https://github.com/internetee/auction_center/pull/630)
+
+31.03.2021
+* Removed redundant state field from the payment profile view [#612](https://github.com/internetee/auction_center/issues/612)
+* Bump y18n to 4.0.1 [#613](https://github.com/internetee/auction_center/pull/613)
+
+24.03.2021
+* Fixed ban message on redeeming the last violation [#609](https://github.com/internetee/auction_center/issues/609)
+
+23.03.2021
+* Overdue invoices are split into active bans and cancelled groups [#607](https://github.com/internetee/auction_center/issues/607)
+
 18.03.2021
 * Added option to redeem invoice due date violations by paying for the invoice after due and releasing the ban [#590](https://github.com/internetee/auction_center/issues/590)
 

@@ -110,7 +110,61 @@ class AutomaticBanTest < ActiveSupport::TestCase
     assert_equal(['user@auction.test'], last_email.to)
   end
 
+  def test_automatic_ban_clear_for_active_bid_of_active_auction
+    invoice, domain_name = create_bannable_offence(@user)
+    auction = Auction.find_by(domain_name: domain_name)
+    auction.update(starts_at: Time.now - 2.days, ends_at: Time.now + 1.day)
+
+    ban = AutomaticBan.new(invoice: invoice, user: @user, domain_name: domain_name)
+    
+    ban.create
+    offer = @user.offers.find_by(auction_id: auction.id)
+    assert_not offer.present?
+  end
+
+  def test_automatic_ban_clear_or_active_bids_for_long_ban
+    invoice, domain_name1 = create_bannable_offence(@user)
+    invoice, domain_name2 = create_bannable_offence(@user)
+    invoice, domain_name3 = create_bannable_offence(@user)
+    invoice, domain_name4 = create_bannable_offence(@user)
+
+    auction1 = make_auction(domain_name1)
+    auction2 = make_auction(domain_name2)
+    auction3 = make_auction(domain_name3)
+    auction4 = make_auction(domain_name4)
+
+    assert @user.offers.find_by(auction_id: auction1.id).present?
+    assert @user.offers.find_by(auction_id: auction2.id).present?
+    assert @user.offers.find_by(auction_id: auction3.id).present?
+    assert @user.offers.find_by(auction_id: auction4.id).present?
+
+    AutomaticBan.new(invoice: invoice, user: @user, domain_name: domain_name1).create
+    AutomaticBan.new(invoice: invoice, user: @user, domain_name: domain_name2).create
+    AutomaticBan.new(invoice: invoice, user: @user, domain_name: domain_name3).create
+
+    assert @user.completely_banned?
+
+    assert auction1.in_progress?
+    assert auction2.in_progress?
+    assert auction3.in_progress?
+    assert auction4.in_progress?
+
+    assert_equal @user.bans.count, 3
+
+    assert_not @user.offers.find_by(auction_id: auction1.id).present?
+    assert_not @user.offers.find_by(auction_id: auction2.id).present?
+    assert_not @user.offers.find_by(auction_id: auction3.id).present?
+    assert_not @user.offers.find_by(auction_id: auction4.id).present?
+  end
+
+  private
   # Test helpers start here
+  def make_auction(domain_name)
+    auction = Auction.find_by(domain_name: domain_name)
+    auction.update(starts_at: Time.now - 2.days, ends_at: Time.now + 1.day)
+    auction
+  end
+
   def create_bannable_offence(user)
     result = create_result_for_ended_auction_with_offers(user)
     invoice = create_overdue_invoice(result)

@@ -22,7 +22,8 @@
 
 <div class="ui container">
     <div class="margin-block">
-        <table class="ui table unstackable fixed" id="bans-table">
+    <%= link_to t(:back), :back, class: "ui button primary" %>
+        <table class="ui table unstackable fixed" id="my-outstanding-invoices-table">
             <thead>
                 <tr>
                     <th scope="col"><%= t('user') %>
@@ -48,9 +49,9 @@
                 </tr>
             </thead>
 
-            <tbody id="bans-table-body">
+            <tbody class="user-table-body">
                 <% @bans.each do |ban| %>
-                    <tr class="bans-table-row">
+                        <tr class="bans-table-row">
                         <td class="ban-table-ban-name">
                             <%= link_to ban.user.display_name, admin_user_path(ban.user) %></td>
                         <td><%= l(ban.valid_from) %></td>
@@ -73,7 +74,6 @@
             </tbody>
         </table>
 
-        <%= paginate @bans %>
-        <br><br>
+        <h4><%= t('search_limit', limit: Kaminari.config.default_per_page) %></h4>
     </div>
 </div>

@@ -1,5 +1,7 @@
 en:
   admin:
     bans:
+      search:
+        title: "Search bans"
       index:
         title: "Bans"

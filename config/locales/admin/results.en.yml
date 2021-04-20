@@ -5,9 +5,11 @@ en:
         title: "Auction results"
         auctions_needing_result: "These auctions have finished, but don't have a result yet:"
         create_results: "Create results"
+        status: "Select status"
 
       search:
         title: "Result search"
+        status: "Select status"
 
       show:
         title: "Auction result"

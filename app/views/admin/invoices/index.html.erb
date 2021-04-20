@@ -5,18 +5,28 @@
 <% end %>
 
 <div class="features-grid top narrow grey">
-    <div class="ui search">
-        <div class="ui massive input icon">
-            <%= form_with(url: search_admin_invoices_path, local: true, method: :get) do |f| %>
-                <div class="ui input icon">
+    <div class="ui input">
+        <%= form_with(url: search_admin_invoices_path, local: true, method: :get, class: 'ui big form') do |f| %>
+            <div class="inline fields">
+                <div class="field">
+                    <%= label_tag :full_list, t('admin.invoices.index.full_list') =%>
+                    <%= check_box_tag :full_list %>
+                </div>
+                <div class="field">
                     <%= f.text_field :search_string, placeholder: t('search') %>
                 </div>
-
-                <%= f.button(class: "ui icon primary button") do %>
-                    <i aria-hidden="true" class="arrow right icon"></i>
-                <% end %>
-            <% end %>
-        </div>
+                <div class="field">
+                    <%= select_tag :statuses_contains,
+                    options_for_select(Invoice.statuses, params[:statuses_contains]), 
+                    { multiple: true, class: 'ui selection dropdown', prompt: t('admin.invoices.index.status') } %> 
+                </div>
+                <div class="field">
+                    <%= f.button(class: "ui icon primary button") do %>
+                        <i aria-hidden="true" class="arrow right icon"></i>
+                    <% end %>
+                </div>
+            </div>
+        <% end %>
     </div>
 </div>
 
@@ -88,7 +98,6 @@
                 <% end %>
             </tbody>
         </table>
+        <%= paginate @invoices %>
     </div>
-
-    <%= paginate @invoices %>
 </div>

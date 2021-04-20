@@ -5,9 +5,11 @@ et:
         title: "Oksjoni tulemused"
         auctions_needing_result: "Oksjonid on lõppenud, kuid tulemused ei ole veel teada:"
         create_results: "Loo tulemused"
+        status: "Valige olek"
 
       search:
         title: "Tulemuse otsing"
+        status: "Valige olek"
 
       show:
         title: "Oksjoni tulemus"

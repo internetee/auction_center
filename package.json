@@ -6,20 +6,20 @@
    },
    "dependencies": {
       "@rails/webpacker": "^5.2.1",
-      "chartkick": "^3.2.0",
-      "highcharts": "^7.2.2",
+      "chartkick": "^4.0.3",
+      "highcharts": "^9.0.1",
       "jquery": "^3.3.1",
-      "less": "3.9.0",
-      "less-loader": "^5.0.0",
+      "less": "3.13.1",
+      "less-loader": "^7.3.0",
       "libphonenumber-js": "^1.5.1",
       "optimize-css-assets-webpack-plugin": "^5.0.4",
       "punycode": "^2.1.1",
       "rails-ujs": "^5.2.1",
       "resolve-url-loader": "^3.0.0",
       "sass-loader": "^10.0.1",
-      "terser-webpack-plugin": "^4.1.0",
+      "terser-webpack-plugin": "^5.1.1",
       "turbolinks": "^5.2.0",
-      "typeface-raleway": "^0.0.75"
+      "typeface-raleway": "^1.1.13"
    },
    "version": "0.0.1",
    "description": "Domain auction software",
@@ -31,13 +31,14 @@
       "Artur Beljajev <artur.beljajev@eestiinternet.ee>"
    ],
    "devDependencies": {
-      "karma": "^5.0.0",
+      "karma": "^6.3.2",
+      "webpack": "^4.0.0",
       "karma-chrome-launcher": "^3.0.0",
-      "karma-coverage": "^1.1.2",
+      "karma-coverage": "^2.0.3",
       "karma-jquery": "^0.2.3",
       "karma-qunit": "^4.0.0",
       "karma-webpack": "^4.0.2",
-      "qunit": "^2.6.2",
+      "qunit": "^2.15.0",
       "webpack-dev-server": "^3.1.14"
    }
 }

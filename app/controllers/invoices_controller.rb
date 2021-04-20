@@ -24,9 +24,10 @@ class InvoicesController < ApplicationController
 
   # GET /invoices
   def index
-    @issued_invoices = get_invoices_list_by_status(Invoice.statuses[:issued])
-    @paid_invoices = get_invoices_list_by_status(Invoice.statuses[:paid])
-    @cancelled_invoices = get_invoices_list_by_status(Invoice.statuses[:cancelled])
+    @issued_invoices = invoices_list_by_status(Invoice.statuses[:issued])
+    @paid_invoices = invoices_list_by_status(Invoice.statuses[:paid])
+    @cancelled_payable_invoices = invoices_list_by_status(Invoice.statuses[:cancelled]).with_ban
+    @cancelled_expired_invoices = invoices_list_by_status(Invoice.statuses[:cancelled]).without_ban
   end
 
   # GET /invoices/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/download
@@ -37,9 +38,7 @@ class InvoicesController < ApplicationController
     send_data(raw_pdf, filename: @invoice.filename)
   end
 
-  private
-
-  def get_invoices_list_by_status(status)
+  def invoices_list_by_status(status)
     Invoice.accessible_by(current_ability)
            .where(user_id: current_user.id)
            .where(status: status)
