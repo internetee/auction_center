@@ -113,17 +113,27 @@ module PaymentOrders
 
     def linkpay_url_builder
       total = invoices_total&.format(symbol: nil, thousands_separator: false, decimal_mark: '.')
-      params = { 'transaction_amount' => total.to_s,
-                 'order_reference' => id,
-                 'linkpay_token' => LINKPAY_TOKEN }
-
-      data = params.to_query
+      data = linkpay_params(total).to_query
 
       hmac = OpenSSL::HMAC.hexdigest('sha256', KEY, data)
       "#{LINKPAY_PREFIX}?#{data}&hmac=#{hmac}"
     end
 
     private
+
+    def linkpay_params(total)
+      { 'transaction_amount' => total.to_s,
+        'order_reference' => id,
+        'invoice_number' => linkpay_invoice.id,
+        'customer_name' => linkpay_invoice.billing_profile.name,
+        'customer_email' => linkpay_invoice.user.email,
+        'custom_field_1' => linkpay_invoice.result.auction.domain_name,
+        'linkpay_token' => LINKPAY_TOKEN }
+    end
+
+    def linkpay_invoice
+      invoices.first
+    end
 
     def language
       if user&.locale == LANGUAGE_CODE_ET
