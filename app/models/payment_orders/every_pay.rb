@@ -125,7 +125,8 @@ module PaymentOrders
       { 'transaction_amount' => total.to_s,
         'order_reference' => id,
         'invoice_number' => linkpay_invoice.id,
-        'customer_name' => linkpay_invoice.billing_profile.name,
+        'customer_name' => linkpay_invoice.billing_profile.name
+                                          .parameterize(separator: '_', preserve_case: true),
         'customer_email' => linkpay_invoice.user.email,
         'custom_field_1' => linkpay_invoice.result.auction.domain_name,
         'linkpay_token' => LINKPAY_TOKEN }
