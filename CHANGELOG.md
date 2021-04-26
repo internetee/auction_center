@@ -1,3 +1,11 @@
+26.04.2021
+* Bump simplecom to 0.21.2 [#657](https://github.com/internetee/auction_center/pull/657)
+* Bump pdfkit to 0.8.5 [#658](https://github.com/internetee/auction_center/pull/658)
+* Bump recaptcha to 5.7.0 [#659](https://github.com/internetee/auction_center/pull/659)
+* Bump webmock to 3.12.2 [#660](https://github.com/internetee/auction_center/pull/660)
+* Bump bootsnap to 1.7.4 [#661](https://github.com/internetee/auction_center/pull/661)
+* Helm charts update: readinessProbe for rails and static container [#656](https://github.com/internetee/auction_center/pull/656)
+
 19.04.2021
 * Bump devise to 4.7.3 [#649](https://github.com/internetee/auction_center/pull/649)
 * Bump skylight to 5.0.1 [#650](https://github.com/internetee/auction_center/pull/650)
