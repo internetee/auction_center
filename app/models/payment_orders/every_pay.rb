@@ -113,6 +113,7 @@ module PaymentOrders
 
     def linkpay_url_builder
       total = invoices_total&.format(symbol: nil, thousands_separator: false, decimal_mark: '.')
+      create_predicate
       data = linkpay_params(total).to_query
 
       hmac = OpenSSL::HMAC.hexdigest('sha256', KEY, data)
@@ -121,9 +122,13 @@ module PaymentOrders
 
     private
 
+    def create_predicate
+      save && reload
+    end
+
     def linkpay_params(total)
       { 'transaction_amount' => total.to_s,
-        'order_reference' => id,
+        'order_reference' => uuid,
         'invoice_number' => linkpay_invoice.id,
         'customer_name' => linkpay_invoice.billing_profile.name
                                           .parameterize(separator: '_', preserve_case: true),

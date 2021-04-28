@@ -7,7 +7,7 @@ class LinkpayController < ApplicationController
   end
 
   def save_response
-    payment_order = PaymentOrder.find(linkpay_params[:order_reference].to_i)
+    payment_order = PaymentOrder.find_by(uuid: linkpay_params[:order_reference])
     return unless payment_order
 
     payment_order.response = {

@@ -19,7 +19,7 @@ class PaymentOrdersTest < ActionDispatch::IntegrationTest
 
   def test_response_from_linkpay_callback_endpoint
     params = {
-      order_reference: @payment_order.id.to_s,
+      order_reference: @payment_order.uuid.to_s,
       payment_reference: SecureRandom.uuid.to_s,
     }
     get linkpay_callback_path(params)
