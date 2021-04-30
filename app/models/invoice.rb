@@ -6,6 +6,7 @@ require 'countries'
 class Invoice < ApplicationRecord
   include Concerns::Invoice::BookKeeping
   include Concerns::Invoice::Payable
+  include Concerns::Invoice::Linkpayable
 
   alias_attribute :country_code, :alpha_two_country_code
   enum status: { issued: 'issued', paid: 'paid', cancelled: 'cancelled' }
@@ -143,14 +144,6 @@ class Invoice < ApplicationRecord
 
   def self.with_billing_profile(billing_profile_id:)
     Invoice.where(billing_profile_id: billing_profile_id)
-  end
-
-  def linkpay_url
-    return unless PaymentOrder.supported_methods.include?('PaymentOrders::EveryPay'.constantize)
-    return if paid?
-
-    payment_order = PaymentOrders::EveryPay.create(invoices: [self], user_id: user_id)
-    payment_order.linkpay_url_builder
   end
 
   private

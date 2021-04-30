@@ -7,8 +7,11 @@ class LinkpayController < ApplicationController
   end
 
   def save_response
-    payment_order = PaymentOrder.find_by(uuid: linkpay_params[:order_reference])
-    return unless payment_order
+    invoice = Invoice.find_by(id: linkpay_params[:order_reference])
+    return unless invoice
+    return unless PaymentOrder.supported_methods.include?('PaymentOrders::EveryPay'.constantize)
+
+    payment_order = PaymentOrders::EveryPay.create(invoices: [invoice])
 
     payment_order.response = {
       order_reference: linkpay_params[:order_reference],
