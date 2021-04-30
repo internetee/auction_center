@@ -21,10 +21,7 @@ jobs:
           echo "ghcr.io/internetee/auction_center:STATIC_RC_$SHORT_SHA" > STATIC_TAG
 
       - name: Set config files for build
-        env:
-          ST_C_YML: ${{ secrets.ST_CUSTOM_YML }}
         run: |
-          echo $ST_C_YML | base64 -di > ./config/customization.yml.remove_me
           cp config/customization.yml.sample config/customization.yml
           cp config/database.yml.sample config/database.yml
           ls -l config/        
