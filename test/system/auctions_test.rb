@@ -83,14 +83,14 @@ class AuctionsTest < ApplicationSystemTestCase
 
   def test_show_page_for_finished_auctions_still_exists
     visit(auction_path(@expired_auction.uuid))
-    assert(page.has_content?('h3', 'This auction has finished'))
-    assert(page.has_content?('dd', 'expired.test'))
+    assert(page.has_content?(:visible, 'This auction has finished'))
+    assert(page.has_content?(:visible, 'expired.test'))
   end
 
   def test_show_page_contains_the_details_of_the_auction
     visit(auction_path(@auction.uuid))
 
-    assert(page.has_content?('dd', 'with-offers.test'))
-    assert(page.has_content?('dd', '2010-07-06 10:30'))
+    assert(page.has_content?(:visible, 'with-offers.test'))
+    assert(page.has_content?(:visible, '2010-07-06 10:30'))
   end
 end

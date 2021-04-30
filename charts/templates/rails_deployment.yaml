@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "charts.fullname" . }}
+  labels:
+    {{- include "charts.labels" . | nindent 4 }}
+    auction: rails
+spec:
+  selector:
+    matchLabels:
+      {{- include "charts.selectorLabels" . | nindent 6 }}
+      auction: rails
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "charts.selectorLabels" . | nindent 8 }}
+        auction: rails
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}-rails
+          tty: true
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: APP_DBHOST
+              value: 195.43.87.134
+            - name: RAILS_ENV
+              value: staging
+            - name: SECRET_KEY_BASE
+              valueFrom:
+                secretKeyRef:
+                  name: st-auction-key-base
+                  key: SECRET_KEY_BASE
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          readinessProbe:
+            tcpSocket:
+              port: 3000
+            initialDelaySeconds: 20
+            periodSeconds: 10
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          command:
+            - bash
+            - -c 
+            - "bundle exec rails server -b 0.0.0.0"
+          volumeMounts:
+          - name: database-config
+            mountPath: "/opt/webapps/app/config/database.yml"
+            subPath: "database.yml"
+          # - name: customization-config
+          #   mountPath: /opt/webapps/app/config/customization.yml
+          #   subPath: customization.yml
+      imagePullSecrets:
+       - name: {{ .Values.imagePullSecrets }}
+      volumes:
+        - name: database-config
+          configMap: 
+            name: st-auction-db-config
+        - name: customization-config
+          configMap:
+            name: st-auction-custom-config
+
