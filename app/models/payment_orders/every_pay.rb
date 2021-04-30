@@ -102,7 +102,7 @@ module PaymentOrders
 
       self.response = body.merge(type: TRUSTED_DATA, timestamp: Time.zone.now)
       save
-      mark_invoice_as_paid
+      mark_invoice_as_paid if body['payment_state'] == 'settled'
     end
 
     # Check if the intermediary reports payment as settled and we can expect money on

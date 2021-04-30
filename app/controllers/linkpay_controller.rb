@@ -11,7 +11,7 @@ class LinkpayController < ApplicationController
     return unless invoice
     return unless PaymentOrder.supported_methods.include?('PaymentOrders::EveryPay'.constantize)
 
-    payment_order = PaymentOrders::EveryPay.create(invoices: [invoice])
+    payment_order = PaymentOrders::EveryPay.create(invoices: [invoice], user: invoice.user)
 
     payment_order.response = {
       order_reference: linkpay_params[:order_reference],
