@@ -65,7 +65,7 @@ ingress:
   tls:
     - secretName: st-auction-cert
       hosts:
-        - riigipilv.tdl.ee
+        - riigipilv.tld.ee
 
 resources:
   # We usually recommend not to specify default resources and to leave this as a conscious
