@@ -24,7 +24,8 @@ jobs:
         env:
           ST_C_YML: ${{ secrets.ST_CUSTOM_YML }}
         run: |
-          echo $ST_C_YML | base64 -di > ./config/customization.yml
+          echo $ST_C_YML | base64 -di > ./config/customization.yml.remove_me
+          cp config/customization.yml.sample config/customization.yml
           cp config/database.yml.sample config/database.yml
           ls -l config/        
 
