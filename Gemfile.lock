@@ -132,8 +132,8 @@ GEM
     httpclient (2.8.3)
     i18n (1.8.10)
       concurrent-ruby (~> 1.0)
-    jbuilder (2.9.1)
-      activesupport (>= 4.2.0)
+    jbuilder (2.11.2)
+      activesupport (>= 5.0.0)
     json (2.5.1)
     json-jwt (1.11.0)
       activesupport (>= 4.2)
@@ -344,7 +344,7 @@ DEPENDENCIES
   delayed_job_active_record
   devise
   directo!
-  jbuilder (~> 2.5)
+  jbuilder (~> 2.11)
   kaminari
   listen (>= 3.0.5, < 3.6)
   mimemagic (~> 0.3.10)
