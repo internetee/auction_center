@@ -6,6 +6,7 @@
    },
    "dependencies": {
       "@rails/webpacker": "^5.3.0",
+      "is-svg":  "^4.2.2",
       "chartkick": "^4.0.4",
       "highcharts": "^9.0.1",
       "jquery": "^3.3.1",
