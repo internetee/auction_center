@@ -1,3 +1,13 @@
+06.05.2021
+* Is-svg security update to 4.2.2 [#673](https://github.com/internetee/auction_center/pull/673)
+* Bump webpacker to 5.3.0 [#671](https://github.com/internetee/auction_center/pull/671)
+* Bump resolve-url-loader to 3.1.3 [#672](https://github.com/internetee/auction_center/pull/672)
+* Bump listen to 3.5.1 [#669](https://github.com/internetee/auction_center/pull/669)
+* Bump data_migrate to 7.0.0 [#668](https://github.com/internetee/auction_center/pull/668)
+* Bump chartkick to 4.0.4 [#666](https://github.com/internetee/auction_center/pull/666)
+* Bump jbuilder to 2.11.2 [#667](https://github.com/internetee/auction_center/pull/667)
+* Bump delayed_job to 4.1.9 [#665](https://github.com/internetee/auction_center/pull/665)
+
 26.04.2021
 * Bump simplecom to 0.21.2 [#657](https://github.com/internetee/auction_center/pull/657)
 * Bump pdfkit to 0.8.5 [#658](https://github.com/internetee/auction_center/pull/658)
