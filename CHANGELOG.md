@@ -1,3 +1,14 @@
+10.05.2021
+* Bump rails to 6.1.3.2 [#679](https://github.com/internetee/auction_center/pull/679)
+* Bump okcomputer to 1.18.4 [#674](https://github.com/internetee/auction_center/pull/674)
+* Bump bullet to 6.1.4 [#675](https://github.com/internetee/auction_center/pull/675)
+* Bump devise to 4.8.0 [#676](https://github.com/internetee/auction_center/pull/676)
+* Bump resolve-url-loader to 4.0.0 [#677](https://github.com/internetee/auction_center/pull/677)
+* Bump recaptcha to 5.8.0 [#678](https://github.com/internetee/auction_center/pull/678)
+* Bump libphonenumber-js to 1.19.7 [#680](https://github.com/internetee/auction_center/pull/680)
+* Bump highcharts to 9.1.0 [#681](https://github.com/internetee/auction_center/pull/681)
+* Bump rails-ujs to 5.2.6 [#628](https://github.com/internetee/auction_center/pull/682)
+
 06.05.2021
 * Is-svg security update to 4.2.2 [#673](https://github.com/internetee/auction_center/pull/673)
 * Bump webpacker to 5.3.0 [#671](https://github.com/internetee/auction_center/pull/671)
