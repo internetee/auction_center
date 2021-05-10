@@ -246,7 +246,7 @@ GEM
     rb-inotify (0.10.1)
       ffi (~> 1.0)
     rbtree3 (0.6.0)
-    recaptcha (5.7.0)
+    recaptcha (5.8.0)
       json
     regexp_parser (2.1.1)
     responders (3.0.1)
