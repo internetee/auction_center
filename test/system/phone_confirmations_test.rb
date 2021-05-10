@@ -44,7 +44,8 @@ class PhoneConfirmationsTest < ApplicationSystemTestCase
 
       fill_in('phone_confirmation[confirmation_code]', with: @user.mobile_phone_confirmation_code)
       click_link_or_button('Submit')
-      assert current_url, Capybara.app_host + "/users/#{@user.uuid}"
+
+      assert current_url.include?("/users/#{@user.uuid}")
 
       visit auction_path(@valid_auction_with_no_offers.uuid)
       assert(page.has_link?('Submit offer'))
