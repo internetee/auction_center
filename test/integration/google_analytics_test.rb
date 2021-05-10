@@ -3,7 +3,7 @@ require 'application_system_test_case'
 class GoogleAnalyticsIntegrationTest < ActionDispatch::IntegrationTest
   def test_google_analytics_integration
     tracking_id = 'test-tracking-id'
-    Rails.configuration.customization['google_analytics']['tracking_id'] = tracking_id
+    Rails.configuration.customization[:google_analytics][:tracking_id] = tracking_id
 
     get auctions_path
 
