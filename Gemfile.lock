@@ -174,7 +174,7 @@ GEM
     nokogiri (1.11.3)
       mini_portile2 (~> 2.5.0)
       racc (~> 1.4)
-    okcomputer (1.18.1)
+    okcomputer (1.18.4)
     omniauth (1.9.0)
       hashie (>= 3.4.6, < 3.7.0)
       rack (>= 1.6.2, < 3)
@@ -349,7 +349,7 @@ DEPENDENCIES
   listen (>= 3.0.5, < 3.6)
   mimemagic (~> 0.3.10)
   money
-  okcomputer (~> 1.18.1)
+  okcomputer (~> 1.18.4)
   omniauth-rails_csrf_protection
   omniauth-tara!
   pdfkit
