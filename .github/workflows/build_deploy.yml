@@ -1,6 +1,7 @@
-name: build and deploy on pullrequest
+name: build and deploy staging
 
 on:
+
   pull_request:
     branches:
     - master
@@ -19,6 +20,7 @@ jobs:
           SHORT_SHA=$(git describe --always)
           echo "ghcr.io/internetee/auction_center:RC_$SHORT_SHA" > TAG
           echo "ghcr.io/internetee/auction_center:STATIC_RC_$SHORT_SHA" > STATIC_TAG
+          echo "RC_$SHORT_SHA" > SHORT_TAG
 
       - name: Set config files for build
         run: |
@@ -44,31 +46,43 @@ jobs:
           docker push $(cat TAG)
           docker push $(cat STATIC_TAG)
 
-  temporarily_disable_deploy:
-    runs-on: ubuntu-20.04
-    needs: build
-    steps:
-      - name: Set variable
-        run: echo "is_self-hosted_runner_safe=false" >> $GITHUB_ENV
-
-  deploy:
-    if: github.IS_SELF-HOSTED_RUNNER_SAFE == true
-    needs:
-      - build
-      - temporarily_disable_deploy
-    runs-on: [self-hosted, helm-kubectl]
-    env:
-      K_CONFIG: ${{ secrets.KUBE_CONFIG }}
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Set image tag
+      - name: Set deploy config
+        env:
+          OVPN: ${{ secrets.OVPN }}
+          VPN_PWD: ${{ secrets.VPN_PWD }}
+          P12: ${{ secrets.P12 }}
+          K_CONFIG: ${{ secrets.KUBE_CONFIG }}
+          SSH_KEY: ${{ secrets.EISBOT_SSH_KEY }}
         run: |
-          SHORT_SHA=$(git describe --always)
-          echo "RC_$SHORT_SHA" > TAG
-
-      - name: Upgrade auction in auction-staging
-        run: |
+          echo $VPN_PWD | base64 -di > client.pwd
+          chmod 0600 client.pwd
+          echo $OVPN | base64 -di >  config.ovpn
+          echo $P12 | base64 -di > cert.p12
+          mkdir -p ~/.ssh
+          echo $SSH_KEY | base64 -di > ~/.ssh/key
+          chmod 0600 ~/.ssh/key
           echo $K_CONFIG | base64 -di > kubeconfig
+          chmod 0600 kubeconfig
+      - name: Install Open VPN
+        run: sudo apt-get install openvpn
+
+      - name: Deploy from remote server
+        run: |
+          sudo openvpn --config config.ovpn --askpass client.pwd --auth-nocache --daemon&
+          sleep 15
+          ping -c 2 192.168.99.12
+          eval `ssh-agent`
+          touch ~/.ssh/known_hosts   
+          ssh-add ~/.ssh/key
+          ssh-keyscan 192.168.99.12 > ~/.ssh/known_hosts
+          scp SHORT_TAG runner@192.168.99.12:/home/runner/TAG
+          scp kubeconfig runner@192.168.99.12:/home/runner/kubeconfig
+          ssh -T runner@192.168.99.12 << 'EOL'
+          bash
           export KUBECONFIG=./kubeconfig
-          helm upgrade --install auction-st --set "image.tag=$(cat TAG)" charts --namespace=auction-staging
+          helm repo add eisrepo https://internetee.github.io/helm-charts/
+          helm repo update
+          helm upgrade --install auction-st --set "image.tag=$(cat TAG)" eisrepo/auction --namespace=auction-staging
+          rm TAG
+          rm kubeconfig
+          EOL
