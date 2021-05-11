@@ -42,6 +42,11 @@
         <div class="column wide sixteen">
             <%= f.submit t(:submit), class: "ui button primary" %>
             <%= link_to t(:back), :back, class: "ui button secondary" %>
+            <%- if offer.uuid.present? %>
+                <%= link_to t('auctions.delete_your_offer'), 
+                offer_path(offer.uuid),
+                method: :delete, data: { confirm: t(:are_you_sure) }, class: "ui button secondary"%>
+            <% end %>
         </div>
     </div>
 <% end %>

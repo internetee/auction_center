@@ -10,6 +10,7 @@ en:
     turns_count: "Turns count"
     offer_actions: "Offer actions"
     your_current_price: "Your current offer"
+    cancel_auction: "Cancel bid"
 
     still_in_progress: "Still in progress"
 

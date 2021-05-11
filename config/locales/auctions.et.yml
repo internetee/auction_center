@@ -8,6 +8,7 @@ et:
     offers: "Pakkumused"
     offer_actions: "Pakkumistegevused"
     your_current_price: "Sinu pakkumus"
+    cancel_auction: "Pakkumise tühistamine"
 
     still_in_progress: "Töötlemisel"
 

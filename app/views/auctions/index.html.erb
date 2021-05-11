@@ -43,6 +43,7 @@
                                 <%= order_buttons('participant_auction_decorators.users_offer_cents') %>
                             </th>
                             <th class="auctions-table-cell-name-no-mobile"><%= t('auctions.offer_actions') %></th>
+                            <th class="auctions-table-cell-name-no-mobile"><%= t('auctions.cancel_auction') %></th>
                             <th class="auctions-table-cell-name-no-mobile"><%= clear_order_button %></th>
                         </tr>
                     </thead>
@@ -65,6 +66,13 @@
                                         <%= link_to t('auctions.submit_offer'),
                                          new_auction_offer_path(auction_uuid: auction.uuid) %>
                                     <% end %>
+                                </td>
+                                <td>
+                                <%- if auction.users_offer_uuid %>
+                                    <%= link_to t('auctions.delete_your_offer'), 
+                                    offer_path(auction.users_offer_uuid),
+                                    method: :delete, data: { confirm: t(:are_you_sure) }, class: "ui button secondary"%>
+                                <% end %>
                                 </td>
                                 <td></td>
                             </tr>
