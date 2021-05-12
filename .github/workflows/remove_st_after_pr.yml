@@ -1,0 +1,21 @@
+name: remove-staging-after-pull-request
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  delete:
+    runs-on: ubuntu-20.04
+
+    steps:
+
+      - uses: actions/checkout@v2
+
+      - name: Set image tag
+        run: |
+          SHORT_SHA=$(git describe --always)
+          echo "ghcr.io/internetee/auction_center:RC_$SHORT_SHA" > TAG
+          echo "ghcr.io/internetee/auction_center:STATIC_RC_$SHORT_SHA" > STATIC_TAG
+          echo "RC_$SHORT_SHA" > SHORT_TAG
+          cat TAG
