@@ -14,6 +14,11 @@ jobs:
 
       - name: Set image tag
         run: |
+          git fetch --no-tags --prune --depth=1 origin +refs/heads/$GITHUB_HEAD_REF:refs/remotes/origin/$GITHUB_HEAD_REF
+          echo "GIT_BRANCH=$GITHUB_HEAD_REF"
+          echo '***********'
+          echo "GIT_COMMIT_SHA=$(git rev-parse origin/$GITHUB_HEAD_REF)"
+
           SHORT_SHA=$(git describe --always)
           echo "ghcr.io/internetee/auction_center:RC_$SHORT_SHA" > TAG
           echo "ghcr.io/internetee/auction_center:STATIC_RC_$SHORT_SHA" > STATIC_TAG
