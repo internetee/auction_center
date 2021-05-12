@@ -45,9 +45,11 @@
                                 <% end %>
                             </td>
                             <td>
-                                <%= link_to t('auctions.delete_your_offer'), 
-                                    offer_path(offer.uuid),
-                                    method: :delete, data: { confirm: t(:are_you_sure) }, class: "ui button secondary"%>
+                                <%- unless offer.auction.finished? %>
+                                    <%= link_to t('auctions.delete_your_offer'), 
+                                        offer_path(offer.uuid),
+                                        method: :delete, data: { confirm: t(:are_you_sure) }, class: "ui button secondary"%>
+                                <% end %>
                             </td>
                             <td>
                                 <%- if offer.result %>

@@ -61,10 +61,12 @@
                                 <td>
                                     <%- if auction.users_offer_uuid %>
                                         <%= link_to t('auctions.edit_your_offer'),
-                                         edit_offer_path(auction.users_offer_uuid) %>
+                                         edit_offer_path(auction.users_offer_uuid),
+                                         class: "ui button secondary" %>
                                     <% else %>
                                         <%= link_to t('auctions.submit_offer'),
-                                         new_auction_offer_path(auction_uuid: auction.uuid) %>
+                                         new_auction_offer_path(auction_uuid: auction.uuid),
+                                         class: "ui button secondary" %>
                                     <% end %>
                                 </td>
                                 <td>
