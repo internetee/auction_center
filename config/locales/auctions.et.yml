@@ -13,6 +13,7 @@ et:
 
     submit_offer: "Esita pakkumus"
     edit_your_offer: "Muuda pakkumust"
+    delete_your_offer: "Kustuta pakkumine"
 
     show:
       title: "Oksjoni andmed"
