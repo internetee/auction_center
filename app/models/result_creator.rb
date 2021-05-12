@@ -18,6 +18,7 @@ class ResultCreator
     @winning_offer = auction.currently_winning_offer || NullOffer.new
 
     create_result
+    prepare_invoice
     send_email_to_winner
     send_email_to_participants
 
@@ -25,6 +26,12 @@ class ResultCreator
   end
 
   private
+
+  def prepare_invoice
+    return unless sold?
+
+    Invoice.create_from_result(result.id).save
+  end
 
   delegate :present?, to: :auction, prefix: true
 
@@ -58,15 +65,13 @@ class ResultCreator
   end
 
   def assign_status
-    sold = winning_offer.cents &&
-           winning_offer.user_id &&
-           winning_offer.billing_profile_id
+    result.status = sold? ? Result.statuses[:awaiting_payment] : Result.statuses[:no_bids]
+  end
 
-    result.status = if sold
-                      Result.statuses[:awaiting_payment]
-                    else
-                      Result.statuses[:no_bids]
-                    end
+  def sold?
+    winning_offer.cents.present? &&
+      winning_offer.user_id.present? &&
+      winning_offer.billing_profile_id.present?
   end
 
   def assign_registration_due_date

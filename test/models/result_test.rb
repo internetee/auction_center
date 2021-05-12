@@ -62,6 +62,7 @@ class ResultTest < ActiveSupport::TestCase
   end
 
   def test_send_email_to_winner_sends_an_email_if_winner_exists
+    Invoice.create_from_result(@invoiceable_result.id)
     @invoiceable_result.send_email_to_winner
 
     assert_not(ActionMailer::Base.deliveries.empty?)
