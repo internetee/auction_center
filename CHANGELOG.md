@@ -1,3 +1,6 @@
+12.05.2021
+* Added LinkPay feature (payinf the invoice using provided unique link) [#606](https://github.com/internetee/auction_center/issues/606)
+
 10.05.2021
 * Bump rails to 6.1.3.2 [#679](https://github.com/internetee/auction_center/pull/679)
 * Bump okcomputer to 1.18.4 [#674](https://github.com/internetee/auction_center/pull/674)
