@@ -82,7 +82,7 @@ jobs:
           export KUBECONFIG=./kubeconfig
           helm repo add eisrepo https://internetee.github.io/helm-charts/
           helm repo update
-          helm upgrade --install auction-st --set "image.tag=$(cat TAG)" eisrepo/auction --namespace=auction-staging
+          helm upgrade --install auction-st-$(cat TAG) --set "image.tag=$(cat TAG)" eisrepo/auction --namespace=auction-staging
           rm TAG
           rm kubeconfig
           EOL

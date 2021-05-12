@@ -54,7 +54,7 @@ jobs:
           ssh -T runner@192.168.99.12 << 'EOL'
           bash
           export KUBECONFIG=./kubeconfig
-          helm delete auction-st --namespace=auction-staging
+          helm delete auction-st-$(cat TAG) --namespace=auction-staging
           rm TAG
           rm kubeconfig
           EOL
