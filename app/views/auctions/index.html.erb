@@ -27,7 +27,7 @@
     <div class="margin-block narrow">
         <div class="grid one column">
             <div class="column">
-                <table class="ui table selectable stackable" id="auctions-table">
+                <table class="ui table selectable celled center aligned" id="auctions-table">
                     <thead>
                         <tr>
                             <th>
@@ -42,9 +42,7 @@
                                 <%= t('auctions.your_current_price') %>
                                 <%= order_buttons('participant_auction_decorators.users_offer_cents') %>
                             </th>
-                            <th class="auctions-table-cell-name-no-mobile"><%= t('auctions.offer_actions') %></th>
-                            <th class="auctions-table-cell-name-no-mobile"><%= t('auctions.cancel_bid') %></th>
-                            <th class="auctions-table-cell-name-no-mobile"><%= clear_order_button %></th>
+                            <th class="auctions-table-cell-name-no-mobile center aligned five wide"><%= t('auctions.offer_actions') %></th>
                         </tr>
                     </thead>
 
@@ -58,25 +56,20 @@
                                 </td>
                                 <td><span class="auctions-table-mobile-infotainment"><%= t('auctions.ends_at') %> </span><%= I18n.l(auction.ends_at) %></td>
                                 <td><span class="auctions-table-mobile-infotainment"><%= t('auctions.your_current_price') %>: </span><%= auction.users_price %></td>
-                                <td>
+                                <td class="center aligned">
                                     <%- if auction.users_offer_uuid %>
                                         <%= link_to t('auctions.edit_your_offer'),
                                          edit_offer_path(auction.users_offer_uuid),
                                          class: "ui button secondary" %>
+                                         <%= link_to t('auctions.delete_your_offer'), 
+                                        offer_path(auction.users_offer_uuid),
+                                        method: :delete, data: { confirm: t(:are_you_sure) }, class: "ui button red "%>
                                     <% else %>
                                         <%= link_to t('auctions.submit_offer'),
                                          new_auction_offer_path(auction_uuid: auction.uuid),
                                          class: "ui button secondary" %>
                                     <% end %>
                                 </td>
-                                <td>
-                                <%- if auction.users_offer_uuid %>
-                                    <%= link_to t('auctions.delete_your_offer'), 
-                                    offer_path(auction.users_offer_uuid),
-                                    method: :delete, data: { confirm: t(:are_you_sure) }, class: "ui button secondary"%>
-                                <% end %>
-                                </td>
-                                <td></td>
                             </tr>
                         <% end %>
                     </tbody>

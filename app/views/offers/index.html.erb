@@ -15,7 +15,6 @@
                         <th scope="col"><%= t('offers.total') %></th>
                         <th scope="col"><%= t('auctions.ends_at') %></th>
                         <th scope="col"><%= t('result_name') %></th>
-                        <th scope="col"><%= t('auctions.cancel_bid') %></th>
                         <th></th>
                     </tr>
                 </thead>
@@ -45,15 +44,12 @@
                                 <% end %>
                             </td>
                             <td>
-                                <%- unless offer.auction.finished? %>
+                                <%- if offer.result %>
+                                    <%= link_to t('.claim_your_domain'), result_path(offer.result.uuid) %>
+                                <%- else %>
                                     <%= link_to t('auctions.delete_your_offer'), 
                                         offer_path(offer.uuid),
                                         method: :delete, data: { confirm: t(:are_you_sure) }, class: "ui button secondary"%>
-                                <% end %>
-                            </td>
-                            <td>
-                                <%- if offer.result %>
-                                    <%= link_to t('.claim_your_domain'), result_path(offer.result.uuid) %>
                                 <% end %>
                             </td>
                         </tr>

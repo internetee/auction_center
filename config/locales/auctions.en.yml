@@ -15,8 +15,8 @@ en:
     still_in_progress: "Still in progress"
 
     submit_offer: "Submit offer"
-    edit_your_offer: "Edit your offer"
-    delete_your_offer: "Delete your offer"
+    edit_your_offer: "Edit"
+    delete_your_offer: "Delete"
 
     index:
       title: "Current auctions"
