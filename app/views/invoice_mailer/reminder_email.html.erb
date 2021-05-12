@@ -9,6 +9,7 @@
             <%= t('.introduction', domain_name: @auction.domain_name, due_date: @invoice.due_date) %>
         </p>
         <p><%= t('.details', domain_name: @auction.domain_name) %></p>
+        <p><%= t('.linkpay_html', linkpay_url: @linkpay_url) if @linkpay_url %></p>
         <%= t('common_mailer.footer_html') %>
     </body>
 </html>
