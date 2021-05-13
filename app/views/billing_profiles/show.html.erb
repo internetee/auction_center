@@ -45,7 +45,7 @@
                 <%= link_to t(:edit), edit_billing_profile_path(@billing_profile.uuid), class: "ui button primary" %>
                 <%= link_to t(:delete), billing_profile_path(@billing_profile.uuid),
                 method: :delete, data: { confirm: t(:are_you_sure) },
-                remote: true, class: "ui button secondary" %>
+                remote: true, class: "ui button red" %>
             </div>
         </div>
     </div>
