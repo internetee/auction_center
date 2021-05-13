@@ -18,16 +18,12 @@ jobs:
       - name: Git log
         run: |
           git log -5 --oneline
-          echo $GITHUB_REF
-          parts=$(echo $GITHUB_REF | tr "/" "\n")
-          echo $parts
-          echo ${parts[1]}
-          echo ${parts[2]}
-          echo ${parts[3]}
-          for part in $parts
-          do
-              echo " $part"
-          done
+          OIFS=$IFS
+          IFS='/'
+          read -a parts <<< "$GITHUB_REF"
+          IFS=OIFS
+          pr_number=${parts[2]}
+          echo $pr_number
 
       # - name: Set image tag
       #   run: |
