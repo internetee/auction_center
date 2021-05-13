@@ -15,9 +15,7 @@ jobs:
       - name: Set image tag
         run: |
           SHORT_SHA=$(echo $GITHUB_SHA | cut -c 1-7)
-          echo "ghcr.io/internetee/auction_center:RC-$SHORT_SHA" > TAG
-          echo "RC-$SHORT_SHA" > SHORT_TAG
-          cat TAG
+          echo "$SHORT_SHA" > SHORT_TAG
 
       - name: Set vpn config
         env:
