@@ -18,10 +18,9 @@ jobs:
       - name: Git log
         run: |
           git log -5 --oneline
-          echo "************"
-          printenv
-          echo "**************"
           echo $GITHUB_REF
+          parts=$(echo $GITHUB_REF | tr "/" "\n")
+          echo ${parts[2]}
 
       # - name: Set image tag
       #   run: |
