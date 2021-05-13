@@ -1,14 +1,11 @@
-name: build and deploy staging
+name: remove-staging-after-pull-request
 
 on:
-
   pull_request:
-    branches:
-    - master
+    types: [closed]
 
 jobs:
-  
-  build:
+  delete:
     runs-on: ubuntu-20.04
 
     steps:
@@ -18,35 +15,9 @@ jobs:
       - name: Set image tag
         run: |
           SHORT_SHA=$(echo $GITHUB_SHA | cut -c 1-7)
-          echo "ghcr.io/internetee/auction_center:RC-$SHORT_SHA" > TAG
-          echo "ghcr.io/internetee/auction_center:STATIC_RC-$SHORT_SHA" > STATIC_TAG
           echo "$SHORT_SHA" > SHORT_TAG
 
-      - name: Set config files for build
-        run: |
-          cp config/customization.yml.sample config/customization.yml
-          cp config/database.yml.sample config/database.yml
-          ls -l config/        
-
-      - name: Build rails image
-        run: |
-          docker build -t $(cat TAG) -f Dockerfile.generic .
-
-      - name: Build static content image
-        env:
-          PASSWORD: ${{ secrets.GHCR }}
-        run: |
-          echo $PASSWORD | docker login ghcr.io -u eisbot --password-stdin
-          docker create -ti --name rails $(cat TAG) bash
-          docker cp rails:/opt/webapps/app/public/ ./public/
-          docker build -t $(cat STATIC_TAG) -f Dockerfile.generic-static .
-
-      - name: Push Docker images to gh container registry
-        run: |
-          docker push $(cat TAG)
-          docker push $(cat STATIC_TAG)
-
-      - name: Set deploy config
+      - name: Set vpn config
         env:
           OVPN: ${{ secrets.OVPN }}
           VPN_PWD: ${{ secrets.VPN_PWD }}
@@ -66,11 +37,11 @@ jobs:
       - name: Install Open VPN
         run: sudo apt-get install openvpn
 
-      - name: Deploy from remote server
+      - name: Delete k8s 
         run: |
           sudo openvpn --config config.ovpn --askpass client.pwd --auth-nocache --daemon&
           sleep 15
-          ping -c 1 192.168.99.12
+          ping -c 2 192.168.99.12
           eval `ssh-agent`
           touch ~/.ssh/known_hosts   
           ssh-add ~/.ssh/key
@@ -80,9 +51,7 @@ jobs:
           ssh -T runner@192.168.99.12 << 'EOL'
           bash
           export KUBECONFIG=./kubeconfig
-          helm repo add eisrepo https://internetee.github.io/helm-charts/
-          helm repo update
-          helm upgrade --install auction-st-$(cat TAG) --set "sha=$(cat TAG)" eisrepo/auction --namespace=auction-staging
+          helm delete auction-st-$(cat TAG) --namespace=auction-staging
           rm TAG
           rm kubeconfig
           EOL
