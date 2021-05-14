@@ -78,14 +78,8 @@ jobs:
           echo $SSH_KEY | base64 -di > ~/.ssh/key
           chmod 0600 ~/.ssh/key
           mkdir -p $REPO/$PR_REF
-          ls
           cd $REPO/$PR_REF
-          pwd
-          ls -la
           echo "RC-$SHORT_SHA" > TAG
-          echo "---------"
-          cat TAG
-          echo "____________"
           echo $K_CONFIG | base64 -di > kubeconfig
           chmod 0600 kubeconfig
           ls
@@ -106,12 +100,12 @@ jobs:
           #scp kubeconfig runner@192.168.99.12:/home/runner/kubeconfig
           ssh -T runner@192.168.99.12 << EOSSH
           bash
-          cd "$REPO"
+          cd "$REPO"/"$PR_REF"
           ls
-          pwd
-          # export KUBECONFIG=./kubeconfig
-          # helm repo add eisrepo https://internetee.github.io/helm-charts/
-          # helm repo update
+          export KUBECONFIG=./kubeconfig
+          helm repo add eisrepo https://internetee.github.io/helm-charts/
+          helm repo update
+          helm ls -A
           # # helm upgrade --install auction-st-$(cat PR_REF) --set "image.tag=$(cat TAG),pullreq=$(cat PR_REF)" eisrepo/auction --namespace=auction-staging
           # rm TAG
           # rm PR_REF
