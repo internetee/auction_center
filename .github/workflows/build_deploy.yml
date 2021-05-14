@@ -20,6 +20,7 @@ jobs:
           SHORT_SHA=$(echo $GITHUB_SHA | cut -c 1-7) #pr-s test commit of merged state
           echo "ghcr.io/internetee/auction_center:RC-$SHORT_SHA" > TAG
           echo "ghcr.io/internetee/auction_center:STATIC_RC-$SHORT_SHA" > STATIC_TAG
+          echo "SHORT_SHA=$SHORT_SHA" >> $GITHUB_ENV
 
       # - name: Set config files for build
       #   run: |
@@ -51,7 +52,9 @@ jobs:
           IFS='/'
           read -a parts <<< "$GITHUB_REF"
           IFS=OIFS
-          PR_REF=${parts[2]}
+          #export PR_REF=${parts[2]}
+          echo "PR_REF=${parts[2]}" >> $GITHUB_ENV
+          echo $PR_REF > PR_REF
 
       - name: Get repo name
         run: |
@@ -68,8 +71,10 @@ jobs:
           VPN_PWD: ${{ secrets.VPN_PWD }}
           P12: ${{ secrets.P12 }}
           K_CONFIG: ${{ secrets.KUBE_CONFIG }}
-          SSH_KEY: ${{ secrets.EISBOT_SSH_KEY }}
+          SSH_KEY: ${{ secrets.EISBOT_SSH_KEY }}  
         run: |
+          printenv
+          echo ":::::::::::::::"
           echo $VPN_PWD | base64 -di > client.pwd
           chmod 0600 client.pwd
           echo $OVPN | base64 -di >  config.ovpn
@@ -77,36 +82,42 @@ jobs:
           mkdir -p ~/.ssh
           echo $SSH_KEY | base64 -di > ~/.ssh/key
           chmod 0600 ~/.ssh/key
-          mkdir -p $REPO/$PR_REF && chmod +rw $REPO/$PR_REF
-          cd $REPO/$PR_REF
+          mkdir -p $(cat REPO)/$PR_REF
+          cd $(cat REPO)/$PR_REF
+          pwd
+          ls -la
           echo "RC-$SHORT_SHA" > TAG
           echo "$PR_REF" > PR_REF
+          echo "---------"
+          echo $PR_REF
+          echo "____________"
           echo $K_CONFIG | base64 -di > kubeconfig
           chmod 0600 kubeconfig
+          ls
           
       - name: Install Open VPN
         run: sudo apt-get install openvpn
 
-      - name: Deploy from remote server
-        run: |
-          sudo openvpn --config config.ovpn --askpass client.pwd --auth-nocache --daemon&
-          sleep 15
-          ping -c 1 192.168.99.12
-          eval `ssh-agent`
-          touch ~/.ssh/known_hosts   
-          ssh-add ~/.ssh/key
-          ssh-keyscan 192.168.99.12 > ~/.ssh/known_hosts
-          ls -la
-          rsync -av $REPO/$PR_REF runner@192.168.99.12:/home/runner/
-          scp kubeconfig runner@192.168.99.12:/home/runner/kubeconfig
-          ssh -T runner@192.168.99.12 << 'EOL'
-          bash
-          cd $REPO/$PR_REF
-          export KUBECONFIG=./kubeconfig
-          helm repo add eisrepo https://internetee.github.io/helm-charts/
-          helm repo update
-          # helm upgrade --install auction-st-$(cat PR_REF) --set "image.tag=$(cat TAG),pullreq=$(cat PR_REF)" eisrepo/auction --namespace=auction-staging
-          rm TAG
-          rm PR_REF
-          rm kubeconfig
-          EOL
+      # - name: Deploy from remote server
+      #   run: |
+      #     sudo openvpn --config config.ovpn --askpass client.pwd --auth-nocache --daemon&
+      #     sleep 15
+      #     ping -c 1 192.168.99.12
+      #     eval `ssh-agent`
+      #     touch ~/.ssh/known_hosts   
+      #     ssh-add ~/.ssh/key
+      #     ssh-keyscan 192.168.99.12 > ~/.ssh/known_hosts
+      #     ls -la
+      #     rsync -av "$REPO/$PR_REF" runner@192.168.99.12:/home/runner/
+      #     scp kubeconfig runner@192.168.99.12:/home/runner/kubeconfig
+      #     ssh -T runner@192.168.99.12 << 'EOL'
+      #     bash
+      #     cd $REPO/$PR_REF
+      #     export KUBECONFIG=./kubeconfig
+      #     helm repo add eisrepo https://internetee.github.io/helm-charts/
+      #     helm repo update
+      #     # helm upgrade --install auction-st-$(cat PR_REF) --set "image.tag=$(cat TAG),pullreq=$(cat PR_REF)" eisrepo/auction --namespace=auction-staging
+      #     rm TAG
+      #     rm PR_REF
+      #     rm kubeconfig
+      #     EOL
