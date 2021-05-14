@@ -52,9 +52,7 @@ jobs:
           IFS='/'
           read -a parts <<< "$GITHUB_REF"
           IFS=OIFS
-          #export PR_REF=${parts[2]}
           echo "PR_REF=${parts[2]}" >> $GITHUB_ENV
-          echo $PR_REF > PR_REF
 
       - name: Get repo name
         run: |
@@ -62,8 +60,7 @@ jobs:
           IFS='/'
           read -a parts <<< "$GITHUB_REPOSITORY"
           IFS=OIFS
-          REPO=${parts[1]}
-          echo "$REPO" > REPO
+          echo "REPO=${parts[1]}" >> $GITHUB_ENV
 
       - name: Set deploy config
         env:
@@ -73,8 +70,6 @@ jobs:
           K_CONFIG: ${{ secrets.KUBE_CONFIG }}
           SSH_KEY: ${{ secrets.EISBOT_SSH_KEY }}  
         run: |
-          printenv
-          echo ":::::::::::::::"
           echo $VPN_PWD | base64 -di > client.pwd
           chmod 0600 client.pwd
           echo $OVPN | base64 -di >  config.ovpn
@@ -82,14 +77,14 @@ jobs:
           mkdir -p ~/.ssh
           echo $SSH_KEY | base64 -di > ~/.ssh/key
           chmod 0600 ~/.ssh/key
-          mkdir -p $(cat REPO)/$PR_REF
-          cd $(cat REPO)/$PR_REF
+          mkdir -p $REPO/$PR_REF
+          ls
+          cd $REPO/$PR_REF
           pwd
           ls -la
           echo "RC-$SHORT_SHA" > TAG
-          echo "$PR_REF" > PR_REF
           echo "---------"
-          echo $PR_REF
+          cat TAG
           echo "____________"
           echo $K_CONFIG | base64 -di > kubeconfig
           chmod 0600 kubeconfig
