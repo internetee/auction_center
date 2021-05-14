@@ -93,26 +93,26 @@ jobs:
       - name: Install Open VPN
         run: sudo apt-get install openvpn
 
-      # - name: Deploy from remote server
-      #   run: |
-      #     sudo openvpn --config config.ovpn --askpass client.pwd --auth-nocache --daemon&
-      #     sleep 15
-      #     ping -c 1 192.168.99.12
-      #     eval `ssh-agent`
-      #     touch ~/.ssh/known_hosts   
-      #     ssh-add ~/.ssh/key
-      #     ssh-keyscan 192.168.99.12 > ~/.ssh/known_hosts
-      #     ls -la
-      #     rsync -av "$REPO/$PR_REF" runner@192.168.99.12:/home/runner/
-      #     scp kubeconfig runner@192.168.99.12:/home/runner/kubeconfig
-      #     ssh -T runner@192.168.99.12 << 'EOL'
-      #     bash
-      #     cd $REPO/$PR_REF
-      #     export KUBECONFIG=./kubeconfig
-      #     helm repo add eisrepo https://internetee.github.io/helm-charts/
-      #     helm repo update
-      #     # helm upgrade --install auction-st-$(cat PR_REF) --set "image.tag=$(cat TAG),pullreq=$(cat PR_REF)" eisrepo/auction --namespace=auction-staging
-      #     rm TAG
-      #     rm PR_REF
-      #     rm kubeconfig
-      #     EOL
+      - name: Deploy from remote server
+        run: |
+          sudo openvpn --config config.ovpn --askpass client.pwd --auth-nocache --daemon&
+          sleep 15
+          ping -c 1 192.168.99.12
+          eval `ssh-agent`
+          touch ~/.ssh/known_hosts   
+          ssh-add ~/.ssh/key
+          ssh-keyscan 192.168.99.12 > ~/.ssh/known_hosts
+          ls -la
+          rsync -av "$REPO/$PR_REF" runner@192.168.99.12:/home/runner/
+          #scp kubeconfig runner@192.168.99.12:/home/runner/kubeconfig
+          # ssh -T runner@192.168.99.12 << 'EOL'
+          # bash
+          # cd $REPO/$PR_REF
+          # export KUBECONFIG=./kubeconfig
+          # helm repo add eisrepo https://internetee.github.io/helm-charts/
+          # helm repo update
+          # # helm upgrade --install auction-st-$(cat PR_REF) --set "image.tag=$(cat TAG),pullreq=$(cat PR_REF)" eisrepo/auction --namespace=auction-staging
+          # rm TAG
+          # rm PR_REF
+          # rm kubeconfig
+          # EOL
