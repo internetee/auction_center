@@ -23,8 +23,16 @@ jobs:
           IFS=OIFS
           PR_REF=${parts[2]}
           echo "$PR_REF" > PR_REF
-          echo "**********"
-          printenv
+
+      - name: Get repo name
+        run: |
+          OIFS=$IFS
+          IFS='/'
+          read -a parts <<< "$GITHUB_REPOSITORY"
+          IFS=OIFS
+          REPO=${parts[1]}
+          echo "$REPO" > REPO
+          echo "$(cat REPO)"
 
       # - name: Set image tag
       #   run: |
