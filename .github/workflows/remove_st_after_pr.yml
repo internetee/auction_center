@@ -12,10 +12,22 @@ jobs:
 
       - uses: actions/checkout@v2
 
-      - name: Set image tag
+      - name: Get pull request reference number
         run: |
-          SHORT_SHA=$(echo $GITHUB_SHA | cut -c 1-7)
-          echo "$SHORT_SHA" > SHORT_TAG
+          OIFS=$IFS
+          IFS='/'
+          read -a parts <<< "$GITHUB_REF"
+          IFS=OIFS
+          PR_REF=${parts[2]}
+          echo "PR_REF=${parts[2]}" >> $GITHUB_ENV
+
+      - name: Get repo name
+        run: |
+          OIFS=$IFS
+          IFS='/'
+          read -a parts <<< "$GITHUB_REPOSITORY"
+          IFS=OIFS
+          echo "REPO=${parts[1]}" >> $GITHUB_ENV
 
       - name: Set vpn config
         env:
@@ -32,8 +44,12 @@ jobs:
           mkdir -p ~/.ssh
           echo $SSH_KEY | base64 -di > ~/.ssh/key
           chmod 0600 ~/.ssh/key
+          mkdir -p $REPO/$PR_REF
+          cd $REPO/$PR_REF
+          echo "$SHORT_SHA" > TAG
           echo $K_CONFIG | base64 -di > kubeconfig
           chmod 0600 kubeconfig
+
       - name: Install Open VPN
         run: sudo apt-get install openvpn
 
@@ -41,17 +57,16 @@ jobs:
         run: |
           sudo openvpn --config config.ovpn --askpass client.pwd --auth-nocache --daemon&
           sleep 15
-          ping -c 2 192.168.99.12
+          ping -c 1 192.168.99.12
           eval `ssh-agent`
           touch ~/.ssh/known_hosts   
           ssh-add ~/.ssh/key
           ssh-keyscan 192.168.99.12 > ~/.ssh/known_hosts
-          scp SHORT_TAG runner@192.168.99.12:/home/runner/TAG
-          scp kubeconfig runner@192.168.99.12:/home/runner/kubeconfig
-          ssh -T runner@192.168.99.12 << 'EOL'
+          rsync -av "$REPO" runner@192.168.99.12:/home/runner/
+          ssh -T runner@192.168.99.12 << EOSSH
           bash
+          cd "$REPO"/"$PR_REF"
           export KUBECONFIG=./kubeconfig
-          helm delete auction-st-$(cat TAG) --namespace=auction-staging
-          rm TAG
+          helm delete auction-st-"$PR_REF" -n auction-staging
           rm kubeconfig
-          EOL
+          EOSSH
