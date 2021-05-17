@@ -42,9 +42,8 @@ jobs:
           docker build -t $STATIC_TAG -f Dockerfile.generic-static .
 
       - name: Push Docker images to gh container registry
-        run: 
+        run: |
           docker push $TAG
-          echo ""
           docker push $STATIC_TAG
 
       - name: Get pull request reference number
