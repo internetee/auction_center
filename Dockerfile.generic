@@ -11,7 +11,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install wkhtmltopdf
 RUN npm install -g yarn@"$YARN_VER"
 
 COPY Gemfile Gemfile.lock ./    
-RUN gem install bundler && bundle install --jobs 20 --retry 5 --without development test
+RUN gem install bundler && bundle config set without 'development test'&& bundle install --jobs 20 --retry 5
 RUN yarn install --check-files
 COPY . .
 
