@@ -91,6 +91,7 @@ jobs:
         run: |
           sudo openvpn --config config.ovpn --askpass client.pwd --auth-nocache --daemon&
           sleep 15
+          grep VPN /var/log/syslog
           ping -c 1 192.168.99.12
           eval `ssh-agent`
           touch ~/.ssh/known_hosts   
