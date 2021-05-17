@@ -82,7 +82,6 @@ jobs:
           echo "$SHORT_SHA" > TAG
           echo $K_CONFIG | base64 -di > kubeconfig
           chmod 0600 kubeconfig
-          ls
 
       - name: Install Open VPN
         run: sudo apt-get install openvpn
@@ -91,7 +90,6 @@ jobs:
         run: |
           sudo openvpn --config config.ovpn --askpass client.pwd --auth-nocache --daemon&
           sleep 15
-          grep VPN /var/log/syslog
           ping -c 1 192.168.99.12
           eval `ssh-agent`
           touch ~/.ssh/known_hosts   
