@@ -16,3 +16,4 @@ RUN yarn install --check-files
 COPY . .
 
 RUN bundle exec rails assets:precompile
+
