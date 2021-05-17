@@ -6,7 +6,9 @@ on:
     paths-ignore:
     - '**.lock'
     - 'Gemfile'
+    - 'CHANGELOG.md'
     - '**.md'
+    - '.github/workflows/build_deploy_staging.yml'
     branches: [master]
     types:
       - assigned
