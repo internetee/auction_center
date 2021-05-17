@@ -7,8 +7,6 @@ on:
     - "*.lock"
     - "Gemfile"
     - "*.md"
-    types:
-    - opened
     branches: [master]
 
 jobs:
