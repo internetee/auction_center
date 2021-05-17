@@ -24,6 +24,7 @@ jobs:
     steps:
       - name: print event
         run: |
-          cat /home/runner/work/_temp/_github_workflow/event.json
+          echo "$GITHUB_EVENT_PATH"
           echo "*************"
-
+          cat /home/runner/work/_temp/_github_workflow/event.json
+          
