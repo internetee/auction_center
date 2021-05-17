@@ -24,5 +24,6 @@ jobs:
     steps:
       - name: print event
         run: |
-          printenv
+          cat /home/runner/work/_temp/_github_workflow/event.json
+          echo "*************"
 
