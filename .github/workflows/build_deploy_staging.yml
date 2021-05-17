@@ -17,10 +17,10 @@ jobs:
 
       - name: Set image tag
         run: |
-          SHORT_SHA=$(echo $GITHUB_SHA | cut -c 1-7)
-          echo "ghcr.io/internetee/auction_center:RC-$SHORT_SHA" > TAG
-          echo "ghcr.io/internetee/auction_center:STATIC_RC-$SHORT_SHA" > STATIC_TAG
-          echo "$SHORT_SHA" > SHORT_TAG
+          SHORT_SHA=$(echo $GITHUB_SHA | cut -c 1-7) #pr-s test commit of merged state
+          echo "TAG=ghcr.io/internetee/auction_center:RC-$SHORT_SHA" >> $GITHUB_ENV
+          echo "STATIC_TAG=ghcr.io/internetee/auction_center:STATIC_RC-$SHORT_SHA" >> $GITHUB_ENV
+          echo "SHORT_TAG=RC-$SHORT_SHA" >> $GITHUB_ENV
 
       - name: Set config files for build
         run: |
@@ -30,21 +30,37 @@ jobs:
 
       - name: Build rails image
         run: |
-          docker build -t $(cat TAG) -f Dockerfile.generic .
+          docker build -t $TAG -f Dockerfile.generic .
 
       - name: Build static content image
         env:
           PASSWORD: ${{ secrets.GHCR }}
         run: |
           echo $PASSWORD | docker login ghcr.io -u eisbot --password-stdin
-          docker create -ti --name rails $(cat TAG) bash
+          docker create -ti --name rails $TAG bash
           docker cp rails:/opt/webapps/app/public/ ./public/
-          docker build -t $(cat STATIC_TAG) -f Dockerfile.generic-static .
+          docker build -t $STATIC_TAG -f Dockerfile.generic-static .
 
       - name: Push Docker images to gh container registry
         run: |
-          docker push $(cat TAG)
-          docker push $(cat STATIC_TAG)
+          docker push $TAG
+          docker push $STATIC_TAG
+
+      - name: Get pull request reference number
+        run: |
+          OIFS=$IFS
+          IFS='/'
+          read -a parts <<< "$GITHUB_REF"
+          IFS=OIFS
+          echo "PR_REF=${parts[2]}" >> $GITHUB_ENV
+
+      - name: Get repo name
+        run: |
+          OIFS=$IFS
+          IFS='/'
+          read -a parts <<< "$GITHUB_REPOSITORY"
+          IFS=OIFS
+          echo "REPO=${parts[1]}" >> $GITHUB_ENV
 
       - name: Set deploy config
         env:
@@ -61,8 +77,12 @@ jobs:
           mkdir -p ~/.ssh
           echo $SSH_KEY | base64 -di > ~/.ssh/key
           chmod 0600 ~/.ssh/key
+          mkdir -p $REPO/$PR_REF
+          cd $REPO/$PR_REF
+          echo "$SHORT_SHA" > TAG
           echo $K_CONFIG | base64 -di > kubeconfig
           chmod 0600 kubeconfig
+
       - name: Install Open VPN
         run: sudo apt-get install openvpn
 
@@ -75,14 +95,13 @@ jobs:
           touch ~/.ssh/known_hosts   
           ssh-add ~/.ssh/key
           ssh-keyscan 192.168.99.12 > ~/.ssh/known_hosts
-          scp SHORT_TAG runner@192.168.99.12:/home/runner/TAG
-          scp kubeconfig runner@192.168.99.12:/home/runner/kubeconfig
-          ssh -T runner@192.168.99.12 << 'EOL'
+          rsync -av "$REPO" runner@192.168.99.12:/home/runner/
+          ssh -T runner@192.168.99.12 << EOSSH
           bash
+          cd "$REPO"/"$PR_REF"
           export KUBECONFIG=./kubeconfig
           helm repo add eisrepo https://internetee.github.io/helm-charts/
           helm repo update
-          helm upgrade --install auction-st-$(cat TAG) --set "sha=$(cat TAG)" eisrepo/auction --namespace=auction-staging
-          rm TAG
+          helm upgrade --install auction-st-"$PR_REF" --set image.tag="$SHORT_TAG",reference="$PR_REF" eisrepo/auction -n auction-staging
           rm kubeconfig
-          EOL
+          EOSSH
