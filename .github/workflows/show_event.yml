@@ -1,0 +1,28 @@
+name: show event what caused workflow to run
+on:
+  pull_request:
+    types:
+      - assigned
+      - unassigned
+      - labeled
+      - unlabeled
+      - opened
+      - edited
+      - closed
+      - reopened
+      - synchronize
+      - ready_for_review
+      - locked
+      - unlocked
+      - review_requested
+      - review_request_removed
+
+jobs:
+  print:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: print event
+        run: |
+          printenv
+
