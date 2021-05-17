@@ -2,9 +2,29 @@ name: build and deploy staging
 
 on:
 
+
   pull_request:
-    branches:
-    - master
+    paths-ignore:
+    - '**.lock'
+    - 'Gemfile'
+    - 'CHANGELOG.md'
+    - '**.md'
+    - '.github/workflows/build_deploy_staging.yml'
+    branches: [master]
+    types:
+      - assigned
+      - unassigned
+      - labeled
+      - unlabeled
+      - opened
+      - edited
+      - reopened
+      - synchronize
+      - ready_for_review
+      - locked
+      - unlocked
+      - review_requested
+      - review_request_removed
 
 jobs:
   
