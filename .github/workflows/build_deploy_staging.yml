@@ -4,9 +4,9 @@ on:
 
   pull_request:
     paths-ignore:
-    - "*.lock"
-    - "Gemfile"
-    - "*.md"
+    - '**.lock'
+    - 'Gemfile'
+    - '**.md'
     branches: [master]
     types:
       - assigned
