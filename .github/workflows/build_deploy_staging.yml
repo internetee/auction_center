@@ -8,7 +8,6 @@ on:
     - "Gemfile"
     - "*.md"
     types:
-    - unlabeled
     - opened
     - unlocked
     - ready_for_review
