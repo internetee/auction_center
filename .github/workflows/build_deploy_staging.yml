@@ -9,8 +9,6 @@ on:
     - "*.md"
     types:
     - opened
-    - unlocked
-    - ready_for_review
     branches: [master]
 
 jobs:
