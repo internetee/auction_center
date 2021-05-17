@@ -12,8 +12,6 @@ on:
     - '.github/workflows/build_deploy_staging.yml'
     branches: [master]
     types:
-      - labeled
-      - unlabeled
       - opened
       - edited
       - reopened
