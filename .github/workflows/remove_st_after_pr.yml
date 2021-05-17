@@ -2,6 +2,10 @@ name: remove-staging-after-pull-request
 
 on:
   pull_request:
+    paths-ignore:
+    - "*.lock"
+    - "Gemfile"
+    - "*.md"
     types: [closed]
 
 jobs:

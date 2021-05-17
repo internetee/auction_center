@@ -3,6 +3,10 @@ name: build and deploy staging
 on:
 
   pull_request:
+    paths-ignore:
+    - "*.lock"
+    - "Gemfile"
+    - "*.md"
     branches:
     - master
 
