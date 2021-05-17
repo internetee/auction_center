@@ -17,10 +17,10 @@ jobs:
 
       - name: Set image tag
         run: |
-          SHORT_SHA=$(echo $GITHUB_SHA | cut -c 1-7)
-          echo "ghcr.io/internetee/auction_center:RC-$SHORT_SHA" > TAG
-          echo "ghcr.io/internetee/auction_center:STATIC_RC-$SHORT_SHA" > STATIC_TAG
-          echo "$SHORT_SHA" > SHORT_TAG
+          SHORT_SHA=$(echo $GITHUB_SHA | cut -c 1-7) #pr-s test commit of merged state
+          echo "TAG=ghcr.io/internetee/auction_center:RC-$SHORT_SHA" >> $GITHUB_ENV
+          echo "STATIC_TAG=ghcr.io/internetee/auction_center:STATIC_RC-$SHORT_SHA" >> $GITHUB_ENV
+          echo "SHORT_TAG=RC-$SHORT_SHA" >> $GITHUB_ENV
 
       - name: Set config files for build
         run: |
@@ -30,21 +30,21 @@ jobs:
 
       - name: Build rails image
         run: |
-          docker build -t $(cat TAG) -f Dockerfile.generic .
+          docker build -t $TAG -f Dockerfile.generic .
 
       - name: Build static content image
         env:
           PASSWORD: ${{ secrets.GHCR }}
         run: |
           echo $PASSWORD | docker login ghcr.io -u eisbot --password-stdin
-          docker create -ti --name rails $(cat TAG) bash
+          docker create -ti --name rails $TAG bash
           docker cp rails:/opt/webapps/app/public/ ./public/
-          docker build -t $(cat STATIC_TAG) -f Dockerfile.generic-static .
+          docker build -t $STATIC_TAG -f Dockerfile.generic-static .
 
       - name: Push Docker images to gh container registry
-        run: |
-          docker push $(cat TAG)
-          docker push $(cat STATIC_TAG)
+        run: 
+          docker push $TAG
+          docker push $STATIC_TAG
 
       - name: Set deploy config
         env:
@@ -82,7 +82,7 @@ jobs:
           export KUBECONFIG=./kubeconfig
           helm repo add eisrepo https://internetee.github.io/helm-charts/
           helm repo update
-          helm upgrade --install auction-st-$(cat TAG) --set "sha=$(cat TAG)" eisrepo/auction --namespace=auction-staging
+          helm upgrade --install auction-st-$TAG --set "sha=$TAG" eisrepo/auction --namespace=auction-staging
           rm TAG
           rm kubeconfig
           EOL
