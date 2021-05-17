@@ -87,6 +87,7 @@ jobs:
         run: sudo apt-get install openvpn
 
       - name: Deploy from remote server
+        timeout-minutes: 5
         run: |
           sudo openvpn --config config.ovpn --askpass client.pwd --auth-nocache --daemon&
           sleep 15
