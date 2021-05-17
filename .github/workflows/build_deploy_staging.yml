@@ -12,8 +12,6 @@ on:
     - '.github/workflows/build_deploy_staging.yml'
     branches: [master]
     types:
-      - assigned
-      - unassigned
       - labeled
       - unlabeled
       - opened
@@ -21,8 +19,6 @@ on:
       - reopened
       - synchronize
       - ready_for_review
-      - locked
-      - unlocked
 
 jobs:
   
