@@ -23,8 +23,6 @@ on:
       - ready_for_review
       - locked
       - unlocked
-      - review_requested
-      - review_request_removed
 
 jobs:
   
