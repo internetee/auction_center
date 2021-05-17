@@ -44,6 +44,7 @@ jobs:
       - name: Push Docker images to gh container registry
         run: 
           docker push $TAG
+          echo ""
           docker push $STATIC_TAG
 
       - name: Get pull request reference number
