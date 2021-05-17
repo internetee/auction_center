@@ -11,6 +11,7 @@ on:
     - unlabeled
     - opened
     - unlocked
+    - ready_for_review
     branches: [master]
 
 jobs:
