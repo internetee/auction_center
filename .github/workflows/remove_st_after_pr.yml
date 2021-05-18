@@ -14,6 +14,7 @@ jobs:
 
       - name: Get pull request reference number
         run: |
+          echo "$GITHUB_REF"
           OIFS=$IFS
           IFS='/'
           read -a parts <<< "$GITHUB_REF"
@@ -21,6 +22,7 @@ jobs:
           PR_REF=${parts[2]}
           echo "PR_REF=${parts[2]}" >> $GITHUB_ENV
           echo "$PR_REF"
+          echo ${parts[*]}
 
       - name: Get repo name
         run: |
@@ -30,55 +32,55 @@ jobs:
           IFS=OIFS
           echo "REPO=${parts[1]}" >> $GITHUB_ENV
 
-      - name: Set vpn config
-        env:
-          OVPN: ${{ secrets.OVPN }}
-          VPN_PWD: ${{ secrets.VPN_PWD }}
-          P12: ${{ secrets.P12 }}
-          K_CONFIG: ${{ secrets.KUBE_CONFIG }}
-          SSH_KEY: ${{ secrets.EISBOT_SSH_KEY }}
-        run: |
-          echo $VPN_PWD | base64 -di > client.pwd
-          chmod 0600 client.pwd
-          echo $OVPN | base64 -di >  config.ovpn
-          echo $P12 | base64 -di > cert.p12
-          mkdir -p ~/.ssh
-          echo $SSH_KEY | base64 -di > ~/.ssh/key
-          chmod 0600 ~/.ssh/key
-          mkdir -p $REPO/$PR_REF
-          cd $REPO/$PR_REF
-          echo "$SHORT_SHA" > TAG
-          echo $K_CONFIG | base64 -di > kubeconfig
-          chmod 0600 kubeconfig
+      # - name: Set vpn config
+      #   env:
+      #     OVPN: ${{ secrets.OVPN }}
+      #     VPN_PWD: ${{ secrets.VPN_PWD }}
+      #     P12: ${{ secrets.P12 }}
+      #     K_CONFIG: ${{ secrets.KUBE_CONFIG }}
+      #     SSH_KEY: ${{ secrets.EISBOT_SSH_KEY }}
+      #   run: |
+      #     echo $VPN_PWD | base64 -di > client.pwd
+      #     chmod 0600 client.pwd
+      #     echo $OVPN | base64 -di >  config.ovpn
+      #     echo $P12 | base64 -di > cert.p12
+      #     mkdir -p ~/.ssh
+      #     echo $SSH_KEY | base64 -di > ~/.ssh/key
+      #     chmod 0600 ~/.ssh/key
+      #     mkdir -p $REPO/$PR_REF
+      #     cd $REPO/$PR_REF
+      #     echo "$SHORT_SHA" > TAG
+      #     echo $K_CONFIG | base64 -di > kubeconfig
+      #     chmod 0600 kubeconfig
 
-      - name: Install Open VPN
-        run: sudo apt-get install openvpn
+      # - name: Install Open VPN
+      #   run: sudo apt-get install openvpn
 
-      - name: Delete k8s
-        timeout-minutes: 2
-        run: |
-          sudo openvpn --config config.ovpn --askpass client.pwd --auth-nocache --daemon&
-          sleep 15
-          ping -c 2 192.168.99.12
-          eval `ssh-agent`
-          touch ~/.ssh/known_hosts   
-          ssh-add ~/.ssh/key
-          ssh-keyscan 192.168.99.12 > ~/.ssh/known_hosts
-          rsync -av "$REPO" runner@192.168.99.12:/home/runner/
-          ssh -T runner@192.168.99.12 << EOSSH
-          bash
-          cd "$REPO"/"$PR_REF"
-          export KUBECONFIG=./kubeconfig
-          helm delete auction-st-"$PR_REF" -n auction-staging
-          rm kubeconfig
-          echo "server obs.tld.ee
-          zone pilv.tld.ee
-          update delete auction-"$PR_REF".riigi.pilv.tld.ee.
-          send
-          " | nsupdate -k ~/Kgh-runner.infra.tld.ee.+165+27011.key
-          if [ "$?" -eq "0" ]; then
-              echo "CNAME update success"
-          else
-              echo "CNAME update failed"
-          fi
-          EOSSH
+      # - name: Delete k8s
+      #   timeout-minutes: 2
+      #   run: |
+      #     sudo openvpn --config config.ovpn --askpass client.pwd --auth-nocache --daemon&
+      #     sleep 15
+      #     ping -c 2 192.168.99.12
+      #     eval `ssh-agent`
+      #     touch ~/.ssh/known_hosts   
+      #     ssh-add ~/.ssh/key
+      #     ssh-keyscan 192.168.99.12 > ~/.ssh/known_hosts
+      #     rsync -av "$REPO" runner@192.168.99.12:/home/runner/
+      #     ssh -T runner@192.168.99.12 << EOSSH
+      #     bash
+      #     cd "$REPO"/"$PR_REF"
+      #     export KUBECONFIG=./kubeconfig
+      #     helm delete auction-st-"$PR_REF" -n auction-staging
+      #     rm kubeconfig
+      #     echo "server obs.tld.ee
+      #     zone pilv.tld.ee
+      #     update delete auction-"$PR_REF".riigi.pilv.tld.ee.
+      #     send
+      #     " | nsupdate -k ~/Kgh-runner.infra.tld.ee.+165+27011.key
+      #     if [ "$?" -eq "0" ]; then
+      #         echo "CNAME update success"
+      #     else
+      #         echo "CNAME update failed"
+      #     fi
+      #     EOSSH

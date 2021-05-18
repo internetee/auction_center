@@ -67,7 +67,7 @@ jobs:
           read -a parts <<< "$GITHUB_REF"
           IFS=OIFS
           echo "PR_REF=${parts[2]}" >> $GITHUB_ENV
-          echo $parts
+          echo ${parts[*]}
 
       - name: Get repo name
         run: |
