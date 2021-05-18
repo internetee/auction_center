@@ -61,11 +61,13 @@ jobs:
 
       - name: Get pull request reference number
         run: |
+          echo "$GITHUB_REF"
           OIFS=$IFS
           IFS='/'
           read -a parts <<< "$GITHUB_REF"
           IFS=OIFS
           echo "PR_REF=${parts[2]}" >> $GITHUB_ENV
+          echo ${parts[*]}
 
       - name: Get repo name
         run: |
