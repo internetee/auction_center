@@ -3,8 +3,19 @@ name: build and deploy staging
 on:
 
   pull_request:
-    branches:
-    - master
+    paths-ignore:
+      - 'Gemfile.lock'
+      - 'Gemfile'
+      - 'CHANGELOG.md'
+      - 'README.md'
+      - 'yarn.lock'
+    branches: [master]
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - ready_for_review
+      - unlocked
 
 jobs:
   
@@ -30,7 +41,7 @@ jobs:
 
       - name: Build rails image
         run: |
-          docker build -t $TAG -f Dockerfile.generic .
+          docker build -t $TAG --build-arg RAILS_ENV=staging --build-arg SECRET_KEY_BASE="$KEY_BASE" -f Dockerfile.generic .
 
       - name: Build static content image
         env:
