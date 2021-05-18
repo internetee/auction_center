@@ -40,6 +40,8 @@ jobs:
           ls -l config/        
 
       - name: Build rails image
+        env:
+          KEY_BASE: ${{ secrets.KEY_BASE}}
         run: |
           docker build -t $TAG --build-arg RAILS_ENV=staging --build-arg SECRET_KEY_BASE="$KEY_BASE" -f Dockerfile.generic .
 
