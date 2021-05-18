@@ -1,5 +1,8 @@
 name: Github Testing
-on: [push]
+on: 
+  push:
+    branches:
+    - TESTING
 
 jobs:
   test:
