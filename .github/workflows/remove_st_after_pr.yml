@@ -20,6 +20,7 @@ jobs:
           IFS=OIFS
           PR_REF=${parts[2]}
           echo "PR_REF=${parts[2]}" >> $GITHUB_ENV
+          echo "$PR_REF"
 
       - name: Get repo name
         run: |
@@ -68,6 +69,6 @@ jobs:
           bash
           cd "$REPO"/"$PR_REF"
           export KUBECONFIG=./kubeconfig
-          helm delete auction-st-"$PR_REF" -n auction-stagin
+          helm delete auction-st-"$PR_REF" -n auction-staging
           rm kubeconfig
           EOSSH
