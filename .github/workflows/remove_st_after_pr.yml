@@ -3,6 +3,12 @@ name: remove-staging-after-pull-request
 on:
   pull_request:
     types: [closed]
+    paths-ignore:
+      - 'Gemfile.lock'
+      - 'Gemfile'
+      - 'CHANGELOG.md'
+      - 'README.md'
+      - 'yarn.lock'
 
 jobs:
   delete:
