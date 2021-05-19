@@ -1,5 +1,16 @@
+19.05.2021
+* Upgrade ruby to 3.0 [#707](https://github.com/internetee/auction_center/pull/707)
+* Bump airbrake to 11.0.3 [#698](https://github.com/internetee/auction_center/pull/698)
+* Bump money to 6.16.0 [#699](https://github.com/internetee/auction_center/pull/699)
+* Bump bootsnap to 1.7.5 [#700](https://github.com/internetee/auction_center/pull/700)
+* Bump pry to 0.14.1 [#701](https://github.com/internetee/auction_center/pull/701)
+* Bumo data_migrate to 7.0.1 [#702](https://github.com/internetee/auction_center/pull/702)
+* Bump optimize-css-assets-webpack-plugin to 6.0.0 [#703](https://github.com/internetee/auction_center/pull/703)
+* Bump terser-webpack-plugin to 5.1.2 [#704](https://github.com/internetee/auction_center/pull/704)
+* Bump puma to 4.3.8 [#717](https://github.com/internetee/auction_center/pull/717)
+
 12.05.2021
-* Added LinkPay feature (payinf the invoice using provided unique link) [#606](https://github.com/internetee/auction_center/issues/606)
+* Added LinkPay feature (paying the invoice using provided unique link) [#606](https://github.com/internetee/auction_center/issues/606)
 
 10.05.2021
 * Bump rails to 6.1.3.2 [#679](https://github.com/internetee/auction_center/pull/679)
