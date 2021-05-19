@@ -1,4 +1,5 @@
 19.05.2021
+* Delete offer button translation fix [#684](https://github.com/internetee/auction_center/issues/684)
 * Upgrade ruby to 3.0 [#707](https://github.com/internetee/auction_center/pull/707)
 * Bump airbrake to 11.0.3 [#698](https://github.com/internetee/auction_center/pull/698)
 * Bump money to 6.16.0 [#699](https://github.com/internetee/auction_center/pull/699)
