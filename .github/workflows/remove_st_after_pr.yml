@@ -15,14 +15,8 @@ jobs:
       - name: Get pull request reference number
         run: |
           echo "$GITHUB_REF"
-          OIFS=$IFS
-          IFS='/'
-          read -a parts <<< "$GITHUB_REF"
-          IFS=OIFS
-          PR_REF=${parts[2]}
-          echo "PR_REF=${parts[2]}" >> $GITHUB_ENV
-          echo "$PR_REF"
-          echo ${parts[*]}
+          echo "PR_REF=$(cat /home/runner/work/_temp/_github_workflow/event.json | jq -r '.number')" >> $GITHUB_ENV
+          echo $(cat /home/runner/work/_temp/_github_workflow/event.json | jq -r '.number')
 
       - name: Get repo name
         run: |
