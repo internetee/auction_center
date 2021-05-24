@@ -270,7 +270,7 @@ GEM
       json (>= 1.8, < 3)
       simplecov-html (~> 0.10.0)
     simplecov-html (0.10.2)
-    simpleidn (0.1.1)
+    simpleidn (0.2.1)
       unf (~> 0.1.4)
     skylight (5.0.1)
       activesupport (>= 5.2.0)
@@ -293,7 +293,7 @@ GEM
       concurrent-ruby (~> 1.0)
     unf (0.1.4)
       unf_ext
-    unf_ext (0.0.7.6)
+    unf_ext (0.0.7.7)
     uniform_notifier (1.14.2)
     validate_email (0.1.6)
       activemodel (>= 3.0)
