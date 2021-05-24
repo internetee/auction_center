@@ -1,3 +1,11 @@
+24.05.2021
+* Bump puma to 5.3.2 [#722](https://github.com/internetee/auction_center/pull/722)
+* Bump webmock to 3.13.0 [#723](https://github.com/internetee/auction_center/pull/723)
+* Bump simpleidn to 0.2.1 [#725](https://github.com/internetee/auction_center/pull/725)
+* Bump mimemagic to 0.4.3 [#726](https://github.com/internetee/auction_center/pull/726)
+* Bump libphonenumber.js to 1.19.18 [#727](https://github.com/internetee/auction_center/pull/727)
+* Bump rails/webpacker to 5.4.0 [#728](https://github.com/internetee/auction_center/pull/728)
+
 19.05.2021
 * Delete offer button translation fix [#684](https://github.com/internetee/auction_center/issues/684)
 * Upgrade ruby to 3.0 [#707](https://github.com/internetee/auction_center/pull/707)
