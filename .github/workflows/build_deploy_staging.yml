@@ -9,6 +9,7 @@ on:
       - 'CHANGELOG.md'
       - 'README.md'
       - 'yarn.lock'
+      - 'package.json'
     branches: [master]
     types:
       - opened
@@ -18,10 +19,10 @@ on:
       - unlocked
 
 jobs:
-  
+
   build:
     if: github.event.pull_request.draft == false
-    
+
     runs-on: ubuntu-20.04
 
     steps:
@@ -39,7 +40,7 @@ jobs:
         run: |
           cp config/customization.yml.sample config/customization.yml
           cp config/database.yml.sample config/database.yml
-          ls -l config/        
+          ls -l config/
 
       - name: Build rails image
         env:
@@ -106,7 +107,7 @@ jobs:
           sleep 15
           ping -c 1 192.168.99.12
           eval `ssh-agent`
-          touch ~/.ssh/known_hosts   
+          touch ~/.ssh/known_hosts
           ssh-add ~/.ssh/key
           ssh-keyscan 192.168.99.12 > ~/.ssh/known_hosts
           rsync -av "$REPO" runner@192.168.99.12:/home/runner/
