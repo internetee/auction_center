@@ -165,7 +165,7 @@ GEM
       mini_mime (>= 0.1.1)
     marcel (1.0.1)
     method_source (1.0.0)
-    mimemagic (0.3.10)
+    mimemagic (0.4.3)
       nokogiri (~> 1)
       rake
     mini_mime (1.0.3)
@@ -175,7 +175,7 @@ GEM
       i18n (>= 0.6.4, <= 2)
     msgpack (1.4.2)
     nio4r (2.5.7)
-    nokogiri (1.11.4)
+    nokogiri (1.11.5)
       mini_portile2 (~> 2.5.0)
       racc (~> 1.4)
     okcomputer (1.18.4)
@@ -350,7 +350,7 @@ DEPENDENCIES
   jbuilder (~> 2.11)
   kaminari
   listen (>= 3.0.5, < 3.6)
-  mimemagic (~> 0.3.10)
+  mimemagic (~> 0.4.3)
   money
   okcomputer (~> 1.18.4)
   omniauth-rails_csrf_protection
