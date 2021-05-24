@@ -85,3 +85,16 @@ jobs:
               echo "CNAME update failed"
           fi
           EOSSH
+
+      - name: Notify developers
+        timeout-minutes: 1
+        env:
+          NOTIFICATION_URL: ${{ secrets.NOTIFICATION_URL}}
+        run: |
+          curl -i -X POST --data-urlencode 'payload={
+            "text": "##### Pull request was succesful, it has been merged :bowtie:\n
+            | Project    | Branch                 | :net:                                      |
+            |:-----------|:----------------------:|:------------------------------------------:|
+            | **'$REPO'**|'${{ github.head_ref }}'| ~~https://auction-'$PR_REF'.riigi.pilv.tld.ee~~ |
+            "
+            }' $NOTIFICATION_URL
