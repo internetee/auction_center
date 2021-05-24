@@ -12,7 +12,6 @@ on:
 
 jobs:
   delete:
-    if: github.event.pull_request.draft == false
     runs-on: ubuntu-20.04
 
     steps:
@@ -87,6 +86,7 @@ jobs:
           EOSSH
 
       - name: Notify developers
+        if: github.event.pull_request.draft == false
         timeout-minutes: 1
         env:
           NOTIFICATION_URL: ${{ secrets.NOTIFICATION_URL}}
