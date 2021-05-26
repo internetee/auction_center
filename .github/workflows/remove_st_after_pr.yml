@@ -76,7 +76,7 @@ jobs:
           rm kubeconfig
           echo "server obs.tld.ee
           zone pilv.tld.ee
-          update delete auction-"$PR_REF".riigi.pilv.tld.ee.
+          update delete auction-"$PR_REF".pilv.tld.ee.
           send
           " | nsupdate -k ~/Kgh-runner.infra.tld.ee.+165+27011.key
           if [ "$?" -eq "0" ]; then
@@ -95,6 +95,6 @@ jobs:
             "text": "##### Pull request was succesful, it has been merged :bowtie:\n
             | Project    | Branch                 | :net:                                      |
             |:-----------|:----------------------:|:------------------------------------------:|
-            | **'$REPO'**|'${{ github.head_ref }}'| ~~https://auction-'$PR_REF'.riigi.pilv.tld.ee~~ |
+            | **'$REPO'**|'${{ github.head_ref }}'| ~~https://auction-'$PR_REF'.pilv.tld.ee~~ |
             "
             }' $NOTIFICATION_URL
