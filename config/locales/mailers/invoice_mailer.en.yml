@@ -12,3 +12,5 @@ en:
         not be able to participate in the same auction again. After a third unpaid
         invoice it will not be possible for you to participate in .ee domain auctions
         for one year.
+      linkpay_html: |
+        You can pay for this invoice using following <a href=%{linkpay_url}>link</a>.

@@ -6,7 +6,6 @@ class ResultMailerPreview < ActionMailer::Preview
     auction = Auction.new(domain_name: 'example.test')
     result = Result.new(user: user, auction: auction, registration_code: 'registration code',
                         uuid: SecureRandom.uuid)
-
     ResultMailer.winner_email(result)
   end
 
@@ -16,7 +15,6 @@ class ResultMailerPreview < ActionMailer::Preview
     auction = Auction.new(domain_name: 'example.test')
     result = Result.new(user: user, auction: auction, registration_code: 'registration code',
                         uuid: SecureRandom.uuid)
-
     ResultMailer.winner_email(result)
   end
 

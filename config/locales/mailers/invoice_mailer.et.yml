@@ -11,3 +11,5 @@ et:
         %{domain_name} eelisõigus läheb tagasi oksjonile. Teie samal oksjonil uuesti
         osaleda ei saa. Pärast kolmandat tasumata arvet ei ole teil võimalik järgneva
         aasta jooksul .ee domeeni oksjonitel osaleda.
+      linkpay_html: |
+        Saad arve koheselt tasuda selle <a href=%{linkpay_url}>lingi</a> abil.

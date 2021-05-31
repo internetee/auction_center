@@ -1,3 +1,47 @@
+24.05.2021
+* Bump puma to 5.3.2 [#722](https://github.com/internetee/auction_center/pull/722)
+* Bump webmock to 3.13.0 [#723](https://github.com/internetee/auction_center/pull/723)
+* Bump simpleidn to 0.2.1 [#725](https://github.com/internetee/auction_center/pull/725)
+* Bump mimemagic to 0.4.3 [#726](https://github.com/internetee/auction_center/pull/726)
+* Bump libphonenumber.js to 1.19.18 [#727](https://github.com/internetee/auction_center/pull/727)
+* Bump rails/webpacker to 5.4.0 [#728](https://github.com/internetee/auction_center/pull/728)
+
+19.05.2021
+* Delete offer button translation fix [#684](https://github.com/internetee/auction_center/issues/684)
+* Upgrade ruby to 3.0 [#707](https://github.com/internetee/auction_center/pull/707)
+* Bump airbrake to 11.0.3 [#698](https://github.com/internetee/auction_center/pull/698)
+* Bump money to 6.16.0 [#699](https://github.com/internetee/auction_center/pull/699)
+* Bump bootsnap to 1.7.5 [#700](https://github.com/internetee/auction_center/pull/700)
+* Bump pry to 0.14.1 [#701](https://github.com/internetee/auction_center/pull/701)
+* Bumo data_migrate to 7.0.1 [#702](https://github.com/internetee/auction_center/pull/702)
+* Bump optimize-css-assets-webpack-plugin to 6.0.0 [#703](https://github.com/internetee/auction_center/pull/703)
+* Bump terser-webpack-plugin to 5.1.2 [#704](https://github.com/internetee/auction_center/pull/704)
+* Bump puma to 4.3.8 [#717](https://github.com/internetee/auction_center/pull/717)
+
+12.05.2021
+* Added LinkPay feature (paying the invoice using provided unique link) [#606](https://github.com/internetee/auction_center/issues/606)
+
+10.05.2021
+* Bump rails to 6.1.3.2 [#679](https://github.com/internetee/auction_center/pull/679)
+* Bump okcomputer to 1.18.4 [#674](https://github.com/internetee/auction_center/pull/674)
+* Bump bullet to 6.1.4 [#675](https://github.com/internetee/auction_center/pull/675)
+* Bump devise to 4.8.0 [#676](https://github.com/internetee/auction_center/pull/676)
+* Bump resolve-url-loader to 4.0.0 [#677](https://github.com/internetee/auction_center/pull/677)
+* Bump recaptcha to 5.8.0 [#678](https://github.com/internetee/auction_center/pull/678)
+* Bump libphonenumber-js to 1.19.7 [#680](https://github.com/internetee/auction_center/pull/680)
+* Bump highcharts to 9.1.0 [#681](https://github.com/internetee/auction_center/pull/681)
+* Bump rails-ujs to 5.2.6 [#628](https://github.com/internetee/auction_center/pull/682)
+
+06.05.2021
+* Is-svg security update to 4.2.2 [#673](https://github.com/internetee/auction_center/pull/673)
+* Bump webpacker to 5.3.0 [#671](https://github.com/internetee/auction_center/pull/671)
+* Bump resolve-url-loader to 3.1.3 [#672](https://github.com/internetee/auction_center/pull/672)
+* Bump listen to 3.5.1 [#669](https://github.com/internetee/auction_center/pull/669)
+* Bump data_migrate to 7.0.0 [#668](https://github.com/internetee/auction_center/pull/668)
+* Bump chartkick to 4.0.4 [#666](https://github.com/internetee/auction_center/pull/666)
+* Bump jbuilder to 2.11.2 [#667](https://github.com/internetee/auction_center/pull/667)
+* Bump delayed_job to 4.1.9 [#665](https://github.com/internetee/auction_center/pull/665)
+
 26.04.2021
 * Bump simplecom to 0.21.2 [#657](https://github.com/internetee/auction_center/pull/657)
 * Bump pdfkit to 0.8.5 [#658](https://github.com/internetee/auction_center/pull/658)

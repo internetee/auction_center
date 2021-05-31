@@ -101,6 +101,7 @@ class ResultCreatorTest < ActiveSupport::TestCase
   end
 
   def test_creator_emails_winner_for_auction_with_offers
+    ActionMailer::Base.deliveries.clear
     result_creator = ResultCreator.new(@auction_with_offers.id)
     result_creator.call
 
@@ -109,5 +110,7 @@ class ResultCreatorTest < ActiveSupport::TestCase
 
     assert_equal('Bid for the with-offers.test domain was successful', last_email.subject)
     assert_equal(['user@auction.test'], last_email.to)
+    linkpay_text = 'You can pay for this invoice using following'
+    assert CGI::unescapeHTML(last_email.body.raw_source).include? linkpay_text
   end
 end
