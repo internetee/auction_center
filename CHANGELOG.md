@@ -1,3 +1,9 @@
+31.05.2021
+* UI improvemnts for canceling bids [#683](https://github.com/internetee/auction_center/issues/683)
+* Bump dns-packet 1.3.4 [#732](https://github.com/internetee/auction_center/pull/732)
+* Bump cancancan to 3.2.2 [#734](https://github.com/internetee/auction_center/pull/734)
+* Bump libphonenumber-js 1.9.19 [#736](https://github.com/internetee/auction_center/pull/736)
+
 24.05.2021
 * Bump puma to 5.3.2 [#722](https://github.com/internetee/auction_center/pull/722)
 * Bump webmock to 3.13.0 [#723](https://github.com/internetee/auction_center/pull/723)
