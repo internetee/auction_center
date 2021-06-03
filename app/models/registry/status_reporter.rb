@@ -65,7 +65,7 @@ module Registry
       when 'awaiting_payment'
         result.invoice.due_date.end_of_day
       when 'payment_received'
-        (result.registration_due_date + 1.day).end_of_day
+        result.registration_due_date.end_of_day
       end
     end
   end
