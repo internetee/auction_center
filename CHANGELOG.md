@@ -1,3 +1,6 @@
+03.06.2021
+* changed the api output of registration deadline to indicate last day of the registration instead of release [#2020](https://github.com/internetee/registry/issues/2020)
+
 31.05.2021
 * UI improvemnts for canceling bids [#683](https://github.com/internetee/auction_center/issues/683)
 * Bump dns-packet 1.3.4 [#732](https://github.com/internetee/auction_center/pull/732)
