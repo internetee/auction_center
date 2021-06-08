@@ -1,3 +1,10 @@
+08.06.2021
+* Bump ws to 7.4.6 (CVE-2021-32640) [#743](https://github.com/internetee/auction_center/pull/743)
+* Bump highcharts from to 9.1.1 [#739](https://github.com/internetee/auction_center/pull/739)
+* Bump karma from to 6.3.3 [#740](https://github.com/internetee/auction_center/pull/740)
+* Bump qunit from to 2.16.0 [#741](https://github.com/internetee/auction_center/pull/741)
+* Bump terser-webpack-plugin from to 5.1.3 [#742](https://github.com/internetee/auction_center/pull/742)
+
 03.06.2021
 * changed the api output of registration deadline to indicate last day of the registration instead of release [#2020](https://github.com/internetee/registry/issues/2020)
 
