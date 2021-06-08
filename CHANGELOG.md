@@ -1,5 +1,6 @@
 08.06.2021
 * Bump ws to 7.4.6 (CVE-2021-32640) [#743](https://github.com/internetee/auction_center/pull/743)
+* Bump css-what to 5.0.1 (CVE-2021-33587) [#744](https://github.com/internetee/auction_center/pull/744)
 * Bump highcharts from to 9.1.1 [#739](https://github.com/internetee/auction_center/pull/739)
 * Bump karma from to 6.3.3 [#740](https://github.com/internetee/auction_center/pull/740)
 * Bump qunit from to 2.16.0 [#741](https://github.com/internetee/auction_center/pull/741)
