@@ -22,7 +22,8 @@
       "turbolinks": "^5.2.0",
       "ws": "^7.4.6",
       "css-what": "^5.0.1",
-      "typeface-raleway": "^1.1.13"
+      "typeface-raleway": "^1.1.13",
+      "normalize-url": "^4.5.1"
    },
    "version": "0.0.1",
    "description": "Domain auction software",
