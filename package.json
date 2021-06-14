@@ -23,7 +23,11 @@
       "ws": "^7.4.6",
       "css-what": "^5.0.1",
       "typeface-raleway": "^1.1.13",
-      "normalize-url": "^4.5.1"
+      "normalize-url": "^4.5.1",
+      "ssri": "^6.0.2",
+      "postcss": "^8.2.10",
+      "browserslist": "^4.16.5",
+      "glob-parent": "^5.1.2"
    },
    "version": "0.0.1",
    "description": "Domain auction software",
