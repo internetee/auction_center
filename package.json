@@ -23,7 +23,8 @@
       "ws": "^7.4.6",
       "css-what": "^5.0.1",
       "typeface-raleway": "^1.1.13",
-      "normalize-url": "^4.5.1"
+      "normalize-url": "^4.5.1",
+      "ssri": "^6.0.2"
    },
    "version": "0.0.1",
    "description": "Domain auction software",
@@ -35,7 +36,7 @@
       "Artur Beljajev <artur.beljajev@eestiinternet.ee>"
    ],
    "devDependencies": {
-      "karma": "^6.3.3",
+      "karma": "^6.3.4",
       "webpack": "^4.0.0",
       "karma-chrome-launcher": "^3.0.0",
       "karma-coverage": "^2.0.3",
