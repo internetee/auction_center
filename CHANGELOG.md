@@ -1,3 +1,8 @@
+14.06.2021
+* Bump karma to 6.3.4 [#745](https://github.com/internetee/auction_center/pull/745)
+* Update normalize-url to 4.5.1 [#746](https://github.com/internetee/auction_center/pull/746)
+* Update ssri to 6.0.2 [#747](https://github.com/internetee/auction_center/pull/747)
+
 08.06.2021
 * Bump ws to 7.4.6 (CVE-2021-32640) [#743](https://github.com/internetee/auction_center/pull/743)
 * Bump css-what to 5.0.1 (CVE-2021-33587) [#744](https://github.com/internetee/auction_center/pull/744)
