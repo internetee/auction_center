@@ -1,3 +1,14 @@
+22.06.2021
+* Bump cancancan to 3.3.0 [#749](https://github.com/internetee/auction_center/pull/749)
+* Bump ssri to 8.0.1 [#750](https://github.com/internetee/auction_center/pull/750)
+* Bump actions/upload-artifact to 2.2.4 [#751](https://github.com/internetee/auction_center/pull/751)
+* Bump actions/download-artifact to 2.0.10 [#752](https://github.com/internetee/auction_center/pull/752)
+* Bump ws to 7.5.0 [#753](https://github.com/internetee/auction_center/pull/753)
+* Bump highcharts to 9.1.2 [#754](https://github.com/internetee/auction_center/pull/754)
+* Bump libphonenumber-js to 1.9.20 [#755](https://github.com/internetee/auction_center/pull/755)
+* Bump postcss to 8.3.5 [#756](https://github.com/internetee/auction_center/pull/756)
+* Bump normalize-url to 6.0.1 [#757](https://github.com/internetee/auction_center/pull/757)
+
 14.06.2021
 * Bump karma to 6.3.4 [#745](https://github.com/internetee/auction_center/pull/745)
 * Update normalize-url to 4.5.1 [#746](https://github.com/internetee/auction_center/pull/746)
