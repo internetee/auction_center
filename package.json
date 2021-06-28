@@ -27,7 +27,7 @@
       "ssri": "^8.0.1",
       "postcss": "^8.3.5",
       "browserslist": "^4.16.5",
-      "glob-parent": "^5.1.2"
+      "glob-parent": "^6.0.0"
    },
    "version": "0.0.1",
    "description": "Domain auction software",
