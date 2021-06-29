@@ -13,7 +13,7 @@
       "less": "3.13.1",
       "less-loader": "^7.3.0",
       "libphonenumber-js": "^1.9.20",
-      "optimize-css-assets-webpack-plugin": "^6.0.0",
+      "optimize-css-assets-webpack-plugin": "^6.0.1",
       "punycode": "^2.1.1",
       "rails-ujs": "^5.2.6",
       "resolve-url-loader": "^4.0.0",
