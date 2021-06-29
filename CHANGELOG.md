@@ -1,3 +1,10 @@
+29.06.2021
+* Bump rails to 6.1.4 [#759](https://github.com/internetee/auction_center/pull/759)
+* Bump normalize-url to 6.1.0 [#760](https://github.com/internetee/auction_center/pull/760)
+* Bump terser-webpack-plugin to 5.1.4 [#761](https://github.com/internetee/auction_center/pull/761)
+* Bump glob-parent to 6.0.0 [#762](https://github.com/internetee/auction_center/pull/762)
+* Bump optimize-css-assets-webpack-plugin to 6.0.1 [#763](https://github.com/internetee/auction_center/pull/763)
+
 22.06.2021
 * Bump cancancan to 3.3.0 [#749](https://github.com/internetee/auction_center/pull/749)
 * Bump ssri to 8.0.1 [#750](https://github.com/internetee/auction_center/pull/750)
