@@ -1,3 +1,7 @@
+06.07.2021
+* Bump libphonenumber-js to 1.9.21 [#764](https://github.com/internetee/auction_center/pull/764)
+* Bump ws to 7.5.2 [#765](https://github.com/internetee/auction_center/pull/765)
+
 29.06.2021
 * Bump rails to 6.1.4 [#759](https://github.com/internetee/auction_center/pull/759)
 * Bump normalize-url to 6.1.0 [#760](https://github.com/internetee/auction_center/pull/760)
