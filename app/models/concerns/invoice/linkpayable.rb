@@ -24,6 +24,7 @@ module Concerns
                                                      CONFIG_NAMESPACE.to_sym, :linkpay_token)
 
       def linkpay_url
+        return unless linkpay_prefix
         return unless PaymentOrder.supported_methods.include?('PaymentOrders::EveryPay'.constantize)
         return if paid?
 
@@ -35,7 +36,11 @@ module Concerns
         data = linkpay_params(price).to_query
 
         hmac = OpenSSL::HMAC.hexdigest('sha256', KEY, data)
-        "#{LINKPAY_PREFIX}?#{data}&hmac=#{hmac}"
+        "#{linkpay_prefix}?#{data}&hmac=#{hmac}"
+      end
+
+      def linkpay_prefix
+        Rails.env.test? ? ENV['linkpay_prefix'] : LINKPAY_PREFIX
       end
 
       def linkpay_params(price)
