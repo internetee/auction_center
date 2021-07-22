@@ -102,6 +102,7 @@ class ResultCreatorTest < ActiveSupport::TestCase
 
   def test_creator_emails_winner_for_auction_with_offers
     ActionMailer::Base.deliveries.clear
+    ENV['linkpay_prefix'] = 'some_prefix'
     result_creator = ResultCreator.new(@auction_with_offers.id)
     result_creator.call
 
@@ -112,5 +113,20 @@ class ResultCreatorTest < ActiveSupport::TestCase
     assert_equal(['user@auction.test'], last_email.to)
     linkpay_text = 'You can pay for this invoice using following'
     assert CGI::unescapeHTML(last_email.body.raw_source).include? linkpay_text
+  end
+
+  def test_creator_emails_winner_without_link_if_none_setup
+    ActionMailer::Base.deliveries.clear
+    ENV['linkpay_prefix'] = nil
+    result_creator = ResultCreator.new(@auction_with_offers.id)
+    result_creator.call
+
+    assert_not(ActionMailer::Base.deliveries.empty?)
+    last_email = ActionMailer::Base.deliveries.first
+    
+    assert_equal('Bid for the with-offers.test domain was successful', last_email.subject)
+    assert_equal(['user@auction.test'], last_email.to)
+    linkpay_text = 'You can pay for this invoice using following'
+    refute CGI::unescapeHTML(last_email.body.raw_source).include? linkpay_text
   end
 end

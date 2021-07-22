@@ -181,11 +181,18 @@ class InvoiceTest < ActiveSupport::TestCase
   def test_linkpay_url
     total = invoices_total([@payable_invoice]).to_s
     linkpay_token = PaymentOrders::EveryPay::LINKPAY_TOKEN
+    ENV['linkpay_prefix'] = 'some_prefix'
     url = @payable_invoice.linkpay_url
 
     assert(url.include? total)
     assert(url.include? linkpay_token)
     assert(url.include? @payable_invoice.id.to_s)
+  end
+
+  def test_linkpay_url_nil_if_no_linkpay
+    ENV['linkpay_prefix'] = nil
+
+    assert_nil @payable_invoice.linkpay_url
   end
 
   def test_linkpay_url_nil_if_paid
