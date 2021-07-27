@@ -171,7 +171,7 @@ GEM
       activerecord
       kaminari-core (= 1.2.1)
     kaminari-core (1.2.1)
-    listen (3.5.1)
+    listen (3.6.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
     llhttp-ffi (0.3.1)
@@ -265,7 +265,7 @@ GEM
       rake (>= 0.13)
       thor (~> 1.0)
     rake (13.0.6)
-    rb-fsevent (0.10.4)
+    rb-fsevent (0.11.0)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
     rbtree3 (0.6.0)
@@ -369,7 +369,7 @@ DEPENDENCIES
   elastic-apm
   jbuilder (~> 2.11)
   kaminari
-  listen (>= 3.0.5, < 3.6)
+  listen (>= 3.0.5, < 3.7)
   mimemagic (~> 0.4.3)
   money
   okcomputer (~> 1.18.4)
