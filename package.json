@@ -25,7 +25,7 @@
       "typeface-raleway": "^1.1.13",
       "normalize-url": "^7.0.0",
       "ssri": "^8.0.1",
-      "postcss": "^8.3.5",
+      "postcss": "^8.3.6",
       "browserslist": "^4.16.5",
       "glob-parent": "^6.0.1"
    },
