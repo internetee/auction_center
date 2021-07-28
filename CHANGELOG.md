@@ -1,3 +1,14 @@
+28.07.2021
+* Bump data_migrate to 7.0.2 [#768](https://github.com/internetee/auction_center/pull/768)
+* Bump chartkick to 4.0.5 [#770](https://github.com/internetee/auction_center/pull/770)
+* Bump normalize-url to 7.0.0 [#773](https://github.com/internetee/auction_center/pull/773)
+* removed LinkPay links from auto emails if not configured [#775](https://github.com/internetee/auction_center/pull/775)
+* Bump bootsnap to 1.7.6 [#776](https://github.com/internetee/auction_center/pull/776)
+* Bump elastic-apm to 4.3.0 [#777](https://github.com/internetee/auction_center/pull/777)
+* Bump listen to 3.6.0 [#778](https://github.com/internetee/auction_center/pull/778)
+* Bump glob-parent to 6.0.1 [#779](https://github.com/internetee/auction_center/pull/779)
+* Bump postcss to 8.3.6 [#780](https://github.com/internetee/auction_center/pull/780)
+
 06.07.2021
 * Bump libphonenumber-js to 1.9.21 [#764](https://github.com/internetee/auction_center/pull/764)
 * Bump ws to 7.5.2 [#765](https://github.com/internetee/auction_center/pull/765)
