@@ -1,4 +1,5 @@
 Rails.application.configure do
+  docker_stdout = '/proc/1/fd/1'
   # Verifies that versions and hashed value of the package contents in the project's package.json
   config.webpacker.check_yarn_integrity = false
   # Settings specified here will take precedence over those in config/application.rb.
@@ -82,7 +83,7 @@ Rails.application.configure do
   config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new 'auction')
 
   if ENV["RAILS_LOG_TO_STDOUT"].present?
-    logger           = ActiveSupport::Logger.new(STDOUT)
+    logger           = ActiveSupport::Logger.new(docker_stdout)
     logger.formatter = config.log_formatter
     config.logger    = ActiveSupport::TaggedLogging.new(logger)
   end
