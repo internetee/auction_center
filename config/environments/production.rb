@@ -1,5 +1,6 @@
+DOCKER_STDOUT = '/proc/1/fd/1'.freeze
+
 Rails.application.configure do
-  docker_stdout = '/proc/1/fd/1'
   # Verifies that versions and hashed value of the package contents in the project's package.json
   config.webpacker.check_yarn_integrity = false
   # Settings specified here will take precedence over those in config/application.rb.
@@ -81,6 +82,12 @@ Rails.application.configure do
   # Use a different logger for distributed setups.
   require 'syslog/logger'
   config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new 'auction')
+
+  unless ENV['RAILS_LOG_TO_DOCKER_STDOUT'].present?
+    logger           = ActiveSupport::Logger.new(DOCKER_STDOUT)
+    logger.formatter = config.log_formatter
+    config.logger    = ActiveSupport::TaggedLogging.new(logger)
+  end
 
   if ENV["RAILS_LOG_TO_STDOUT"].present?
     logger           = ActiveSupport::Logger.new(docker_stdout)
