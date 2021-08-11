@@ -1,4 +1,5 @@
 11.08.2021
+* Fixed logging in production mode [#633](https://github.com/internetee/auction_center/issues/633)
 * Bump webmock to 3.14.0 [#788](https://github.com/internetee/auction_center/pull/788)
 * Bump browserlist to 4.16.7 [#789](https://github.com/internetee/auction_center/pull/789)
 * Bump url-parse to 1.5.3 [#791](https://github.com/internetee/auction_center/pull/791)
