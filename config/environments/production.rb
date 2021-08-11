@@ -83,7 +83,7 @@ Rails.application.configure do
   require 'syslog/logger'
   config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new 'auction')
 
-  unless ENV['RAILS_LOG_TO_DOCKER_STDOUT'].present?
+  if ENV['RAILS_LOG_TO_DOCKER_STDOUT'].present?
     logger           = ActiveSupport::Logger.new(DOCKER_STDOUT)
     logger.formatter = config.log_formatter
     config.logger    = ActiveSupport::TaggedLogging.new(logger)
