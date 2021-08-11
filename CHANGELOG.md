@@ -1,3 +1,16 @@
+11.08.2021
+* Bump webmock to 3.14.0 [#788](https://github.com/internetee/auction_center/pull/788)
+* Bump browserlist to 4.16.7 [#789](https://github.com/internetee/auction_center/pull/789)
+* Bump url-parse to 1.5.3 [#791](https://github.com/internetee/auction_center/pull/791)
+* Bump path-parse 1.0.7 [#792](https://github.com/internetee/auction_center/pull/792)
+
+03.08.2021
+* Bump bootsnap to 1.7.7 [#781](https://github.com/internetee/auction_center/pull/781)
+* Bump puma to 5.4.0 [#782](https://github.com/internetee/auction_center/pull/782)
+* Bump ws to 8.0.0 [#783](https://github.com/internetee/auction_center/pull/783)
+* Bump libphonenumber-js to 1.9.23 [#784](https://github.com/internetee/auction_center/pull/784)
+* Bump tar to 6.1.3 [#785](https://github.com/internetee/auction_center/pull/785)
+
 28.07.2021
 * Bump data_migrate to 7.0.2 [#768](https://github.com/internetee/auction_center/pull/768)
 * Bump chartkick to 4.0.5 [#770](https://github.com/internetee/auction_center/pull/770)
