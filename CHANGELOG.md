@@ -1,3 +1,8 @@
+18.08.2021
+* Bump bullet to 6.1.5 [#793](https://github.com/internetee/auction_center/pull/793)
+* Bump normalize-url to 7.0.1 [#794](https://github.com/internetee/auction_center/pull/794)
+* Bump ws to 8.1.0 [#795](https://github.com/internetee/auction_center/pull/795)
+
 11.08.2021
 * Fixed logging in production mode [#633](https://github.com/internetee/auction_center/issues/633)
 * Bump webmock to 3.14.0 [#788](https://github.com/internetee/auction_center/pull/788)
