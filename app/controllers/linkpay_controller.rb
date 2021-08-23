@@ -18,7 +18,7 @@ class LinkpayController < ApplicationController
       payment_reference: linkpay_params[:payment_reference],
     }
     payment_order.save
-    CheckLinkpayStatusJob.perform_now(payment_order.id)
+    CheckLinkpayStatusJob.set(wait: 1.minute).perform_later(payment_order.id)
   end
 
   def linkpay_params
