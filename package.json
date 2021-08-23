@@ -26,7 +26,7 @@
       "normalize-url": "^7.0.1",
       "ssri": "^8.0.1",
       "postcss": "^8.3.6",
-      "browserslist": "^4.16.7",
+      "browserslist": "^4.16.8",
       "glob-parent": "^6.0.1"
    },
    "version": "0.0.1",
