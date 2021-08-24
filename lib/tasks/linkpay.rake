@@ -1,7 +1,7 @@
 namespace :linkpay do
   desc 'Creates a dummy email bounce by email address'
   task :check_payment, [:order_reference, :payment_reference] => [:environment] do |_t, args|
-    invoice = Invoice.find_by(id: args[:order_reference])
+    invoice = Invoice.find_by(id: args[:order_reference].to_i)
 
     unless invoice
       log "Invoice with number #{args[:order_reference]} not found"
