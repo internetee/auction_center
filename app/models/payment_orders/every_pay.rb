@@ -73,9 +73,10 @@ module PaymentOrders
     # Perform necessary checks and mark the invoice as paid
     def mark_invoice_as_paid
       return unless settled_payment? && valid_response?
-
+      system_response = response.with_indifferent_access
       paid!
-      time = Time.strptime(response['timestamp'], '%s')
+      time = generate_time(system_response)
+
       Invoice.transaction do
         invoices.each do |invoice|
           invoice.mark_as_paid_at_with_payment_order(time, self)
@@ -121,6 +122,14 @@ module PaymentOrders
     end
 
     private
+
+    def generate_time(system_response)
+      time = Time.strptime(system_response['timestamp'], '%s')
+      if time.to_date == Date.new(1970, 01, 01)
+        time = created_at
+      end
+      time
+    end
 
     def language
       if user&.locale == LANGUAGE_CODE_ET
