@@ -11,8 +11,8 @@ namespace :linkpay do
     payment_order = PaymentOrders::EveryPay.create(invoices: [invoice], user: invoice.user)
 
     payment_order.response = {
-      order_reference: linkpay_params[:order_reference],
-      payment_reference: linkpay_params[:payment_reference],
+      order_reference: args[:order_reference],
+      payment_reference: args[:payment_reference],
     }
 
     payment_order.save!
