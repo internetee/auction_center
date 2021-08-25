@@ -1,3 +1,14 @@
+25.08.2021
+* Set delay to Linkpay status jobs [#797](https://github.com/internetee/auction_center/pull/797)
+* Bump rails to 6.1.4.1 [#799](https://github.com/internetee/auction_center/pull/799)
+* Bump webdrivers to 4.6.1 [#800](https://github.com/internetee/auction_center/pull/800)
+* Bump listen to 3.7.0 [#801](https://github.com/internetee/auction_center/pull/801)
+* Bump webpack-dev-server to 4.0.0 [#802](https://github.com/internetee/auction_center/pull/802)
+* Bump ws to 8.2.0 [#803](https://github.com/internetee/auction_center/pull/803)
+* Bump browserlist to 4.16.8 [#804](https://github.com/internetee/auction_center/pull/804)
+* Bump libphonenumber-js to 19.24 [#805](https://github.com/internetee/auction_center/pull/805)
+* Bump rails/webpacker to 5.4.2 [#806](https://github.com/internetee/auction_center/pull/806)
+
 18.08.2021
 * Bump bullet to 6.1.5 [#793](https://github.com/internetee/auction_center/pull/793)
 * Bump normalize-url to 7.0.1 [#794](https://github.com/internetee/auction_center/pull/794)
