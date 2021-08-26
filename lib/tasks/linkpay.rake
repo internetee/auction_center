@@ -8,7 +8,7 @@ namespace :linkpay do
       abort
     end
 
-    payment_order = find_payment_order(invoice)
+    payment_order = find_payment_order(invoice: invoice, ref: args[:payment_reference])
 
     payment_order.response = {
       order_reference: args[:order_reference],
@@ -21,8 +21,8 @@ namespace :linkpay do
 
   private
 
-  def find_payment_order(invoice)
-    order = invoice.payment_orders.every_pay.issued.last
+  def find_payment_order(invoice:, ref:)
+    order = invoice.payment_orders.every_pay.for_payment_reference(ref).first
     return order if order
 
     PaymentOrders::EveryPay.create(invoices: [invoice], user: invoice.user)
