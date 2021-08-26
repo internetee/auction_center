@@ -8,7 +8,7 @@ namespace :linkpay do
       abort
     end
 
-    payment_order = PaymentOrders::EveryPay.create(invoices: [invoice], user: invoice.user)
+    payment_order = find_payment_order(invoice)
 
     payment_order.response = {
       order_reference: args[:order_reference],
@@ -17,6 +17,15 @@ namespace :linkpay do
 
     payment_order.save!
     payment_order.check_linkpay_status
+  end
+
+  private
+
+  def find_payment_order(invoice)
+    order = invoice.payment_orders.every_pay.issued.last
+    return order if order
+
+    PaymentOrders::EveryPay.create(invoices: [invoice], user: invoice.user)
   end
 
   def log(msg)

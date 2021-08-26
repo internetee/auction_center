@@ -24,6 +24,8 @@ class PaymentOrder < ApplicationRecord
   attr_writer :return_url
   attr_reader :return_url
 
+  scope :every_pay, -> { where('type = ?', 'PaymentOrders::EveryPay') }
+
   # Name of configuration namespace
   def self.config_namespace_name; end
 
