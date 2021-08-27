@@ -2,6 +2,17 @@ require 'test_helper'
 
 class HealthCheckTest < ActionDispatch::IntegrationTest
 
+  def setup
+    super
+    @prev_locale = I18n.locale
+    I18n.locale = :en
+  end
+
+  def teardown
+    super
+    I18n.locale = @prev_locale
+  end
+
   def test_default_check_passed
     get("/healthcheck/default", as: :json)
 
