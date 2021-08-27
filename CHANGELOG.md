@@ -1,3 +1,7 @@
+26.08.2021
+* Refactored linkpay payment confirmation [#808](https://github.com/internetee/auction_center/pull/808)
+* Bump highcharts to 9.2.2 [#807](https://github.com/internetee/auction_center/pull/807)
+
 25.08.2021
 * Set delay to Linkpay status jobs [#797](https://github.com/internetee/auction_center/pull/797)
 * Bump rails to 6.1.4.1 [#799](https://github.com/internetee/auction_center/pull/799)
