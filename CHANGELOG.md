@@ -1,3 +1,9 @@
+31.08.2021
+* Bump bootsnap to 1.8.1 [#811](https://github.com/internetee/auction_center/pull/811)
+* Bump libphonenumber-js to 1.9.25 [#812](https://github.com/internetee/auction_center/pull/812)
+* Bump ws to 8.2.1 [#813](https://github.com/internetee/auction_center/pull/813)
+* Bump tar to 6.1.11 [#814](https://github.com/internetee/auction_center/pull/814)
+
 26.08.2021
 * Refactored linkpay payment confirmation [#808](https://github.com/internetee/auction_center/pull/808)
 * Bump highcharts to 9.2.2 [#807](https://github.com/internetee/auction_center/pull/807)
