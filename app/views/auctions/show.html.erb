@@ -44,7 +44,7 @@
                     edit_offer_path(@auction.offer_from_user(current_user).uuid), class: "ui button primary" %>
                     <%= link_to t('auctions.delete_your_offer'),
                     offer_path(@auction.offer_from_user(current_user).uuid),
-                    method: :delete, data: { confirm: t(:are_you_sure) }, class: "ui button secondary"%>
+                    method: :delete, data: { confirm: t(:are_you_sure) }, class: "ui button red"%>
                 <% elsif @auction.in_progress? %>
                     <%= link_to t('auctions.submit_offer'),
                     new_auction_offer_path(auction_uuid: @auction.uuid), class: "ui button primary" %>

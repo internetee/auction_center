@@ -4,11 +4,10 @@ on:
 
   pull_request:
     paths-ignore:
-      - 'Gemfile.lock'
-      - 'Gemfile'
       - 'CHANGELOG.md'
       - 'README.md'
       - 'yarn.lock'
+      - 'package.json'
     branches: [master]
     types:
       - opened
@@ -18,8 +17,10 @@ on:
       - unlocked
 
 jobs:
-  
+
   build:
+    if: github.event.pull_request.draft == false
+
     runs-on: ubuntu-20.04
 
     steps:
@@ -37,7 +38,7 @@ jobs:
         run: |
           cp config/customization.yml.sample config/customization.yml
           cp config/database.yml.sample config/database.yml
-          ls -l config/        
+          ls -l config/
 
       - name: Build rails image
         env:
@@ -62,12 +63,8 @@ jobs:
       - name: Get pull request reference number
         run: |
           echo "$GITHUB_REF"
-          OIFS=$IFS
-          IFS='/'
-          read -a parts <<< "$GITHUB_REF"
-          IFS=OIFS
-          echo "PR_REF=${parts[2]}" >> $GITHUB_ENV
-          echo ${parts[*]}
+          echo "PR_REF=$(cat /home/runner/work/_temp/_github_workflow/event.json | jq -r '.number')" >> $GITHUB_ENV
+          echo $(cat /home/runner/work/_temp/_github_workflow/event.json | jq -r '.number')
 
       - name: Get repo name
         run: |
@@ -108,7 +105,7 @@ jobs:
           sleep 15
           ping -c 1 192.168.99.12
           eval `ssh-agent`
-          touch ~/.ssh/known_hosts   
+          touch ~/.ssh/known_hosts
           ssh-add ~/.ssh/key
           ssh-keyscan 192.168.99.12 > ~/.ssh/known_hosts
           rsync -av "$REPO" runner@192.168.99.12:/home/runner/
@@ -122,7 +119,7 @@ jobs:
           rm kubeconfig
           echo "server obs.tld.ee
           zone pilv.tld.ee
-          update add auction-"$PR_REF".riigi.pilv.tld.ee. 3600 CNAME riigi.pilv.tld.ee.
+          update add auction-"$PR_REF".pilv.tld.ee. 3600 CNAME riigi.pilv.tld.ee.
           send
           " | nsupdate -k ~/Kgh-runner.infra.tld.ee.+165+27011.key
           if [ "$?" -eq "0" ]; then
@@ -131,3 +128,16 @@ jobs:
               echo "CNAME update failed"
           fi
           EOSSH
+
+      - name: Notify developers
+        timeout-minutes: 1
+        env:
+          NOTIFICATION_URL: ${{ secrets.NOTIFICATION_URL}}
+        run: |
+          curl -i -X POST --data-urlencode 'payload={
+            "text": "##### Build and deploy from pull request has been succesful :tada:\n
+            | Project    | Branch                 | :net:                                      |
+            |:-----------|:----------------------:|:------------------------------------------:|
+            | **'$REPO'**|'${{ github.head_ref }}'| https://auction-'$PR_REF'.pilv.tld.ee |
+            "
+            }' $NOTIFICATION_URL

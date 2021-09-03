@@ -3,9 +3,14 @@ name: remove-staging-after-pull-request
 on:
   pull_request:
     types: [closed]
+    paths-ignore:
+      - 'CHANGELOG.md'
+      - 'README.md'
+      - 'yarn.lock'
 
 jobs:
   delete:
+    if: github.event.pull_request.draft == false
     runs-on: ubuntu-20.04
 
     steps:
@@ -15,14 +20,8 @@ jobs:
       - name: Get pull request reference number
         run: |
           echo "$GITHUB_REF"
-          OIFS=$IFS
-          IFS='/'
-          read -a parts <<< "$GITHUB_REF"
-          IFS=OIFS
-          PR_REF=${parts[2]}
-          echo "PR_REF=${parts[2]}" >> $GITHUB_ENV
-          echo "$PR_REF"
-          echo ${parts[*]}
+          echo "PR_REF=$(cat /home/runner/work/_temp/_github_workflow/event.json | jq -r '.number')" >> $GITHUB_ENV
+          echo $(cat /home/runner/work/_temp/_github_workflow/event.json | jq -r '.number')
 
       - name: Get repo name
         run: |
@@ -75,7 +74,7 @@ jobs:
           rm kubeconfig
           echo "server obs.tld.ee
           zone pilv.tld.ee
-          update delete auction-"$PR_REF".riigi.pilv.tld.ee.
+          update delete auction-"$PR_REF".pilv.tld.ee.
           send
           " | nsupdate -k ~/Kgh-runner.infra.tld.ee.+165+27011.key
           if [ "$?" -eq "0" ]; then
@@ -84,3 +83,16 @@ jobs:
               echo "CNAME update failed"
           fi
           EOSSH
+
+      - name: Notify developers
+        timeout-minutes: 1
+        env:
+          NOTIFICATION_URL: ${{ secrets.NOTIFICATION_URL}}
+        run: |
+          curl -i -X POST --data-urlencode 'payload={
+            "text": "##### Pull request was succesful, it has been merged :bowtie:\n
+            | Project    | Branch                 | :net:                                      |
+            |:-----------|:----------------------:|:------------------------------------------:|
+            | **'$REPO'**|'${{ github.head_ref }}'| ~~https://auction-'$PR_REF'.pilv.tld.ee~~ |
+            "
+            }' $NOTIFICATION_URL

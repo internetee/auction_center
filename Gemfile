@@ -12,16 +12,17 @@ gem 'delayed_job'
 gem 'delayed_job_active_record'
 gem 'devise'
 gem 'directo', github: 'internetee/directo', branch: 'master'
+gem 'elastic-apm'
 gem 'jbuilder', '~> 2.11'
 gem 'kaminari'
-gem 'mimemagic', '~> 0.3.10'
+gem 'mimemagic', '~> 0.4.3'
 gem 'money'
 gem 'okcomputer', '~> 1.18.4'
 gem 'omniauth-rails_csrf_protection'
 gem 'omniauth-tara', github: 'internetee/omniauth-tara'
 gem 'pdfkit'
 gem 'pg', '>= 0.18', '< 2.0'
-gem 'puma', '~> 4.3.5'
+gem 'puma', '~> 5.4.0'
 gem 'rails', '>= 6.0.3.5'
 gem 'rails-i18n'
 gem 'recaptcha'
@@ -40,7 +41,7 @@ group :development, :test do
 end
 
 group :development do
-  gem 'listen', '>= 3.0.5', '< 3.6'
+  gem 'listen', '>= 3.0.5', '< 3.8'
   gem 'web-console', '>= 3.3.0'
 end
 

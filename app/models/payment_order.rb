@@ -24,6 +24,9 @@ class PaymentOrder < ApplicationRecord
   attr_writer :return_url
   attr_reader :return_url
 
+  scope :every_pay, -> { where('type = ?', 'PaymentOrders::EveryPay') }
+  scope :for_payment_reference, ->(ref) { where("response->>'payment_reference'=?", ref) }
+
   # Name of configuration namespace
   def self.config_namespace_name; end
 

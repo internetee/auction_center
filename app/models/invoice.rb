@@ -114,6 +114,7 @@ class Invoice < ApplicationRecord
       clear_linked_ban
       paid!
     end
+    ResultStatusUpdateJob.perform_now
   end
 
   def mark_as_paid_at_with_payment_order(time, payment_order)
@@ -125,6 +126,7 @@ class Invoice < ApplicationRecord
       clear_linked_ban
       paid!
     end
+    ResultStatusUpdateJob.perform_now
   end
 
   def overdue?

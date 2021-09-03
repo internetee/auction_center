@@ -111,11 +111,6 @@ class OffersTest < ApplicationSystemTestCase
 
     fill_in('offer[price]', with: '5.121')
 
-    # Check in-browser validation
-    validation_message = find('#offer_price').native.attribute('validationMessage')
-    assert_equal('Please enter a valid value. The two nearest valid values are 5.12 and 5.13.',
-                 validation_message)
-
     assert_no_changes('Offer.count') do
       click_link_or_button('Submit')
     end

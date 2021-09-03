@@ -8,11 +8,13 @@ et:
     offers: "Pakkumused"
     offer_actions: "Pakkumistegevused"
     your_current_price: "Sinu pakkumus"
+    cancel_bid: "Pakkumise tühistamine"
 
     still_in_progress: "Töötlemisel"
 
     submit_offer: "Esita pakkumus"
     edit_your_offer: "Muuda pakkumust"
+    delete_your_offer: "Kustuta pakkumine"
 
     show:
       title: "Oksjoni andmed"

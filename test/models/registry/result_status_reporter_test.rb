@@ -79,7 +79,7 @@ class ResultStatusReporterTest < ActiveSupport::TestCase
 
   def test_call_sends_registration_deadline_if_payment_received
     @awaiting_payment.update(status: Result.statuses[:payment_received])
-    result_deadline = (@awaiting_payment.registration_due_date + 1.day).end_of_day
+    result_deadline = @awaiting_payment.registration_due_date.end_of_day
 
     instance = Registry::StatusReporter.new(@awaiting_payment)
 

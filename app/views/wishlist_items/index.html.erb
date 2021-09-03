@@ -84,7 +84,7 @@
                             <td>
                                 <%= link_to t(:delete), wishlist_item_path(wishlist_item.uuid),
                                  method: :delete, data: { confirm: t(:are_you_sure) },
-                                 remote: true, class: "ui button secondary" %>
+                                 remote: true, class: "ui button red" %>
                             </td>
                         </tr>
                     <% end %>

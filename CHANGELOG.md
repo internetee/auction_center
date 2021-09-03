@@ -1,5 +1,120 @@
+31.08.2021
+* Bump bootsnap to 1.8.1 [#811](https://github.com/internetee/auction_center/pull/811)
+* Bump libphonenumber-js to 1.9.25 [#812](https://github.com/internetee/auction_center/pull/812)
+* Bump ws to 8.2.1 [#813](https://github.com/internetee/auction_center/pull/813)
+* Bump tar to 6.1.11 [#814](https://github.com/internetee/auction_center/pull/814)
+
+26.08.2021
+* Refactored linkpay payment confirmation [#808](https://github.com/internetee/auction_center/pull/808)
+* Bump highcharts to 9.2.2 [#807](https://github.com/internetee/auction_center/pull/807)
+
+25.08.2021
+* Set delay to Linkpay status jobs [#797](https://github.com/internetee/auction_center/pull/797)
+* Bump rails to 6.1.4.1 [#799](https://github.com/internetee/auction_center/pull/799)
+* Bump webdrivers to 4.6.1 [#800](https://github.com/internetee/auction_center/pull/800)
+* Bump listen to 3.7.0 [#801](https://github.com/internetee/auction_center/pull/801)
+* Bump webpack-dev-server to 4.0.0 [#802](https://github.com/internetee/auction_center/pull/802)
+* Bump ws to 8.2.0 [#803](https://github.com/internetee/auction_center/pull/803)
+* Bump browserlist to 4.16.8 [#804](https://github.com/internetee/auction_center/pull/804)
+* Bump libphonenumber-js to 19.24 [#805](https://github.com/internetee/auction_center/pull/805)
+* Bump rails/webpacker to 5.4.2 [#806](https://github.com/internetee/auction_center/pull/806)
+
+18.08.2021
+* Bump bullet to 6.1.5 [#793](https://github.com/internetee/auction_center/pull/793)
+* Bump normalize-url to 7.0.1 [#794](https://github.com/internetee/auction_center/pull/794)
+* Bump ws to 8.1.0 [#795](https://github.com/internetee/auction_center/pull/795)
+
+11.08.2021
+* Fixed logging in production mode [#633](https://github.com/internetee/auction_center/issues/633)
+* Bump webmock to 3.14.0 [#788](https://github.com/internetee/auction_center/pull/788)
+* Bump browserlist to 4.16.7 [#789](https://github.com/internetee/auction_center/pull/789)
+* Bump url-parse to 1.5.3 [#791](https://github.com/internetee/auction_center/pull/791)
+* Bump path-parse 1.0.7 [#792](https://github.com/internetee/auction_center/pull/792)
+
+03.08.2021
+* Bump bootsnap to 1.7.7 [#781](https://github.com/internetee/auction_center/pull/781)
+* Bump puma to 5.4.0 [#782](https://github.com/internetee/auction_center/pull/782)
+* Bump ws to 8.0.0 [#783](https://github.com/internetee/auction_center/pull/783)
+* Bump libphonenumber-js to 1.9.23 [#784](https://github.com/internetee/auction_center/pull/784)
+* Bump tar to 6.1.3 [#785](https://github.com/internetee/auction_center/pull/785)
+
+28.07.2021
+* Bump data_migrate to 7.0.2 [#768](https://github.com/internetee/auction_center/pull/768)
+* Bump chartkick to 4.0.5 [#770](https://github.com/internetee/auction_center/pull/770)
+* Bump normalize-url to 7.0.0 [#773](https://github.com/internetee/auction_center/pull/773)
+* removed LinkPay links from auto emails if not configured [#775](https://github.com/internetee/auction_center/pull/775)
+* Bump bootsnap to 1.7.6 [#776](https://github.com/internetee/auction_center/pull/776)
+* Bump elastic-apm to 4.3.0 [#777](https://github.com/internetee/auction_center/pull/777)
+* Bump listen to 3.6.0 [#778](https://github.com/internetee/auction_center/pull/778)
+* Bump glob-parent to 6.0.1 [#779](https://github.com/internetee/auction_center/pull/779)
+* Bump postcss to 8.3.6 [#780](https://github.com/internetee/auction_center/pull/780)
+
+06.07.2021
+* Bump libphonenumber-js to 1.9.21 [#764](https://github.com/internetee/auction_center/pull/764)
+* Bump ws to 7.5.2 [#765](https://github.com/internetee/auction_center/pull/765)
+
+29.06.2021
+* Bump rails to 6.1.4 [#759](https://github.com/internetee/auction_center/pull/759)
+* Bump normalize-url to 6.1.0 [#760](https://github.com/internetee/auction_center/pull/760)
+* Bump terser-webpack-plugin to 5.1.4 [#761](https://github.com/internetee/auction_center/pull/761)
+* Bump glob-parent to 6.0.0 [#762](https://github.com/internetee/auction_center/pull/762)
+* Bump optimize-css-assets-webpack-plugin to 6.0.1 [#763](https://github.com/internetee/auction_center/pull/763)
+
+22.06.2021
+* Bump cancancan to 3.3.0 [#749](https://github.com/internetee/auction_center/pull/749)
+* Bump ssri to 8.0.1 [#750](https://github.com/internetee/auction_center/pull/750)
+* Bump actions/upload-artifact to 2.2.4 [#751](https://github.com/internetee/auction_center/pull/751)
+* Bump actions/download-artifact to 2.0.10 [#752](https://github.com/internetee/auction_center/pull/752)
+* Bump ws to 7.5.0 [#753](https://github.com/internetee/auction_center/pull/753)
+* Bump highcharts to 9.1.2 [#754](https://github.com/internetee/auction_center/pull/754)
+* Bump libphonenumber-js to 1.9.20 [#755](https://github.com/internetee/auction_center/pull/755)
+* Bump postcss to 8.3.5 [#756](https://github.com/internetee/auction_center/pull/756)
+* Bump normalize-url to 6.0.1 [#757](https://github.com/internetee/auction_center/pull/757)
+
+14.06.2021
+* Bump karma to 6.3.4 [#745](https://github.com/internetee/auction_center/pull/745)
+* Update normalize-url to 4.5.1 [#746](https://github.com/internetee/auction_center/pull/746)
+* Update ssri to 6.0.2 [#747](https://github.com/internetee/auction_center/pull/747)
+
+08.06.2021
+* Bump ws to 7.4.6 (CVE-2021-32640) [#743](https://github.com/internetee/auction_center/pull/743)
+* Bump css-what to 5.0.1 (CVE-2021-33587) [#744](https://github.com/internetee/auction_center/pull/744)
+* Bump highcharts from to 9.1.1 [#739](https://github.com/internetee/auction_center/pull/739)
+* Bump karma from to 6.3.3 [#740](https://github.com/internetee/auction_center/pull/740)
+* Bump qunit from to 2.16.0 [#741](https://github.com/internetee/auction_center/pull/741)
+* Bump terser-webpack-plugin from to 5.1.3 [#742](https://github.com/internetee/auction_center/pull/742)
+
+03.06.2021
+* changed the api output of registration deadline to indicate last day of the registration instead of release [#2020](https://github.com/internetee/registry/issues/2020)
+
+31.05.2021
+* UI improvemnts for canceling bids [#683](https://github.com/internetee/auction_center/issues/683)
+* Bump dns-packet 1.3.4 [#732](https://github.com/internetee/auction_center/pull/732)
+* Bump cancancan to 3.2.2 [#734](https://github.com/internetee/auction_center/pull/734)
+* Bump libphonenumber-js 1.9.19 [#736](https://github.com/internetee/auction_center/pull/736)
+
+24.05.2021
+* Bump puma to 5.3.2 [#722](https://github.com/internetee/auction_center/pull/722)
+* Bump webmock to 3.13.0 [#723](https://github.com/internetee/auction_center/pull/723)
+* Bump simpleidn to 0.2.1 [#725](https://github.com/internetee/auction_center/pull/725)
+* Bump mimemagic to 0.4.3 [#726](https://github.com/internetee/auction_center/pull/726)
+* Bump libphonenumber.js to 1.19.18 [#727](https://github.com/internetee/auction_center/pull/727)
+* Bump rails/webpacker to 5.4.0 [#728](https://github.com/internetee/auction_center/pull/728)
+
+19.05.2021
+* Delete offer button translation fix [#684](https://github.com/internetee/auction_center/issues/684)
+* Upgrade ruby to 3.0 [#707](https://github.com/internetee/auction_center/pull/707)
+* Bump airbrake to 11.0.3 [#698](https://github.com/internetee/auction_center/pull/698)
+* Bump money to 6.16.0 [#699](https://github.com/internetee/auction_center/pull/699)
+* Bump bootsnap to 1.7.5 [#700](https://github.com/internetee/auction_center/pull/700)
+* Bump pry to 0.14.1 [#701](https://github.com/internetee/auction_center/pull/701)
+* Bumo data_migrate to 7.0.1 [#702](https://github.com/internetee/auction_center/pull/702)
+* Bump optimize-css-assets-webpack-plugin to 6.0.0 [#703](https://github.com/internetee/auction_center/pull/703)
+* Bump terser-webpack-plugin to 5.1.2 [#704](https://github.com/internetee/auction_center/pull/704)
+* Bump puma to 4.3.8 [#717](https://github.com/internetee/auction_center/pull/717)
+
 12.05.2021
-* Added LinkPay feature (payinf the invoice using provided unique link) [#606](https://github.com/internetee/auction_center/issues/606)
+* Added LinkPay feature (paying the invoice using provided unique link) [#606](https://github.com/internetee/auction_center/issues/606)
 
 10.05.2021
 * Bump rails to 6.1.3.2 [#679](https://github.com/internetee/auction_center/pull/679)
