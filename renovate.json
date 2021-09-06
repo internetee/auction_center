@@ -1,5 +1,38 @@
 {
   "extends": [
     "config:base"
+  ],
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+      "automerge": true,
+      "automergeType": "pr"
+    },
+    {
+      "depTypeList": ["ruby"],"addLabels": ["bundler"]
+    },
+    {
+      "depTypeList": ["bundler"], "addLabels": ["bundler"]
+    }
+  ],
+  "docker": {
+    "enabled": false
+  },
+  "ignorePaths": [
+    "Dockerfile", "Dockerfile.*", ".github/workflows/build_deploy_staging.yml",
+    ".github/workflows/remove_st_after_pr.yml", ".nvmrc", ".github/workflows/autorebase.yml"
+  ],
+  "rangeStrategy": "replace",
+  "separateMajorMinor": true,
+  "prCreation": "immediate",
+  "prHourlyLimit": 2,
+  "prConcurrentLimit": 10,
+  "ignoreUnstable": true,
+  "dependencyDashboard": true,
+  "labels": [
+    "dependencies"
+  ],
+  "schedule": [
+    "before 2am"
   ]
 }
