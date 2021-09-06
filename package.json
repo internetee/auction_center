@@ -47,6 +47,6 @@
       "karma-qunit": "^4.0.0",
       "karma-webpack": "^4.0.2",
       "qunit": "^2.16.0",
-      "webpack-dev-server": "^4.0.0"
+      "webpack-dev-server": "^4.1.0"
    }
 }
