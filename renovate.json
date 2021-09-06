@@ -9,10 +9,7 @@
       "automergeType": "pr"
     },
     {
-      "depTypeList": ["ruby"],"addLabels": ["bundler"]
-    },
-    {
-      "depTypeList": ["bundler"], "addLabels": ["bundler"]
+      "depTypeList": ["ruby", "bundler", "Gemfile", "Gemfile.lock"],"addLabels": ["bundler"]
     }
   ],
   "docker": {
