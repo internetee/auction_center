@@ -4631,10 +4631,10 @@ less@3.13.1:
     native-request "^1.0.5"
     source-map "~0.6.0"
 
-libphonenumber-js@^1.9.25:
-  version "1.9.25"
-  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.9.25.tgz#e54b570f03d36ce059a88ab01ec49b9037ec1c97"
-  integrity sha512-LsSjcmXXGujESsrOsF2rrLdmuABj3OluCzPJKVNslJ2qc7xF5KdKXN8y0OcxHVurqosVf1/r4itrVrKSrlbVHA==
+libphonenumber-js@^1.9.26:
+  version "1.9.26"
+  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.9.26.tgz#888aca88a4019d0b108e45db8e0509d55785ae45"
+  integrity sha512-j0brmDsZLSKJCrcli1HjzHYP29VOf5P/Yz+xxe7WmKTe+0XVnKa0J+UEAaT96D21w1mfLPhlm0ZXBQ13EVF+XQ==
 
 lines-and-columns@^1.1.6:
   version "1.1.6"
