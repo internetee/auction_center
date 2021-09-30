@@ -185,7 +185,7 @@ class InvoiceTest < ActiveSupport::TestCase
 
     assert(url.include? total)
     assert(url.include? linkpay_token)
-    assert(url.include? @payable_invoice.id.to_s)
+    assert(url.include? @payable_invoice.number.to_s)
   end
 
   def test_linkpay_url_nil_if_paid
