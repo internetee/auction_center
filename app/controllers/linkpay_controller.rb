@@ -7,7 +7,7 @@ class LinkpayController < ApplicationController
   end
 
   def save_response
-    invoice = Invoice.find_by(id: linkpay_params[:order_reference])
+    invoice = Invoice.find_by(number: linkpay_params[:order_reference])
     payment_reference = linkpay_params[:payment_reference]
 
     return unless invoice
