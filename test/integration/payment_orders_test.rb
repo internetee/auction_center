@@ -19,7 +19,7 @@ class PaymentOrdersTest < ActionDispatch::IntegrationTest
 
   def test_response_from_linkpay_callback_endpoint
     params = {
-      order_reference: @invoice.id.to_s,
+      order_reference: @invoice.number.to_s,
       payment_reference: SecureRandom.uuid.to_s,
     }
     assert_changes('@invoice.payment_orders.count', 1) do
@@ -36,7 +36,7 @@ class PaymentOrdersTest < ActionDispatch::IntegrationTest
 
   def test_response_from_linkpay_callback_endpoint_without_new_payment_order
     params = {
-      order_reference: @invoice.id.to_s,
+      order_reference: @invoice.number.to_s,
       payment_reference: SecureRandom.uuid.to_s,
     }
     @payment_order.response = params

@@ -40,9 +40,8 @@ module Concerns
 
       def linkpay_params(price)
         { 'transaction_amount' => price.to_s,
-          'order_reference' => id,
-          'customer_name' => billing_profile.name
-                                            .parameterize(separator: '_', preserve_case: true),
+          'order_reference' => number,
+          'customer_name' => billing_profile.name.parameterize(separator: '_', preserve_case: true),
           'customer_email' => user.email,
           'custom_field_1' => result.auction.domain_name,
           'linkpay_token' => LINKPAY_TOKEN }
