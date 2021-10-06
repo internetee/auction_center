@@ -73,8 +73,6 @@ module Concerns
 
         JSON.parse(response.body)
       end
-    rescue JSON::ParserError, *HTTP_ERRORS
-      nil
     end
     # :nocov:
   end
