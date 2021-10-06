@@ -1,3 +1,7 @@
+06.10.2021
+* Invoice nr is now used as order ref for linkpay payments [#836](https://github.com/internetee/auction_center/issues/836)
+* Improved error handling and logging for linkpay payments [#838](https://github.com/internetee/auction_center/pull/838)
+
 31.08.2021
 * Bump bootsnap to 1.8.1 [#811](https://github.com/internetee/auction_center/pull/811)
 * Bump libphonenumber-js to 1.9.25 [#812](https://github.com/internetee/auction_center/pull/812)
