@@ -19,12 +19,11 @@ const path = require('path');
 // };
 
 module.exports = {
-    test: /\.less$/,
     plugins: [new MiniCssExtractPlugin()],
     module: {
         rules: [
             {
-                test: /\.css$/i,
+                test: /\.less$/,
                 use: [MiniCssExtractPlugin.loader,
                     "css-loader",
                     {
