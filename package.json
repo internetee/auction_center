@@ -41,6 +41,7 @@
       "Artur Beljajev <artur.beljajev@eestiinternet.ee>"
    ],
    "devDependencies": {
+      "babel-loader": "^8.2.2",
       "karma": "^6.3.4",
       "karma-chrome-launcher": "^3.0.0",
       "karma-coverage": "^2.0.3",
