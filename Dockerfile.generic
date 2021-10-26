@@ -1,17 +1,16 @@
-FROM internetee/ruby:2.7
+FROM internetee/ruby_base:3.0-v1
 LABEL org.opencontainers.image.source=https://github.com/internetee/auction_center
-ARG YARN_VER='1.22.10'
 ARG RAILS_ENV
 ARG SECRET_KEY_BASE
 
 ENV RAILS_ENV "$RAILS_ENV"
 ENV SECRET_KEY_BASE "$SECRET_KEY_BASE"
 
-RUN npm install -g yarn@"$YARN_VER"
 
 COPY Gemfile Gemfile.lock ./    
 RUN gem install bundler && bundle config set without 'development test' && bundle install --jobs 20 --retry 5
 RUN yarn install --check-files
+
 COPY . .
 
 RUN bundle exec rails assets:precompile
