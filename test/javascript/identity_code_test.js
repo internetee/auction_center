@@ -1,4 +1,4 @@
-import IdentityCode from '../../app/javascript/src/identity_code';
+import IdentityCode from '../../app/packs/src/identity_code';
 
 QUnit.module('IdentityCode validation');
 
