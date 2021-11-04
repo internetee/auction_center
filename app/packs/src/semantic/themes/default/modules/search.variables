@@ -51,7 +51,8 @@
 
 /* Result Content */
 @resultTitleFont: @headerFont;
-@resultTitleMargin: -@headerLineHeightOffset 0 0;
+/*@resultTitleMargin: -@headerLineHeightOffset 0 0;*/
+@resultTitleMargin: 0;
 @resultTitleFontWeight: @bold;
 @resultTitleFontSize: @relativeMedium;
 @resultTitleColor: @darkTextColor;

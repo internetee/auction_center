@@ -16,7 +16,8 @@
 @bottomMargin: @headerBottomMargin;
 @margin: @topMargin 0 @bottomMargin;
 
-@firstMargin: -@lineHeightOffset;
+@firstMargin:  0em;
+/*@firstMargin: -@lineHeightOffset;*/
 @lastMargin: 0;
 @horizontalPadding: 0;
 @verticalPadding: 0;
