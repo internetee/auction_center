@@ -41,6 +41,7 @@ en:
   bans_name: "Bans"
   errors_name: "Errors"
   statistics_name: "Statistics"
+  unsubscribe: "Unsubscribe"
 
   user: "User"
   deleted_user: "User was deleted"

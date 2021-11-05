@@ -12,8 +12,9 @@ class NotificationMailer < ApplicationMailer
     mail(to: addressee.email, subject: t('.subject', date: Date.yesterday))
   end
 
-  def daily_auctions_broadcast_email(recipient:, auctions:)
+  def daily_auctions_broadcast_email(recipient:, auctions:, unsubscribe: nil)
     @auctions = auctions
+    @unsubscribe = unsubscribe
     mail(to: recipient)
   end
 
