@@ -42,15 +42,14 @@ jobs:
 
       - name: Build rails image
         env:
+          PASSWORD: ${{ secrets.GHCR }}
           KEY_BASE: ${{ secrets.KEY_BASE}}
         run: |
+          echo $PASSWORD | docker login ghcr.io -u eisbot --password-stdin
           docker build -t $TAG --build-arg RAILS_ENV=staging --build-arg SECRET_KEY_BASE="$KEY_BASE" -f Dockerfile.generic .
 
       - name: Build static content image
-        env:
-          PASSWORD: ${{ secrets.GHCR }}
         run: |
-          echo $PASSWORD | docker login ghcr.io -u eisbot --password-stdin
           docker create -ti --name rails $TAG bash
           docker cp rails:/opt/webapps/app/public/ ./public/
           docker build -t $STATIC_TAG -f Dockerfile.generic-static .
