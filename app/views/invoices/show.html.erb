@@ -107,16 +107,8 @@
                     <% if @invoice.cancelled? %>
                         <p><%= t('.redeem') %></p>
                     <% end %>
-                    <% PaymentOrder.supported_methods.each do |method| %>
-                        <%= form_with(model: PaymentOrder, local: true,
-                                      url: invoice_payment_orders_path(@invoice.uuid),
-                                      id: method.config_namespace_name) do |f| %>
-                            <%= f.hidden_field :user_id, value: @invoice.user_id %>
-                            <%= f.hidden_field :invoice_id, value: @invoice.id %>
-                            <%= f.hidden_field :invoice_ids, value: @invoice.id %>
-                            <%= f.hidden_field :type, value: method %>
-                            <%= f.submit t(:submit), type: :image, src: method.icon %>
-                        <% end %>
+                    <%= link_to @invoice.linkpay_url do %>
+                        <%= image_tag("every_pay.png") %>
                     <% end %>
                 </div>
             <% end %>
