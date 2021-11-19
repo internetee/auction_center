@@ -10,52 +10,64 @@
 
         <table class="ui selectable stackable table" id="my-outstanding-invoices-table">
             <thead>
-                <tr>
-                    <th scope="col"><%= t('invoices.item') %></th>
-                    <th scope="col"><%= t('invoices.due_date') %></th>
-                    <th scope="col"><%= t('invoices.total') %></th>
-                    <th scope="col"><%= t('Payment link') %></th>
-                </tr>
+            <tr>
+                <th scope="col"><%= t('invoices.item') %></th>
+                <th scope="col"><%= t('invoices.due_date') %></th>
+                <th scope="col"><%= t('invoices.total') %></th>
+            </tr>
             </thead>
 
             <tbody class="invoices-table-body issued">
-                <% @issued_invoices.each do |invoice| %>
-                    <tr class="invoices-table-row">
-                        <td><%= link_to invoice.items.first.name, invoice_path(invoice.uuid) %></td>
-                        <td><%= I18n.l(invoice.due_date) %></td>
-                        <td><%= t('offers.price_in_currency', price: invoice.total) %></td>
-                        <td><%= link_to 'Pay', invoice.linkpay_url %></td>
-                    </tr>
-                <% end %>
+            <% @issued_invoices.each do |invoice| %>
+                <tr class="invoices-table-row">
+                    <td><%= link_to invoice.items.first.name, invoice_path(invoice.uuid) %></td>
+                    <td><%= I18n.l(invoice.due_date) %></td>
+                    <td><%= t('offers.price_in_currency', price: invoice.total) %></td>
+                </tr>
+            <% end %>
             </tbody>
         </table>
 
-
+        <% if @issued_invoices.any? %>
+            <div class="column sixteen wide">
+                <h3><%= t('.pay') %></h3>
+                <% PaymentOrder.supported_methods.each do |method| %>
+                    <%= form_with(model: PaymentOrder, local: true,
+                                  url: invoice_payment_orders_path(@issued_invoices.first.uuid),
+                                  id: method.config_namespace_name) do |f| %>
+                        <%= f.hidden_field :user_id, value: @issued_invoices.first.user_id %>
+                        <%= f.hidden_field :invoice_ids, value: @issued_invoices.pluck(:id).join(',') %>
+                        <%= f.hidden_field :invoice_id, value: @issued_invoices.first.id %>
+                        <%= f.hidden_field :type, value: method %>
+                        <%= f.submit t(:submit), type: :image, src: method.icon %>
+                    <% end %>
+                <% end %>
+            </div>
+        <% end %>
         <% if @paid_invoices.any? %>
             <h2>
                 <%= t('invoices.paid') %>
             </h2>
             <table class="ui selectable stackable table" id="my-paid-invoices-table mt-4">
                 <thead>
-                    <tr>
-                        <th scope="col"><%= t('invoices.item') %></th>
-                        <th scope="col"><%= t('invoices.due_date') %></th>
-                        <th scope="col"><%= t('invoices.total') %></th>
-                    </tr>
+                <tr>
+                    <th scope="col"><%= t('invoices.item') %></th>
+                    <th scope="col"><%= t('invoices.due_date') %></th>
+                    <th scope="col"><%= t('invoices.total') %></th>
+                </tr>
                 </thead>
 
                 <tbody class="invoices-table-body paid">
-                    <% @paid_invoices.each do |invoice| %>
-                        <tr class="invoices-table-row">
-                            <td><%= link_to invoice.items.first.name, invoice_path(invoice.uuid) %></td>
-                            <td><%= I18n.l(invoice.due_date) %></td>
-                            <td><%= invoice.total %></td>
-                        </tr>
-                    <% end %>
+                <% @paid_invoices.each do |invoice| %>
+                    <tr class="invoices-table-row">
+                        <td><%= link_to invoice.items.first.name, invoice_path(invoice.uuid) %></td>
+                        <td><%= I18n.l(invoice.due_date) %></td>
+                        <td><%= invoice.total %></td>
+                    </tr>
+                <% end %>
                 </tbody>
             </table>
         <% end %>
-
         <% if @cancelled_payable_invoices.any? %>
             <h2>
                 <%= t('invoices.cancelled') %>
@@ -80,7 +92,6 @@
                 </tbody>
             </table>
         <% end %>
-
         <% if @cancelled_expired_invoices.any? %>
             <h2>
                 <%= t('invoices.cancelled_expired') %>
