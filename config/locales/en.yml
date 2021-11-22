@@ -41,7 +41,8 @@ en:
   bans_name: "Bans"
   errors_name: "Errors"
   statistics_name: "Statistics"
-  unsubscribe: "Unsubscribe"
+
+  unsubscribe_mailer_text: "I do not wish to receive daily summary about currently auctioned domains any more"
 
   user: "User"
   deleted_user: "User was deleted"
