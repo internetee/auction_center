@@ -32,6 +32,7 @@ jobs:
           SHORT_SHA=$(echo $GITHUB_SHA | cut -c 1-7) #pr-s test commit of merged state
           echo "TAG=ghcr.io/internetee/auction_center:RC-$SHORT_SHA" >> $GITHUB_ENV
           echo "STATIC_TAG=ghcr.io/internetee/auction_center:STATIC_RC-$SHORT_SHA" >> $GITHUB_ENV
+          echo "REGISTRY_TAG=ghcr.io/internetee/auction_center:REGISTRY_RC-$SHORT_SHA" >> $GITHUB_ENV
           echo "SHORT_TAG=RC-$SHORT_SHA" >> $GITHUB_ENV
 
       - name: Set config files for build
@@ -54,6 +55,22 @@ jobs:
           docker create -ti --name rails $TAG bash
           docker cp rails:/opt/webapps/app/public/ ./public/
           docker build -t $STATIC_TAG -f Dockerfile.generic-static .
+
+      - name: Clone registry project
+        run: |
+          git clone https://github.com/internetee/registry.git
+
+      - name: Build registry image
+        env:
+          KEY_BASE: ${{ secrets.KEY_BASE}}
+          ST_APP: ${{ secrets.ST_REGISTRY_APPLICATION_YML}}
+        run: |
+          cd registry
+          mkdir log
+          echo $ST_APP | base64 -di > config/application.yml
+          cp config/database.yml.sample config/database.yml
+          sed -i -e 's/LABEL org.opencontainers.image.source=https:\/\/github.com\/internetee\/registry/LABEL org.opencontainers.image.source=https:\/\/github.com\/internetee\/auction_center/' Dockerfile.preinstalled_gems
+          docker build -t $REGISTRY_TAG --build-arg RAILS_ENV=staging --build-arg SECRET_KEY_BASE="$KEY_BASE" -f Dockerfile.preinstalled_gems .
 
       - name: Push Docker images to gh container registry
         run: |
