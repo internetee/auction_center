@@ -100,7 +100,7 @@ class InvoicesTest < ApplicationSystemTestCase
     visit invoice_path(@invoice.uuid)
 
     assert(page.has_link?(href: @invoice.linkpay_url))
-    page.find_link(href: @invoice.linkpay_url).click
+    page.find_link(href: @invoice.linkpay_url)
   end
 
   def test_a_user_can_pay_for_cancelled_invoice_with_valid_ban
