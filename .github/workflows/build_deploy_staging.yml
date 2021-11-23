@@ -76,6 +76,7 @@ jobs:
         run: |
           docker push $TAG
           docker push $STATIC_TAG
+          docker push $REGISTRY_TAG
 
       - name: Get pull request reference number
         run: |
