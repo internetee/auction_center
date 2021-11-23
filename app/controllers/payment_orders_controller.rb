@@ -9,7 +9,7 @@ class PaymentOrdersController < ApplicationController
 
     respond_to do |format|
       if create_predicate
-        format.html { redirect_to payment_order_path(@payment_order.uuid) }
+        format.html { redirect_to @payment_order.linkpay_url_builder }
         format.json { render :show, status: :created, location: @payment_order }
       else
         format.html { redirect_to invoices_path(@payment_order.invoice), notice: t(:error) }
