@@ -114,7 +114,6 @@ module PaymentOrders
 
     def linkpay_url_builder
       total = invoices_total&.format(symbol: nil, thousands_separator: false, decimal_mark: '.')
-      create_predicate
       data = linkpay_params(total).to_query
 
       hmac = OpenSSL::HMAC.hexdigest('sha256', KEY, data)
@@ -122,6 +121,15 @@ module PaymentOrders
     end
 
     private
+
+    def linkpay_params(price)
+      { 'transaction_amount' => price.to_s,
+        'order_reference' => uuid,
+        'customer_name' => user.given_names.parameterize(separator: '_', preserve_case: true),
+        'customer_email' => user.email,
+        'custom_field_1' => invoices.map { |invoice| invoice.result.auction.domain_name}.join('_'),
+        'linkpay_token' => LINKPAY_TOKEN }
+    end
 
     def generate_time(system_response)
       time = Time.strptime(system_response['timestamp'], '%s')
