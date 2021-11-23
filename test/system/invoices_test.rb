@@ -101,8 +101,6 @@ class InvoicesTest < ApplicationSystemTestCase
 
     assert(page.has_link?(href: @invoice.linkpay_url))
     page.find_link(href: @invoice.linkpay_url).click
-
-    assert(page.has_text?('You are being redirected to the payment gateway'))
   end
 
   def test_a_user_can_pay_for_cancelled_invoice_with_valid_ban
