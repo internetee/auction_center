@@ -99,11 +99,8 @@ class InvoicesTest < ApplicationSystemTestCase
   def test_a_user_can_pay_invoice_via_every_pay
     visit invoice_path(@invoice.uuid)
 
-    assert(page.has_css?('form#every_pay'))
-
-    within('form#every_pay') do
-      click_link_or_button('Submit')
-    end
+    assert(page.has_link?(href: @invoice.linkpay_url))
+    page.find_link(href: @invoice.linkpay_url).click
 
     assert(page.has_text?('You are being redirected to the payment gateway'))
   end
@@ -113,7 +110,7 @@ class InvoicesTest < ApplicationSystemTestCase
     AutomaticBan.new(invoice: @invoice, user: @user, domain_name: 'some-domain.test').create
 
     visit invoice_path(@invoice.uuid)
-    assert(page.has_css?('form#every_pay'))
+    assert(assert(page.has_link?(href: @invoice.linkpay_url)))
   end
 
   def test_a_user_cannot_pay_for_cancelled_invoice_with_expired_ban
