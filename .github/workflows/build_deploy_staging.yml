@@ -69,7 +69,7 @@ jobs:
           cp config/application.yml.sample config/application.yml
           cp config/database.yml.sample config/database.yml
           sed -i -e 's/LABEL org.opencontainers.image.source=https:\/\/github.com\/internetee\/registry/LABEL org.opencontainers.image.source=https:\/\/github.com\/internetee\/auction_center/' Dockerfile.preinstalled_gems
-          docker build -t $REGISTRY_TAG --build-arg RAILS_ENV=staging --build-arg SECRET_KEY_BASE="$KEY_BASE" -f Dockerfile.preinstalled_gems .
+          docker build -t $REGISTRY_TAG --build-arg RAILS_ENV=staging --build-arg action_mailer_default_host="build.time.mailer.ee" --build-arg action_mailer_default_from="mailer@staging.ee" --build-arg SECRET_KEY_BASE="$KEY_BASE" -f Dockerfile.preinstalled_gems .
 
       - name: Push Docker images to gh container registry
         run: |
