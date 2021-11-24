@@ -127,7 +127,7 @@ module PaymentOrders
         'order_reference' => uuid,
         'customer_name' => user.given_names.parameterize(separator: '_', preserve_case: true),
         'customer_email' => user.email,
-        'custom_field_1' => invoices.map { |invoice| invoice.result.auction.domain_name}.join('_'),
+        'custom_field_1' => invoices.map { |invoice| invoice.result.auction.domain_name }.join('_'),
         'linkpay_token' => LINKPAY_TOKEN }
     end
 
