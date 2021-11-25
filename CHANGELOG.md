@@ -1,3 +1,6 @@
+25.11.2021
+* unsubscribe link to daily auction broadcast emails [#845](https://github.com/internetee/auction_center/issues/845)
+
 06.10.2021
 * Invoice nr is now used as order ref for linkpay payments [#836](https://github.com/internetee/auction_center/issues/836)
 * Improved error handling and logging for linkpay payments [#838](https://github.com/internetee/auction_center/pull/838)
