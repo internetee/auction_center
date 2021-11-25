@@ -139,6 +139,7 @@ jobs:
           echo "server obs.tld.ee
           zone pilv.tld.ee
           update add auction-"$PR_REF".pilv.tld.ee. 3600 CNAME riigi.pilv.tld.ee.
+          update add reg-api-auction-"$PR_REF".pilv.tld.ee. 3600 CNAME riigi.pilv.tld.ee.
           send
           " | nsupdate -k ~/Kgh-runner.infra.tld.ee.+165+27011.key
           if [ "$?" -eq "0" ]; then
