@@ -1,0 +1,16 @@
+<% content_for :hero do %>
+    <div class="hero orange">
+        <h1><%= t('header_text') %></h1>
+    </div>
+<% end %>
+
+<div class="u-container">
+    <div class="margin-block">
+        <%= form_for(@user, url: unsubscribe_update_path(id: @user.id)) do |f| %>
+            <h3><%= t('unsubscribe_text') %></h3>
+            <%= f.hidden_field(:daily_summary, value: false) %>
+            <%= f.submit t('unsubscribe_btn'), class: "ui button big primary red" %>
+            <%= link_to t('cancel_btn'), root_url, class: "ui button big secondary" %>
+        <% end %>
+    </div>
+</div>

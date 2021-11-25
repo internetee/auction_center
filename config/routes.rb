@@ -7,6 +7,8 @@ disallowed_auction_actions = if Feature.registry_integration_enabled?
                              end
 
 Rails.application.routes.draw do
+  get 'unsubscribe/unsubscribe'
+  patch 'unsubscribe/update'
   root to: 'auctions#index'
 
   concern :auditable do

@@ -42,6 +42,8 @@ en:
   errors_name: "Errors"
   statistics_name: "Statistics"
 
+  unsubscribe_mailer_text: "I do not wish to receive daily summary about currently auctioned domains any more"
+
   user: "User"
   deleted_user: "User was deleted"
   banned: |
