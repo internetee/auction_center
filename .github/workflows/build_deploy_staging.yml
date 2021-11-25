@@ -161,3 +161,4 @@ jobs:
             | **'$REPO'**|'${{ github.head_ref }}'| https://auction-'$PR_REF'.pilv.tld.ee |
             "
             }' $NOTIFICATION_URL
+            
