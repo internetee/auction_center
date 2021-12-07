@@ -9,9 +9,9 @@ class LinkpayController < ApplicationController
   def save_response
     uuid_regex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
     payment_order = if uuid_regex.match?(linkpay_params[:order_reference].to_s.downcase)
-                      find_by_uuid
+                      payment_order_by_uuid
                     else
-                      find_by_invoice
+                      payment_order_by_invoice
                     end
 
     return unless payment_order
@@ -26,7 +26,7 @@ class LinkpayController < ApplicationController
 
   private
 
-  def find_by_invoice
+  def payment_order_by_invoice
     invoice = Invoice.find_by(number: linkpay_params[:order_reference])
     payment_reference = linkpay_params[:payment_reference]
     return unless invoice
@@ -34,7 +34,7 @@ class LinkpayController < ApplicationController
     find_payment_order(invoice: invoice, ref: payment_reference)
   end
 
-  def find_by_uuid
+  def payment_order_by_uuid
     PaymentOrder.find_by(uuid: linkpay_params[:order_reference])
   end
 
