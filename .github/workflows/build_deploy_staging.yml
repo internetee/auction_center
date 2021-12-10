@@ -32,6 +32,7 @@ jobs:
           SHORT_SHA=$(echo $GITHUB_SHA | cut -c 1-7) #pr-s test commit of merged state
           echo "TAG=ghcr.io/internetee/auction_center:RC-$SHORT_SHA" >> $GITHUB_ENV
           echo "STATIC_TAG=ghcr.io/internetee/auction_center:STATIC_RC-$SHORT_SHA" >> $GITHUB_ENV
+          echo "REGISTRY_TAG=ghcr.io/internetee/auction_center:REGISTRY_RC-$SHORT_SHA" >> $GITHUB_ENV
           echo "SHORT_TAG=RC-$SHORT_SHA" >> $GITHUB_ENV
 
       - name: Set config files for build
@@ -55,10 +56,27 @@ jobs:
           docker cp rails:/opt/webapps/app/public/ ./public/
           docker build -t $STATIC_TAG -f Dockerfile.generic-static .
 
+      - name: Clone registry project
+        run: |
+          git clone https://github.com/internetee/registry.git
+
+      - name: Build registry image
+        env:
+          KEY_BASE: ${{ secrets.KEY_BASE}}
+          ST_APP: ${{ secrets.ST_REGISTRY_APPLICATION_YML}}
+        run: |
+          cd registry
+          mkdir log
+          echo $ST_APP | base64 -di > config/application.yml
+          cp config/database.yml.sample config/database.yml
+          sed -i -e 's/LABEL org.opencontainers.image.source=https:\/\/github.com\/internetee\/registry/LABEL org.opencontainers.image.source=https:\/\/github.com\/internetee\/auction_center/' Dockerfile.preinstalled_gems
+          docker build -t $REGISTRY_TAG --build-arg RAILS_ENV=staging --build-arg SECRET_KEY_BASE="$KEY_BASE" -f Dockerfile.preinstalled_gems .
+
       - name: Push Docker images to gh container registry
         run: |
           docker push $TAG
           docker push $STATIC_TAG
+          docker push $REGISTRY_TAG
 
       - name: Get pull request reference number
         run: |
@@ -115,11 +133,13 @@ jobs:
           export KUBECONFIG=./kubeconfig
           helm repo add eisrepo https://internetee.github.io/helm-charts/
           helm repo update
-          helm upgrade --install auction-st-"$PR_REF" --set image.tag="$SHORT_TAG",reference="$PR_REF" eisrepo/auction -n auction-staging
+          helm upgrade --install auction-st-"$PR_REF" --set image.tag="$SHORT_TAG",reference="$PR_REF",scheduler.enabled="true" eisrepo/auction -n auction-staging
+          helm upgrade --install auction-reg-api-"$PR_REF" --set nameOverride="reg-api-auction",image.repository="ghcr.io/internetee/auction_center",image.tag="REGISTRY_"$SHORT_TAG"",reference="$PR_REF" eisrepo/registry-api -n reg-api
           rm kubeconfig
           echo "server obs.tld.ee
           zone pilv.tld.ee
           update add auction-"$PR_REF".pilv.tld.ee. 3600 CNAME riigi.pilv.tld.ee.
+          update add reg-api-auction-"$PR_REF".pilv.tld.ee. 3600 CNAME riigi.pilv.tld.ee.
           send
           " | nsupdate -k ~/Kgh-runner.infra.tld.ee.+165+27011.key
           if [ "$?" -eq "0" ]; then
@@ -141,3 +161,4 @@ jobs:
             | **'$REPO'**|'${{ github.head_ref }}'| https://auction-'$PR_REF'.pilv.tld.ee |
             "
             }' $NOTIFICATION_URL
+            

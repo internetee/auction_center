@@ -40,6 +40,8 @@ et:
   bans_name: "Keelud"
   errors_name: "Vead"
 
+  unsubscribe_mailer_text: "Ei soovi enam saada oksjonil olevate domeenide nimekirja meilile"
+
   user: "Kasutaja"
   deleted_user: "Kasutaja kustutatud"
   banned: |
