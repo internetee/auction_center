@@ -149,6 +149,7 @@
 /* Table Cells */
 .ui.table > tbody > tr > td,
 .ui.table > tr > td {
+  font-size: 18px;
   padding: @cellVerticalPadding @cellHorizontalPadding;
   text-align: @cellTextAlign;
 }
@@ -1209,10 +1210,10 @@ each(@colors, {
        Celled
   ---------------*/
 
-  .ui.celled.table > tr > th,
-  .ui.celled.table > thead > tr > th,
-  .ui.celled.table > tbody > tr > th,
-  .ui.celled.table > tfoot > tr > th,
+  .ui.celled.table > tr,
+  .ui.celled.table > thead > tr,
+  .ui.celled.table > tbody > tr,
+  .ui.celled.table > tfoot > tr,
   .ui.celled.table > tr > td,
   .ui.celled.table > tbody > tr > td ,
   .ui.celled.table > tfoot > tr > td {
@@ -1224,6 +1225,7 @@ each(@colors, {
       border-left: @invertedCellBorder;
     }
   }
+  .ui.celled.table > tr >th,
   .ui.celled.table > tr > th:first-child,
   .ui.celled.table > thead > tr > th:first-child,
   .ui.celled.table > tbody > tr > th:first-child,

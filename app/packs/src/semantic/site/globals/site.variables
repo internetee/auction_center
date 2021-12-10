@@ -224,7 +224,7 @@
 @olive            : #32CD32;
 @green            : #48A23F;
 @teal             : #00BABE;
-@blue             : #6177c5;
+@blue             : #0085ca;
 @violet           : #3A3794;
 @purple           : #B413EC;
 @pink             : #FF1493;
@@ -239,7 +239,7 @@
 @lightOlive       : #D9E778;
 @lightGreen       : #2ECC40;
 @lightTeal        : #6DFFFF;
-@lightBlue        : #6177c5;
+@lightBlue        : #0085ca;
 @lightViolet      : #A291FB;
 @lightPurple      : #DC73FF;
 @lightPink        : #FF8EDF;
