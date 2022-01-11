@@ -54,8 +54,12 @@ Rails.application.configure do
   config.log_level = :debug
 
   # Prepend all log lines with the following tags.
-  config.log_tags = [ :request_id, :remote_ip ]
-
+  # config.log_tags = [ :request_id, :remote_ip ]
+  config.log_tags = {
+    app: 'Auction',
+    request_id: :request_id,
+    remote_ip: :remote_ip
+  }
   # Use a different cache store in production.
   # config.cache_store = :mem_cache_store
 
@@ -80,19 +84,25 @@ Rails.application.configure do
   config.log_formatter = ::Logger::Formatter.new
 
   # Use a different logger for distributed setups.
-  require 'syslog/logger'
-  config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new 'auction')
-
+  # require 'syslog/logger'
+  # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new 'auction')
+  #
   if ENV['RAILS_LOG_TO_DOCKER_STDOUT'].present?
-    logger           = ActiveSupport::Logger.new(DOCKER_STDOUT)
-    logger.formatter = config.log_formatter
-    config.logger    = ActiveSupport::TaggedLogging.new(logger)
+    $stdout.sync = true
+    config.rails_semantic_logger.add_file_appender = false
+    config.semantic_logger.add_appender(io: $stdout, formatter: config.rails_semantic_logger.format)
+    # logger           = ActiveSupport::Logger.new(DOCKER_STDOUT)
+    # logger.formatter = config.log_formatter
+    # config.logger    = ActiveSupport::TaggedLogging.new(logger)
   end
 
   if ENV["RAILS_LOG_TO_STDOUT"].present?
-    logger           = ActiveSupport::Logger.new(STDOUT)
-    logger.formatter = config.log_formatter
-    config.logger    = ActiveSupport::TaggedLogging.new(logger)
+    $stdout.sync = true
+    config.rails_semantic_logger.add_file_appender = false
+    config.semantic_logger.add_appender(io: $stdout, formatter: config.rails_semantic_logger.format)
+    # logger           = ActiveSupport::Logger.new(STDOUT)
+    # logger.formatter = config.log_formatter
+    # config.logger    = ActiveSupport::TaggedLogging.new(logger)
   end
 
   # Do not dump schema after migrations.
