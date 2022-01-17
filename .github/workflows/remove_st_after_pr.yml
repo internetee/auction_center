@@ -70,7 +70,7 @@ jobs:
           bash
           cd "$REPO"/"$PR_REF"
           export KUBECONFIG=./kubeconfig
-          helm delete auction-st-"$PR_REF" -n auction-staging
+          helm delete auction-st-"$PR_REF" -n auction
           helm delete auction-reg-api-"$PR_REF" -n reg-api
           rm kubeconfig
           echo "server obs.tld.ee

@@ -133,7 +133,7 @@ jobs:
           export KUBECONFIG=./kubeconfig
           helm repo add eisrepo https://internetee.github.io/helm-charts/
           helm repo update
-          helm upgrade --install auction-st-"$PR_REF" --set image.tag="$SHORT_TAG",reference="$PR_REF",scheduler.enabled="true" eisrepo/auction -n auction-staging
+          helm upgrade --install auction-st-"$PR_REF" --set image.tag="$SHORT_TAG",reference="$PR_REF",scheduler.enabled="true" eisrepo/auction -n auction
           helm upgrade --install auction-reg-api-"$PR_REF" --set nameOverride="reg-api-auction",image.repository="ghcr.io/internetee/auction_center",image.tag="REGISTRY_"$SHORT_TAG"",reference="$PR_REF" eisrepo/registry-api -n reg-api
           rm kubeconfig
           echo "server obs.tld.ee
