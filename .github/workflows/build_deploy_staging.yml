@@ -6,8 +6,6 @@ on:
     paths-ignore:
       - 'CHANGELOG.md'
       - 'README.md'
-      - 'yarn.lock'
-      - 'package.json'
     branches: [master]
     types:
       - opened
