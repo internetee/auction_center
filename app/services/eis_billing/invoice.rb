@@ -16,7 +16,7 @@ module EisBilling
       data = {}
       data[:transaction_amount] = invoice.total.to_s
       data[:order_reference] = invoice.number
-      data[:customer_name] = invoice.user.name
+      data[:customer_name] = invoice.user.given_names + ' ' + invoice.user.surname
       data[:customer_email] = invoice.user.email
       data[:custom_field_1] = invoice.notes
       data[:custom_field_2] = 'auction'
@@ -39,7 +39,7 @@ module EisBilling
     end
 
     def invoice_generator_url
-      "http://eis_billing_system:3000/api/v1/invoice_generator/invoice_generator"
+      "#{BASE_URL}/api/v1/invoice_generator/invoice_generator"
     end
   end
 end

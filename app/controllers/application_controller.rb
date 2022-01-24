@@ -23,4 +23,8 @@ class ApplicationController < ActionController::Base
       update_params
     end
   end
+
+  def logger
+    @logger ||= Rails.logger
+  end
 end

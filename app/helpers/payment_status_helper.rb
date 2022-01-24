@@ -1,0 +1,2 @@
+module PaymentStatusHelper
+end

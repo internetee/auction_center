@@ -34,7 +34,10 @@ class InvoiceCreator
 
   def send_invoice_to_billing_system(invoice)
     add_invoice_instance = EisBilling::Invoice.new(invoice)
-    add_invoice_instance.send_invoice
+    result = add_invoice_instance.send_invoice
+    link = JSON.parse(result.body)['everypay_link']
+
+    invoice.update(payment_link: link)
   end
 
   def assign_invoice_associations
