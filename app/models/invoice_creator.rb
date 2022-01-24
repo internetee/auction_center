@@ -16,6 +16,7 @@ class InvoiceCreator
     return result.invoice if invoice_already_present?
 
     create_invoice
+    send_invoice_to_billing_system(invoice)
     invoice
   end
 
@@ -29,6 +30,11 @@ class InvoiceCreator
 
   def invoice_already_present?
     result.invoice.present?
+  end
+
+  def send_invoice_to_billing_system(invoice)
+    add_invoice_instance = EisBilling::Invoice.new(invoice)
+    add_invoice_instance.send_invoice
   end
 
   def assign_invoice_associations
