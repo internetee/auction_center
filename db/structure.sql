@@ -1147,6 +1147,7 @@ CREATE TABLE public.invoices (
     alpha_two_country_code character varying,
     in_directo boolean DEFAULT false NOT NULL,
     payment_link character varying,
+    number_two integer,
     CONSTRAINT invoices_cents_are_positive CHECK ((cents > 0)),
     CONSTRAINT invoices_due_date_is_not_before_issue_date CHECK ((issue_date <= due_date)),
     CONSTRAINT paid_at_is_filled_when_status_is_paid CHECK ((NOT ((status = 'paid'::public.invoice_status) AND (paid_at IS NULL)))),
@@ -1621,13 +1622,6 @@ ALTER TABLE ONLY public.invoice_payment_orders ALTER COLUMN id SET DEFAULT nextv
 --
 
 ALTER TABLE ONLY public.invoices ALTER COLUMN id SET DEFAULT nextval('public.invoices_id_seq'::regclass);
-
-
---
--- Name: invoices number; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.invoices ALTER COLUMN number SET DEFAULT nextval('public.invoices_number_seq'::regclass);
 
 
 --
@@ -2757,6 +2751,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200205092158'),
 ('20200206090106'),
 ('20200212081434'),
-('20220124114525');
+('20220124114525'),
+('20220127103133'),
+('20220127105212');
 
 
