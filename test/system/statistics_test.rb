@@ -15,6 +15,10 @@ class StatisticsTest < ApplicationSystemTestCase
     super
 
     travel_back
+
+    WebMock.reset!
+    Capybara.reset_sessions!
+    Capybara.use_default_driver
   end
 
   def test_statistic_page_has_all_tables

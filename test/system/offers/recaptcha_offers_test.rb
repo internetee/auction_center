@@ -4,6 +4,12 @@ class RecaptchaOffersTest < ApplicationSystemTestCase
   def setup
     super
 
+    invoice_n = Invoice.order(number: :desc).last.number
+    stub_request(:post, "#{EisBilling::Base::BASE_URL}/api/v1/invoice_generator/invoice_generator")
+      .to_return(status: 200, body: "{\"everypay_link\":\"http://link.test\"}", headers: {})
+    stub_request(:post, "#{EisBilling::Base::BASE_URL}/api/v1/invoice_generator/invoice_number_generator")
+      .to_return(status: 200, body: "{\"invoice_number\":\"#{invoice_n + 3}\"}", headers: {})
+
     @expired_auction = auctions(:expired)
     @valid_auction = auctions(:valid_with_offers)
     @valid_auction_with_no_offers = auctions(:valid_without_offers)
@@ -17,6 +23,10 @@ class RecaptchaOffersTest < ApplicationSystemTestCase
 
   def teardown
     super
+
+    WebMock.reset!
+    Capybara.reset_sessions!
+    Capybara.use_default_driver
   end
 
   def test_user_needs_to_fill_in_recaptcha_when_submitting_an_offer

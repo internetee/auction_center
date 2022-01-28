@@ -129,6 +129,8 @@ development:
 test:
   <<: *default
 
+  eis_billing_system_base_url: 'http://eis_billing_system:3000'
+
   payment_methods:
     enabled_methods:
       - "PaymentOrders::EveryPay"

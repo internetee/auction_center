@@ -18,6 +18,9 @@ class InvoicesTest < ApplicationSystemTestCase
     super
 
     travel_back
+    WebMock.reset!
+    Capybara.reset_sessions!
+    Capybara.use_default_driver
   end
 
   def test_user_can_update_billing_profile_on_issued_invoice

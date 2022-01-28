@@ -13,6 +13,10 @@ class AdminUsersListTest < ApplicationSystemTestCase
     super
 
     clear_email_deliveries
+
+    WebMock.reset!
+    Capybara.reset_sessions!
+    Capybara.use_default_driver
   end
 
   def test_user_display_names_are_links

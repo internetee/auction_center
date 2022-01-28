@@ -115,6 +115,12 @@ GEM
     data_migrate (7.0.2)
       activerecord (>= 5.0)
       railties (>= 5.0)
+    database_cleaner (2.0.1)
+      database_cleaner-active_record (~> 2.0.0)
+    database_cleaner-active_record (2.0.1)
+      activerecord (>= 5.a)
+      database_cleaner-core (~> 2.0.0)
+    database_cleaner-core (2.0.1)
     delayed_job (4.1.9)
       activesupport (>= 3.0, < 6.2)
     delayed_job_active_record (4.1.6)
@@ -343,6 +349,7 @@ DEPENDENCIES
   capybara (>= 2.15)
   chartkick
   data_migrate
+  database_cleaner
   delayed_job
   delayed_job_active_record
   devise

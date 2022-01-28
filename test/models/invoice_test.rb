@@ -4,6 +4,12 @@ class InvoiceTest < ActiveSupport::TestCase
   def setup
     super
 
+    invoice_n = Invoice.order(number: :desc).last.number
+    stub_request(:post, "#{EisBilling::Base::BASE_URL}/api/v1/invoice_generator/invoice_generator")
+      .to_return(status: 200, body: "{\"everypay_link\":\"http://link.test\"}", headers: {})
+    stub_request(:post, "#{EisBilling::Base::BASE_URL}/api/v1/invoice_generator/invoice_number_generator")
+      .to_return(status: 200, body: "{\"invoice_number\":\"#{invoice_n + 3}\"}", headers: {})
+
     @result = results(:expired_participant)
     @not_sold_result = results(:without_offers_nobody)
     @user = users(:participant)

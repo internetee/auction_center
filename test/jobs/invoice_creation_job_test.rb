@@ -10,6 +10,10 @@ class InvoiceCreationJobTest < ActiveJob::TestCase
 
   def teardown
     super
+
+    WebMock.reset!
+    Capybara.reset_sessions!
+    Capybara.use_default_driver
   end
 
   def test_job_generates_invoice_for_results_that_need_them

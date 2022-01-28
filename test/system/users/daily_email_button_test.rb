@@ -5,7 +5,14 @@ class DailyEmailButtonTest < ApplicationSystemTestCase
     super
 
     @user = users(:participant)
+  end
 
+  def teardown
+    super
+
+    WebMock.reset!
+    Capybara.reset_sessions!
+    Capybara.use_default_driver
   end
 
   def test_button_not_marked_without_login

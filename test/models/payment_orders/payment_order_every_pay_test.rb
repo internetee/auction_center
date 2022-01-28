@@ -48,6 +48,10 @@ class PaymentOrderEveryPayTest < ActiveSupport::TestCase
     super
 
     travel_back
+
+    WebMock.reset!
+    Capybara.reset_sessions!
+    Capybara.use_default_driver
   end
 
   def test_form_fields_are_filled_according_to_schema

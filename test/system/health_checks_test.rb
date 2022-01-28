@@ -10,6 +10,10 @@ class HealthChecksTest < ApplicationSystemTestCase
   def teardown
     super
     Capybara.default_max_wait_time = @original_wait_time
+
+    WebMock.reset!
+    Capybara.reset_sessions!
+    Capybara.use_default_driver
   end
 
   def test_visit_healthcheck_main

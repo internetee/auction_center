@@ -6,6 +6,20 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
 
   include SemanticUiHelper
 
+  # def setup
+  #   super
+  #   DatabaseCleaner.start
+  # end
+
+  # teardown do
+  #   super
+
+  #   WebMock.reset!
+  #   Capybara.reset_sessions!
+  #   Capybara.use_default_driver
+  #   DatabaseCleaner.clean
+  # end
+
   Capybara.register_driver(:headless_chrome) do |app|
     options = ::Selenium::WebDriver::Chrome::Options.new
     options.add_argument('--headless')

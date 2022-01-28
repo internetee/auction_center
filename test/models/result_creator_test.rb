@@ -16,6 +16,12 @@ class ResultCreatorTest < ActiveSupport::TestCase
   end
 
   def test_a_result_is_created_for_auction_with_offers
+    invoice_n = Invoice.order(number: :desc).last.number
+    stub_request(:post, "#{EisBilling::Base::BASE_URL}/api/v1/invoice_generator/invoice_generator")
+      .to_return(status: 200, body: "{\"everypay_link\":\"http://link.test\"}", headers: {})
+    stub_request(:post, "#{EisBilling::Base::BASE_URL}/api/v1/invoice_generator/invoice_number_generator")
+      .to_return(status: 200, body: "{\"invoice_number\":\"#{invoice_n + 3}\"}", headers: {})
+
     Result.destroy_all
 
     result_creator = ResultCreator.new(@auction_with_offers.id)
@@ -90,6 +96,12 @@ class ResultCreatorTest < ActiveSupport::TestCase
   end
 
   def test_creator_emails_particiapants_for_auction_with_offers
+    invoice_n = Invoice.order(number: :desc).last.number
+    stub_request(:post, "#{EisBilling::Base::BASE_URL}/api/v1/invoice_generator/invoice_generator")
+      .to_return(status: 200, body: "{\"everypay_link\":\"http://link.test\"}", headers: {})
+    stub_request(:post, "#{EisBilling::Base::BASE_URL}/api/v1/invoice_generator/invoice_number_generator")
+      .to_return(status: 200, body: "{\"invoice_number\":\"#{invoice_n + 3}\"}", headers: {})
+
     result_creator = ResultCreator.new(@auction_with_offers.id)
     result_creator.call
 
@@ -101,6 +113,12 @@ class ResultCreatorTest < ActiveSupport::TestCase
   end
 
   def test_creator_emails_winner_for_auction_with_offers
+    invoice_n = Invoice.order(number: :desc).last.number
+    stub_request(:post, "#{EisBilling::Base::BASE_URL}/api/v1/invoice_generator/invoice_generator")
+      .to_return(status: 200, body: "{\"everypay_link\":\"http://link.test\"}", headers: {})
+    stub_request(:post, "#{EisBilling::Base::BASE_URL}/api/v1/invoice_generator/invoice_number_generator")
+      .to_return(status: 200, body: "{\"invoice_number\":\"#{invoice_n + 3}\"}", headers: {})
+
     ActionMailer::Base.deliveries.clear
     result_creator = ResultCreator.new(@auction_with_offers.id)
     result_creator.call

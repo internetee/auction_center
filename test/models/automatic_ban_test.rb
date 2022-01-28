@@ -27,6 +27,12 @@ class AutomaticBanTest < ActiveSupport::TestCase
   end
 
   def test_bans_are_based_on_number_of_cancelled_invoices_without_bans
+    invoice_n = Invoice.order(number: :desc).last.number
+    stub_request(:post, "#{EisBilling::Base::BASE_URL}/api/v1/invoice_generator/invoice_generator")
+      .to_return(status: 200, body: "{\"everypay_link\":\"http://link.test\"}", headers: {})
+    stub_request(:post, "#{EisBilling::Base::BASE_URL}/api/v1/invoice_generator/invoice_number_generator")
+      .to_return(status: 200, body: "{\"invoice_number\":\"#{invoice_n + 3}\"}", headers: {})
+
     invoice, domain_name = create_bannable_offence(@user)
     ban = AutomaticBan.new(invoice: invoice, user: @user, domain_name: domain_name).create
 
@@ -37,6 +43,12 @@ class AutomaticBanTest < ActiveSupport::TestCase
   end
 
   def test_ban_without_bannable_invoice_fails
+    invoice_n = Invoice.order(number: :desc).last.number
+    stub_request(:post, "#{EisBilling::Base::BASE_URL}/api/v1/invoice_generator/invoice_generator")
+      .to_return(status: 200, body: "{\"everypay_link\":\"http://link.test\"}", headers: {})
+    stub_request(:post, "#{EisBilling::Base::BASE_URL}/api/v1/invoice_generator/invoice_number_generator")
+      .to_return(status: 200, body: "{\"invoice_number\":\"#{invoice_n + 3}\"}", headers: {})
+
     invoice, domain_name = create_bannable_offence(@user)
     AutomaticBan.new(invoice: invoice, user: @user, domain_name: domain_name).create
     ban = AutomaticBan.new(invoice: Invoice.new, user: @user, domain_name: 'some-domain.test')
@@ -47,6 +59,12 @@ class AutomaticBanTest < ActiveSupport::TestCase
   end
 
   def test_ban_for_second_invoice_is_also_long
+    invoice_n = Invoice.order(number: :desc).last.number
+    stub_request(:post, "#{EisBilling::Base::BASE_URL}/api/v1/invoice_generator/invoice_generator")
+      .to_return(status: 200, body: "{\"everypay_link\":\"http://link.test\"}", headers: {})
+    stub_request(:post, "#{EisBilling::Base::BASE_URL}/api/v1/invoice_generator/invoice_number_generator")
+      .to_return(status: 200, body: "{\"invoice_number\":\"#{invoice_n + 3}\"}", headers: {})
+
     create_bannable_offence(@user)
     invoice, domain_name = create_bannable_offence(@user)
     ban = AutomaticBan.new(invoice: invoice, user: @user, domain_name: domain_name).create
@@ -58,6 +76,12 @@ class AutomaticBanTest < ActiveSupport::TestCase
   end
 
   def test_third_ban_is_long
+    invoice_n = Invoice.order(number: :desc).last.number
+    stub_request(:post, "#{EisBilling::Base::BASE_URL}/api/v1/invoice_generator/invoice_generator")
+      .to_return(status: 200, body: "{\"everypay_link\":\"http://link.test\"}", headers: {})
+    stub_request(:post, "#{EisBilling::Base::BASE_URL}/api/v1/invoice_generator/invoice_number_generator")
+      .to_return(status: 200, body: "{\"invoice_number\":\"#{invoice_n + 3}\"}", headers: {})
+
     create_bannable_offence(@user)
     create_bannable_offence(@user)
 
@@ -71,6 +95,12 @@ class AutomaticBanTest < ActiveSupport::TestCase
   end
 
   def test_number_of_ban_offences_before_long_ban_is_configurable_in_settings
+    invoice_n = Invoice.order(number: :desc).last.number
+    stub_request(:post, "#{EisBilling::Base::BASE_URL}/api/v1/invoice_generator/invoice_generator")
+      .to_return(status: 200, body: "{\"everypay_link\":\"http://link.test\"}", headers: {})
+    stub_request(:post, "#{EisBilling::Base::BASE_URL}/api/v1/invoice_generator/invoice_number_generator")
+      .to_return(status: 200, body: "{\"invoice_number\":\"#{invoice_n + 3}\"}", headers: {})
+
     setting = settings(:ban_number_of_strikes)
     setting.update!(value: '1')
 
@@ -82,6 +112,12 @@ class AutomaticBanTest < ActiveSupport::TestCase
   end
 
   def test_creating_a_short_ban_sends_an_email
+    invoice_n = Invoice.order(number: :desc).last.number
+    stub_request(:post, "#{EisBilling::Base::BASE_URL}/api/v1/invoice_generator/invoice_generator")
+      .to_return(status: 200, body: "{\"everypay_link\":\"http://link.test\"}", headers: {})
+    stub_request(:post, "#{EisBilling::Base::BASE_URL}/api/v1/invoice_generator/invoice_number_generator")
+      .to_return(status: 200, body: "{\"invoice_number\":\"#{invoice_n + 3}\"}", headers: {})
+
     invoice, domain_name = create_bannable_offence(@user)
     clear_email_deliveries
 
@@ -95,6 +131,12 @@ class AutomaticBanTest < ActiveSupport::TestCase
   end
 
   def test_creating_a_long_ban_sends_an_email
+    invoice_n = Invoice.order(number: :desc).last.number
+    stub_request(:post, "#{EisBilling::Base::BASE_URL}/api/v1/invoice_generator/invoice_generator")
+      .to_return(status: 200, body: "{\"everypay_link\":\"http://link.test\"}", headers: {})
+    stub_request(:post, "#{EisBilling::Base::BASE_URL}/api/v1/invoice_generator/invoice_number_generator")
+      .to_return(status: 200, body: "{\"invoice_number\":\"#{invoice_n + 3}\"}", headers: {})
+
     create_bannable_offence(@user)
     create_bannable_offence(@user)
 
@@ -111,18 +153,30 @@ class AutomaticBanTest < ActiveSupport::TestCase
   end
 
   def test_automatic_ban_clear_for_active_bid_of_active_auction
+    invoice_n = Invoice.order(number: :desc).last.number
+    stub_request(:post, "#{EisBilling::Base::BASE_URL}/api/v1/invoice_generator/invoice_generator")
+      .to_return(status: 200, body: "{\"everypay_link\":\"http://link.test\"}", headers: {})
+    stub_request(:post, "#{EisBilling::Base::BASE_URL}/api/v1/invoice_generator/invoice_number_generator")
+      .to_return(status: 200, body: "{\"invoice_number\":\"#{invoice_n + 3}\"}", headers: {})
+
     invoice, domain_name = create_bannable_offence(@user)
     auction = Auction.find_by(domain_name: domain_name)
     auction.update(starts_at: Time.now - 2.days, ends_at: Time.now + 1.day)
 
     ban = AutomaticBan.new(invoice: invoice, user: @user, domain_name: domain_name)
-    
+
     ban.create
     offer = @user.offers.find_by(auction_id: auction.id)
     assert_not offer.present?
   end
 
   def test_automatic_ban_clear_or_active_bids_for_long_ban
+    invoice_n = Invoice.order(number: :desc).last.number
+    stub_request(:post, "#{EisBilling::Base::BASE_URL}/api/v1/invoice_generator/invoice_generator")
+      .to_return(status: 200, body: "{\"everypay_link\":\"http://link.test\"}", headers: {})
+    stub_request(:post, "#{EisBilling::Base::BASE_URL}/api/v1/invoice_generator/invoice_number_generator")
+      .to_return(status: 200, body: "{\"invoice_number\":\"#{invoice_n + 3}\"}", headers: {})
+
     invoice, domain_name1 = create_bannable_offence(@user)
     invoice, domain_name2 = create_bannable_offence(@user)
     invoice, domain_name3 = create_bannable_offence(@user)

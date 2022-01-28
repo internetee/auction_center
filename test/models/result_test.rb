@@ -4,6 +4,8 @@ class ResultTest < ActiveSupport::TestCase
   def setup
     super
 
+    WebMock.disable_net_connect!
+
     clear_email_deliveries
     travel_to Time.parse('2010-07-05 10:30 +0000').in_time_zone
     @valid_auction = auctions(:valid_with_offers)
@@ -62,6 +64,12 @@ class ResultTest < ActiveSupport::TestCase
   end
 
   def test_send_email_to_winner_sends_an_email_if_winner_exists
+    invoice_n = Invoice.order(number: :desc).last.number
+    stub_request(:post, "#{EisBilling::Base::BASE_URL}/api/v1/invoice_generator/invoice_generator")
+      .to_return(status: 200, body: "{\"everypay_link\":\"http://link.test\"}", headers: {})
+    stub_request(:post, "#{EisBilling::Base::BASE_URL}/api/v1/invoice_generator/invoice_number_generator")
+      .to_return(status: 200, body: "{\"invoice_number\":\"#{invoice_n + 3}\"}", headers: {})
+
     Invoice.create_from_result(@invoiceable_result.id)
     @invoiceable_result.send_email_to_winner
 

@@ -10,6 +10,12 @@ class InvoiceCreatorTest < ActiveSupport::TestCase
   end
 
   def test_an_invoice_is_prefilled_with_data_from_winning_offer
+    invoice_n = Invoice.order(number: :desc).last.number
+    stub_request(:post, "#{EisBilling::Base::BASE_URL}/api/v1/invoice_generator/invoice_generator")
+      .to_return(status: 200, body: "{\"everypay_link\":\"http://link.test\"}", headers: {})
+    stub_request(:post, "#{EisBilling::Base::BASE_URL}/api/v1/invoice_generator/invoice_number_generator")
+      .to_return(status: 200, body: "{\"invoice_number\":\"#{invoice_n + 3}\"}", headers: {})
+
     invoice_creator = InvoiceCreator.new(@result.id)
     invoice = invoice_creator.call
 
@@ -34,6 +40,12 @@ class InvoiceCreatorTest < ActiveSupport::TestCase
   end
 
   def test_invoice_creator_also_creates_invoice_items
+    invoice_n = Invoice.order(number: :desc).last.number
+    stub_request(:post, "#{EisBilling::Base::BASE_URL}/api/v1/invoice_generator/invoice_generator")
+      .to_return(status: 200, body: "{\"everypay_link\":\"http://link.test\"}", headers: {})
+    stub_request(:post, "#{EisBilling::Base::BASE_URL}/api/v1/invoice_generator/invoice_number_generator")
+      .to_return(status: 200, body: "{\"invoice_number\":\"#{invoice_n + 3}\"}", headers: {})
+
     invoice_creator = InvoiceCreator.new(@result.id)
     invoice = invoice_creator.call
 
