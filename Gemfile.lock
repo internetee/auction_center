@@ -144,6 +144,7 @@ GEM
       activesupport (>= 4.2)
       aes_key_wrap
       bindata
+    jwt (2.3.0)
     kaminari (1.2.1)
       activesupport (>= 4.1.0)
       kaminari-actionview (= 1.2.1)
@@ -356,6 +357,7 @@ DEPENDENCIES
   devise
   directo!
   jbuilder (~> 2.11)
+  jwt
   kaminari
   listen (>= 3.0.5, < 3.8)
   mimemagic (~> 0.4.3)

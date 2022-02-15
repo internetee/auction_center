@@ -25,6 +25,10 @@ Rails.application.routes.draw do
   match '/profile/toggle_subscription', via: :get, to: 'users#toggle_subscription',
         as: :user_toggle_sub
 
+  namespace :eis_billing do
+    put '/payment_status', to: 'payment_status#update', as: 'payment_status'
+  end
+
   namespace :admin, constraints: Constraints::Administrator.new do
     resources :auctions, except: disallowed_auction_actions, concerns: %i[auditable searchable]
 

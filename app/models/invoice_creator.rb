@@ -16,6 +16,7 @@ class InvoiceCreator
     return result.invoice if invoice_already_present?
 
     create_invoice
+    send_invoice_to_billing_system(invoice)
     invoice
   end
 
@@ -35,6 +36,14 @@ class InvoiceCreator
     invoice.result = result
     invoice.user = result.user
     invoice.billing_profile = result_offer.billing_profile
+  end
+
+  def send_invoice_to_billing_system(invoice)
+    add_invoice_instance = EisBilling::Invoice.new(invoice)
+    result = add_invoice_instance.send_invoice
+    link = JSON.parse(result.body)['everypay_link']
+
+    invoice.update(payment_link: link)
   end
 
   def assign_price

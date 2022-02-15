@@ -119,7 +119,13 @@
                         <% end %>
                     <% end %>
                 </div>
+                <% if @invoice.payment_link.present? %>
+                    <%= link_to 'Everypay link', @invoice.payment_link, target: '_blank' %>
+                <% else  %>
+                    No everypay link
+                <% end %>
             <% end %>
+            
         </div>
     </div>
 </div>

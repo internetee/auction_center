@@ -19,6 +19,21 @@ class BansTest < ApplicationSystemTestCase
     @ban = Ban.create!(user: @participant,
                        domain_name: @valid_auction_with_no_offers.domain_name,
                        valid_from: Time.zone.today - DAYS_BEFORE, valid_until: Time.zone.today + DAYS_AFTER)
+
+    if Feature.billing_system_integration_enabled?
+      invoice_n = Invoice.order(number: :desc).last.number
+      stub_request(:post, "http://eis_billing_system:3000/api/v1/invoice_generator/invoice_number_generator")
+        .to_return(status: 200, body: "{\"invoice_number\":\"#{invoice_n + 3}\"}", headers: {})
+
+      stub_request(:post, "http://eis_billing_system:3000/api/v1/invoice_generator/invoice_generator")
+        .to_return(status: 200, body: "{\"everypay_link\":\"http://link.test\"}", headers: {})
+
+      stub_request(:put, "http://registry:3000/eis_billing/e_invoice_response").
+        to_return(status: 200, body: "{\"invoice_number\":\"#{invoice_n + 3}\"}, {\"date\":\"#{Time.zone.now-10.minutes}\"}", headers: {})
+
+      stub_request(:post, "http://eis_billing_system:3000/api/v1/e_invoice/e_invoice").
+        to_return(status: 200, body: "", headers: {})
+    end
   end
 
   def teardown
@@ -165,21 +180,28 @@ class BansTest < ApplicationSystemTestCase
   end
 
   def test_administrator_can_link_bans_with_invoice
-    InvoiceCreationJob.perform_now
-    @expired_auction.reload
-    invoice = @expired_auction.result.invoice
-    invoice.update!(issue_date: Time.zone.today - 30, due_date: Time.zone.today - 14)
-    InvoiceCancellationJob.perform_now
+    mock = Minitest::Mock.new
+    def mock.authorized; true; end
 
-    sign_in(@administrator)
-    visit admin_bans_path
+    clazz = EisBilling::BaseController.new
 
-    within('tbody#bans-table-body') do
-      assert(page.has_link?('Invoice', href: admin_invoice_path(invoice)))
-      click_link_or_button('Invoice')
+    clazz.stub :authorized, mock do
+      InvoiceCreationJob.perform_now
+      @expired_auction.reload
+      invoice = @expired_auction.result.invoice
+      invoice.update!(issue_date: Time.zone.today - 30, due_date: Time.zone.today - 14)
+      InvoiceCancellationJob.perform_now
+
+      sign_in(@administrator)
+      visit admin_bans_path
+
+      within('tbody#bans-table-body') do
+        assert(page.has_link?('Invoice', href: admin_invoice_path(invoice)))
+        click_link_or_button('Invoice')
+      end
+
+      assert(page.has_text?('expired.test (auction 1999-07-05) registration code'))
     end
-
-    assert(page.has_text?('expired.test (auction 1999-07-05) registration code'))
   end
 
   def test_administrator_can_create_bans

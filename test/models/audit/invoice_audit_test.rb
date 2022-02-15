@@ -8,6 +8,21 @@ class InvoiceAuditTest < ActiveSupport::TestCase
     @result = results(:expired_participant)
     @user = users(:participant)
     @billing_profile = billing_profiles(:company)
+
+    if Feature.billing_system_integration_enabled?
+      invoice_n = Invoice.order(number: :desc).last.number
+      stub_request(:post, "http://eis_billing_system:3000/api/v1/invoice_generator/invoice_number_generator")
+        .to_return(status: 200, body: "{\"invoice_number\":\"#{invoice_n + 3}\"}", headers: {})
+
+      stub_request(:post, "http://eis_billing_system:3000/api/v1/invoice_generator/invoice_generator")
+        .to_return(status: 200, body: "{\"everypay_link\":\"http://link.test\"}", headers: {})
+
+      stub_request(:put, "http://registry:3000/eis_billing/e_invoice_response").
+        to_return(status: 200, body: "{\"invoice_number\":\"#{invoice_n + 3}\"}, {\"date\":\"#{Time.zone.now-10.minutes}\"}", headers: {})
+
+      stub_request(:post, "http://eis_billing_system:3000/api/v1/e_invoice/e_invoice").
+        to_return(status: 200, body: "", headers: {})
+    end
   end
 
   def teardown
@@ -17,17 +32,24 @@ class InvoiceAuditTest < ActiveSupport::TestCase
   end
 
   def test_creating_a_invoice_creates_a_history_record
-    invoice = Invoice.new(result: @result,
-                          billing_profile: @billing_profile,
-                          user: @user,
-                          issue_date: Time.zone.today,
-                          due_date: Time.zone.today + Setting.find_by(code: 'payment_term').retrieve,
-                          cents: 1000)
+    mock = Minitest::Mock.new
+    def mock.authorized; true; end
 
-    invoice.save!
+    clazz = EisBilling::BaseController.new
 
-    assert(audit_record = Audit::Invoice.find_by(object_id: invoice.id, action: 'INSERT'))
-    assert_equal(invoice.cents, audit_record.new_value['cents'])
+    clazz.stub :authorized, mock do
+      invoice = Invoice.new(result: @result,
+                            billing_profile: @billing_profile,
+                            user: @user,
+                            issue_date: Time.zone.today,
+                            due_date: Time.zone.today + Setting.find_by(code: 'payment_term').retrieve,
+                            cents: 1000)
+
+      invoice.save!
+
+      assert(audit_record = Audit::Invoice.find_by(object_id: invoice.id, action: 'INSERT'))
+      assert_equal(invoice.cents, audit_record.new_value['cents'])
+    end
   end
 
   def test_updating_a_invoice_creates_a_history_record

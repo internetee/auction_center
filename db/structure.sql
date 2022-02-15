@@ -1162,7 +1162,7 @@ CREATE TABLE public.invoices (
     cents integer NOT NULL,
     paid_at timestamp without time zone,
     status public.invoice_status DEFAULT 'issued'::public.invoice_status,
-    number integer NOT NULL,
+    number_old integer DEFAULT 1 NOT NULL,
     uuid uuid DEFAULT public.gen_random_uuid(),
     vat_rate numeric,
     paid_amount numeric,
@@ -1178,6 +1178,8 @@ CREATE TABLE public.invoices (
     postal_code character varying,
     alpha_two_country_code character varying,
     in_directo boolean DEFAULT false NOT NULL,
+    payment_link character varying,
+    number integer,
     CONSTRAINT invoices_cents_are_positive CHECK ((cents > 0)),
     CONSTRAINT invoices_due_date_is_not_before_issue_date CHECK ((issue_date <= due_date)),
     CONSTRAINT paid_at_is_filled_when_status_is_paid CHECK ((NOT ((status = 'paid'::public.invoice_status) AND (paid_at IS NULL)))),
@@ -1220,7 +1222,7 @@ CREATE SEQUENCE public.invoices_number_seq
 -- Name: invoices_number_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.invoices_number_seq OWNED BY public.invoices.number;
+ALTER SEQUENCE public.invoices_number_seq OWNED BY public.invoices.number_old;
 
 
 --
@@ -1614,6 +1616,7 @@ ALTER TABLE ONLY public.auto_bids ALTER COLUMN id SET DEFAULT nextval('public.au
 
 
 --
+
 -- Name: bans id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1670,6 +1673,7 @@ ALTER TABLE ONLY public.invoices ALTER COLUMN number SET DEFAULT nextval('public
 
 
 --
+
 -- Name: offers id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2820,6 +2824,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200206090106'),
 ('20200212081434'),
 ('20220422121056'),
-('20220425103701');
-
-
+('20220425103701'),
+('20220124114525'),
+('20220127103133'),
+('20220214124251'),
+('20220214124829'),
+('20220214130432');
