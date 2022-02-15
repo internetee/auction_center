@@ -9,6 +9,21 @@ class AutomaticBanTest < ActiveSupport::TestCase
 
     @user = users(:participant)
     @domain_name = 'example.test'
+
+    if Feature.billing_system_integration_enabled?
+      invoice_n = Invoice.order(number: :desc).last.number
+      stub_request(:post, "http://eis_billing_system:3000/api/v1/invoice_generator/invoice_number_generator")
+        .to_return(status: 200, body: "{\"invoice_number\":\"#{invoice_n + 3}\"}", headers: {})
+
+      stub_request(:post, "http://eis_billing_system:3000/api/v1/invoice_generator/invoice_generator")
+        .to_return(status: 200, body: "{\"everypay_link\":\"http://link.test\"}", headers: {})
+
+      stub_request(:put, "http://registry:3000/eis_billing/e_invoice_response").
+        to_return(status: 200, body: "{\"invoice_number\":\"#{invoice_n + 3}\"}, {\"date\":\"#{Time.zone.now-10.minutes}\"}", headers: {})
+
+      stub_request(:post, "http://eis_billing_system:3000/api/v1/e_invoice/e_invoice").
+        to_return(status: 200, body: "", headers: {})
+    end
   end
 
   def teardown
@@ -21,64 +36,107 @@ class AutomaticBanTest < ActiveSupport::TestCase
   def test_automatic_ban_on_user_without_overdue_invoices_fails
     ban = AutomaticBan.new(invoice: Invoice.new, user: @user, domain_name: 'some-domain.test')
 
-    assert_raises(Errors::NoCancelledInvoices) do
-      ban.create
+    mock = Minitest::Mock.new
+    def mock.authorized; true; end
+
+    clazz = EisBilling::BaseController.new
+
+    clazz.stub :authorized, mock do
+      assert_raises(Errors::NoCancelledInvoices) do
+        ban.create
+      end
     end
   end
 
   def test_bans_are_based_on_number_of_cancelled_invoices_without_bans
     invoice, domain_name = create_bannable_offence(@user)
-    ban = AutomaticBan.new(invoice: invoice, user: @user, domain_name: domain_name).create
 
-    assert(ban.persisted?)
-    assert_equal(invoice, ban.invoice)
-    assert_equal(domain_name, ban.domain_name)
-    assert_equal(@time >> Setting.find_by(code: 'ban_length').retrieve, ban.valid_until)
+    mock = Minitest::Mock.new
+    def mock.authorized; true; end
+
+    clazz = EisBilling::BaseController.new
+
+    clazz.stub :authorized, mock do
+      ban = AutomaticBan.new(invoice: invoice, user: @user, domain_name: domain_name).create
+
+      assert(ban.persisted?)
+      assert_equal(invoice, ban.invoice)
+      assert_equal(domain_name, ban.domain_name)
+      assert_equal(@time >> Setting.find_by(code: 'ban_length').retrieve, ban.valid_until)
+    end
   end
 
   def test_ban_without_bannable_invoice_fails
-    invoice, domain_name = create_bannable_offence(@user)
-    AutomaticBan.new(invoice: invoice, user: @user, domain_name: domain_name).create
-    ban = AutomaticBan.new(invoice: Invoice.new, user: @user, domain_name: 'some-domain.test')
+    mock = Minitest::Mock.new
+    def mock.authorized; true; end
 
-    assert_raises(Errors::NoCancelledInvoices) do
-      ban.create
+    clazz = EisBilling::BaseController.new
+
+    clazz.stub :authorized, mock do
+      invoice, domain_name = create_bannable_offence(@user)
+      AutomaticBan.new(invoice: invoice, user: @user, domain_name: domain_name).create
+      ban = AutomaticBan.new(invoice: Invoice.new, user: @user, domain_name: 'some-domain.test')
+
+      assert_raises(Errors::NoCancelledInvoices) do
+        ban.create
+      end
     end
   end
 
   def test_ban_for_second_invoice_is_also_long
-    create_bannable_offence(@user)
-    invoice, domain_name = create_bannable_offence(@user)
-    ban = AutomaticBan.new(invoice: invoice, user: @user, domain_name: domain_name).create
+    mock = Minitest::Mock.new
+    def mock.authorized; true; end
 
-    assert(ban.persisted?)
-    assert_equal(invoice, ban.invoice)
-    assert_equal(domain_name, ban.domain_name)
-    assert_equal(@time >> Setting.find_by(code: 'ban_length').retrieve, ban.valid_until)
+    clazz = EisBilling::BaseController.new
+
+    clazz.stub :authorized, mock do
+      create_bannable_offence(@user)
+      invoice, domain_name = create_bannable_offence(@user)
+      ban = AutomaticBan.new(invoice: invoice, user: @user, domain_name: domain_name).create
+
+      assert(ban.persisted?)
+      assert_equal(invoice, ban.invoice)
+      assert_equal(domain_name, ban.domain_name)
+      assert_equal(@time >> Setting.find_by(code: 'ban_length').retrieve, ban.valid_until)
+    end
   end
 
   def test_third_ban_is_long
-    create_bannable_offence(@user)
-    create_bannable_offence(@user)
+    mock = Minitest::Mock.new
+    def mock.authorized; true; end
 
-    invoice, domain_name = create_bannable_offence(@user)
-    ban = AutomaticBan.new(invoice: invoice, user: @user, domain_name: domain_name).create
+    clazz = EisBilling::BaseController.new
 
-    assert(ban.persisted?)
-    assert_equal(invoice, ban.invoice)
-    assert_equal(domain_name, ban.domain_name)
-    assert_equal(@time >> Setting.find_by(code: 'ban_length').retrieve, ban.valid_until)
+    clazz.stub :authorized, mock do
+      create_bannable_offence(@user)
+      create_bannable_offence(@user)
+
+      invoice, domain_name = create_bannable_offence(@user)
+      ban = AutomaticBan.new(invoice: invoice, user: @user, domain_name: domain_name).create
+
+      assert(ban.persisted?)
+      assert_equal(invoice, ban.invoice)
+      assert_equal(domain_name, ban.domain_name)
+      assert_equal(@time >> Setting.find_by(code: 'ban_length').retrieve, ban.valid_until)
+    end
   end
 
   def test_number_of_ban_offences_before_long_ban_is_configurable_in_settings
-    setting = settings(:ban_number_of_strikes)
-    setting.update!(value: '1')
+    mock = Minitest::Mock.new
+    def mock.authorized; true; end
 
-    invoice, domain_name = create_bannable_offence(@user)
-    ban = AutomaticBan.new(invoice: invoice, user: @user, domain_name: domain_name).create
+    clazz = EisBilling::BaseController.new
 
-    assert(ban.persisted?)
-    assert_equal(@time >> 100, ban.valid_until)
+    clazz.stub :authorized, mock do
+      setting = settings(:ban_number_of_strikes)
+      setting.update!(value: '1')
+
+      invoice, domain_name = create_bannable_offence(@user)
+      ban = AutomaticBan.new(invoice: invoice, user: @user, domain_name: domain_name).create
+
+      assert(ban.persisted?)
+      assert_equal(@time >> 100, ban.valid_until)
+    end
   end
 
   def test_creating_a_short_ban_sends_an_email

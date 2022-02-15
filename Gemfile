@@ -32,6 +32,9 @@ gem 'sprockets', '~> 4.0'
 gem 'turbolinks', '~> 5'
 gem 'webpacker', '~> 6.0.0.beta.6'
 
+# token
+gem 'jwt'
+
 group :development, :test do
   gem 'bullet'
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
