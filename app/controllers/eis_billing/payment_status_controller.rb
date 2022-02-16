@@ -15,7 +15,11 @@ module EisBilling
       }
       payment_order.save
 
-      CheckLinkpayStatusJob.set(wait: 1.minute).perform_later(payment_order.id)
+      if Rails.env.development?
+        CheckLinkpayStatusJob.perform_now(payment_order.id)
+      else
+        CheckLinkpayStatusJob.set(wait: 1.minute).perform_later(payment_order.id)
+      end
 
       render status: 200, json: { status: 'ok' }
     end
