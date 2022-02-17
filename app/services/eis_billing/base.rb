@@ -4,7 +4,7 @@ module EisBilling
     if Rails.env.staging?
       BASE_URL = AuctionCenter::Application.config
                                              .customization[:billing_system_integration]
-                                             &.compact&.fetch(:eis_billing_system_base_url_staging, '') 
+                                             &.compact&.fetch(:eis_billing_system_base_url_staging, '')
     else
       BASE_URL = AuctionCenter::Application.config
                                              .customization[:billing_system_integration]

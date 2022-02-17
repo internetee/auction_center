@@ -15,7 +15,7 @@ module EisBilling
       }
       payment_order.save
 
-      if Rails.env.development?
+      if Rails.env.development? || Rails.env.test?
         CheckLinkpayStatusJob.perform_now(payment_order.id)
       else
         CheckLinkpayStatusJob.set(wait: 1.minute).perform_later(payment_order.id)
