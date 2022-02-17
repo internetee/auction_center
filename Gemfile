@@ -53,4 +53,5 @@ group :test do
   gem 'simplecov', '~> 0.10', '< 0.18', require: false
   gem 'webdrivers'
   gem 'webmock'
+  gem 'spy'
 end

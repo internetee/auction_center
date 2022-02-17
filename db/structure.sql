@@ -1,19 +1,31 @@
 SET statement_timeout = 0;
 SET lock_timeout = 0;
-SET idle_in_transaction_session_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SELECT pg_catalog.set_config('search_path', '', false);
 SET check_function_bodies = false;
 SET xmloption = content;
 SET client_min_messages = warning;
-SET row_security = off;
 
 --
 -- Name: audit; Type: SCHEMA; Schema: -; Owner: -
 --
 
 CREATE SCHEMA audit;
+
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 
 --
@@ -448,7 +460,7 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- Name: auctions; Type: TABLE; Schema: audit; Owner: -
+-- Name: auctions; Type: TABLE; Schema: audit; Owner: -; Tablespace: 
 --
 
 CREATE TABLE audit.auctions (
@@ -482,7 +494,7 @@ ALTER SEQUENCE audit.auctions_id_seq OWNED BY audit.auctions.id;
 
 
 --
--- Name: bans; Type: TABLE; Schema: audit; Owner: -
+-- Name: bans; Type: TABLE; Schema: audit; Owner: -; Tablespace: 
 --
 
 CREATE TABLE audit.bans (
@@ -516,7 +528,7 @@ ALTER SEQUENCE audit.bans_id_seq OWNED BY audit.bans.id;
 
 
 --
--- Name: billing_profiles; Type: TABLE; Schema: audit; Owner: -
+-- Name: billing_profiles; Type: TABLE; Schema: audit; Owner: -; Tablespace: 
 --
 
 CREATE TABLE audit.billing_profiles (
@@ -550,7 +562,7 @@ ALTER SEQUENCE audit.billing_profiles_id_seq OWNED BY audit.billing_profiles.id;
 
 
 --
--- Name: invoice_items; Type: TABLE; Schema: audit; Owner: -
+-- Name: invoice_items; Type: TABLE; Schema: audit; Owner: -; Tablespace: 
 --
 
 CREATE TABLE audit.invoice_items (
@@ -584,7 +596,7 @@ ALTER SEQUENCE audit.invoice_items_id_seq OWNED BY audit.invoice_items.id;
 
 
 --
--- Name: invoice_payment_orders; Type: TABLE; Schema: audit; Owner: -
+-- Name: invoice_payment_orders; Type: TABLE; Schema: audit; Owner: -; Tablespace: 
 --
 
 CREATE TABLE audit.invoice_payment_orders (
@@ -618,7 +630,7 @@ ALTER SEQUENCE audit.invoice_payment_orders_id_seq OWNED BY audit.invoice_paymen
 
 
 --
--- Name: invoices; Type: TABLE; Schema: audit; Owner: -
+-- Name: invoices; Type: TABLE; Schema: audit; Owner: -; Tablespace: 
 --
 
 CREATE TABLE audit.invoices (
@@ -652,7 +664,7 @@ ALTER SEQUENCE audit.invoices_id_seq OWNED BY audit.invoices.id;
 
 
 --
--- Name: offers; Type: TABLE; Schema: audit; Owner: -
+-- Name: offers; Type: TABLE; Schema: audit; Owner: -; Tablespace: 
 --
 
 CREATE TABLE audit.offers (
@@ -686,7 +698,7 @@ ALTER SEQUENCE audit.offers_id_seq OWNED BY audit.offers.id;
 
 
 --
--- Name: payment_orders; Type: TABLE; Schema: audit; Owner: -
+-- Name: payment_orders; Type: TABLE; Schema: audit; Owner: -; Tablespace: 
 --
 
 CREATE TABLE audit.payment_orders (
@@ -720,7 +732,7 @@ ALTER SEQUENCE audit.payment_orders_id_seq OWNED BY audit.payment_orders.id;
 
 
 --
--- Name: results; Type: TABLE; Schema: audit; Owner: -
+-- Name: results; Type: TABLE; Schema: audit; Owner: -; Tablespace: 
 --
 
 CREATE TABLE audit.results (
@@ -754,7 +766,7 @@ ALTER SEQUENCE audit.results_id_seq OWNED BY audit.results.id;
 
 
 --
--- Name: settings; Type: TABLE; Schema: audit; Owner: -
+-- Name: settings; Type: TABLE; Schema: audit; Owner: -; Tablespace: 
 --
 
 CREATE TABLE audit.settings (
@@ -788,7 +800,7 @@ ALTER SEQUENCE audit.settings_id_seq OWNED BY audit.settings.id;
 
 
 --
--- Name: users; Type: TABLE; Schema: audit; Owner: -
+-- Name: users; Type: TABLE; Schema: audit; Owner: -; Tablespace: 
 --
 
 CREATE TABLE audit.users (
@@ -822,7 +834,7 @@ ALTER SEQUENCE audit.users_id_seq OWNED BY audit.users.id;
 
 
 --
--- Name: wishlist_items; Type: TABLE; Schema: audit; Owner: -
+-- Name: wishlist_items; Type: TABLE; Schema: audit; Owner: -; Tablespace: 
 --
 
 CREATE TABLE audit.wishlist_items (
@@ -856,7 +868,7 @@ ALTER SEQUENCE audit.wishlist_items_id_seq OWNED BY audit.wishlist_items.id;
 
 
 --
--- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -
+-- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE public.ar_internal_metadata (
@@ -868,7 +880,7 @@ CREATE TABLE public.ar_internal_metadata (
 
 
 --
--- Name: auctions; Type: TABLE; Schema: public; Owner: -
+-- Name: auctions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE public.auctions (
@@ -937,7 +949,7 @@ ALTER SEQUENCE public.auto_bids_id_seq OWNED BY public.auto_bids.id;
 
 
 --
--- Name: bans; Type: TABLE; Schema: public; Owner: -
+-- Name: bans; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE public.bans (
@@ -972,7 +984,7 @@ ALTER SEQUENCE public.bans_id_seq OWNED BY public.bans.id;
 
 
 --
--- Name: billing_profiles; Type: TABLE; Schema: public; Owner: -
+-- Name: billing_profiles; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE public.billing_profiles (
@@ -1012,7 +1024,7 @@ ALTER SEQUENCE public.billing_profiles_id_seq OWNED BY public.billing_profiles.i
 
 
 --
--- Name: delayed_jobs; Type: TABLE; Schema: public; Owner: -
+-- Name: delayed_jobs; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE public.delayed_jobs (
@@ -1051,7 +1063,7 @@ ALTER SEQUENCE public.delayed_jobs_id_seq OWNED BY public.delayed_jobs.id;
 
 
 --
--- Name: directo_customers; Type: TABLE; Schema: public; Owner: -
+-- Name: directo_customers; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE public.directo_customers (
@@ -1083,7 +1095,7 @@ ALTER SEQUENCE public.directo_customers_id_seq OWNED BY public.directo_customers
 
 
 --
--- Name: invoice_items; Type: TABLE; Schema: public; Owner: -
+-- Name: invoice_items; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE public.invoice_items (
@@ -1117,7 +1129,7 @@ ALTER SEQUENCE public.invoice_items_id_seq OWNED BY public.invoice_items.id;
 
 
 --
--- Name: invoice_payment_orders; Type: TABLE; Schema: public; Owner: -
+-- Name: invoice_payment_orders; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE public.invoice_payment_orders (
@@ -1147,7 +1159,7 @@ ALTER SEQUENCE public.invoice_payment_orders_id_seq OWNED BY public.invoice_paym
 
 
 --
--- Name: invoices; Type: TABLE; Schema: public; Owner: -
+-- Name: invoices; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE public.invoices (
@@ -1162,7 +1174,7 @@ CREATE TABLE public.invoices (
     cents integer NOT NULL,
     paid_at timestamp without time zone,
     status public.invoice_status DEFAULT 'issued'::public.invoice_status,
-    number_old integer DEFAULT 1 NOT NULL,
+    number integer NOT NULL,
     uuid uuid DEFAULT public.gen_random_uuid(),
     vat_rate numeric,
     paid_amount numeric,
@@ -1178,8 +1190,6 @@ CREATE TABLE public.invoices (
     postal_code character varying,
     alpha_two_country_code character varying,
     in_directo boolean DEFAULT false NOT NULL,
-    payment_link character varying,
-    number integer,
     CONSTRAINT invoices_cents_are_positive CHECK ((cents > 0)),
     CONSTRAINT invoices_due_date_is_not_before_issue_date CHECK ((issue_date <= due_date)),
     CONSTRAINT paid_at_is_filled_when_status_is_paid CHECK ((NOT ((status = 'paid'::public.invoice_status) AND (paid_at IS NULL)))),
@@ -1222,11 +1232,11 @@ CREATE SEQUENCE public.invoices_number_seq
 -- Name: invoices_number_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.invoices_number_seq OWNED BY public.invoices.number_old;
+ALTER SEQUENCE public.invoices_number_seq OWNED BY public.invoices.number;
 
 
 --
--- Name: offers; Type: TABLE; Schema: public; Owner: -
+-- Name: offers; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE public.offers (
@@ -1263,7 +1273,7 @@ ALTER SEQUENCE public.offers_id_seq OWNED BY public.offers.id;
 
 
 --
--- Name: payment_orders; Type: TABLE; Schema: public; Owner: -
+-- Name: payment_orders; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE public.payment_orders (
@@ -1299,7 +1309,7 @@ ALTER SEQUENCE public.payment_orders_id_seq OWNED BY public.payment_orders.id;
 
 
 --
--- Name: remote_view_partials; Type: TABLE; Schema: public; Owner: -
+-- Name: remote_view_partials; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE public.remote_view_partials (
@@ -1332,7 +1342,7 @@ ALTER SEQUENCE public.remote_view_partials_id_seq OWNED BY public.remote_view_pa
 
 
 --
--- Name: results; Type: TABLE; Schema: public; Owner: -
+-- Name: results; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE public.results (
@@ -1372,7 +1382,7 @@ ALTER SEQUENCE public.results_id_seq OWNED BY public.results.id;
 
 
 --
--- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
+-- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE public.schema_migrations (
@@ -1381,7 +1391,7 @@ CREATE TABLE public.schema_migrations (
 
 
 --
--- Name: settings; Type: TABLE; Schema: public; Owner: -
+-- Name: settings; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE public.settings (
@@ -1416,7 +1426,7 @@ ALTER SEQUENCE public.settings_id_seq OWNED BY public.settings.id;
 
 
 --
--- Name: statistics_report_invoices; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+-- Name: statistics_report_invoices; Type: MATERIALIZED VIEW; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE MATERIALIZED VIEW public.statistics_report_invoices AS
@@ -1428,7 +1438,7 @@ CREATE MATERIALIZED VIEW public.statistics_report_invoices AS
 
 
 --
--- Name: users; Type: TABLE; Schema: public; Owner: -
+-- Name: users; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE public.users (
@@ -1484,7 +1494,7 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 
 --
--- Name: wishlist_items; Type: TABLE; Schema: public; Owner: -
+-- Name: wishlist_items; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE public.wishlist_items (
@@ -1518,91 +1528,91 @@ ALTER SEQUENCE public.wishlist_items_id_seq OWNED BY public.wishlist_items.id;
 
 
 --
--- Name: auctions id; Type: DEFAULT; Schema: audit; Owner: -
+-- Name: id; Type: DEFAULT; Schema: audit; Owner: -
 --
 
 ALTER TABLE ONLY audit.auctions ALTER COLUMN id SET DEFAULT nextval('audit.auctions_id_seq'::regclass);
 
 
 --
--- Name: bans id; Type: DEFAULT; Schema: audit; Owner: -
+-- Name: id; Type: DEFAULT; Schema: audit; Owner: -
 --
 
 ALTER TABLE ONLY audit.bans ALTER COLUMN id SET DEFAULT nextval('audit.bans_id_seq'::regclass);
 
 
 --
--- Name: billing_profiles id; Type: DEFAULT; Schema: audit; Owner: -
+-- Name: id; Type: DEFAULT; Schema: audit; Owner: -
 --
 
 ALTER TABLE ONLY audit.billing_profiles ALTER COLUMN id SET DEFAULT nextval('audit.billing_profiles_id_seq'::regclass);
 
 
 --
--- Name: invoice_items id; Type: DEFAULT; Schema: audit; Owner: -
+-- Name: id; Type: DEFAULT; Schema: audit; Owner: -
 --
 
 ALTER TABLE ONLY audit.invoice_items ALTER COLUMN id SET DEFAULT nextval('audit.invoice_items_id_seq'::regclass);
 
 
 --
--- Name: invoice_payment_orders id; Type: DEFAULT; Schema: audit; Owner: -
+-- Name: id; Type: DEFAULT; Schema: audit; Owner: -
 --
 
 ALTER TABLE ONLY audit.invoice_payment_orders ALTER COLUMN id SET DEFAULT nextval('audit.invoice_payment_orders_id_seq'::regclass);
 
 
 --
--- Name: invoices id; Type: DEFAULT; Schema: audit; Owner: -
+-- Name: id; Type: DEFAULT; Schema: audit; Owner: -
 --
 
 ALTER TABLE ONLY audit.invoices ALTER COLUMN id SET DEFAULT nextval('audit.invoices_id_seq'::regclass);
 
 
 --
--- Name: offers id; Type: DEFAULT; Schema: audit; Owner: -
+-- Name: id; Type: DEFAULT; Schema: audit; Owner: -
 --
 
 ALTER TABLE ONLY audit.offers ALTER COLUMN id SET DEFAULT nextval('audit.offers_id_seq'::regclass);
 
 
 --
--- Name: payment_orders id; Type: DEFAULT; Schema: audit; Owner: -
+-- Name: id; Type: DEFAULT; Schema: audit; Owner: -
 --
 
 ALTER TABLE ONLY audit.payment_orders ALTER COLUMN id SET DEFAULT nextval('audit.payment_orders_id_seq'::regclass);
 
 
 --
--- Name: results id; Type: DEFAULT; Schema: audit; Owner: -
+-- Name: id; Type: DEFAULT; Schema: audit; Owner: -
 --
 
 ALTER TABLE ONLY audit.results ALTER COLUMN id SET DEFAULT nextval('audit.results_id_seq'::regclass);
 
 
 --
--- Name: settings id; Type: DEFAULT; Schema: audit; Owner: -
+-- Name: id; Type: DEFAULT; Schema: audit; Owner: -
 --
 
 ALTER TABLE ONLY audit.settings ALTER COLUMN id SET DEFAULT nextval('audit.settings_id_seq'::regclass);
 
 
 --
--- Name: users id; Type: DEFAULT; Schema: audit; Owner: -
+-- Name: id; Type: DEFAULT; Schema: audit; Owner: -
 --
 
 ALTER TABLE ONLY audit.users ALTER COLUMN id SET DEFAULT nextval('audit.users_id_seq'::regclass);
 
 
 --
--- Name: wishlist_items id; Type: DEFAULT; Schema: audit; Owner: -
+-- Name: id; Type: DEFAULT; Schema: audit; Owner: -
 --
 
 ALTER TABLE ONLY audit.wishlist_items ALTER COLUMN id SET DEFAULT nextval('audit.wishlist_items_id_seq'::regclass);
 
 
 --
--- Name: auctions id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.auctions ALTER COLUMN id SET DEFAULT nextval('public.auctions_id_seq'::regclass);
@@ -1618,112 +1628,112 @@ ALTER TABLE ONLY public.auto_bids ALTER COLUMN id SET DEFAULT nextval('public.au
 --
 
 -- Name: bans id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.bans ALTER COLUMN id SET DEFAULT nextval('public.bans_id_seq'::regclass);
 
 
 --
--- Name: billing_profiles id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.billing_profiles ALTER COLUMN id SET DEFAULT nextval('public.billing_profiles_id_seq'::regclass);
 
 
 --
--- Name: delayed_jobs id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.delayed_jobs ALTER COLUMN id SET DEFAULT nextval('public.delayed_jobs_id_seq'::regclass);
 
 
 --
--- Name: directo_customers id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.directo_customers ALTER COLUMN id SET DEFAULT nextval('public.directo_customers_id_seq'::regclass);
 
 
 --
--- Name: invoice_items id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.invoice_items ALTER COLUMN id SET DEFAULT nextval('public.invoice_items_id_seq'::regclass);
 
 
 --
--- Name: invoice_payment_orders id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.invoice_payment_orders ALTER COLUMN id SET DEFAULT nextval('public.invoice_payment_orders_id_seq'::regclass);
 
 
 --
--- Name: invoices id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.invoices ALTER COLUMN id SET DEFAULT nextval('public.invoices_id_seq'::regclass);
 
 
 --
--- Name: invoices number; Type: DEFAULT; Schema: public; Owner: -
+-- Name: number; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.invoices ALTER COLUMN number SET DEFAULT nextval('public.invoices_number_seq'::regclass);
 
 
 --
-
--- Name: offers id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.offers ALTER COLUMN id SET DEFAULT nextval('public.offers_id_seq'::regclass);
 
 
 --
--- Name: payment_orders id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.payment_orders ALTER COLUMN id SET DEFAULT nextval('public.payment_orders_id_seq'::regclass);
 
 
 --
--- Name: remote_view_partials id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.remote_view_partials ALTER COLUMN id SET DEFAULT nextval('public.remote_view_partials_id_seq'::regclass);
 
 
 --
--- Name: results id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.results ALTER COLUMN id SET DEFAULT nextval('public.results_id_seq'::regclass);
 
 
 --
--- Name: settings id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.settings ALTER COLUMN id SET DEFAULT nextval('public.settings_id_seq'::regclass);
 
 
 --
--- Name: users id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
 
 
 --
--- Name: wishlist_items id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.wishlist_items ALTER COLUMN id SET DEFAULT nextval('public.wishlist_items_id_seq'::regclass);
 
 
 --
--- Name: auctions auctions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: auctions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY public.auctions
@@ -1731,7 +1741,7 @@ ALTER TABLE ONLY public.auctions
 
 
 --
--- Name: statistics_report_auctions; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+-- Name: statistics_report_auctions; Type: MATERIALIZED VIEW; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE MATERIALIZED VIEW public.statistics_report_auctions AS
@@ -1763,7 +1773,7 @@ CREATE MATERIALIZED VIEW public.statistics_report_auctions AS
 
 
 --
--- Name: results results_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: results_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY public.results
@@ -1771,7 +1781,7 @@ ALTER TABLE ONLY public.results
 
 
 --
--- Name: statistics_report_results; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+-- Name: statistics_report_results; Type: MATERIALIZED VIEW; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE MATERIALIZED VIEW public.statistics_report_results AS
@@ -1787,7 +1797,7 @@ CREATE MATERIALIZED VIEW public.statistics_report_results AS
 
 
 --
--- Name: auctions auctions_pkey; Type: CONSTRAINT; Schema: audit; Owner: -
+-- Name: auctions_pkey; Type: CONSTRAINT; Schema: audit; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY audit.auctions
@@ -1795,7 +1805,7 @@ ALTER TABLE ONLY audit.auctions
 
 
 --
--- Name: bans bans_pkey; Type: CONSTRAINT; Schema: audit; Owner: -
+-- Name: bans_pkey; Type: CONSTRAINT; Schema: audit; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY audit.bans
@@ -1803,7 +1813,7 @@ ALTER TABLE ONLY audit.bans
 
 
 --
--- Name: billing_profiles billing_profiles_pkey; Type: CONSTRAINT; Schema: audit; Owner: -
+-- Name: billing_profiles_pkey; Type: CONSTRAINT; Schema: audit; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY audit.billing_profiles
@@ -1811,7 +1821,7 @@ ALTER TABLE ONLY audit.billing_profiles
 
 
 --
--- Name: invoice_items invoice_items_pkey; Type: CONSTRAINT; Schema: audit; Owner: -
+-- Name: invoice_items_pkey; Type: CONSTRAINT; Schema: audit; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY audit.invoice_items
@@ -1819,7 +1829,7 @@ ALTER TABLE ONLY audit.invoice_items
 
 
 --
--- Name: invoice_payment_orders invoice_payment_orders_pkey; Type: CONSTRAINT; Schema: audit; Owner: -
+-- Name: invoice_payment_orders_pkey; Type: CONSTRAINT; Schema: audit; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY audit.invoice_payment_orders
@@ -1827,7 +1837,7 @@ ALTER TABLE ONLY audit.invoice_payment_orders
 
 
 --
--- Name: invoices invoices_pkey; Type: CONSTRAINT; Schema: audit; Owner: -
+-- Name: invoices_pkey; Type: CONSTRAINT; Schema: audit; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY audit.invoices
@@ -1835,7 +1845,7 @@ ALTER TABLE ONLY audit.invoices
 
 
 --
--- Name: offers offers_pkey; Type: CONSTRAINT; Schema: audit; Owner: -
+-- Name: offers_pkey; Type: CONSTRAINT; Schema: audit; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY audit.offers
@@ -1843,7 +1853,7 @@ ALTER TABLE ONLY audit.offers
 
 
 --
--- Name: payment_orders payment_orders_pkey; Type: CONSTRAINT; Schema: audit; Owner: -
+-- Name: payment_orders_pkey; Type: CONSTRAINT; Schema: audit; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY audit.payment_orders
@@ -1851,7 +1861,7 @@ ALTER TABLE ONLY audit.payment_orders
 
 
 --
--- Name: results results_pkey; Type: CONSTRAINT; Schema: audit; Owner: -
+-- Name: results_pkey; Type: CONSTRAINT; Schema: audit; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY audit.results
@@ -1859,7 +1869,7 @@ ALTER TABLE ONLY audit.results
 
 
 --
--- Name: settings settings_pkey; Type: CONSTRAINT; Schema: audit; Owner: -
+-- Name: settings_pkey; Type: CONSTRAINT; Schema: audit; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY audit.settings
@@ -1867,7 +1877,7 @@ ALTER TABLE ONLY audit.settings
 
 
 --
--- Name: users users_pkey; Type: CONSTRAINT; Schema: audit; Owner: -
+-- Name: users_pkey; Type: CONSTRAINT; Schema: audit; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY audit.users
@@ -1875,7 +1885,7 @@ ALTER TABLE ONLY audit.users
 
 
 --
--- Name: wishlist_items wishlist_items_pkey; Type: CONSTRAINT; Schema: audit; Owner: -
+-- Name: wishlist_items_pkey; Type: CONSTRAINT; Schema: audit; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY audit.wishlist_items
@@ -1883,7 +1893,7 @@ ALTER TABLE ONLY audit.wishlist_items
 
 
 --
--- Name: ar_internal_metadata ar_internal_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: ar_internal_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY public.ar_internal_metadata
@@ -1907,7 +1917,7 @@ ALTER TABLE ONLY public.bans
 
 
 --
--- Name: billing_profiles billing_profiles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: billing_profiles_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY public.billing_profiles
@@ -1915,7 +1925,7 @@ ALTER TABLE ONLY public.billing_profiles
 
 
 --
--- Name: delayed_jobs delayed_jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: delayed_jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY public.delayed_jobs
@@ -1923,7 +1933,7 @@ ALTER TABLE ONLY public.delayed_jobs
 
 
 --
--- Name: directo_customers directo_customers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: directo_customers_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY public.directo_customers
@@ -1931,7 +1941,7 @@ ALTER TABLE ONLY public.directo_customers
 
 
 --
--- Name: invoice_items invoice_items_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: invoice_items_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY public.invoice_items
@@ -1939,7 +1949,7 @@ ALTER TABLE ONLY public.invoice_items
 
 
 --
--- Name: invoice_payment_orders invoice_payment_orders_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: invoice_payment_orders_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY public.invoice_payment_orders
@@ -1947,7 +1957,7 @@ ALTER TABLE ONLY public.invoice_payment_orders
 
 
 --
--- Name: invoices invoices_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: invoices_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY public.invoices
@@ -1955,7 +1965,7 @@ ALTER TABLE ONLY public.invoices
 
 
 --
--- Name: offers offers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: offers_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY public.offers
@@ -1963,7 +1973,7 @@ ALTER TABLE ONLY public.offers
 
 
 --
--- Name: payment_orders payment_orders_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: payment_orders_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY public.payment_orders
@@ -1971,7 +1981,7 @@ ALTER TABLE ONLY public.payment_orders
 
 
 --
--- Name: remote_view_partials remote_view_partials_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: remote_view_partials_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY public.remote_view_partials
@@ -1979,7 +1989,7 @@ ALTER TABLE ONLY public.remote_view_partials
 
 
 --
--- Name: schema_migrations schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY public.schema_migrations
@@ -1987,7 +1997,7 @@ ALTER TABLE ONLY public.schema_migrations
 
 
 --
--- Name: settings settings_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: settings_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY public.settings
@@ -1995,7 +2005,7 @@ ALTER TABLE ONLY public.settings
 
 
 --
--- Name: auctions unique_domain_name_per_auction_duration; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: unique_domain_name_per_auction_duration; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY public.auctions
@@ -2003,7 +2013,7 @@ ALTER TABLE ONLY public.auctions
 
 
 --
--- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY public.users
@@ -2011,7 +2021,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- Name: wishlist_items wishlist_items_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: wishlist_items_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY public.wishlist_items
@@ -2019,203 +2029,203 @@ ALTER TABLE ONLY public.wishlist_items
 
 
 --
--- Name: auctions_object_id_idx; Type: INDEX; Schema: audit; Owner: -
+-- Name: auctions_object_id_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
 --
 
 CREATE INDEX auctions_object_id_idx ON audit.auctions USING btree (object_id);
 
 
 --
--- Name: auctions_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -
+-- Name: auctions_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
 --
 
 CREATE INDEX auctions_recorded_at_idx ON audit.auctions USING btree (recorded_at);
 
 
 --
--- Name: bans_object_id_idx; Type: INDEX; Schema: audit; Owner: -
+-- Name: bans_object_id_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
 --
 
 CREATE INDEX bans_object_id_idx ON audit.bans USING btree (object_id);
 
 
 --
--- Name: bans_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -
+-- Name: bans_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
 --
 
 CREATE INDEX bans_recorded_at_idx ON audit.bans USING btree (recorded_at);
 
 
 --
--- Name: billing_profiles_object_id_idx; Type: INDEX; Schema: audit; Owner: -
+-- Name: billing_profiles_object_id_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
 --
 
 CREATE INDEX billing_profiles_object_id_idx ON audit.billing_profiles USING btree (object_id);
 
 
 --
--- Name: billing_profiles_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -
+-- Name: billing_profiles_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
 --
 
 CREATE INDEX billing_profiles_recorded_at_idx ON audit.billing_profiles USING btree (recorded_at);
 
 
 --
--- Name: invoice_items_object_id_idx; Type: INDEX; Schema: audit; Owner: -
+-- Name: invoice_items_object_id_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
 --
 
 CREATE INDEX invoice_items_object_id_idx ON audit.invoice_items USING btree (object_id);
 
 
 --
--- Name: invoice_items_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -
+-- Name: invoice_items_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
 --
 
 CREATE INDEX invoice_items_recorded_at_idx ON audit.invoice_items USING btree (recorded_at);
 
 
 --
--- Name: invoice_payment_orders_object_id_idx; Type: INDEX; Schema: audit; Owner: -
+-- Name: invoice_payment_orders_object_id_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
 --
 
 CREATE INDEX invoice_payment_orders_object_id_idx ON audit.invoice_payment_orders USING btree (object_id);
 
 
 --
--- Name: invoice_payment_orders_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -
+-- Name: invoice_payment_orders_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
 --
 
 CREATE INDEX invoice_payment_orders_recorded_at_idx ON audit.invoice_payment_orders USING btree (recorded_at);
 
 
 --
--- Name: invoices_object_id_idx; Type: INDEX; Schema: audit; Owner: -
+-- Name: invoices_object_id_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
 --
 
 CREATE INDEX invoices_object_id_idx ON audit.invoices USING btree (object_id);
 
 
 --
--- Name: invoices_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -
+-- Name: invoices_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
 --
 
 CREATE INDEX invoices_recorded_at_idx ON audit.invoices USING btree (recorded_at);
 
 
 --
--- Name: offers_object_id_idx; Type: INDEX; Schema: audit; Owner: -
+-- Name: offers_object_id_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
 --
 
 CREATE INDEX offers_object_id_idx ON audit.offers USING btree (object_id);
 
 
 --
--- Name: offers_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -
+-- Name: offers_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
 --
 
 CREATE INDEX offers_recorded_at_idx ON audit.offers USING btree (recorded_at);
 
 
 --
--- Name: payment_orders_object_id_idx; Type: INDEX; Schema: audit; Owner: -
+-- Name: payment_orders_object_id_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
 --
 
 CREATE INDEX payment_orders_object_id_idx ON audit.payment_orders USING btree (object_id);
 
 
 --
--- Name: payment_orders_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -
+-- Name: payment_orders_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
 --
 
 CREATE INDEX payment_orders_recorded_at_idx ON audit.payment_orders USING btree (recorded_at);
 
 
 --
--- Name: results_object_id_idx; Type: INDEX; Schema: audit; Owner: -
+-- Name: results_object_id_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
 --
 
 CREATE INDEX results_object_id_idx ON audit.results USING btree (object_id);
 
 
 --
--- Name: results_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -
+-- Name: results_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
 --
 
 CREATE INDEX results_recorded_at_idx ON audit.results USING btree (recorded_at);
 
 
 --
--- Name: settings_object_id_idx; Type: INDEX; Schema: audit; Owner: -
+-- Name: settings_object_id_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
 --
 
 CREATE INDEX settings_object_id_idx ON audit.settings USING btree (object_id);
 
 
 --
--- Name: settings_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -
+-- Name: settings_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
 --
 
 CREATE INDEX settings_recorded_at_idx ON audit.settings USING btree (recorded_at);
 
 
 --
--- Name: users_object_id_idx; Type: INDEX; Schema: audit; Owner: -
+-- Name: users_object_id_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
 --
 
 CREATE INDEX users_object_id_idx ON audit.users USING btree (object_id);
 
 
 --
--- Name: users_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -
+-- Name: users_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
 --
 
 CREATE INDEX users_recorded_at_idx ON audit.users USING btree (recorded_at);
 
 
 --
--- Name: wishlist_items_object_id_idx; Type: INDEX; Schema: audit; Owner: -
+-- Name: wishlist_items_object_id_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
 --
 
 CREATE INDEX wishlist_items_object_id_idx ON audit.wishlist_items USING btree (object_id);
 
 
 --
--- Name: wishlist_items_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -
+-- Name: wishlist_items_recorded_at_idx; Type: INDEX; Schema: audit; Owner: -; Tablespace: 
 --
 
 CREATE INDEX wishlist_items_recorded_at_idx ON audit.wishlist_items USING btree (recorded_at);
 
 
 --
--- Name: delayed_jobs_priority; Type: INDEX; Schema: public; Owner: -
+-- Name: delayed_jobs_priority; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX delayed_jobs_priority ON public.delayed_jobs USING btree (priority, run_at);
 
 
 --
--- Name: index_auctions_on_domain_name; Type: INDEX; Schema: public; Owner: -
+-- Name: index_auctions_on_domain_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_auctions_on_domain_name ON public.auctions USING btree (domain_name);
 
 
 --
--- Name: index_auctions_on_ends_at; Type: INDEX; Schema: public; Owner: -
+-- Name: index_auctions_on_ends_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_auctions_on_ends_at ON public.auctions USING btree (ends_at);
 
 
 --
--- Name: index_auctions_on_remote_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_auctions_on_remote_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE UNIQUE INDEX index_auctions_on_remote_id ON public.auctions USING btree (remote_id);
 
 
 --
--- Name: index_auctions_on_uuid; Type: INDEX; Schema: public; Owner: -
+-- Name: index_auctions_on_uuid; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE UNIQUE INDEX index_auctions_on_uuid ON public.auctions USING btree (uuid);
@@ -2236,357 +2246,357 @@ CREATE INDEX index_bans_on_domain_name ON public.bans USING btree (domain_name);
 
 
 --
--- Name: index_bans_on_invoice_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_bans_on_invoice_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_bans_on_invoice_id ON public.bans USING btree (invoice_id);
 
 
 --
--- Name: index_bans_on_user_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_bans_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_bans_on_user_id ON public.bans USING btree (user_id);
 
 
 --
--- Name: index_billing_profiles_on_user_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_billing_profiles_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_billing_profiles_on_user_id ON public.billing_profiles USING btree (user_id);
 
 
 --
--- Name: index_billing_profiles_on_uuid; Type: INDEX; Schema: public; Owner: -
+-- Name: index_billing_profiles_on_uuid; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE UNIQUE INDEX index_billing_profiles_on_uuid ON public.billing_profiles USING btree (uuid);
 
 
 --
--- Name: index_billing_profiles_on_vat_code_and_user_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_billing_profiles_on_vat_code_and_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE UNIQUE INDEX index_billing_profiles_on_vat_code_and_user_id ON public.billing_profiles USING btree (vat_code, user_id);
 
 
 --
--- Name: index_directo_customers_on_customer_code; Type: INDEX; Schema: public; Owner: -
+-- Name: index_directo_customers_on_customer_code; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE UNIQUE INDEX index_directo_customers_on_customer_code ON public.directo_customers USING btree (customer_code);
 
 
 --
--- Name: index_directo_customers_on_vat_number; Type: INDEX; Schema: public; Owner: -
+-- Name: index_directo_customers_on_vat_number; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE UNIQUE INDEX index_directo_customers_on_vat_number ON public.directo_customers USING btree (vat_number);
 
 
 --
--- Name: index_invoice_items_on_invoice_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_invoice_items_on_invoice_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_invoice_items_on_invoice_id ON public.invoice_items USING btree (invoice_id);
 
 
 --
--- Name: index_invoice_items_on_uuid; Type: INDEX; Schema: public; Owner: -
+-- Name: index_invoice_items_on_uuid; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE UNIQUE INDEX index_invoice_items_on_uuid ON public.invoice_items USING btree (uuid);
 
 
 --
--- Name: index_invoice_payment_orders_on_invoice_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_invoice_payment_orders_on_invoice_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_invoice_payment_orders_on_invoice_id ON public.invoice_payment_orders USING btree (invoice_id);
 
 
 --
--- Name: index_invoice_payment_orders_on_payment_order_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_invoice_payment_orders_on_payment_order_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_invoice_payment_orders_on_payment_order_id ON public.invoice_payment_orders USING btree (payment_order_id);
 
 
 --
--- Name: index_invoices_on_billing_profile_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_invoices_on_billing_profile_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_invoices_on_billing_profile_id ON public.invoices USING btree (billing_profile_id);
 
 
 --
--- Name: index_invoices_on_paid_with_payment_order_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_invoices_on_paid_with_payment_order_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_invoices_on_paid_with_payment_order_id ON public.invoices USING btree (paid_with_payment_order_id);
 
 
 --
--- Name: index_invoices_on_result_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_invoices_on_result_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_invoices_on_result_id ON public.invoices USING btree (result_id);
 
 
 --
--- Name: index_invoices_on_user_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_invoices_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_invoices_on_user_id ON public.invoices USING btree (user_id);
 
 
 --
--- Name: index_invoices_on_uuid; Type: INDEX; Schema: public; Owner: -
+-- Name: index_invoices_on_uuid; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE UNIQUE INDEX index_invoices_on_uuid ON public.invoices USING btree (uuid);
 
 
 --
--- Name: index_offers_on_auction_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_offers_on_auction_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_offers_on_auction_id ON public.offers USING btree (auction_id);
 
 
 --
--- Name: index_offers_on_user_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_offers_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_offers_on_user_id ON public.offers USING btree (user_id);
 
 
 --
--- Name: index_offers_on_uuid; Type: INDEX; Schema: public; Owner: -
+-- Name: index_offers_on_uuid; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE UNIQUE INDEX index_offers_on_uuid ON public.offers USING btree (uuid);
 
 
 --
--- Name: index_payment_orders_on_invoice_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_payment_orders_on_invoice_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_payment_orders_on_invoice_id ON public.payment_orders USING btree (invoice_id);
 
 
 --
--- Name: index_payment_orders_on_user_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_payment_orders_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_payment_orders_on_user_id ON public.payment_orders USING btree (user_id);
 
 
 --
--- Name: index_payment_orders_on_uuid; Type: INDEX; Schema: public; Owner: -
+-- Name: index_payment_orders_on_uuid; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE UNIQUE INDEX index_payment_orders_on_uuid ON public.payment_orders USING btree (uuid);
 
 
 --
--- Name: index_results_on_auction_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_results_on_auction_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_results_on_auction_id ON public.results USING btree (auction_id);
 
 
 --
--- Name: index_results_on_last_remote_status; Type: INDEX; Schema: public; Owner: -
+-- Name: index_results_on_last_remote_status; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_results_on_last_remote_status ON public.results USING btree (last_remote_status);
 
 
 --
--- Name: index_results_on_offer_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_results_on_offer_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_results_on_offer_id ON public.results USING btree (offer_id);
 
 
 --
--- Name: index_results_on_user_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_results_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_results_on_user_id ON public.results USING btree (user_id);
 
 
 --
--- Name: index_results_on_uuid; Type: INDEX; Schema: public; Owner: -
+-- Name: index_results_on_uuid; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE UNIQUE INDEX index_results_on_uuid ON public.results USING btree (uuid);
 
 
 --
--- Name: index_settings_on_code; Type: INDEX; Schema: public; Owner: -
+-- Name: index_settings_on_code; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE UNIQUE INDEX index_settings_on_code ON public.settings USING btree (code);
 
 
 --
--- Name: index_statistics_report_auctions_on_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_statistics_report_auctions_on_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE UNIQUE INDEX index_statistics_report_auctions_on_id ON public.statistics_report_auctions USING btree (id);
 
 
 --
--- Name: index_statistics_report_invoices_on_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_statistics_report_invoices_on_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE UNIQUE INDEX index_statistics_report_invoices_on_id ON public.statistics_report_invoices USING btree (id);
 
 
 --
--- Name: index_statistics_report_results_on_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_statistics_report_results_on_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE UNIQUE INDEX index_statistics_report_results_on_id ON public.statistics_report_results USING btree (id);
 
 
 --
--- Name: index_users_on_confirmation_token; Type: INDEX; Schema: public; Owner: -
+-- Name: index_users_on_confirmation_token; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE UNIQUE INDEX index_users_on_confirmation_token ON public.users USING btree (confirmation_token);
 
 
 --
--- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -
+-- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE UNIQUE INDEX index_users_on_email ON public.users USING btree (email);
 
 
 --
--- Name: index_users_on_provider_and_uid; Type: INDEX; Schema: public; Owner: -
+-- Name: index_users_on_provider_and_uid; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE UNIQUE INDEX index_users_on_provider_and_uid ON public.users USING btree (provider, uid);
 
 
 --
--- Name: index_users_on_reset_password_token; Type: INDEX; Schema: public; Owner: -
+-- Name: index_users_on_reset_password_token; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE UNIQUE INDEX index_users_on_reset_password_token ON public.users USING btree (reset_password_token);
 
 
 --
--- Name: index_users_on_uuid; Type: INDEX; Schema: public; Owner: -
+-- Name: index_users_on_uuid; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE UNIQUE INDEX index_users_on_uuid ON public.users USING btree (uuid);
 
 
 --
--- Name: index_wishlist_items_on_domain_name; Type: INDEX; Schema: public; Owner: -
+-- Name: index_wishlist_items_on_domain_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_wishlist_items_on_domain_name ON public.wishlist_items USING btree (domain_name);
 
 
 --
--- Name: users_by_identity_code_and_country; Type: INDEX; Schema: public; Owner: -
+-- Name: users_by_identity_code_and_country; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE UNIQUE INDEX users_by_identity_code_and_country ON public.users USING btree (alpha_two_country_code, identity_code) WHERE ((alpha_two_country_code)::text = 'EE'::text);
 
 
 --
--- Name: auctions process_auction_audit; Type: TRIGGER; Schema: public; Owner: -
+-- Name: process_auction_audit; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER process_auction_audit AFTER INSERT OR DELETE OR UPDATE ON public.auctions FOR EACH ROW EXECUTE FUNCTION public.process_auction_audit();
 
 
 --
--- Name: bans process_ban_audit; Type: TRIGGER; Schema: public; Owner: -
+-- Name: process_ban_audit; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER process_ban_audit AFTER INSERT OR DELETE OR UPDATE ON public.bans FOR EACH ROW EXECUTE FUNCTION public.process_ban_audit();
 
 
 --
--- Name: billing_profiles process_billing_profile_audit; Type: TRIGGER; Schema: public; Owner: -
+-- Name: process_billing_profile_audit; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER process_billing_profile_audit AFTER INSERT OR DELETE OR UPDATE ON public.billing_profiles FOR EACH ROW EXECUTE FUNCTION public.process_billing_profile_audit();
 
 
 --
--- Name: invoices process_invoice_audit; Type: TRIGGER; Schema: public; Owner: -
+-- Name: process_invoice_audit; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER process_invoice_audit AFTER INSERT OR DELETE OR UPDATE ON public.invoices FOR EACH ROW EXECUTE FUNCTION public.process_invoice_audit();
 
 
 --
--- Name: invoice_items process_invoice_item_audit; Type: TRIGGER; Schema: public; Owner: -
+-- Name: process_invoice_item_audit; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER process_invoice_item_audit AFTER INSERT OR DELETE OR UPDATE ON public.invoice_items FOR EACH ROW EXECUTE FUNCTION public.process_invoice_item_audit();
 
 
 --
--- Name: invoice_payment_orders process_invoice_payment_order_audit; Type: TRIGGER; Schema: public; Owner: -
+-- Name: process_invoice_payment_order_audit; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER process_invoice_payment_order_audit AFTER INSERT OR DELETE OR UPDATE ON public.invoice_payment_orders FOR EACH ROW EXECUTE FUNCTION public.process_invoice_payment_order_audit();
 
 
 --
--- Name: offers process_offer_audit; Type: TRIGGER; Schema: public; Owner: -
+-- Name: process_offer_audit; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER process_offer_audit AFTER INSERT OR DELETE OR UPDATE ON public.offers FOR EACH ROW EXECUTE FUNCTION public.process_offer_audit();
 
 
 --
--- Name: payment_orders process_payment_order_audit; Type: TRIGGER; Schema: public; Owner: -
+-- Name: process_payment_order_audit; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER process_payment_order_audit AFTER INSERT OR DELETE OR UPDATE ON public.payment_orders FOR EACH ROW EXECUTE FUNCTION public.process_payment_order_audit();
 
 
 --
--- Name: results process_result_audit; Type: TRIGGER; Schema: public; Owner: -
+-- Name: process_result_audit; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER process_result_audit AFTER INSERT OR DELETE OR UPDATE ON public.results FOR EACH ROW EXECUTE FUNCTION public.process_result_audit();
 
 
 --
--- Name: settings process_setting_audit; Type: TRIGGER; Schema: public; Owner: -
+-- Name: process_setting_audit; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER process_setting_audit AFTER INSERT OR DELETE OR UPDATE ON public.settings FOR EACH ROW EXECUTE FUNCTION public.process_setting_audit();
 
 
 --
--- Name: users process_user_audit; Type: TRIGGER; Schema: public; Owner: -
+-- Name: process_user_audit; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER process_user_audit AFTER INSERT OR DELETE OR UPDATE ON public.users FOR EACH ROW EXECUTE FUNCTION public.process_user_audit();
 
 
 --
--- Name: wishlist_items process_wishlist_item_audit; Type: TRIGGER; Schema: public; Owner: -
+-- Name: process_wishlist_item_audit; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER process_wishlist_item_audit AFTER INSERT OR DELETE OR UPDATE ON public.wishlist_items FOR EACH ROW EXECUTE FUNCTION public.process_wishlist_item_audit();
 
 
 --
--- Name: bans fk_rails_070022cd76; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: fk_rails_070022cd76; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.bans
@@ -2594,7 +2604,7 @@ ALTER TABLE ONLY public.bans
 
 
 --
--- Name: invoice_items fk_rails_25bf3d2c5e; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: fk_rails_25bf3d2c5e; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.invoice_items
@@ -2602,7 +2612,7 @@ ALTER TABLE ONLY public.invoice_items
 
 
 --
--- Name: invoices fk_rails_3d1522a0d8; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: fk_rails_3d1522a0d8; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.invoices
@@ -2626,7 +2636,7 @@ ALTER TABLE ONLY public.wishlist_items
 
 
 --
--- Name: payment_orders fk_rails_79beebc2e9; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: fk_rails_79beebc2e9; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.payment_orders
@@ -2634,7 +2644,7 @@ ALTER TABLE ONLY public.payment_orders
 
 
 --
--- Name: results fk_rails_7f0d5a2cd6; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: fk_rails_7f0d5a2cd6; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.results
@@ -2642,7 +2652,7 @@ ALTER TABLE ONLY public.results
 
 
 --
--- Name: billing_profiles fk_rails_8fda547d9d; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: fk_rails_8fda547d9d; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.billing_profiles
@@ -2650,7 +2660,7 @@ ALTER TABLE ONLY public.billing_profiles
 
 
 --
--- Name: bans fk_rails_9c21645d6a; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: fk_rails_9c21645d6a; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.bans
@@ -2658,7 +2668,7 @@ ALTER TABLE ONLY public.bans
 
 
 --
--- Name: results fk_rails_9f5d06cf95; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: fk_rails_9f5d06cf95; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.results
@@ -2666,7 +2676,7 @@ ALTER TABLE ONLY public.results
 
 
 --
--- Name: offers fk_rails_bb5f3f4ecb; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: fk_rails_bb5f3f4ecb; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.offers
@@ -2674,7 +2684,7 @@ ALTER TABLE ONLY public.offers
 
 
 --
--- Name: invoices fk_rails_d44c2f8d29; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: fk_rails_d44c2f8d29; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.invoices
@@ -2682,7 +2692,7 @@ ALTER TABLE ONLY public.invoices
 
 
 --
--- Name: offers fk_rails_e6095d6211; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: fk_rails_e6095d6211; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.offers
@@ -2690,7 +2700,7 @@ ALTER TABLE ONLY public.offers
 
 
 --
--- Name: payment_orders fk_rails_f9dc5857c3; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: fk_rails_f9dc5857c3; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.payment_orders
@@ -2698,7 +2708,7 @@ ALTER TABLE ONLY public.payment_orders
 
 
 --
--- Name: invoices fk_rails_ff50c5defa; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: fk_rails_ff50c5defa; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.invoices
@@ -2709,7 +2719,7 @@ ALTER TABLE ONLY public.invoices
 -- PostgreSQL database dump complete
 --
 
-SET search_path TO "$user", public;
+SET search_path TO "$user",public;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20180829130641'),
@@ -2830,3 +2840,4 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220214124251'),
 ('20220214124829'),
 ('20220214130432');
+

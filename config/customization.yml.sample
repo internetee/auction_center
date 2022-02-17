@@ -110,6 +110,7 @@ default: &default
     secret_access_word: 'please-Give-Me-accesS'
     secret_word: 'this-secret-should-be-change'
     billing_system_integrated: 'true'
+    billing_secret: ''
 
 development:
   <<: *default
