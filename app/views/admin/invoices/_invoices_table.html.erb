@@ -1,0 +1,66 @@
+<table class="ui table unstackable fixed" id="my-outstanding-invoices-table">
+    <thead>
+        <tr>
+            <th scope="col" width="15%">
+                <%= t('invoices.billing_profile') %>
+                <%= order_buttons('invoices.billing_profile_id', origin: @origin) %>
+            </th>
+            <th scope="col" width="12%">
+                <%= t('invoices.due_date') %>
+                <%= order_buttons('invoices.due_date', origin: @origin) %>
+            </th>
+            <th scope="col">
+                <%= t('invoices.number') %>
+                <%= order_buttons('invoices.number', origin: @origin) %>
+            </th>
+            <th scope="col">
+                <%= t('invoices.status') %>
+                <%= order_buttons('invoices.status', origin: @origin) %>
+            </th>
+            <th scope="col">
+                <%= t('invoices.notes') %>
+                <%= order_buttons('invoices.notes', origin: @origin) %>
+            </th>
+            <th scope="col">
+                <%= t('invoices.total') %>
+                <%= order_buttons('invoices.cents', origin: @origin) %>
+            </th>
+            <th scope="col">
+                <%= t('invoices.vat_rate_on_payment') %>
+                <%= order_buttons('invoices.vat_rate', origin: @origin) %>
+            </th>
+            <th scope="col">
+                <%= t('invoices.total_paid') %>
+                <%= order_buttons('invoices.paid_amount', origin: @origin) %>
+            </th>
+            <th scope="col">
+                <%= t('invoices.paid_through') %>
+            </th>
+
+            <th scope="col"><%= clear_order_button %></th>
+        </tr>
+    </thead>
+
+    <tbody class="invoices-table-body">
+        <% @invoices.each do |invoice| %>
+            <tr class="invoices-table-row">
+                <td><%= link_to invoice.recipient, admin_invoice_path(invoice) %></td>
+                <td><%= I18n.l(invoice.due_date) %></td>
+                <td><%= invoice.number %></td>
+                <td><%= invoice.status %></td>
+                <td><%= invoice.notes %></td>
+                <td><%= t('offers.price_in_currency', price: invoice.total) %></td>
+                <% if invoice.paid? %>
+                    <td><%= number_to_percentage(invoice.vat_rate * 100, precision: 0) %></td>
+                    <td><%= t('offers.price_in_currency', price: invoice.paid_amount) %></td>
+                    <td><%= invoice.paid_with_payment_order&.channel %></td>
+                <% else %>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                <% end %>
+                <td></td>
+            </tr>
+        <% end %>
+    </tbody>
+</table>
