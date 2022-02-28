@@ -23,9 +23,9 @@
         </tr>
     </thead>
 
-    <tbody class="bans-table-body">
+    <tbody id="bans-table-body">
         <% @bans.each do |ban| %>
-                <tr class="bans-table-row">
+            <tr class="bans-table-row">
                 <td class="ban-table-ban-name">
                     <%= link_to ban.user.display_name, admin_user_path(ban.user) %></td>
                 <td><%= l(ban.valid_from) %></td>

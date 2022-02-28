@@ -1,7 +1,8 @@
 et:
   okcomputer:
     check:
-      passed: PASSED
+      passed: "%{registrant_name}: PASSED %{message}"
+      failed: "%{registrant_name}: FAILED %{message}"
   health_checks:
     index:
       title: Site health check
