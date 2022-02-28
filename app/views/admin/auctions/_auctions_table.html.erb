@@ -39,7 +39,7 @@
               </td>
               <td><%= I18n.l(auction.starts_at) %></td>
               <td><%= I18n.l(auction.ends_at) %></td>
-              <td class="auction-highest-offer"><%= auction.highest_offer_id.present? ? auction.highest_price : t('.no_price')%></td>
+              <td class="auction-highest-offer"><%= auction.highest_offer_id.present? ? auction.highest_price : t('admin.auctions.index.no_price')%></td>
               <td class="auction-offers-count"><%= auction.number_of_offers %></td>
               <td class="auction-turns-count"><%= auction.turns_count %></td>
               <td></td>
