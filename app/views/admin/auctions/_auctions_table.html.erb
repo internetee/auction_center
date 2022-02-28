@@ -1,0 +1,49 @@
+<table class="ui table selectable unstackable" id="auctions-table">
+  <thead>
+      <tr>
+          <th scope="col">
+              <%= t('auctions.domain_name') %>
+              <%= order_buttons('admin_auction_decorators.domain_name', origin: @origin) %>
+          </th>
+          <th scope="col">
+              <%= t('auctions.starts_at') %>
+              <%= order_buttons('admin_auction_decorators.starts_at', origin: @origin) %>
+          </th>
+          <th scope="col">
+              <%= t('auctions.ends_at') %>
+              <%= order_buttons('admin_auction_decorators.ends_at', origin: @origin) %>
+          </th>
+          <th scope="col">
+              <%= t('auctions.highest_price') %>
+              <%= order_buttons('admin_auction_decorators.highest_offer_cents', origin: @origin) %>
+          </th>
+          <th scope="col">
+              <%= t('auctions.offers') %>
+              <%= order_buttons('admin_auction_decorators.number_of_offers', origin: @origin) %>
+          </th>
+          <th scope="col">
+              <%= t('auctions.turns_count') %>
+              <%= order_buttons('admin_auction_decorators.turns_count', origin: @origin) %>
+          </th>
+          <th scope="col"><%= clear_order_button %></th>
+      </tr>
+  </thead>
+
+  <tbody id="auctions-table-body">
+      <% @auctions.each do |auction| %>
+          <tr class="auctions-table-row">
+              <td class="auction-domain-name monospace">
+                  <%= link_to(admin_auction_path(auction.id)) do %>
+                      <%= domain_name_with_embedded_colors(auction.domain_name) %>
+                  <% end %>
+              </td>
+              <td><%= I18n.l(auction.starts_at) %></td>
+              <td><%= I18n.l(auction.ends_at) %></td>
+              <td class="auction-highest-offer"><%= auction.highest_offer_id.present? ? auction.highest_price : t('.no_price')%></td>
+              <td class="auction-offers-count"><%= auction.number_of_offers %></td>
+              <td class="auction-turns-count"><%= auction.turns_count %></td>
+              <td></td>
+          </tr>
+      <% end %>
+  </tbody>
+</table>

@@ -7,15 +7,7 @@
 <div class="features-grid top narrow grey">
     <div class="ui search">
         <div class="ui massive input icon">
-            <%= form_with(url: search_admin_auctions_path, local: true, method: :get) do |f| %>
-                <div class="ui input icon">
-                    <%= f.text_field :domain_name, placeholder: t('search_by_domain_name') %>
-                </div>
-
-                <%= f.button(class: "ui icon primary button") do %>
-                    <i aria-hidden="true" class="arrow right icon"></i>
-                <% end %>
-            <% end %>
+            <%= render 'search_form' %>
         </div>
     </div>
 </div>
@@ -24,53 +16,7 @@
     <div class="margin-block">
         <div class="grid one column">
             <div class="column">
-                <table class="ui table selectable unstackable" id="auctions-table">
-                    <thead>
-                        <tr>
-                            <th scope="col">
-                                <%= t('auctions.domain_name') %>
-                                <%= order_buttons('admin_auction_decorators.domain_name', origin: @origin) %>
-                            </th>
-                            <th scope="col">
-                                <%= t('auctions.starts_at') %>
-                                <%= order_buttons('admin_auction_decorators.starts_at', origin: @origin) %>
-                            </th>
-                            <th scope="col">
-                                <%= t('auctions.ends_at') %>
-                                <%= order_buttons('admin_auction_decorators.ends_at', origin: @origin) %>
-                            </th>
-                            <th scope="col">
-                                <%= t('auctions.highest_price') %>
-                                <%= order_buttons('admin_auction_decorators.highest_offer_cents', origin: @origin) %>
-                            </th>
-                            <th scope="col">
-                                <%= t('auctions.offers') %>
-                                <%= order_buttons('admin_auction_decorators.number_of_offers', origin: @origin) %>
-                            </th>
-                            <th scope="col">
-                                <%= t('auctions.turns_count') %>
-                                <%= order_buttons('admin_auction_decorators.turns_count', origin: @origin) %>
-                            </th>
-                            <th scope="col"><%= clear_order_button %></th>
-                        </tr>
-                    </thead>
-
-                    <tbody id="auctions-table-body">
-                        <% @auctions.each do |auction| %>
-                            <tr class="auctions-table-row">
-                                <td class="auction-domain-name monospace">
-                                    <%= link_to auction.domain_name, admin_auction_path(auction.id) %>
-                                </td>
-                                <td><%= I18n.l(auction.starts_at) %></td>
-                                <td><%= I18n.l(auction.ends_at) %></td>
-                                <td class="auction-highest-offer"><%= auction.highest_price %></td>
-                                <td class="auction-offers-count"><%= auction.number_of_offers %></td>
-                                <td class="auction-turns-count"><%= auction.turns_count %></td>
-                                <td></td>
-                            </tr>
-                        <% end %>
-                    </tbody>
-                </table>
+                <%= render 'auctions_table' %>
             </div>
         </div>
         <h4><%= t('search_limit', limit: Kaminari.config.default_per_page)%></h4>

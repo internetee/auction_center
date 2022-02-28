@@ -45,15 +45,15 @@ default: &default
     # environment: ''
 
   recaptcha:
-    site_key: ''
-    secret_key: ''
+    site_key: '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'
+    secret_key: '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe'
 
 
   google_analytics:
     # Disabled when not configured
     tracking_id:
 
-  payment_methods:
+  payment_methods: 
     enabled_methods:
       - "PaymentOrders::EveryPay"
       - "PaymentOrders::SEB"

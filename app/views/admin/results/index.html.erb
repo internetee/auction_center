@@ -6,24 +6,7 @@
 
 <div class="features-grid top narrow grey ">
         <div class="ui input">
-            <%= form_with(url: search_admin_results_path, local: true, method: :get, class: 'ui big form') do |f| %>
-            <div class="inline fields">
-                <div class="field">
-                    <%= f.text_field :domain_name, placeholder: t('search_by_domain_name') %>
-                </div>
-                <div class="field">
-                    <%= select_tag :statuses_contains,
-                    options_for_select(Result.statuses, params[:statuses_contains]), 
-                    { multiple: true, class: 'ui selection dropdown', prompt: t('admin.results.index.status') } %> 
-                </div>
-
-                <div class="field">
-                <%= f.button(class: "ui icon primary button") do %>
-                    <i aria-hidden="true" class="arrow right icon"></i>
-                <% end %>
-                </div>
-                </div>
-            <% end %>
+          <%= render 'search_form', action: 'index' %>
         </div>
 </div>
 
@@ -60,54 +43,7 @@
             <% end %>
 
             <div class="column">
-                <table class="ui table" id="results-table">
-                    <thead>
-                        <tr>
-                            <th scope="col">
-                                <%= t('auctions.domain_name') %>
-                                <%= order_buttons('auctions.domain_name') %>
-                            </th>
-                            <th scope="col">
-                                <%= t('auctions.finished_at') %>
-                                <%= order_buttons('auctions.ends_at') %>
-                            </th>
-                            <th scope="col">
-                                <%= t('results.registration_due_date') %>
-                                <%= order_buttons('results.registration_due_date') %>
-                            </th>
-                            <th scope="col">
-                                <%= t('status') %>
-                                <%= order_buttons('results.status') %>
-                            </th>
-                            <th scope="col">
-                                <%= t('billing_profiles.name') %>
-                                <%= order_buttons('users.id') %>
-                            </th>
-                            <th scope="col"><%= clear_order_button %></th>
-                        </tr>
-                    </thead>
-
-                    <tbody id="results-table-body">
-                        <% @results.each do |result| %>
-                            <tr class="results-table-row">
-                                <td class="monospace">
-                                    <%= link_to result.auction.domain_name, admin_result_path(result) %>
-                                </td>
-                                <td><%= I18n.l(result.auction.ends_at) %></td>
-                                <td><%= I18n.l(result.registration_due_date) %></td>
-                                <td><%= result.status.humanize %></td>
-                                <td>
-                                    <%- unless result.no_bids? %>
-                                        <%- unless result.offer.nil? %>
-                                            <%= result.offer.billing_profile&.name %>
-                                        <% end %>
-                                    <% end %>
-                                </td>
-                                <td></td>
-                            </tr>
-                        <% end %>
-                    </tbody>
-                </table>
+                <%= render 'results_table' %>
             </div>
 
             <%= paginate @results %>

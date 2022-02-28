@@ -1,0 +1,9 @@
+<%= form_with(url: search_admin_auctions_path, local: true, method: :get) do |f| %>
+    <div class="ui input icon">
+        <%= f.text_field :domain_name, placeholder: t('search_by_domain_name'), value: @origin %>
+    </div>
+
+    <%= f.button(type: 'submit', name: '', class: "ui icon primary button") do %>
+        <i aria-hidden="true" class="arrow right icon"></i>
+    <% end %>
+<% end %>

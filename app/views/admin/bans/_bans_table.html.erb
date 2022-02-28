@@ -1,0 +1,49 @@
+<table class="ui table unstackable fixed" id="bans-table">
+    <thead>
+        <tr>
+            <th scope="col"><%= t('user') %>
+                <%= order_buttons('users.surname', origin: @origin) %>
+            </th>
+            <th scope="col">
+                <%= t('bans.valid_from') %>
+                <%= order_buttons('bans.valid_from', origin: @origin) %>
+            </th>
+            <th scope="col">
+                <%= t('bans.valid_until') %>
+                <%= order_buttons('bans.valid_until', origin: @origin) %>
+            </th>
+            <th scope="col">
+                <%= t('bans.domain_name') %>
+                <%= order_buttons('bans.domain_name', origin: @origin) %>
+            </th>
+            <th scope="col">
+                <%= t('results.invoice') %>
+            </th>
+            <th scope="col"><%= t('actions') %> <%= clear_order_button %></th>
+        </tr>
+    </thead>
+
+    <tbody class="user-table-body">
+        <% @bans.each do |ban| %>
+                <tr class="bans-table-row">
+                <td class="ban-table-ban-name">
+                    <%= link_to ban.user.display_name, admin_user_path(ban.user) %></td>
+                <td><%= l(ban.valid_from) %></td>
+                <td><%= l(ban.valid_until) %></td>
+                <td><%= ban.domain_name %></td>
+                <td>
+                    <% if ban.invoice_id %>
+                        <%= link_to t('results.invoice'), admin_invoice_path(ban.invoice_id) %>
+                    <% end %>
+                </td>
+                <td>
+                    <%= link_to t(:delete), admin_ban_path(ban), method: :delete,
+                    data: { confirm: t(:are_you_sure) }, remote: true,
+                    class: "ui button secondary" %>
+                    <%= link_to t(:versions_name),
+                        admin_ban_versions_path(ban), class: "ui button primary" %>
+                </td>
+            </tr>
+        <% end %>
+    </tbody>
+</table>

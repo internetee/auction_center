@@ -7,61 +7,14 @@
 <div class="features-grid top narrow grey">
     <div class="ui search">
         <div class="ui massive input icon">
-            <%= form_with(url: search_admin_billing_profiles_path, local: true, method: :get) do |f| %>
-                <div class="ui input icon">
-                    <%= f.text_field :search_string, placeholder: t('search') %>
-                </div>
-
-                <%= f.button(class: "ui icon primary button") do %>
-                    <i aria-hidden="true" class="arrow right icon"></i>
-                <% end %>
-            <% end %>
+            <%= render 'search_form' %>
         </div>
     </div>
 </div>
 
 <div class="ui container">
     <div class="margin-block">
-        <table class="ui table fixed" id="billing-profiles-table">
-            <thead>
-                <tr>
-                    <th scope="col">
-                        <%= t('billing_profiles.user') %>
-                        <%= order_buttons('users.surname') %>
-                    </th>
-                    <th scope="col">
-                        <%= t('billing_profiles.name') %>
-                        <%= order_buttons('billing_profiles.name') %>
-                    </th>
-                    <th scope="col">
-                        <%= t('billing_profiles.vat_code') %>
-                        <%= order_buttons('billing_profiles.vat_code') %>
-                    </th>
-                    <th scope="col"><%= t('billing_profiles.address') %></th>
-                    <th scope="col"><%= clear_order_button %></th>
-                </tr>
-            </thead>
-
-            <tbody id="billing-profiles-table-body">
-                <% @billing_profiles.each do |billing_profile| %>
-                    <tr class="billing-profiles-table-row">
-                        <td>
-                            <% if billing_profile.user %>
-                                <%= link_to billing_profile.user_name, admin_user_path(billing_profile.user) %>
-                            <% else %>
-                                <%= billing_profile.user_name %>
-                            <% end %>
-                        </td>
-                        <td class="billing-profile-name">
-                            <%= link_to billing_profile.name, admin_billing_profile_path(billing_profile) %>
-                        </td>
-                        <td><%= billing_profile.vat_code %></td>
-                        <td><%= billing_profile.address %></td>
-                        <td></td>
-                    </tr>
-                <% end %>
-            </tbody>
-        </table>
+        <%= render 'billing_profiles_table' %>
 
         <%= paginate @billing_profiles %>
     </div>
