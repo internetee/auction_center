@@ -13,7 +13,6 @@ module Admin
       @billing_profile = BillingProfile.where('name ILIKE ?', "%#{@origin}%").all
       user_ids = (@users.ids + [@billing_profile.select(:user_id)]).uniq
 
-
       @bans = Ban.where(user_id: user_ids).order(orderable_array(default_order_params)).page(1)
     end
 
