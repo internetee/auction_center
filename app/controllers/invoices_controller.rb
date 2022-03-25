@@ -20,11 +20,18 @@ class InvoicesController < ApplicationController
   end
 
   # GET /invoices/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
-  def show; end
+  def show
+    EisBilling::SetInvoiceStatus.ping_status(@invoice)
+  end
 
   # GET /invoices
   def index
     @issued_invoices = invoices_list_by_status(Invoice.statuses[:issued])
+
+    @issued_invoices.each do |invoice|
+      EisBilling::SetInvoiceStatus.ping_status(invoice)
+    end
+
     @paid_invoices = invoices_list_by_status(Invoice.statuses[:paid])
     @cancelled_payable_invoices = invoices_list_by_status(Invoice.statuses[:cancelled]).with_ban
     @cancelled_expired_invoices = invoices_list_by_status(Invoice.statuses[:cancelled]).without_ban
