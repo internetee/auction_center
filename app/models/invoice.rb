@@ -47,11 +47,6 @@ class Invoice < ApplicationRecord
     InvoiceCreator.new(result_id).call
   end
 
-  def get_response_from_billing
-    response = EisBilling::GetInvoiceStatus.send_invoice(invoice_number: number)
-    JSON.parse(response.body, symbolize_names: true)
-  end
-
   def set_invoice_number
     if Feature.billing_system_integration_enabled?
       result = EisBilling::GetInvoiceNumber.send_invoice
