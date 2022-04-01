@@ -1,8 +1,8 @@
 module EisBilling
   class Base
     BASE_URL = AuctionCenter::Application.config
-                                            .customization[:billing_system_integration]
-                                            &.compact&.fetch(:eis_billing_system_base_url, '')
+                                         .customization[:billing_system_integration]
+                                         &.compact&.fetch(:eis_billing_system_base_url, '')
 
     INITIATOR = 'auction'.freeze
 

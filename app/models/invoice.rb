@@ -47,24 +47,26 @@ class Invoice < ApplicationRecord
     InvoiceCreator.new(result_id).call
   end
 
+  def billing_restrictions_issue
+    errors.add(:base, I18n.t('cannot get access'))
+    logger.error('PROBLEM WITH TOKEN')
+    throw(:abort)
+  end
+
+  def billing_out_of_range_issue
+    errors.add(:base, I18n.t('failed_to_generate_invoice_invoice_number_limit_reached'))
+    logger.error('INVOICE NUMBER LIMIT REACHED, COULD NOT GENERATE INVOICE')
+    throw(:abort)
+  end
+
   def set_invoice_number
-    if Feature.billing_system_integration_enabled?
-      result = EisBilling::GetInvoiceNumber.send_invoice
+    return unless Feature.billing_system_integration_enabled?
 
-      if JSON.parse(result.body)['code'] == '403'
-        errors.add(:base, I18n.t('cannot get access'))
-        logger.error('PROBLEM WITH TOKEN')
-        throw(:abort)
-      end
+    result = EisBilling::GetInvoiceNumber.send_invoice
+    billing_restrictions_issue if JSON.parse(result.body)['code'] == '403'
+    billing_out_of_range_issue if JSON.parse(result.body)['error'] == 'out of range'
 
-      if JSON.parse(result.body)['error'] == 'out of range'
-        errors.add(:base, I18n.t('failed_to_generate_invoice_invoice_number_limit_reached'))
-        logger.error('INVOICE NUMBER LIMIT REACHED, COULD NOT GENERATE INVOICE')
-        throw(:abort)
-      end
-
-      self.number = JSON.parse(result.body)['invoice_number'].to_i
-    end
+    self.number = JSON.parse(result.body)['invoice_number'].to_i
   end
 
   def items

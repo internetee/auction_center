@@ -7,7 +7,7 @@ module EisBilling
     def self.send_info(object_data:)
       prepared_data = {
         invoice_data: object_data,
-        initiator: INITIATOR
+        initiator: INITIATOR,
       }
 
       http = EisBilling::Base.base_request(url: directo_url)
