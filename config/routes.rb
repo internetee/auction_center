@@ -67,9 +67,14 @@ Rails.application.routes.draw do
   resources :billing_profiles, param: :uuid
   match '/status', via: :get, to: 'health_checks#index'
 
+
   resources :invoices, only: %i[show edit update index], param: :uuid do
     member do
       get 'download'
+    end
+
+    collection do
+      post 'invoices/pay_all_bills', to: 'invoices#pay_all_bills', as: 'pay_all_bills'
     end
 
     resources :payment_orders, only: %i[new show create], shallow: true, param: :uuid do

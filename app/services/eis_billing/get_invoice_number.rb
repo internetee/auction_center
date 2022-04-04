@@ -1,6 +1,6 @@
 module EisBilling
   class GetInvoiceNumber < EisBilling::Base
-    def self.send_invoice
+    def self.take_it
       send_request
     end
 

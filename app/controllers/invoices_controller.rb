@@ -1,7 +1,7 @@
 class InvoicesController < ApplicationController
   before_action :authenticate_user!
   before_action :authorize_user
-  before_action :set_invoice, except: :index
+  before_action :set_invoice, except: [:index, :pay_all_bills]
 
   # GET /invoices/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/edit
   def edit; end
@@ -43,6 +43,23 @@ class InvoicesController < ApplicationController
            .where(user_id: current_user.id)
            .where(status: status)
            .order(due_date: :desc)
+  end
+
+  def pay_all_bills
+    issued_invoices = invoices_list_by_status(Invoice.statuses[:issued])
+    result = EisBilling::BulkInvoices.generate_link(issued_invoices)
+
+    @everypay_link = JSON.parse(result.body, symbolize_names: true)[:everypay_link]
+
+    p "@@@@@@"
+    p @everypay_link
+    p "@@@@@@@@@"
+
+    respond_to do |format|
+      format.json { render status: :ok, json: @everypay_link }
+      format.html { redirect_to :back, :notice => 'Run was successfully created.' }
+      format.js
+    end
   end
 
   def update_predicate

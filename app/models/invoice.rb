@@ -62,7 +62,7 @@ class Invoice < ApplicationRecord
   def set_invoice_number
     return unless Feature.billing_system_integration_enabled?
 
-    result = EisBilling::GetInvoiceNumber.send_invoice
+    result = EisBilling::GetInvoiceNumber.take_it
     billing_restrictions_issue if JSON.parse(result.body)['code'] == '403'
     billing_out_of_range_issue if JSON.parse(result.body)['error'] == 'out of range'
 

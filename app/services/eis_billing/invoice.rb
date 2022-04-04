@@ -18,8 +18,8 @@ module EisBilling
       data[:order_reference] = invoice.number
       data[:customer_name] = "#{invoice.user.given_names} #{invoice.user.surname}"
       data[:customer_email] = invoice.user.email
-      data[:custom_field_1] = 'prepended'
-      data[:custom_field_2] = INITIATOR
+      data[:custom_field1] = 'prepended'
+      data[:custom_field2] = INITIATOR
       data[:invoice_number] = invoice.number
 
       data

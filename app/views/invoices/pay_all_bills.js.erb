@@ -1,0 +1,12 @@
+
+  const everypayLinkBox = document.getElementById('everypay_link');
+  const a = document.createElement('a');
+  const linkText = document.createTextNode("Everypay link");
+
+  let everypay_link = "<%= @everypay_link %>";
+
+  a.appendChild(linkText);
+  a.title = "Everypay link";
+  a.href = everypay_link.replace(/&amp;/g, "&");
+  a.target = '_blank';
+  everypayLinkBox.appendChild(a)

@@ -42,6 +42,14 @@
                         <%= f.submit t(:submit), type: :image, src: method.icon %>
                     <% end %>
                 <% end %>
+
+                <%= button_to "Generate invoice", 
+                              pay_all_bills_invoices_path,
+                              method: :post,
+                              style: 'padding: 10px 5px; margin-top: 5px; cursor: pointer;',
+                              id: 'everypay_generator',
+                              remote: true %>
+                <div id="everypay_link"></div>
             </div>
         <% end %>
 
