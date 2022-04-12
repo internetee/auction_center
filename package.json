@@ -24,7 +24,7 @@
       "css-what": "^6.0.0",
       "typeface-raleway": "^1.1.13",
       "normalize-url": "^7.0.1",
-      "ssri": "^8.0.1",
+      "ssri": "^9.0.0",
       "postcss": "^8.3.6",
       "browserslist": "^4.16.8",
       "glob-parent": "^6.0.1",
