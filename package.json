@@ -21,7 +21,7 @@
       "terser-webpack-plugin": "^5.1.4",
       "turbolinks": "^5.2.0",
       "ws": "^8.2.1",
-      "css-what": "^5.0.1",
+      "css-what": "^6.0.0",
       "typeface-raleway": "^1.1.13",
       "normalize-url": "^7.0.1",
       "ssri": "^8.0.1",
