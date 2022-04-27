@@ -25,6 +25,10 @@ class InvoiceCreatorTest < ActiveSupport::TestCase
   end
 
   def test_an_invoice_is_prefilled_with_data_from_winning_offer
+    eis_response = OpenStruct.new(body: "{\"payment_link\":\"http://link.test\"}")
+    Spy.on_instance_method(EisBilling::Invoice, :send_invoice).and_return(eis_response)
+    Spy.on(EisBilling::SendInvoiceStatus, :send_info).and_return(true)
+
     mock = Minitest::Mock.new
     def mock.authorized; true; end
 
@@ -56,6 +60,9 @@ class InvoiceCreatorTest < ActiveSupport::TestCase
   end
 
   def test_invoice_creator_also_creates_invoice_items
+    eis_response = OpenStruct.new(body: "{\"payment_link\":\"http://link.test\"}")
+    Spy.on_instance_method(EisBilling::Invoice, :send_invoice).and_return(eis_response)
+    Spy.on(EisBilling::SendInvoiceStatus, :send_info).and_return(true)
     mock = Minitest::Mock.new
     def mock.authorized; true; end
 

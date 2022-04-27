@@ -23,7 +23,7 @@ module EisBilling
       return if data.empty?
 
       data.each do |d|
-        invoice = Invoice.find_by(number: d[:number])
+        invoice = ::Invoice.find_by(number: d[:number])
         payment_process(invoice: invoice, payment_reference: d[:payment_reference])
       end
     end

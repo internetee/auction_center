@@ -31,6 +31,10 @@ class ResultCreatorTest < ActiveSupport::TestCase
   end
 
   def test_a_result_is_created_for_auction_with_offers
+    eis_response = OpenStruct.new(body: "{\"payment_link\":\"http://link.test\"}")
+    Spy.on_instance_method(EisBilling::Invoice, :send_invoice).and_return(eis_response)
+    Spy.on(EisBilling::SendInvoiceStatus, :send_info).and_return(true)
+
     Result.destroy_all
 
     mock = Minitest::Mock.new
@@ -74,6 +78,10 @@ class ResultCreatorTest < ActiveSupport::TestCase
   end
 
   def test_result_is_created_even_after_a_user_is_deleted
+    eis_response = OpenStruct.new(body: "{\"payment_link\":\"http://link.test\"}")
+    Spy.on_instance_method(EisBilling::Invoice, :send_invoice).and_return(eis_response)
+    Spy.on(EisBilling::SendInvoiceStatus, :send_info).and_return(true)
+
     Result.destroy_all
 
     mock = Minitest::Mock.new
@@ -127,6 +135,10 @@ class ResultCreatorTest < ActiveSupport::TestCase
   end
 
   def test_creator_emails_particiapants_for_auction_with_offers
+    eis_response = OpenStruct.new(body: "{\"payment_link\":\"http://link.test\"}")
+    Spy.on_instance_method(EisBilling::Invoice, :send_invoice).and_return(eis_response)
+    Spy.on(EisBilling::SendInvoiceStatus, :send_info).and_return(true)
+
     result_creator = ResultCreator.new(@auction_with_offers.id)
     result_creator.call
 
@@ -138,6 +150,10 @@ class ResultCreatorTest < ActiveSupport::TestCase
   end
 
   def test_creator_emails_winner_for_auction_with_offers
+    eis_response = OpenStruct.new(body: "{\"payment_link\":\"http://link.test\"}")
+    Spy.on_instance_method(EisBilling::Invoice, :send_invoice).and_return(eis_response)
+    Spy.on(EisBilling::SendInvoiceStatus, :send_info).and_return(true)
+
     ActionMailer::Base.deliveries.clear
     result_creator = ResultCreator.new(@auction_with_offers.id)
     result_creator.call

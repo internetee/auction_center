@@ -76,6 +76,10 @@ class ResultTest < ActiveSupport::TestCase
   end
 
   def test_send_email_to_winner_sends_an_email_if_winner_exists
+    eis_response = OpenStruct.new(body: "{\"payment_link\":\"http://link.test\"}")
+    Spy.on_instance_method(EisBilling::Invoice, :send_invoice).and_return(eis_response)
+    Spy.on(EisBilling::SendInvoiceStatus, :send_info).and_return(true)
+
     mock = Minitest::Mock.new
     def mock.authorized; true; end
 

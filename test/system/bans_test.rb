@@ -180,6 +180,9 @@ class BansTest < ApplicationSystemTestCase
   end
 
   def test_administrator_can_link_bans_with_invoice
+    eis_response = OpenStruct.new(body: "{\"payment_link\":\"http://link.test\"}")
+    Spy.on_instance_method(EisBilling::Invoice, :send_invoice).and_return(eis_response)
+    Spy.on(EisBilling::SendInvoiceStatus, :send_info).and_return(true)
     mock = Minitest::Mock.new
     def mock.authorized; true; end
 
