@@ -1,6 +1,9 @@
 module Admin
   class AuctionsController < BaseController
     include OrderableHelper
+    include PagyHelper
+
+    include Pagy::Backend
 
     before_action :authorize_user
     before_action :set_auction, only: %i[show destroy]
@@ -27,25 +30,31 @@ module Admin
 
     # GET /admin/auctions
     def index
-      @collection = AdminAuctionDecorator.with_highest_offers
-                                         .order(orderable_array(default_order_params))
-                                         .page(params[:page])
+      sort_column = params[:sort].presence_in(%w{ domain name 
+                                                  starts_at
+                                                  ends_at
+                                                  highest_offer_cents
+                                                  number_of_offers
+                                                  turns_count
+                                                  starting_price
+                                                  min_bids_step
+                                                  slipping_end
+                                                  platform}) || "id"
+      sort_direction = params[:direction].presence_in(%w{ asc desc }) || "desc"
 
-      auction_currency = Setting.find_by(code: 'auction_currency').retrieve
-      @auctions = @collection.map { |auction| AdminAuctionDecorator.new(auction, auction_currency) }
-    end
-
-    # GET /admin/auctions/search
-    def search
-      domain_name = search_params[:domain_name]
-      @origin = domain_name || search_params.dig(:order, :origin)
-      auction_currency = Setting.find_by(code: 'auction_currency').retrieve
       collection = AdminAuctionDecorator.with_highest_offers
-                                        .where('domain_name ILIKE ?', "%#{@origin}%")
-                                        .order(orderable_array)
-                                        .page(1)
+                                        .with_domain_name(params[:domain_name])
+                                        .with_type(params[:type])
+                                        .with_starts_at(params[:starts_at])
+                                        .with_ends_at(params[:ends_at])
+                                        .with_starts_at_nil(params[:starts_at_nil])
+                                        .order(sort_column => sort_direction)
+                                        #  .page(params[:page]
 
-      @auctions = collection.map { |auction| AdminAuctionDecorator.new(auction, auction_currency) }
+      # auction_currency = Setting.find_by(code: 'auction_currency').retrieve
+      # auctions = collection.map { |auction| AdminAuctionDecorator.new(auction, auction_currency) }
+
+      @pagy, @auctions = pagy(collection, items: params[:per_page] ||= 15, link_extra: 'data-turbo-action="advance"')
     end
 
     # GET /admin/auctions/1
@@ -67,7 +76,64 @@ module Admin
       end
     end
 
+    def upload_spreadsheet
+      filename = params[:file]
+      table = CSV.parse(File.read(filename), headers: true)
+
+      if validate_table(table)
+        table.each do |row|
+          record = row.to_h
+
+          next if Auction.exists?(domain_name: record['domain'])
+
+          auction = Auction.new(domain_name: record['domain'], uuid: record['uuid'], platform: 'english')
+          auction.save!
+        end
+        flash[:notice] = "Domains added"
+        redirect_to admin_auctions_path
+      else
+        flash[:alert] = "Invalid CSV format."
+        redirect_to admin_auctions_path
+      end
+    end
+
+    def bulk_starts_at
+      auctions_data = params[:auction_elements]
+
+      auction_ids = auctions_data[:auction_ids]
+      auction_ids = auctions_data[:elements_id].split(' ') if auction_ids.nil?
+
+      return if auction_ids.nil?
+
+      @auctions = Auction.where(id: auction_ids)
+
+      @auctions.each do |auction|
+        auction.starts_at = auctions_data[:set_starts_at] unless auctions_data[:set_starts_at].empty?
+        auction.ends_at = auctions_data[:set_ends_at] unless auctions_data[:set_ends_at].empty?
+        auction.starting_price = auctions_data[:starting_price] unless auctions_data[:starting_price].empty?
+        auction.min_bids_step = auctions_data[:min_bids_step] unless auctions_data[:min_bids_step].empty?
+        auction.slipping_end = auctions_data[:slipping_end] unless auctions_data[:slipping_end].empty?
+
+        auction.save!
+      end
+
+      flash[:notice] = 'New value was set'
+      redirect_to admin_auctions_path
+    end
+
     private
+
+    def validate_table(table)
+      first_row = table.headers
+      first_row[0] == 'id' &&
+        first_row[1] == 'domain' &&
+        first_row[2] == 'status' &&
+        first_row[3] == 'uuid' &&
+        first_row[4] == 'created_at' &&
+        first_row[5] == 'registration_code' &&
+        first_row[6] == 'registration_deadline' &&
+        first_row[7] == 'platform'
+    end
 
     def search_params
       search_params_copy = params.dup

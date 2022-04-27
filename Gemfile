@@ -56,3 +56,15 @@ group :test do
   gem 'webdrivers'
   gem 'webmock'
 end
+
+# frontend
+gem "hotwire-rails", "~> 0.1.3"
+# Use Redis for Action Cable
+
+gem 'redis', '~> 4.0'
+
+# For search
+gem 'pg_search'
+
+# For pagination
+gem "pagy", "~> 5.5"

@@ -38,6 +38,10 @@
                                 <%= t('auctions.ends_at') %>
                                 <%= order_buttons('participant_auction_decorators.ends_at') %>
                             </th>
+                            <th>
+                                <%= t('auctions.auction_type') %>
+                                <%= order_buttons('participant_auction_decorators.platform') %>
+                            </th>
                             <th class="auctions-table-cell-name-no-mobile">
                                 <%= t('auctions.your_current_price') %>
                                 <%= order_buttons('participant_auction_decorators.users_offer_cents') %>
@@ -55,19 +59,34 @@
                                     <% end %>
                                 </td>
                                 <td><span class="auctions-table-mobile-infotainment"><%= t('auctions.ends_at') %> </span><%= I18n.l(auction.ends_at) %></td>
-                                <td><span class="auctions-table-mobile-infotainment"><%= t('auctions.your_current_price') %>: </span><%= auction.users_price %></td>
-                                <td class="center aligned">
-                                    <%- if auction.users_offer_uuid %>
-                                        <%= link_to t('auctions.edit_your_offer'),
-                                         edit_offer_path(auction.users_offer_uuid),
-                                         class: "ui button blue" %>
-                                         <%= link_to t('auctions.delete_your_offer'), 
-                                        offer_path(auction.users_offer_uuid),
-                                        method: :delete, data: { confirm: t(:are_you_sure) }, class: "ui button red "%>
+                                <td><span class="auctions-table-mobile-infotainment"><%= t('auctions.auction_type') %> </span><%= auction.platform %></td>
+                                <td><span class="auctions-table-mobile-infotainment">
+                                    <% if auction.platform == 'blind' || auction.platform.nil? %>
+                                        <%= t('auctions.your_current_price') %>: </span><%= auction.users_price %>
                                     <% else %>
-                                        <%= link_to t('auctions.submit_offer'),
-                                         new_auction_offer_path(auction_uuid: auction.uuid),
-                                         class: "ui button secondary" %>
+                                        <%= t('auctions.your_current_price') %>:</span>
+                                        <% auction_presenter = EnglishBidsPresenter.new(auction) %>
+                                        <%= auction_presenter.maximum_bids %>
+                                    <% end %>
+                                </td>
+                                <td class="center aligned">
+                                    <% if auction.platform == 'blind' || auction.platform.nil? %>
+                                        <%- if auction.users_offer_uuid %>
+                                            <%= link_to t('auctions.edit_your_offer'),
+                                            edit_offer_path(auction.users_offer_uuid),
+                                            class: "ui button blue" %>
+                                            <%= link_to t('auctions.delete_your_offer'), 
+                                            offer_path(auction.users_offer_uuid),
+                                            method: :delete, data: { confirm: t(:are_you_sure) }, class: "ui button red "%>
+                                        <% else %>
+                                            <%= link_to t('auctions.submit_offer'),
+                                            new_auction_offer_path(auction_uuid: auction.uuid),
+                                            class: "ui button secondary" %>
+                                        <% end %>
+                                    <% else %>
+                                            <%= link_to t('auctions.new_bind'),
+                                            new_auction_offer_path(auction_uuid: auction.uuid),
+                                            class: "ui button primary" %>
                                     <% end %>
                                 </td>
                             </tr>

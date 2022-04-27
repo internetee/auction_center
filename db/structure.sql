@@ -886,6 +886,7 @@ CREATE TABLE public.auctions (
     min_bids_step numeric,
     slipping_end integer,
     initial_ends_at timestamp without time zone,
+
     CONSTRAINT starts_at_earlier_than_ends_at CHECK ((starts_at < ends_at))
 );
 
@@ -1711,6 +1712,7 @@ ALTER TABLE ONLY public.invoices ALTER COLUMN id SET DEFAULT nextval('public.inv
 
 
 --
+-- Name: invoices number; Type: DEFAULT; Schema: public; Owner: -
 -- Name: invoices number_old; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2818,6 +2820,5 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220527064738'),
 ('20220601052131'),
 ('20220606110658'),
-('20220617123124');
-
-
+('20220617123124'),
+('20220419064621');

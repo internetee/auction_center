@@ -1,8 +1,10 @@
 class Auction < ApplicationRecord
+  include PgSearch
+
   after_create :find_auction_turns
   validates :domain_name, presence: true
-  validates :ends_at, presence: true
-  validates :starts_at, presence: true
+  # validates :ends_at, presence: true
+  # validates :starts_at, presence: true
 
   validate :does_not_overlap
   validate :ends_at_later_than_starts_at
@@ -10,6 +12,15 @@ class Auction < ApplicationRecord
 
   has_many :offers, dependent: :delete_all
   has_one :result, required: false, dependent: :destroy
+
+  enum platform: %i[blind english]
+
+  pg_search_scope :search_by_domain_name, against: [:domain_name],
+  using: {
+    tsearch: {
+      prefix: true
+    }
+  }
 
   scope :active, -> { where('starts_at <= ? AND ends_at >= ?', Time.now.utc, Time.now.utc) }
   scope :without_result, lambda {
@@ -22,6 +33,11 @@ class Auction < ApplicationRecord
 
   scope :without_offers, -> { includes(:offers).where(offers: { auction_id: nil }) }
   scope :with_offers, -> { includes(:offers).where.not(offers: { auction_id: nil }) }
+  scope :with_domain_name, ->(domain_name) { search_by_domain_name(domain_name) if domain_name.present? }
+  scope :with_type, ->(type) { where(platform: type) if type.present? }
+  scope :with_starts_at, ->(starts_at) { where("starts_at >= ?", starts_at.to_date.beginning_of_day) if starts_at.present? }
+  scope :with_ends_at, ->(ends_at) { where("ends_at <= ?", ends_at.to_date.end_of_day) if ends_at.present? }
+  scope :with_starts_at_nil, ->(state) { where(starts_at: nil) if state.present? }
 
   delegate :count, to: :offers, prefix: true
   delegate :size, to: :offers, prefix: true

@@ -1,6 +1,7 @@
 require_relative 'boot'
 
 require 'rails/all'
+require 'csv'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -13,6 +14,8 @@ module AuctionCenter
     config.autoloader = :classic
 
     config.active_model.i18n_customize_full_message = true
+
+    config.autoload_paths += Dir[Rails.root.join('app', 'presenters', '**/')]
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers

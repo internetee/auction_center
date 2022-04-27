@@ -14,7 +14,7 @@ module Registry
 
       body_as_json = JSON.parse(body_as_string, symbolize_names: true)
       body_as_json.each do |item|
-        create_auction_from_api(item[:domain], item[:id])
+        create_auction_from_api(item[:domain], item[:id], item[:platform])
         send_wishlist_notifications(item[:domain], item[:id])
       end
     end
@@ -44,10 +44,19 @@ module Registry
       end
     end
 
-    def create_auction_from_api(domain_name, remote_id)
+    def create_auction_from_api(domain_name, remote_id, platform)
+      auction_type = :english
+      auction_type = :blind if platform.nil? || platform == 'auto'
+
       Auction.find_or_initialize_by(domain_name: domain_name, remote_id: remote_id) do |auction|
-        auction.starts_at = auction_starts_at
-        auction.ends_at = auction_ends_at
+        auction.platform = auction_type
+        auction.starts_at = nil
+        auction.ends_at = nil
+
+        if auction_type == :blind
+          auction.starts_at = auction_starts_at
+          auction.ends_at = auction_ends_at
+        end
         auction.save!
       end
     end

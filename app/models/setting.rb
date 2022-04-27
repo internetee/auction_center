@@ -15,7 +15,7 @@ class Setting < ApplicationRecord
   }.with_indifferent_access.freeze
 
   def self.default_scope
-    Rails.cache.fetch(['cached_', name.underscore.to_s, 's']) { all.load }
+    # Rails.cache.fetch(['cached_', name.underscore.to_s, 's']) { all.load }
   end
 
   after_commit :clear_cache

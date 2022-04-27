@@ -1,0 +1,22 @@
+                            
+<%# name_frame_id = dom_id(auction) %>
+<tr class="auctions-table-row" data-turbo-frame="auction_<%= auction.id %>">
+  <td class="text-center">
+    <%= f.check_box :auction_ids, { multiple: true }, auction.id, nil %>
+  </td>
+  <td class="auction-domain-name monospace">
+    <%= link_to(admin_auction_path(auction.id), target: '_top') do %>
+      <%= domain_name_with_embedded_colors(auction.domain_name) %>
+    <% end %>
+  </td>
+  <td><%= auction.starts_at %></td>
+  <td><%= auction.ends_at %></td>
+  <td class="auction-highest-offer"><%= auction.highest_offer_id.present? ? auction.highest_price : t('.no_price')%></td>
+  <td class="auction-offers-count"><%= auction.number_of_offers %></td>
+  <td class="auction-turns-count"><%= auction.turns_count %></td>
+  <td class="auction-turns-count"><%= auction.starting_price %></td>
+  <td class="auction-turns-count"><%= auction.min_bids_step %></td>
+  <td class="auction-turns-count"><%= auction.slipping_end %></td>
+  <td class="auction-platform"><%= auction.platform %></td>
+  <td></td>
+</tr>

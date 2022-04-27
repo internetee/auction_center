@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "name": "auction_center",
   "private": true,
   "scripts": {
@@ -59,4 +60,59 @@
     "webpack-cli": "^4.8.0",
     "webpack-dev-server": "^4.3.1"
   }
+=======
+   "name": "auction_center",
+   "private": true,
+   "scripts": {
+      "test": "NODE_ENV=test karma start"
+   },
+   "dependencies": {
+      "@hotwired/stimulus": "^3.0.1",
+      "@hotwired/turbo-rails": "^7.1.1",
+      "@rails/webpacker": "^5.4.2",
+      "ansi-html-community": "0.0.8",
+      "browserslist": "^4.16.8",
+      "chartkick": "^4.0.5",
+      "css-what": "^6.0.0",
+      "glob-parent": "^6.0.1",
+      "highcharts": "^10.0.0",
+      "is-svg": "^4.2.2",
+      "jquery": "^3.3.1",
+      "less": "3.13.1",
+      "less-loader": "^7.3.0",
+      "libphonenumber-js": "^1.9.25",
+      "normalize-url": "^7.0.1",
+      "optimize-css-assets-webpack-plugin": "^6.0.1",
+      "postcss": "^8.3.6",
+      "punycode": "^2.1.1",
+      "rails-ujs": "^5.2.6",
+      "resolve-url-loader": "^5.0.0",
+      "sass-loader": "^10.0.1",
+      "ssri": "^9.0.0",
+      "terser-webpack-plugin": "^5.1.4",
+      "turbolinks": "^5.2.0",
+      "typeface-raleway": "^1.1.13",
+      "ws": "^8.2.1"
+   },
+   "version": "0.0.1",
+   "description": "Domain auction software",
+   "main": "index.js",
+   "repository": "git@github.com:internetee/auction_center",
+   "license": "MIT/X11",
+   "contributors": [
+      "Maciej Szlosarczyk <maciej.szlosarczyk@eestiinternet.ee>",
+      "Artur Beljajev <artur.beljajev@eestiinternet.ee>"
+   ],
+   "devDependencies": {
+      "karma": "^6.3.4",
+      "karma-chrome-launcher": "^3.0.0",
+      "karma-coverage": "^2.0.3",
+      "karma-jquery": "^0.2.3",
+      "karma-qunit": "^4.0.0",
+      "karma-webpack": "^4.0.2",
+      "qunit": "^2.16.0",
+      "webpack": "^4.0.0",
+      "webpack-dev-server": "^4.0.0"
+   }
+>>>>>>> added filter, search in admin panel, hotwire, pagination, update sorting
 }

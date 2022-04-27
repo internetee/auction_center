@@ -31,7 +31,12 @@ Rails.application.routes.draw do
   end
 
   namespace :admin, constraints: Constraints::Administrator.new do
-    resources :auctions, except: disallowed_auction_actions, concerns: %i[auditable searchable]
+    resources :auctions, except: disallowed_auction_actions, concerns: %i[auditable searchable] do
+      collection do
+        post 'bulk_starts_at', to: 'auctions#bulk_starts_at', as: 'bulk_starts_at'
+        post 'upload_spreadsheet', to: 'auctions#upload_spreadsheet', as: :upload_spreadsheet
+      end
+    end
 
     resources :bans, except: %i[new show edit update], concerns: %i[auditable searchable]
     resources :statistics, only: :index

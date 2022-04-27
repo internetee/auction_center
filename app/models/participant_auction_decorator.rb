@@ -28,6 +28,10 @@ class ParticipantAuctionDecorator
     Money.new(auction.users_offer_cents, Setting.find_by(code: 'auction_currency').retrieve)
   end
 
+  def maximum_bids
+    auction.offers.maximum(:cents)
+  end
+
   delegate :users_offer_id, to: :auction
   delegate :users_offer_uuid, to: :auction
   delegate :id, to: :auction
@@ -37,6 +41,10 @@ class ParticipantAuctionDecorator
   delegate :ends_at, to: :auction
   delegate :starts_at, to: :auction
   delegate :in_progress?, to: :auction
+  delegate :platform, to: :auction
+  delegate :starting_price, to: :auction
+  delegate :min_bids_step, to: :auction
+  delegate :slipping_end, to: :auction
 
   # A simple subquery suffices here.
   def self.with_user_offers_query(user_id)

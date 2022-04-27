@@ -5,10 +5,15 @@ et:
     ends_at: 'Lõpp'
     finished: "Oksjon on lõppenud"
     highest_price: "Kõrgeim hind"
+    auction_type: "Oksjoni tüüp"
     offers: "Pakkumused"
     offer_actions: "Pakkumistegevused"
     your_current_price: "Sinu pakkumus"
     cancel_bid: "Pakkumise tühistamine"
+    starting_price: "Alghind eurodes"
+    min_bids_step: "Minimaalne panuse samm eurod"
+    slipping_end: "Pikenev lõpp minutites"
+
 
     still_in_progress: "Töötlemisel"
 

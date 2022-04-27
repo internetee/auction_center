@@ -40,6 +40,10 @@ class AdminAuctionDecorator
   delegate :ends_at, to: :auction
   delegate :starts_at, to: :auction
   delegate :turns_count, to: :auction
+  delegate :platform, to: :auction
+  delegate :starting_price, to: :auction
+  delegate :min_bids_step, to: :auction
+  delegate :slipping_end, to: :auction
 
   # Use window functions to find the winning offer, and then append those fields to
   # the auction dataset. It is considerably slower than original query, but does not contain any
@@ -51,6 +55,19 @@ class AdminAuctionDecorator
   # auction = ExtendedAuction.with_highest_offers.first
   # auction.highest_offer_uuid => "f4c8bb6b-00f2-4bb0-a097-4a5265fd1c9c"
   # auction.highest_offer_id => 156
+
+  # def self.search_by_domain_name(domain_name)
+  #   Auction.with_domain_name(domain_name) if domain_name.present?
+  # end
+
+  # def self.search(params={})
+  #   self.search_by_domain_name(params)
+  # end
+
+  def self.default_order_params
+    { 'auctions.starts_at' => 'desc' }
+  end
+
   def self.with_highest_offers_query
     sql = <<~SQL
       (WITH offers_subquery AS (
