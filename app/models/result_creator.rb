@@ -36,7 +36,7 @@ class ResultCreator
   delegate :present?, to: :auction, prefix: true
 
   def auction_not_finished?
-    !auction.finished?
+    !auction.finished? && auction.blind?
   end
 
   def result_already_present?

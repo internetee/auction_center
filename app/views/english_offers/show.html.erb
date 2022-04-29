@@ -1,0 +1,46 @@
+<% content_for :hero do %>
+    <div class="hero green">
+        <h1><%= t('.title') %></h1>
+        <div class="monospace"><%= @offer.auction.domain_name %></div>
+    </div>
+<% end %>
+
+<div class="u-container">
+    <div class="margin-block">
+        <div class="body">
+            <table class="ui table very basic padded">
+                <tbody>
+                    <tr>
+                        <td><strong><%= t('auctions.domain_name') %></strong></td>
+                        <td class="monospace"><%= @offer.auction.domain_name %></td>
+                    </tr>
+
+                    <tr>
+                        <td><strong><%= t('auctions.ends_at') %></strong></td>
+                        <td><%= I18n.l(@offer.auction.ends_at) %></td>
+                    </tr>
+                    <tr>
+                        <td><strong><%= t('offers.price') %></strong></td>
+                        <td><%= t('offers.price_in_currency', price: @offer.price) %></td>
+                    </tr>
+                    <tr>
+                        <td><strong><%= t('offers.total') %></strong></td>
+                        <td><%= t('offers.price_in_currency', price: @offer.total) %></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="buttons">
+
+                <%- if @offer.can_be_modified?  %>
+                    <%= link_to t(:edit), edit_english_offer_path(@offer.uuid), class: "ui button primary" %>
+                    <%= link_to t(:delete), english_offer_path(@offer.uuid),
+                    method: :delete, data: { confirm: t(:are_you_sure) },
+                    remote: true, class: "ui button red" %>
+                <% end %>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%= render 'auctions/bottom_grid' %>

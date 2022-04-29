@@ -1,3 +1,5 @@
+<%= turbo_stream_from "auctions" %>
+
 <% content_for :hero do %>
     <div class="hero green">
         <h1><%= t('.title') %></h1>
@@ -50,53 +52,16 @@
                         </tr>
                     </thead>
 
-                    <tbody id="auctions-table-body">
+                    <tbody id="auctions-table-body" id="bids">
                         <% @auctions.each do |auction| %>
-                            <tr class="auctions-table-row">
-                                <td class="auction-domain-name monospace">
-                                    <%= link_to auction_path(auction.uuid) do %>
-                                        <%= domain_name_with_embedded_colors(auction.domain_name) %>
-                                    <% end %>
-                                </td>
-                                <td><span class="auctions-table-mobile-infotainment"><%= t('auctions.ends_at') %> </span><%= I18n.l(auction.ends_at) %></td>
-                                <td><span class="auctions-table-mobile-infotainment"><%= t('auctions.auction_type') %> </span><%= auction.platform %></td>
-                                <td><span class="auctions-table-mobile-infotainment">
-                                    <% if auction.platform == 'blind' || auction.platform.nil? %>
-                                        <%= t('auctions.your_current_price') %>: </span><%= auction.users_price %>
-                                    <% else %>
-                                        <%= t('auctions.your_current_price') %>:</span>
-                                        <% auction_presenter = EnglishBidsPresenter.new(auction) %>
-                                        <%= auction_presenter.maximum_bids %>
-                                    <% end %>
-                                </td>
-                                <td class="center aligned">
-                                    <% if auction.platform == 'blind' || auction.platform.nil? %>
-                                        <%- if auction.users_offer_uuid %>
-                                            <%= link_to t('auctions.edit_your_offer'),
-                                            edit_offer_path(auction.users_offer_uuid),
-                                            class: "ui button blue" %>
-                                            <%= link_to t('auctions.delete_your_offer'), 
-                                            offer_path(auction.users_offer_uuid),
-                                            method: :delete, data: { confirm: t(:are_you_sure) }, class: "ui button red "%>
-                                        <% else %>
-                                            <%= link_to t('auctions.submit_offer'),
-                                            new_auction_offer_path(auction_uuid: auction.uuid),
-                                            class: "ui button secondary" %>
-                                        <% end %>
-                                    <% else %>
-                                            <%= link_to t('auctions.new_bind'),
-                                            new_auction_offer_path(auction_uuid: auction.uuid),
-                                            class: "ui button primary" %>
-                                    <% end %>
-                                </td>
-                            </tr>
+                            <%= render partial: 'auction', locals: { auction: auction } %>
                         <% end %>
                     </tbody>
                 </table>
             </div>
 
             <div class="column">
-                <%= paginate @collection %>
+                <%#= paginate @collection %>
             </div>
         </div>
     </div>

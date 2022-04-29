@@ -1,0 +1,65 @@
+<% content_for :hero do %>
+    <div class="hero green">
+        <h1><%= t(:my_offers) %></h1>
+    </div>
+<% end %>
+
+<div class="u-container">
+    <div class="margin-block">
+        <div class="grid one column">
+            <table class="ui table selectable celled center aligned" id="my-offers-table">
+                <thead>
+                    <tr>
+                        <th scope="col"><%= t('auctions.domain_name') %></th>
+                        <th scope="col"><%= t('.your_last_offer') %></th>
+                        <th scope="col"><%= t('offers.total') %></th>
+                        <th scope="col"><%= t('auctions.ends_at') %></th>
+                        <th scope="col"><%= t('result_name') %></th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody id="offers-table-body">
+                    <% @offers.each do |offer| %>
+                        <tr class="offers-table-row">
+                            <td class="monospace"><%= link_to offer.auction.domain_name, english_offer_path(offer.uuid) %></td>
+                            <td><%= t('offers.price_in_currency', price: offer.price) %></td>
+                            <td><%= t('offers.price_in_currency', price: offer.total) %></td>
+                            <td>
+                                <%- if offer.auction.finished? %>
+                                    <%= t('auctions.finished') %>
+                                <% else %>
+                                    <%= I18n.l(offer.auction.ends_at) %>
+                                <% end %>
+                            </td>
+                            <td>
+                                <%- if offer.auction.finished? %>
+                                    <%- if offer.result %>
+                                        <%= t('.you_won') %>
+                                    <%- elsif offer.auction&.result && !offer.result %>
+                                        <%= t('.you_lost') %>
+                                    <% end %>
+                                <% else %>
+                                    <%= t('auctions.still_in_progress') %>
+                                <% end %>
+                            </td>
+                            <td>
+                                <%- if offer.result %>
+                                    <%= link_to t('.claim_your_domain'), result_path(offer.result.uuid) %>
+                                <%- else %>
+                                    <%= link_to t('auctions.delete_your_offer'), 
+                                        english_offer_path(offer.uuid),
+                                        method: :delete, data: { confirm: t(:are_you_sure) }, class: "ui button red"%>
+                                <% end %>
+                            </td>
+                        </tr>
+                    <% end %>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="column">
+            <%= paginate @offers %>
+        </div>
+    </div>
+</div>

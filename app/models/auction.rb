@@ -1,5 +1,5 @@
 class Auction < ApplicationRecord
-  include PgSearch
+  include PgSearch::Model
 
   after_create :find_auction_turns
   validates :domain_name, presence: true
@@ -38,6 +38,7 @@ class Auction < ApplicationRecord
   scope :with_starts_at, ->(starts_at) { where("starts_at >= ?", starts_at.to_date.beginning_of_day) if starts_at.present? }
   scope :with_ends_at, ->(ends_at) { where("ends_at <= ?", ends_at.to_date.end_of_day) if ends_at.present? }
   scope :with_starts_at_nil, ->(state) { where(starts_at: nil) if state.present? }
+  scope :english, -> { where(platform: :english) }
 
   delegate :count, to: :offers, prefix: true
   delegate :size, to: :offers, prefix: true
@@ -143,5 +144,67 @@ class Auction < ApplicationRecord
     result_statuses.reduce(0) do |sum, status|
       statuses_to_drop_count.include?(status) ? 1 : sum + 1
     end
+  end
+
+  def users_price
+    Money.new(users_offer_cents, Setting.find_by(code: 'auction_currency').retrieve)
+  end
+
+  def maximum_bids
+    Money.new(offers.maximum(:cents), Setting.find_by(code: 'auction_currency').retrieve)
+  end
+
+  def english_auction_slippiage_ends?
+    return false if offers.empty? || blind?
+
+    offer = offers.order(updated_at: :desc).last
+    difference = Time.zone.now.to_time - offer.updated_at.to_time
+
+    (difference / 60).to_i > slipping_end.to_i
+  end
+
+  def self.without_result_and_slipping_left
+    slipping_domain = []
+    Auction.english.each do |auction|
+      slipping_domain << auction if auction.english_auction_slippiage_ends?
+    end
+
+    without_result + slipping_domain
+  end
+
+  def self.active_filters
+    auction_cellect = []
+    active.each do |a|
+      if a.slipping_end.nil? && !a.english?
+        auction_cellect << a
+      else
+        auction_cellect << a unless a.english_auction_slippiage_ends?
+      end
+    end
+
+    auction_cellect
+  end
+
+  def self.with_user_offers(user_id)
+    Auction.from(with_user_offers_query(user_id))
+  end
+
+  def self.with_user_offers_query(user_id)
+    sql = <<~SQL
+      (WITH offers_subquery AS (
+          SELECT *
+          FROM offers
+          WHERE user_id = ?
+      )
+      SELECT DISTINCT
+          auctions.*,
+          offers_subquery.cents AS users_offer_cents,
+          offers_subquery.id AS users_offer_id,
+          offers_subquery.uuid AS users_offer_uuid
+      FROM auctions
+      LEFT JOIN offers_subquery on auctions.id = offers_subquery.auction_id) AS auctions
+    SQL
+
+    ActiveRecord::Base.sanitize_sql([sql, user_id])
   end
 end

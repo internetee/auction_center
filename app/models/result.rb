@@ -59,7 +59,7 @@ class Result < ApplicationRecord
     auction = Auction.find_by(id: auction_id)
 
     raise(Errors::AuctionNotFound, auction_id) unless auction
-    raise(Errors::AuctionNotFinished, auction_id) unless auction.finished?
+    # raise(Errors::AuctionNotFinished, auction_id) unless auction.finished? && auction.blind?
 
     ResultCreator.new(auction_id).call
   end

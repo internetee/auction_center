@@ -34,7 +34,6 @@ Rails.application.routes.draw do
     resources :auctions, except: disallowed_auction_actions, concerns: %i[auditable searchable] do
       collection do
         post 'bulk_starts_at', to: 'auctions#bulk_starts_at', as: 'bulk_starts_at'
-        post 'upload_spreadsheet', to: 'auctions#upload_spreadsheet', as: :upload_spreadsheet
       end
     end
 
@@ -66,6 +65,7 @@ Rails.application.routes.draw do
 
   resources :auctions, only: %i[index show], param: :uuid, concerns: [:searchable] do
     resources :offers, only: %i[new show create edit update destroy], shallow: true, param: :uuid
+    resources :english_offers, only: %i[new show create edit update destroy], shallow: true, param: :uuid
   end
   match '*auctions', controller: 'auctions', action: 'cors_preflight_check', via: [:options]
 

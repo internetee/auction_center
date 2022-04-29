@@ -76,27 +76,6 @@ module Admin
       end
     end
 
-    def upload_spreadsheet
-      filename = params[:file]
-      table = CSV.parse(File.read(filename), headers: true)
-
-      if validate_table(table)
-        table.each do |row|
-          record = row.to_h
-
-          next if Auction.exists?(domain_name: record['domain'])
-
-          auction = Auction.new(domain_name: record['domain'], uuid: record['uuid'], platform: 'english')
-          auction.save!
-        end
-        flash[:notice] = "Domains added"
-        redirect_to admin_auctions_path
-      else
-        flash[:alert] = "Invalid CSV format."
-        redirect_to admin_auctions_path
-      end
-    end
-
     def bulk_starts_at
       auctions_data = params[:auction_elements]
 

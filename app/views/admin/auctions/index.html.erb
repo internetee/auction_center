@@ -44,7 +44,7 @@
     </div>
   </div>
 
-    <div class="three fields" style="align-items: center">
+    <div class="two fields" style="align-items: center">
         <div class="field">
             <div class="ui checkbox">
             <%= form.check_box :starts_at_nil, { }, 1, nil %>
@@ -53,16 +53,6 @@
         </div>
 <% end %>
 
-            <%= form_with url: upload_spreadsheet_admin_auctions_path, data: { controller: 'submitter'} do |f| %>
-                <div class="field">
-                <label class = ''></label>
-                    <%= f.file_field :file,
-                                    accept: ".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel",
-                                    direct_upload: true,
-                                    data: { action: "change->submitter#uploadFile" },
-                                    class: 'ui primary button' %>
-                </div>
-            <% end %>
             <div class="field">
                 <%= link_to 'Clear', request.path, class: 'ui primary button' %>
             </div>

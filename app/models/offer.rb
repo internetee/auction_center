@@ -1,4 +1,6 @@
 class Offer < ApplicationRecord
+  include ActionView::RecordIdentifier
+
   belongs_to :user, optional: true
   belongs_to :auction, optional: false
   belongs_to :billing_profile, optional: false
@@ -7,9 +9,17 @@ class Offer < ApplicationRecord
 
   validates :cents, numericality: { only_integer: true, greater_than: 0 }
   validate :auction_must_be_active
-  validate :must_be_higher_than_minimum_offer
+  validate :must_be_higher_than_minimum_offer, if: proc { |offer| offer.auction.platform == 'blind' || offer.auction.platform.nil? }
 
   DEFAULT_PRICE_VALUE = 1
+
+  after_create_commit ->{
+    broadcast_prepend_to 'auctions', target: 'bids', partial: 'auctions/auction', locals: { auction: auction }
+  }
+
+  after_update_commit ->{
+    broadcast_replace_to 'auctions', target: "#{dom_id(self.auction)}", partial: 'auctions/auction', locals: { auction: auction }
+  }
 
   def auction_must_be_active
     active_auction = Auction.active.find_by(id: auction_id)

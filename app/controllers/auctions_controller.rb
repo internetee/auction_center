@@ -7,31 +7,9 @@ class AuctionsController < ApplicationController
   # GET /auctions
   def index
     set_cors_header
-
-    unpaginated_auctions = ParticipantAuctionDecorator.with_user_offers(current_user&.id)
-                                                      .active
-                                                      .order(orderable_array)
-
-    respond_to do |format|
-      format.html do
-        @collection = unpaginated_auctions.page(params[:page])
-        @auctions = @collection.map { |auction| ParticipantAuctionDecorator.new(auction) }
-      end
-      format.json { @auctions = unpaginated_auctions }
-    end
-  end
-
-  # GET /auctions/search
-  def search
-    domain_name = search_params[:domain_name]
-
-    collection = ParticipantAuctionDecorator.with_user_offers(current_user&.id)
-                                            .where('domain_name ILIKE ?', "#{domain_name}%")
-                                            .order(orderable_array)
-                                            .accessible_by(current_ability)
-                                            .page(1)
-
-    @auctions = collection.map { |auction| ParticipantAuctionDecorator.new(auction) }
+    @auctions = Auction
+                .with_user_offers(current_user&.id)
+                .active_filters
   end
 
   # OPTIONS /auctions
