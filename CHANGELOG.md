@@ -1,3 +1,36 @@
+13.04.2022
+* Update dependency css-what to v6 [#862](https://github.com/internetee/auction_center/pull/862)
+* Update dependency resolve-url-loader to v5 [#867](https://github.com/internetee/auction_center/pull/867)
+* Update actions/checkout action to v3 [#885](https://github.com/internetee/auction_center/pull/885)
+* Update actions/download-artifact action to v3 [#886](https://github.com/internetee/auction_center/pull/886)
+* Update actions/upload-artifact action to v3 [#887](https://github.com/internetee/auction_center/pull/887)
+* Update dependency highcharts to v10 [#888](https://github.com/internetee/auction_center/pull/888)
+* Bump puma to 5.6.4 [#891](https://github.com/internetee/auction_center/pull/891)
+* Update dependency ssri to v9 [#894](https://github.com/internetee/auction_center/pull/894)
+* Bump minimist to 1.2.6 [#895](https://github.com/internetee/auction_center/pull/895)
+* Bump nokogiri to 1.13.4 [#896](https://github.com/internetee/auction_center/pull/896)
+* Bump ansi-regex [#897](https://github.com/internetee/auction_center/pull/897)
+* Update dependency ruby to v3.1.2 [#898](https://github.com/internetee/auction_center/pull/898)
+
+12.02.2022
+* Update dependency puma to ~> 5.6.0 [#872](https://github.com/internetee/auction_center/pull/877)
+
+11.02.2022
+* Update dependency karma to v6.3.14 [#875](https://github.com/internetee/auction_center/pull/875)
+
+27.01.2022
+* Bump follow-redirects to 1.14.7 [#863](https://github.com/internetee/auction_center/pull/863)
+* Bump engine.io to 4.1.2 [#864](https://github.com/internetee/auction_center/pull/864)
+* Bump nanoid to 3.2.0 [#869](https://github.com/internetee/auction_center/pull/869)
+* Bump log4js to 6.4.1 [#872](https://github.com/internetee/auction_center/pull/872)
+
+17.01.2022
+* Update auction namespace [#865](https://github.com/internetee/auction_center/pull/865)
+* Remove elastic-APM gem [#866](https://github.com/internetee/auction_center/pull/866)
+
+16.12.2021
+* Update upload-artifact action to 2.3.1 [#860](https://github.com/internetee/auction_center/pull/860)
+
 25.11.2021
 * unsubscribe link to daily auction broadcast emails [#845](https://github.com/internetee/auction_center/issues/845)
 
