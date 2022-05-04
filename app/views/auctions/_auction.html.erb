@@ -1,6 +1,6 @@
                             
-<% english_auction_presenter = EnglishBidsPresenter.new(auction) %>
 <tr class="auctions-table-row" id="<%= dom_id(auction) %>">
+<% english_auction_presenter = EnglishBidsPresenter.new(auction) %>
   <td class="auction-domain-name monospace">
     <%= link_to auction_path(auction.uuid) do %>
       <%= domain_name_with_embedded_colors(auction.domain_name) %>
@@ -31,11 +31,10 @@
       <%= link_to t('auctions.submit_offer'), new_auction_offer_path(auction_uuid: auction.uuid), class: "ui button secondary" %>
     <% end %>
   <% else %>
-    <% auction_decorator = ParticipantAuctionDecorator.new(auction) %>
-    <%- if auction_decorator.users_offer_uuid %>
-      <%= link_to "Bid!", edit_english_offer_path(auction_decorator.users_offer_uuid), class: "ui button blue" %>
+    <%- if auction.users_offer_uuid %>
+      <%= link_to "Bid!", edit_english_offer_path(auction.users_offer_uuid), class: "ui button blue" %>
     <% else %>
-      <%= link_to "Bid!", new_auction_english_offer_path(auction_uuid: auction_decorator.uuid), class: "ui button blue" %>
+      <%= link_to "Bid!", new_auction_english_offer_path(auction_uuid: auction.uuid), class: "ui button blue" %>
     <% end %>
   <% end %>
 </td>

@@ -27,41 +27,20 @@ class EnglishOffersController < ApplicationController
 
     unless check_first_bid_for_english_auction(create_params, auction)
       flash[:alert] = "First bid should be more that starter price #{auction.starting_price} and more that minum bid step #{auction.min_bids_step}"
-      redirect_to auctions_path and return
+      # redirect_to auctions_path and return
+      redirect_to new_auction_english_offer_path(auction_uuid: auction.uuid) and return
     end
 
     @offer = Offer.new(create_params)
     authorize! :manage, @offer
 
     if create_predicate
-      flash[:notice] = t('.created')
+      flash[:notice] = 'Bid created'
       redirect_to edit_english_offer_path(@offer.uuid)
     else
       flash[:alert] = 'Somethings goes wrong.'
       redirect_to auctions_path
     end
-    # auction = Auction.find_by!(uuid: params[:auction_uuid])
-    # existing_offer = auction.offer_from_user(current_user.id)
-
-    # @offer = Offer.new(create_params)
-    # authorize! :manage, @offer
-
-    # respond_to do |format|
-    #   if existing_offer
-    #     format.html do
-    #       redirect_to offer_path(existing_offer.uuid), notice: t('offers.already_exists')
-    #     end
-    #   elsif check_first_bid_for_english_auction(create_params)
-    #     format.html { redirect_to edit_offer_path(@offer.uuid), alert: "You bid can't be less than current bid" }
-    #     format.json { render json: @offer.errors, status: :unprocessable_entity }
-    #   elsif create_predicate
-    #     format.html { redirect_to offer_path(@offer.uuid), notice: t('.created') }
-    #     format.json { render :show, status: :created, location: @offer }
-    #   else
-    #     format.html { render :new }
-    #     format.json { render json: @offer.errors, status: :unprocessable_entity }
-    #   end
-    # end
   end
 
   # GET /offers
@@ -81,14 +60,20 @@ class EnglishOffersController < ApplicationController
 
   # PUT /offers/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
   def update
-    respond_to do |format|
-      if update_predicate
-        format.html { redirect_to edit_english_offer_path(@offer.uuid), notice: t(:updated) }
-        format.json { render :show, status: :ok, location: @offer }
-      else
-        format.html { render :edit }
-        format.json { render json: @offer.errors, status: :unprocessable_entity }
-      end
+    auction = Auction.with_user_offers(current_user.id).find_by(uuid: @offer.auction.uuid)
+
+    unless check_bids_for_english_auction(create_params, auction)
+      flash[:alert] = "Minimum bid is #{auction.min_bids_step}"
+
+      redirect_to edit_english_offer_path(auction.users_offer_uuid) and return
+    end
+
+    if update_predicate
+      flash[:notice] = 'Bid updated'
+      redirect_to edit_english_offer_path(@offer.uuid)
+    else
+      flash[:alert] = 'Somethings goes wrong.'
+      redirect_to auctions_path
     end
   end
 

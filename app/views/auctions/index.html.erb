@@ -52,11 +52,13 @@
                         </tr>
                     </thead>
 
-                    <tbody id="auctions-table-body" id="bids">
+                    <%# <tbody id="bids"> %>
+                        <%= tag.tbody id: "bids" do %>
                         <% @auctions.each do |auction| %>
                             <%= render partial: 'auction', locals: { auction: auction } %>
                         <% end %>
-                    </tbody>
+                        <% end %>
+                    <%# </tbody> %>
                 </table>
             </div>
 

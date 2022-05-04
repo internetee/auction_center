@@ -22,6 +22,17 @@ class Auction < ApplicationRecord
     }
   }
 
+  after_update_commit ->{
+    broadcast_prepend_to 'auctions',
+                          target: 'bids',
+                          partial: 'auctions/auction',
+                          locals: { auction: Auction.with_user_offers(nil).find_by(uuid: uuid) } }
+
+  after_update_commit ->{
+    broadcast_replace_to 'auctions',
+                          target: 'auction_count',
+                          html: "<strong>#{Auction.active.count}</strong>".html_safe }
+
   scope :active, -> { where('starts_at <= ? AND ends_at >= ?', Time.now.utc, Time.now.utc) }
   scope :without_result, lambda {
     where('ends_at < ? and id NOT IN (SELECT results.auction_id FROM results)', Time.now.utc)

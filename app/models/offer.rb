@@ -14,12 +14,16 @@ class Offer < ApplicationRecord
   DEFAULT_PRICE_VALUE = 1
 
   after_create_commit ->{
-    broadcast_prepend_to 'auctions', target: 'bids', partial: 'auctions/auction', locals: { auction: auction }
-  }
+    broadcast_replace_to 'auctions',
+                          target: 'bids',
+                          partial: 'auctions/auction',
+                          locals: { auction: Auction.with_user_offers(user.id).find_by(uuid: auction.uuid) } }
 
   after_update_commit ->{
-    broadcast_replace_to 'auctions', target: "#{dom_id(self.auction)}", partial: 'auctions/auction', locals: { auction: auction }
-  }
+    broadcast_replace_to 'auctions',
+                          target: "#{dom_id(self.auction)}",
+                          partial: 'auctions/auction',
+                          locals: { auction: Auction.with_user_offers(user.id).find_by(uuid: auction.uuid) } }
 
   def auction_must_be_active
     active_auction = Auction.active.find_by(id: auction_id)
