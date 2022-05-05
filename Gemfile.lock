@@ -85,6 +85,7 @@ GEM
       airbrake-ruby (~> 5.1)
     airbrake-ruby (5.2.0)
       rbtree3 (~> 0.5)
+    amazing_print (1.4.0)
     attr_required (1.0.1)
     bcrypt (3.1.16)
     bindata (2.4.10)
@@ -239,6 +240,10 @@ GEM
     rails-i18n (6.0.0)
       i18n (>= 0.7, < 2)
       railties (>= 6.0.0, < 7)
+    rails_semantic_logger (4.9.0)
+      rack
+      railties (>= 5.1)
+      semantic_logger (~> 4.9)
     railties (6.1.4.1)
       actionpack (= 6.1.4.1)
       activesupport (= 6.1.4.1)
@@ -264,6 +269,8 @@ GEM
     selenium-webdriver (3.142.7)
       childprocess (>= 0.5, < 4.0)
       rubyzip (>= 1.2.2)
+    semantic_logger (4.9.0)
+      concurrent-ruby (~> 1.0)
     semantic_range (3.0.0)
     simplecov (0.17.1)
       docile (~> 1.1)
@@ -336,6 +343,7 @@ PLATFORMS
 
 DEPENDENCIES
   airbrake
+  amazing_print
   bootsnap (>= 1.1.0)
   bullet
   byebug
@@ -361,6 +369,7 @@ DEPENDENCIES
   puma (~> 5.6.4)
   rails (>= 6.0.3.5)
   rails-i18n
+  rails_semantic_logger
   recaptcha
   scenic
   simplecov (~> 0.10, < 0.18)
