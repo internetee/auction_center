@@ -45,7 +45,13 @@ class Auction < ApplicationRecord
   scope :without_offers, -> { includes(:offers).where(offers: { auction_id: nil }) }
   scope :with_offers, -> { includes(:offers).where.not(offers: { auction_id: nil }) }
   scope :with_domain_name, ->(domain_name) { search_by_domain_name(domain_name) if domain_name.present? }
-  scope :with_type, ->(type) { where(platform: type) if type.present? }
+  scope :with_type, ->(type) do
+    if type.present?
+      return where(platform: [type, nil]) if type == "0"
+
+      where(platform: type)
+    end
+  end
   scope :with_starts_at, ->(starts_at) { where("starts_at >= ?", starts_at.to_date.beginning_of_day) if starts_at.present? }
   scope :with_ends_at, ->(ends_at) { where("ends_at <= ?", ends_at.to_date.end_of_day) if ends_at.present? }
   scope :with_starts_at_nil, ->(state) { where(starts_at: nil) if state.present? }

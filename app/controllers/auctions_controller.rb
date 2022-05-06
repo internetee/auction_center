@@ -12,6 +12,20 @@ class AuctionsController < ApplicationController
                 .active_filters
   end
 
+  # GET /auctions/search
+  def search
+    domain_name = search_params[:domain_name]
+
+    collection = ParticipantAuctionDecorator.with_user_offers(current_user&.id)
+                                            .where('domain_name ILIKE ?', "#{domain_name}%")
+                                            .order(orderable_array)
+                                            .accessible_by(current_ability)
+                                            .page(1)
+                                            .active_filters
+
+    @auctions = collection.map { |auction| ParticipantAuctionDecorator.new(auction) }
+  end
+
   # OPTIONS /auctions
   def cors_preflight_check
     set_access_control_headers

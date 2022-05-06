@@ -9,7 +9,8 @@ class EnglishBidsPresenter
 
   def maximum_bids
     return 'Bad auction type' if auction.platform == 'blind'
-    return auction.starting_price if auction.offers.empty?
+    # return auction.starting_price if auction.offers.empty?
+    return 0.0 if auction.offers.empty?
 
     Money.new(auction.offers.maximum(:cents), Setting.find_by(code: 'auction_currency').retrieve)
   end

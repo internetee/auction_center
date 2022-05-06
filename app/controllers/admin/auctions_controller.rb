@@ -82,7 +82,7 @@ module Admin
       skipped_auctions = []
 
       @auctions.each do |auction|
-        unless auction.starts_at.nil?
+        if !auction.starts_at.nil? && auction.starts_at < Time.zone.now || !auction.english?
           skipped_auctions << auction.domain_name
 
           next
@@ -101,7 +101,7 @@ module Admin
         flash[:notice] = 'New value was set'
         redirect_to admin_auctions_path
       else
-        flash[:notice] = "These auctions were skipped because they are already in game: #{skipped_auctions.join(' ')}"
+        flash[:notice] = "These auctions were skipped: #{skipped_auctions.join(' ')}"
         redirect_to admin_auctions_path
       end
     end
