@@ -8,7 +8,7 @@ module Admin
                        .order(orderable_array(default_order_params))
                        .page(params[:page])
 
-      @auctions_needing_results = Auction.without_result
+      @auctions_needing_results = Auction.without_result_and_slipping_left
     end
 
     # POST /admin/results

@@ -7,6 +7,9 @@ disallowed_auction_actions = if Feature.registry_integration_enabled?
                              end
 
 Rails.application.routes.draw do
+  namespace :admin do
+    get 'finished_auctions/index'
+  end
   mount ActionCable.server => '/cable'
 
   get 'unsubscribe/unsubscribe'

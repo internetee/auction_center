@@ -69,6 +69,7 @@ class EnglishOffersController < ApplicationController
     end
 
     if update_predicate
+      update_minimum_bid_step(update_params[:price].to_f, auction)
       flash[:notice] = 'Bid updated'
       redirect_to edit_english_offer_path(@offer.uuid)
     else
@@ -126,6 +127,27 @@ class EnglishOffersController < ApplicationController
     captcha_predicate = true
     # captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
     captcha_predicate && @offer.update(update_params) && @offer.reload
+  end
+
+  def update_minimum_bid_step(bid, auction)
+    update_value = 0.01
+
+    if bid < 1.0
+      update_value
+    elsif bid > 1.0 && bid < 10.0
+      update_value = update_value * 10
+    elsif bid > 10.0 && bid < 100.0
+      update_value = update_value * 100
+    elsif bid > 100.0 && bid < 1000.0
+      update_value = update_value * 1000
+    elsif bid > 1000.0 && bid < 10000.0
+      update_value = update_value * 10000
+    elsif bid > 10000.0 && bid < 100000.0
+      update_value = update_value * 100000
+    end
+
+    auction.min_bids_step = auction.min_bids_step + update_value
+    auction.save
   end
 
   def update_params
