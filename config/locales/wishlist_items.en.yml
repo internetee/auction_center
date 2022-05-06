@@ -10,11 +10,15 @@ en:
        in unicode format, e.g "internetpäev.ee". Diacritical signs are significant, päev.ee and
        paev.ee are not the same.
 
+      my_bid: "My bid"
+      my_bid_tooltip: "."
       notification_title: "Wait for notification"
       notification_description: |
         Once a domain from your wishlist goes to auction, we will send you an email.
         It can take a long time before current registrant decides to not renew a domain, so
         we keep your wishlist indefinitely.
+
+      create_auto_offer: "Create auto offer"
 
   activerecord:
     attributes:

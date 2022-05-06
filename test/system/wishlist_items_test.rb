@@ -66,4 +66,12 @@ class WishlistItemsTest < ApplicationSystemTestCase
     assert_not(page.has_css?('div.notice', text: 'Created successfully.'))
     assert(page.has_text?('Wishlist has too many items'))
   end
+
+  def test_user_can_add_price
+    fill_in('wishlist_item[price]', with: '5.00')
+    click_link_or_button('Create auto offer')
+
+    assert(@wishlist_item.cents, 500)
+    assert_redirected_to(wishlist_items_path)
+  end
 end

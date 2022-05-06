@@ -10,15 +10,11 @@ class WishlistJob < ApplicationJob
 
     wishlist_items.each do |item|
       WishlistMailer.auction_notification_mail(item, auction).deliver_later
+      WishlistAutoOfferJob.set(wait_until: auction.starts_at).perform_later(item.id, auction.id)
     end
   end
 
-  # Consider different management of this property.
   def self.wait_time
-    if Rails.env.production?
-      LONG_WAIT_TIME
-    else
-      SHORT_WAIT_TIME
-    end
+    Rails.env.production? ? LONG_WAIT_TIME : SHORT_WAIT_TIME
   end
 end

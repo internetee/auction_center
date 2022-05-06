@@ -9,6 +9,7 @@ et:
       list_description: |
        Täpitähed on olulised - päev.ee ei ole sama mis paev.ee
 
+      my_bid: "Minu pakkumus"
       notification_title: "Oota teadet"
       notification_description: |
         Saadame epostiga teate, kui soovitud domeeninimi läheb oksjonile.

@@ -13,11 +13,7 @@ class BillingProfile < ApplicationRecord
   after_update :mirror_address_to_attached_invoices
 
   def user_name
-    if user
-      user.display_name
-    else
-      I18n.t('billing_profiles.orphaned')
-    end
+    user ? user.display_name : I18n.t('billing_profiles.orphaned')
   end
 
   def address

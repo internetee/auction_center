@@ -40,6 +40,19 @@ class WishlistItemsController < ApplicationController
     @wishlist_item.save
   end
 
+  def update
+    price = params.require(:wishlist_item).permit(:price)[:price]
+    wishlist_item = WishlistItem.find_by(uuid: params[:uuid])
+
+    if wishlist_item.update(price: price)
+      flash[:notice] = I18n.t('created')
+    else
+      flash[:alert] = I18n.t('something_went_wrong')
+    end
+
+    redirect_to wishlist_items_path
+  end
+
   private
 
   def create_params
