@@ -10,7 +10,7 @@ en:
     offers: "Offers"
     turns_count: "Turns count"
     offer_actions: "Offer actions"
-    your_current_price: "Your current offer"
+    your_current_price: "Current offer"
     cancel_bid: "Cancel bid"
     starting_price: "Starting price in euros"
     min_bids_step: "Minimum bid steps in euros"

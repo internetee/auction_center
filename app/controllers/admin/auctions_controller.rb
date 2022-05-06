@@ -42,19 +42,12 @@ module Admin
                                                   platform}) || "id"
       sort_direction = params[:direction].presence_in(%w{ asc desc }) || "desc"
 
-      collection = AdminAuctionDecorator.with_highest_offers
-                                        .with_domain_name(params[:domain_name])
-                                        .with_type(params[:type])
-                                        .with_starts_at(params[:starts_at])
-                                        .with_ends_at(params[:ends_at])
-                                        .with_starts_at_nil(params[:starts_at_nil])
-                                        .order(sort_column => sort_direction)
-                                        #  .page(params[:page]
+      # Filtered record I put into array
+      # but because pagy doesn't work with collection, they need ActiveRecord relationship
+      filtered_collection_ids = Auction.non_finished.pluck(:id).uniq
+      collection = Auction.where(id: filtered_collection_ids).search(params).order(sort_column => sort_direction)
 
-      # auction_currency = Setting.find_by(code: 'auction_currency').retrieve
-      # auctions = collection.map { |auction| AdminAuctionDecorator.new(auction, auction_currency) }
-
-      @pagy, @auctions = pagy(collection, items: params[:per_page] ||= 15, link_extra: 'data-turbo-action="advance"')
+      @pagy, @auctions = pagy(collection, items: params[:per_page] ||= 20, link_extra: 'data-turbo-action="advance"')
     end
 
     # GET /admin/auctions/1
@@ -86,7 +79,15 @@ module Admin
 
       @auctions = Auction.where(id: auction_ids)
 
+      skipped_auctions = []
+
       @auctions.each do |auction|
+        unless auction.starts_at.nil?
+          skipped_auctions << auction.domain_name
+
+          next
+        end
+
         auction.starts_at = auctions_data[:set_starts_at] unless auctions_data[:set_starts_at].empty?
         auction.ends_at = auctions_data[:set_ends_at] unless auctions_data[:set_ends_at].empty?
         auction.starting_price = auctions_data[:starting_price] unless auctions_data[:starting_price].empty?
@@ -96,8 +97,13 @@ module Admin
         auction.save!
       end
 
-      flash[:notice] = 'New value was set'
-      redirect_to admin_auctions_path
+      if skipped_auctions.empty?
+        flash[:notice] = 'New value was set'
+        redirect_to admin_auctions_path
+      else
+        flash[:notice] = "These auctions were skipped because they are already in game: #{skipped_auctions.join(' ')}"
+        redirect_to admin_auctions_path
+      end
     end
 
     private

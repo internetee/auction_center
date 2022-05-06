@@ -49,10 +49,51 @@ class Auction < ApplicationRecord
   scope :with_starts_at, ->(starts_at) { where("starts_at >= ?", starts_at.to_date.beginning_of_day) if starts_at.present? }
   scope :with_ends_at, ->(ends_at) { where("ends_at <= ?", ends_at.to_date.end_of_day) if ends_at.present? }
   scope :with_starts_at_nil, ->(state) { where(starts_at: nil) if state.present? }
+
   scope :english, -> { where(platform: :english) }
+  scope :not_english, -> { where.not(platform: :english) }
+
+  scope :slipping_nil, -> { where(slipping_end: nil)}
+  scope :slipping_not_end, -> { each { |a| !a.english_auction_slippiage_ends?} }
 
   delegate :count, to: :offers, prefix: true
   delegate :size, to: :offers, prefix: true
+
+  def self.non_finished
+    auction_collect = []
+
+    self.all.each do |a|
+      if a.slipping_end.nil? && !a.english?
+        auction_collect << a
+      else
+        auction_collect << a unless a.english_auction_slippiage_ends?
+      end
+    end
+
+    auction_collect
+  end
+
+  def self.active_filters
+    auction_collect = []
+    active.each do |a|
+      if a.slipping_end.nil? && !a.english?
+        auction_collect << a
+      else
+        auction_collect << a unless a.english_auction_slippiage_ends?
+      end
+    end
+
+    auction_collect
+  end
+
+  def self.search(params={})
+    self.with_highest_offers
+        .with_domain_name(params[:domain_name])
+        .with_type(params[:type])
+        .with_starts_at(params[:starts_at])
+        .with_ends_at(params[:ends_at])
+        .with_starts_at_nil(params[:starts_at_nil])
+  end
 
   def does_not_overlap
     return unless starts_at && ends_at
@@ -183,19 +224,6 @@ class Auction < ApplicationRecord
     without_result + slipping_domain
   end
 
-  def self.active_filters
-    auction_cellect = []
-    active.each do |a|
-      if a.slipping_end.nil? && !a.english?
-        auction_cellect << a
-      else
-        auction_cellect << a unless a.english_auction_slippiage_ends?
-      end
-    end
-
-    auction_cellect
-  end
-
   def self.with_user_offers(user_id)
     Auction.from(with_user_offers_query(user_id))
   end
@@ -217,5 +245,40 @@ class Auction < ApplicationRecord
     SQL
 
     ActiveRecord::Base.sanitize_sql([sql, user_id])
+  end
+
+  def self.with_highest_offers
+    Auction.from(with_highest_offers_query)
+  end
+
+  def self.default_order_params
+    { 'auctions.starts_at' => 'desc' }
+  end
+
+  def self.with_highest_offers_query
+    sql = <<~SQL
+      (WITH offers_subquery AS (
+          SELECT DISTINCT on (uuid) offers.*
+          FROM (SELECT auction_id,
+               max(cents) over (PARTITION BY auction_id)             as max_price,
+               min(created_at) over (PARTITION BY auction_id, cents) as min_time
+               FROM offers
+       ) AS highest_offers
+       INNER JOIN offers
+       ON
+          offers.cents = highest_offers.max_price AND
+          offers.created_at = highest_offers.min_time AND
+          offers.auction_id = highest_offers.auction_id)
+      SELECT DISTINCT
+          auctions.*,
+          offers_subquery.cents AS highest_offer_cents,
+          offers_subquery.id AS highest_offer_id,
+          offers_subquery.uuid AS highest_offer_uuid,
+          (SELECT COUNT(*) FROM offers where offers.auction_id = auctions.id) AS number_of_offers
+      FROM auctions
+      LEFT JOIN offers_subquery on auctions.id = offers_subquery.auction_id) AS auctions
+    SQL
+
+    sql
   end
 end

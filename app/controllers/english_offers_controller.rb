@@ -21,12 +21,12 @@ class EnglishOffersController < ApplicationController
     auction = Auction.find_by!(uuid: params[:auction_uuid])
 
     unless auction.offers.empty?
-      flash[:alert] = 'Bids already exists'
+      flash[:alert] = 'Bid already exists'
       redirect_to auctions_path and return
     end
 
     unless check_first_bid_for_english_auction(create_params, auction)
-      flash[:alert] = "First bid should be more that starter price #{auction.starting_price} and more that minum bid step #{auction.min_bids_step}"
+      flash[:alert] = "First bid should be more or equal that starter price #{auction.starting_price}"
       # redirect_to auctions_path and return
       redirect_to new_auction_english_offer_path(auction_uuid: auction.uuid) and return
     end
@@ -109,10 +109,7 @@ class EnglishOffersController < ApplicationController
     starting_price = auction.starting_price
     price = params[:price].to_f
 
-    return false if price.to_f < starting_price.to_f
-
-    price = params[:price].to_f
-    (price - starting_price) >= auction.min_bids_step
+    price.to_f >= starting_price.to_f
   end
 
   def check_bids_for_english_auction(params, auction)

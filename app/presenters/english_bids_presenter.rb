@@ -19,6 +19,6 @@ class EnglishBidsPresenter
 
     return auction.ends_at if auction.offers.empty?
 
-    auction.offers.order(created_at: :desc).first.created_at + auction.slipping_end.minutes
+    auction.offers.order(created_at: :desc).first.created_at + auction.slipping_end.minutes + 1.minute
   end
 end
