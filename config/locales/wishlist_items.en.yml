@@ -18,8 +18,9 @@ en:
         It can take a long time before current registrant decides to not renew a domain, so
         we keep your wishlist indefinitely.
 
-      create_auto_offer: "Create auto offer"
-
+      create_offer: "Create offer"
+      delete_offer: "Delete offer"
+      auto_offer_tooltip: "when filled this will be your bid made automatically when the domain is put in auction. You can change this any time of course until the end of the auction."
   activerecord:
     attributes:
       wishlist_item:

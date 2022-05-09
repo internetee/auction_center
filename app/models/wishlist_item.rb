@@ -55,7 +55,7 @@ class WishlistItem < ApplicationRecord
 
   def price=(value)
     price = Money.from_amount(value.to_d, Setting.find_by(code: 'auction_currency').retrieve)
-    self.cents = price.cents
+    self.cents = price.cents.positive? ? price.cents : nil
   end
 
   private

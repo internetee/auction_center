@@ -74,4 +74,27 @@ class WishlistItemsTest < ApplicationSystemTestCase
     assert(@wishlist_item.cents, 500)
     assert_redirected_to(wishlist_items_path)
   end
+
+  def test_user_cannot_add_price_when_banned
+    Ban.create!(user: @user, domain_name: @wishlist_item.domain_name,
+                valid_from: Time.zone.today - 1, valid_until: Time.zone.today + 2)
+
+    fill_in('wishlist_item[price]', with: '5.00')
+    click_link_or_button('Create offer')
+
+    assert(page.has_css?(
+      'div.alert',
+      text: "You are banned from participating in auctions for domain(s): #{@wishlist_item.domain_name}.")
+    )
+    assert(@wishlist_item.cents, 0)
+    assert_redirected_to(wishlist_items_path)
+  end
+
+  def test_user_can_delete_price
+    @wishlist_item.update!(cents: 10000)
+    click_link_or_button('Delete offer')
+
+    assert(@wishlist_item.cents, 0)
+    assert_redirected_to(wishlist_items_path)
+  end
 end
