@@ -189,4 +189,73 @@ class AdminAuctionsTest < ApplicationSystemTestCase
       page.has_text?('It is not allowed to delete an action that is already in progress and has bids or has already finished.')
     )
   end
+
+  def test_search_existing_auction_without_submitting
+    visit admin_auctions_path
+
+    auction = auctions(:valid_with_offers)
+    fill_in 'domain_name', :with => auction.domain_name
+
+    assert_text auction.domain_name
+    assert_text auction.starts_at
+    assert_text auction.ends_at
+  end
+
+  # def test_should_filtering_english_auctions
+  #   english_auction = auctions(:english)
+  #   auction_blind = auctions(:valid_with_offers)
+  #   visit admin_auctions_path
+
+  #   select "english", :from => "type"
+
+  #   assert(page.has_text?(english_auction.domain_name))
+  #   assert(page.has_text?(english_auction.starts_at))
+  #   assert(page.has_text?(english_auction.ends_at))
+
+  #   assert(page.has_no_text?(assert_no_text auction_blind.domain_name))
+  # end
+
+  # def test_should_filtering_blind_auctions
+  #   english_auction = auctions(:english)
+  #   auction_blind = auctions(:valid_with_offers)
+  #   visit admin_auctions_path
+
+  #   select "blind", :from => "type"
+
+  #   assert_no_text english_auction.domain_name
+
+  #   assert_no_text auction_blind.domain_name
+  #   assert_no_text auction_blind.starts_at
+  #   assert_no_text auction_blind.ends_at
+  # end
+
+  def test_set_starts_at_to_english_auction
+    visit admin_auctions_path
+    english_auction = auctions(:english_nil_starts)
+
+    find(:id, "auction_elements_auction_ids_#{english_auction.id}").set(true)
+    fill_in "auction_elements_set_starts_at", with: Time.zone.now.to_date
+    fill_in "auction_elements_set_ends_at", with: Time.zone.now.to_date + 1.day
+
+    find(:id, "bulk-operation", match: :first).click
+    assert_text "New value was set"
+  end
+
+  def test_cannot_to_change_value_of_auction_if_it_already_in_game
+    visit admin_auctions_path
+    english_auction = auctions(:english_nil_starts)
+
+    find(:id, "auction_elements_auction_ids_#{english_auction.id}").set(true)
+    fill_in "auction_elements_set_starts_at", with: Time.zone.now.to_date
+    fill_in "auction_elements_set_ends_at", with: Time.zone.now.to_date + 1.day
+    find(:id, "bulk-operation", match: :first).click
+
+    find(:id, "auction_elements_auction_ids_#{english_auction.id}").set(true)
+    fill_in "auction_elements_set_starts_at", with: Time.zone.now.to_date + 1.day
+    fill_in "auction_elements_set_ends_at", with: Time.zone.now.to_date + 2.day
+    find(:id, "bulk-operation", match: :first).click
+
+
+    assert_text "These auctions were skipped: #{english_auction.domain_name}"
+  end
 end

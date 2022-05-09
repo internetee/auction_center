@@ -113,7 +113,7 @@
                     <%= form.hidden_field :elements_id %>
 
                     <div class="field down">
-                        <%= form.submit 'Run bulk operation', class: 'ui inverted red button', data: { action: 'click->checker#collect_ids' } %>
+                        <%= form.submit 'Run bulk operation', id: 'bulk-operation', class: 'ui inverted red button', data: { action: 'click->checker#collect_ids' } %>
                     </div>
             </div>
         </div>
