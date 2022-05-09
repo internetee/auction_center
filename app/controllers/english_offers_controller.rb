@@ -35,7 +35,7 @@ class EnglishOffersController < ApplicationController
     authorize! :manage, @offer
 
     if create_predicate
-      flash[:notice] = 'Bid created'
+      flash[:notice] = 'Offer submitted successfully.'
       redirect_to edit_english_offer_path(@offer.uuid)
     else
       flash[:alert] = 'Somethings goes wrong.'
@@ -95,8 +95,8 @@ class EnglishOffersController < ApplicationController
   end
 
   def create_predicate
-    captcha_predicate = true
-    # captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
+    # captcha_predicate = true
+    captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
     captcha_predicate && @offer.save && @offer.reload
   end
 
@@ -124,8 +124,8 @@ class EnglishOffersController < ApplicationController
   end
 
   def update_predicate
-    captcha_predicate = true
-    # captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
+    # captcha_predicate = true
+    captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
     captcha_predicate && @offer.update(update_params) && @offer.reload
   end
 

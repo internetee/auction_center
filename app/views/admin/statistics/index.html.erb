@@ -19,7 +19,7 @@
                             <%= f.date_field :end_date, value: @end_date %>
                         </div>
                         <div class="four wide column">
-                            <%= f.submit t(:submit), class: "ui button primary" %>
+                            <%= f.submit t(:submit), class: "ui button primary", data: { turbo: false } %>
                         </div>
                     </div>
                 <% end %>

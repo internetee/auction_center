@@ -7,7 +7,7 @@
             </div>
 
             <div class="column wide sixteen">
-                <%= f.submit t(:submit), class: "ui button primary" %>
+                <%= f.submit t(:submit), class: "ui button primary", data: { turbo: false } %>
                 <%= link_to t(:back), :back, class: "ui button secondary" %>
             </div>
         </div>

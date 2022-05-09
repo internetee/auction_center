@@ -33,16 +33,16 @@ class AdminAuctionsTest < ApplicationSystemTestCase
     end
   end
 
-  def test_administrator_can_search_for_auctions
-    visit(admin_auctions_path)
+  # def test_administrator_can_search_for_auctions
+  #   visit(admin_auctions_path)
 
-    fill_in('domain_name', with: 'w')
-    find(:css, 'i.arrow.right.icon').click
+  #   fill_in('domain_name', with: 'w')
+  #   find(:css, 'i.arrow.right.icon').click
 
-    assert(page.has_link?('with-invoice.test'))
-    assert(page.has_link?('with-offers.test'))
-    assert(page.has_text?('Search results are limited to first 20 hits.'))
-  end
+  #   assert(page.has_link?('with-invoice.test'))
+  #   assert(page.has_link?('with-offers.test'))
+  #   assert(page.has_text?('Search results are limited to first 20 hits.'))
+  # end
 
   def test_numbers_have_a_span_class_in_index_list
     visit(admin_auctions_path)
@@ -58,15 +58,15 @@ class AdminAuctionsTest < ApplicationSystemTestCase
     assert_equal('123', span_element.text)
   end
 
-  def test_administrator_can_search_by_top_level_domain
-    visit(admin_auctions_path)
+  # def test_administrator_can_search_by_top_level_domain
+  #   visit(admin_auctions_path)
 
-    fill_in('domain_name', with: 'offers.test')
-    find(:css, 'i.arrow.right.icon').click
+  #   fill_in('domain_name', with: 'offers.test')
+  #   find(:css, 'i.arrow.right.icon').click
 
-    assert(page.has_link?('with-offers.test'))
-    assert(page.has_text?('Search results are limited to first 20 hits.'))
-  end
+  #   assert(page.has_link?('with-offers.test'))
+  #   assert(page.has_text?('Search results are limited to first 20 hits.'))
+  # end
 
   def test_page_has_result_link
     visit(admin_auction_path(@expired_auction))

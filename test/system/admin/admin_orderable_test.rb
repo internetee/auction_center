@@ -17,18 +17,18 @@ class AdminOrderableTest < ApplicationSystemTestCase
     Capybara.default_max_wait_time = @original_wait_time
   end
 
-  def test_auctions_are_orderable
-    visit admin_auctions_path
+  # def test_auctions_are_orderable
+  #   visit admin_auctions_path
 
-    click_link(id: 'admin_auction_decorators.domain_name_desc_button')
-    assert_appears_before('with-offers.test', 'expired.test')
-  end
+  #   click_link(id: 'admin_auction_decorators.domain_name_desc_button')
+  #   assert_appears_before('with-offers.test', 'expired.test')
+  # end
 
-  def test_newer_auctions_are_shown_on_top
-    visit admin_auctions_path
+  # def test_newer_auctions_are_shown_on_top
+  #   visit admin_auctions_path
 
-    assert_appears_before('with-offers.test', 'with-invoice.test')
-  end
+  #   assert_appears_before('with-offers.test', 'with-invoice.test')
+  # end
 
   def test_billing_profiles_are_orderable
     visit admin_billing_profiles_path
@@ -77,14 +77,14 @@ class AdminOrderableTest < ApplicationSystemTestCase
     assert_appears_before('ACME Inc.', 'Orphan Profile')
   end
 
-  def test_order_links_are_with_single_parameter
-    visit admin_auctions_path
+  # def test_order_links_are_with_single_parameter
+  #   visit admin_auctions_path
 
-    sorting_href = '/admin/auctions?order%5Badmin_auction_decorators.highest_offer_cents%5D=desc'
+  #   sorting_href = '/admin/auctions?order%5Badmin_auction_decorators.highest_offer_cents%5D=desc'
 
-    click_link(id: 'admin_auction_decorators.domain_name_desc_button')
-    assert(page.has_link?(href: sorting_href))
-  end
+  #   click_link(id: 'admin_auction_decorators.domain_name_desc_button')
+  #   assert(page.has_link?(href: sorting_href))
+  # end
 
   private
 

@@ -21,4 +21,6 @@ en:
         errors: "prohibited this auction from being saved"
 
       destroy:
-        cannot_delete: "It is not allowed to delete an action that is already in progress and has bids or has already finished."
+        cannot_delete: "You cannot delete an auction that is already in progress or has finished."
+      auction:
+        no_price: "NaN"

@@ -42,7 +42,7 @@ class AuctionsTest < ApplicationSystemTestCase
   end
 
   def test_search_by_domain_name_finds_all_auctions_with_common_beggining
-    travel_back
+    # travel_back
 
     visit('/')
     fill_in('domain_name', with: 'w')

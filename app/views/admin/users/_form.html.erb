@@ -89,10 +89,10 @@
 
         <div class="column sixteen wide">
             <% if user.persisted? %>
-                <%= f.submit t(:update), class: "ui button big primary", id: "user_form_commit" %>
+                <%= f.submit t(:update), class: "ui button big primary", id: "user_form_commit", data: { turbo: false } %>
                 <%= link_to t(:back), :back, class: "ui button big secondary" %>
             <% else %>
-                <%= f.submit t(:submit), class: "ui button big primary", id: "user_form_commit" %>
+                <%= f.submit t(:submit), class: "ui button big primary", id: "user_form_commit", data: { turbo: false } %>
             <% end %>
         </div>
     </div>

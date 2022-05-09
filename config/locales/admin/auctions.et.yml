@@ -21,4 +21,6 @@ et:
         errors: "ei võimaldanud toimingut salvestada"
 
       destroy:
-        cannot_delete: "Oksjonit, mis on alanud ja millele on tehtud pakkumine või mis on juba lõppenud, ei saa kustutada."
+        cannot_delete: "Oksjonit mis on alanud või lõppenud ei saa kustutada."
+      auction:
+        no_price: "NaN"

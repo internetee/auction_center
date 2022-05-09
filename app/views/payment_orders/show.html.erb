@@ -21,7 +21,7 @@
                         <%- @payment_order.form_fields.each do |k, v| %>
                             <%= f.hidden_field k, value: v %>
                         <% end %>
-                        <%= f.submit t(:submit) %>
+                        <%= f.submit t(:submit), data: { turbo: false } %>
                     <% end %>
                 </div>
             </div>

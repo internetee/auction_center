@@ -23,8 +23,9 @@ class AuctionTest < ActiveSupport::TestCase
 
     assert_not(auction.valid?)
     assert_equal(["can't be blank"], auction.errors[:domain_name])
-    assert_equal(["can't be blank"], auction.errors[:ends_at])
-    assert_equal(["can't be blank"], auction.errors[:starts_at])
+    # In english auction version these columns can be nil 
+    # assert_equal(["can't be blank"], auction.errors[:ends_at])
+    # assert_equal(["can't be blank"], auction.errors[:starts_at])
 
     auction.domain_name = 'domain-to-auction.test'
     auction.ends_at = Time.now.in_time_zone + 2.days

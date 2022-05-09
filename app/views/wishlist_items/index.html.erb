@@ -60,7 +60,7 @@
                 </div>
 
                 <div class="buttons">
-                    <%= f.submit t(:submit), class: "ui button primary", id: "wishlist_item_form_commit" %>
+                    <%= f.submit t(:submit), class: "ui button primary", id: "wishlist_item_form_commit", data: { turbo: false } %>
                 </div>
             <% end %>
             <br>

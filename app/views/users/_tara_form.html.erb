@@ -1,10 +1,7 @@
 <%= form_with(model: user, url: url, local: true, id: 'user_form', class: 'ui form big') do |f| %>
-    <%= f.hidden_field :provider, value: user.provider %>
-    <%= f.hidden_field :uid, value: user.uid %>
-    <%= f.hidden_field :locale, value: I18n.locale %>
     <div class="ui two column doubling stackable grid">
         <div class="column">
-            <h3 class="p3"><%= t('.data_from_identity_document') %></h3>
+            <h3 class="p3"><%= t('auth.tara.form.data_from_identity_document') %></h3>
             <div class="field">
                 <%= f.label :identity_code, t('users.identity_code') %>
                 <div class="ui disabled input">
@@ -14,8 +11,9 @@
             <div class="field">
                 <%= f.label :country, t('users.country_code') %>
                 <div class="ui disabled input">
-                    <%= f.text_field :country_code, value: user.country_code || Setting.find_by(code: 'default_country').retrieve,
-                                     readonly: true %>
+                    <%= f.text_field :country_code,
+                        value: user.country_code || Setting.find_by(code: 'default_country').retrieve,
+                        readonly: true %>
                 </div>
             </div>
             <div class="field">
@@ -33,7 +31,7 @@
         </div>
 
         <div class="column">
-            <h3 class="p3"><%= t('.contact_data') %></h3>
+            <h3 class="p3"><%= t('auth.tara.form.data_from_identity_document') %></h3>
 
             <div class="field">
                 <%= f.hidden_field :locale, value: I18n.locale %>
@@ -42,17 +40,24 @@
             </div>
             <div class="field">
                 <div class="ui checkbox">
-                    <%= f.check_box :accepts_terms_and_conditions, { value: false }, "true", "false" %>
+                    <%= f.check_box :accepts_terms_and_conditions, { value: user.accepts_terms_and_conditions }, "true", "false" %>
                     <%= f.label :accepts_terms_and_conditions do %>
                         <%= t('users.i_accept_terms_and_conditions_html',
                               link: link_to(t('users.terms_and_conditions_link'), Setting.find_by(code: 'terms_and_conditions_link').retrieve)) %>
                     <% end %>
                 </div>
             </div>
+            <h3 class="p3"><%= t('.daily_summary') %></h3>
+            <div class="field">
+                <div class="ui checkbox">
+                    <%= f.check_box :daily_summary %>
+                    <%= f.label :daily_summary %>
+                </div>
+            </div>
         </div>
 
         <div class="column sixteen wide">
-            <%= f.submit t('.sign_up'), class: "ui button big primary", id: "user_form_commit", data: { turbo: false } %>
+            <%= f.submit t('submit'), class: "ui button big primary", id: "user_form_commit", data: { turbo: false } %>
         </div>
     </div>
 <% end %>

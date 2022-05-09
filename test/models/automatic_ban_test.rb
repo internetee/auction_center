@@ -234,9 +234,12 @@ class AutomaticBanTest < ActiveSupport::TestCase
 
     auction = Auction.new(domain_name: domain_name,
                           starts_at: Time.zone.now - day * 3,
-                          ends_at: Time.zone.now - day * 2)
+                          ends_at: Time.zone.now - day * 2,
+                          platform: 0)
 
     auction.save(validate: false)
+
+    auction = Auction.with_user_offers(user.id).find_by(id: auction.id)
 
     travel_back
     travel_to(auction.starts_at + 1) do
