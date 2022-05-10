@@ -33,13 +33,13 @@
     <div class="field">
         <div class="column">
             <%= form.label :starts_at, t('auctions.starts_at') %>
-            <%= form.date_field :starts_at, class: "form-control", min: Time.zone.today %>
+            <%= form.date_field :starts_at, class: "form-control" %>
         </div>
     </div>
     <div class="field">
         <div class="column">
             <%= form.label :ends_at, t('auctions.ends_at') %>
-            <%= form.date_field :ends_at, class: "form-control", min: Time.zone.today %>
+            <%= form.date_field :ends_at, class: "form-control" %>
         </div>
     </div>
   </div>
@@ -48,7 +48,7 @@
         <div class="field">
             <div class="ui checkbox">
             <%= form.check_box :starts_at_nil, { }, 1, nil %>
-            <label>Select starts at nil elements</label>
+            <label>Show auctions with no start date</label>
             </div>
         </div>
 <% end %>
@@ -77,7 +77,7 @@
                              url: bulk_starts_at_admin_auctions_path,
                              html: { class: 'ui form', autocomplete: 'off' },
                              data: { controller: 'checker', checker_target: 'bulkactionform' } do |form| %>
-                    <div class="five fields" style="padding: 0 300px";>
+                    <div class="four fields" style="padding: 0 300px";>
                         <div class="field">
                             <div class="column">
                                 <%= form.label :set_starts_at, t('auctions.starts_at') %>
@@ -96,12 +96,12 @@
                                 <%= form.number_field :starting_price, class: "form-control", step: :any, value: 5.0 %>
                             </div>
                         </div>
-                        <div class="field">
-                            <div class="column">
-                                <%= form.label :min_bids_step, t('auctions.min_bids_step') %>
-                                <%= form.number_field :min_bids_step, class: "form-control", step: :any, value: 5.0 %>
-                            </div>
-                        </div>
+                        <%# <div class="field"> %>
+                            <%# <div class="column"> %>
+                                <%#= form.label :min_bids_step, t('auctions.min_bids_step') %>
+                                <%#= form.number_field :min_bids_step, class: "form-control", step: :any, value: 5.0 %>
+                            <%# </div> %>
+                        <%# </div> %>
                         <div class="field">
                             <div class="column">
                                 <%= form.label :slipping_end, t('auctions.slipping_end') %>

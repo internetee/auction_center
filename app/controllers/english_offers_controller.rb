@@ -20,10 +20,10 @@ class EnglishOffersController < ApplicationController
   def create
     auction = Auction.find_by!(uuid: params[:auction_uuid])
 
-    unless auction.offers.empty?
-      flash[:alert] = 'Bid already exists'
-      redirect_to auctions_path and return
-    end
+    # unless auction.offers.empty?
+    #   flash[:alert] = 'Bid already exists'
+    #   redirect_to auctions_path and return
+    # end
 
     unless check_first_bid_for_english_auction(create_params, auction)
       flash[:alert] = "First bid should be more or equal that starter price #{auction.starting_price}"
@@ -35,6 +35,7 @@ class EnglishOffersController < ApplicationController
     authorize! :manage, @offer
 
     if create_predicate
+      update_minimum_bid_step(create_params[:price].to_f, auction)
       flash[:notice] = 'Offer submitted successfully.'
       redirect_to edit_english_offer_path(@offer.uuid)
     else
@@ -79,14 +80,14 @@ class EnglishOffersController < ApplicationController
   end
 
   # DELETE /offers/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
-  def destroy
-    return unless @offer.can_be_modified? && @offer.destroy
+  # def destroy
+  #   return unless @offer.can_be_modified? && @offer.destroy
 
-    respond_to do |format|
-      format.html { redirect_to auction_path(@offer.auction.uuid), notice: t(:deleted) }
-      format.json { head :no_content }
-    end
-  end
+  #   respond_to do |format|
+  #     format.html { redirect_to auction_path(@offer.auction.uuid), notice: t(:deleted) }
+  #     format.json { head :no_content }
+  #   end
+  # end
 
   private
 
@@ -95,8 +96,8 @@ class EnglishOffersController < ApplicationController
   end
 
   def create_predicate
-    # captcha_predicate = true
-    captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
+    captcha_predicate = true
+    # captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
     captcha_predicate && @offer.save && @offer.reload
   end
 
@@ -116,16 +117,17 @@ class EnglishOffersController < ApplicationController
   def check_bids_for_english_auction(params, auction)
     return true if auction.blind?
 
-    minimum = auction.min_bids_step
+    minimum = auction.min_bids_step.to_f
     price = params[:price].to_f
-    bids = price - @offer.price.to_f
+    # bids = price - @offer.price.to_f
 
-    bids.to_f >= minimum.to_f
+    # bids.to_f >= minimum.to_f
+    price >= minimum
   end
 
   def update_predicate
-    # captcha_predicate = true
-    captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
+    captcha_predicate = true
+    # captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
     captcha_predicate && @offer.update(update_params) && @offer.reload
   end
 
@@ -146,8 +148,8 @@ class EnglishOffersController < ApplicationController
       update_value = update_value * 100000
     end
 
-    auction.min_bids_step = auction.min_bids_step + update_value
-    auction.save
+    auction.min_bids_step = bid + update_value
+    auction.save!
   end
 
   def update_params

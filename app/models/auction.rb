@@ -31,7 +31,12 @@ class Auction < ApplicationRecord
   after_update_commit ->{
     broadcast_replace_to 'auctions',
                           target: 'auction_count',
-                          html: "<strong>#{Auction.active.count}</strong>".html_safe }
+                          html: "<strong>#{Auction.with_user_offers(nil).active_filters.count}</strong>".html_safe}
+
+  after_update_commit ->{
+    broadcast_replace_to 'auction_min',
+                          target: "mini",
+                          html: "<h5>Minimum bid is #{self.min_bids_step}</h5>".html_safe}
 
   scope :active, -> { where('starts_at <= ? AND ends_at >= ?', Time.now.utc, Time.now.utc) }
   scope :without_result, lambda {

@@ -1,3 +1,5 @@
+<%= turbo_stream_from "auctions_offer" %>
+
 <% content_for :hero do %>
     <div class="hero green">
         <h1><%= t('.title') %></h1>
@@ -20,6 +22,8 @@
             </div>
         <% end %>
 
-        <%= render 'form', offer: @offer, url: english_offer_path(@offer.uuid) %>
+        <%= tag.div id: 'offer_form' do %>
+            <%= render partial: 'form', locals: { offer: @offer, url: english_offer_path(@offer.uuid) } %>
+        <% end %>
     </div>
 </div>

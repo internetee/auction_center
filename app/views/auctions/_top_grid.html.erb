@@ -1,7 +1,9 @@
 <div class="features-grid top green">
     <div class="overview">
         <div class="u-container">
-            <span class="title"><%= t('.title')%> <strong id="auction_count"><%= Auction.active.count %></strong>.</span>
+            <span class="title"><%= t('.title')%> 
+            <strong id="auction_count"><%= Auction.with_user_offers(current_user&.id).active_filters.count %></strong>
+            </span>
         </div>
     </div>
     <div class="u-container">

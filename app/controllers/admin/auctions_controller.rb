@@ -91,7 +91,7 @@ module Admin
         auction.starts_at = auctions_data[:set_starts_at] unless auctions_data[:set_starts_at].empty?
         auction.ends_at = auctions_data[:set_ends_at] unless auctions_data[:set_ends_at].empty?
         auction.starting_price = auctions_data[:starting_price] unless auctions_data[:starting_price].empty?
-        auction.min_bids_step = auctions_data[:min_bids_step] unless auctions_data[:min_bids_step].empty?
+        auction.min_bids_step = auction.starting_price unless auctions_data[:starting_price].empty?
         auction.slipping_end = auctions_data[:slipping_end] unless auctions_data[:slipping_end].empty?
 
         auction.save!
