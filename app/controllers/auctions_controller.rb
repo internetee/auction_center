@@ -7,9 +7,8 @@ class AuctionsController < ApplicationController
   # GET /auctions
   def index
     set_cors_header
-    @auctions = Auction
-                .with_user_offers(current_user&.id)
-                .active_filters
+    @auctions = Auction.with_user_offers(current_user&.id).active
+                # .active_filters
   end
 
   # GET /auctions/search
@@ -21,7 +20,7 @@ class AuctionsController < ApplicationController
                                             .order(orderable_array)
                                             .accessible_by(current_ability)
                                             .page(1)
-                                            .active_filters
+                                            # .active_filters
 
     @auctions = collection.map { |auction| ParticipantAuctionDecorator.new(auction) }
   end

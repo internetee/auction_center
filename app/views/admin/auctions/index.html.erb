@@ -27,7 +27,7 @@
 
   <div class="three fields">
     <div class="field">
-            <%= form.label :tyle, 'Select type of auction' %>
+            <%= form.label :type, 'Select type of auction' %>
             <%= form.select :type, options_for_select(Auction.platforms, selected: params[:type]), {include_blank: 'All'}, {class: '' } %>
     </div>
     <div class="field">

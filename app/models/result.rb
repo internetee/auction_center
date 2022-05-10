@@ -2,6 +2,8 @@ require 'auction_not_finished'
 require 'auction_not_found'
 
 class Result < ApplicationRecord
+  include PgSearch::Model
+
   enum status: { no_bids: 'no_bids',
                  awaiting_payment: 'awaiting_payment',
                  payment_received: 'payment_received',
@@ -37,6 +39,16 @@ class Result < ApplicationRecord
   scope :registered, -> { where(status: statuses[:domain_registered]) }
   scope :unregistered, -> { where(status: statuses[:domain_not_registered]) }
 
+  scope :with_domain_name, ->(domain_name) do
+    if domain_name.present?
+      self.joins(:auction)
+          .includes(:offer, :invoice)
+          .where('auctions.domain_name ILIKE ?', "%#{domain_name}%")
+    end
+  end
+
+  scope :with_status, ->(status) { where(status: status) if status.present? }
+
   scope :pending_registration_everyday_reminder, lambda {
     without_current_reminders
       .before_registration_date
@@ -59,10 +71,15 @@ class Result < ApplicationRecord
     auction = Auction.find_by(id: auction_id)
 
     raise(Errors::AuctionNotFound, auction_id) unless auction
-    raise(Errors::AuctionNotFinished, auction_id) unless auction.finished? && (auction.blind? || auction.platform.nil?)
+    raise(Errors::AuctionNotFinished, auction_id) unless auction.finished?
 
     ResultCreator.new(auction_id).call
   end
+
+  def self.search(params={})
+    self.with_domain_name(params[:domain_name]).with_status(params[:statuses_contains])
+  end
+
 
   def winning_offer
     offer

@@ -34,6 +34,7 @@ et:
   settings_name: "Seadistus"
   users_name: "Kasutajad"
   results_name: "Tulemused"
+  finished_auctions: "Finished auctions"
   result_name: "Tulemus"
   versions_name: "Versioonid"
   offers_name: "Pakkumused"

@@ -35,6 +35,7 @@ en:
   settings_name: "Settings"
   users_name: "Users"
   results_name: "Results"
+  finished_auctions: "Finished auctions"
   result_name: "Result"
   versions_name: "Versions"
   offers_name: "Offers"

@@ -106,6 +106,7 @@ module ApplicationHelper
   def administrator_link_list
     [{ name: t(:auctions_name), path: admin_auctions_path },
      { name: t(:results_name), path: admin_results_path },
+     { name: t(:finished_auctions), path: admin_finished_auctions_index_path },
      { name: t(:billing_profiles_name), path: admin_billing_profiles_path },
      { name: t(:users_name), path: admin_users_path },
      { name: t(:bans_name), path: admin_bans_path },

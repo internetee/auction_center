@@ -1,6 +1,6 @@
 class ResultCreationJob < ApplicationJob
   def perform
-    Auction.without_result_and_slipping_left.map do |auction|
+    Auction.without_result.map do |auction|
       Result.create_from_auction(auction.id)
     end
 

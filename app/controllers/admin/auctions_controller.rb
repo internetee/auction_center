@@ -42,10 +42,10 @@ module Admin
                                                   platform}) || "id"
       sort_direction = params[:direction].presence_in(%w{ asc desc }) || "desc"
 
-      # Filtered record I put into array
-      # but because pagy doesn't work with collection, they need ActiveRecord relationship
-      filtered_collection_ids = Auction.non_finished.pluck(:id).uniq
-      collection = Auction.where(id: filtered_collection_ids).search(params).order(sort_column => sort_direction)
+      # .search(params).order(sort_column => sort_direction)
+      collection_one = Auction.where.not('ends_at <= ?', Time.zone.now).pluck(:id)
+      collection_two = Auction.where(starts_at: nil).pluck(:id)
+      collection = Auction.where(id: collection_one + collection_two).search(params).order(sort_column => sort_direction)
 
       @pagy, @auctions = pagy(collection, items: params[:per_page] ||= 20, link_extra: 'data-turbo-action="advance"')
     end

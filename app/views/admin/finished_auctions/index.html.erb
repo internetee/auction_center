@@ -1,2 +1,95 @@
-<h1>Admin::FinishedAuctions#index</h1>
-<p>Find me in app/views/admin/finished_auctions/index.html.erb</p>
+<% content_for :hero do %>
+    <div class="hero orange">
+        <h1><%= t('.title') %></h1>
+    </div>
+<% end %>
+
+<div class="features-grid top narrow grey ">
+        <div class="ui input">
+
+          <%= form_with url: admin_finished_auctions_index_path, 
+            method: :get,
+            data: { controller: 'debounce',
+                    debounce_target: 'form',
+                    turbo_action: "advance",
+                    turbo_frame: "results",
+                    action: 'input->debounce#search' 
+                    }, class: 'ui big form' do |form| %>
+            <div class="inline fields">
+              <div class="field">
+                <%= form.search_field :domain_name, value: params[:domain_name], placeholder: t('search_by_domain_name'), class: 'prompt' %>
+              </div>
+              <div class="field">
+                <%= form.label :type, 'Select type of auction' %>
+                <%= form.select :type, options_for_select(Auction.platforms, selected: params[:type]), {include_blank: 'All'}, {class: '' } %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+</div>
+
+<div class="u-container">
+    <div class="margin-block">
+        <div class="grid one column">
+            <%= turbo_frame_tag "results" do %>
+                <div class="column">
+                    <h3>Finished auctions</h3>
+                    <table class="ui table" id="auctions-needing-results-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">
+                                    <%= t('auctions.domain_name') %>
+                                    <%= sort_link_to "", "domain_name" %>
+                                </th>
+                                <th scope="col"><%= t('auctions.finished_at') %></th>
+                                <th scope="col">Type</th>
+                                <th scope="col">Last offer</th>
+                                <th scope="col">Last participant</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="auctions-needing-results-table">
+                            <% @auctions.each do |auction| %>
+                                <tr class="auctions-needing-results-table-row">
+                                    <td class="monospace"><%= auction.domain_name %></td>
+                                    <td><%= auction.ends_at %></td>
+                                    <td>
+                                      <% if auction.platform.nil? %>
+                                        Blind (legacy)
+                                      <% else %>
+                                        <%= auction.platform %>
+                                      <% end %>
+                                    </td>
+                                    <td>
+                                      <% if auction.offers.present? %>
+                                        <%= Money.new(auction.offers.order(updated_at: :asc).last.cents, Setting.find_by(code: 'auction_currency').retrieve) %>
+                                      <% else %>
+                                        NaN
+                                      <% end %>
+                                    </td>
+                                    <td>
+                                    <% if auction.offers.present? %>
+                                      <% last_offer = auction.offers.order(updated_at: :asc).last %>
+                                      <%= link_to last_offer.user.display_name, admin_user_path(last_offer.user) %>
+                                    <% else %>
+                                      Nobody
+                                    <% end %>
+                                    </td>
+                                </tr>
+                            <% end %>
+                        </tbody>
+                    </table>
+                </div>
+              
+                <div class="column">
+                <% if @pagy.pages > 1 %>
+                    <div class="footer">
+                        <%== pagy_nav(@pagy) %>
+                    </div>
+                <% end %>
+                </div>
+            <% end %>
+
+        </div>
+    </div>
+</div>

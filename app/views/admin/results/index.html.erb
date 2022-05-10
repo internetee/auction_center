@@ -6,7 +6,7 @@
 
 <div class="features-grid top narrow grey ">
         <div class="ui input">
-            <%= form_with(url: search_admin_results_path, local: true, method: :get, class: 'ui big form') do |f| %>
+            <%= form_with(url: admin_results_path, local: true, method: :get, class: 'ui big form') do |f| %>
             <div class="inline fields">
                 <div class="field">
                     <%= f.text_field :domain_name, placeholder: t('search_by_domain_name') %>

@@ -102,8 +102,8 @@ default: &default
     # proxy: "http://user:password@address.com:8080"
 
   registry_integration:
-    enabled: false
-    url: 'http://registry/api/v1/auctions/'
+    enabled: true
+    url: 'http://registry:3000/api/v1/auctions/'
 
   billing_system_integration:
     enabled: true

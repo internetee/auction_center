@@ -31,7 +31,7 @@ class Auction < ApplicationRecord
   after_update_commit ->{
     broadcast_replace_to 'auctions',
                           target: 'auction_count',
-                          html: "<strong>#{Auction.with_user_offers(nil).active_filters.count}</strong>".html_safe}
+                          html: "<strong>#{Auction.with_user_offers(nil).active.count}</strong>".html_safe}
 
   after_update_commit ->{
     broadcast_replace_to 'auction_min',
@@ -64,38 +64,8 @@ class Auction < ApplicationRecord
   scope :english, -> { where(platform: :english) }
   scope :not_english, -> { where.not(platform: :english) }
 
-  scope :slipping_nil, -> { where(slipping_end: nil)}
-  scope :slipping_not_end, -> { each { |a| !a.english_auction_slippiage_ends?} }
-
   delegate :count, to: :offers, prefix: true
   delegate :size, to: :offers, prefix: true
-
-  def self.non_finished
-    auction_collect = []
-
-    self.all.each do |a|
-      if a.slipping_end.nil? && !a.english?
-        auction_collect << a
-      else
-        auction_collect << a unless a.english_auction_slippiage_ends?
-      end
-    end
-
-    auction_collect
-  end
-
-  def self.active_filters
-    auction_collect = []
-    active.each do |a|
-      if a.slipping_end.nil? && !a.english?
-        auction_collect << a
-      else
-        auction_collect << a unless a.english_auction_slippiage_ends?
-      end
-    end
-
-    auction_collect
-  end
 
   def self.search(params={})
     self.with_highest_offers
@@ -215,24 +185,6 @@ class Auction < ApplicationRecord
 
   def maximum_bids
     Money.new(offers.maximum(:cents), Setting.find_by(code: 'auction_currency').retrieve)
-  end
-
-  def english_auction_slippiage_ends?
-    return false if offers.empty? || blind?
-
-    offer = offers.order(updated_at: :desc).last
-    difference = Time.zone.now.to_time - offer.updated_at.to_time
-
-    (difference / 60).to_i > slipping_end.to_i
-  end
-
-  def self.without_result_and_slipping_left
-    slipping_domain = []
-    Auction.english.each do |auction|
-      slipping_domain << auction if auction.english_auction_slippiage_ends?
-    end
-
-    without_result + slipping_domain
   end
 
   def self.with_user_offers(user_id)

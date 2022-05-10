@@ -20,14 +20,8 @@ class EnglishOffersController < ApplicationController
   def create
     auction = Auction.find_by!(uuid: params[:auction_uuid])
 
-    # unless auction.offers.empty?
-    #   flash[:alert] = 'Bid already exists'
-    #   redirect_to auctions_path and return
-    # end
-
     unless check_first_bid_for_english_auction(create_params, auction)
       flash[:alert] = "First bid should be more or equal that starter price #{auction.starting_price}"
-      # redirect_to auctions_path and return
       redirect_to new_auction_english_offer_path(auction_uuid: auction.uuid) and return
     end
 
@@ -36,6 +30,7 @@ class EnglishOffersController < ApplicationController
 
     if create_predicate
       update_minimum_bid_step(create_params[:price].to_f, auction)
+      update_ends_at(@offer, auction)
       flash[:notice] = 'Offer submitted successfully.'
       redirect_to edit_english_offer_path(@offer.uuid)
     else
@@ -71,6 +66,7 @@ class EnglishOffersController < ApplicationController
 
     if update_predicate
       update_minimum_bid_step(update_params[:price].to_f, auction)
+      update_ends_at(@offer, auction)
       flash[:notice] = 'Bid updated'
       redirect_to edit_english_offer_path(@offer.uuid)
     else
@@ -78,16 +74,6 @@ class EnglishOffersController < ApplicationController
       redirect_to auctions_path
     end
   end
-
-  # DELETE /offers/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
-  # def destroy
-  #   return unless @offer.can_be_modified? && @offer.destroy
-
-  #   respond_to do |format|
-  #     format.html { redirect_to auction_path(@offer.auction.uuid), notice: t(:deleted) }
-  #     format.json { head :no_content }
-  #   end
-  # end
 
   private
 
@@ -119,9 +105,7 @@ class EnglishOffersController < ApplicationController
 
     minimum = auction.min_bids_step.to_f
     price = params[:price].to_f
-    # bids = price - @offer.price.to_f
 
-    # bids.to_f >= minimum.to_f
     price >= minimum
   end
 
@@ -129,6 +113,19 @@ class EnglishOffersController < ApplicationController
     captcha_predicate = true
     # captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
     captcha_predicate && @offer.update(update_params) && @offer.reload
+  end
+
+  def update_ends_at(offer, auction)
+    updated_at = offer.updated_at
+    ends_at = auction.ends_at
+    slipping_time = auction.slipping_end
+
+    difference_time = ends_at.to_time - updated_at.to_time
+    if (difference_time / 60).to_f.round(2) > 0.0 && (difference_time / 60).to_f.round(2) < slipping_time.to_f
+      surplus_time = slipping_time.to_f - (difference_time / 60).to_f.round(2)
+      new_deadline = ends_at + surplus_time.minutes
+      auction.update(ends_at: new_deadline)
+    end
   end
 
   def update_minimum_bid_step(bid, auction)

@@ -1,17 +1,13 @@
                             
 <tr class="auctions-table-row" id="<%= dom_id(auction) %>">
-<% english_auction_presenter = EnglishBidsPresenter.new(auction) %>
+<% english_auction_presenter = EnglishBidsPresenter.new(auction, current_user) %>
   <td class="auction-domain-name monospace">
     <%= link_to auction_path(auction.uuid) do %>
       <%= domain_name_with_embedded_colors(auction.domain_name) %>
     <% end %>
   </td>
   <td>
-    <% if auction.platform == 'blind' || auction.platform.nil? %>
-      <span class="auctions-table-mobile-infotainment"><%= t('auctions.ends_at') %> </span><%= I18n.l(auction.ends_at) %>
-    <% else %>
-      <span class="auctions-table-mobile-infotainment"><%= t('auctions.ends_at') %> </span><%=  I18n.l(english_auction_presenter.display_ends_at) %>
-    <% end %>
+    <span class="auctions-table-mobile-infotainment"><%= t('auctions.ends_at') %> </span><%= I18n.l(auction.ends_at) %>
   </td>
   <td><span class="auctions-table-mobile-infotainment"><%= t('auctions.auction_type') %> </span><%= auction.platform %></td>
   <td><span class="auctions-table-mobile-infotainment">
@@ -19,7 +15,12 @@
         <%= t('auctions.your_current_price') %>: </span><%= auction.users_price %>
     <% else %>
       <%= t('auctions.your_current_price') %>:</span>
-    <%= english_auction_presenter.maximum_bids %>
+    
+    <% if english_auction_presenter.do_current_user_offer? %>
+      <span style="color: green;"><%= english_auction_presenter.maximum_bids %></span>
+    <% else %>
+      <span style="color: red;"><%= english_auction_presenter.maximum_bids %></span>
+    <% end %>
   <% end %>
 </td>
 <td class="center aligned">

@@ -2,7 +2,7 @@
     <div class="overview">
         <div class="u-container">
             <span class="title"><%= t('.title')%> 
-            <strong id="auction_count"><%= Auction.with_user_offers(current_user&.id).active_filters.count %></strong>
+            <strong id="auction_count"><%= Auction.with_user_offers(current_user&.id).active.count %></strong>
             </span>
         </div>
     </div>
