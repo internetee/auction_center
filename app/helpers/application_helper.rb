@@ -31,7 +31,7 @@ module ApplicationHelper
     content_tag(:div, class: 'ui message ban') do
       result = content_tag(:div, message, class: 'header')
       if eligible_violations_present?(domains: domains)
-        result << content_tag(:p, violation_message(domains.count), class: 'violation-message')
+        result << content_tag(:p, violation_message(domains.size), class: 'violation-message')
       end
       result
     end
@@ -69,7 +69,7 @@ module ApplicationHelper
 
   def eligible_violations_present?(domains: nil)
     num_of_strikes = Setting.find_by(code: 'ban_number_of_strikes').retrieve
-    return true if domains && domains.count < num_of_strikes
+    return true if domains && domains.size < num_of_strikes
 
     false
   end

@@ -103,7 +103,7 @@ class User < ApplicationRecord
 
   def completely_banned?
     num_of_strikes = Setting.find_by(code: 'ban_number_of_strikes').retrieve
-    bans_count = bans.valid.count
+    bans_count = bans.valid.size
     bans_count >= num_of_strikes
   end
 

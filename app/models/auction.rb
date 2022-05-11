@@ -31,7 +31,7 @@ class Auction < ApplicationRecord
   after_update_commit ->{
     broadcast_replace_to 'auctions',
                           target: 'auction_count',
-                          html: "<strong>#{Auction.with_user_offers(nil).active.count}</strong>".html_safe}
+                          html: "<strong>#{Auction.with_user_offers(nil).active.size}</strong>".html_safe}
 
   after_update_commit ->{
     broadcast_replace_to 'auction_min',

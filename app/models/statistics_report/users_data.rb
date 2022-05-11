@@ -20,13 +20,13 @@ class StatisticsReport
     def users_data
       @users = User.joins(:results)
                    .group('users.given_names')
-                   .count
+                   .size
                    .sort_by { |_key, value| value }
                    .to_h
     end
 
     def geo_data
-      @winners_by_country = User.joins(:results).group('alpha_two_country_code').count
+      @winners_by_country = User.joins(:results).group('alpha_two_country_code').size
     end
   end
 end
