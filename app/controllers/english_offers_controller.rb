@@ -58,7 +58,13 @@ class EnglishOffersController < ApplicationController
   def update
     auction = Auction.with_user_offers(current_user.id).find_by(uuid: @offer.auction.uuid)
 
-    unless check_bids_for_english_auction(create_params, auction)
+    unless additional_check_for_bids(auction, update_params[:price])
+      flash[:alert] = "Minimum bid is #{auction.min_bids_step}"
+
+      redirect_to edit_english_offer_path(auction.users_offer_uuid) and return
+    end
+
+    unless check_bids_for_english_auction(update_params, auction)
       flash[:alert] = "Minimum bid is #{auction.min_bids_step}"
 
       redirect_to edit_english_offer_path(auction.users_offer_uuid) and return
@@ -76,6 +82,12 @@ class EnglishOffersController < ApplicationController
   end
 
   private
+
+  def additional_check_for_bids(auction, current_bid)
+    order = auction.offers.order(updated_at: :desc).first
+
+    order.cents < current_bid.to_i
+  end
 
   def set_captcha_required
     @captcha_required = current_user.requires_captcha?
