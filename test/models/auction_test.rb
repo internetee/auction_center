@@ -9,6 +9,8 @@ class AuctionTest < ActiveSupport::TestCase
     @other_persisted_auction = auctions(:valid_without_offers)
     @orphaned_auction = auctions(:orphaned)
     @with_invoice_auction = auctions(:with_invoice)
+    @english = auctions(:english)
+    @english_nil = auctions(:english_nil_starts)
     travel_to Time.parse('2010-07-05 10:30 +0000').in_time_zone
   end
 
@@ -70,19 +72,6 @@ class AuctionTest < ActiveSupport::TestCase
     auction.ends_at = Time.now.in_time_zone + 3.days
 
     assert(auction.can_be_deleted?)
-  end
-
-  def test_active_scope_returns_only_active_auction
-    assert_equal([@persisted_auction, @other_persisted_auction,
-                  @orphaned_auction, @with_invoice_auction].to_set,
-                 Auction.active.to_set)
-    assert_equal([@persisted_auction, @other_persisted_auction,
-                  @expired_auction, @orphaned_auction, @with_invoice_auction].to_set,
-                 Auction.all.to_set)
-
-    travel_to Time.parse('2010-07-04 10:30 +0000').in_time_zone
-    assert_equal([], Auction.active)
-    travel_back
   end
 
   def test_time_related_method_return_false_for_invalid_auctions

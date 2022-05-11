@@ -10,6 +10,8 @@ class AuctionOffersTest < ActiveSupport::TestCase
     @other_persisted_auction = auctions(:valid_without_offers)
     @orphaned_auction = auctions(:orphaned)
     @with_invoice_auction = auctions(:with_invoice)
+    @english = auctions(:english)
+    @english_nil = auctions(:english_nil_starts)
     travel_to Time.parse('2010-07-05 10:30 +0000').in_time_zone
   end
 
@@ -80,16 +82,17 @@ class AuctionOffersTest < ActiveSupport::TestCase
   def test_without_result_scope_does_not_return_active_auctions
     assert_equal([].to_set, Auction.without_result.to_set)
     assert_equal([@persisted_auction, @other_persisted_auction,
-                  @orphaned_auction, @with_invoice_auction].to_set,
+                  @orphaned_auction, @with_invoice_auction, @english].to_set,
                  Auction.active.to_set)
   end
 
   def test_without_result_scope_returns_auctions_that_do_not_have_results
     travel_back
-    assert_equal([@persisted_auction].to_set,
+    assert_equal([@persisted_auction, @english].to_set,
                  Auction.without_result.to_set)
     assert_equal([@persisted_auction, @other_persisted_auction,
-                  @expired_auction, @orphaned_auction, @with_invoice_auction].to_set,
+                  @expired_auction, @orphaned_auction, @with_invoice_auction,
+                  @english, @english_nil].to_set,
                  Auction.all.to_set)
   end
 end

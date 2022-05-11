@@ -5,7 +5,6 @@ class EnglishBidsPresenter
 
   def initialize(auction)
     @auction = auction
-    # @current_user = current_user
   end
 
   def get_last_actual_offer
@@ -14,19 +13,12 @@ class EnglishBidsPresenter
 
   def maximum_bids
     return 'Bad auction type' if auction.platform == 'blind'
-    # return auction.starting_price if auction.offers.empty?
     return 0.0 if auction.offers.empty?
 
     offer = get_last_actual_offer
 
     Money.new(offer.cents, Setting.find_by(code: 'auction_currency').retrieve)
   end
-
-  # def do_current_user_offer?
-  #   offer = get_last_actual_offer
-
-  #   offer.user == current_user
-  # end
 
   def display_ends_at
     return 'Bad auction type' if auction.platform == 'blind'
