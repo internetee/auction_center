@@ -61,6 +61,7 @@
                                       <% end %>
                                     </td>
                                     <td>
+                                      <% auction.offers.load %>
                                       <% if auction.offers.present? %>
                                         <%= Money.new(auction.offers.order(updated_at: :asc).last.cents, Setting.find_by(code: 'auction_currency').retrieve) %>
                                       <% else %>

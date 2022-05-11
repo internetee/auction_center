@@ -16,7 +16,7 @@
     <% else %>
       <%= t('auctions.your_current_price') %>:</span>
     
-    <% if auction.offers.present? && current_user == auction.offers.order(updated_at: :desc).first.user %>
+    <% if auction.offers.load.present? && current_user == auction.offers.order(updated_at: :desc).first.user %>
       <span style="color: green;"><%= english_auction_presenter.maximum_bids %></span>
     <% else %>
       <span style="color: red;"><%= english_auction_presenter.maximum_bids %></span>
