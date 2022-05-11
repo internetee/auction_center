@@ -26,7 +26,7 @@ class Auction < ApplicationRecord
     broadcast_prepend_to 'auctions',
                           target: 'bids',
                           partial: 'auctions/auction',
-                          locals: { auction: Auction.with_user_offers(nil).find_by(uuid: uuid) } }
+                          locals: { auction: Auction.with_user_offers(nil).find_by(uuid: uuid), current_user: nil } }
 
   after_update_commit ->{
     broadcast_replace_to 'auctions',

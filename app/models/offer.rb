@@ -17,13 +17,13 @@ class Offer < ApplicationRecord
     broadcast_replace_to 'auctions',
                           target: 'bids',
                           partial: 'auctions/auction',
-                          locals: { auction: Auction.with_user_offers(user.id).find_by(uuid: auction.uuid) } }
+                          locals: { auction: Auction.with_user_offers(user.id).find_by(uuid: auction.uuid), current_user: self.user } }
 
   after_update_commit ->{
     broadcast_replace_to 'auctions',
                           target: "#{dom_id(self.auction)}",
                           partial: 'auctions/auction',
-                          locals: { auction: Auction.with_user_offers(user.id).find_by(uuid: auction.uuid) } }
+                          locals: { auction: Auction.with_user_offers(user.id).find_by(uuid: auction.uuid), current_user: self.user } }
 
   def auction_must_be_active
     active_auction = Auction.active.find_by(id: auction_id)

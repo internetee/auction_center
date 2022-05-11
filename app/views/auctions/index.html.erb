@@ -55,7 +55,7 @@
                     <%# <tbody id="bids"> %>
                         <%= tag.tbody id: "bids" do %>
                         <% @auctions.each do |auction| %>
-                            <%= render partial: 'auction', locals: { auction: auction } %>
+                            <%= render partial: 'auction', locals: { auction: auction, q_user: current_user } %>
                         <% end %>
                         <% end %>
                     <%# </tbody> %>

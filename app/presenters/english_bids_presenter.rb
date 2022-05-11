@@ -1,11 +1,11 @@
 class EnglishBidsPresenter
   include ActionView::Helpers::TagHelper
 
-  attr_reader :auction, :current_user
+  attr_reader :auction
 
-  def initialize(auction, current_user)
+  def initialize(auction)
     @auction = auction
-    @current_user = current_user
+    # @current_user = current_user
   end
 
   def get_last_actual_offer
@@ -22,11 +22,11 @@ class EnglishBidsPresenter
     Money.new(offer.cents, Setting.find_by(code: 'auction_currency').retrieve)
   end
 
-  def do_current_user_offer?
-    offer = get_last_actual_offer
+  # def do_current_user_offer?
+  #   offer = get_last_actual_offer
 
-    offer.user == current_user
-  end
+  #   offer.user == current_user
+  # end
 
   def display_ends_at
     return 'Bad auction type' if auction.platform == 'blind'
