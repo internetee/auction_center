@@ -1,3 +1,6 @@
+12.05.2022
+* Webpacker updated to v 6.0.0 [#809](https://github.com/internetee/auction_center/issues/809)
+
 05.05.2022
 * Added system identifier to logs [#853](https://github.com/internetee/auction_center/issues/853)
 
