@@ -1,0 +1,79 @@
+@mixin button {
+    margin: 0;
+    padding: 0;
+    border-style: none;
+    cursor: pointer;
+    background: none;
+    &:focus {
+        outline: none;
+    }
+    &::-moz-focus-inner {
+        padding: 0;
+        border-style: none;
+    }
+}
+
+@mixin h2 {
+    font-size: 30px;
+    line-height: 30px;
+    span {
+        font-weight: 500;
+        color: #A7A8AA;
+    }
+}
+
+@mixin h3 {
+    font-size: 24px;
+    line-height: 30px;
+    span {
+        font-weight: 500;
+        color: #A7A8AA;
+    }
+}
+
+@mixin h4 {
+    font-size: 20px;
+    line-height: 20px;
+    span {
+        font-weight: 500;
+        color: #A7A8AA;
+    }
+}
+
+@mixin screen($res-min, $res-max, $orientation: false) {
+    @if $orientation {
+        @media screen and (min-width: $res-min) and (max-width: $res-max) and (orientation:#{$orientation}) {
+            @content;
+        }
+    }
+    @else {
+        @media screen and (min-width: $res-min) and (max-width: $res-max) {
+            @content;
+        }
+    }
+}
+@mixin max-screen($res) {
+    @media only screen and (max-width: $res) {
+        @content;
+    }
+}
+@mixin min-screen($res) {
+    @media only screen and (min-width: $res) {
+        @content;
+    }
+}
+
+@mixin container{
+    font-size: 16px;
+    width: 1440px;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 50px;
+    @include max-screen(1024px){
+        padding: 0 20px;
+    }
+    @include max-screen(767px){
+        padding: 0 10px;
+    }
+}
