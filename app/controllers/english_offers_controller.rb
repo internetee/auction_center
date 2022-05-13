@@ -59,13 +59,13 @@ class EnglishOffersController < ApplicationController
     auction = Auction.with_user_offers(current_user.id).find_by(uuid: @offer.auction.uuid)
 
     unless additional_check_for_bids(auction, update_params[:price])
-      flash[:alert] = "Minimum bid is #{auction.min_bids_step}"
+      flash[:alert] = "Bid failed, current price is #{auction.highest_price.to_f}"
 
       redirect_to edit_english_offer_path(auction.users_offer_uuid) and return
     end
 
     unless check_bids_for_english_auction(update_params, auction)
-      flash[:alert] = "Minimum bid is #{auction.min_bids_step}"
+      flash[:alert] = "Bid failed, current price is #{auction.highest_price.to_f}"
 
       redirect_to edit_english_offer_path(auction.users_offer_uuid) and return
     end
@@ -86,7 +86,7 @@ class EnglishOffersController < ApplicationController
   def additional_check_for_bids(auction, current_bid)
     order = auction.offers.order(updated_at: :desc).first
 
-    order.cents < current_bid.to_i
+    Money.new(order.cents).to_f < current_bid.to_f
   end
 
   def set_captcha_required
@@ -94,8 +94,8 @@ class EnglishOffersController < ApplicationController
   end
 
   def create_predicate
-    captcha_predicate = true
-    # captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
+    # captcha_predicate = true
+    captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
     captcha_predicate && @offer.save && @offer.reload
   end
 
@@ -122,8 +122,8 @@ class EnglishOffersController < ApplicationController
   end
 
   def update_predicate
-    captcha_predicate = true
-    # captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
+    # captcha_predicate = true
+    captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
     captcha_predicate && @offer.update(update_params) && @offer.reload
   end
 

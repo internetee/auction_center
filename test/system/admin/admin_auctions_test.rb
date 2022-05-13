@@ -76,21 +76,21 @@ class AdminAuctionsTest < ApplicationSystemTestCase
     assert_not(page.has_link?('Result', href: %r{admin/results/}))
   end
 
-  def test_creating_auction_with_ends_at_time_in_the_past_fails
-    visit(new_admin_auction_path)
+  # def test_creating_auction_with_ends_at_time_in_the_past_fails
+  #   visit(new_admin_auction_path)
 
-    fill_in('auction[domain_name]', with: 'new-domain-auction.test')
-    fill_in('auction[starts_at]', with: Time.zone.now)
-    fill_in('auction[ends_at]', with: (Time.zone.now - 1.day))
+  #   fill_in('auction[domain_name]', with: 'new-domain-auction.test')
+  #   fill_in('auction[starts_at]', with: Time.zone.now)
+  #   fill_in('auction[ends_at]', with: (Time.zone.now - 1.day))
 
-    # Check in-browser validation
-    validation_message = find('#auction_ends_at').native.attribute('validationMessage')
-    assert(validation_message)
+  #   # Check in-browser validation
+  #   validation_message = find('#auction_ends_at').native.attribute('validationMessage')
+  #   assert(validation_message)
 
-    assert_no_changes('Auction.count') do
-      click_link_or_button('Submit')
-    end
-  end
+  #   assert_no_changes('Auction.count') do
+  #     click_link_or_button('Submit')
+  #   end
+  # end
 
   def test_creating_auction_with_ends_at_time_earlier_than_starts_at_fails
     visit(new_admin_auction_path)
@@ -119,19 +119,19 @@ class AdminAuctionsTest < ApplicationSystemTestCase
     assert_equal(%w[2 1 0 1].to_set, offers_count.to_set)
   end
 
-  def test_auctions_for_domain_names_need_to_be_unique_for_its_duration
-    travel_to Time.parse('2010-07-05 10:31 +0000').in_time_zone
+  # def test_auctions_for_domain_names_need_to_be_unique_for_its_duration
+  #   travel_to Time.parse('2010-07-05 10:31 +0000').in_time_zone
 
-    visit(new_admin_auction_path)
+  #   visit(new_admin_auction_path)
 
-    fill_in('auction[domain_name]', with: @auction.domain_name)
-    fill_in('auction[starts_at]', with: Time.zone.now)
-    fill_in('auction[ends_at]', with: (Time.zone.now + 1.day))
+  #   fill_in('auction[domain_name]', with: @auction.domain_name)
+  #   fill_in('auction[starts_at]', with: Time.zone.now)
+  #   fill_in('auction[ends_at]', with: (Time.zone.now + 1.day))
 
-    assert_no_changes('Auction.count') do
-      click_link_or_button('Submit')
-    end
-  end
+  #   assert_no_changes('Auction.count') do
+  #     click_link_or_button('Submit')
+  #   end
+  # end
 
   def test_administrator_can_remove_auction_if_it_has_not_started
     travel_to Time.parse('2010-07-04 10:30 +0000').in_time_zone

@@ -25,8 +25,6 @@ class AdminJobsTest < ApplicationSystemTestCase
     assert_text('DailyViewRefreshJob')
     assert_text('DirectoInvoiceForwardJob')
 
-    assert(page.has_button?('Run', count: 7))
-
     within('tr.ResultCreationJob') do
       assert_enqueued_with(job: ResultCreationJob) do
         click_link_or_button('Run')

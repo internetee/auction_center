@@ -1,11 +1,16 @@
 <%= turbo_stream_from "auction_min" %>
+<% english_auction_presenter = EnglishBidsPresenter.new(offer.auction) %>
 
 <%= form_with(model: offer, local: true, url: url, class: "ui form big") do |f| %>
     <%# <h4> %>
         <%#= t('offers.reminder') %>
     <%# </h4> %>
     <%= tag.h5 id: 'mini' do %>
-    Minimum bid is <%= offer.auction.min_bids_step %>
+        Minimum bid is <%= offer.auction.min_bids_step %>
+    <% end %>
+
+    <%= tag.h5 id: 'current' do %>
+        Current price is <%= english_auction_presenter.maximum_bids %>
     <% end %>
     <div class="ui two column doubling stackable grid">
         <div class="column">
@@ -14,7 +19,7 @@
 
             <div class="field">
                 <%= f.label :price, t('.offer') %>
-                <%= f.number_field :price, class: "form-control", min: 0, step: "0.01", value: "#{ f.object.new_record? ? offer.auction.starting_price : offer.price }" %>
+                <%= f.number_field :price, class: "form-control", min: 0, step: "0.01", value: "#{ offer.auction.min_bids_step }" %>
                 <br>
                 <em>
                     <%= t('.minimum_offer',
