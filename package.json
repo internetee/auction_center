@@ -8,14 +8,13 @@
       "@hotwired/stimulus": "^3.0.1",
       "@hotwired/turbo-rails": "^7.1.1",
       "@rails/webpacker": "^6.0.0-rc.5",
-      "@webpack-cli/serve": "^1.6.0",
-      "babel-plugin-macros": "^3.1.0",
-      "css-loader": "^5.2.7",
-      "file-loader": "^6.2.0",
       "ansi-html-community": "0.0.8",
+      "babel-plugin-macros": "^3.1.0",
       "browserslist": "^4.16.8",
       "chartkick": "^4.0.5",
+      "css-loader": "^5.2.7",
       "css-what": "^6.0.0",
+      "file-loader": "^6.2.0",
       "glob-parent": "^6.0.1",
       "highcharts": "^10.0.0",
       "is-svg": "^4.2.2",
@@ -34,21 +33,21 @@
       "punycode": "^2.1.1",
       "rails-ujs": "^5.2.6",
       "resolve-url-loader": "^5.0.0",
-      "url-loader": "^4.1.1",
       "sass": "^1.43.3",
       "sass-loader": "^10.0.1",
-      "style-loader": "^3.3.1",
       "ssri": "^9.0.0",
+      "style-loader": "^3.3.1",
       "terser-webpack-plugin": "^5.1.4",
       "turbolinks": "^5.2.0",
       "typeface-raleway": "^1.1.13",
+      "url-loader": "^4.1.1",
       "ws": "^8.2.1"
    },
-  "babel": {
-    "presets": [
-      "./node_modules/@rails/webpacker/package/babel/preset.js"
-    ]
-  },
+   "babel": {
+      "presets": [
+         "./node_modules/@rails/webpacker/package/babel/preset.js"
+      ]
+   },
    "version": "0.1.0",
    "description": "Domain auction software",
    "main": "index.js",

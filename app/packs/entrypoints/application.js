@@ -17,8 +17,10 @@ Turbolinks.start();
 import { Turbo } from "@hotwired/turbo-rails"
 Turbo.session.drive = false
 
-// import "../controllers"
 import "@hotwired/turbo-rails"
+// import "controllers"
+import "./controllers"
+import './stylesheets/application.scss'
 
 // UI modules
 import '../src/semantic/definitions/modules/transition.js';
