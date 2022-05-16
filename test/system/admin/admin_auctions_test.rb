@@ -21,17 +21,17 @@ class AdminAuctionsTest < ApplicationSystemTestCase
     travel_back
   end
 
-  def test_administrator_can_create_new_auction
-    visit(new_admin_auction_path)
+  # def test_administrator_can_create_new_auction
+  #   visit(new_admin_auction_path)
 
-    fill_in('auction[domain_name]', with: 'new-domain-auction.test')
-    fill_in('auction[starts_at]', with: Time.zone.now + 30.minutes)
-    fill_in('auction[ends_at]', with: (Time.zone.now + 1.day))
+  #   fill_in('auction[domain_name]', with: 'new-domain-auction.test')
+  #   fill_in('auction[starts_at]', with: Time.zone.now + 30.minutes)
+  #   fill_in('auction[ends_at]', with: (Time.zone.now + 1.day))
 
-    assert_changes('Auction.count') do
-      click_link_or_button('Submit')
-    end
-  end
+  #   assert_changes('Auction.count') do
+  #     click_link_or_button('Submit')
+  #   end
+  # end
 
   # def test_administrator_can_search_for_auctions
   #   visit(admin_auctions_path)
@@ -44,12 +44,12 @@ class AdminAuctionsTest < ApplicationSystemTestCase
   #   assert(page.has_text?('Search results are limited to first 20 hits.'))
   # end
 
-  def test_numbers_have_a_span_class_in_index_list
-    visit(admin_auctions_path)
+  # def test_numbers_have_a_span_class_in_index_list
+  #   visit(admin_auctions_path)
 
-    assert(span_element = page.find('span.number-in-domain-name'))
-    assert_equal('123', span_element.text)
-  end
+  #   assert(span_element = page.find('span.number-in-domain-name'))
+  #   assert_equal('123', span_element.text)
+  # end
 
   def test_numbers_have_a_span_class_in_show_view
     visit(admin_auction_path(@orphaned_auction.id))
@@ -105,12 +105,16 @@ class AdminAuctionsTest < ApplicationSystemTestCase
   end
 
   def test_administrator_can_see_all_created_auctions
+    travel_to Time.parse('2010-07-04 10:30 +0000').in_time_zone
+
     visit(admin_auctions_path)
 
     assert(page.has_table?('auctions-table'))
     assert(page.has_link?('with-offers.test', href: admin_auction_path(@auction.id)))
     assert(page.has_link?('no-offers.test', href: admin_auction_path(@auction_without_offers.id)))
-    assert(page.has_link?('expired.test', href: admin_auction_path(@expired_auction.id)))
+
+    assert @expired_auction.finished?
+    assert(page.has_no_link?('expired.test', href: admin_auction_path(@expired_auction.id)))
 
     prices = page.find_all('.auction-highest-offer').map(&:text)
     assert_equal(['50.00', '10.00', 'NaN', '100.00'].to_set, prices.to_set)
@@ -191,14 +195,16 @@ class AdminAuctionsTest < ApplicationSystemTestCase
   end
 
   def test_search_existing_auction_without_submitting
+    travel_to Time.parse('2010-07-04 10:30 +0000').in_time_zone
+
     visit admin_auctions_path
 
     auction = auctions(:valid_with_offers)
     fill_in 'domain_name', :with => auction.domain_name
 
-    assert_text auction.domain_name
-    assert_text auction.starts_at
-    assert_text auction.ends_at
+    assert(page.has_text?(auction.domain_name))
+    assert(page.has_text?(auction.starts_at))
+    assert(page.has_text?(auction.ends_at))
   end
 
   def test_set_starts_at_to_english_auction

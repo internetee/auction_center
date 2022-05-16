@@ -140,6 +140,8 @@ class Auction < ApplicationRecord
   end
 
   def can_be_deleted?
+    return true if starts_at.nil?
+
     if valid?
       (!in_progress? || offers.blank?) && !finished?
     else

@@ -17,26 +17,17 @@ Turbolinks.start();
 import { Turbo } from "@hotwired/turbo-rails"
 Turbo.session.drive = false
 
-import "../controllers"
+// import "../controllers"
 import "@hotwired/turbo-rails"
 
 // UI modules
-<<<<<<< HEAD:app/packs/entrypoints/application.js
 import '../src/semantic/definitions/modules/transition.js';
 import '../src/semantic/definitions/modules/checkbox.js';
 import '../src/semantic/definitions/modules/dropdown.js';
+import '../src/semantic/definitions/modules/accordion.js';
 import '../src/semantic/definitions/modules/sidebar.js';
 import '../src/semantic/definitions/modules/popup.js';
 import '../src/semantic/semantic.less';
-=======
-import '../src/semantic-ui/definitions/modules/transition.js';
-import '../src/semantic-ui/definitions/modules/checkbox.js';
-import '../src/semantic-ui/definitions/modules/dropdown.js';
-import '../src/semantic-ui/definitions/modules/accordion.js';
-import '../src/semantic-ui/definitions/modules/sidebar.js';
-import '../src/semantic-ui/definitions/modules/popup.js';
-import '../src/semantic-ui/semantic.less';
->>>>>>> added filter, search in admin panel, hotwire, pagination, update sorting:app/javascript/packs/application.js
 
 // Fonts
 import 'typeface-raleway';

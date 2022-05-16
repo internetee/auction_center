@@ -1,10 +1,10 @@
 require 'constraints/administrator'
 
-disallowed_auction_actions = if Feature.registry_integration_enabled?
-                               %i[new create edit update]
-                             else
-                               %i[edit update]
-                             end
+# disallowed_auction_actions = if Feature.registry_integration_enabled?
+#                                %i[new create edit update destroy]
+#                              else
+#                                %i[edit update]
+#                              end
 
 Rails.application.routes.draw do
   namespace :admin do
@@ -36,7 +36,8 @@ Rails.application.routes.draw do
   end
 
   namespace :admin, constraints: Constraints::Administrator.new do
-    resources :auctions, except: disallowed_auction_actions, concerns: %i[auditable searchable] do
+    # resources :auctions, except: disallowed_auction_actions, concerns: %i[auditable searchable] do
+      resources :auctions, concerns: %i[auditable searchable] do
       collection do
         post 'bulk_starts_at', to: 'auctions#bulk_starts_at', as: 'bulk_starts_at'
       end
