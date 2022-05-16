@@ -11,16 +11,13 @@ en:
        paev.ee are not the same.
 
       my_bid: "My bid"
-      my_bid_tooltip: "."
+      my_bid_tooltip: "When filled this will be your bid made automatically when the domain is put in auction. You can change this any time until the end of the auction."
       notification_title: "Wait for notification"
       notification_description: |
         Once a domain from your wishlist goes to auction, we will send you an email.
         It can take a long time before current registrant decides to not renew a domain, so
         we keep your wishlist indefinitely.
 
-      create_offer: "Create offer"
-      delete_offer: "Delete offer"
-      auto_offer_tooltip: "When filled this will be your bid made automatically when the domain is put in auction. You can change this any time until the end of the auction."
   activerecord:
     attributes:
       wishlist_item:

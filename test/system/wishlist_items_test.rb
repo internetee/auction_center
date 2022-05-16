@@ -68,7 +68,8 @@ class WishlistItemsTest < ApplicationSystemTestCase
   end
 
   def test_user_can_add_price
-    fill_in('wishlist_item[price]', with: '5.00').send_keys(:return)
+    fill_in('wishlist_item[price]', with: '5.00')
+    find('#wishlist_item_price').native.send_keys(:return)
 
     assert(@wishlist_item.cents, 500)
     assert_redirected_to(wishlist_items_path)
@@ -78,7 +79,8 @@ class WishlistItemsTest < ApplicationSystemTestCase
     Ban.create!(user: @user, domain_name: @wishlist_item.domain_name,
                 valid_from: Time.zone.today - 1, valid_until: Time.zone.today + 2)
 
-    fill_in('wishlist_item[price]', with: '5.00').send_keys(:return)
+    fill_in('wishlist_item[price]', with: '5.00')
+    find('#wishlist_item_price').native.send_keys(:return)
 
     assert(page.has_css?(
       'div.alert',
@@ -90,7 +92,8 @@ class WishlistItemsTest < ApplicationSystemTestCase
 
   def test_user_can_delete_price
     @wishlist_item.update!(cents: 10000)
-    fill_in('wishlist_item[price]', with: '').send_keys(:return)
+    fill_in('wishlist_item[price]', with: '')
+    find('#wishlist_item_price').native.send_keys(:return)
 
     assert(@wishlist_item.cents, 0)
     assert_redirected_to(wishlist_items_path)
