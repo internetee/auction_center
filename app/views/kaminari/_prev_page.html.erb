@@ -6,6 +6,6 @@ total_pages:   total number of pages
 per_page:      number of items to fetch per page
 remote:        data-remote
 -%>
-<%= link_to url, rel: 'prev', remote: remote, class: current_page.first? ? "disabled": "" do %>
+<%= link_to url, rel: 'prev', remote: remote, class: current_page.first? ? "item disabled": "item" do %>
     <%= t('views.pagination.previous').html_safe %>
 <% end %>

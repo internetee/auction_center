@@ -25,19 +25,24 @@ module Admin
 
     # GET /admin/invoices/search
     def search
-      search_string = search_params[:search_string]
-      statuses_contains = params[:statuses_contains]
-      @origin = search_string || search_params.dig(:order, :origin)
+      @_params = search_params.compact_blank
+      @origin = @_params[:order].present? ? @_params.dig(:order, :origin) : @_params
+      @full_list = @_params[:full_list] || @_params.dig(:order, :origin, :full_list)
+      @search_string = @_params[:search_string] || @_params.dig(:order, :origin, :search_string)
+      @statuses_contains = @_params[:statuses_contains] || @_params.dig(:order, :origin,
+                                                                        :statuses_contains)
 
       set_invoices_search_scope
 
-      return paginate_result if statuses_contains.nil?
+      return paginate_result if @statuses_contains.nil?
 
-      statuses_filter(statuses_contains)
+      statuses_filter(@statuses_contains)
       paginate_result
     end
 
     def search_scope(origin)
+      return Invoice if origin.nil?
+
       if numeric?(origin)
         Invoice.where('number = ?', origin)
       else
@@ -107,8 +112,9 @@ module Admin
     private
 
     def set_invoices_search_scope
-      @invoices = search_scope(@origin).accessible_by(current_ability)
-                                       .order(orderable_array)
+      @invoices = search_scope(@search_string).accessible_by(current_ability)
+                                              .includes(:paid_with_payment_order)
+                                              .order(orderable_array(default_order_params))
     end
 
     def statuses_filter(statuses)
@@ -137,7 +143,9 @@ module Admin
 
     def search_params
       search_params_copy = params.dup
-      search_params_copy.permit(:search_string, :statuses_contains, order: :origin)
+      search_params_copy.permit(:search_string, :full_list, :page,
+                                order: {},
+                                statuses_contains: [])
     end
 
     def authorize_user
@@ -153,7 +161,7 @@ module Admin
     end
 
     def default_order_params
-      { 'invoices.due_date' => 'desc' }
+      { 'invoices.due_date' => 'desc', 'invoices.created_at' => 'desc' }
     end
   end
 end

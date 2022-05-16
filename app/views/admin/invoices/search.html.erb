@@ -6,102 +6,17 @@
 
 <div class="features-grid top narrow grey">
     <div class="ui input">
-        <%= form_with(url: search_admin_invoices_path, local: true, method: :get, class: 'ui big form') do |f| %>
-            <div class="inline fields">
-                <div class="field">
-                    <%= label_tag :full_list, t('admin.invoices.search.full_list') =%>
-                    <%= check_box_tag :full_list %>
-                </div>
-                <div class="field">
-                    <%= f.text_field :search_string, placeholder: t('search') %>
-                </div>
-                <div class="field">
-                    <%= select_tag :statuses_contains,
-                    options_for_select(Invoice.statuses, params[:statuses_contains]), 
-                    { multiple: true, class: 'ui selection dropdown', prompt: t('admin.invoices.search.status') } %> 
-                </div>
-                <div class="field">
-                    <%= f.button(class: "ui icon primary button") do %>
-                        <i aria-hidden="true" class="arrow right icon"></i>
-                    <% end %>
-                </div>
-            </div>
-        <% end %>
+        <%= render 'search_form', action: 'search' %>
     </div>
 </div>
 
 <div class="ui container">
     <div class="margin-block">
-        <table class="ui table unstackable fixed" id="my-outstanding-invoices-table">
-            <thead>
-                <tr>
-                    <th scope="col">
-                        <%= t('invoices.billing_profile') %>
-                        <%= order_buttons('invoices.billing_profile_id', origin: @origin) %>
-                    </th>
-                    <th scope="col">
-                        <%= t('invoices.due_date') %>
-                        <%= order_buttons('invoices.due_date', origin: @origin) %>
-                    </th>
-                    <th scope="col">
-                        <%= t('invoices.number') %>
-                        <%= order_buttons('invoices.number') %>
-                    </th>
-                    <th scope="col">
-                        <%= t('invoices.status') %>
-                        <%= order_buttons('invoices.status', origin: @origin) %>
-                    </th>
-                    <th scope="col">
-                        <%= t('invoices.notes') %>
-                        <%= order_buttons('invoices.notes', origin: @origin) %>
-                    </th>
-                    <th scope="col">
-                        <%= t('invoices.total') %>
-                        <%= order_buttons('invoices.total', origin: @origin) %>
-                    </th>
-                    <th scope="col">
-                        <%= t('invoices.vat_rate_on_payment') %>
-                        <%= order_buttons('invoices.vat_rate', origin: @origin) %>
-                    </th>
-                    <th scope="col">
-                        <%= t('invoices.total_paid') %>
-                        <%= order_buttons('invoices.paid_amount', origin: @origin) %>
-                    </th>
-                    <th scope="col">
-                        <%= t('invoices.paid_through') %>
-                    </th>
-
-                    <th scope="col"><%= clear_order_button %></th>
-                </tr>
-            </thead>
-
-            <tbody class="invoices-table-body">
-                <% @invoices.each do |invoice| %>
-                    <tr class="invoices-table-row">
-                        <td><%= link_to invoice.billing_profile.name, admin_invoice_path(invoice) %></td>
-                        <td><%= I18n.l(invoice.due_date) %></td>
-                        <td><%= invoice.number %></td>
-                        <td><%= invoice.status %></td>
-                        <td><%= invoice.notes %></td>
-                        <td><%= t('offers.price_in_currency', price: invoice.total) %></td>
-                        <% if invoice.paid? %>
-                            <td><%= number_to_percentage(invoice.vat_rate * 100, precision: 0) %></td>
-                            <td><%= t('offers.price_in_currency', price: invoice.paid_amount) %></td>
-                            <td><%= invoice.paid_with_payment_order&.channel %></td>
-                        <% else %>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        <% end %>
-                        <td></td>
-                    </tr>
-                <% end %>
-            </tbody>
-        </table>
-        <% if params[:full_list] == "1" %>
+        <%= render 'invoices_table' %>
+        <% if @full_list == '1' %>
             <%= paginate @invoices %>
         <% else %>
-            <h4><%= t('search_limit', limit: Kaminari.config.default_per_page)%></h4>
+            <h4><%= t('search_limit', limit: Kaminari.config.default_per_page) %></h4>
         <% end %>
     </div>
 </div>
