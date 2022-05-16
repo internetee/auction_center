@@ -74,7 +74,7 @@
                         <th scope="col"><%= t('auctions.domain_name') %></th>
                         <th scope="col"><%= t('actions') %></th>
                         <th scope="col"><%= t('.my_bid') %>
-                          <a data-tooltip=<%= t('.auto_offer_tooltip') %>><i class="blue info icon"></i></a>
+                          <a data-tooltip="<%= t('.auto_offer_tooltip') %>"><i class="blue info icon"></i></a>
                         </th>
                     </tr>
                 </thead>
@@ -90,20 +90,8 @@
                                  remote: true, class: "ui button red" %>
                             </td>
                             <td>
-                              <%= form_for(wishlist_item, url: wishlist_item_path(uuid: wishlist_item.uuid), html: { method: "patch", class: "", style: "display: inline-block"}, remote: true) do |f| %>
-                                <%= f.number_field :price, class: "", style: "border: 2px solid #A7A8AA; border-radius: 3px; font-family: 'Raleway', 'Helvetica Neue', Arial, Helvetica, sans-serif; margin-right: 10px", min: 5, step: "0.01" %>
-                                <% if wishlist_item.cents.present? %>
-                                  <%= f.submit t('edit'), class: "ui button primary" %>
-                                <% else %>
-                                  <%= f.submit t('.create_offer'), class: "ui button secondary" %>
-                                <% end %>
-                              <% end %>
-
-                              <% if wishlist_item.cents.present? %>
-                                <%= form_for(wishlist_item, url: wishlist_item_path(uuid: wishlist_item.uuid), html: { method: "patch", class: "ui form", style: "display: inline-block"}, remote: true) do |f| %>
-                                  <%= f.hidden_field :price, value: "0" %>
-                                  <%= f.submit t('.delete_offer'), class: "ui button red" %>
-                                <% end %>
+                              <%= form_for(wishlist_item, url: wishlist_item_path(uuid: wishlist_item.uuid), html: { method: "patch" }, remote: true) do |f| %>
+                                <%= f.number_field :price, style: "border: 2px solid #A7A8AA; border-radius: 3px; font-family: 'Raleway', 'Helvetica Neue', Arial, Helvetica, sans-serif; margin-right: 10px", min: 5, step: "0.01" %>
                               <% end %>
                             </td>
                         </tr>

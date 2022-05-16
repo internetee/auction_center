@@ -20,7 +20,7 @@ en:
 
       create_offer: "Create offer"
       delete_offer: "Delete offer"
-      auto_offer_tooltip: "when filled this will be your bid made automatically when the domain is put in auction. You can change this any time of course until the end of the auction."
+      auto_offer_tooltip: "When filled this will be your bid made automatically when the domain is put in auction. You can change this any time until the end of the auction."
   activerecord:
     attributes:
       wishlist_item:
