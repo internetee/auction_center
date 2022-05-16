@@ -1,3 +1,6 @@
+16.05.2022
+* Invoice search and filtering fix for admin [#873](https://github.com/internetee/auction_center/issues/873)
+
 12.05.2022
 * Webpacker updated to v 6.0.0 [#809](https://github.com/internetee/auction_center/issues/809)
 
