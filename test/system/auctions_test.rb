@@ -11,6 +11,8 @@ class AuctionsTest < ApplicationSystemTestCase
     @other_auction = auctions(:valid_without_offers)
     @expired_auction = auctions(:expired)
     @orphaned_auction = auctions(:orphaned)
+    @english_auction = auctions(:english)
+    @english_nil_auction = auctions(:english_nil_starts)
   end
 
   def teardown
@@ -25,6 +27,8 @@ class AuctionsTest < ApplicationSystemTestCase
     assert(page.has_table?('auctions-table'))
     assert(page.has_link?('with-offers.test', href: auction_path(@auction.uuid)))
     assert(page.has_link?('no-offers.test', href: auction_path(@other_auction.uuid)))
+    assert(page.has_link?('english_auction.test', href: auction_path(@english_auction.uuid)))
+    assert(page.has_no_link?('english_nil_auction.test', href: auction_path(@english_nil_auction.uuid)))
   end
 
   def test_numbers_have_a_span_class_in_index_list
@@ -92,5 +96,37 @@ class AuctionsTest < ApplicationSystemTestCase
 
     assert(page.has_content?(:visible, 'with-offers.test'))
     assert(page.has_content?(:visible, '2010-07-06 10:30'))
+  end
+
+  def test_for_english_auction_should_be_bid_button
+    visit('/')
+
+    assert(page.has_link?('english_auction.test', href: auction_path(@english_auction.uuid)))
+    assert(page.has_link?('Bid!'))
+  end
+
+  def test_should_display_the_highest_offer_for_english_auction
+    user_one = users(:participant)
+    user_two = users(:second_place_participant)
+
+    company_billing_profile = billing_profiles(:company)
+
+    Offer.create!(auction: @english_auction,
+                  cents: 3000,
+                  user: user_one, billing_profile: user_one.billing_profiles.first)
+
+    Offer.create!(auction: @english_auction,
+                  cents: 5000,
+                  user: user_two, billing_profile: company_billing_profile)
+
+    @english_auction.reload
+
+    visit('/')
+
+    english_auction_presenter = EnglishBidsPresenter.new(@english_auction)
+
+    assert(page.has_text?(@english_auction.domain_name))
+    assert(page.has_text?('50.00'))
+    assert(page.has_text?(english_auction_presenter.maximum_bids))
   end
 end
