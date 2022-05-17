@@ -78,7 +78,7 @@ class AuctionTest < ActiveSupport::TestCase
     auction = Auction.new
 
     assert_not(auction.in_progress?)
-    assert_not(auction.can_be_deleted?)
+    assert(auction.can_be_deleted?)
     assert_not(auction.finished?)
   end
 

@@ -110,12 +110,12 @@ class ResultCreatorTest < ActiveSupport::TestCase
     assert_nil(result_creator.call)
   end
 
-  def test_creator_does_not_email_winner_for_auction_without_offers
-    result_creator = ResultCreator.new(@auction_without_offers.id)
-    result_creator.call
+  # def test_creator_does_not_email_winner_for_auction_without_offers
+  #   result_creator = ResultCreator.new(@auction_without_offers.id)
+  #   result_creator.call
 
-    assert(ActionMailer::Base.deliveries.empty?)
-  end
+  #   assert(ActionMailer::Base.deliveries.empty?)
+  # end
 
   def test_creator_does_not_email_winner_for_existing_result
     result_creator = ResultCreator.new(@auction_with_result.id)

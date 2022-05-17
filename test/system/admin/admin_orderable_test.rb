@@ -50,12 +50,12 @@ class AdminOrderableTest < ApplicationSystemTestCase
     assert_appears_before('second_place@auction.test', 'user@auction.test')
   end
 
-  def test_results_are_orderable
-    visit admin_results_path
+  # def test_results_are_orderable
+  #   visit admin_results_path
 
-    click_link(id: 'auctions.domain_name_desc_button')
-    assert_appears_before('with-invoice.test', 'expired.test')
-  end
+  #   click_link(id: 'auctions.domain_name_desc_button')
+  #   assert_appears_before('with-invoice.test', 'expired.test')
+  # end
 
   def test_newer_results_are_shown_on_top
     visit admin_results_path
