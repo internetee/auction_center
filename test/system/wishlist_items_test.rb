@@ -71,8 +71,10 @@ class WishlistItemsTest < ApplicationSystemTestCase
     fill_in('wishlist_item[price]', with: '5.00')
     find('#wishlist_item_price').native.send_keys(:return)
 
+    @wishlist_item.reload
+
     assert(@wishlist_item.cents, 500)
-    assert_redirected_to(wishlist_items_path)
+    assert_current_path(wishlist_items_path)
   end
 
   def test_user_cannot_add_price_when_banned
@@ -82,12 +84,14 @@ class WishlistItemsTest < ApplicationSystemTestCase
     fill_in('wishlist_item[price]', with: '5.00')
     find('#wishlist_item_price').native.send_keys(:return)
 
+    @wishlist_item.reload
+
     assert(page.has_css?(
       'div.alert',
       text: "You are banned from participating in auctions for domain(s): #{@wishlist_item.domain_name}.")
     )
-    assert(@wishlist_item.cents, 0)
-    assert_redirected_to(wishlist_items_path)
+    assert_nil(@wishlist_item.cents)
+    assert_current_path(wishlist_items_path)
   end
 
   def test_user_can_delete_price
@@ -95,7 +99,9 @@ class WishlistItemsTest < ApplicationSystemTestCase
     fill_in('wishlist_item[price]', with: '')
     find('#wishlist_item_price').native.send_keys(:return)
 
-    assert(@wishlist_item.cents, 0)
-    assert_redirected_to(wishlist_items_path)
+    @wishlist_item.reload
+
+    assert_nil(@wishlist_item.cents)
+    assert_current_path(wishlist_items_path)
   end
 end
