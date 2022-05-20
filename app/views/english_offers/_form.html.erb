@@ -2,9 +2,6 @@
 <% english_auction_presenter = EnglishBidsPresenter.new(offer.auction) %>
 
 <%= form_with(model: offer, local: true, url: url, class: "ui form big") do |f| %>
-    <%# <h4> %>
-        <%#= t('offers.reminder') %>
-    <%# </h4> %>
     <%= tag.h5 id: 'mini' do %>
         Minimum bid is <%= offer.auction.min_bids_step %>
     <% end %>
@@ -12,6 +9,8 @@
     <%= tag.h5 id: 'current' do %>
         Current price is <%= english_auction_presenter.maximum_bids %>
     <% end %>
+
+    <p>English auction finish at <span style='font-weight: 800;'><%= I18n.l(offer.auction.ends_at) %></span></p>
     <div class="ui two column doubling stackable grid">
         <div class="column">
             <%= f.hidden_field :user_id, value: offer.user_id %>
@@ -19,7 +18,7 @@
 
             <div class="field">
                 <%= f.label :price, t('.offer') %>
-                <%= f.number_field :price, class: "form-control", min: 0, step: "0.01", value: "#{ offer.auction.min_bids_step }" %>
+                <%= f.number_field :price, class: "form-control", min: 0, step: "0.01", value: "#{ offer.auction.min_bids_step }", disabled: offer.auction.finished? ? true : false %>
                 <br>
                 <em>
                     <%= t('.minimum_offer',

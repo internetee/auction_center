@@ -1,4 +1,14 @@
 default: &default
+  billing_system_integration:
+    enabled: true
+    #eis_billing_system_base_url_dev: 'http://eis_billing_system:3000'
+    #eis_billing_system_base_url_staging: 'https://st-billing.infra.tld.ee'
+    eis_billing_system_base_url: 'http://eis_billing_system:3000'
+    secret_access_word: 'please-Give-Me-accesS'
+    secret_word: 'this-secret-should-be-change'
+    billing_system_integrated: 'true'
+
+    billing_secret: '0fb3661d89134de0cbcdd6b29780e23f2ec05e744c4d15feb381b1e7d7549d5ec960989c6471c9a31835ee455865cf7b2641529ae7cf1e6b4c3675f6361e98d0'
   # This is your application name, as displayed in the UI
   application_name: "EIS Auction Center"
 

@@ -46,7 +46,9 @@ module Registry
 
     def create_auction_from_api(domain_name, remote_id, platform)
       auction_type = :english
-      auction_type = :blind if platform.nil? || platform == 'auto'
+      if platform.nil? || platform == 'auto'
+        auction_type = :blind
+      end
 
       Auction.find_or_initialize_by(domain_name: domain_name, remote_id: remote_id) do |auction|
         auction.platform = auction_type
@@ -57,8 +59,22 @@ module Registry
           auction.starts_at = auction_starts_at
           auction.ends_at = auction_ends_at
         end
+
         auction.save!
       end
+
+      indicate_correct_platform_and_assign_it(domain_name)
+    end
+
+    def indicate_correct_platform_and_assign_it(domain_name)
+      auctions = Auction.where(domain_name: domain_name)
+      return nil if auctions.empty?
+
+      platform = auctions.order(created_at: :asc).first.platform.to_sym
+      auction = Auction.where(domain_name: domain_name).order(created_at: :asc).last
+      auction.platform = platform
+      auction.skip_broadcast = true
+      auction.save
     end
 
     def send_wishlist_notifications(domain_name, remote_id)

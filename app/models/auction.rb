@@ -6,6 +6,8 @@ class Auction < ApplicationRecord
   # validates :ends_at, presence: true
   # validates :starts_at, presence: true
 
+  attr_accessor :skip_broadcast
+
   validate :does_not_overlap
   validate :ends_at_later_than_starts_at
   validate :starts_at_cannot_be_in_the_past, on: :create
@@ -26,7 +28,7 @@ class Auction < ApplicationRecord
     broadcast_prepend_to 'auctions',
                           target: 'bids',
                           partial: 'auctions/auction',
-                          locals: { auction: Auction.with_user_offers(nil).find_by(uuid: uuid), current_user: nil } }
+                          locals: { auction: Auction.with_user_offers(nil).find_by(uuid: uuid), current_user: nil } }, unless: :skip_broadcast
 
   after_update_commit ->{
     broadcast_replace_to 'auctions',
