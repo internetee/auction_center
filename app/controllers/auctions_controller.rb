@@ -1,5 +1,8 @@
 class AuctionsController < ApplicationController
   include OrderableHelper
+  include PagyHelper
+
+  include Pagy::Backend
 
   skip_before_action :verify_authenticity_token, only: [:cors_preflight_check]
   before_action :authorize_user
@@ -7,22 +10,16 @@ class AuctionsController < ApplicationController
   # GET /auctions
   def index
     set_cors_header
-    @auctions = Auction.with_user_offers(current_user&.id).active
-                # .active_filters
-  end
+    sort_column = params[:sort].presence_in(%w{ domain name ends_at platform users_price}) || "id"
+    sort_direction = params[:direction].presence_in(%w{ asc desc }) || "desc"
 
-  # GET /auctions/search
-  def search
-    domain_name = search_params[:domain_name]
+    @auctions = Auction
+                  .active
+                  .search(params)
+                  .with_user_offers(current_user&.id)
+                  .order(sort_column => sort_direction)
 
-    collection = ParticipantAuctionDecorator.with_user_offers(current_user&.id)
-                                            .where('domain_name ILIKE ?', "#{domain_name}%")
-                                            .order(orderable_array)
-                                            .accessible_by(current_ability)
-                                            .page(1)
-                                            # .active_filters
-
-    @auctions = collection.map { |auction| ParticipantAuctionDecorator.new(auction) }
+    @pagy, @auctions = pagy(@auctions, items: params[:per_page] ||= 15, link_extra: 'data-turbo-action="advance"')
   end
 
   # OPTIONS /auctions
