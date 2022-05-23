@@ -11,6 +11,11 @@
     <% end %>
 
     <p>English auction finish at <span style='font-weight: 800;'><%= I18n.l(offer.auction.ends_at) %></span></p>
+
+    <div id="auction_timer" style="margin-bottom: 10px;">
+        <%= render partial: 'english_offers/timer', locals: { auction: offer.auction } %>
+    </div>
+
     <div class="ui two column doubling stackable grid">
         <div class="column">
             <%= f.hidden_field :user_id, value: offer.user_id %>

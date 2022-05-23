@@ -45,6 +45,12 @@ class Auction < ApplicationRecord
                           target: "current",
                           html: "<h5>Minimum bid is #{self.highest_price.to_f}</h5>".html_safe}
 
+  after_update_commit ->{
+    broadcast_replace_to 'auction_min',
+                          target: "auction_timer",
+                          partial: 'english_offers/timer',
+                          locals: { auction: self } }
+
   scope :active, -> { where('starts_at <= ? AND ends_at >= ?', Time.now.utc, Time.now.utc) }
   scope :without_result, lambda {
     where('ends_at < ? and id NOT IN (SELECT results.auction_id FROM results)', Time.now.utc)

@@ -94,8 +94,8 @@ class EnglishOffersController < ApplicationController
   end
 
   def create_predicate
-    # captcha_predicate = true
-    captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
+    captcha_predicate = true
+    # captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
     captcha_predicate && @offer.save && @offer.reload
   end
 
@@ -122,8 +122,8 @@ class EnglishOffersController < ApplicationController
   end
 
   def update_predicate
-    # captcha_predicate = true
-    captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
+    captcha_predicate = true
+    # captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
     captcha_predicate && @offer.update(update_params) && @offer.reload
   end
 
@@ -145,15 +145,15 @@ class EnglishOffersController < ApplicationController
 
     if bid < 1.0
       update_value
-    elsif bid > 1.0 && bid < 10.0
+    elsif bid >= 1.0 && bid < 10.0
       update_value = update_value * 10
-    elsif bid > 10.0 && bid < 100.0
+    elsif bid >= 10.0 && bid < 100.0
       update_value = update_value * 100
-    elsif bid > 100.0 && bid < 1000.0
+    elsif bid >= 100.0 && bid < 1000.0
       update_value = update_value * 1000
-    elsif bid > 1000.0 && bid < 10000.0
+    elsif bid >= 1000.0 && bid < 10000.0
       update_value = update_value * 10000
-    elsif bid > 10000.0 && bid < 100000.0
+    elsif bid >= 10000.0 && bid < 100000.0
       update_value = update_value * 100000
     end
 

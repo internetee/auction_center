@@ -14,3 +14,5 @@ import SubmitterController from "./submitter_controller"
 application.register("submitter", SubmitterController)
 import CheckerController from "./checker_controller"
 application.register("checker", CheckerController)
+import CountdownController from "./countdown_controller"
+application.register("countdown", CountdownController)
