@@ -1,0 +1,21 @@
+<%= form_with(url: search_admin_invoices_path, local: true, method: :get, class: 'ui big form') do |f| %>
+    <div class="inline fields">
+        <div class="field">
+            <%= label_tag :full_list, t("admin.invoices.#{action}.full_list") =%>
+            <%= check_box_tag :full_list, '1', (@full_list == '1' ? true : false) %>
+        </div>
+        <div class="field">
+            <%= f.text_field :search_string, placeholder: t('search'), value: @search_string %>
+        </div>
+        <div class="field">
+            <%= select_tag :statuses_contains,
+            options_for_select(Invoice.statuses, @statuses_contains), 
+            { multiple: true, class: 'ui selection dropdown', prompt: t("admin.invoices.#{action}.status") } %> 
+        </div>
+        <div class="field">
+            <%= f.button(type: 'submit', name: '', class: "ui icon primary button") do %>
+                <i aria-hidden="true" class="arrow right icon"></i>
+            <% end %>
+        </div>
+    </div>
+<% end %>

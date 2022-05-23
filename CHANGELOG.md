@@ -1,3 +1,12 @@
+16.05.2022
+* Invoice search and filtering fix for admin [#873](https://github.com/internetee/auction_center/issues/873)
+
+12.05.2022
+* Webpacker updated to v 6.0.0 [#809](https://github.com/internetee/auction_center/issues/809)
+
+05.05.2022
+* Added system identifier to logs [#853](https://github.com/internetee/auction_center/issues/853)
+
 13.04.2022
 * Update dependency css-what to v6 [#862](https://github.com/internetee/auction_center/pull/862)
 * Update dependency resolve-url-loader to v5 [#867](https://github.com/internetee/auction_center/pull/867)

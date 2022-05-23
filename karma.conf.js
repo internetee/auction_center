@@ -11,7 +11,7 @@ module.exports = function(config) {
 
         // frameworks to use
         // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-        frameworks: ['qunit'],
+        frameworks: ['qunit', 'webpack'],
 
         plugins: ['karma-qunit',
                   'karma-coverage',

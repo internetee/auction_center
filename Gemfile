@@ -4,6 +4,7 @@ source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 gem 'airbrake'
+gem 'amazing_print'
 gem 'bootsnap', '>= 1.1.0', require: false
 gem 'cancancan'
 gem 'chartkick'
@@ -24,13 +25,14 @@ gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 5.6.4'
 gem 'rails', '>= 6.0.3.5'
 gem 'rails-i18n'
+gem 'rails_semantic_logger'
 gem 'recaptcha'
 gem 'scenic'
 gem 'simpleidn'
 gem 'skylight'
 gem 'sprockets', '~> 4.0'
 gem 'turbolinks', '~> 5'
-gem 'webpacker', '~> 6.0.0.beta.6'
+gem 'webpacker', '~> 6.0.0.rc.5'
 
 group :development, :test do
   gem 'bullet'
