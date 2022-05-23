@@ -10,7 +10,7 @@ class AuctionsController < ApplicationController
   # GET /auctions
   def index
     set_cors_header
-    sort_column = params[:sort].presence_in(%w{ domain name ends_at platform users_price}) || "id"
+    sort_column = params[:sort].presence_in(%w{ domain_name ends_at platform users_price}) || "id"
     sort_direction = params[:direction].presence_in(%w{ asc desc }) || "desc"
 
     @auctions = Auction
