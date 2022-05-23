@@ -70,6 +70,7 @@ class WishlistItemsTest < ApplicationSystemTestCase
   def test_user_can_add_price
     fill_in('wishlist_item[price]', with: '5.00')
     find('#wishlist_item_price').native.send_keys(:return)
+    sleep(1)
 
     @wishlist_item.reload
 
@@ -83,6 +84,7 @@ class WishlistItemsTest < ApplicationSystemTestCase
 
     fill_in('wishlist_item[price]', with: '5.00')
     find('#wishlist_item_price').native.send_keys(:return)
+    sleep(1)
 
     @wishlist_item.reload
 
@@ -98,6 +100,7 @@ class WishlistItemsTest < ApplicationSystemTestCase
     @wishlist_item.update!(cents: 10000)
     fill_in('wishlist_item[price]', with: '')
     find('#wishlist_item_price').native.send_keys(:return)
+    sleep(1)
 
     @wishlist_item.reload
 
