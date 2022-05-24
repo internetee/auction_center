@@ -3,8 +3,6 @@ module Admin
     include OrderableHelper
     include PagyHelper
 
-    include Pagy::Backend
-
     before_action :authorize_user
     before_action :set_auction, only: %i[show destroy]
 

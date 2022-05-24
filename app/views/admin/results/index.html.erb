@@ -65,23 +65,23 @@
                         <tr>
                             <th scope="col">
                                 <%= t('auctions.domain_name') %>
-                                <%= order_buttons('auctions.domain_name') %>
+                                <%= sort_link_to "", "auctions.domain_name" %>
                             </th>
                             <th scope="col">
                                 <%= t('auctions.finished_at') %>
-                                <%= order_buttons('auctions.ends_at') %>
+                                <%= sort_link_to "", "auctions.ends_at" %>
                             </th>
                             <th scope="col">
                                 <%= t('results.registration_due_date') %>
-                                <%= order_buttons('results.registration_due_date') %>
+                                <%= sort_link_to "", "registration_due_date" %>
                             </th>
                             <th scope="col">
                                 <%= t('status') %>
-                                <%= order_buttons('results.status') %>
+                                <%= sort_link_to "", "status" %>
                             </th>
                             <th scope="col">
                                 <%= t('billing_profiles.name') %>
-                                <%= order_buttons('users.id') %>
+                                <%= sort_link_to "", "users.id" %>
                             </th>
                             <th scope="col"><%= clear_order_button %></th>
                         </tr>
@@ -110,7 +110,12 @@
                 </table>
             </div>
 
-            <%= paginate @results %>
+                <% if @pagy.pages > 1 %>
+                    <div class="footer">
+                        <%== pagy_nav(@pagy) %>
+                    </div>
+                <% end %>
+            <%#= paginate @results %>
         </div>
     </div>
 </div>

@@ -1,4 +1,6 @@
 module ApplicationHelper
+  include PagyHelper
+
   def application_name
     Rails.configuration.customization['application_name']
   end

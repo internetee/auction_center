@@ -1,19 +1,23 @@
 module Admin
   class BansController < BaseController
     include OrderableHelper
+    include PagyHelper
+    include Pagy::Backend
+
 
     before_action :authorize_user
     before_action :set_ban, only: %i[show destroy]
 
-    def search
-      search_string = search_params[:search_string]
-      @users = User.where('given_names ILIKE ? OR surname ILIKE ? OR email ILIKE ?',
-                          "%#{search_string}%", "%#{search_string}%", "%#{search_string}%").all
-      @billing_profile = BillingProfile.where('name ILIKE ?', "%#{search_string}%").all
-      user_ids = (@users.ids + [@billing_profile.select(:user_id)]).uniq
+    # def search
+    #   search_string = search_params[:search_string]
+    #   @users = User.where('given_names ILIKE ? OR surname ILIKE ? OR email ILIKE ?',
+    #                       "%#{search_string}%", "%#{search_string}%", "%#{search_string}%").all
+    #   @billing_profile = BillingProfile.where('name ILIKE ?', "%#{search_string}%").all
+    #   user_ids = (@users.ids + [@billing_profile.select(:user_id)]).uniq
 
-      @bans = Ban.where(user_id: user_ids).uniq
-    end
+    #   bans = Ban.where(user_id: user_ids).uniq
+    #   @pagy, @bans = pagy(bans, items: params[:per_page] ||= 20)
+    # end
 
     # POST /admin/bans
     def create
@@ -32,8 +36,11 @@ module Admin
 
     # GET /admin/bans
     def index
-      @bans = Ban.includes(:user).order(orderable_array(default_order_params))
-                 .page(params[:page])
+      sort_column = params[:sort].presence_in(%w{ users.surname valid_from valid_until domain_name invoice_id }) || "id"
+      sort_direction = params[:direction].presence_in(%w{ asc desc }) || "desc"
+
+      bans = Ban.includes(:user).search(params).order("#{sort_column} #{sort_direction}")
+      @pagy, @bans = pagy(bans, items: params[:per_page] ||= 20)
     end
 
     # DELETE /admin/bans/1

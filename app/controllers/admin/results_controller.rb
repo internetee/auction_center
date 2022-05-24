@@ -4,10 +4,16 @@ module Admin
 
     # GET /admin/results
     def index
+      sort_column = params[:sort].presence_in(%w{ auctions.domain_name auctions.ends_at registration_due_date status users.id }) || "id"
+      sort_direction = params[:direction].presence_in(%w{ asc desc }) || "desc"
+
       @results = Result.includes(:auction, offer: [:billing_profile])
                        .search(params)
-                       .order(orderable_array(default_order_params))
-                       .page(params[:page])
+                       .includes(:user)
+                       .includes(:auction)
+                       .order("#{sort_column} #{sort_direction}")
+
+      @pagy, @results = pagy(@results, items: params[:per_page] ||= 15)
 
       @auctions_needing_results = Auction.without_result.search(params)
     end
@@ -21,19 +27,6 @@ module Admin
       else
         render :index
       end
-    end
-
-    # GET /admin/results/search
-    def search
-      search_string = search_params[:domain_name]
-      statuses_contains = params[:statuses_contains]
-
-      @origin = search_string || search_params.dig(:order, :origin)
-      @results = return_search_results(search_string)
-
-      return if statuses_contains.nil?
-
-      statuses_filter(statuses_contains)
     end
 
     # GET /admin/results/1
