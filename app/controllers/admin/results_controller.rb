@@ -4,7 +4,11 @@ module Admin
 
     # GET /admin/results
     def index
-      sort_column = params[:sort].presence_in(%w{ auctions.domain_name auctions.ends_at registration_due_date status users.id }) || "id"
+      sort_column = params[:sort].presence_in(%w{ auctions.domain_name
+                                                  auctions.ends_at
+                                                  registration_due_date
+                                                  status
+                                                  users.id }) || "auctions.ends_at"
       sort_direction = params[:direction].presence_in(%w{ asc desc }) || "desc"
 
       @results = Result.includes(:auction, offer: [:billing_profile])

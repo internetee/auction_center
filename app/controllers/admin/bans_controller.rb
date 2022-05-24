@@ -36,7 +36,7 @@ module Admin
 
     # GET /admin/bans
     def index
-      sort_column = params[:sort].presence_in(%w{ users.surname valid_from valid_until domain_name invoice_id }) || "id"
+      sort_column = params[:sort].presence_in(%w{ users.surname valid_from valid_until domain_name invoice_id }) || "users.surname"
       sort_direction = params[:direction].presence_in(%w{ asc desc }) || "desc"
 
       bans = Ban.includes(:user).search(params).order("#{sort_column} #{sort_direction}")

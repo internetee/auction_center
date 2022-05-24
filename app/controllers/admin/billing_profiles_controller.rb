@@ -6,7 +6,7 @@ module Admin
 
     # GET /admin/billing_profiles
     def index
-      sort_column = params[:sort].presence_in(%w{ users.surname name  vat_code }) || "id"
+      sort_column = params[:sort].presence_in(%w{ users.surname name  vat_code }) || "users.surname"
       sort_direction = params[:direction].presence_in(%w{ asc desc }) || "desc"
 
       billing_profiles = BillingProfile.accessible_by(current_ability)

@@ -80,7 +80,6 @@ class Result < ApplicationRecord
     self.with_domain_name(params[:domain_name]).with_status(params[:statuses_contains])
   end
 
-
   def winning_offer
     offer
   end
