@@ -10,16 +10,9 @@ class AuctionsController < ApplicationController
   # GET /auctions
   def index
     set_cors_header
-    sort_column = params[:sort].presence_in(%w{ domain_name ends_at platform users_price}) || "id"
-    sort_direction = params[:direction].presence_in(%w{ asc desc }) || "desc"
+    auctions = Auction.active.search(params).with_user_offers(current_user&.id)
 
-    @auctions = Auction
-                  .active
-                  .search(params)
-                  .with_user_offers(current_user&.id)
-                  .order(sort_column => sort_direction)
-
-    @pagy, @auctions = pagy(@auctions, items: params[:per_page] ||= 15, link_extra: 'data-turbo-action="advance"')
+    @pagy, @auctions = pagy(auctions, items: params[:per_page] ||= 15, link_extra: 'data-turbo-action="advance"')
   end
 
   # OPTIONS /auctions

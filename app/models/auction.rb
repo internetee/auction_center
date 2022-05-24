@@ -17,12 +17,12 @@ class Auction < ApplicationRecord
 
   enum platform: %i[blind english]
 
-  pg_search_scope :search_by_domain_name, against: [:domain_name],
-  using: {
-    tsearch: {
-      prefix: true
-    }
-  }
+  # pg_search_scope :search_by_domain_name, against: [:domain_name],
+  # using: {
+  #   tsearch: {
+  #     prefix: true
+  #   }
+  # }
 
   after_update_commit ->{
     broadcast_prepend_to 'auctions',
@@ -62,7 +62,8 @@ class Auction < ApplicationRecord
 
   scope :without_offers, -> { includes(:offers).where(offers: { auction_id: nil }) }
   scope :with_offers, -> { includes(:offers).where.not(offers: { auction_id: nil }) }
-  scope :with_domain_name, ->(domain_name) { search_by_domain_name(domain_name) if domain_name.present? }
+  # scope :with_domain_name, ->(domain_name) { search_by_domain_name(domain_name) if domain_name.present? }
+  scope :with_domain_name, ->(domain_name) { where("domain_name like ?", "%#{domain_name}%") if domain_name.present? }
   scope :with_type, ->(type) do
     if type.present?
       return where(platform: [type, nil]) if type == "0"
@@ -81,12 +82,17 @@ class Auction < ApplicationRecord
   delegate :size, to: :offers, prefix: true
 
   def self.search(params={})
+    sort_column = params[:sort].presence_in(%w{ domain_name ends_at platform users_price}) || "domain_name"
+    sort_direction = params[:direction].presence_in(%w{ asc desc }) || "desc"
+
     self.with_highest_offers
         .with_domain_name(params[:domain_name])
         .with_type(params[:type])
         .with_starts_at(params[:starts_at])
         .with_ends_at(params[:ends_at])
         .with_starts_at_nil(params[:starts_at_nil])
+        .order("#{sort_column} #{sort_direction}")
+
   end
 
   def does_not_overlap

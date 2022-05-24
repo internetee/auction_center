@@ -24,7 +24,7 @@ class Ban < ApplicationRecord
       billing_profile = BillingProfile.where('name ILIKE ?', "%#{search_string}%").all
       user_ids = (users.ids + [billing_profile.select(:user_id)]).uniq
 
-      where(user_id: user_ids).uniq
+      where(user_id: user_ids)
     end
   }
 
