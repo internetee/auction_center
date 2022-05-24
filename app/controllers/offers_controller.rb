@@ -41,11 +41,13 @@ class OffersController < ApplicationController
 
   # GET /offers
   def index
-    @offers = Offer.includes(:auction)
+    offers = Offer.includes(:auction)
                    .includes(:result)
                    .where(user_id: current_user)
                    .order('auctions.ends_at DESC')
-                   .page(params[:page])
+
+    @pagy, @offers = pagy(offers, items: params[:per_page] ||= 15)
+                  #  .page(params[:page])
   end
 
   # GET /offers/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
@@ -86,8 +88,8 @@ class OffersController < ApplicationController
   end
 
   def create_predicate
-    captcha_predicate = true
-    # captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
+    # captcha_predicate = true
+    captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
     captcha_predicate && @offer.save && @offer.reload
   end
 
@@ -96,8 +98,8 @@ class OffersController < ApplicationController
   end
 
   def update_predicate
-    captcha_predicate = true
-    # captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
+    # captcha_predicate = true
+    captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
     captcha_predicate && @offer.update(update_params)
   end
 

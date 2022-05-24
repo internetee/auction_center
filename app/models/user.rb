@@ -46,6 +46,21 @@ class User < ApplicationRecord
   scope :subscribed_to_daily_summary, -> { where(daily_summary: true) }
   scope :with_confirmed_phone, -> { where.not(mobile_phone_confirmed_at: nil) }
 
+  scope :with_search_scope, -> (origin) {
+    if origin.present?
+      self.where('email ILIKE ? OR surname ILIKE ? OR given_names ILIKE ? ' \
+                'OR mobile_phone ILIKE ?',
+                "%#{origin}%", "%#{origin}%", "%#{origin}%",
+                "%#{origin}%")
+    end
+  }
+
+
+  def self.search(params={})
+    self.with_search_scope(params[:search_string])
+  end
+
+
   def identity_code_must_be_valid_for_estonia
     return if IdentityCode.new(country_code, identity_code).valid?
 

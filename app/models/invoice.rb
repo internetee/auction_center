@@ -30,6 +30,29 @@ class Invoice < ApplicationRecord
 
   before_create :set_invoice_number
 
+  scope :with_search_scope, ->(origin) {
+    if origin.present?
+      if numeric?(origin)
+        self.where('number = ?', origin)
+      else
+        self.joins(:user)
+            .joins(:billing_profile)
+            .joins(:invoice_items)
+            .where('billing_profiles.name ILIKE ? OR ' \
+                  'users.email ILIKE ? OR users.surname ILIKE ? OR ' \
+                  'invoice_items.name ILIKE ?',
+                    "%#{origin}%",
+                    "%#{origin}%",
+                    "%#{origin}%",
+                    "%#{origin}%")
+      end
+    end
+  }
+
+  scope :with_statuses, ->(statuses) {
+    self.where(status: [statuses]) if statuses.present?
+  }
+
   scope :overdue, -> { where('due_date < ? AND status = ?', Time.zone.today, statuses[:issued]) }
 
   scope :pending_payment_reminder,
@@ -37,6 +60,10 @@ class Invoice < ApplicationRecord
           where('due_date = ? AND status = ?',
                 Time.zone.today + number_of_days, statuses[:issued])
         }
+
+  def self.search(params={})
+    self.with_search_scope(params[:search_string]).with_statuses(params[:statuses_contains])
+  end
 
   def self.create_from_result(result_id)
     result = Result.find_by(id: result_id)
@@ -182,6 +209,16 @@ class Invoice < ApplicationRecord
     self.paid_at = time
     self.vat_rate = billing_profile.present? ? billing_profile.vat_rate : vat_rate
     self.paid_amount = total
+  end
+
+  def self.numeric?(string)
+    return true if string =~ /\A\d+\Z/
+
+    begin
+      true if Float(string)
+    rescue StandardError
+      false
+    end
   end
 end
 # rubocop:enable Metrics/ClassLength

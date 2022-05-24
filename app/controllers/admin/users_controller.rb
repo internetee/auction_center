@@ -15,23 +15,29 @@ module Admin
 
     # GET /admin/users
     def index
-      @users = User.order(orderable_array(default_order_params))
-                   .page(params[:page])
+      sort_column = params[:sort].presence_in(%w{ surname mobile_phone email roles }) || "id"
+      sort_direction = params[:direction].presence_in(%w{ asc desc }) || "desc"
+
+      users = User.accessible_by(current_ability).search(params).order("#{sort_column} #{sort_direction}")
+
+      @pagy, @users = pagy(users, items: params[:per_page] ||= 15)
+                  #  .order(orderable_array(default_order_params))
+                  #  .page(params[:page])
     end
 
     # GET /admin/users/search
-    def search
-      search_string = search_params[:search_string]
-      @origin = search_string || search_params.dig(:order, :origin)
+    # def search
+    #   search_string = search_params[:search_string]
+    #   @origin = search_string || search_params.dig(:order, :origin)
 
-      @users = User.where('email ILIKE ? OR surname ILIKE ? OR given_names ILIKE ? ' \
-                          'OR mobile_phone ILIKE ?',
-                          "%#{@origin}%", "%#{@origin}%", "%#{@origin}%",
-                          "%#{@origin}%")
-                   .accessible_by(current_ability)
-                   .order(orderable_array)
-                   .page(1)
-    end
+    #   @users = User.where('email ILIKE ? OR surname ILIKE ? OR given_names ILIKE ? ' \
+    #                       'OR mobile_phone ILIKE ?',
+    #                       "%#{@origin}%", "%#{@origin}%", "%#{@origin}%",
+    #                       "%#{@origin}%")
+    #                .accessible_by(current_ability)
+    #                .order(orderable_array)
+    #                .page(1)
+    # end
 
     # POST /admin/users
     def create
