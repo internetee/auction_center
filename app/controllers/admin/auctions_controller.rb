@@ -39,7 +39,6 @@ module Admin
                                                   platform}) || "id"
       sort_direction = params[:direction].presence_in(%w{ asc desc }) || "desc"
 
-      # .search(params).order(sort_column => sort_direction)
       collection_one = Auction.where.not('ends_at <= ?', Time.zone.now).pluck(:id)
       collection_two = Auction.where(starts_at: nil).pluck(:id)
       collection = Auction.where(id: collection_one + collection_two).search(params).order(sort_column => sort_direction)
@@ -117,11 +116,6 @@ module Admin
         first_row[7] == 'platform'
     end
 
-    def search_params
-      search_params_copy = params.dup
-      search_params_copy.permit(:domain_name, order: :origin)
-    end
-
     def create_params
       params.require(:auction).permit(:domain_name, :starts_at, :ends_at)
     end
@@ -132,10 +126,6 @@ module Admin
 
     def set_auction
       @auction = Auction.find(params[:id])
-    end
-
-    def default_order_params
-      { 'auctions.starts_at' => 'desc' }
     end
   end
 end

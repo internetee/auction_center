@@ -26,11 +26,6 @@ class AuctionsController < ApplicationController
 
   private
 
-  def search_params
-    search_params_copy = params.dup
-    search_params_copy.permit(:domain_name)
-  end
-
   def set_cors_header
     response.headers['Access-Control-Allow-Origin'] = request.headers['Origin']
   end

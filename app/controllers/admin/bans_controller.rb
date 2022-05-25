@@ -40,11 +40,6 @@ module Admin
 
     private
 
-    def search_params
-      search_params_copy = params.dup
-      search_params_copy.permit(:search_string, order: :origin)
-    end
-
     def set_ban
       @ban = Ban.find(params[:id])
     end
@@ -55,10 +50,6 @@ module Admin
 
     def authorize_user
       authorize! :manage, Ban
-    end
-
-    def default_order_params
-      { 'bans.valid_from' => 'desc' }
     end
   end
 end

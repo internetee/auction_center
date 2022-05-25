@@ -20,12 +20,6 @@ Rails.application.routes.draw do
     resources :versions, only: :index
   end
 
-  concern :searchable do
-    collection do
-      get 'search'
-    end
-  end
-
   match 'profile/edit', via: :get, to: 'users#edit_authwall', as: :user_edit_authwall
   match '/profile/toggle_subscription', via: :get, to: 'users#toggle_subscription',
         as: :user_toggle_sub
@@ -36,27 +30,26 @@ Rails.application.routes.draw do
   end
 
   namespace :admin, constraints: Constraints::Administrator.new do
-    # resources :auctions, except: disallowed_auction_actions, concerns: %i[auditable searchable] do
-      resources :auctions, concerns: %i[auditable searchable] do
-      collection do
-        post 'bulk_starts_at', to: 'auctions#bulk_starts_at', as: 'bulk_starts_at'
-      end
+    resources :auctions, concerns: %i[auditable] do
+    collection do
+      post 'bulk_starts_at', to: 'auctions#bulk_starts_at', as: 'bulk_starts_at'
     end
+  end
 
-    resources :bans, except: %i[new show edit update], concerns: %i[auditable searchable]
+    resources :bans, except: %i[new show edit update], concerns: %i[auditable]
     resources :statistics, only: :index
-    resources :billing_profiles, only: %i[index show], concerns: %i[auditable searchable]
-    resources :invoices, except: %i[new create destroy], concerns: %i[auditable searchable] do
+    resources :billing_profiles, only: %i[index show], concerns: %i[auditable]
+    resources :invoices, except: %i[new create destroy], concerns: %i[auditable] do
       member do
         get 'download'
       end
     end
     resources :jobs, only: %i[index create]
     resources :offers, only: [:show], concerns: [:auditable]
-    resources :results, only: %i[index create show], concerns: %i[auditable searchable]
+    resources :results, only: %i[index create show], concerns: %i[auditable]
 
     resources :settings, except: %i[create destroy], concerns: [:auditable]
-    resources :users, concerns: %i[auditable searchable]
+    resources :users, concerns: %i[auditable]
   end
 
   devise_scope :user do
@@ -69,7 +62,7 @@ Rails.application.routes.draw do
   devise_for :users, path: 'sessions',
                      controllers: { confirmations: 'email_confirmations', sessions: 'auth/sessions' }
 
-  resources :auctions, only: %i[index show], param: :uuid, concerns: [:searchable] do
+  resources :auctions, only: %i[index show], param: :uuid do
     resources :offers, only: %i[new show create edit update destroy], shallow: true, param: :uuid
     resources :english_offers, only: %i[new show create edit update destroy], shallow: true, param: :uuid
   end

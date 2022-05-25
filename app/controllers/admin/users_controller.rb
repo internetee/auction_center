@@ -21,23 +21,7 @@ module Admin
       users = User.accessible_by(current_ability).search(params).order("#{sort_column} #{sort_direction}")
 
       @pagy, @users = pagy(users, items: params[:per_page] ||= 15)
-                  #  .order(orderable_array(default_order_params))
-                  #  .page(params[:page])
     end
-
-    # GET /admin/users/search
-    # def search
-    #   search_string = search_params[:search_string]
-    #   @origin = search_string || search_params.dig(:order, :origin)
-
-    #   @users = User.where('email ILIKE ? OR surname ILIKE ? OR given_names ILIKE ? ' \
-    #                       'OR mobile_phone ILIKE ?',
-    #                       "%#{@origin}%", "%#{@origin}%", "%#{@origin}%",
-    #                       "%#{@origin}%")
-    #                .accessible_by(current_ability)
-    #                .order(orderable_array)
-    #                .page(1)
-    # end
 
     # POST /admin/users
     def create
@@ -91,11 +75,6 @@ module Admin
 
     private
 
-    def search_params
-      search_params_copy = params.dup
-      search_params_copy.permit(:search_string, order: :origin)
-    end
-
     def create_params
       params.require(:user)
             .permit(:email, :password, :password_confirmation, :identity_code, :country_code,
@@ -122,10 +101,6 @@ module Admin
 
     def set_phone_confirmation_toggle
       @phone_confirmation_toggle = Setting.find_by(code: 'require_phone_confirmation').retrieve
-    end
-
-    def default_order_params
-      { 'users.created_at' => 'desc' }
     end
   end
 end
