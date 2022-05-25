@@ -47,7 +47,7 @@ class Result < ApplicationRecord
     end
   end
 
-  scope :with_status, ->(status) { where(status: status) if status.present? }
+  scope :with_status, ->(status) { where(status: [status]) if status.present? }
 
   scope :pending_registration_everyday_reminder, lambda {
     without_current_reminders

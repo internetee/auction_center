@@ -11,9 +11,11 @@
           <%= f.text_field :domain_name, placeholder: t('search_by_domain_name') %>
         </div>
         <div class="field">
-          <%= select_tag :statuses_contains,
-                    options_for_select(Result.statuses, params[:statuses_contains]), 
-                    { multiple: true, class: 'ui selection dropdown', prompt: t('admin.results.index.status') }%>
+          <div style="min-width: 250px;">
+            <%= select_tag :statuses_contains,
+                      options_for_select(Result.statuses, params[:statuses_contains]), 
+                      { multiple: true, class: 'ui selection dropdown', prompt: t('admin.results.index.status') }%>
+          </div>
         </div>
         <div class="field">
           <%= f.button(class: "ui icon primary button") do %>
