@@ -42,6 +42,9 @@ group :development, :test do
   gem 'bullet'
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'pry'
+
+  # https://github.com/rubocop/rubocop-performance
+  gem 'rubocop-performance', require: false
 end
 
 group :development do
