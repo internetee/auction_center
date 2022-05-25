@@ -99,10 +99,12 @@
             </tbody>
         </table>
 
+        <div style="margin-top:10px; text-align: center;">
         <% if @pagy.pages > 1 %>
             <div class="footer">
                 <%== pagy_nav(@pagy) %>
             </div>
         <% end %>
+        </div>
     </div>
 </div>

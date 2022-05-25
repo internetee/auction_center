@@ -63,13 +63,14 @@
             </tbody>
         </table>
 
-        <%#= paginate @users %>
+    <div style="margin-top:10px; text-align: center;">
     <% if @pagy.pages > 1 %>
         <div class="footer">
           <%== pagy_nav(@pagy) %>
         </div>
       <% end %>
         <br><br>
+    </div>
 
         <p><%= link_to t('.new_user'), new_admin_user_path, class: "ui button primary" %></p>
     </div>

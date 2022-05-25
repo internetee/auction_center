@@ -58,13 +58,13 @@
             </table>
         </div>
 
-        <div class="column">
+        <div class="column" style="margin-top:10px; text-align: center;">
             <% if @pagy.pages > 1 %>
                 <div class="footer">
                     <%== pagy_nav(@pagy) %>
                 </div>
             <% end %>
-            <%#= paginate @offers %>
+
         </div>
     </div>
 </div>
