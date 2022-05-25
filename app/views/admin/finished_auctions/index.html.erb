@@ -23,6 +23,9 @@
                 <%= form.label :type, 'Select type of auction' %>
                 <%= form.select :type, options_for_select(Auction.platforms, selected: params[:type]), {include_blank: 'All'}, {class: '' } %>
               </div>
+              <div class="field">
+                <%= link_to 'Clear', request.path, class: 'ui primary button' %>
+              </div>
             </div>
           <% end %>
         </div>

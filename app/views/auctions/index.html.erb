@@ -11,7 +11,6 @@
 <div class="features-grid top narrow grey">
     <div class="ui search">
         <div class="ui massive input icon">
-            <%#= form_with(url: auctions_path, local: true, method: :get) do |f| %>
             <%= form_with url: auctions_path, 
                     method: :get,
                     data: { controller: 'debounce',
@@ -31,6 +30,9 @@
         </div>
             <%= daily_summary_link %>
     </div>
+    <div class="field">
+        <%= link_to 'Clear', request.path, class: 'ui primary button' %>
+    </div>
 </div>
 
 <div class="u-container">
@@ -43,22 +45,18 @@
                         <tr>
                             <th>
                                 <%= t('auctions.domain_name') %>
-                                <%#= order_buttons('participant_auction_decorators.domain_name') %>
                                 <%= sort_link_to "", "domain_name" %>
                             </th>
                             <th>
                                 <%= t('auctions.ends_at') %>
-                                <%#= order_buttons('participant_auction_decorators.ends_at') %>
                                 <%= sort_link_to "", "ends_at" %>
                             </th>
                             <th>
                                 <%= t('auctions.auction_type') %>
-                                <%#= order_buttons('participant_auction_decorators.platform') %>
                                 <%= sort_link_to "", "platform" %>
                             </th>
                             <th class="auctions-table-cell-name-no-mobile">
                                 <%= t('auctions.your_current_price') %>
-                                <%#= order_buttons('participant_auction_decorators.users_offer_cents') %>
                                 <%= sort_link_to "", "users_offer_cents" %>
                             </th>
                             <th class="auctions-table-cell-name-no-mobile center aligned five wide"><%= t('auctions.offer_actions') %></th>
