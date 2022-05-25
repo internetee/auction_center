@@ -1,8 +1,5 @@
 class AuctionsController < ApplicationController
   include OrderableHelper
-  include PagyHelper
-
-  include Pagy::Backend
 
   skip_before_action :verify_authenticity_token, only: [:cors_preflight_check]
   before_action :authorize_user

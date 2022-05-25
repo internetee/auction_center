@@ -1,9 +1,5 @@
 class Admin::FinishedAuctionsController < ApplicationController
   before_action :authorize_user
-  include PagyHelper
-
-  include Pagy::Backend
-  # before_action :set_auction, only: %i[show destroy]
 
   def index
     sort_column = params[:sort].presence_in(%w{ domain name }) || "id"

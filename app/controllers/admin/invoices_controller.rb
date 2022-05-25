@@ -28,38 +28,6 @@ module Admin
       @pagy, @invoices = pagy(invoices, items: params[:per_page] ||= 15)
     end
 
-    # GET /admin/invoices/search
-<<<<<<< HEAD
-    def search
-      @_params = search_params.compact_blank
-      @origin = @_params[:order].present? ? @_params.dig(:order, :origin) : @_params
-      @full_list = @_params[:full_list] || @_params.dig(:order, :origin, :full_list)
-      @search_string = @_params[:search_string] || @_params.dig(:order, :origin, :search_string)
-      @statuses_contains = @_params[:statuses_contains] || @_params.dig(:order, :origin,
-                                                                        :statuses_contains)
-=======
-    # def search
-    #   search_string = search_params[:search_string]
-    #   statuses_contains = params[:statuses_contains]
-    #   @origin = search_string || search_params.dig(:order, :origin)
->>>>>>> change pagination type, change logic in search and in order with filtering
-
-    #   set_invoices_search_scope
-
-<<<<<<< HEAD
-      return paginate_result if @statuses_contains.nil?
-
-      statuses_filter(@statuses_contains)
-      paginate_result
-    end
-=======
-    #   return paginate_result if statuses_contains.nil?
-
-    #   statuses_filter(statuses_contains)
-    #   paginate_result
-    # end
->>>>>>> change pagination type, change logic in search and in order with filtering
-
     def search_scope(origin)
       return Invoice if origin.nil?
 
