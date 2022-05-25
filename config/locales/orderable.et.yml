@@ -1,5 +1,0 @@
-et:
-  orderable:
-    errors:
-      not_orderable: "Not orderable"
-      not_a_valid_order_direction: "Not a valid order direction"

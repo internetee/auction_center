@@ -3,8 +3,6 @@ class Auction < ApplicationRecord
 
   after_create :find_auction_turns
   validates :domain_name, presence: true
-  # validates :ends_at, presence: true
-  # validates :starts_at, presence: true
 
   attr_accessor :skip_broadcast
 
@@ -16,13 +14,6 @@ class Auction < ApplicationRecord
   has_one :result, required: false, dependent: :destroy
 
   enum platform: %i[blind english]
-
-  # pg_search_scope :search_by_domain_name, against: [:domain_name],
-  # using: {
-  #   tsearch: {
-  #     prefix: true
-  #   }
-  # }
 
   after_update_commit ->{
     broadcast_prepend_to 'auctions',
@@ -62,7 +53,6 @@ class Auction < ApplicationRecord
 
   scope :without_offers, -> { includes(:offers).where(offers: { auction_id: nil }) }
   scope :with_offers, -> { includes(:offers).where.not(offers: { auction_id: nil }) }
-  # scope :with_domain_name, ->(domain_name) { search_by_domain_name(domain_name) if domain_name.present? }
   scope :with_domain_name, ->(domain_name) { where("domain_name like ?", "%#{domain_name}%") if domain_name.present? }
   scope :with_type, ->(type) do
     if type.present?
@@ -92,7 +82,6 @@ class Auction < ApplicationRecord
         .with_ends_at(params[:ends_at])
         .with_starts_at_nil(params[:starts_at_nil])
         .order("#{sort_column} #{sort_direction}")
-
   end
 
   def does_not_overlap
@@ -233,10 +222,6 @@ class Auction < ApplicationRecord
 
   def self.with_highest_offers
     Auction.from(with_highest_offers_query)
-  end
-
-  def self.default_order_params
-    { 'auctions.starts_at' => 'desc' }
   end
 
   def self.with_highest_offers_query
