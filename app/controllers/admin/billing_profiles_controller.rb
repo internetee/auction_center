@@ -1,7 +1,5 @@
 module Admin
   class BillingProfilesController < BaseController
-    include OrderableHelper
-
     before_action :authorize_user
 
     # GET /admin/billing_profiles

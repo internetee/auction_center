@@ -1,7 +1,5 @@
 module Admin
   class ResultsController < BaseController
-    include OrderableHelper
-
     # GET /admin/results
     def index
       sort_column = params[:sort].presence_in(%w{ auctions.domain_name

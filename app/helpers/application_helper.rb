@@ -1,5 +1,6 @@
 module ApplicationHelper
   include PagyHelper
+  include OrderableHelper
 
   def application_name
     Rails.configuration.customization['application_name']

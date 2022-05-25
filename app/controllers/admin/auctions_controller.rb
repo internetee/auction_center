@@ -1,7 +1,5 @@
 module Admin
   class AuctionsController < BaseController
-    include OrderableHelper
-
     before_action :authorize_user
     before_action :set_auction, only: %i[show destroy]
 

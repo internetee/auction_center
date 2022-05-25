@@ -3,8 +3,6 @@ require 'invoice_already_paid'
 
 module Admin
   class InvoicesController < BaseController
-    include OrderableHelper
-
     before_action :authorize_user
     before_action :create_invoice_if_needed
     before_action :set_invoice, only: %i[show download update edit]

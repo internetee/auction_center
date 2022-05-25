@@ -1,7 +1,5 @@
 module Admin
   class BansController < BaseController
-    include OrderableHelper
-
     before_action :authorize_user
     before_action :set_ban, only: %i[show destroy]
 

@@ -1,6 +1,4 @@
 class AuctionsController < ApplicationController
-  include OrderableHelper
-
   skip_before_action :verify_authenticity_token, only: [:cors_preflight_check]
   before_action :authorize_user
 

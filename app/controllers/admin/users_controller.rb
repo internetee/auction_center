@@ -2,8 +2,6 @@ require 'countries'
 
 module Admin
   class UsersController < BaseController
-    include OrderableHelper
-
     before_action :authorize_user
     before_action :set_user, except: %i[index new create search]
     before_action :set_phone_confirmation_toggle, only: %i[index show]
