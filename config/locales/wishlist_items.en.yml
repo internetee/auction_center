@@ -10,6 +10,8 @@ en:
        in unicode format, e.g "internetpäev.ee". Diacritical signs are significant, päev.ee and
        paev.ee are not the same.
 
+      my_bid: "My bid"
+      my_bid_tooltip: "When filled this will be your bid made automatically when the domain is put in auction. You can change this any time until the end of the auction."
       notification_title: "Wait for notification"
       notification_description: |
         Once a domain from your wishlist goes to auction, we will send you an email.

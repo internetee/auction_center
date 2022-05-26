@@ -9,6 +9,8 @@ et:
       list_description: |
        Täpitähed on olulised - päev.ee ei ole sama mis paev.ee
 
+      my_bid: "Minu pakkumus"
+      my_bid_tooltip: "Sellele summale teeb süsteem teie nimel automaatselt pakkumise kohe kui vastav domeen läheb oksjonile. Saate oma pakkumist kuni oksjoni lõpuni vabalt muuta."
       notification_title: "Oota teadet"
       notification_description: |
         Saadame epostiga teate, kui soovitud domeeninimi läheb oksjonile.

@@ -56,7 +56,7 @@ et:
   my_offers: "Minu pakkumised"
   my_invoices: "Minu arved"
   my_wishlist: "Minu soovide nimekiri"
-  actions: "Actions"
+  actions: "Toimingud"
   job_enqueued: "Tegevus on järjekorras. Kontrolli tulemusi mõne minuti pärast."
 
   versions:
@@ -105,4 +105,3 @@ et:
       user:
         update: "Muuda mu parool"
         create: "Muuda mu parool"
-

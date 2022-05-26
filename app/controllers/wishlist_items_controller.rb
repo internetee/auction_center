@@ -40,9 +40,31 @@ class WishlistItemsController < ApplicationController
     @wishlist_item.save
   end
 
+  def update
+    price = params.require(:wishlist_item).permit(:price)[:price]
+    wishlist_item = WishlistItem.find_by(uuid: params[:uuid])
+    flash_update_status(wishlist_item, price)
+
+    redirect_to wishlist_items_path
+  end
+
   private
 
   def create_params
     params.require(:wishlist_item).permit(:user_id, :domain_name)
+  end
+
+  def flash_update_status(wishlist_item, price)
+    domain_name = wishlist_item.domain_name
+
+    if current_user.completely_banned?
+      flash[:alert] = I18n.t('auctions.banned_completely', valid_until: current_user.longest_ban.valid_until)
+    elsif current_user.bans.valid.pluck(:domain_name).include?(domain_name)
+      flash[:alert] = I18n.t('auctions.banned', domain_names: domain_name)
+    elsif wishlist_item.update(price: price)
+      flash[:notice] = price.to_i.zero? ? I18n.t('deleted') : I18n.t('created')
+    else
+      flash[:alert] = I18n.t('something_went_wrong')
+    end
   end
 end

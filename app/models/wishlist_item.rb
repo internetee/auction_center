@@ -7,6 +7,7 @@ class WishlistItem < ApplicationRecord
   before_validation :autocomplete_domain_extension
 
   validates :domain_name, uniqueness: { scope: :user_id }
+  validates :cents, numericality: { only_integer: true, greater_than: 0 }, allow_nil: true
 
   # 1) Allows 1 to 61 characters with Estonian diacritic signs as domain name / third-level domain.
   # 2) 1 to 61 chars with Estonian diacritic signs as second-level domain (optional) and 1 to 61
@@ -45,11 +46,16 @@ class WishlistItem < ApplicationRecord
 
   # Can safely return zero if user_id is unset, without it the whole object is invalid.
   def number_of_items_for_user
-    if user_id
-      WishlistItem.for_user(user_id).count
-    else
-      0
-    end
+    user_id ? WishlistItem.for_user(user_id).count : 0
+  end
+
+  def price
+    Money.new(cents, Setting.find_by(code: 'auction_currency').retrieve)
+  end
+
+  def price=(value)
+    price = Money.from_amount(value.to_d, Setting.find_by(code: 'auction_currency').retrieve)
+    self.cents = price.cents.positive? ? price.cents : nil
   end
 
   private
@@ -65,12 +71,8 @@ class WishlistItem < ApplicationRecord
 
   # Validate that FQDN has supported extension
   def valid_domain_extension
-    return if Setting.find_by(code: 'wishlist_supported_domain_extensions').retrieve.empty?
-    if Setting.find_by(code: 'wishlist_supported_domain_extensions').retrieve.include?(
-      domain_name.split('.', 2).last
-    )
-      return
-    end
+    domain_extension = Setting.find_by(code: 'wishlist_supported_domain_extensions').retrieve
+    return if domain_extension.empty? || domain_extension.include?(domain_name.split('.', 2).last)
 
     errors.add(:domain_name, :invalid) if errors[:domain_name].blank?
   end
