@@ -1,3 +1,6 @@
+26.05.2022
+* New whislist auto-bid price feature [#893](https://github.com/internetee/auction_center/issues/893)
+
 16.05.2022
 * Invoice search and filtering fix for admin [#873](https://github.com/internetee/auction_center/issues/873)
 
