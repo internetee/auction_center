@@ -54,6 +54,7 @@ module Registry
         auction.platform = auction_type
         auction.starts_at = nil
         auction.ends_at = nil
+        auction.skip_broadcast = true
 
         if auction_type == :blind
           auction.starts_at = auction_starts_at

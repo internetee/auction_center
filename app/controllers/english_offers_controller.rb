@@ -28,9 +28,9 @@ class EnglishOffersController < ApplicationController
     @offer = Offer.new(create_params)
     authorize! :manage, @offer
 
-    if create_predicate
-      update_minimum_bid_step(create_params[:price].to_f, auction)
-      update_ends_at(@offer, auction)
+    if create_predicate(auction)
+      auction.update_ends_at(@offer)
+
       flash[:notice] = 'Offer submitted successfully.'
       redirect_to edit_english_offer_path(@offer.uuid)
     else
@@ -51,19 +51,18 @@ class EnglishOffersController < ApplicationController
 
     unless additional_check_for_bids(auction, update_params[:price])
       flash[:alert] = "Bid failed, current price is #{auction.highest_price.to_f}"
-
       redirect_to edit_english_offer_path(auction.users_offer_uuid) and return
     end
 
     unless check_bids_for_english_auction(update_params, auction)
       flash[:alert] = "Bid failed, current price is #{auction.highest_price.to_f}"
-
       redirect_to edit_english_offer_path(auction.users_offer_uuid) and return
     end
 
-    if update_predicate
-      update_minimum_bid_step(update_params[:price].to_f, auction)
-      update_ends_at(@offer, auction)
+    if update_predicate(auction)
+      EnglishAutobiderJob.perform_now(auction.id) unless @offer.skip_autobider
+      auction.update_ends_at(@offer)
+
       flash[:notice] = 'Bid updated'
       redirect_to edit_english_offer_path(@offer.uuid)
     else
@@ -84,10 +83,10 @@ class EnglishOffersController < ApplicationController
     @captcha_required = current_user.requires_captcha?
   end
 
-  def create_predicate
+  def create_predicate(auction)
     # captcha_predicate = true
     captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
-    captcha_predicate && @offer.save && @offer.reload
+    captcha_predicate && @offer.save && auction.update_minimum_bid_step(create_params[:price].to_f) && @offer.reload
   end
 
   def create_params
@@ -112,44 +111,10 @@ class EnglishOffersController < ApplicationController
     price >= minimum
   end
 
-  def update_predicate
+  def update_predicate(auction)
     # captcha_predicate = true
     captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
-    captcha_predicate && @offer.update(update_params) && @offer.reload
-  end
-
-  def update_ends_at(offer, auction)
-    updated_at = offer.updated_at
-    ends_at = auction.ends_at
-    slipping_time = auction.slipping_end
-
-    difference_time = ends_at.to_time - updated_at.to_time
-    if (difference_time / 60).to_f.round(2) > 0.0 && (difference_time / 60).to_f.round(2) < slipping_time.to_f
-      surplus_time = slipping_time.to_f - (difference_time / 60).to_f.round(2)
-      new_deadline = ends_at + surplus_time.minutes
-      auction.update(ends_at: new_deadline)
-    end
-  end
-
-  def update_minimum_bid_step(bid, auction)
-    update_value = 0.01
-
-    if bid < 1.0
-      update_value
-    elsif bid >= 1.0 && bid < 10.0
-      update_value = update_value * 10
-    elsif bid >= 10.0 && bid < 100.0
-      update_value = update_value * 100
-    elsif bid >= 100.0 && bid < 1000.0
-      update_value = update_value * 1000
-    elsif bid >= 1000.0 && bid < 10000.0
-      update_value = update_value * 10000
-    elsif bid >= 10000.0 && bid < 100000.0
-      update_value = update_value * 100000
-    end
-
-    auction.min_bids_step = bid + update_value
-    auction.save!
+    captcha_predicate && @offer.update(update_params) && auction.update_minimum_bid_step(create_params[:price].to_f) && @offer.reload
   end
 
   def update_params

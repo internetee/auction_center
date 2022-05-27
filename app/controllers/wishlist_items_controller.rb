@@ -9,7 +9,7 @@ class WishlistItemsController < ApplicationController
   end
 
   def create
-    @wishlist_item = WishlistItem.new(create_params)
+    @wishlist_item = WishlistItem.new(strong_params)
 
     respond_to do |format|
       if create_predicate
@@ -41,30 +41,41 @@ class WishlistItemsController < ApplicationController
   end
 
   def update
-    price = params.require(:wishlist_item).permit(:price)[:price]
     wishlist_item = WishlistItem.find_by(uuid: params[:uuid])
-    flash_update_status(wishlist_item, price)
+    domain_name = wishlist_item.domain_name
+
+    if current_user.completely_banned?
+      flash[:alert] = I18n.t('auctions.banned_completely', valid_until: current_user.longest_ban.valid_until)
+      redirect_to wishlist_items_path and return
+    end
+
+    if current_user.bans.valid.pluck(:domain_name).include?(domain_name)
+      flash[:alert] = I18n.t('auctions.banned', domain_names: domain_name)
+      redirect_to wishlist_items_path and return
+    end
+
+    highest_bid = strong_params[:maximum_bid] || 0
+    highest_bid = Money.from_amount(highest_bid.to_d, Setting.find_by(code: 'auction_currency').retrieve)
+    highest_bid = highest_bid.cents.positive? ? highest_bid.cents : nil
+    starting_price = wishlist_item.cents || 0
+
+    if highest_bid.to_i < starting_price
+      flash[:alert] = "Highest bid can't be less than starting price!"
+      redirect_to wishlist_items_path and return
+    end
+
+    if wishlist_item.update(strong_params)
+      flash[:notice] = 'Updated'
+    else
+      flash[:alert] = I18n.t('something_went_wrong')
+    end
 
     redirect_to wishlist_items_path
   end
 
   private
 
-  def create_params
-    params.require(:wishlist_item).permit(:user_id, :domain_name)
-  end
-
-  def flash_update_status(wishlist_item, price)
-    domain_name = wishlist_item.domain_name
-
-    if current_user.completely_banned?
-      flash[:alert] = I18n.t('auctions.banned_completely', valid_until: current_user.longest_ban.valid_until)
-    elsif current_user.bans.valid.pluck(:domain_name).include?(domain_name)
-      flash[:alert] = I18n.t('auctions.banned', domain_names: domain_name)
-    elsif wishlist_item.update(price: price)
-      flash[:notice] = price.to_i.zero? ? I18n.t('deleted') : I18n.t('created')
-    else
-      flash[:alert] = I18n.t('something_went_wrong')
-    end
+  def strong_params
+    params.require(:wishlist_item).permit(:user_id, :domain_name, :price, :maximum_bid)
   end
 end

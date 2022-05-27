@@ -40,7 +40,7 @@ class Auction < ApplicationRecord
     broadcast_replace_to 'auction_min',
                           target: "auction_timer",
                           partial: 'english_offers/timer',
-                          locals: { auction: self } }
+                          locals: { auction: self } }, unless: :skip_broadcast
 
   scope :active, -> { where('starts_at <= ? AND ends_at >= ?', Time.now.utc, Time.now.utc) }
   scope :without_result, lambda {
@@ -103,6 +103,37 @@ class Auction < ApplicationRecord
     return unless offers.any?
 
     offers.order(cents: :desc).limit(1).first.price
+  end
+
+  def update_ends_at(offer)
+    difference_time = self.ends_at.to_time - offer.updated_at.to_time
+
+    if (difference_time / 60).to_f.round(2) > 0.0 && (difference_time / 60).to_f.round(2) < self.slipping_end.to_f
+      surplus_time = self.slipping_end.to_f - (difference_time / 60).to_f.round(2)
+      new_deadline = self.ends_at + surplus_time.minutes
+      auction.update(ends_at: new_deadline)
+    end
+  end
+
+  def update_minimum_bid_step(bid)
+    update_value = 0.01
+
+    if bid < 1.0
+      update_value
+    elsif bid >= 1.0 && bid < 10.0
+      update_value = update_value * 10
+    elsif bid >= 10.0 && bid < 100.0
+      update_value = update_value * 100
+    elsif bid >= 100.0 && bid < 1000.0
+      update_value = update_value * 1000
+    elsif bid >= 1000.0 && bid < 10000.0
+      update_value = update_value * 10000
+    elsif bid >= 10000.0 && bid < 100000.0
+      update_value = update_value * 100000
+    end
+
+    self.min_bids_step = bid + update_value
+    self.save!
   end
 
   # As the name suggests, this method return the offer that is currently the highest.

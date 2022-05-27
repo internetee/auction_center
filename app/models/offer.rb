@@ -25,6 +25,15 @@ class Offer < ApplicationRecord
                           partial: 'auctions/auction',
                           locals: { auction: Auction.with_user_offers(user.id).find_by(uuid: auction.uuid), current_user: self.user } }
 
+  attr_accessor :skip_autobider
+  # after_update :run_english_autobider, unless: :skip_autobider
+
+  def run_english_autobider
+    return unless self.auction.english?
+
+    EnglishAutobiderJob.perform_now(self.auction.id)
+  end
+
   def auction_must_be_active
     active_auction = Auction.active.find_by(id: auction_id)
     return if active_auction

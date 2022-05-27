@@ -1534,7 +1534,8 @@ CREATE TABLE public.wishlist_items (
     uuid uuid DEFAULT public.gen_random_uuid(),
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    cents integer
+    cents integer,
+    highest_bid integer
 );
 
 
@@ -1712,7 +1713,6 @@ ALTER TABLE ONLY public.invoices ALTER COLUMN id SET DEFAULT nextval('public.inv
 
 
 --
--- Name: invoices number; Type: DEFAULT; Schema: public; Owner: -
 -- Name: invoices number_old; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2560,6 +2560,90 @@ CREATE INDEX index_wishlist_items_on_domain_name ON public.wishlist_items USING 
 --
 
 CREATE UNIQUE INDEX users_by_identity_code_and_country ON public.users USING btree (alpha_two_country_code, identity_code) WHERE ((alpha_two_country_code)::text = 'EE'::text);
+
+
+--
+-- Name: auctions process_auction_audit; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER process_auction_audit AFTER INSERT OR DELETE OR UPDATE ON public.auctions FOR EACH ROW EXECUTE PROCEDURE public.process_auction_audit();
+
+
+--
+-- Name: bans process_ban_audit; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER process_ban_audit AFTER INSERT OR DELETE OR UPDATE ON public.bans FOR EACH ROW EXECUTE PROCEDURE public.process_ban_audit();
+
+
+--
+-- Name: billing_profiles process_billing_profile_audit; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER process_billing_profile_audit AFTER INSERT OR DELETE OR UPDATE ON public.billing_profiles FOR EACH ROW EXECUTE PROCEDURE public.process_billing_profile_audit();
+
+
+--
+-- Name: invoices process_invoice_audit; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER process_invoice_audit AFTER INSERT OR DELETE OR UPDATE ON public.invoices FOR EACH ROW EXECUTE PROCEDURE public.process_invoice_audit();
+
+
+--
+-- Name: invoice_items process_invoice_item_audit; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER process_invoice_item_audit AFTER INSERT OR DELETE OR UPDATE ON public.invoice_items FOR EACH ROW EXECUTE PROCEDURE public.process_invoice_item_audit();
+
+
+--
+-- Name: invoice_payment_orders process_invoice_payment_order_audit; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER process_invoice_payment_order_audit AFTER INSERT OR DELETE OR UPDATE ON public.invoice_payment_orders FOR EACH ROW EXECUTE PROCEDURE public.process_invoice_payment_order_audit();
+
+
+--
+-- Name: offers process_offer_audit; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER process_offer_audit AFTER INSERT OR DELETE OR UPDATE ON public.offers FOR EACH ROW EXECUTE PROCEDURE public.process_offer_audit();
+
+
+--
+-- Name: payment_orders process_payment_order_audit; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER process_payment_order_audit AFTER INSERT OR DELETE OR UPDATE ON public.payment_orders FOR EACH ROW EXECUTE PROCEDURE public.process_payment_order_audit();
+
+
+--
+-- Name: results process_result_audit; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER process_result_audit AFTER INSERT OR DELETE OR UPDATE ON public.results FOR EACH ROW EXECUTE PROCEDURE public.process_result_audit();
+
+
+--
+-- Name: settings process_setting_audit; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER process_setting_audit AFTER INSERT OR DELETE OR UPDATE ON public.settings FOR EACH ROW EXECUTE PROCEDURE public.process_setting_audit();
+
+
+--
+-- Name: users process_user_audit; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER process_user_audit AFTER INSERT OR DELETE OR UPDATE ON public.users FOR EACH ROW EXECUTE PROCEDURE public.process_user_audit();
+
+
+--
+-- Name: wishlist_items process_wishlist_item_audit; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER process_wishlist_item_audit AFTER INSERT OR DELETE OR UPDATE ON public.wishlist_items FOR EACH ROW EXECUTE PROCEDURE public.process_wishlist_item_audit();
 
 
 --
