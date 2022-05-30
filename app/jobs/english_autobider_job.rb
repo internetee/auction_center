@@ -18,6 +18,9 @@ class EnglishAutobiderJob < ApplicationJob
       wishlist_instance = wishlist_items.first
       user_offer = Offer.find_by(auction_id: auction.id, user_id: wishlist_instance.user.id)
 
+      owner_of_last_offer = auction.offers.order(updated_at: :asc).last.user
+      return if owner_of_last_offer == wishlist_instance.user
+
       min_bid_step = auction.min_bids_step
       min_bid_step_translated = Money.from_amount(min_bid_step.to_d, Setting.find_by(code: 'auction_currency').retrieve)
 

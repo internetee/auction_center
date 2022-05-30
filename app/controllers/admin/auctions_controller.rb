@@ -88,9 +88,10 @@ module Admin
         auction.min_bids_step = auction.starting_price unless auctions_data[:starting_price].empty?
         auction.slipping_end = auctions_data[:slipping_end] unless auctions_data[:slipping_end].empty?
 
-        auction.save!
+        if auction.save!
+          SetHighestBidJob.perform_now(auction.id)
+        end
       end
-
       if skipped_auctions.empty?
         flash[:notice] = 'New value was set'
         redirect_to admin_auctions_path

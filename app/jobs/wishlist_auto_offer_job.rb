@@ -5,7 +5,10 @@ class WishlistAutoOfferJob < ApplicationJob
     return if item.cents.blank?
 
     auction = Auction.find(auction_id)
-    offer = Offer.create!(
+
+    return if auction.english?
+
+    Offer.create!(
       auction: auction,
       user: item.user,
       cents: item.cents,
