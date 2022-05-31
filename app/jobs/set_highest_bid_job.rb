@@ -78,7 +78,7 @@ class SetHighestBidJob < ApplicationJob
 
   def single_wishlist_participant(wishlist_instance:, auction:)
     return if wishlist_instance.cents.nil? && wishlist_instance.highest_bid.nil?
-    return if wishlist_instance.cents == 0 && wishlist_instance.highest_bid == 0
+    return if wishlist_instance.cents.zero? && wishlist_instance.highest_bid.zero?
 
     auction_starting_price = Money.from_amount(auction.starting_price).cents
 

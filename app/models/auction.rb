@@ -192,6 +192,7 @@ class Auction < ApplicationRecord
   end
 
   def in_progress?
+    return false if starts_at.nil?
     if valid?
       Time.now.utc > starts_at && !finished?
     else
