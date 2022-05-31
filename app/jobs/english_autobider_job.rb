@@ -1,6 +1,11 @@
 class EnglishAutobiderJob < ApplicationJob
-  def perform(auction_id)
+  def perform(auction_id, user_id)
+    p "YOU ARE HERE"
+    p "YOU ARE HERE"
+    p "YOU ARE HERE"
+
     auction = Auction.find(auction_id)
+    user = User.find(user_id)
     retrun unless auction.english?
 
     maximum_hight_offer_in_price = auction.offers.maximum(:cents)
@@ -25,7 +30,16 @@ class EnglishAutobiderJob < ApplicationJob
       min_bid_step_translated = Money.from_amount(min_bid_step.to_d, Setting.find_by(code: 'auction_currency').retrieve)
 
       if min_bid_step_translated.cents < wishlist_instance.highest_bid
-        user_offer.update!(cents: min_bid_step_translated.cents, skip_autobider: true)
+        if user_offer.nil?
+          Offer.create!(
+            auction: auction,
+            user: user,
+            cents: min_bid_step_translated.cents,
+            billing_profile: user.billing_profiles.first
+          )
+        else
+          user_offer.update!(cents: min_bid_step_translated.cents, skip_autobider: true)
+        end
         auction.update_minimum_bid_step(min_bid_step)
       else
         user_offer.update!(cents: wishlist_instance.highest_bid, skip_autobider: true)

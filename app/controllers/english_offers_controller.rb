@@ -29,6 +29,7 @@ class EnglishOffersController < ApplicationController
     authorize! :manage, @offer
 
     if create_predicate(auction)
+      EnglishAutobiderJob.perform_now(auction.id, current_user.id) unless @offer.skip_autobider
       auction.update_ends_at(@offer)
 
       flash[:notice] = 'Offer submitted successfully.'
@@ -60,7 +61,7 @@ class EnglishOffersController < ApplicationController
     end
 
     if update_predicate(auction)
-      EnglishAutobiderJob.perform_now(auction.id) unless @offer.skip_autobider
+      EnglishAutobiderJob.perform_now(auction.id, current_user.id) unless @offer.skip_autobider
       auction.update_ends_at(@offer)
 
       flash[:notice] = 'Bid updated'

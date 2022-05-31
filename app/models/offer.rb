@@ -28,11 +28,11 @@ class Offer < ApplicationRecord
   attr_accessor :skip_autobider
   # after_update :run_english_autobider, unless: :skip_autobider
 
-  def run_english_autobider
-    return unless self.auction.english?
+  # def run_english_autobider
+  #   return unless self.auction.english?
 
-    EnglishAutobiderJob.perform_now(self.auction.id)
-  end
+  #   EnglishAutobiderJob.perform_now(self.auction.id, nil)
+  # end
 
   def auction_must_be_active
     active_auction = Auction.active.find_by(id: auction_id)

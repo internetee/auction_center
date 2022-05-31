@@ -12,17 +12,21 @@ class SetHighestBidJob < ApplicationJob
     end
 
     if wishlist_items.empty?
-      first_bid_for_multiple_participants(auction: auction)
+      wishlist_items_collection = WishlistItem.where(domain_name: auction.domain_name).where.not(cents: nil).order(cents: :asc)
+      return if wishlist_items_collection.empty?
+
+      if wishlist_items_collection.size == 1
+        single_wishlist_participant(wishlist_instance: wishlist_items_collection.first, auction: auction)
+      else
+        first_bid_for_multiple_participants(auction: auction, wishlist_items_collection: wishlist_items_collection)
+      end
     end
   end
 
   private
 
-  def first_bid_for_multiple_participants(auction:)
-    wishlist_items_starting_price = WishlistItem.where(domain_name: auction.domain_name).where.not(cents: nil).order(cents: :asc)
-    return if wishlist_items_starting_price.empty? || wishlist_items_starting_price.size == 1
-
-    wishlist_instance = wishlist_items_starting_price.last
+  def first_bid_for_multiple_participants(auction:, wishlist_items_collection:)
+    wishlist_instance = wishlist_items_collection.last
 
     Offer.create!(
       auction: auction,
