@@ -42,6 +42,7 @@ class User < ApplicationRecord
   has_many :invoices, dependent: :nullify
   has_many :bans, dependent: :destroy
   has_many :wishlist_items, dependent: :destroy
+  has_many :autobiders, dependent: :destroy
 
   scope :subscribed_to_daily_summary, -> { where(daily_summary: true) }
   scope :with_confirmed_phone, -> { where.not(mobile_phone_confirmed_at: nil) }

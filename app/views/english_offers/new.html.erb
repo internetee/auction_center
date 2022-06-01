@@ -21,5 +21,7 @@
         <% end %>
 
         <%= render 'form', offer: @offer, url: auction_english_offers_path(auction_uuid: params[:auction_uuid]), data: { turbo: false } %>
+        <% url = @autobider.new_record? ? autobider_index_path : autobider_path(uuid: @autobider.uuid)  %>
+        <%= render partial: 'autobider', locals: { offer: @offer, autobider: @autobider, url: url } %>
     </div>
 </div>

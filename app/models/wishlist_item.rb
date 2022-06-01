@@ -54,19 +54,19 @@ class WishlistItem < ApplicationRecord
     Money.new(cents, Setting.find_by(code: 'auction_currency').retrieve)
   end
 
-  def maximum_bid
-    Money.new(highest_bid, Setting.find_by(code: 'auction_currency').retrieve)
-  end
+  # def maximum_bid
+  #   Money.new(highest_bid, Setting.find_by(code: 'auction_currency').retrieve)
+  # end
 
   def price=(value)
     price = Money.from_amount(value.to_d, Setting.find_by(code: 'auction_currency').retrieve)
     self.cents = price.cents.positive? ? price.cents : nil
   end
 
-  def maximum_bid=(value)
-    maximum_bid = Money.from_amount(value.to_d, Setting.find_by(code: 'auction_currency').retrieve)
-    self.highest_bid = maximum_bid.cents.positive? ? maximum_bid.cents : nil
-  end
+  # def maximum_bid=(value)
+  #   maximum_bid = Money.from_amount(value.to_d, Setting.find_by(code: 'auction_currency').retrieve)
+  #   self.highest_bid = maximum_bid.cents.positive? ? maximum_bid.cents : nil
+  # end
 
   private
 

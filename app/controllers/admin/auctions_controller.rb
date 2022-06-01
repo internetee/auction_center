@@ -89,7 +89,7 @@ module Admin
         auction.slipping_end = auctions_data[:slipping_end] unless auctions_data[:slipping_end].empty?
 
         if auction.save!
-          SetHighestBidJob.perform_now(auction.id)
+          # SetHighestBidJob.perform_now(auction.id)
         end
       end
       if skipped_auctions.empty?

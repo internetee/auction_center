@@ -25,5 +25,7 @@
         <%= tag.div id: 'offer_form' do %>
             <%= render partial: 'form', locals: { offer: @offer, url: english_offer_path(@offer.uuid) } %>
         <% end %>
+        <% url = @autobider.new_record? ? autobider_index_path : autobider_path(uuid: @autobider.uuid)  %>
+        <%= render partial: 'autobider', locals: { offer: @offer, autobider: @autobider, url: url } %>
     </div>
 </div>

@@ -12,6 +12,9 @@ class EnglishOffersController < ApplicationController
     offer = auction.offer_from_user(current_user.id)
     redirect_to edit_english_offer_path(offer.uuid), notice: t('offers.already_exists') if offer
 
+    @autobider = Autobider.find_by(domain_name: auction.domain_name, user: current_user)
+    @autobider = current_user.autobiders.build(domain_name: auction.domain_name) if @autobider.nil?
+
     BillingProfile.create_default_for_user(current_user.id)
     @offer = Offer.new(auction_id: auction.id, user_id: current_user.id)
   end
@@ -29,8 +32,9 @@ class EnglishOffersController < ApplicationController
     authorize! :manage, @offer
 
     if create_predicate(auction)
-      EnglishAutobiderJob.perform_now(auction.id, current_user.id) unless @offer.skip_autobider
+      # EnglishAutobiderJob.perform_now(auction.id, current_user.id) unless @offer.skip_autobider
       auction.update_ends_at(@offer)
+      AutobiderService.autobid(auction)
 
       flash[:notice] = 'Offer submitted successfully.'
       redirect_to edit_english_offer_path(@offer.uuid)
@@ -44,7 +48,12 @@ class EnglishOffersController < ApplicationController
   def show; end
 
   # GET /offers/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/edit
-  def edit; end
+  def edit
+    auction = @offer.auction
+
+    @autobider = Autobider.find_by(domain_name: auction.domain_name, user: current_user)
+    @autobider = current_user.autobiders.build(domain_name: auction.domain_name) if @autobider.nil?
+  end
 
   # PUT /offers/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
   def update
@@ -61,7 +70,8 @@ class EnglishOffersController < ApplicationController
     end
 
     if update_predicate(auction)
-      EnglishAutobiderJob.perform_now(auction.id, current_user.id) unless @offer.skip_autobider
+      # EnglishAutobiderJob.perform_now(auction.id, current_user.id) unless @offer.skip_autobider
+      AutobiderService.autobid(auction)
       auction.update_ends_at(@offer)
 
       flash[:notice] = 'Bid updated'

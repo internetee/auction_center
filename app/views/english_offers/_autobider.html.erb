@@ -1,0 +1,8 @@
+<%= form_with model: autobider, url: url do |f| %>
+  <div class="ui two column doubling stackable grid">
+    <%= f.hidden_field :domain_name, value: offer.auction.domain_name %>
+    <%= f.hidden_field :user_id, value: offer.user_id %>
+    <%= f.number_field :price, class: "form-control", min: 0, step: "0.01", disabled: offer.auction.finished? ? true : false %>
+    <%= f.submit t(:submit), class: "ui button primary", data: { turbo: false } %>
+  </div>
+<% end %>

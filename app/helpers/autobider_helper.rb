@@ -1,0 +1,2 @@
+module AutobiderHelper
+end

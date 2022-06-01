@@ -13,76 +13,76 @@ class WishlistAutoOfferJobTest < ActiveJob::TestCase
     # slipping_end: 5
   end
 
-  # def test_should_increase_min_bids_if_one_of_the_users_has_autobider
-  #   item = WishlistItem.new(user: @second_user, domain_name: @auction.domain_name, cents: 10000, highest_bid: 12000)
-  #   item.save(validate: false)
-  #   item.reload
+  def test_should_increase_min_bids_if_one_of_the_users_has_autobider
+    item = WishlistItem.new(user: @second_user, domain_name: @auction.domain_name, cents: 10000, highest_bid: 12000)
+    item.save(validate: false)
+    item.reload
 
-  #   assert_equal @auction.min_bids_step.to_f, 5.0
+    assert_equal @auction.min_bids_step.to_f, 5.0
 
-  #   EnglishAutobiderJob.perform_now(@auction.id, @user.id)
+    EnglishAutobiderJob.perform_now(@auction.id, @user.id)
 
-  #   @auction.reload
+    @auction.reload
 
-  #   assert_equal @auction.min_bids_step.to_f, 5.1
-  # end
+    assert_equal @auction.min_bids_step.to_f, 5.1
+  end
 
-  # def test_should_update_min_bids_after_each_bid
-  #   item = WishlistItem.new(user: @second_user, domain_name: @auction.domain_name, cents: 10000, highest_bid: 12000)
-  #   item.save(validate: false)
-  #   item.reload
-  #   assert_equal @auction.min_bids_step.to_f, 5.0
+  def test_should_update_min_bids_after_each_bid
+    item = WishlistItem.new(user: @second_user, domain_name: @auction.domain_name, cents: 10000, highest_bid: 12000)
+    item.save(validate: false)
+    item.reload
+    assert_equal @auction.min_bids_step.to_f, 5.0
 
-  #   EnglishAutobiderJob.perform_now(@auction.id, @user.id)
-  #   @auction.reload
-  #   assert_equal @auction.min_bids_step.to_f, 5.1
+    EnglishAutobiderJob.perform_now(@auction.id, @user.id)
+    @auction.reload
+    assert_equal @auction.min_bids_step.to_f, 5.1
 
-  #   EnglishAutobiderJob.perform_now(@auction.id, @user.id)
-  #   @auction.reload
-  #   assert_equal @auction.min_bids_step.to_f, 5.2
-  # end
+    EnglishAutobiderJob.perform_now(@auction.id, @user.id)
+    @auction.reload
+    assert_equal @auction.min_bids_step.to_f, 5.2
+  end
 
-  # def test_should_not_increase_more_then_highest_bid
-  #   item = WishlistItem.new(user: @second_user, domain_name: @auction.domain_name, cents: 4000, highest_bid: 4900)
-  #   item.save(validate: false)
-  #   item.reload
+  def test_should_not_increase_more_then_highest_bid
+    item = WishlistItem.new(user: @second_user, domain_name: @auction.domain_name, cents: 4000, highest_bid: 4900)
+    item.save(validate: false)
+    item.reload
 
-  #   assert_equal @auction.min_bids_step.to_f, 5.0
+    assert_equal @auction.min_bids_step.to_f, 5.0
 
-  #   EnglishAutobiderJob.perform_now(@auction.id, @user.id)
+    EnglishAutobiderJob.perform_now(@auction.id, @user.id)
 
-  #   @auction.reload
+    @auction.reload
 
-  #   assert_equal @auction.min_bids_step.to_f, 5.0
-  #   EnglishAutobiderJob.perform_now(@auction.id, @user.id)
+    assert_equal @auction.min_bids_step.to_f, 5.0
+    EnglishAutobiderJob.perform_now(@auction.id, @user.id)
 
-  #   @auction.reload
-  #   assert_equal @auction.min_bids_step.to_f, 5.0
-  # end
+    @auction.reload
+    assert_equal @auction.min_bids_step.to_f, 5.0
+  end
 
-  # def test_should_not_autobid_if_user_with_actual_highest_wishlist_make_bid
-  #   item = WishlistItem.new(user: @user, domain_name: @auction.domain_name, cents: 10000, highest_bid: 12000)
-  #   item.save(validate: false)
-  #   item.reload
-  #   assert_equal @auction.min_bids_step.to_f, 5.0
+  def test_should_not_autobid_if_user_with_actual_highest_wishlist_make_bid
+    item = WishlistItem.new(user: @user, domain_name: @auction.domain_name, cents: 10000, highest_bid: 12000)
+    item.save(validate: false)
+    item.reload
+    assert_equal @auction.min_bids_step.to_f, 5.0
 
-  #   EnglishAutobiderJob.perform_now(@auction.id, @user.id)
-  #   @auction.reload
-  #   assert_equal @auction.min_bids_step.to_f, 5.0
+    EnglishAutobiderJob.perform_now(@auction.id, @user.id)
+    @auction.reload
+    assert_equal @auction.min_bids_step.to_f, 5.0
 
-  #   EnglishAutobiderJob.perform_now(@auction.id, @user.id)
-  #   @auction.reload
-  #   assert_equal @auction.min_bids_step.to_f, 5.0
-  # end
+    EnglishAutobiderJob.perform_now(@auction.id, @user.id)
+    @auction.reload
+    assert_equal @auction.min_bids_step.to_f, 5.0
+  end
 
   # -------------- serial autobiders for the same auction -----------------
 
   def test_serial_autobiders_for_the_same_auction
-    item = WishlistItem.new(user: @user, domain_name: @auction.domain_name, cents: 10000, highest_bid: 12000)
+    item = WishlistItem.new(user: @user, domain_name: @auction.domain_name, cents: 500, highest_bid: 12000)
     item.save(validate: false)
     item.reload
 
-    item2 = WishlistItem.new(user: @second_user, domain_name: @auction.domain_name, cents: 10000, highest_bid: 14000)
+    item2 = WishlistItem.new(user: @second_user, domain_name: @auction.domain_name, cents: 500, highest_bid: 14000)
     item2.save(validate: false)
     item2.reload
 
@@ -90,9 +90,6 @@ class WishlistAutoOfferJobTest < ActiveJob::TestCase
 
     EnglishAutobiderJob.perform_now(@auction.id, @user.id)
     @auction.reload
-
-    # p @auction
-    # assert_equal @auction.min_bids_step.to_f, 5.0
+    assert_equal @auction.min_bids_step.to_f, 130.0
   end
-  
 end
