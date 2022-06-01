@@ -8,7 +8,6 @@ class WishlistItem < ApplicationRecord
 
   validates :domain_name, uniqueness: { scope: :user_id }
   validates :cents, numericality: { only_integer: true, greater_than: 0 }, allow_nil: true
-  validates :highest_bid, numericality: { only_integer: true, greater_than: 0 }, allow_nil: true
 
   # 1) Allows 1 to 61 characters with Estonian diacritic signs as domain name / third-level domain.
   # 2) 1 to 61 chars with Estonian diacritic signs as second-level domain (optional) and 1 to 61
