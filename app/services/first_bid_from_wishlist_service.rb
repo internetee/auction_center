@@ -21,15 +21,15 @@ class FirstBidFromWishlistService
 
     actual_wishlists = wishlists.select { |item| item.cents == maximum_bid }
 
+    money = Money.new(maximum_bid).to_f
     if actual_wishlists.size == 1
       create_offer(auction: auction, owner: actual_wishlists.first.user, cents: maximum_bid)
-      auction.update_minimum_bid_step(maximum_bid)
     elsif actual_wishlists.size > 1
       sorted_items = actual_wishlists.sort_by(&:updated_at)
-
       create_offer(auction: auction, owner: sorted_items.first.user, cents: maximum_bid)
-      auction.update_minimum_bid_step(maximum_bid)
     end
+
+    auction.update_minimum_bid_step(money)
   end
 
   def create_offer(auction:, owner:, cents:)

@@ -93,8 +93,8 @@ class EnglishOffersController < ApplicationController
   end
 
   def create_predicate(auction)
-    captcha_predicate = true
-    # captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
+    # captcha_predicate = true
+    captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
     captcha_predicate && @offer.save && auction.update_minimum_bid_step(create_params[:price].to_f) && @offer.reload
   end
 
@@ -121,8 +121,8 @@ class EnglishOffersController < ApplicationController
   end
 
   def update_predicate(auction)
-    captcha_predicate = true
-    # captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
+    # captcha_predicate = true
+    captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
     captcha_predicate && @offer.update(update_params) && auction.update_minimum_bid_step(create_params[:price].to_f) && @offer.reload
   end
 
