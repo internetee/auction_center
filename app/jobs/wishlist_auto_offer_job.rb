@@ -1,20 +1,23 @@
 class WishlistAutoOfferJob < ApplicationJob
-  def perform(item_id, auction_id)
-    item = WishlistItem.find(item_id)
-
-    return if item.cents.blank?
-
+  def perform(auction_id)
     auction = Auction.find(auction_id)
-
     return if auction.english?
 
-    Offer.create!(
-      auction: auction,
-      user: item.user,
-      cents: item.cents,
-      billing_profile: item.user.billing_profiles.first
-    )
+    FirstBidFromWishlistService.set_bid(auction: auction)
 
-    WishlistMailer.auto_offer_notification_mail(item, auction, offer).deliver_later
+    # item = WishlistItem.find(item_id)
+
+    # return if item.cents.blank?
+
+    # auction = Auction.find(auction_id)
+
+    # return if auction.english?
+
+    # Offer.create!(
+    #   auction: auction,
+    #   user: item.user,
+    #   cents: item.cents,
+    #   billing_profile: item.user.billing_profiles.first
+    # )
   end
 end

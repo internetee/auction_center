@@ -2,8 +2,10 @@
 
 <% content_for :hero do %>
     <div class="hero green">
-        <h1><%= t('.title') %></h1>
-        <div class="monospace"><%= @offer.auction.domain_name %></div>
+        <h1><%= @offer.auction.domain_name %></h1>
+        <div class="monospace" id="auction_timer" style='margin-top: 30px;'>
+            <%= render partial: 'english_offers/timer', locals: { auction: @offer.auction } %>
+        </div>
     </div>
 <% end %>
 
@@ -22,10 +24,26 @@
             </div>
         <% end %>
 
+        <div class="ui two column grid centered">
+            <div class="column">
+                <%= tag.h5 id: 'mini' do %>
+                    Minimum bid is <%= @offer.auction.min_bids_step %>
+                <% end %>
+            </div>
+
+            <div class="column">
+                <%= tag.h5 id: 'current' do %>
+                    <% english_auction_presenter = EnglishBidsPresenter.new(@offer.auction) %>
+                    Current price is <%= english_auction_presenter.maximum_bids %>
+                <% end %>
+            </div>
+        </div>
+
+        <% url = @autobider.new_record? ? autobider_index_path : autobider_path(uuid: @autobider.uuid)  %>
+        <%= render partial: 'autobider', locals: { offer: @offer, autobider: @autobider, url: url } %>
+
         <%= tag.div id: 'offer_form' do %>
             <%= render partial: 'form', locals: { offer: @offer, url: english_offer_path(@offer.uuid) } %>
         <% end %>
-        <% url = @autobider.new_record? ? autobider_index_path : autobider_path(uuid: @autobider.uuid)  %>
-        <%= render partial: 'autobider', locals: { offer: @offer, autobider: @autobider, url: url } %>
     </div>
 </div>

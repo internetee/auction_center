@@ -27,17 +27,17 @@ class Auction < ApplicationRecord
                           html: "<strong>#{Auction.with_user_offers(nil).active.size}</strong>".html_safe}
 
   after_update_commit ->{
-    broadcast_replace_to 'auction_min',
+    broadcast_replace_to 'auctions_offer',
                           target: "mini",
                           html: "<h5>Minimum bid is #{self.min_bids_step}</h5>".html_safe}
 
   after_update_commit ->{
-    broadcast_replace_to 'auction_min',
+    broadcast_replace_to 'auctions_offer',
                           target: "current",
                           html: "<h5>Minimum bid is #{self.highest_price.to_f}</h5>".html_safe}
 
   after_update_commit ->{
-    broadcast_replace_to 'auction_min',
+    broadcast_replace_to 'auctions_offer',
                           target: "auction_timer",
                           partial: 'english_offers/timer',
                           locals: { auction: self } }, unless: :skip_broadcast

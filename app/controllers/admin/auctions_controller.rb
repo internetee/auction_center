@@ -89,6 +89,7 @@ module Admin
         auction.slipping_end = auctions_data[:slipping_end] unless auctions_data[:slipping_end].empty?
 
         auction.save!
+        FirstBidFromWishlistService.set_bid(auction: auction)
       end
       if skipped_auctions.empty?
         flash[:notice] = 'New value was set'

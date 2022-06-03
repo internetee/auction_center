@@ -1,22 +1,21 @@
 <%= turbo_stream_from "auction_min" %>
-<% english_auction_presenter = EnglishBidsPresenter.new(offer.auction) %>
 
-<%= form_with(model: offer, local: true, url: url, class: "ui form big") do |f| %>
-    <%= tag.h5 id: 'mini' do %>
-        Minimum bid is <%= offer.auction.min_bids_step %>
-    <% end %>
+<style>
+.centrilize-form {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center !important;
+}
 
-    <%= tag.h5 id: 'current' do %>
-        Current price is <%= english_auction_presenter.maximum_bids %>
-    <% end %>
+.right-btns {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: flex-end !important;
+}
+</style>
 
-    <p>English auction finish at <span style='font-weight: 800;'><%= I18n.l(offer.auction.ends_at) %></span></p>
-
-    <div id="auction_timer" style="margin-bottom: 10px;">
-        <%= render partial: 'english_offers/timer', locals: { auction: offer.auction } %>
-    </div>
-
-    <div class="ui two column doubling stackable grid">
+<%= form_with(model: offer, local: true, url: url, class: "ui form big centrilize-form") do |f| %>
+    <div class="ui one column grid centered">
         <div class="column">
             <%= f.hidden_field :user_id, value: offer.user_id %>
             <%= f.hidden_field :auction_id, value: offer.auction_id %>
@@ -54,7 +53,7 @@
             <% end %>
         </div>
 
-        <div class="column wide sixteen">
+        <div class="column wide sixteen right-btns" style="margin-top: -30px;">
             <%= f.submit t(:submit), class: "ui button primary", data: { turbo: false } %>
             <%= link_to t(:back), :back, class: "ui button secondary" %>
         </div>
