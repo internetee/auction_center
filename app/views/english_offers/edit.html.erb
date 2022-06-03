@@ -3,13 +3,13 @@
 <% content_for :hero do %>
     <div class="hero green">
         <h1><%= @offer.auction.domain_name %></h1>
-        <div class="monospace" id="auction_timer" style='margin-top: 30px;'>
+        <div id="auction_timer">
             <%= render partial: 'english_offers/timer', locals: { auction: @offer.auction } %>
         </div>
     </div>
 <% end %>
 
-<div class="u-container">
+<div class="u-container centered">
     <div class="u-container margin-block">
         <% if @offer.errors.any? %>
             <div class="ui message">
@@ -24,14 +24,14 @@
             </div>
         <% end %>
 
-        <div class="ui two column grid centered">
-            <div class="column">
+        <div class="ui two column grid centered" style="margin-bottom: 20px;">
+            <div class="">
                 <%= tag.h5 id: 'mini' do %>
                     Minimum bid is <%= @offer.auction.min_bids_step %>
                 <% end %>
             </div>
 
-            <div class="column">
+            <div class="">
                 <%= tag.h5 id: 'current' do %>
                     <% english_auction_presenter = EnglishBidsPresenter.new(@offer.auction) %>
                     Current price is <%= english_auction_presenter.maximum_bids %>
