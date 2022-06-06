@@ -1,9 +1,9 @@
 class CreateAutobiders < ActiveRecord::Migration[6.1]
   def change
     create_table :autobiders do |t|
-      t.references :user, null: false
-      t.string :domain_name, null: false
-      t.integer :cents, null: false, default: 0
+      t.references :user
+      t.string :domain_name
+      t.integer :cents
       t.uuid :uuid, default: 'gen_random_uuid()'
 
       t.timestamps
