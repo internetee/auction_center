@@ -1,3 +1,20 @@
+<style>
+.custom-centrilize {
+    display: flex !important;
+    justify-content: space-around;
+}
+
+@media only screen and (max-width: 767px) {
+            .custom-centrilize {
+                flex-direction: column;
+            }
+
+            #counter {
+                visibility: hidden;
+            }
+        }
+</style>
+
 <% content_for :hero do %>
     <div class="hero green">
         <h1><%= t(:my_wishlist) %></h1>
@@ -10,9 +27,9 @@
             <span class="title"><%= t('.limit_html', limit: Setting.find_by(code: 'wishlist_size').retrieve) %></span>
         </div>
     </div>
-    <div class="u-container">
-        <div class="items">
-            <div class="item two-column">
+    <div class="u-container center page">
+        <div class="items custom-centrilize">
+            <div class="item">
                 <h3 class="ui icon header">
                     <i class="clipboard list icon"></i>
                     <div class="content">
@@ -21,7 +38,7 @@
                     </div>
                 </h3>
             </div>
-            <div class="item two-column">
+            <div class="item">
                 <h3 class="ui icon header">
                     <i class="cloud icon"></i>
                     <div class="content">
@@ -30,8 +47,6 @@
                     </div>
                 </h3>
             </div>
-        </div>
-        <div class="text">
         </div>
     </div>
 </div>
@@ -70,7 +85,7 @@
             <table class="table ui stackable" id="my-wishlist-table">
                 <thead>
                     <tr>
-                        <th scope="col">#</th>
+                        <th scope="col" id="counter">#</th>
                         <th scope="col"><%= t('auctions.domain_name') %></th>
                         <th scope="col"><%= t('actions') %></th>
                         <th scope="col"><%= t('.my_bid') %>
