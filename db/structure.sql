@@ -1534,8 +1534,7 @@ CREATE TABLE public.wishlist_items (
     uuid uuid DEFAULT public.gen_random_uuid(),
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    cents integer,
-    highest_bid integer
+    cents integer
 );
 
 
