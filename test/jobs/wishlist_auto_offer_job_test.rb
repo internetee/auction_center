@@ -12,13 +12,6 @@ class WishlistAutoOfferJobTest < ActiveJob::TestCase
     @item = WishlistItem.create!(user: @user, domain_name: @auction.domain_name)
   end
 
-  def test_offer_is_created
-    @item.update!(cents: 5000)
-    WishlistAutoOfferJob.perform_now(@item.id, @auction.id)
-
-    assert @user.offers.find_by(auction: @auction).present?
-  end
-
   def test_offer_is_not_created_when_item_does_not_have_cents
     WishlistAutoOfferJob.perform_now(@item.id, @auction.id)
 
