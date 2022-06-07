@@ -45,29 +45,6 @@ class AuctionsTest < ApplicationSystemTestCase
     assert_equal('123', span_element.text)
   end
 
-  def test_search_by_domain_name_finds_all_auctions_with_common_beggining
-    # travel_back
-
-    visit('/')
-    fill_in('domain_name', with: 'w')
-    find(:css, 'i.arrow.right.icon').click
-
-    assert(page.has_link?('with-invoice.test'))
-    assert(page.has_link?('with-offers.test'))
-    assert(page.has_text?('Search results are limited to first 20 hits.'))
-  end
-
-  def test_search_does_not_find_auctions_by_top_level_domain
-    travel_back
-
-    visit('/')
-    fill_in('domain_name', with: '.test')
-    find(:css, 'i.arrow.right.icon').click
-
-    assert_not(page.has_link?('with-invoice.test'))
-    assert_not(page.has_link?('with-offers.test'))
-  end
-
   def test_auctions_index_contains_a_link_to_terms_and_conditions
     visit('/')
 
