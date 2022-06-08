@@ -7,59 +7,14 @@
 <div class="features-grid top narrow grey">
     <div class="ui search">
         <div class="ui massive input icon">
-            <%= form_with(url: search_admin_users_path, local: true, method: :get) do |f| %>
-                <div class="ui input icon">
-                    <%= f.text_field :search_string, placeholder: t('search') %>
-                </div>
-
-                <%= f.button(class: "ui icon primary button") do %>
-                    <i aria-hidden="true" class="arrow right icon"></i>
-                <% end %>
-            <% end %>
+            <%= render 'search_form' %>
         </div>
     </div>
 </div>
 
 <div class="ui container">
     <div class="margin-block">
-        <table class="ui table unstackable fixed" id="users-table">
-            <thead>
-                <tr>
-                    <th scope="col">
-                        <%= t('users.display_name') %>
-                        <%= order_buttons('users.surname') %>
-                    </th>
-                    <th scope="col">
-                        <%= t('users.mobile_phone') %>
-                        <%= order_buttons('users.mobile_phone') %>
-                    </th>
-                    <th scope="col" class="six wide">
-                        <%= t('users.email') %>
-                        <%= order_buttons('users.email') %>
-                    </th>
-                    <th scope="col"><%= t('users.roles') %></th>
-                    <th scope="col"><%= clear_order_button %></th>
-                </tr>
-            </thead>
-
-            <tbody id="users-table-body">
-                <% @users.each do |user| %>
-                    <tr class="users-table-row">
-                        <td class="user-table-user-name"><%= link_to user.display_name, admin_user_path(user) %></td>
-                        <td>
-                            <% if user.phone_number_confirmed? && @phone_confirmation_toggle %>
-                                <i class="ui icon check circle outline"></i>
-                            <% end %>
-
-                            <%= user.mobile_phone %>
-                        </td>
-                        <td><%= user.email %></td>
-                        <td><%= user.roles.join(', ') %></td>
-                        <td></td>
-                    </tr>
-                <% end %>
-            </tbody>
-        </table>
+        <%= render 'users_table' %>
 
         <%= paginate @users %>
         <br><br>

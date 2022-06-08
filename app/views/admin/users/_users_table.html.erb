@@ -1,0 +1,37 @@
+<table class="ui table unstackable fixed" id="users-table">
+  <thead>
+      <tr>
+          <th scope="col" width="20%">
+              <%= t('users.display_name') %>
+              <%= order_buttons('users.surname', origin: @origin) %>
+          </th>
+          <th scope="col" width="20%">
+              <%= t('users.mobile_phone') %>
+              <%= order_buttons('users.mobile_phone', origin: @origin) %>
+          </th>
+          <th scope="col" class="six wide">
+              <%= t('users.email') %>
+              <%= order_buttons('users.email', origin: @origin) %>
+          </th>
+          <th scope="col"><%= t('users.roles') %></th>
+          <th scope="col"><%= clear_order_button %></th>
+      </tr>
+  </thead>
+
+  <tbody id="users-table-body">
+      <% @users.each do |user| %>
+          <tr class="users-table-row">
+              <td class="user-table-user-name"><%= link_to user.display_name, admin_user_path(user) %></td>
+              <td>
+                  <% if user.phone_number_confirmed? && @phone_confirmation_toggle %>
+                      <i class="ui icon check circle outline"></i>
+                  <% end %>
+
+                  <%= user.mobile_phone %>
+              </td>
+              <td><%= user.email %></td>
+              <td><%= user.roles.join(', ') %></td>
+          </tr>
+      <% end %>
+  </tbody>
+</table>

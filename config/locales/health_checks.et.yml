@@ -1,4 +1,4 @@
-en:
+et:
   okcomputer:
     check:
       passed: "%{registrant_name}: PASSED %{message}"

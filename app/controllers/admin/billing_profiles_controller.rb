@@ -26,7 +26,7 @@ module Admin
                                           "%#{@origin}%",
                                           "%#{@origin}%"
                                         )
-                                        .order(orderable_array)
+                                        .order(orderable_array(default_order_params))
                                         .page(1)
     end
 

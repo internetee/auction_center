@@ -29,7 +29,7 @@ module Admin
                           "%#{@origin}%", "%#{@origin}%", "%#{@origin}%",
                           "%#{@origin}%")
                    .accessible_by(current_ability)
-                   .order(orderable_array)
+                   .order(orderable_array(default_order_params))
                    .page(1)
     end
 
