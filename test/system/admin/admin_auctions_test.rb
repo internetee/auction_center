@@ -126,19 +126,6 @@ class AdminAuctionsTest < ApplicationSystemTestCase
     )
   end
 
-  def test_search_existing_auction_without_submitting
-    travel_to Time.parse('2010-07-04 10:30 +0000').in_time_zone
-
-    visit admin_auctions_path
-
-    auction = auctions(:valid_with_offers)
-    fill_in 'domain_name', :with => auction.domain_name
-
-    assert(page.has_text?(auction.domain_name))
-    assert(page.has_text?(auction.starts_at))
-    assert(page.has_text?(auction.ends_at))
-  end
-
   def test_set_starts_at_to_english_auction
     visit admin_auctions_path
     english_auction = auctions(:english_nil_starts)

@@ -7,8 +7,8 @@ class EnglishOffersTest < ApplicationSystemTestCase
     @english = auctions(:english)
     @english_nil = auctions(:english_nil_starts)
 
-    @user = users(:participant)
     @user = users(:second_place_participant)
+    @user_two = users(:participant)
     @offer = offers(:high_english_offer)
 
     travel_to Time.parse('2010-07-05 10:31 +0000').in_time_zone
@@ -20,38 +20,146 @@ class EnglishOffersTest < ApplicationSystemTestCase
     travel_back
   end
 
-  # def test_root_has_a_link_to_offers_page
-  #   sign_in(@user)
-  #   visit root_path
+  def test_possible_to_make_offer
+    sign_in(@user)
+    visit auction_path(@english.uuid)
 
-  #   assert(page.has_link?('My offers', href: offers_path))
-  # end
+    assert(page.has_link?('Bid'))
+    click_link('Bid')
 
-  # def test_race_condition_case
-  #   assert_equal(5, ActiveRecord::Base.connection.pool.size)
+    fill_in('offer[price]', with: '52.12')
+    find('#bid_action').click
 
-  #   p ">>>>>>>>>"
-  #   p @offer.cents
-  #   p ">>>>>>"
+    assert(page.has_css?('div.notice', text: 'Offer submitted successfully.'))
+  end
 
-  #   begin
-  #     concurrency_level = 4
+  def test_can_not_made_offer_less_than_starting_price
+    starting_price = 15.0
+    @english.update(starting_price: starting_price)
+    @english.offers.destroy_all
+    @english.reload
 
-  #     threads = Array.new(concurrency_level) do |_i|
-  #       Thread.new do
-  #         cents = @offer.cents
-  #         @offer.update(cents: cents + 1000)
+    sign_in(@user)
+    visit auction_path(@english.uuid)
 
-  #         p ">>>>>>>>>"
-  #         p @offer.cents
-  #         p ">>>>>>"
-      
-  #       end
-  #     end
+    assert(page.has_link?('Bid'))
+    click_link('Bid')
 
-  #     threads.each(&:join)
-  #   ensure
-  #     ActiveRecord::Base.connection_pool.disconnect!
-  #   end
-  # end
+    fill_in('offer[price]', with: '5.12')
+    find('#bid_action').click
+    assert(page.has_css?('div.alert', text: "First bid should be more or equal that starter price #{starting_price}"))
+  end
+
+  def test_after_bid_should_display_min_bid
+    bid = rand(51.0...999.9).round(2)
+    min_next_bid = calculate_min_bid(bid)
+    sign_in(@user)
+    visit auction_path(@english.uuid)
+
+    assert(page.has_link?('Bid'))
+    click_link('Bid')
+
+    fill_in('offer[price]', with: bid)
+    find('#bid_action').click
+
+    @english.reload
+
+    assert(page.has_css?('div.notice', text: 'Offer submitted successfully.'))
+    assert find('#mini').has_text?(min_next_bid)
+  end
+
+  def test_user_cannot_to_make_bid_what_less_than_minimum_bid
+    bid = rand(51.0...999.9).round(2)
+    min_next_bid = calculate_min_bid(bid)
+    sign_in(@user)
+    visit auction_path(@english.uuid)
+
+    assert(page.has_link?('Bid'))
+    click_link('Bid')
+
+    fill_in('offer[price]', with: bid)
+    find('#bid_action').click
+
+    @english.reload
+
+    assert(page.has_css?('div.notice', text: 'Offer submitted successfully.'))
+    assert find('#mini').has_text?(min_next_bid)
+
+    fill_in('offer[price]', with: min_next_bid - 0.01)
+    find('#bid_action').click
+
+    assert(page.has_css?('div.alert', text: "Bid failed, current price is #{bid}"))
+  end
+
+  def test_one_player_can_overbid_another_one
+    @english.offers.destroy_all
+    @english.reload
+
+    sign_in(@user)
+    visit auction_path(@english.uuid)
+
+    assert(page.has_link?('Bid'))
+    click_link('Bid')
+
+    fill_in('offer[price]', with: '5.8')
+    find('#bid_action').click
+
+    @english.reload
+    current_price = Money.new(@english.highest_price)
+
+    assert(page.has_css?('div.notice', text: 'Offer submitted successfully.'))
+    assert_equal current_price.to_f, 5.8
+
+    sign_out(@user)
+    sign_in(@user_two)
+
+    visit auction_path(@english.uuid)
+    assert(page.has_link?('Bid'))
+    click_link('Bid')
+
+    fill_in('offer[price]', with: '6.8')
+    find('#bid_action').click
+
+    @english.reload
+    current_price = Money.new(@english.highest_price)
+
+    assert(page.has_css?('div.notice', text: 'Offer submitted successfully.'))
+    assert_equal current_price.to_f, 6.8
+  end
+
+  # AUTOBIDER CASE ---------------------------
+
+  def test_autobider_can_be_set_by_user
+    sign_in(@user_two)
+    visit auction_path(@english.uuid)
+    assert(page.has_link?('Bid'))
+    click_link('Bid')
+
+    fill_in('autobider[price]', with: '15')
+    find('#autobidder_action').click
+    assert(page.has_css?('div.notice', text: 'Autobider created'))
+  end
+
+  private
+
+
+  def calculate_min_bid(bid)
+    update_value = 0.01
+
+    if bid < 1.0
+      update_value
+    elsif bid >= 1.0 && bid < 10.0
+      update_value = update_value * 10
+    elsif bid >= 10.0 && bid < 100.0
+      update_value = update_value * 100
+    elsif bid >= 100.0 && bid < 1000.0
+      update_value = update_value * 1000
+    elsif bid >= 1000.0 && bid < 10000.0
+      update_value = update_value * 10000
+    elsif bid >= 10000.0 && bid < 100000.0
+      update_value = update_value * 100000
+    end
+
+    bid + update_value
+  end
 end
