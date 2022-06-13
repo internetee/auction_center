@@ -13,20 +13,19 @@ class Offer < ApplicationRecord
 
   DEFAULT_PRICE_VALUE = 1
 
-  after_create_commit ->{
-    broadcast_update_to 'auctions',
-                          # target: 'bids',
-                          target: "#{dom_id(self.auction)}",
-                          partial: 'auctions/auction',
-                          locals: { auction: Auction.with_user_offers(user.id).find_by(uuid: auction.uuid), current_user: self.user } }
-
-  after_update_commit ->{
-    broadcast_update_to 'auctions',
-                          target: "#{dom_id(self.auction)}",
-                          partial: 'auctions/auction',
-                          locals: { auction: Auction.with_user_offers(user.id).find_by(uuid: auction.uuid), current_user: self.user } }
+  after_create_commit :broadcast_update_auction
+  after_update_commit :broadcast_update_auction
 
   attr_accessor :skip_autobider
+
+  def broadcast_update_auction
+    broadcast_update_to('auctions',
+                        target: "#{dom_id(self.auction)}",
+                        partial: 'auctions/auction',
+                        locals: { auction: Auction.with_user_offers(user.id).find_by(uuid: auction.uuid),
+                                  current_user: self.user
+                                })
+  end
 
   def auction_must_be_active
     active_auction = Auction.active.find_by(id: auction_id)
