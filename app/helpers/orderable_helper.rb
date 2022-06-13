@@ -1,26 +1,25 @@
 module OrderableHelper
   def sort_link_to(name, column)
     if direction_indicator(column).nil?
-      dir = content_tag(:i, nil, class: "sort alphabet up icon") 
+      dir = content_tag(:i, nil, class: 'sort alphabet up icon') 
       name = raw("#{name} #{dir}")
     else
       name = raw("#{name} #{direction_indicator(column)}")
     end
 
-    params = request.params.
-      merge(sort: column, direction: next_direction(column))
+    params = request.params.merge(sort: column, direction: next_direction(column))
 
     link_to name, params, data: {
-      turbo_action: "advance",
-      action: "turbo:click->sort-link#updateForm"
+      turbo_action: 'advance',
+      action: 'turbo:click->sort-link#updateForm'
     }
   end
 
   def next_direction(column)
     if currently_sorted?(column)
-      params[:direction] == "asc" ? "desc" : "asc"
+      params[:direction] == 'asc' ? 'desc' : 'asc'
     else
-      "asc"
+      'asc'
     end
   end
 

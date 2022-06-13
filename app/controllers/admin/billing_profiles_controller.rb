@@ -4,8 +4,8 @@ module Admin
 
     # GET /admin/billing_profiles
     def index
-      sort_column = params[:sort].presence_in(%w{ users.surname name  vat_code }) || "users.surname"
-      sort_direction = params[:direction].presence_in(%w{ asc desc }) || "desc"
+      sort_column = params[:sort].presence_in(%w[users.surname name  vat_code]) || 'users.surname'
+      sort_direction = params[:direction].presence_in(%w[asc desc]) || 'desc'
 
       billing_profiles = BillingProfile.accessible_by(current_ability)
                                        .includes(:user)
@@ -25,6 +25,5 @@ module Admin
     def authorize_user
       authorize! :manage, BillingProfile
     end
-
   end
 end

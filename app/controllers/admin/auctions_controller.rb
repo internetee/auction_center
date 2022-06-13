@@ -25,17 +25,17 @@ module Admin
 
     # GET /admin/auctions
     def index
-      sort_column = params[:sort].presence_in(%w{ domain name 
-                                                  starts_at
-                                                  ends_at
-                                                  highest_offer_cents
-                                                  number_of_offers
-                                                  turns_count
-                                                  starting_price
-                                                  min_bids_step
-                                                  slipping_end
-                                                  platform}) || "id"
-      sort_direction = params[:direction].presence_in(%w{ asc desc }) || "desc"
+      sort_column = params[:sort].presence_in(%w[domain name
+                                                 starts_at
+                                                 ends_at
+                                                 highest_offer_cents
+                                                 number_of_offers
+                                                 turns_count
+                                                 starting_price
+                                                 min_bids_step
+                                                 slipping_end
+                                                 platform]) || 'id'
+      sort_direction = params[:direction].presence_in(%w[asc desc]) || 'desc'
 
       collection_one = Auction.where.not('ends_at <= ?', Time.zone.now).pluck(:id)
       collection_two = Auction.where(starts_at: nil).pluck(:id)
@@ -91,13 +91,11 @@ module Admin
         auction.save!
         FirstBidFromWishlistService.set_bid(auction: auction)
       end
-      if skipped_auctions.empty?
-        flash[:notice] = 'New value was set'
-        redirect_to admin_auctions_path
-      else
-        flash[:notice] = "These auctions were skipped: #{skipped_auctions.join(' ')}"
-        redirect_to admin_auctions_path
-      end
+
+      flash[:notice] = "These auctions were skipped: #{skipped_auctions.join(' ')}"
+      flash[:notice] = 'New value was set' if skipped_auctions.empty?
+
+      redirect_to admin_auctions_path
     end
 
     private
