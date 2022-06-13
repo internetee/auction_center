@@ -76,20 +76,7 @@ module Admin
       skipped_auctions = []
 
       @auctions.each do |auction|
-        if !auction.starts_at.nil? && auction.starts_at < Time.zone.now || !auction.english?
-          skipped_auctions << auction.domain_name
-
-          next
-        end
-
-        auction.starts_at = auctions_data[:set_starts_at] unless auctions_data[:set_starts_at].empty?
-        auction.ends_at = auctions_data[:set_ends_at] unless auctions_data[:set_ends_at].empty?
-        auction.starting_price = auctions_data[:starting_price] unless auctions_data[:starting_price].empty?
-        auction.min_bids_step = auction.starting_price unless auctions_data[:starting_price].empty?
-        auction.slipping_end = auctions_data[:slipping_end] unless auctions_data[:slipping_end].empty?
-
-        auction.save!
-        FirstBidFromWishlistService.set_bid(auction: auction)
+        set_bulk_values(auction: auction, auctions_data: auctions_data)
       end
 
       flash[:notice] = "These auctions were skipped: #{skipped_auctions.join(' ')}"
@@ -99,6 +86,23 @@ module Admin
     end
 
     private
+
+    def set_bulk_values(auction:, auctions_data:)
+      if !auction.starts_at.nil? && auction.starts_at < Time.zone.now || !auction.english?
+        skipped_auctions << auction.domain_name
+
+        next
+      end
+
+      auction.starts_at = auctions_data[:set_starts_at] unless auctions_data[:set_starts_at].empty?
+      auction.ends_at = auctions_data[:set_ends_at] unless auctions_data[:set_ends_at].empty?
+      auction.starting_price = auctions_data[:starting_price] unless auctions_data[:starting_price].empty?
+      auction.min_bids_step = auction.starting_price unless auctions_data[:starting_price].empty?
+      auction.slipping_end = auctions_data[:slipping_end] unless auctions_data[:slipping_end].empty?
+
+      auction.save!
+      FirstBidFromWishlistService.set_bid(auction: auction)
+    end
 
     def validate_table(table)
       first_row = table.headers
