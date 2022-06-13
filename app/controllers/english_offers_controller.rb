@@ -32,11 +32,7 @@ class EnglishOffersController < ApplicationController
     authorize! :manage, @offer
 
     if create_predicate(auction)
-      auction.update_ends_at(@offer)
-      AutobiderService.autobid(auction)
-
-      flash[:notice] = 'Offer submitted successfully.'
-      redirect_to edit_english_offer_path(@offer.uuid)
+      update_auction_values(auction, 'Offer submitted successfully.')
     else
       flash[:alert] = 'Somethings goes wrong.'
       redirect_to auctions_path
@@ -58,22 +54,13 @@ class EnglishOffersController < ApplicationController
   def update
     auction = Auction.with_user_offers(current_user.id).find_by(uuid: @offer.auction.uuid)
 
-    unless additional_check_for_bids(auction, update_params[:price])
-      flash[:alert] = "Bid failed, current price is #{auction.highest_price.to_f}"
-      redirect_to edit_english_offer_path(auction.users_offer_uuid) and return
-    end
-
-    unless check_bids_for_english_auction(update_params, auction)
+    if bid_is_bad?(auction: auction, update_params: update_params)
       flash[:alert] = "Bid failed, current price is #{auction.highest_price.to_f}"
       redirect_to edit_english_offer_path(auction.users_offer_uuid) and return
     end
 
     if update_predicate(auction)
-      AutobiderService.autobid(auction)
-      auction.update_ends_at(@offer)
-
-      flash[:notice] = 'Bid updated'
-      redirect_to edit_english_offer_path(@offer.uuid)
+      update_auction_values(auction, 'Bid updated')
     else
       flash[:alert] = 'Somethings goes wrong.'
       redirect_to auctions_path
@@ -81,6 +68,19 @@ class EnglishOffersController < ApplicationController
   end
 
   private
+
+  def update_auction_values(auction, message_text)
+    AutobiderService.autobid(auction)
+    auction.update_ends_at(@offer)
+
+    flash[:notice] = message_text
+    redirect_to edit_english_offer_path(@offer.uuid)
+  end
+
+  def bid_is_bad?(auction:, update_params:)
+    !additional_check_for_bids(auction, update_params[:price]) ||
+      !check_bids_for_english_auction(update_params, auction)
+  end
 
   def additional_check_for_bids(auction, current_bid)
     order = auction.offers.order(updated_at: :desc).first
@@ -93,8 +93,8 @@ class EnglishOffersController < ApplicationController
   end
 
   def create_predicate(auction)
-    captcha_predicate = true
-    # captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
+    # captcha_predicate = true
+    captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
     captcha_predicate && @offer.save && auction.update_minimum_bid_step(create_params[:price].to_f) && @offer.reload
   end
 
@@ -121,12 +121,12 @@ class EnglishOffersController < ApplicationController
   end
 
   def update_predicate(auction)
-    captcha_predicate = true
-    # captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
+    # captcha_predicate = true
+    captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
     captcha_predicate &&
       @offer.update(update_params) &&
       auction.update_minimum_bid_step(create_params[:price].to_f) &&
-      offer.reload
+      @offer.reload
   end
 
   def update_params
