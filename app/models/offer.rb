@@ -20,11 +20,13 @@ class Offer < ApplicationRecord
   attr_accessor :skip_autobider
 
   def broadcast_update_auction
-    auction = Auction.with_user_offers(user.id).find_by(uuid: auction.uuid)
     broadcast_update_to('auctions',
-                        target: dom_id(self.auction).to_s,
+                        target: "#{dom_id(self.auction)}",
                         partial: 'auctions/auction',
-                        locals: { auction: auction, current_user: self.user })
+                        locals: {
+                                  auction: Auction.with_user_offers(user.id).find_by(uuid: auction.uuid),
+                                  current_user: self.user
+                                })
   end
 
   def auction_must_be_active

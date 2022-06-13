@@ -16,7 +16,7 @@ class FirstBidFromWishlistService
 
     maximum_bid = wishlists.maximum(:cents)
 
-    return unless starting_bid_fine?(maximum_bid)
+    return unless starting_bid_fine?(maximum_bid) if auction.english?
 
     create_offers_for_starting_bids(wishlists: wishlists, maximum_bid: maximum_bid)
 
