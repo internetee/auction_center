@@ -1,6 +1,8 @@
 class Auction < ApplicationRecord
   include PgSearch::Model
 
+  BLIND = '0'.freeze
+
   after_create :find_auction_turns
   validates :domain_name, presence: true
 
@@ -32,16 +34,20 @@ class Auction < ApplicationRecord
 
   scope :without_offers, -> { includes(:offers).where(offers: { auction_id: nil }) }
   scope :with_offers, -> { includes(:offers).where.not(offers: { auction_id: nil }) }
-  scope :with_domain_name, ->(domain_name) { where("domain_name like ?", "%#{domain_name}%") if domain_name.present? }
+  scope :with_domain_name, ->(domain_name) { where('domain_name like ?', "%#{domain_name}%") if domain_name.present? }
   scope :with_type, ->(type) do
     if type.present?
-      return where(platform: [type, nil]) if type == "0"
+      return where(platform: [type, nil]) if type == BLIND
 
       where(platform: type)
     end
   end
-  scope :with_starts_at, ->(starts_at) { where("starts_at >= ?", starts_at.to_date.beginning_of_day) if starts_at.present? }
-  scope :with_ends_at, ->(ends_at) { where("ends_at <= ?", ends_at.to_date.end_of_day) if ends_at.present? }
+
+  scope :with_starts_at, ->(starts_at) do
+    where('starts_at >= ?', starts_at.to_date.beginning_of_day) if starts_at.present?
+  end
+
+  scope :with_ends_at, ->(ends_at) { where('ends_at <= ?', ends_at.to_date.end_of_day) if ends_at.present? }
   scope :with_starts_at_nil, ->(state) { where(starts_at: nil) if state.present? }
 
   scope :english, -> { where(platform: :english) }
@@ -83,9 +89,9 @@ class Auction < ApplicationRecord
                          locals: { auction: self })
   end
 
-  def self.search(params={})
-    sort_column = params[:sort].presence_in(%w{ domain_name ends_at platform users_price}) || "domain_name"
-    sort_direction = params[:direction].presence_in(%w{ asc desc }) || "desc"
+  def self.search(params = {})
+    sort_column = params[:sort].presence_in(%w[domain_name ends_at platform users_price]) || 'domain_name'
+    sort_direction = params[:direction].presence_in(%w[asc desc]) || 'desc'
 
     self.with_highest_offers
         .with_domain_name(params[:domain_name])
@@ -119,8 +125,10 @@ class Auction < ApplicationRecord
 
   def update_ends_at(offer)
     difference_time = self.ends_at.to_time - offer.updated_at.to_time
+    difference_time_more_than_null = (difference_time / 60).to_f.round(2) > 0.0
+    difference_time_less_than_slipping_time = (difference_time / 60).to_f.round(2) < self.slipping_end.to_f
 
-    if (difference_time / 60).to_f.round(2) > 0.0 && (difference_time / 60).to_f.round(2) < self.slipping_end.to_f
+    if difference_time_more_than_null && difference_time_less_than_slipping_time
       surplus_time = self.slipping_end.to_f - (difference_time / 60).to_f.round(2)
       new_deadline = self.ends_at + surplus_time.minutes
       auction.update(ends_at: new_deadline)
@@ -133,15 +141,15 @@ class Auction < ApplicationRecord
     if bid < 1.0
       update_value
     elsif bid >= 1.0 && bid < 10.0
-      update_value = update_value * 10
+      update_value *= 10
     elsif bid >= 10.0 && bid < 100.0
-      update_value = update_value * 100
-    elsif bid >= 100.0 && bid < 1000.0
-      update_value = update_value * 1000
-    elsif bid >= 1000.0 && bid < 10000.0
-      update_value = update_value * 10000
-    elsif bid >= 10000.0 && bid < 100000.0
-      update_value = update_value * 100000
+      update_value *= 100
+    elsif bid >= 100.0 && bid < 1_000.0
+      update_value *= 1_000
+    elsif bid >= 1_000.0 && bid < 10_000.0
+      update_value *= 10_000
+    elsif bid >= 10_000.0 && bid < 100_000.0
+      update_value *= 100_000
     end
 
     self.min_bids_step = bid + update_value
@@ -205,6 +213,7 @@ class Auction < ApplicationRecord
 
   def in_progress?
     return false if starts_at.nil?
+
     if valid?
       Time.now.utc > starts_at && !finished?
     else
