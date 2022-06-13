@@ -26,7 +26,7 @@ class AdminBulkActionService
 
       apply_values(auction)
 
-      FirstBidFromWishlistService.set_bid(auction: auction)
+      FirstBidFromWishlistService.apply_bid(auction: auction)
     end
 
     skipped_auctions

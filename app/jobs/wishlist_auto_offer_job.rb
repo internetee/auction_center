@@ -3,6 +3,6 @@ class WishlistAutoOfferJob < ApplicationJob
     auction = Auction.find(auction_id)
     return if auction.english?
 
-    FirstBidFromWishlistService.set_bid(auction: auction)
+    FirstBidFromWishlistService.apply_bid(auction: auction)
   end
 end

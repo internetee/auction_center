@@ -22,7 +22,7 @@ class FirstBidFromWishlistServiceTest < ActionDispatch::IntegrationTest
     wishlist_item.save
     assert_equal @auction.offers.count, 0
 
-    FirstBidFromWishlistService.set_bid(auction: @auction)
+    FirstBidFromWishlistService.apply_bid(auction: @auction)
     @auction.reload
 
     assert_equal @auction.offers.count, 1
@@ -34,7 +34,7 @@ class FirstBidFromWishlistServiceTest < ActionDispatch::IntegrationTest
     wishlist_item.save
     assert_equal @auction.offers.count, 0
 
-    FirstBidFromWishlistService.set_bid(auction: @auction)
+    FirstBidFromWishlistService.apply_bid(auction: @auction)
     @auction.reload
 
     assert_equal @auction.offers.count, 0
@@ -48,7 +48,7 @@ class FirstBidFromWishlistServiceTest < ActionDispatch::IntegrationTest
     wishlist_item.save
     assert_equal @english_auction.offers.count, 0
 
-    FirstBidFromWishlistService.set_bid(auction: @english_auction)
+    FirstBidFromWishlistService.apply_bid(auction: @english_auction)
     @english_auction.reload
 
     assert_equal @english_auction.offers.count, 0
@@ -63,7 +63,7 @@ class FirstBidFromWishlistServiceTest < ActionDispatch::IntegrationTest
 
     assert_equal @english_auction.offers.count, 0
 
-    FirstBidFromWishlistService.set_bid(auction: @english_auction)
+    FirstBidFromWishlistService.apply_bid(auction: @english_auction)
     @english_auction.reload
 
     assert_equal @english_auction.offers.count, 1
@@ -86,7 +86,7 @@ class FirstBidFromWishlistServiceTest < ActionDispatch::IntegrationTest
 
     assert_equal @auction.offers.count, 0
 
-    FirstBidFromWishlistService.set_bid(auction: @auction)
+    FirstBidFromWishlistService.apply_bid(auction: @auction)
     @auction.reload
 
     assert_equal @auction.currently_winning_offer.user, @user
@@ -110,7 +110,7 @@ class FirstBidFromWishlistServiceTest < ActionDispatch::IntegrationTest
 
     assert_equal @english_auction.offers.count, 0
 
-    FirstBidFromWishlistService.set_bid(auction: @english_auction)
+    FirstBidFromWishlistService.apply_bid(auction: @english_auction)
     @english_auction.reload
 
     assert_equal @english_auction.currently_winning_offer.user, @user
@@ -134,7 +134,7 @@ class FirstBidFromWishlistServiceTest < ActionDispatch::IntegrationTest
 
     assert_equal @english_auction.offers.count, 0
 
-    FirstBidFromWishlistService.set_bid(auction: @english_auction)
+    FirstBidFromWishlistService.apply_bid(auction: @english_auction)
     @english_auction.reload
 
     assert_equal @english_auction.currently_winning_offer.cents, 10000
