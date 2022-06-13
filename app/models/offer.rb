@@ -9,7 +9,8 @@ class Offer < ApplicationRecord
 
   validates :cents, numericality: { only_integer: true, greater_than: 0 }
   validate :auction_must_be_active
-  validate :must_be_higher_than_minimum_offer, if: proc { |offer| offer&.auction&.platform == 'blind' || offer&.auction&.platform.nil? }
+  validate :must_be_higher_than_minimum_offer,
+           if: proc { |offer| offer&.auction&.platform == 'blind' || offer&.auction&.platform.nil? }
 
   DEFAULT_PRICE_VALUE = 1
 
@@ -19,12 +20,11 @@ class Offer < ApplicationRecord
   attr_accessor :skip_autobider
 
   def broadcast_update_auction
+    auction = Auction.with_user_offers(user.id).find_by(uuid: auction.uuid)
     broadcast_update_to('auctions',
-                        target: "#{dom_id(self.auction)}",
+                        target: dom_id(self.auction).to_s,
                         partial: 'auctions/auction',
-                        locals: { auction: Auction.with_user_offers(user.id).find_by(uuid: auction.uuid),
-                                  current_user: self.user
-                                })
+                        locals: { auction: auction, current_user: self.user })
   end
 
   def auction_must_be_active

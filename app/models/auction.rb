@@ -73,13 +73,13 @@ class Auction < ApplicationRecord
   def broadcast_update_min_bid
     broadcast_replace_to('auctions_offer',
                          target: 'mini',
-                         html: "<h5>Minimum bid is #{self.min_bids_step}</h5>".html_safe)
+                         html: "<h5>Minimum bid is #{min_bids_step}</h5>".html_safe)
   end
 
   def broadcast_update_highest_bid
     broadcast_replace_to('auctions_offer',
                          target: 'current',
-                         html: "<h5>Minimum bid is #{self.highest_price.to_f}</h5>".html_safe)
+                         html: "<h5>Minimum bid is #{highest_price.to_f}</h5>".html_safe)
   end
 
   def broadcast_update_timer
@@ -124,15 +124,15 @@ class Auction < ApplicationRecord
   end
 
   def update_ends_at(offer)
-    difference_time = self.ends_at.to_time - offer.updated_at.to_time
+    difference_time = ends_at.to_time - offer.updated_at.to_time
     difference_time_more_than_null = (difference_time / 60).to_f.round(2) > 0.0
-    difference_time_less_than_slipping_time = (difference_time / 60).to_f.round(2) < self.slipping_end.to_f
+    difference_time_less_than_slipping_time = (difference_time / 60).to_f.round(2) < slipping_end.to_f
 
-    if difference_time_more_than_null && difference_time_less_than_slipping_time
-      surplus_time = self.slipping_end.to_f - (difference_time / 60).to_f.round(2)
-      new_deadline = self.ends_at + surplus_time.minutes
-      auction.update(ends_at: new_deadline)
-    end
+    return unless difference_time_more_than_null && difference_time_less_than_slipping_time
+
+    surplus_time = slipping_end.to_f - (difference_time / 60).to_f.round(2)
+    new_deadline = ends_at + surplus_time.minutes
+    auction.update(ends_at: new_deadline)
   end
 
   def update_minimum_bid_step(bid)
@@ -153,7 +153,7 @@ class Auction < ApplicationRecord
     end
 
     self.min_bids_step = bid + update_value
-    self.save!
+    save!
   end
 
   # As the name suggests, this method return the offer that is currently the highest.

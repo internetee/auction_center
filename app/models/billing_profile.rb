@@ -12,7 +12,7 @@ class BillingProfile < ApplicationRecord
   belongs_to :user, optional: true
   after_update :mirror_address_to_attached_invoices
 
-  scope :with_search_scope,-> (origin) {
+  scope :with_search_scope, ->(origin) {
     if origin.present?
       joins(:user)
         .includes(:user)
@@ -26,7 +26,7 @@ class BillingProfile < ApplicationRecord
     end
   }
 
-  def self.search(params={})
+  def self.search(params = {})
     self.with_search_scope(params[:search_string])
   end
 

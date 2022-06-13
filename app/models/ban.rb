@@ -16,10 +16,12 @@ class Ban < ApplicationRecord
     where('valid_until >= ? AND valid_from <= ?', Time.now.utc, Time.now.utc)
   }
 
-  scope :with_name, ->(search_string){
+  scope :with_name, ->(search_string) {
     if search_string.present?
       users = User.where('given_names ILIKE ? OR surname ILIKE ? OR email ILIKE ?',
-        "%#{search_string}%", "%#{search_string}%", "%#{search_string}%").all
+                         "%#{search_string}%",
+                         "%#{search_string}%",
+                         "%#{search_string}%").all
 
       billing_profile = BillingProfile.where('name ILIKE ?', "%#{search_string}%").all
       user_ids = (users.ids + [billing_profile.select(:user_id)]).uniq

@@ -39,12 +39,12 @@ class Invoice < ApplicationRecord
             .joins(:billing_profile)
             .joins(:invoice_items)
             .where('billing_profiles.name ILIKE ? OR ' \
-                  'users.email ILIKE ? OR users.surname ILIKE ? OR ' \
-                  'invoice_items.name ILIKE ?',
-                    "%#{origin}%",
-                    "%#{origin}%",
-                    "%#{origin}%",
-                    "%#{origin}%")
+                   'users.email ILIKE ? OR users.surname ILIKE ? OR ' \
+                   'invoice_items.name ILIKE ?',
+                   "%#{origin}%",
+                   "%#{origin}%",
+                   "%#{origin}%",
+                   "%#{origin}%")
       end
     end
   }
@@ -198,6 +198,16 @@ class Invoice < ApplicationRecord
     Invoice.where(billing_profile_id: billing_profile_id)
   end
 
+  def self.numeric?(string)
+    return true if string =~ /\A\d+\Z/
+
+    begin
+      true if Float(string)
+    rescue StandardError
+      false
+    end
+  end
+
   private
 
   def clear_linked_ban
@@ -209,16 +219,6 @@ class Invoice < ApplicationRecord
     self.paid_at = time
     self.vat_rate = billing_profile.present? ? billing_profile.vat_rate : vat_rate
     self.paid_amount = total
-  end
-
-  def self.numeric?(string)
-    return true if string =~ /\A\d+\Z/
-
-    begin
-      true if Float(string)
-    rescue StandardError
-      false
-    end
   end
 end
 # rubocop:enable Metrics/ClassLength

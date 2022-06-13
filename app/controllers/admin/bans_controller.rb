@@ -24,7 +24,7 @@ module Admin
                                                  valid_from
                                                  valid_until
                                                  domain_name
-                                                 invoice_id]) ||'users.surname'
+                                                 invoice_id]) || 'users.surname'
       sort_direction = params[:direction].presence_in(%w[asc desc]) || 'desc'
 
       bans = Ban.includes(:user).search(params).order("#{sort_column} #{sort_direction}")
