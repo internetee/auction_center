@@ -40,17 +40,7 @@ class WishlistItemsController < ApplicationController
 
   def update
     wishlist_item = WishlistItem.find_by(uuid: params[:uuid])
-    domain_name = wishlist_item.domain_name
-
-    if current_user.completely_banned?
-      flash[:alert] = I18n.t('auctions.banned_completely', valid_until: current_user.longest_ban.valid_until)
-      redirect_to wishlist_items_path and return
-    end
-
-    if current_user.bans.valid.pluck(:domain_name).include?(domain_name)
-      flash[:alert] = I18n.t('auctions.banned', domain_names: domain_name)
-      redirect_to wishlist_items_path and return
-    end
+    check_for_action_restrictions(wishlist_item.domain_name)
 
     if wishlist_item.update(strong_params)
       flash[:notice] = 'Updated'
@@ -62,6 +52,16 @@ class WishlistItemsController < ApplicationController
   end
 
   private
+
+  def check_for_action_restrictions(domain_name)
+    if current_user.completely_banned?
+      flash[:alert] = I18n.t('auctions.banned_completely', valid_until: current_user.longest_ban.valid_until)
+      redirect_to wishlist_items_path and return
+    elsif current_user.bans.valid.pluck(:domain_name).include?(domain_name)
+      flash[:alert] = I18n.t('auctions.banned', domain_names: domain_name)
+      redirect_to wishlist_items_path and return
+    end
+  end
 
   def strong_params
     params.require(:wishlist_item).permit(:user_id, :domain_name, :price)

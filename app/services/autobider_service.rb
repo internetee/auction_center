@@ -9,21 +9,27 @@ class AutobiderService
     return unless auction.english?
 
     bider = new(auction: auction)
-
-    maximum_hight_offer_in_price = auction.offers.maximum(:cents) || 0
-    autobiders = Autobider.where('domain_name = ? AND cents >= ?', auction.domain_name, maximum_hight_offer_in_price)
+    autobiders = bider.auctual_autobiders
 
     return if autobiders.empty?
 
     if autobiders.size == 1
-      if auction.offers.empty?
-        bider.create_first_bid(autobider: autobiders.first, auction: auction)
-      else
-        bider.outbid_if_exists(autobider: autobiders.first, auction: auction)
-      end
-
+      bider.autobid_for_single_pericipant(autobider: autobiders.first)
     elsif autobiders.size > 1
       bider.autobid_for_multiple_users(autobiders: autobiders, auction: auction)
+    end
+  end
+
+  def auctual_autobiders
+    maximum_hight_offer_in_price = auction.offers.maximum(:cents) || 0
+    Autobider.where('domain_name = ? AND cents >= ?', auction.domain_name, maximum_hight_offer_in_price)
+  end
+
+  def autobid_for_single_pericipant(autobider:)
+    if auction.offers.empty?
+      create_first_bid(autobider: autobider, auction: auction)
+    else
+      outbid_if_exists(autobider: autobider, auction: auction)
     end
   end
 
