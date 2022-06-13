@@ -14,6 +14,9 @@ class FirstBidFromWishlistService
     wishlists = WishlistItem.where(domain_name: auction.domain_name)
     return if wishlists.empty?
 
+    is_any_bid = wishlists.any? { |wish| wish.cents.present? }
+    return unless is_any_bid
+
     maximum_bid = wishlists.maximum(:cents)
 
     auction_starting_price = Money.from_amount(auction.starting_price).cents unless auction.starting_price.nil?
