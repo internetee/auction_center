@@ -4,8 +4,6 @@ class WishlistItemsController < ApplicationController
   def index
     @wishlist_item = WishlistItem.new(user: current_user)
     @wishlist_items = WishlistItem.for_user(current_user.id)
-                                  # .page(params[:page])
-                                  # .order(created_at: :desc)
   end
 
   def create

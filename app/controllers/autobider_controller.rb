@@ -23,7 +23,7 @@ class AutobiderController < ApplicationController
         auction = Auction.find_by(domain_name: @autobider.domain_name)
         AutobiderService.autobid(auction)
 
-        format.html { redirect_to auctions_path, notice: "Autobider created" }
+        format.html { redirect_to auctions_path, notice: 'Autobider created' }
         format.json { render json: @wishlist_item, status: :created }
       else
         format.json do
@@ -42,5 +42,4 @@ class AutobiderController < ApplicationController
     authorize! :create, @autobider
     @autobider.save
   end
-
 end

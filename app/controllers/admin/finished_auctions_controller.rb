@@ -2,8 +2,8 @@ class Admin::FinishedAuctionsController < ApplicationController
   before_action :authorize_user
 
   def index
-    sort_column = params[:sort].presence_in(%w{ domain name }) || "id"
-    sort_direction = params[:direction].presence_in(%w{ asc desc }) || "desc"
+    sort_column = params[:sort].presence_in(%w[domain name]) || 'id'
+    sort_direction = params[:direction].presence_in(%w[asc desc]) || 'desc'
 
     auctions = Auction.where('ends_at <= ?', Time.zone.now).search(params).order(sort_column => sort_direction)
 

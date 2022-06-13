@@ -3,7 +3,7 @@ require 'countries'
 module Admin
   class UsersController < BaseController
     before_action :authorize_user
-    before_action :set_user, except: %i[index new create search]
+    before_action :set_user, except: %i[index new create]
     before_action :set_phone_confirmation_toggle, only: %i[index show]
 
     # GET /admin/users/new
@@ -13,8 +13,8 @@ module Admin
 
     # GET /admin/users
     def index
-      sort_column = params[:sort].presence_in(%w{ surname mobile_phone email roles }) || "id"
-      sort_direction = params[:direction].presence_in(%w{ asc desc }) || "desc"
+      sort_column = params[:sort].presence_in(%w[surname mobile_phone email roles]) || 'id'
+      sort_direction = params[:direction].presence_in(%w[asc desc]) || 'desc'
 
       users = User.accessible_by(current_ability).search(params).order("#{sort_column} #{sort_direction}")
 

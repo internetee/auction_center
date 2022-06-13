@@ -1,8 +1,8 @@
 class EnglishOffersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_offer, only: %i[show edit update destroy]
+  before_action :set_offer, only: %i[show edit update]
   before_action :authorize_phone_confirmation
-  before_action :authorize_offer_for_user, except: %i[new index create]
+  before_action :authorize_offer_for_user, except: %i[new create]
   before_action :set_captcha_required
 
   # GET /auctions/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/offers/new
@@ -123,7 +123,10 @@ class EnglishOffersController < ApplicationController
   def update_predicate(auction)
     captcha_predicate = true
     # captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
-    captcha_predicate && @offer.update(update_params) && auction.update_minimum_bid_step(create_params[:price].to_f) && @offer.reload
+    captcha_predicate &&
+      @offer.update(update_params) &&
+      auction.update_minimum_bid_step(create_params[:price].to_f) &&
+      offer.reload
   end
 
   def update_params

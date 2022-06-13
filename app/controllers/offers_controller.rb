@@ -42,12 +42,11 @@ class OffersController < ApplicationController
   # GET /offers
   def index
     offers = Offer.includes(:auction)
-                   .includes(:result)
-                   .where(user_id: current_user)
-                   .order('auctions.ends_at DESC')
+                  .includes(:result)
+                  .where(user_id: current_user)
+                  .order('auctions.ends_at DESC')
 
     @pagy, @offers = pagy(offers, items: params[:per_page] ||= 15)
-                  #  .page(params[:page])
   end
 
   # GET /offers/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
