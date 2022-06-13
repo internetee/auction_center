@@ -64,20 +64,7 @@ module Admin
     end
 
     def bulk_starts_at
-      auctions_data = params[:auction_elements]
-
-      auction_ids = auctions_data[:auction_ids]
-      auction_ids = auctions_data[:elements_id].split(' ') if auction_ids.nil?
-
-      return if auction_ids.nil?
-
-      @auctions = Auction.where(id: auction_ids)
-
-      skipped_auctions = []
-
-      @auctions.each do |auction|
-        set_bulk_values(auction: auction, auctions_data: auctions_data)
-      end
+      skipped_auctions = AdminBulkActionService.apply_for_english_auction(auction_elements: params[:auction_elements])
 
       flash[:notice] = "These auctions were skipped: #{skipped_auctions.join(' ')}"
       flash[:notice] = 'New value was set' if skipped_auctions.empty?
@@ -86,35 +73,6 @@ module Admin
     end
 
     private
-
-    def set_bulk_values(auction:, auctions_data:)
-      if !auction.starts_at.nil? && auction.starts_at < Time.zone.now || !auction.english?
-        skipped_auctions << auction.domain_name
-
-        next
-      end
-
-      auction.starts_at = auctions_data[:set_starts_at] unless auctions_data[:set_starts_at].empty?
-      auction.ends_at = auctions_data[:set_ends_at] unless auctions_data[:set_ends_at].empty?
-      auction.starting_price = auctions_data[:starting_price] unless auctions_data[:starting_price].empty?
-      auction.min_bids_step = auction.starting_price unless auctions_data[:starting_price].empty?
-      auction.slipping_end = auctions_data[:slipping_end] unless auctions_data[:slipping_end].empty?
-
-      auction.save!
-      FirstBidFromWishlistService.set_bid(auction: auction)
-    end
-
-    def validate_table(table)
-      first_row = table.headers
-      first_row[0] == 'id' &&
-        first_row[1] == 'domain' &&
-        first_row[2] == 'status' &&
-        first_row[3] == 'uuid' &&
-        first_row[4] == 'created_at' &&
-        first_row[5] == 'registration_code' &&
-        first_row[6] == 'registration_deadline' &&
-        first_row[7] == 'platform'
-    end
 
     def create_params
       params.require(:auction).permit(:domain_name, :starts_at, :ends_at)
