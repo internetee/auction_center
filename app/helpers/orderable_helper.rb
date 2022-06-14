@@ -1,7 +1,7 @@
 module OrderableHelper
   def sort_link_to(name, column)
     if direction_indicator(column).nil?
-      dir = content_tag(:i, nil, class: 'sort alphabet up icon') 
+      dir = content_tag(:i, nil, class: 'sort alphabet up icon')
       name = raw("#{name} #{dir}")
     else
       name = raw("#{name} #{direction_indicator(column)}")

@@ -76,7 +76,7 @@ class Result < ApplicationRecord
     ResultCreator.new(auction_id).call
   end
 
-  def self.search(params={})
+  def self.search(params = {})
     self.with_domain_name(params[:domain_name]).with_status(params[:statuses_contains])
   end
 

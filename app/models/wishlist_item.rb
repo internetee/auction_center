@@ -57,7 +57,7 @@ class WishlistItem < ApplicationRecord
     price = Money.from_amount(value.to_d, Setting.find_by(code: 'auction_currency').retrieve)
     self.cents = price.cents.positive? ? price.cents : nil
   end
-  
+
   private
 
   # Appends first domain extension in supported extension list in case no extension

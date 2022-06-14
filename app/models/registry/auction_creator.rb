@@ -46,9 +46,7 @@ module Registry
 
     def create_auction_from_api(domain_name, remote_id, platform)
       auction_type = :english
-      if platform.nil? || platform == 'auto'
-        auction_type = :blind
-      end
+      auction_type = :blind if platform.nil? || platform == 'auto'
 
       Auction.find_or_initialize_by(domain_name: domain_name, remote_id: remote_id) do |auction|
         auction.platform = auction_type
@@ -56,15 +54,19 @@ module Registry
         auction.ends_at = nil
         auction.skip_broadcast = true
 
-        if auction_type == :blind
-          auction.starts_at = auction_starts_at
-          auction.ends_at = auction_ends_at
-        end
+        auction = put_initialize_data_for_blind_auction(auction) if auction_type == :blind
 
         auction.save!
       end
 
       indicate_correct_platform_and_assign_it(domain_name)
+    end
+
+    def put_initialize_data_for_blind_auction(auction)
+      auction.starts_at = auction_starts_at
+      auction.ends_at = auction_ends_at
+
+      auction
     end
 
     def indicate_correct_platform_and_assign_it(domain_name)

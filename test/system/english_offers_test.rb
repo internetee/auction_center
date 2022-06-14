@@ -144,7 +144,6 @@ class EnglishOffersTest < ApplicationSystemTestCase
 
   private
 
-
   def calculate_min_bid(bid)
     update_value = 0.01
 
