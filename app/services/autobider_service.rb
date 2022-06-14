@@ -36,6 +36,7 @@ class AutobiderService
   def create_first_bid(autobider:, auction:)
     starting_price_translated = Money.from_amount(auction.starting_price.to_d,
                                                   Setting.find_by(code: 'auction_currency').retrieve)
+
     return if autobider.cents < starting_price_translated.cents
 
     min_bid_step_in_cents = transform_money_to_cents(auction.min_bids_step)

@@ -92,6 +92,8 @@ class EnglishOffersTest < ApplicationSystemTestCase
   end
 
   def test_one_player_can_overbid_another_one
+    Autobider.destroy_all
+
     @english.offers.destroy_all
     @english.reload
 
@@ -130,7 +132,7 @@ class EnglishOffersTest < ApplicationSystemTestCase
   # AUTOBIDER CASE ---------------------------
 
   def test_autobider_can_be_set_by_user
-    sign_in(@user_two)
+    sign_in(@user)
     visit auction_path(@english.uuid)
     assert(page.has_link?('Bid'))
     click_link('Bid')
