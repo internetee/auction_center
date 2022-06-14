@@ -7,7 +7,7 @@ class EnglishBidsPresenter
     @auction = auction
   end
 
-  def get_last_actual_offer
+  def last_actual_offer
     auction.offers.order(updated_at: :desc).first
   end
 
@@ -15,9 +15,7 @@ class EnglishBidsPresenter
     return 'Bad auction type' if auction.platform == 'blind'
     return 0.0 if auction.offers.empty?
 
-    offer = get_last_actual_offer
-
-    Money.new(offer.cents, Setting.find_by(code: 'auction_currency').retrieve)
+    Money.new(last_actual_offer.cents, Setting.find_by(code: 'auction_currency').retrieve)
   end
 
   def display_ends_at

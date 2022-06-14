@@ -60,7 +60,7 @@ group :test do
 end
 
 # frontend
-gem "hotwire-rails", "~> 0.1.3"
+gem 'hotwire-rails', '~> 0.1.3'
 # Use Redis for Action Cable
 
 gem 'redis', '~> 4.0'
@@ -69,4 +69,4 @@ gem 'redis', '~> 4.0'
 gem 'pg_search'
 
 # For pagination
-gem "pagy", "~> 5.5"
+gem 'pagy', '~> 5.5'

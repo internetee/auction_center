@@ -14,9 +14,7 @@ class AdminBulkActionService
     return if parse_auction_ids.nil?
 
     auctions = Auction.where(id: parse_auction_ids)
-
     skipped_auctions = []
-
     auctions.each do |auction|
       if skip?(auction)
         skipped_auctions << auction.domain_name
@@ -25,7 +23,6 @@ class AdminBulkActionService
       end
 
       apply_values(auction)
-
       FirstBidFromWishlistService.apply_bid(auction: auction)
     end
 

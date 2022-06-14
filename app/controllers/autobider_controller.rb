@@ -18,19 +18,14 @@ class AutobiderController < ApplicationController
 
   def create
     @autobider = Autobider.new(strong_params)
-    respond_to do |format|
-      if create_predicate
-        auction = Auction.find_by(domain_name: @autobider.domain_name)
-        AutobiderService.autobid(auction)
 
-        format.html { redirect_to auctions_path, notice: 'Autobider created' }
-        format.json { render json: @wishlist_item, status: :created }
-      else
-        format.json do
-          render json: @wishlist_item.errors.full_messages, status: :unprocessable_entity
-        end
-        format.html { redirect_to auctions_path, notice: t(:something_went_wrong) }
-      end
+    if create_predicate
+      auction = Auction.find_by(domain_name: @autobider.domain_name)
+      AutobiderService.autobid(auction)
+
+      redirect_to auctions_path, notice: 'Autobider created'
+    else
+      redirect_to auctions_path, notice: t(:something_went_wrong)
     end
   end
 
