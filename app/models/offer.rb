@@ -21,11 +21,12 @@ class Offer < ApplicationRecord
 
   def broadcast_update_auction
     broadcast_update_to('auctions',
-                        target: "#{dom_id(self.auction)}",
+                        target: dom_id(self.auction).to_s,
                         partial: 'auctions/auction',
-                        locals: {
+                        locals:
+                                {
                                   auction: Auction.with_user_offers(user.id).find_by(uuid: auction.uuid),
-                                  current_user: self.user
+                                  current_user: self.user,
                                 })
   end
 

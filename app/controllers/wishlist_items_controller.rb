@@ -40,7 +40,9 @@ class WishlistItemsController < ApplicationController
 
   def update
     wishlist_item = WishlistItem.find_by(uuid: params[:uuid])
-    check_for_action_restrictions(wishlist_item.domain_name)
+
+    flash[:alert] = check_for_action_restrictions(wishlist_item.domain_name)
+    redirect_to wishlist_items_path and return if flash[:alert].present?
 
     if wishlist_item.update(strong_params)
       flash[:notice] = 'Updated'
@@ -55,11 +57,9 @@ class WishlistItemsController < ApplicationController
 
   def check_for_action_restrictions(domain_name)
     if current_user.completely_banned?
-      flash[:alert] = I18n.t('auctions.banned_completely', valid_until: current_user.longest_ban.valid_until)
-      redirect_to wishlist_items_path and return
+      I18n.t('auctions.banned_completely', valid_until: current_user.longest_ban.valid_until)
     elsif current_user.bans.valid.pluck(:domain_name).include?(domain_name)
-      flash[:alert] = I18n.t('auctions.banned', domain_names: domain_name)
-      redirect_to wishlist_items_path and return
+      I18n.t('auctions.banned', domain_names: domain_name)
     end
   end
 
