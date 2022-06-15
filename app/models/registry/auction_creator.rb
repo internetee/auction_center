@@ -73,9 +73,15 @@ module Registry
       auctions = Auction.where(domain_name: domain_name)
       return nil if auctions.empty?
 
-      platform = auctions.order(created_at: :asc).first.platform.to_sym
+      platform = auctions.order(created_at: :asc).first.platform
       auction = Auction.where(domain_name: domain_name).order(created_at: :asc).last
-      auction.platform = platform
+      
+      if platform.nil?
+        auction.platform = :blind
+      else
+        auction.platform = platform.to_sym
+      end
+      
       auction.skip_broadcast = true
       auction.save
     end
