@@ -4,6 +4,8 @@ class EnglishOffersController < ApplicationController
   before_action :authorize_phone_confirmation
   before_action :authorize_offer_for_user, except: %i[new create]
   before_action :set_captcha_required
+  
+  protect_from_forgery with: :null_session
 
   # GET /auctions/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/offers/new
   def new
@@ -31,8 +33,8 @@ class EnglishOffersController < ApplicationController
     @offer = Offer.new(create_params)
     authorize! :manage, @offer
 
-    # captcha_predicate = true
-    captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
+    captcha_predicate = true
+    # captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
     unless captcha_predicate
       flash[:alert] = 'Captcha not resolve'
       redirect_to request.referrer and return
@@ -40,6 +42,10 @@ class EnglishOffersController < ApplicationController
 
     if create_predicate(auction)
       update_auction_values(auction, 'Offer submitted successfully.')
+      auction.broadcast_replace_to "auctions_offer_#{auction.id}",
+                                    target: "offer_#{auction.id}_form",
+                                    partial: 'english_offers/number_form_field',
+                                    locals: {offer_value: auction.min_bids_step , offer_disabled: auction.finished? ? true : false }
     else
       flash[:alert] = 'Somethings goes wrong.'
       redirect_to request.referrer
@@ -66,8 +72,8 @@ class EnglishOffersController < ApplicationController
       redirect_to edit_english_offer_path(auction.users_offer_uuid) and return
     end
 
-    # captcha_predicate = true
-    captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
+    captcha_predicate = true
+    # captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
 
     unless captcha_predicate
       flash[:alert] = 'Captcha not resolve'
@@ -76,6 +82,10 @@ class EnglishOffersController < ApplicationController
 
     if update_predicate(auction)
       update_auction_values(auction, 'Bid updated')
+      auction.broadcast_replace_to "auctions_offer_#{auction.id}",
+                                  target: "offer_#{auction.id}_form",
+                                  partial: 'english_offers/number_form_field',
+                                  locals: {offer_value: auction.min_bids_step , offer_disabled: auction.finished? ? true : false }
     else
       flash[:alert] = 'Somethings goes wrong.'
       redirect_to request.referrer

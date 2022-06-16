@@ -18,11 +18,10 @@
             <%= f.hidden_field :user_id, value: offer.user_id %>
             <%= f.hidden_field :auction_id, value: offer.auction_id %>
 
-            <div class="field" id="offer_<%=@offer.auction.id%>_form">
-                <%= f.label :price, t('.offer') %>
-                <%= f.number_field :price, class: "form-control", min: 0, step: "0.01", value: "#{ offer.auction.min_bids_step }", disabled: offer.auction.finished? ? true : false %>
-                <br>
+            <div id="offer_<%=offer.auction.id%>_form">
+                <%= render partial: 'number_form_field', locals: {offer_value: offer.auction.min_bids_step , offer_disabled: offer.auction.finished? ? true : false } %>
             </div>
+            <br>
 
             <div class="field">
                 <%= f.label :billing_profile, t('.bidder') %>

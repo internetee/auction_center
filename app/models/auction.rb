@@ -22,6 +22,7 @@ class Auction < ApplicationRecord
   after_update_commit :broadcast_update_min_bid
   after_update_commit :broadcast_update_highest_bid, unless: :skip_broadcast
   after_update_commit :broadcast_update_timer, unless: :skip_broadcast
+  # after_update_commit :broadcast_update_form, unless: :skip_broadcast
 
   scope :active, -> { where('starts_at <= ? AND ends_at >= ?', Time.now.utc, Time.now.utc) }
   scope :without_result, lambda {
@@ -89,13 +90,6 @@ class Auction < ApplicationRecord
                          target: 'auction_timer',
                          partial: 'english_offers/timer',
                          locals: { auction: self })
-  end
-
-  def broadcast_update_form
-    broadcast_replace_to("auctions_offer_#{self.id}",
-                         target: "offer_#{self.id}_form",
-                         partial: 'english_offers/form',
-                         locals: { offer: self.currently_winning_offer, url: english_offer_path(self.currently_winning_offer.uuid) })
   end
 
   def self.search(params = {})

@@ -1,0 +1,2 @@
+<%= label_tag :price, t('.offer') %>
+<%= number_field_tag 'offer_price', offer_value, name: "offer[price]", class: "form-control", min: 0, step: "0.01", disabled: offer_disabled %>

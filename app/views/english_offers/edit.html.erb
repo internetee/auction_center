@@ -31,9 +31,6 @@
                 <% end %>
                 <em>
                     <small>
-                        <%= t('.minimum_offer',
-                            minimum: Money.new(Setting.find_by(code: 'auction_minimum_offer').retrieve,
-                                                Setting.find_by(code: 'auction_currency').retrieve)) %>
                         <%= t('offers.price_is_without_vat') %>
                     </small>
                 </em>
@@ -50,7 +47,7 @@
         <% url = @autobider.new_record? ? autobider_index_path : autobider_path(uuid: @autobider.uuid)  %>
         <%= render partial: 'autobider', locals: { offer: @offer, autobider: @autobider, url: url } %>
 
-            <div id="offer_<%=@offer.auction.id%>_form">
+            <div>
                 <%= render partial: 'form', locals: { offer: @offer, url: english_offer_path(@offer.uuid) } %>
             </div>
     </div>
