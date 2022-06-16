@@ -33,13 +33,13 @@
     <div class="field">
         <div class="column">
             <%= form.label :starts_at, t('auctions.starts_at') %>
-            <%= form.date_field :starts_at, class: "form-control" %>
+            <%= form.datetime_field :starts_at, class: "form-control" %>
         </div>
     </div>
     <div class="field">
         <div class="column">
             <%= form.label :ends_at, t('auctions.ends_at') %>
-            <%= form.date_field :ends_at, class: "form-control" %>
+            <%= form.datetime_field :ends_at, class: "form-control" %>
         </div>
     </div>
   </div>
@@ -81,13 +81,13 @@
                         <div class="field">
                             <div class="column">
                                 <%= form.label :set_starts_at, t('auctions.starts_at') %>
-                                <%= form.date_field :set_starts_at, class: "form-control", min: Time.zone.today %>
+                                <%= form.datetime_field :set_starts_at, class: "form-control", min: Time.zone.today %>
                             </div>
                         </div>
                         <div class="field">
                             <div class="column">
                                 <%= form.label :set_ends_at, t('auctions.ends_at') %>
-                                <%= form.date_field :set_ends_at, class: "form-control", min: Time.zone.today %>
+                                <%= form.datetime_field :set_ends_at, class: "form-control", min: Time.zone.today %>
                             </div>
                         </div>
                         <div class="field">

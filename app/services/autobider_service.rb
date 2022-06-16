@@ -58,8 +58,9 @@ class AutobiderService
     return if autobider.cents < starting_price_translated.cents
 
     min_bid_step_in_cents = transform_money_to_cents(auction.min_bids_step)
-    create_offer(auction: auction, owner: autobider.user, cents: min_bid_step_in_cents)
+    offer = create_offer(auction: auction, owner: autobider.user, cents: min_bid_step_in_cents)
     auction.update_minimum_bid_step(auction.min_bids_step)
+    auction.update_ends_at(offer)
   end
 
   def outbid_if_exists(autobider:, auction:)
@@ -80,13 +81,14 @@ class AutobiderService
     highest_price = autobiders.order(cents: :asc).last(2).first.cents
     owner = autobiders.where('cents >= ?', highest_price).reorder(created_at: :asc).first.user
 
-    create_or_update_offer(owner: owner, auction: auction, price: highest_price)
+    offer = create_or_update_offer(owner: owner, auction: auction, price: highest_price)
 
     money = Money.new(highest_price).to_f
     auction.update_minimum_bid_step(money)
     auction.reload
 
     update_bid_if_somebody_has_higher(autobiders: autobiders, auction: auction)
+    auction.update_ends_at(offer)
   end
 
   def update_bid_if_somebody_has_higher(autobiders:, auction:)
@@ -96,8 +98,9 @@ class AutobiderService
     return if autobider_owner_with_highest_cents == last_offer_owner
 
     min_bid_step_in_cents = transform_money_to_cents(auction.min_bids_step)
-    create_or_update_offer(owner: autobider_owner_with_highest_cents, auction: auction, price: min_bid_step_in_cents)
+    offer = create_or_update_offer(owner: autobider_owner_with_highest_cents, auction: auction, price: min_bid_step_in_cents)
     auction.update_minimum_bid_step(auction.min_bids_step)
+    auction.update_ends_at(offer)
   end
 
   def transform_money_to_cents(money)
@@ -107,10 +110,12 @@ class AutobiderService
   def create_or_update_offer(owner:, auction:, price:)
     user_offer = auction.offers.find_by(user: owner)
     if user_offer.nil?
-      create_offer(auction: auction, owner: owner, cents: price)
+      user_offer = create_offer(auction: auction, owner: owner, cents: price)
     else
       user_offer.update!(cents: price, skip_autobider: true)
     end
+
+    user_offer
   end
 
   def create_offer(auction:, owner:, cents:)
