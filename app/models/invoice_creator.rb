@@ -17,7 +17,7 @@ class InvoiceCreator
     return result.invoice if invoice_already_present?
 
     create_invoice
-    send_invoice_to_billing_system(invoice)
+    send_invoice_to_billing_system(invoice) unless Rails.env.test?
     invoice
   end
 
