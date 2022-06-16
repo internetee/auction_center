@@ -17,6 +17,7 @@ en:
     new:
       title: "Offer for the reservation of the domain name"
       errors: "prohibited this offer from being saved"
+      minimum_offer: "Minimum offer is %{minimum}."
 
     show:
       title: "Your offer"
