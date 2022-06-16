@@ -126,8 +126,8 @@ class AutobiderServiceTest < ActionDispatch::IntegrationTest
     offer.update(user: @user_two)
     offer.reload
 
-    autobider_two = Autobider.create(user: @user_two, domain_name: @english_auction.domain_name, cents: 15_000)
-    @autobider.update(created_at: autobider_two.created_at - 1.day) # because travel_to in setup method
+    Autobider.create(user: @user_two, domain_name: @english_auction.domain_name, cents: 15_000)
+    # @autobider.update(created_at: autobider_two.created_at - 1.day) # because travel_to in setup method
     @autobider.reload
 
     AutobiderService.autobid(@english_auction)

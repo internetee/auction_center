@@ -60,6 +60,7 @@ module Registry
       end
 
       indicate_correct_platform_and_assign_it(domain_name)
+      put_same_values_as_before_for_new_round(domain_name)
       destroy_autobider(domain_name)
     end
 
@@ -68,6 +69,22 @@ module Registry
       auction.ends_at = auction_ends_at
 
       auction
+    end
+
+    def put_same_values_as_before_for_new_round(domain_name)
+      auctions = Auction.where(domain_name: domain_name)
+      return nil if auctions.empty?
+      return nil if auctions.count < 2
+
+      legacy_auction = auctions.order(created_at: :asc).first
+
+      auction = Auction.where(domain_name: domain_name).order(created_at: :asc).last
+      auction.starting_price = legacy_auction.starting_price
+      auction.min_bids_step = legacy_auction.min_bids_step
+      auction.slipping_end = legacy_auction.slipping_end
+
+      auction.skip_broadcast = true
+      auction.save
     end
 
     def indicate_correct_platform_and_assign_it(domain_name)

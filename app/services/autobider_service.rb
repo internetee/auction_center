@@ -66,6 +66,11 @@ class AutobiderService
     return if auction.offers.order(updated_at: :asc).last.user == autobider.user
 
     min_bid_step_in_cents = transform_money_to_cents(auction.min_bids_step)
+
+    if auction.highest_price.cents < autobider.cents
+      min_bid_step_in_cents = min_bid_step_in_cents > autobider.cents ? autobider.cents : min_bid_step_in_cents
+    end
+
     create_or_update_offer(owner: autobider.user, auction: auction, price: min_bid_step_in_cents)
 
     auction.update_minimum_bid_step(auction.min_bids_step)
