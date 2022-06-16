@@ -70,6 +70,7 @@ class OffersController < ApplicationController
 
   # DELETE /offers/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
   def destroy
+    return if @offer.auction.english?
     return unless @offer.can_be_modified? && @offer.destroy
 
     respond_to do |format|

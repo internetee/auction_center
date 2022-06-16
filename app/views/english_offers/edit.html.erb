@@ -29,11 +29,6 @@
                 <%= tag.h5 id: 'mini' do %>
                     Minimum bid is <%= @offer.auction.min_bids_step %>
                 <% end %>
-                <em>
-                    <small>
-                        <%= t('offers.price_is_without_vat') %>
-                    </small>
-                </em>
             </div>
 
             <div class="" id="current_<%=@offer.auction.id%>_price">

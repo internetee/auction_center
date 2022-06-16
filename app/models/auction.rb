@@ -129,13 +129,13 @@ class Auction < ApplicationRecord
   def update_ends_at(offer)
     difference_time = ends_at.to_time - offer.updated_at.to_time
     difference_time_more_than_null = (difference_time / 60).to_f.round(2) > 0.0
-    difference_time_less_than_slipping_time = (difference_time / 60).to_f.round(2) < slipping_end.to_f
+    difference_time_less_than_slipping_time = (difference_time / 60).to_f.round(2) < slipping_end.to_f + 1.minute
 
     return unless difference_time_more_than_null && difference_time_less_than_slipping_time
 
     # surplus_time = slipping_end.to_f - (difference_time / 60).to_f.round(2)
     # new_deadline = ends_at + surplus_time.minutes
-    new_deadline = offer.updated_at + self.slipping_end.minutes
+    new_deadline = offer.updated_at + self.slipping_end.minutes + 1.minute
     self.update(ends_at: new_deadline)
   end
 
