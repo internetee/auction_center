@@ -60,6 +60,7 @@ module Registry
       end
 
       indicate_correct_platform_and_assign_it(domain_name)
+      destroy_autobider(domain_name)
     end
 
     def put_initialize_data_for_blind_auction(auction)
@@ -75,13 +76,13 @@ module Registry
 
       platform = auctions.order(created_at: :asc).first.platform
       auction = Auction.where(domain_name: domain_name).order(created_at: :asc).last
-      
+
       if platform.nil?
         auction.platform = :blind
       else
         auction.platform = platform.to_sym
       end
-      
+
       auction.skip_broadcast = true
       auction.save
     end
@@ -89,6 +90,11 @@ module Registry
     def send_wishlist_notifications(domain_name, remote_id)
       WishlistJob.set(wait: WishlistJob.wait_time)
                  .perform_later(domain_name, remote_id)
+    end
+
+    def destroy_autobider(domain_name)
+      autobider = Autobider.where(domain_name: domain_name)
+      autobider&.destroy_all
     end
   end
 end

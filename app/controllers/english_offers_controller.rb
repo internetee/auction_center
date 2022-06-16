@@ -31,11 +31,18 @@ class EnglishOffersController < ApplicationController
     @offer = Offer.new(create_params)
     authorize! :manage, @offer
 
+    captcha_predicate = true
+    # captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
+    unless captcha_predicate
+      flash[:alert] = 'Captcha not resolve'
+      redirect_to request.referrer and return
+    end
+
     if create_predicate(auction)
       update_auction_values(auction, 'Offer submitted successfully.')
     else
       flash[:alert] = 'Somethings goes wrong.'
-      redirect_to auctions_path
+      redirect_to request.referrer
     end
   end
 
@@ -59,11 +66,19 @@ class EnglishOffersController < ApplicationController
       redirect_to edit_english_offer_path(auction.users_offer_uuid) and return
     end
 
+    captcha_predicate = true
+    # captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
+
+    unless captcha_predicate
+      flash[:alert] = 'Captcha not resolve'
+      redirect_to request.referrer and return
+    end
+
     if update_predicate(auction)
       update_auction_values(auction, 'Bid updated')
     else
       flash[:alert] = 'Somethings goes wrong.'
-      redirect_to auctions_path
+      redirect_to request.referrer
     end
   end
 
@@ -93,9 +108,7 @@ class EnglishOffersController < ApplicationController
   end
 
   def create_predicate(auction)
-    # captcha_predicate = true
-    captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
-    captcha_predicate && @offer.save && auction.update_minimum_bid_step(create_params[:price].to_f) && @offer.reload
+    @offer.save && auction.update_minimum_bid_step(create_params[:price].to_f) && @offer.reload
   end
 
   def create_params
@@ -121,12 +134,9 @@ class EnglishOffersController < ApplicationController
   end
 
   def update_predicate(auction)
-    # captcha_predicate = true
-    captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
-    captcha_predicate &&
-      @offer.update(update_params) &&
-      auction.update_minimum_bid_step(create_params[:price].to_f) &&
-      @offer.reload
+    @offer.update(update_params) &&
+    auction.update_minimum_bid_step(create_params[:price].to_f) &&
+    @offer.reload
   end
 
   def update_params

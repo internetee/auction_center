@@ -11,13 +11,31 @@ class AutobiderService
     bider = new(auction: auction)
     autobiders = bider.auctual_autobiders
 
-    return if autobiders.empty?
+    filtered_autobiders = bider.filter_autobider_for_banned_users(autobiders: autobiders)
 
-    if autobiders.size == 1
-      bider.autobid_for_single_pericipant(autobider: autobiders.first)
-    elsif autobiders.size > 1
-      bider.autobid_for_multiple_users(autobiders: autobiders, auction: auction)
+    return if filtered_autobiders.empty?
+
+    if filtered_autobiders.size == 1
+      bider.autobid_for_single_pericipant(autobider: filtered_autobiders.first)
+    elsif filtered_autobiders.size > 1
+      bider.autobid_for_multiple_users(autobiders: filtered_autobiders, auction: auction)
     end
+  end
+
+  def filter_autobider_for_banned_users(autobiders:)
+    collection_ids = autobiders.select { |autobider| restrict_for_banned_user(autobider: autobider) }.pluck(:id)
+
+    Autobider.where(id: collection_ids)
+  end
+
+  def restrict_for_banned_user(autobider:)
+    if autobider.user.completely_banned?
+      return false
+    elsif autobider.user.bans.valid.pluck(:domain_name).include?(autobider.domain_name)
+      return false
+    end
+
+    true
   end
 
   def auctual_autobiders

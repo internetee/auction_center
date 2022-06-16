@@ -15,12 +15,7 @@
         <%= t('auctions.your_current_price') %>: </span><%= auction.users_price %>
     <% else %>
       <%= t('auctions.your_current_price') %>:</span>
-    
-    <% if auction.offers.load.present? && current_user == auction.offers.order(updated_at: :desc).first.user %>
-      <span style="color: green;"><%= english_auction_presenter.maximum_bids %></span>
-    <% else %>
-      <span style="color: red;"><%= english_auction_presenter.maximum_bids %></span>
-    <% end %>
+      <span class="initial-color current_<%= auction.currently_winning_offer&.user&.id %>_user"><%= english_auction_presenter.maximum_bids %></span>
   <% end %>
 </td>
 <td class="center aligned">

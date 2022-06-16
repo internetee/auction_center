@@ -20,7 +20,7 @@ class Auction < ApplicationRecord
   after_update_commit :broadcast_add_new_auction, unless: :skip_broadcast
   after_update_commit :broadcast_update_auction_count
   after_update_commit :broadcast_update_min_bid
-  after_update_commit :broadcast_update_highest_bid
+  after_update_commit :broadcast_update_highest_bid, unless: :skip_broadcast
   after_update_commit :broadcast_update_timer, unless: :skip_broadcast
 
   scope :active, -> { where('starts_at <= ? AND ends_at >= ?', Time.now.utc, Time.now.utc) }
@@ -71,22 +71,31 @@ class Auction < ApplicationRecord
   end
 
   def broadcast_update_min_bid
-    broadcast_replace_to('auctions_offer',
+    broadcast_update_to("auctions_offer_#{self.id}",
                          target: 'mini',
                          html: "<h5>Minimum bid is #{min_bids_step}</h5>".html_safe)
   end
 
   def broadcast_update_highest_bid
-    broadcast_replace_to('auctions_offer',
-                         target: 'current',
-                         html: "<h5>Minimum bid is #{highest_price.to_f}</h5>".html_safe)
+    broadcast_update_to("auctions_offer_#{self.id}",
+                         target: "current_#{self.id}_price",
+                        partial: 'english_offers/current_price',
+                        locals: { auction: self }
+                        )
   end
 
   def broadcast_update_timer
-    broadcast_replace_to('auctions_offer',
+    broadcast_update_to("auctions_offer_#{self.id}",
                          target: 'auction_timer',
                          partial: 'english_offers/timer',
                          locals: { auction: self })
+  end
+
+  def broadcast_update_form
+    broadcast_replace_to("auctions_offer_#{self.id}",
+                         target: "offer_#{self.id}_form",
+                         partial: 'english_offers/form',
+                         locals: { offer: self.currently_winning_offer, url: english_offer_path(self.currently_winning_offer.uuid) })
   end
 
   def self.search(params = {})
@@ -130,9 +139,10 @@ class Auction < ApplicationRecord
 
     return unless difference_time_more_than_null && difference_time_less_than_slipping_time
 
-    surplus_time = slipping_end.to_f - (difference_time / 60).to_f.round(2)
-    new_deadline = ends_at + surplus_time.minutes
-    auction.update(ends_at: new_deadline)
+    # surplus_time = slipping_end.to_f - (difference_time / 60).to_f.round(2)
+    # new_deadline = ends_at + surplus_time.minutes
+    new_deadline = offer.updated_at + self.slipping_end.minutes
+    self.update(ends_at: new_deadline)
   end
 
   def update_minimum_bid_step(bid)

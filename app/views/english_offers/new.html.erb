@@ -1,4 +1,4 @@
-<%= turbo_stream_from "auctions_offer" %>
+<%= turbo_stream_from "auctions_offer_#{@offer.auction.id}" %>
 
 <% content_for :hero do %>
     <div class="hero green">
@@ -29,15 +29,23 @@
                 <%= tag.h5 id: 'mini' do %>
                     Minimum bid is <%= @offer.auction.min_bids_step %>
                 <% end %>
+                <em>
+                    <small>
+                        <%= t('.minimum_offer',
+                            minimum: Money.new(Setting.find_by(code: 'auction_minimum_offer').retrieve,
+                                                Setting.find_by(code: 'auction_currency').retrieve)) %>
+                        <%= t('offers.price_is_without_vat') %>
+                    </small>
+                </em>
+                <br>
             </div>
 
-            <div class="">
-                <%= tag.h5 id: 'current' do %>
-                    <% english_auction_presenter = EnglishBidsPresenter.new(@offer.auction) %>
-                    Current price is <%= english_auction_presenter.maximum_bids %>
-                <% end %>
+            <div class="" id="current_<%=@offer.auction.id%>_price">
+                <%= render partial: 'current_price_new', locals: { offer: @offer } %>
             </div>
         </div>
+
+        <hr>
 
         <% url = @autobider.new_record? ? autobider_index_path : autobider_path(uuid: @autobider.uuid)  %>
         <%= render partial: 'autobider', locals: { offer: @offer, autobider: @autobider, url: url } %>

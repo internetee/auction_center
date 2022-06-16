@@ -1,0 +1,5 @@
+                
+<h5 class="current_<%= offer.user.id %>_user">
+  <% english_auction_presenter = EnglishBidsPresenter.new(offer.auction) %>
+  Current price is <%= english_auction_presenter.maximum_bids %>
+</h5>
