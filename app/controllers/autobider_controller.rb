@@ -34,7 +34,7 @@ class AutobiderController < ApplicationController
   def allow_any_action_with_autobider
     return true if restrict_for_banned_user(strong_params[:domain_name])
 
-    flash[:alert] = 'You have restrictions for this action'
+    flash[:alert] = 'You are banned from this auction'
     redirect_to auctions_path and return
   end
 

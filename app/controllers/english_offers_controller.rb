@@ -36,7 +36,7 @@ class EnglishOffersController < ApplicationController
     captcha_predicate = true
     # captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
     unless captcha_predicate
-      flash[:alert] = 'Captcha not resolve'
+      flash[:alert] = 'Captcha verification failed'
       redirect_to request.referrer and return
     end
 
@@ -76,7 +76,7 @@ class EnglishOffersController < ApplicationController
     # captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
 
     unless captcha_predicate
-      flash[:alert] = 'Captcha not resolve'
+      flash[:alert] = 'Captcha verification failed'
       redirect_to request.referrer and return
     end
 
