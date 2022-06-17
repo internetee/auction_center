@@ -44,6 +44,7 @@ class ResultCreator
   end
 
   def send_email_to_participants
+    return if auction.english?
     return if result.status == Result.statuses[:no_bids]
 
     recipients = User.joins(:offers)

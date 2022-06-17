@@ -42,3 +42,6 @@ en:
       bidder: "Bidder"
       offer: "Offer"
       minimum_offer: "Minimum offer is %{minimum}."
+
+    number_form_field:
+      offer: "Offer"
