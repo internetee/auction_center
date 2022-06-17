@@ -886,7 +886,10 @@ CREATE TABLE public.auctions (
     min_bids_step numeric,
     slipping_end integer,
     initial_ends_at timestamp without time zone,
+<<<<<<< HEAD
 
+=======
+>>>>>>> added new column for initials ends_at datetime and added possobility to add value starts_at and ends_at for auctions which comes to the seconds round
     CONSTRAINT starts_at_earlier_than_ends_at CHECK ((starts_at < ends_at))
 );
 

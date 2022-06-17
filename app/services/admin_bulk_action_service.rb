@@ -43,6 +43,7 @@ class AdminBulkActionService
   def apply_values(auction)
     auction.starts_at = auction_elements[:set_starts_at] unless auction_elements[:set_starts_at].empty?
     auction.ends_at = auction_elements[:set_ends_at] unless auction_elements[:set_ends_at].empty?
+    auction.initial_ends_at = auction_elements[:set_ends_at] unless auction_elements[:set_ends_at].empty?
     auction.starting_price = auction_elements[:starting_price] unless auction_elements[:starting_price].empty?
     auction.min_bids_step = auction.starting_price unless auction_elements[:starting_price].empty?
     auction.slipping_end = auction_elements[:slipping_end] unless auction_elements[:slipping_end].empty?

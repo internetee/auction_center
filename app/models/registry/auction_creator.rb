@@ -78,10 +78,21 @@ module Registry
 
       legacy_auction = auctions.order(created_at: :asc).first
 
+      new_ends_at = legacy_auction.ends_at
+      if legacy_auction.initial_ends_at.present?
+        legacy_time_difference = (legacy_auction.initial_ends_at - legacy_auction.starts_at).to_i.abs
+        legacy_difference_in_day = legacy_time_difference / 86400
+        legacy_time = legacy_auction.ends_at.strftime("%H:%M:%S")
+        new_ends_at = Time.zone.now.beginning_of_day + legacy_difference_in_day + legacy_time.to_time + 1.hour
+      end
+
       auction = Auction.where(domain_name: domain_name).order(created_at: :asc).last
       auction.starting_price = legacy_auction.starting_price
       auction.min_bids_step = legacy_auction.starting_price
       auction.slipping_end = legacy_auction.slipping_end
+      auction.starts_at = Time.zone.now
+      auction.ends_at = new_ends_at
+      auction.initial_ends_at = new_ends_at
 
       auction.skip_broadcast = true
       auction.save
