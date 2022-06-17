@@ -70,6 +70,12 @@ class AutobiderService
 
     if auction.highest_price.cents < autobider.cents
       min_bid_step_in_cents = min_bid_step_in_cents > autobider.cents ? autobider.cents : min_bid_step_in_cents
+      create_or_update_offer(owner: autobider.user, auction: auction, price: min_bid_step_in_cents)
+
+      s = Money.new(min_bid_step_in_cents)
+      auction.update_minimum_bid_step(s.to_f)
+
+      return
     end
 
     create_or_update_offer(owner: autobider.user, auction: auction, price: min_bid_step_in_cents)
