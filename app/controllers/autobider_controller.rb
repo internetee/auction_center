@@ -1,9 +1,9 @@
 class AutobiderController < ApplicationController
   before_action :authenticate_user!
+  before_action :allow_any_action_with_autobider
 
   def update
     @autobider = Autobider.find_by(uuid: params[:uuid])
-    # authorize! :update, @autobider
 
     if @autobider.update(strong_params)
       auction = Auction.find_by(domain_name: @autobider.domain_name)
@@ -27,6 +27,25 @@ class AutobiderController < ApplicationController
     else
       redirect_to auctions_path, notice: t(:something_went_wrong)
     end
+  end
+
+  private
+
+  def allow_any_action_with_autobider
+    return true if restrict_for_banned_user(strong_params[:domain_name])
+
+    flash[:alert] = 'You have restrictions for this action'
+    redirect_to auctions_path and return
+  end
+
+  def restrict_for_banned_user(domain_name)
+    if current_user.completely_banned?
+      return false
+    elsif current_user.bans.valid.pluck(:domain_name).include?(domain_name)
+      return false
+    end
+
+    true
   end
 
   def strong_params
