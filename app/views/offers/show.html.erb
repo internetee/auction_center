@@ -32,14 +32,12 @@
 
             <div class="buttons">
 
-                <%- if @offer.can_be_modified?  %>
+                <%- if @offer.can_be_modified? && !@offer.auction.english? %>
                     <%= link_to t(:edit), edit_offer_path(@offer.uuid), class: "ui button primary" %>
 
-                    <% unless @offer.auction.english? %>
-                        <%= link_to t(:delete), offer_path(@offer.uuid),
+                    <%= link_to t(:delete), offer_path(@offer.uuid),
                         method: :delete, data: { confirm: t(:are_you_sure) },
                         remote: true, class: "ui button red" %>
-                    <% end %>
 
                 <% end %>
             </div>

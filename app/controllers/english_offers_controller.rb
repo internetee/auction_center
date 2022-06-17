@@ -33,8 +33,8 @@ class EnglishOffersController < ApplicationController
     @offer = Offer.new(create_params)
     authorize! :manage, @offer
 
-    # captcha_predicate = true
-    captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
+    captcha_predicate = true
+    # captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
     unless captcha_predicate
       flash[:alert] = 'Captcha not resolve'
       redirect_to request.referrer and return
@@ -72,8 +72,8 @@ class EnglishOffersController < ApplicationController
       redirect_to edit_english_offer_path(auction.users_offer_uuid) and return
     end
 
-    # captcha_predicate = true
-    captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
+    captcha_predicate = true
+    # captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
 
     unless captcha_predicate
       flash[:alert] = 'Captcha not resolve'
