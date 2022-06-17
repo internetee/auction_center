@@ -80,7 +80,7 @@ module Registry
 
       auction = Auction.where(domain_name: domain_name).order(created_at: :asc).last
       auction.starting_price = legacy_auction.starting_price
-      auction.min_bids_step = legacy_auction.min_bids_step
+      auction.min_bids_step = legacy_auction.starting_price
       auction.slipping_end = legacy_auction.slipping_end
 
       auction.skip_broadcast = true

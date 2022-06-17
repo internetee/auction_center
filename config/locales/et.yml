@@ -86,7 +86,7 @@ et:
 
   time:
     formats:
-      default: "%Y-%m-%d %H:%M"
+      default: "%Y-%m-%d %H:%M:%S"
       long: "%A, %e. %B %Y, %H:%M"
       short: "%d.%m.%y, %H:%M"
       date: "%Y-%m-%d"
