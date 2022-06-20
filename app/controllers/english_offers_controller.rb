@@ -4,7 +4,9 @@ class EnglishOffersController < ApplicationController
   before_action :authorize_phone_confirmation
   before_action :authorize_offer_for_user, except: %i[new create]
   before_action :set_captcha_required
-  
+  before_action :prevent_check_for_invalid_bid, only: [:update]
+  before_action :captcha_check, only: [:update, :create]
+
   protect_from_forgery with: :null_session
 
   # GET /auctions/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/offers/new
@@ -33,13 +35,6 @@ class EnglishOffersController < ApplicationController
     @offer = Offer.new(create_params)
     authorize! :manage, @offer
 
-    # captcha_predicate = true
-    captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
-    unless captcha_predicate
-      flash[:alert] = 'Captcha verification failed'
-      redirect_to request.referrer and return
-    end
-
     if create_predicate(auction)
       update_auction_values(auction, 'Offer submitted successfully.')
       auction.broadcast_replace_to "auctions_offer_#{auction.id}",
@@ -67,19 +62,6 @@ class EnglishOffersController < ApplicationController
   def update
     auction = Auction.with_user_offers(current_user.id).find_by(uuid: @offer.auction.uuid)
 
-    if bid_is_bad?(auction: auction, update_params: update_params)
-      flash[:alert] = "Bid failed, current price is #{auction.highest_price.to_f}"
-      redirect_to edit_english_offer_path(auction.users_offer_uuid) and return
-    end
-
-    # captcha_predicate = true
-    captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
-
-    unless captcha_predicate
-      flash[:alert] = 'Captcha verification failed'
-      redirect_to request.referrer and return
-    end
-
     if update_predicate(auction)
       update_auction_values(auction, 'Bid updated')
       auction.broadcast_replace_to "auctions_offer_#{auction.id}",
@@ -94,12 +76,28 @@ class EnglishOffersController < ApplicationController
 
   private
 
+  def captcha_check
+    captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
+    return if captcha_predicate
+
+    flash[:alert] = 'Captcha verification failed'
+    redirect_to request.referrer and return
+  end
+
   def update_auction_values(auction, message_text)
     AutobiderService.autobid(auction)
     auction.update_ends_at(@offer)
 
     flash[:notice] = message_text
     redirect_to edit_english_offer_path(@offer.uuid)
+  end
+
+  def prevent_check_for_invalid_bid
+    auction = Auction.with_user_offers(current_user.id).find_by(uuid: @offer.auction.uuid)
+    return unless bid_is_bad?(auction: auction, update_params: update_params)
+
+    flash[:alert] = "Bid failed, current price is #{auction.highest_price.to_f}"
+    redirect_to edit_english_offer_path(auction.users_offer_uuid) and return
   end
 
   def bid_is_bad?(auction:, update_params:)
