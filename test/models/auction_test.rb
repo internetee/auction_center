@@ -168,15 +168,21 @@ class AuctionTest < ActiveSupport::TestCase
   end
 
   def test_min_bid_update_value_does_not_work_for_no_english_auctions
-    auction = auctions(:english)
-  end
+    auction = auctions(:valid_with_offers)
+    assert_equal auction.min_bids_step, nil
 
-  def test_min_bid_update_not_work_for_nil_value
-
+    auction.update_minimum_bid_step(11.0)
+    auction.reload
+    assert_equal auction.min_bids_step, nil
   end
 
   def test_min_bid_update_should_return_error_if_bid_less_than_min_bid_required
+    auction = auctions(:english)
+    assert_equal auction.min_bids_step, 5.0
 
+    auction.update_minimum_bid_step(4.8)
+    auction.reload
+    assert_not_equal auction.min_bids_step, 4.9
   end
 
   def assert_overlap_error_messages(object)
