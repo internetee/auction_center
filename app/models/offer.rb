@@ -18,6 +18,7 @@ class Offer < ApplicationRecord
   after_update_commit :broadcast_update_auction
 
   attr_accessor :skip_autobider
+  attr_accessor :skip_if_wishlist_case
 
   def broadcast_update_auction
     broadcast_update_to('auctions',
@@ -31,6 +32,7 @@ class Offer < ApplicationRecord
   end
 
   def auction_must_be_active
+    return if skip_if_wishlist_case
     active_auction = Auction.active.find_by(id: auction_id)
     return if active_auction
 

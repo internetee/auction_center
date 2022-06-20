@@ -51,7 +51,8 @@ class FirstBidFromWishlistService
       auction: auction,
       user: owner,
       cents: cents,
-      billing_profile: owner.billing_profiles.first
+      billing_profile: owner.billing_profiles.first,
+      skip_if_wishlist_case: true
     )
   end
 end

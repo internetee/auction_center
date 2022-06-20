@@ -90,8 +90,8 @@ class OffersController < ApplicationController
   end
 
   def create_predicate
-    captcha_predicate = true
-    # captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
+    # captcha_predicate = true
+    captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
     captcha_predicate && @offer.save && @offer.reload
   end
 
@@ -100,8 +100,8 @@ class OffersController < ApplicationController
   end
 
   def update_predicate
-    captcha_predicate = true
-    # captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
+    # captcha_predicate = true
+    captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
     captcha_predicate && @offer.update(update_params)
   end
 
