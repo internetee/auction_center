@@ -1,12 +1,16 @@
 
   const everypayLinkBox = document.getElementById('everypay_link');
   const a = document.createElement('a');
-  const linkText = document.createTextNode("Everypay link");
+  const everypayImage = document.createElement('img');
 
   let everypay_link = "<%= @everypay_link %>";
 
-  a.appendChild(linkText);
-  a.title = "Everypay link";
   a.href = everypay_link.replace(/&amp;/g, "&");
   a.target = '_blank';
+  a.style = 'margin-top: 20px !important;'
+  everypayImage.src = '/images/payment_methods/everypay.png'
+  everypayImage.style = 'max-width: 150px !important; margin-top: 20px !important;'
+  
+  a.appendChild(everypayImage);
+  
   everypayLinkBox.appendChild(a)

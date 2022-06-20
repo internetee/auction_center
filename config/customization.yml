@@ -128,6 +128,7 @@ development:
       linkpay_prefix: 'https://igw-demo.every-pay.com/lp'
       linkpay_check_prefix: 'https://igw-demo.every-pay.com/api/v3/payments/'
       linkpay_token: 'rucd4v'
+      icon: '/images/payment_methods/everypay.png'
 
     seb:
       url: 'https://pangalink.bitweb.ee/banklink/seb'

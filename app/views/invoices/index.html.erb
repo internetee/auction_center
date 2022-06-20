@@ -31,18 +31,6 @@
         <% if @issued_invoices.any? %>
             <div class="column sixteen wide">
                 <h3><%= t('.pay') %></h3>
-                <% PaymentOrder.supported_methods.each do |method| %>
-                    <%= form_with(model: PaymentOrder, local: true,
-                                  url: invoice_payment_orders_path(@issued_invoices.first.uuid),
-                                  id: method.config_namespace_name) do |f| %>
-                        <%= f.hidden_field :user_id, value: @issued_invoices.first.user_id %>
-                        <%= f.hidden_field :invoice_ids, value: @issued_invoices.pluck(:id).join(',') %>
-                        <%= f.hidden_field :invoice_id, value: @issued_invoices.first.id %>
-                        <%= f.hidden_field :type, value: method %>
-                        <%= f.submit t(:submit), type: :image, src: method.icon %>
-                    <% end %>
-                <% end %>
-
                 <%= button_to "Generate invoice", 
                               pay_all_bills_invoices_path,
                               method: :post,
