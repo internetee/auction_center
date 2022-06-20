@@ -174,19 +174,55 @@ class OfferTest < ActiveSupport::TestCase
     offer.cents = 500
     offer.billing_profile = @billing_profile
     offer.save
+    auction.reload
 
     assert_equal auction.currently_winning_offer.cents, 500
 
     offer = Offer.new
     offer.auction = auction
     offer.user = @user
-    offer.cents = 600
+    offer.cents = 400
     offer.billing_profile = @billing_profile
     offer.save
+    auction.reload
 
-    p offer.errors
-    p auction.currently_winning_offer.cents
+    assert_equal(['First bid should be more or equal than starting price',
+                  'Next bid should be higher or equal than minimum bid step'], offer.errors[:price])
   end
+
+  def test_if_next_bid_higher_or_equal_that_min_bid_then_no_any_errors
+    auction = auctions(:english)
+    offer = Offer.new
+    offer.auction = auction
+    offer.user = @user
+    offer.cents = 500
+    offer.billing_profile = @billing_profile
+    offer.save
+    auction.reload
+
+    assert_equal auction.currently_winning_offer.cents, 500
+
+    offer = Offer.new
+    offer.auction = auction
+    offer.user = @user
+    offer.cents = 510
+    offer.billing_profile = @billing_profile
+    offer.save
+    auction.reload
+
+    assert_equal([], offer.errors[:price])
+
+    offer = Offer.new
+    offer.auction = auction
+    offer.user = @user
+    offer.cents = 700
+    offer.billing_profile = @billing_profile
+    offer.save
+    auction.reload
+
+    assert_equal([], offer.errors[:price])
+  end
+
 
   def test_blind_auction_should_not_have_configurable_starting_price
 
