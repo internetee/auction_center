@@ -189,4 +189,6 @@ class AuctionTest < ActiveSupport::TestCase
     assert(object.errors[:ends_at].include?('overlaps with another auction'))
     assert(object.errors[:starts_at].include?('overlaps with another auction'))
   end
+
+  
 end

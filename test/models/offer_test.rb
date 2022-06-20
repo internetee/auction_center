@@ -120,4 +120,75 @@ class OfferTest < ActiveSupport::TestCase
     assert_nil(@offer.user)
     assert_nil(@offer.user_id)
   end
+
+  def test_first_bid_must_be_higher_or_equal_to_starting_price
+    auction = auctions(:english)
+    auction.offers.destroy_all
+    assert_equal auction.starting_price, 5.0
+
+    offer = Offer.new
+    offer.auction = auction
+    offer.user = @user
+    offer.cents = 6
+    offer.billing_profile = @billing_profile
+    offer.save
+
+    auction.reload
+
+    assert_equal(['First bid should be more or equal than starting price'], offer.errors[:price])
+  end
+
+  def test_if_first_bid_less_than_starting_price_from_wishlist_it_should_be_skipped
+    auction = auctions(:english)
+    auction.offers.destroy_all
+    assert_equal auction.starting_price, 5.0
+
+    wishlist_item = WishlistItem.new(domain_name: auction.domain_name, user: @user, cents: 300)
+    wishlist_item.save(validate: false)
+
+    FirstBidFromWishlistService.apply_bid(auction: auction)
+    auction.reload
+
+    assert_equal auction.offers.count, 0
+  end
+
+  def test_create_first_bid_from_wishlist_if_it_price_higher_that_starting_price
+    auction = auctions(:english)
+    auction.offers.destroy_all
+    assert_equal auction.starting_price, 5.0
+
+    wishlist_item = WishlistItem.new(domain_name: auction.domain_name, user: @user, cents: 600)
+    wishlist_item.save(validate: false)
+
+    FirstBidFromWishlistService.apply_bid(auction: auction)
+    auction.reload
+
+    assert_equal auction.offers.count, 1
+  end
+
+  def test_next_bid_should_be_higher_than_previous_for_english_auction_by_min_bid_step
+    auction = auctions(:english)
+    offer = Offer.new
+    offer.auction = auction
+    offer.user = @user
+    offer.cents = 500
+    offer.billing_profile = @billing_profile
+    offer.save
+
+    assert_equal auction.currently_winning_offer.cents, 500
+
+    offer = Offer.new
+    offer.auction = auction
+    offer.user = @user
+    offer.cents = 600
+    offer.billing_profile = @billing_profile
+    offer.save
+
+    p offer.errors
+    p auction.currently_winning_offer.cents
+  end
+
+  def test_blind_auction_should_not_have_configurable_starting_price
+
+  end
 end

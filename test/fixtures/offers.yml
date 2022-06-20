@@ -5,12 +5,12 @@ high_offer:
   billing_profile: private_person
   uuid: "92f2d552-4270-4d08-8687-b332432c872f"
 
-high_english_offer:
-  auction: english
-  user: participant
-  cents: 5000
-  billing_profile: private_person
-  uuid: "91d71378-1f00-4ed3-bb56-b70c45c50eb0"
+# high_english_offer:
+#   auction: english
+#   user: participant
+#   cents: 600
+#   billing_profile: private_person
+#   uuid: "91d71378-1f00-4ed3-bb56-b70c45c50eb0"
 
 minimum_offer:
   auction: valid_with_offers

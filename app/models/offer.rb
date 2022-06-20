@@ -11,6 +11,8 @@ class Offer < ApplicationRecord
   validate :auction_must_be_active
   validate :must_be_higher_than_minimum_offer,
            if: proc { |offer| offer&.auction&.platform == 'blind' || offer&.auction&.platform.nil? }
+  validate :must_be_higher_that_starting_price
+  validate :next_bid_should_be_equal_or_higher_than_min_bid_steps
 
   DEFAULT_PRICE_VALUE = 1
 
@@ -29,6 +31,26 @@ class Offer < ApplicationRecord
                                   auction: Auction.with_user_offers(user.id).find_by(uuid: auction.uuid),
                                   current_user: self.user,
                                 })
+  end
+
+  def next_bid_should_be_equal_or_higher_than_min_bid_steps
+    auction = Auction.find_by(id: auction_id)
+    return if auction.nil? || !auction.english? || auction.offers.empty?
+
+    min_bids_step_in_cents = Money.from_amount(auction.min_bids_step).cents
+    return if min_bids_step_in_cents <= cents
+
+    errors.add(:price, 'Next bid should be higher or equal than minimum bid step')
+  end
+
+  def must_be_higher_that_starting_price
+    auction = Auction.find_by(id: auction_id)
+    return if auction.nil? || !auction.english?
+
+    starting_price_in_cents = Money.from_amount(auction.starting_price).cents
+    return if starting_price_in_cents <= cents
+
+    errors.add(:price, 'First bid should be more or equal than starting price')
   end
 
   def auction_must_be_active

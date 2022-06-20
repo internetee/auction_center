@@ -28,34 +28,36 @@ class AutobiderServiceTest < ActionDispatch::IntegrationTest
   end
 
   def test_if_offer_of_another_user_is_exist_autobidder_should_outbid
-    bid_in_cents = 500
+    offer = Offer.new
+    offer.auction = @english_auction
+    offer.user = @user_two
+    offer.cents = 500
+    offer.billing_profile = @user_two.billing_profiles.first
+    offer.save!
+    @english_auction.update_minimum_bid_step(5.1)
 
-    @english_auction.update(min_bids_step: 5.1)
     @english_auction.reload
-    offer = @english_auction.offers.first
-    offer.update(cents: bid_in_cents)
-    offer.reload
 
-    assert_equal @english_auction.highest_price.to_f, 5.0
-
-    @autobider.update(user: @user_two)
-    @autobider.reload
     AutobiderService.autobid(@english_auction)
-    @english_auction.reload
 
-    assert_equal @english_auction.highest_price.to_f, 5.1
-    assert_equal @english_auction.min_bids_step.round(2), 5.2
-    assert_equal @english_auction.currently_winning_offer.user, @user_two
+    assert_equal @english_auction.highest_price.to_f, 5.2
+    assert_equal @english_auction.min_bids_step, 5.3
+    assert_equal @autobider.user, @user
+    assert_equal @english_auction.currently_winning_offer.user, @user
   end
 
   def test_user_cannot_to_outbid_him_self_if_previous_highest_offer_is_him
     bid_in_cents = 500
 
-    @english_auction.update(min_bids_step: 5.1)
+    offer = Offer.new
+    offer.auction = @english_auction
+    offer.user = @user
+    offer.cents = bid_in_cents
+    offer.billing_profile = @user_two.billing_profiles.first
+    offer.save!
+
+    @english_auction.update_minimum_bid_step(5.0)
     @english_auction.reload
-    offer = @english_auction.offers.first
-    offer.update(cents: bid_in_cents)
-    offer.reload
 
     assert_equal offer.user, @user
     AutobiderService.autobid(@english_auction)
@@ -98,7 +100,15 @@ class AutobiderServiceTest < ActionDispatch::IntegrationTest
 
   def test_if_two_participants_have_autobiders_should_be_sets_penultimate_value
     autobider_two = Autobider.create(user: @user_two, domain_name: @english_auction.domain_name, cents: 15_000)
-    assert_equal @english_auction.highest_price.to_f, 50.0
+
+    offer = Offer.new
+    offer.auction = @english_auction
+    offer.user = @user
+    offer.cents = 500
+    offer.billing_profile = @user_two.billing_profiles.first
+    offer.save!
+
+    assert_equal @english_auction.highest_price.to_f, 5.0
     assert_equal @autobider.cents, 20_000 # 200.0
     assert_equal autobider_two.cents, 15_000 # 150.0
 
@@ -110,6 +120,13 @@ class AutobiderServiceTest < ActionDispatch::IntegrationTest
   end
 
   def test_if_two_participants_have_same_values_should_be_apply_for_early_record
+    offer = Offer.new
+    offer.auction = @english_auction
+    offer.user = @user
+    offer.cents = 500
+    offer.billing_profile = @user_two.billing_profiles.first
+    offer.save!
+
     autobider_two = Autobider.create(user: @user_two, domain_name: @english_auction.domain_name, cents: 20_000)
     assert autobider_two.created_at < @autobider.created_at # because travel_to in setup method
     assert_equal @autobider.cents, autobider_two.cents
@@ -122,9 +139,13 @@ class AutobiderServiceTest < ActionDispatch::IntegrationTest
 
   def test_highest_autobider_should_outbid_penultimate_autobider_value
     @english_auction.reload
-    offer = @english_auction.offers.first
-    offer.update(user: @user_two)
-    offer.reload
+
+    offer = Offer.new
+    offer.auction = @english_auction
+    offer.user = @user_two
+    offer.cents = 500
+    offer.billing_profile = @user_two.billing_profiles.first
+    offer.save!
 
     Autobider.create(user: @user_two, domain_name: @english_auction.domain_name, cents: 15_000)
     # @autobider.update(created_at: autobider_two.created_at - 1.day) # because travel_to in setup method
