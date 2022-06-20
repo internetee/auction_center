@@ -222,9 +222,4 @@ class OfferTest < ActiveSupport::TestCase
 
     assert_equal([], offer.errors[:price])
   end
-
-
-  def test_blind_auction_should_not_have_configurable_starting_price
-
-  end
 end

@@ -6,10 +6,8 @@ class EnglishOffersTest < ApplicationSystemTestCase
 
     @english = auctions(:english)
     @english_nil = auctions(:english_nil_starts)
-
     @user = users(:second_place_participant)
     @user_two = users(:participant)
-    @offer = offers(:high_english_offer)
 
     travel_to Time.parse('2010-07-05 10:31 +0000').in_time_zone
   end
