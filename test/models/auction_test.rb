@@ -140,7 +140,6 @@ class AuctionTest < ActiveSupport::TestCase
                                  status: Result.statuses[:domain_registered])
     assert_equal(asserted_count_after_domain_registration,
                  @with_invoice_auction.calculate_turns_count)
-
   end
 
   def test_auction_creation_uses_callbacks
@@ -153,6 +152,31 @@ class AuctionTest < ActiveSupport::TestCase
 
     assert_equal(asserted_count_after_domain_registration,
                  @with_invoice_auction.turns_count)
+  end
+
+  def test_english_auction_should_change_min_bid_after_actual_bid
+    auction = auctions(:english)
+    assert_equal auction.min_bids_step, 5.0
+
+    auction.update_minimum_bid_step(5.1)
+    auction.reload
+    assert_equal auction.min_bids_step, 5.2
+
+    auction.update_minimum_bid_step(11.0)
+    auction.reload
+    assert_equal auction.min_bids_step, 12.0
+  end
+
+  def test_min_bid_update_value_does_not_work_for_no_english_auctions
+    auction = auctions(:english)
+  end
+
+  def test_min_bid_update_not_work_for_nil_value
+
+  end
+
+  def test_min_bid_update_should_return_error_if_bid_less_than_min_bid_required
+
   end
 
   def assert_overlap_error_messages(object)

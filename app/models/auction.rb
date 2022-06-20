@@ -140,6 +140,8 @@ class Auction < ApplicationRecord
   end
 
   def update_minimum_bid_step(bid)
+    return unless english?
+
     update_value = 0.01
 
     if bid < 1.0

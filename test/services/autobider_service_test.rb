@@ -44,7 +44,7 @@ class AutobiderServiceTest < ActionDispatch::IntegrationTest
     @english_auction.reload
 
     assert_equal @english_auction.highest_price.to_f, 5.1
-    assert_equal @english_auction.min_bids_step, 5.2
+    assert_equal @english_auction.min_bids_step.round(2), 5.2
     assert_equal @english_auction.currently_winning_offer.user, @user_two
   end
 
