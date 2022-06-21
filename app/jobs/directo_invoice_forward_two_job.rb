@@ -9,6 +9,12 @@ class DirectoInvoiceForwardTwoJob < ApplicationJob
       collected_data << i.as_directo_json
     end
 
-    EisBilling::SendDataToDirecto.send_request(object_data: collected_data)
+    result = EisBilling::SendDataToDirecto.send_request(object_data: collected_data)
+
+    Rails.logger.info '---------'
+    Rails.logger.info result.body
+    Rails.logger.info '---------'
+    
+    result
   end
 end
