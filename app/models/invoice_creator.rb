@@ -10,11 +10,6 @@ class InvoiceCreator
   def call
     @result = Result.find_by(id: result_id)
 
-    p '============'
-    p "result present ? #{result_present?}"
-    p "result_awaiting_payment ? #{result_awaiting_payment?}"
-    p "result_user ? #{result_user}"
-
     return unless result_present?
     return unless result_awaiting_payment?
     return unless result_user
