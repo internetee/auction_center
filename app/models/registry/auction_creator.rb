@@ -48,10 +48,19 @@ module Registry
       auction_type = :english
       auction_type = :blind if platform.nil? || platform == 'auto'
 
+      duplicate = Auction.find_by(domain_name: domain_name)
+
       Auction.find_or_initialize_by(domain_name: domain_name, remote_id: remote_id) do |auction|
         auction.platform = auction_type
-        auction.starts_at = nil
-        auction.ends_at = nil
+
+        unless duplicate.nil?
+          auction.starts_at = Time.zone.now + 1.minute
+          auction.ends_at = Time.zone.now + 10.days
+        else
+          auction.starts_at = nil
+          auction.ends_at = nil
+        end
+
         auction.skip_broadcast = true
 
         auction = put_initialize_data_for_blind_auction(auction) if auction_type == :blind

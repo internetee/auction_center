@@ -81,29 +81,4 @@ class AuctionsTest < ApplicationSystemTestCase
     assert(page.has_link?('english_auction.test', href: auction_path(@english_auction.uuid)))
     assert(page.has_link?('Bid!'))
   end
-
-  def test_should_display_the_highest_offer_for_english_auction
-    user_one = users(:participant)
-    user_two = users(:second_place_participant)
-
-    company_billing_profile = billing_profiles(:company)
-
-    Offer.create!(auction: @english_auction,
-                  cents: 3000,
-                  user: user_one, billing_profile: user_one.billing_profiles.first)
-
-    Offer.create!(auction: @english_auction,
-                  cents: 5000,
-                  user: user_two, billing_profile: company_billing_profile)
-
-    @english_auction.reload
-
-    visit('/')
-
-    english_auction_presenter = EnglishBidsPresenter.new(@english_auction)
-
-    assert(page.has_text?(@english_auction.domain_name))
-    assert(page.has_text?('50.00'))
-    assert(page.has_text?(english_auction_presenter.maximum_bids))
-  end
 end
