@@ -41,6 +41,12 @@ class Invoice < ApplicationRecord
   def self.create_from_result(result_id)
     result = Result.find_by(id: result_id)
 
+    p '==============='
+    p '--------------'
+    p result
+    p '-------------'
+    p '==============='
+
     raise(Errors::ResultNotFound, result_id) unless result
     raise(Errors::ResultNotSold, result_id) unless result.awaiting_payment?
 
@@ -63,6 +69,14 @@ class Invoice < ApplicationRecord
     return unless Feature.billing_system_integration_enabled?
 
     result = EisBilling::GetInvoiceNumber.take_it
+
+    p '============================ INVOICE NUMBER'
+    p '*****************88'
+    p result.body
+    p '**************************8'
+    p '**************************8'
+    p '**************************8'
+
     billing_restrictions_issue if JSON.parse(result.body)['code'] == '403'
     billing_out_of_range_issue if JSON.parse(result.body)['error'] == 'out of range'
 
