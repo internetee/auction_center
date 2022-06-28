@@ -17,7 +17,7 @@ module Concerns
       def compose_invoice_meta(invoice)
         invoice['issue_date'] = issue_date.strftime('%Y-%m-%d')
         invoice['transaction_date'] = paid_at.strftime('%Y-%m-%d')
-        invoice['language'] = user.locale == 'en' ? 'ENG' : ''
+        invoice['language'] = user && user&.locale == 'en' ? 'ENG' : ''
         invoice['currency'] = Setting.find_by(code: 'auction_currency').retrieve
         invoice['total_wo_vat'] = price.amount
         invoice['vat_amount'] = vat.amount
