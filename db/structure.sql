@@ -1205,7 +1205,7 @@ CREATE TABLE public.invoices (
     cents integer NOT NULL,
     paid_at timestamp without time zone,
     status public.invoice_status DEFAULT 'issued'::public.invoice_status,
-    number_old integer NOT NULL,
+    number integer NOT NULL,
     uuid uuid DEFAULT public.gen_random_uuid(),
     vat_rate numeric,
     paid_amount numeric,
@@ -1221,8 +1221,6 @@ CREATE TABLE public.invoices (
     postal_code character varying,
     alpha_two_country_code character varying,
     in_directo boolean DEFAULT false NOT NULL,
-    payment_link character varying,
-    number integer,
     CONSTRAINT invoices_cents_are_positive CHECK ((cents > 0)),
     CONSTRAINT invoices_due_date_is_not_before_issue_date CHECK ((issue_date <= due_date)),
     CONSTRAINT paid_at_is_filled_when_status_is_paid CHECK ((NOT ((status = 'paid'::public.invoice_status) AND (paid_at IS NULL)))),
@@ -1265,7 +1263,7 @@ CREATE SEQUENCE public.invoices_number_seq
 -- Name: invoices_number_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.invoices_number_seq OWNED BY public.invoices.number_old;
+ALTER SEQUENCE public.invoices_number_seq OWNED BY public.invoices.number;
 
 
 --
@@ -1715,10 +1713,10 @@ ALTER TABLE ONLY public.invoices ALTER COLUMN id SET DEFAULT nextval('public.inv
 
 
 --
--- Name: invoices number_old; Type: DEFAULT; Schema: public; Owner: -
+-- Name: invoices number; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.invoices ALTER COLUMN number_old SET DEFAULT nextval('public.invoices_number_seq'::regclass);
+ALTER TABLE ONLY public.invoices ALTER COLUMN number SET DEFAULT nextval('public.invoices_number_seq'::regclass);
 
 
 --
@@ -2565,90 +2563,6 @@ CREATE UNIQUE INDEX users_by_identity_code_and_country ON public.users USING btr
 
 
 --
--- Name: auctions process_auction_audit; Type: TRIGGER; Schema: public; Owner: -
---
-
-CREATE TRIGGER process_auction_audit AFTER INSERT OR DELETE OR UPDATE ON public.auctions FOR EACH ROW EXECUTE PROCEDURE public.process_auction_audit();
-
-
---
--- Name: bans process_ban_audit; Type: TRIGGER; Schema: public; Owner: -
---
-
-CREATE TRIGGER process_ban_audit AFTER INSERT OR DELETE OR UPDATE ON public.bans FOR EACH ROW EXECUTE PROCEDURE public.process_ban_audit();
-
-
---
--- Name: billing_profiles process_billing_profile_audit; Type: TRIGGER; Schema: public; Owner: -
---
-
-CREATE TRIGGER process_billing_profile_audit AFTER INSERT OR DELETE OR UPDATE ON public.billing_profiles FOR EACH ROW EXECUTE PROCEDURE public.process_billing_profile_audit();
-
-
---
--- Name: invoices process_invoice_audit; Type: TRIGGER; Schema: public; Owner: -
---
-
-CREATE TRIGGER process_invoice_audit AFTER INSERT OR DELETE OR UPDATE ON public.invoices FOR EACH ROW EXECUTE PROCEDURE public.process_invoice_audit();
-
-
---
--- Name: invoice_items process_invoice_item_audit; Type: TRIGGER; Schema: public; Owner: -
---
-
-CREATE TRIGGER process_invoice_item_audit AFTER INSERT OR DELETE OR UPDATE ON public.invoice_items FOR EACH ROW EXECUTE PROCEDURE public.process_invoice_item_audit();
-
-
---
--- Name: invoice_payment_orders process_invoice_payment_order_audit; Type: TRIGGER; Schema: public; Owner: -
---
-
-CREATE TRIGGER process_invoice_payment_order_audit AFTER INSERT OR DELETE OR UPDATE ON public.invoice_payment_orders FOR EACH ROW EXECUTE PROCEDURE public.process_invoice_payment_order_audit();
-
-
---
--- Name: offers process_offer_audit; Type: TRIGGER; Schema: public; Owner: -
---
-
-CREATE TRIGGER process_offer_audit AFTER INSERT OR DELETE OR UPDATE ON public.offers FOR EACH ROW EXECUTE PROCEDURE public.process_offer_audit();
-
-
---
--- Name: payment_orders process_payment_order_audit; Type: TRIGGER; Schema: public; Owner: -
---
-
-CREATE TRIGGER process_payment_order_audit AFTER INSERT OR DELETE OR UPDATE ON public.payment_orders FOR EACH ROW EXECUTE PROCEDURE public.process_payment_order_audit();
-
-
---
--- Name: results process_result_audit; Type: TRIGGER; Schema: public; Owner: -
---
-
-CREATE TRIGGER process_result_audit AFTER INSERT OR DELETE OR UPDATE ON public.results FOR EACH ROW EXECUTE PROCEDURE public.process_result_audit();
-
-
---
--- Name: settings process_setting_audit; Type: TRIGGER; Schema: public; Owner: -
---
-
-CREATE TRIGGER process_setting_audit AFTER INSERT OR DELETE OR UPDATE ON public.settings FOR EACH ROW EXECUTE PROCEDURE public.process_setting_audit();
-
-
---
--- Name: users process_user_audit; Type: TRIGGER; Schema: public; Owner: -
---
-
-CREATE TRIGGER process_user_audit AFTER INSERT OR DELETE OR UPDATE ON public.users FOR EACH ROW EXECUTE PROCEDURE public.process_user_audit();
-
-
---
--- Name: wishlist_items process_wishlist_item_audit; Type: TRIGGER; Schema: public; Owner: -
---
-
-CREATE TRIGGER process_wishlist_item_audit AFTER INSERT OR DELETE OR UPDATE ON public.wishlist_items FOR EACH ROW EXECUTE PROCEDURE public.process_wishlist_item_audit();
-
-
---
 -- Name: bans fk_rails_070022cd76; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2894,8 +2808,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200205092158'),
 ('20200206090106'),
 ('20200212081434'),
-('20220214124251'),
-('20220214130432'),
 ('20220419091123'),
 ('20220422094307'),
 ('20220422094556'),
