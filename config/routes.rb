@@ -103,7 +103,7 @@ Rails.application.routes.draw do
     resources :phone_confirmations, only: %i[new create]
   end
 
-  resources :wishlist_items, param: :uuid, only: %i[index create destroy update]
+  resources :wishlist_items, param: :uuid, only: %i[index edit create destroy update]
   resources :autobider, param: :uuid, only: [:create, :update]
 
   mount OkComputer::Engine, at: '/healthcheck', as: :healthcheck

@@ -1,0 +1,7 @@
+<%= turbo_frame_tag dom_id(wishlist_item) do %>
+  <%= tag.div do %>
+    <label for="wishlist_price"><%= wishlist_item.price %></label>
+    <%= link_to "Change starting price", edit_wishlist_item_path(wishlist_item.uuid), data: { turbo_frame: 'starting_price_block', turbo: true } %>
+    </div>
+  <% end %>
+<% end %>

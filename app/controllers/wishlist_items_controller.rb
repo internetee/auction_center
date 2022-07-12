@@ -1,9 +1,15 @@
 class WishlistItemsController < ApplicationController
+  include ActionView::RecordIdentifier
+
   before_action :authenticate_user!
 
   def index
     @wishlist_item = WishlistItem.new(user: current_user)
     @wishlist_items = WishlistItem.for_user(current_user.id)
+  end
+
+  def edit
+    @wishlist_item = WishlistItem.find_by(uuid: params[:uuid])
   end
 
   def create
@@ -44,13 +50,20 @@ class WishlistItemsController < ApplicationController
     flash[:alert] = check_for_action_restrictions(wishlist_item.domain_name)
     redirect_to wishlist_items_path and return if flash[:alert].present?
 
-    if wishlist_item.update(strong_params)
-      flash[:notice] = 'Updated'
-    else
-      flash[:alert] = I18n.t('something_went_wrong')
+    respond_to do |format|
+      if wishlist_item.update(strong_params)
+        flash.now[:notice] = 'Updated'
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.append(dom_id(wishlist_item), partial: 'wishlist_items/starting_price',
+                                                       locals: { wishlist_item: wishlist_item })
+          ]
+        end
+      else
+        flash[:alert] = I18n.t('something_went_wrong')
+        format.html { redirect_to wishlist_items_path }
+      end
     end
-
-    redirect_to wishlist_items_path
   end
 
   private
