@@ -1,6 +1,7 @@
 et:
   wishlist_items:
     too_many_items: "suuruse piirang on ületatud"
+    in_progress: "auction already in game"
 
     index:
       new_item: "Lisa uus domeeninimi"

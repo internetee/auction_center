@@ -66,6 +66,19 @@ class WishlistItemsController < ApplicationController
     end
   end
 
+  def domain_wishlist_availability
+    return if Rails.env.test?
+
+    wishlist_item = current_user.wishlist_items.build(domain_name: params[:domain_name])
+    if wishlist_item.valid?
+      msg = { status: 'fine', domain_name: params[:domain_name] }
+    else
+      msg = { status: 'wrong', domain_name: params[:domain_name], errors: wishlist_item.errors.full_messages }
+    end
+
+    render json: msg
+  end
+
   private
 
   def check_for_action_restrictions(domain_name)

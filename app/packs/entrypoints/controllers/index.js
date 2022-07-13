@@ -3,6 +3,7 @@
 // ./bin/rails generate stimulus controllerName
 
 import { application } from "./application"
+// import Rails from "@rails/ujs"
 
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
@@ -16,3 +17,5 @@ import CheckerController from "./checker_controller"
 application.register("checker", CheckerController)
 import CountdownController from "./countdown_controller"
 application.register("countdown", CountdownController)
+import WishlistController from "./wishlist_controller"
+application.register("wishlist", WishlistController)
