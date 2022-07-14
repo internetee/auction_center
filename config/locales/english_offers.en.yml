@@ -13,6 +13,7 @@ en:
       NB: This is a blind auction where bids are not public.
       There might be other bids.
       Make an offer according to the value the domain name holds to you.
+    timer: Auction will finish in
 
     new:
       title: "Offer for the reservation of the domain name"
@@ -24,6 +25,8 @@ en:
       we_will_contact_winner: |
         Once the auction time has ended, we will send an email to
         the auction winner.
+      min_bid: Minimum bid is
+      current_price: Current price is
 
     create:
       created: "Offer submitted successfully."
@@ -42,6 +45,8 @@ en:
       bidder: "Bidder"
       offer: "Offer"
       minimum_offer: "Minimum offer is %{minimum}."
+      captcha_verification: "Captcha verification failed"
+      offer_title: Offer
 
     number_form_field:
       offer: "Offer"

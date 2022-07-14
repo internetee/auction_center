@@ -1,5 +1,12 @@
 <%= form_with model: autobider, url: url do |f| %>
   <div class="ui grid centered", style='margin-top: 20px; margin-bottom: 40px;' style: "">
+    <% if @captcha_required %>
+      <div class="field">
+        <br>
+        <%= recaptcha_tags %>
+      </div>
+    <% end %>
+
     <%= f.hidden_field :domain_name, value: offer.auction.domain_name %>
     <%= f.hidden_field :user_id, value: offer.user_id %>
 

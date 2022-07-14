@@ -15,6 +15,7 @@ en:
     starting_price: "Starting price in euros"
     min_bids_step: "Minimum bid steps in euros"
     slipping_end: "Slipping end condition in minutes"
+    offer_owner: "Offer owner"
 
 
     still_in_progress: "Still in progress"

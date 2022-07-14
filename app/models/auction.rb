@@ -22,6 +22,7 @@ class Auction < ApplicationRecord
   after_update_commit :broadcast_update_min_bid
   after_update_commit :broadcast_update_highest_bid, unless: :skip_broadcast
   after_update_commit :broadcast_update_timer, unless: :skip_broadcast
+  after_update_commit :broadcast_update_winner_offer_owner
   # after_update_commit :broadcast_update_form, unless: :skip_broadcast
 
   scope :active, -> { where('starts_at <= ? AND ends_at >= ?', Time.now.utc, Time.now.utc) }
@@ -92,6 +93,13 @@ class Auction < ApplicationRecord
                          locals: { auction: self })
   end
 
+  # "offer_owner_<%=@offer.auction.id%>"
+  def broadcast_update_winner_offer_owner
+    broadcast_update_to("auctions_offer_#{self.id}",
+                         target: "offer_owner_#{self.id}",
+                         html: "Bid owner <h5>#{self&.currently_winning_offer&.user&.display_name}</h5>".html_safe)
+  end
+
   def self.search(params = {})
     sort_column = params[:sort].presence_in(%w[domain_name ends_at platform users_price]) || 'domain_name'
     sort_direction = params[:direction].presence_in(%w[asc desc]) || 'desc'
@@ -139,10 +147,10 @@ class Auction < ApplicationRecord
     self.update(ends_at: new_deadline)
   end
 
-  def update_minimum_bid_step(bid)
+  def update_minimum_bid_step(bid, force: false)
     return unless english?
 
-    return if bid < self.min_bids_step
+    return if bid < self.min_bids_step && !force
 
     update_value = 0.01
 

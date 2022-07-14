@@ -21,9 +21,10 @@ class Offer < ApplicationRecord
 
   attr_accessor :skip_autobider
   attr_accessor :skip_if_wishlist_case
+  attr_accessor :skip_validation
 
   def broadcast_update_auction
-    broadcast_update_to('auctions',
+    broadcast_replace_to('auctions',
                         target: dom_id(self.auction).to_s,
                         partial: 'auctions/auction',
                         locals:
@@ -34,6 +35,8 @@ class Offer < ApplicationRecord
   end
 
   def next_bid_should_be_equal_or_higher_than_min_bid_steps
+    return if skip_validation
+
     auction = Auction.find_by(id: auction_id)
     return if auction.nil? || !auction.english? || auction.offers.empty?
 

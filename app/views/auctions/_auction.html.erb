@@ -1,5 +1,4 @@
-                            
-<tr class="auctions-table-row" id="<%= dom_id(auction) %>">
+<tr class="auctions-table-row contents" id="<%= dom_id(auction) %>">
 <% english_auction_presenter = EnglishBidsPresenter.new(auction) %>
   <td class="auction-domain-name monospace">
     <%= link_to auction_path(auction.uuid) do %>
@@ -17,6 +16,9 @@
       <%= t('auctions.your_current_price') %>:</span>
       <span class="initial-color current_<%= auction.currently_winning_offer&.user&.id %>_user"><%= english_auction_presenter.maximum_bids %></span>
   <% end %>
+</td>
+<td class="initial-color current_<%= auction.currently_winning_offer&.user&.id %>_user">
+  <%= auction&.currently_winning_offer&.user&.display_name %>
 </td>
 <td class="center aligned">
   <% if auction.platform == 'blind' || auction.platform.nil? %>

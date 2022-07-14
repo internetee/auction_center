@@ -71,11 +71,15 @@
                                 <%= t('auctions.your_current_price') %>
                                 <%= sort_link_to "", "users_offer_cents" %>
                             </th>
+                            <th>
+                                <%= t('auctions.offer_owner') %>
+                                <%= sort_link_to "", "platform" %>
+                            </th>
                             <th class="auctions-table-cell-name-no-mobile center aligned five wide"><%= t('auctions.offer_actions') %></th>
                         </tr>
                     </thead>
 
-                    <%= tag.tbody id: "bids" do %>
+                    <%= tag.tbody id: "bids", class: 'contents' do %>
                         <% @auctions.uniq.each do |auction| %>
                             <%= render partial: 'auction', locals: { auction: auction, q_user: current_user } %>
                         <% end %>

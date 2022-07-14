@@ -27,12 +27,16 @@
         <div class="ui two column grid centered" style="margin-bottom: 20px;">
             <div class="">
                 <%= tag.h5 id: 'mini' do %>
-                    Minimum bid is <%= @offer.auction.min_bids_step %>
+                    <%= t('english_offers.show.min_bid') %> <%= @offer.auction.min_bids_step %>
                 <% end %>
             </div>
 
             <div class="" id="current_<%=@offer.auction.id%>_price">
                 <%= render partial: 'current_price', locals: { auction: @offer.auction } %>
+            </div>
+
+            <div id="offer_owner_<%=@offer.auction.id%>" class="initial-color current_<%= @offer.auction.currently_winning_offer&.user&.id %>_user">
+                <h5>Bid owner <%= @offer&.auction&.currently_winning_offer&.user&.display_name %></h5>
             </div>
         </div>
 

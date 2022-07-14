@@ -12,6 +12,8 @@ class AutobiderService
     autobiders = bider.auctual_autobiders
 
     filtered_autobiders = bider.filter_autobider_for_banned_users(autobiders: autobiders)
+    filtered_autobiders = bider.reject_autobiders_which_bid_equal_to_auction_current_price(filtered_autobiders: filtered_autobiders,
+                                                                                          auction: auction)
 
     return if filtered_autobiders.empty?
 
@@ -24,6 +26,16 @@ class AutobiderService
 
   def filter_autobider_for_banned_users(autobiders:)
     collection_ids = autobiders.select { |autobider| restrict_for_banned_user(autobider: autobider) }.pluck(:id)
+
+    Autobider.where(id: collection_ids)
+  end
+
+  def reject_autobiders_which_bid_equal_to_auction_current_price(filtered_autobiders:, auction:)
+    return filtered_autobiders if auction.offers.empty?
+
+    current_price = auction.highest_price.cents
+
+    collection_ids = filtered_autobiders.select { |autobider| autobider.cents > current_price }.pluck(:id)
 
     Autobider.where(id: collection_ids)
   end
@@ -69,11 +81,23 @@ class AutobiderService
     min_bid_step_in_cents = transform_money_to_cents(auction.min_bids_step)
 
     if auction.highest_price.cents < autobider.cents
+      skip_validation = min_bid_step_in_cents > autobider.cents ? true : false
       min_bid_step_in_cents = min_bid_step_in_cents > autobider.cents ? autobider.cents : min_bid_step_in_cents
-      create_or_update_offer(owner: autobider.user, auction: auction, price: min_bid_step_in_cents)
 
-      s = Money.new(min_bid_step_in_cents.round(2))
-      auction.update_minimum_bid_step(s.to_f)
+      create_or_update_offer(owner: autobider.user,
+                             auction: auction,
+                             price: min_bid_step_in_cents,
+                             skip_validation: skip_validation)
+
+      # s = Money.new(min_bid_step_in_cents.round(2))
+      # auction.update_minimum_bid_step(s.to_f)
+
+      if skip_validation
+        tranformed_money = Money.new(min_bid_step_in_cents)
+        auction.update_minimum_bid_step(tranformed_money.to_f, force: true)
+      else
+        auction.update_minimum_bid_step(auction.min_bids_step)
+      end
 
       return
     end
@@ -85,7 +109,12 @@ class AutobiderService
 
   def autobid_for_multiple_users(autobiders:, auction:)
     highest_price = autobiders.order(cents: :asc).last(2).first.cents
-    owner = autobiders.where('cents >= ?', highest_price).reorder(created_at: :asc).first.user
+    highest_autobider = autobiders.where('cents >= ?', highest_price).reorder(created_at: :asc).first
+
+    owner = highest_autobider.user
+
+    last_created_autobider = autobiders.order(:created_at).last
+    owner = last_created_autobider.user if last_created_autobider.cents == highest_price
 
     offer = create_or_update_offer(owner: owner, auction: auction, price: highest_price)
 
@@ -93,19 +122,35 @@ class AutobiderService
     auction.update_minimum_bid_step(money)
     auction.reload
 
-    update_bid_if_somebody_has_higher(autobiders: autobiders, auction: auction)
+    higher_autobider = autobiders.order('cents DESC').first
+
+    update_bid_if_somebody_has_higher(highest_autobider: higher_autobider, auction: auction)
     auction.update_ends_at(offer)
   end
 
-  def update_bid_if_somebody_has_higher(autobiders:, auction:)
-    autobider_owner_with_highest_cents = autobiders.order(cents: :asc).last.user
-    last_offer_owner = auction.offers.order(updated_at: :desc).first.user
+  def update_bid_if_somebody_has_higher(highest_autobider:, auction:)
+    highest_autobider_owner = highest_autobider.user
+    last_offer_owner = auction.currently_winning_offer.user
 
-    return if autobider_owner_with_highest_cents == last_offer_owner
+    return if highest_autobider_owner == last_offer_owner
 
     min_bid_step_in_cents = transform_money_to_cents(auction.min_bids_step)
-    offer = create_or_update_offer(owner: autobider_owner_with_highest_cents, auction: auction, price: min_bid_step_in_cents)
-    auction.update_minimum_bid_step(auction.min_bids_step)
+    skip_validation = min_bid_step_in_cents > highest_autobider.cents ? true : false
+    min_bid_step_in_cents = min_bid_step_in_cents > highest_autobider.cents ? highest_autobider.cents : min_bid_step_in_cents
+
+    offer = create_or_update_offer(owner: highest_autobider_owner,
+                                   auction: auction,
+                                   price: min_bid_step_in_cents,
+                                   skip_validation: skip_validation)
+
+    if skip_validation
+      tranformed_money = Money.new(min_bid_step_in_cents)
+
+      auction.update_minimum_bid_step(tranformed_money.to_f, force: true)
+    else
+      auction.update_minimum_bid_step(auction.min_bids_step)
+    end
+
     auction.update_ends_at(offer)
   end
 
@@ -113,12 +158,12 @@ class AutobiderService
     Money.from_amount(money.to_d, Setting.find_by(code: 'auction_currency').retrieve).cents
   end
 
-  def create_or_update_offer(owner:, auction:, price:)
+  def create_or_update_offer(owner:, auction:, price:, skip_validation: false)
     user_offer = auction.offers.find_by(user: owner)
     if user_offer.nil?
       user_offer = create_offer(auction: auction, owner: owner, cents: price)
     else
-      user_offer.update!(cents: price, skip_autobider: true)
+      user_offer.update!(cents: price, skip_autobider: true, skip_validation: skip_validation)
     end
 
     user_offer

@@ -13,6 +13,7 @@ et:
     starting_price: "Alghind eurodes"
     min_bids_step: "Minimaalne panuse samm eurod"
     slipping_end: "Pikenev lõpp minutites"
+    offer_owner: "Offer owner"
 
 
     still_in_progress: "Töötlemisel"

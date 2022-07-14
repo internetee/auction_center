@@ -1,47 +1,53 @@
-en:
+et:
   english_offers:
-    auction: "Auction"
-    price: "Price"
-    total: "Total with VAT"
-    i_accept_terms_and_conditions: "I accept terms and conditions"
+    auction: "Oksjon"
+    price: "Hind"
+    i_accept_terms_and_conditions: "Nõustun tingimustega"
     price_in_currency: "%{price} €"
-    price_is_without_vat: "The offer does not include VAT."
-    already_exists: "You already have an offer for this auction."
-    must_be_active: "must be active"
-    must_be_higher_than: "must be higher than %{minimum}"
+    price_is_without_vat: "Pakkumus ei sisalda käibemaksu."
+    already_exists: "Oled sellele oksjonile pakkumuse juba esitanud."
+    errors: "seda pakkumust ei saa salvestada"
+    total: "Käibemaksuga kokku"
+    must_be_active: "peab olema aktiivne"
+    must_be_higher_than: "peab olema suurem kui %{minimum}"
     reminder: |
-      NB: This is a blind auction where bids are not public.
-      There might be other bids.
-      Make an offer according to the value the domain name holds to you.
+      NB: Tegemist on pimeoksjoniga, kus pakkumised ei ole nähtavad.
+      Domeeninimele võib olla ka teisi pakkujaid.
+      Tee pakkumine vastavalt oma hinnangule domeeninime väärtuse kohta.
+    timer: Oksjoni lõpuni on jäänud
 
     new:
-      title: "Offer for the reservation of the domain name"
-      errors: "prohibited this offer from being saved"
-      minimum_offer: "Minimum offer is %{minimum}."
-
-    show:
-      title: "Your offer"
-      we_will_contact_winner: |
-        Once the auction time has ended, we will send an email to
-        the auction winner.
+      title: "Domeeni registreerimise eelisõiguse pakkumus"
 
     create:
-      created: "Offer submitted successfully."
+      created: "Pakkumus edukalt esitatud"
+
+    show:
+      title: "Sinu pakkumus"
+      we_will_contact_winner: |
+        Kui oksjon on lõppenud, saadameoksjoni võitjale e-kirja aadressile
+      min_bid: Vähim võimalik pakkumus
+      current_price: Hetke parim pakkumus
 
     edit:
-      title: "Offer for the reservation of the domain name"
-      errors: "prohibited this offer from being saved"
+      title: "Domeeni registreerimise eelisõiguse pakkumus"
 
     index:
-      your_last_offer: "Your last offer"
-      claim_your_domain: "Claim your domain"
-      you_won: "You won"
-      you_lost: "Someone else won"
+      your_last_offer: "Sinu viimane pakkumus"
+      claim_your_domain: "Võta domeen"
+      you_won: "Oled võitnud"
+      you_lost: "Teine pakkuja võitis"
 
     form:
-      bidder: "Bidder"
-      offer: "Offer"
-      minimum_offer: "Minimum offer is %{minimum}."
+      bidder: "Pakkuja"
+      offer: "Pakkumus"
+      minimum_offer: "Pakkumus peab olema vähemalt %{minimum}."
+      captcha_verification: "Captcha kontroll ebaõnnestus"
+      offer_title: Tee oma pakkumus
 
-    number_form_field:
-      offer: "Offer"
+  activerecord:
+    attributes:
+      offer:
+        auction: "oksjon"
+        price: "hind"
+        cents: "hind"

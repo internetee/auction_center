@@ -5,7 +5,7 @@ class EnglishOffersController < ApplicationController
   before_action :authorize_offer_for_user, except: %i[new create]
   before_action :set_captcha_required
   before_action :prevent_check_for_invalid_bid, only: [:update]
-  before_action :captcha_check, only: [:update, :create]
+  # before_action :captcha_check, only: [:update, :create]
 
   protect_from_forgery with: :null_session
 
@@ -28,7 +28,7 @@ class EnglishOffersController < ApplicationController
     auction = Auction.find_by!(uuid: params[:auction_uuid])
 
     unless check_first_bid_for_english_auction(create_params, auction)
-      flash[:alert] = "First bid should be more or equal that starter price #{auction.starting_price}"
+      flash[:alert] = "Your bid must be #{auction.starting_price}€ or more"
       redirect_to new_auction_english_offer_path(auction_uuid: auction.uuid) and return
     end
 
@@ -40,9 +40,10 @@ class EnglishOffersController < ApplicationController
       auction.broadcast_replace_to "auctions_offer_#{auction.id}",
                                     target: "offer_#{auction.id}_form",
                                     partial: 'english_offers/number_form_field',
-                                    locals: {offer_value: auction.min_bids_step , offer_disabled: auction.finished? ? true : false }
+                                    locals: { offer_value: auction.min_bids_step,
+                                              offer_disabled: auction.finished? ? true : false }
     else
-      flash[:alert] = 'Somethings goes wrong.'
+      flash[:alert] = @offer.errors
       redirect_to request.referrer
     end
   end
@@ -69,7 +70,7 @@ class EnglishOffersController < ApplicationController
                                   partial: 'english_offers/number_form_field',
                                   locals: {offer_value: auction.min_bids_step , offer_disabled: auction.finished? ? true : false }
     else
-      flash[:alert] = 'Somethings goes wrong.'
+      flash[:alert] = @offer.errors
       redirect_to request.referrer
     end
   end
@@ -80,7 +81,7 @@ class EnglishOffersController < ApplicationController
     captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
     return if captcha_predicate
 
-    flash[:alert] = 'Captcha verification failed'
+    flash[:alert] = t('english_offers.form.captcha_verification')
     redirect_to request.referrer and return
   end
 
@@ -96,7 +97,7 @@ class EnglishOffersController < ApplicationController
     auction = Auction.with_user_offers(current_user.id).find_by(uuid: @offer.auction.uuid)
     return unless bid_is_bad?(auction: auction, update_params: update_params)
 
-    flash[:alert] = "Bid failed, current price is #{auction.highest_price.to_f}"
+    flash[:alert] = "Bid failed, #{t('english_offers.show.current_price')} #{auction.highest_price.to_f}"
     redirect_to edit_english_offer_path(auction.users_offer_uuid) and return
   end
 

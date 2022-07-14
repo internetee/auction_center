@@ -5,7 +5,8 @@ export default class extends Controller {
     date: String,
     refreshInterval: { type: Number, default: 1000 },
     expiredMessage: { type: String, default: 'Auction has been ended.' },
-    message: { type: String, default: "Auction will finish in <b>${days}d ${hours}h ${minutes}m ${seconds}s</b>" }
+    messageTimer: { type: String, default: "<b>${days}d ${hours}h ${minutes}m ${seconds}s</b>" },
+    message: String,
   }
 
   connect() {
@@ -47,11 +48,11 @@ export default class extends Controller {
     let minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
     let seconds = Math.floor((difference % (1000 * 60)) / 1000);
 
-    this.element.innerHTML = this.messageValue
-                                   .replace("${days}", days)
-                                   .replace("${hours}", hours)
-                                   .replace("${minutes}", minutes)
-                                   .replace("${seconds}", seconds)
+    this.element.innerHTML = this.messageValue + ' ' + this.messageTimerValue
+                                                           .replace("${days}", days)
+                                                           .replace("${hours}", hours)
+                                                           .replace("${minutes}", minutes)
+                                                           .replace("${seconds}", seconds)
   }
 
   timeDifference() {
