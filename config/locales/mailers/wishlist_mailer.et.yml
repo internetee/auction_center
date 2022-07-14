@@ -10,7 +10,7 @@ et:
       call_to_action_html: "Tee oma pakkumine %{link}."
       call_to_action_link: "siin"
     auto_offer_notification_mail:
-      subject: Automaat pakkumine domeenile %{domain_name} oli edukas
+      subject: Automaatpakkumine domeenile %{domain_name} oli edukas
       salutation: "Lugupeetud %{display_name},"
       introduction: Sooviloendis olev domeeninimi %{domain_name} pandi oksjonile ja tehti automaatne pakkumine %{offer_price}
       call_to_action_html: "Vaadake oma pakkumist %{link}."

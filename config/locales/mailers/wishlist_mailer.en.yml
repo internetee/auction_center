@@ -10,8 +10,8 @@ en:
       call_to_action_html: "Make your bid %{link}."
       call_to_action_link: "here"
     auto_offer_notification_mail:
-      subject: Automatic bid for the %{domain_name} domain was successful"
+      subject: Automated bid for the %{domain_name} domain was successful"
       salutation: "Dear %{display_name},"
-      introduction: The domain name %{domain_name} from the wishlist was auctioned and an automatic bid of %{offer_price} was made
+      introduction: The domain name %{domain_name} from the wishlist was auctioned and an automated bid of %{offer_price} was made
       call_to_action_html: "See your bid %{link}."
       call_to_action_link: "here"
