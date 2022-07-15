@@ -81,32 +81,46 @@ module Registry
     end
 
     def put_same_values_as_before_for_new_round(domain_name)
-      auctions = Auction.where(domain_name: domain_name)
+      auctions = Auction.where(domain_name: domain_name).order(created_at: :asc)
       return nil if auctions.empty?
       return nil if auctions.count < 2
 
-      legacy_auction = auctions.order(created_at: :asc).first
+      legacy_auction = auctions.first
 
       new_ends_at = legacy_auction.ends_at
       if legacy_auction.initial_ends_at.present?
         legacy_time_difference = (legacy_auction.initial_ends_at - legacy_auction.starts_at).to_i.abs
         legacy_difference_in_day = legacy_time_difference / 86400
-        legacy_time = legacy_auction.ends_at.strftime("%H:%M:%S")
+        # legacy_time = legacy_auction.ends_at.strftime("%H:%M:%S")
+        legacy_time = legacy_auction.initial_ends_at.strftime("%H:%M:%S")
         t = Time.parse(legacy_time).seconds_since_midnight.seconds
         new_ends_at = Time.zone.now.beginning_of_day + legacy_difference_in_day.day + t
       end
 
-      auction = Auction.where(domain_name: domain_name).order(created_at: :asc).last
+      auction = auctions.last
       auction.starting_price = legacy_auction.starting_price
       auction.min_bids_step = legacy_auction.starting_price
       auction.slipping_end = legacy_auction.slipping_end
       auction.platform = legacy_auction.platform
       auction.starts_at = Time.zone.now
+
+      additional_day = reassign_ends_at(legacy_auction, auction)
       auction.ends_at = new_ends_at.present? ? new_ends_at.to_s : nil
-      auction.initial_ends_at = new_ends_at.to_s
+      auction.ends_at = auction.ends_at + additional_day.day
+      auction.initial_ends_at = new_ends_at.present? ? new_ends_at.to_s : nil
+      auction.initial_ends_at = auction.initial_ends_at + additional_day.day
 
       auction.skip_broadcast = true
-      auction.save
+      auction.save!
+    end
+
+    def reassign_ends_at(legacy_auction, new_auction)
+      t1 = legacy_auction.starts_at
+      t2 = new_auction.starts_at
+      t1_time = t1.strftime("%H:%M:%S")
+      t2_time = t2.strftime("%H:%M:%S")
+
+      t1_time < t2_time ? 1 : 0
     end
 
     def indicate_correct_platform_and_assign_it(domain_name)

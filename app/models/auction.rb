@@ -22,7 +22,7 @@ class Auction < ApplicationRecord
   after_update_commit :broadcast_update_min_bid
   after_update_commit :broadcast_update_highest_bid, unless: :skip_broadcast
   after_update_commit :broadcast_update_timer, unless: :skip_broadcast
-  after_update_commit :broadcast_update_winner_offer_owner
+  after_update_commit :broadcast_update_winner_offer_owner, unless: :skip_broadcast
   # after_update_commit :broadcast_update_form, unless: :skip_broadcast
 
   scope :active, -> { where('starts_at <= ? AND ends_at >= ?', Time.now.utc, Time.now.utc) }

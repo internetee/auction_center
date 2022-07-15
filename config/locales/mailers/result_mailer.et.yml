@@ -7,9 +7,7 @@ et:
         Palju õnne! Pakkumine domeeni eelisõiguse oksjonil domeenile
         %{domain_name} oli edukas.
       details_html: |
-        Domeeni %{domain_name} eelisõiguse soetamiseks tuleb 7 päeva
-        jooksul tasuda ettemaksuarve. Ettemaksuarve saajaks saad määrata
-        ka muu isiku %{link}.
+        %{domain_name} registreerimise eelisõiguse omandamiseks tuleb 7 päeva jooksul tasuda %{link}. ettemaksuarve. Vajadusel saate keskkonnas muuta arve saaja andmeid. 
       linkpay_html: |
         Saad arve koheselt tasuda selle <a href=%{linkpay_url}>lingi</a> abil.
       auction_link: ".ee oksjonikeskkonnas"

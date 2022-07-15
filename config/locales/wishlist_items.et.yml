@@ -16,6 +16,7 @@ et:
       notification_description: |
         Saadame epostiga teate, kui soovitud domeeninimi läheb oksjonile.
         Võib minna väga kaua aega enne kui domeeninimi jõuab oksjonile seepärast kirjed nimekirjas ei aegu.
+      change_starting_price: Muuda
 
   activerecord:
     attributes:

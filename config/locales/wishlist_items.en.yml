@@ -18,6 +18,7 @@ en:
         Once a domain from your wishlist goes to auction, we will send you an email.
         It can take a long time before current registrant decides to not renew a domain, so
         we keep your wishlist indefinitely.
+      change_starting_price: Change
 
   activerecord:
     attributes:

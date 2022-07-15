@@ -7,10 +7,9 @@ class WishlistMailer < ApplicationMailer
     mail(to: @user.email, subject: t('.subject', domain_name: item.domain_name))
   end
 
-  def auto_offer_notification_mail(item, auction, offer)
+  def auction_wishlist_bid(item, auction)
     @user = item.user
     @auction = auction
-    @offer = offer
     I18n.locale = @user.locale
 
     mail(to: @user.email, subject: t('.subject', domain_name: item.domain_name))

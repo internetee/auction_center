@@ -54,5 +54,8 @@ class FirstBidFromWishlistService
       billing_profile: owner.billing_profiles.first,
       skip_if_wishlist_case: true
     )
+
+    wishlist_item = WishlistItem.find_by(user_id: owner.id, domain_name: auction.domain_name)
+    WishlistMailer.auction_wishlist_bid(wishlist_item, auction).deliver_later(wait_until: auction.starts_at)
   end
 end

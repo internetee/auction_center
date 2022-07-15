@@ -2,7 +2,7 @@ et:
   invoice_mailer:
     reminder_email:
       subject: "%{domain_name} arve tasumise tähtaeg"
-      salutation: "Lugupeetud, %{display_name}!"
+      salutation: "Lugupeetud, %{display_name} oksjoni võitja!"
       introduction: |
         Tuletame meelde, et .ee domeeni oksjonilt soetatud domeeni %{domain_name}
         registreerimise eelisõiguse arve tasumise tähtaeg on %{due_date}.
