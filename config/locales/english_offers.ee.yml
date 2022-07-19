@@ -8,7 +8,7 @@ et:
     already_exists: "Oled sellele oksjonile pakkumuse juba esitanud."
     errors: "seda pakkumust ei saa salvestada"
     total: "Käibemaksuga kokku"
-    must_be_active: "peab olema aktiivne"
+    must_be_active: "Oksjon on lõppenud"
     must_be_higher_than: "peab olema suurem kui %{minimum}"
     reminder: |
       NB: Tegemist on pimeoksjoniga, kus pakkumised ei ole nähtavad.
