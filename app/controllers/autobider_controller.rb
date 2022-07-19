@@ -2,13 +2,13 @@ class AutobiderController < ApplicationController
   before_action :authenticate_user!
   before_action :allow_any_action_with_autobider
   before_action :set_captcha_required
-  # before_action :captcha_check, only: [:update, :create]
+  before_action :captcha_check, only: [:update, :create]
 
   def update
     @autobider = Autobider.find_by(uuid: params[:uuid])
 
     if @autobider.update(strong_params)
-      auction = Auction.find_by(domain_name: @autobider.domain_name)
+      auction = Auction.where(domain_name: @autobider.domain_name).order(:created_at).last
 
       AutobiderService.autobid(auction) unless skip_autobid(auction)
       flash[:notice] = 'Updated'
@@ -23,7 +23,7 @@ class AutobiderController < ApplicationController
     @autobider = Autobider.new(strong_params)
 
     if create_predicate
-      auction = Auction.find_by(domain_name: @autobider.domain_name)
+      auction = Auction.where(domain_name: @autobider.domain_name).order(:created_at).last
       AutobiderService.autobid(auction)
 
       redirect_to auctions_path, notice: 'Autobider created'
