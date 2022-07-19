@@ -27,6 +27,7 @@ en:
         the auction winner.
       min_bid: Minimum bid is
       current_price: Current price is
+      bid_failed: Bid failed, current price is
 
     create:
       created: "Offer submitted successfully."
@@ -47,6 +48,7 @@ en:
       minimum_offer: "Minimum offer is %{minimum}."
       captcha_verification: "Captcha verification failed"
       offer_title: Offer
+      autobider: "Autobidder"
 
     number_form_field:
       offer: "Offer"

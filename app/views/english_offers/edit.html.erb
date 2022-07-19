@@ -34,10 +34,6 @@
             <div class="" id="current_<%=@offer.auction.id%>_price">
                 <%= render partial: 'current_price', locals: { auction: @offer.auction } %>
             </div>
-
-            <div id="offer_owner_<%=@offer.auction.id%>" class="initial-color current_<%= @offer.auction.currently_winning_offer&.user&.id %>_user">
-                <h5>Bid owner <%= @offer&.auction&.currently_winning_offer&.user&.display_name %></h5>
-            </div>
         </div>
 
 

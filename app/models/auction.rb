@@ -22,8 +22,6 @@ class Auction < ApplicationRecord
   after_update_commit :broadcast_update_min_bid
   after_update_commit :broadcast_update_highest_bid, unless: :skip_broadcast
   after_update_commit :broadcast_update_timer, unless: :skip_broadcast
-  after_update_commit :broadcast_update_winner_offer_owner, unless: :skip_broadcast
-  # after_update_commit :broadcast_update_form, unless: :skip_broadcast
 
   scope :active, -> { where('starts_at <= ? AND ends_at >= ?', Time.now.utc, Time.now.utc) }
   scope :without_result, lambda {
@@ -91,13 +89,6 @@ class Auction < ApplicationRecord
                          target: 'auction_timer',
                          partial: 'english_offers/timer',
                          locals: { auction: self })
-  end
-
-  # "offer_owner_<%=@offer.auction.id%>"
-  def broadcast_update_winner_offer_owner
-    broadcast_update_to("auctions_offer_#{self.id}",
-                         target: "offer_owner_#{self.id}",
-                         html: "Bid owner <h5>#{self&.currently_winning_offer&.user&.display_name}</h5>".html_safe)
   end
 
   def self.search(params = {})

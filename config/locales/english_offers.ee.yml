@@ -28,6 +28,7 @@ et:
         Kui oksjon on lõppenud, saadameoksjoni võitjale e-kirja aadressile
       min_bid: Vähim võimalik pakkumus
       current_price: Hetke parim pakkumus
+      bid_failed: Pakkumine ebaõnnestus, hetke parim pakkumus
 
     edit:
       title: "Domeeni registreerimise eelisõiguse pakkumus"
@@ -44,6 +45,7 @@ et:
       minimum_offer: "Pakkumus peab olema vähemalt %{minimum}."
       captcha_verification: "Captcha kontroll ebaõnnestus"
       offer_title: Tee oma pakkumus
+      autobider: "Automaatpakkuja"
 
   activerecord:
     attributes:

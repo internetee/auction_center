@@ -1,4 +1,4 @@
                 
 <h5 class="initial-color current_<%= auction.currently_winning_offer&.user&.id %>_user">
-  <%= t('english_offers.show.current_price') %> <%= auction.currently_winning_offer&.price %>
+  <%= t('english_offers.show.current_price') %> <%= auction.currently_winning_offer&.price %> (<%= auction&.currently_winning_offer&.user&.display_name %>)
 </h5>
