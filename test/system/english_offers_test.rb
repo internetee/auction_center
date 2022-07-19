@@ -31,41 +31,6 @@ class EnglishOffersTest < ApplicationSystemTestCase
     assert(page.has_css?('div.notice', text: 'Offer submitted successfully.'))
   end
 
-  def test_can_not_made_offer_less_than_starting_price
-    starting_price = 15.0
-    @english.update(starting_price: starting_price)
-    @english.offers.destroy_all
-    @english.reload
-
-    sign_in(@user)
-    visit auction_path(@english.uuid)
-
-    assert(page.has_link?('Bid'))
-    click_link('Bid')
-
-    fill_in('offer[price]', with: '5.12')
-    find('#bid_action').click
-    assert(page.has_css?('div.alert', text: "First bid should be more or equal that starter price #{starting_price}"))
-  end
-
-  def test_after_bid_should_display_min_bid
-    bid = rand(51.0...999.9).round(2)
-    min_next_bid = calculate_min_bid(bid)
-    sign_in(@user)
-    visit auction_path(@english.uuid)
-
-    assert(page.has_link?('Bid'))
-    click_link('Bid')
-
-    fill_in('offer[price]', with: bid)
-    find('#bid_action').click
-
-    @english.reload
-
-    assert(page.has_css?('div.notice', text: 'Offer submitted successfully.'))
-    assert find('#mini').has_text?(min_next_bid)
-  end
-
   def test_user_cannot_to_make_bid_what_less_than_minimum_bid
     bid = rand(51.0...999.9).round(2)
     min_next_bid = calculate_min_bid(bid)

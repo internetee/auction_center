@@ -56,6 +56,6 @@ class FirstBidFromWishlistService
     )
 
     wishlist_item = WishlistItem.find_by(user_id: owner.id, domain_name: auction.domain_name)
-    WishlistMailer.auction_wishlist_bid(wishlist_item, auction).deliver_later(wait_until: auction.starts_at)
+    WishlistMailer.auction_wishlist_bid(wishlist_item, auction).deliver_later(wait_until: auction.starts_at) unless Rails.env.test?
   end
 end

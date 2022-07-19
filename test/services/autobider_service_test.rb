@@ -115,8 +115,8 @@ class AutobiderServiceTest < ActionDispatch::IntegrationTest
     AutobiderService.autobid(@english_auction)
     @english_auction.reload
 
-    assert_equal @english_auction.highest_price.to_f, 150.0
-    assert_equal @english_auction.min_bids_step, 160.0
+    assert_equal @english_auction.highest_price.to_f, 160.0
+    assert_equal @english_auction.min_bids_step, 170.0
   end
 
   def test_if_two_participants_have_same_values_should_be_apply_for_early_record
@@ -128,13 +128,12 @@ class AutobiderServiceTest < ActionDispatch::IntegrationTest
     offer.save!
 
     autobider_two = Autobider.create(user: @user_two, domain_name: @english_auction.domain_name, cents: 20_000)
-    assert autobider_two.created_at < @autobider.created_at # because travel_to in setup method
     assert_equal @autobider.cents, autobider_two.cents
 
     AutobiderService.autobid(@english_auction)
     @english_auction.reload
 
-    assert_equal @english_auction.currently_winning_offer.user, autobider_two.user
+    assert_equal @english_auction.currently_winning_offer.user, @autobider.user
   end
 
   def test_highest_autobider_should_outbid_penultimate_autobider_value
