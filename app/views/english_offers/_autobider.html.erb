@@ -1,18 +1,23 @@
-<%= form_with model: autobider, url: url do |f| %>
-  <div class="ui grid centered", style='margin-top: 20px; margin-bottom: 40px;' style: "">
-    <% if @captcha_required %>
+<%= form_with model: autobider, url: url, class: 'centrilize-form' do |f| %>
+  <div class="ui one column grid centered"", style='margin-top: 20px; margin-bottom: 40px;' style: "">
+    <div class="column">
+    <%= f.hidden_field :domain_name, value: offer.auction.domain_name %>
+    <%= f.hidden_field :user_id, value: offer.user_id %>
+
+    <%= f.label "Autobider (current value):", style: "valign-item: center; padding-top: 10px;"%>
+    <%= f.number_field :price, class: "form-control", min: 0, step: "0.01", disabled: offer.auction.finished? ? true : false, style: "padding: 10px 5px;" %>
+
+    <%= f.submit t(:submit), class: "ui button primary", data: { turbo: false }, id: 'autobidder_action', style: 'margin-left: 10px;' %>
+    </div>
+
+      <div class='column'>
+        <% if @captcha_required %>
       <div class="field">
         <br>
         <%= recaptcha_tags %>
       </div>
     <% end %>
-
-    <%= f.hidden_field :domain_name, value: offer.auction.domain_name %>
-    <%= f.hidden_field :user_id, value: offer.user_id %>
-
-    <%= f.label "Autobider (current value):", style: "valign-item: center; padding-top: 10px;"%>
-    <%= f.number_field :price, class: "form-control", min: 0, step: "0.01", disabled: offer.auction.finished? ? true : false %>
-
-    <%= f.submit t(:submit), class: "ui button primary", data: { turbo: false }, id: 'autobidder_action', style: 'margin-left: 10px;' %>
+    
+    </div>
   </div>
 <% end %>

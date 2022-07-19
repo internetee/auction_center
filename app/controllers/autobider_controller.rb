@@ -2,7 +2,7 @@ class AutobiderController < ApplicationController
   before_action :authenticate_user!
   before_action :allow_any_action_with_autobider
   before_action :set_captcha_required
-  before_action :captcha_check, only: [:update, :create]
+  # before_action :captcha_check, only: [:update, :create]
 
   def update
     @autobider = Autobider.find_by(uuid: params[:uuid])
