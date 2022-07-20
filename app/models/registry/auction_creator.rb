@@ -48,20 +48,23 @@ module Registry
       auction_type = :english
       auction_type = :blind if platform.nil? || platform == 'auto'
 
-      duplicate = Auction.find_by(domain_name: domain_name)
+      # duplicate = Auction.find_by(domain_name: domain_name)
 
       Auction.find_or_initialize_by(domain_name: domain_name, remote_id: remote_id) do |auction|
         auction.platform = auction_type
 
-        unless duplicate.nil?
-          auction.starts_at = Time.zone.now + 1.minute
-          auction.ends_at = Time.zone.now + 10.days
-        else
-          auction.starts_at = nil
-          auction.ends_at = nil
-        end
+        # unless duplicate.nil?
+        #   auction.starts_at = Time.zone.now + 1.minute
+        #   auction.ends_at = Time.zone.now + 10.days
+        # else
+        #   auction.starts_at = nil
+        #   auction.ends_at = nil
+        # end
 
+        auction.starts_at = nil
+        auction.ends_at = nil
         auction.skip_broadcast = true
+        auction.skip_validation = true if auction.english?
 
         auction = put_initialize_data_for_blind_auction(auction) if auction_type == :blind
 
@@ -69,7 +72,7 @@ module Registry
       end
 
       indicate_correct_platform_and_assign_it(domain_name)
-      put_same_values_as_before_for_new_round(domain_name)
+      put_same_values_as_before_for_new_round(domain_name) if auction_type == :english
       destroy_autobider(domain_name)
     end
 
@@ -83,6 +86,7 @@ module Registry
     def put_same_values_as_before_for_new_round(domain_name)
       auctions = Auction.where(domain_name: domain_name).order(created_at: :asc)
       return nil if auctions.empty?
+      # return nil unless auction.english?
       return nil if auctions.count < 2
 
       legacy_auction = auctions.first
@@ -111,7 +115,11 @@ module Registry
       auction.initial_ends_at = auction.initial_ends_at + additional_day.day
 
       auction.skip_broadcast = true
+      auction.skip_validation = true if auction.english?
+
       auction.save!
+
+      auction
     end
 
     def reassign_ends_at(legacy_auction, new_auction)
@@ -137,6 +145,7 @@ module Registry
       end
 
       auction.skip_broadcast = true
+      auction.skip_validation = true if auction.english?
       auction.save
     end
 

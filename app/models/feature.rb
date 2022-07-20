@@ -3,7 +3,6 @@ class Feature
     !!AuctionCenter::Application.config
                                 .customization[:registry_integration]
                                 &.compact&.fetch(:enabled, true)
-
   end
 
   def self.billing_system_integration_enabled?

@@ -7,6 +7,7 @@ class Auction < ApplicationRecord
   validates :domain_name, presence: true
 
   attr_accessor :skip_broadcast
+  attr_accessor :skip_validation
 
   validate :does_not_overlap
   validate :ends_at_later_than_starts_at
@@ -105,6 +106,7 @@ class Auction < ApplicationRecord
   end
 
   def does_not_overlap
+    return if skip_validation
     return unless starts_at && ends_at
     return unless overlaping_auctions&.exists?
 
@@ -186,6 +188,7 @@ class Auction < ApplicationRecord
   end
 
   def ends_at_later_than_starts_at
+    return if skip_validation
     return unless starts_at && ends_at
     return if ends_at > starts_at
 
