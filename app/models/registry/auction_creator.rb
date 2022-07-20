@@ -48,23 +48,22 @@ module Registry
       auction_type = :english
       auction_type = :blind if platform.nil? || platform == 'auto'
 
-      # duplicate = Auction.find_by(domain_name: domain_name)
+      duplicate = Auction.where(domain_name: domain_name).last
+      return if duplicate && duplicate.in_progress?
 
       Auction.find_or_initialize_by(domain_name: domain_name, remote_id: remote_id) do |auction|
         auction.platform = auction_type
 
-        # unless duplicate.nil?
-        #   auction.starts_at = Time.zone.now + 1.minute
-        #   auction.ends_at = Time.zone.now + 10.days
-        # else
-        #   auction.starts_at = nil
-        #   auction.ends_at = nil
-        # end
+        unless duplicate.nil?
+          auction.starts_at = Time.zone.now + 1.minute
+          auction.ends_at = Time.zone.now + 10.days
+        else
+          auction.starts_at = nil
+          auction.ends_at = nil
+        end
 
-        auction.starts_at = nil
-        auction.ends_at = nil
         auction.skip_broadcast = true
-        auction.skip_validation = true if auction.english?
+        auction.skip_validation = true
 
         auction = put_initialize_data_for_blind_auction(auction) if auction_type == :blind
 
@@ -72,7 +71,7 @@ module Registry
       end
 
       indicate_correct_platform_and_assign_it(domain_name)
-      put_same_values_as_before_for_new_round(domain_name) if auction_type == :english
+      put_same_values_as_before_for_new_round(domain_name)
       destroy_autobider(domain_name)
     end
 
@@ -86,7 +85,6 @@ module Registry
     def put_same_values_as_before_for_new_round(domain_name)
       auctions = Auction.where(domain_name: domain_name).order(created_at: :asc)
       return nil if auctions.empty?
-      # return nil unless auction.english?
       return nil if auctions.count < 2
 
       legacy_auction = auctions.first
@@ -95,7 +93,6 @@ module Registry
       if legacy_auction.initial_ends_at.present?
         legacy_time_difference = (legacy_auction.initial_ends_at - legacy_auction.starts_at).to_i.abs
         legacy_difference_in_day = legacy_time_difference / 86400
-        # legacy_time = legacy_auction.ends_at.strftime("%H:%M:%S")
         legacy_time = legacy_auction.initial_ends_at.strftime("%H:%M:%S")
         t = Time.parse(legacy_time).seconds_since_midnight.seconds
         new_ends_at = Time.zone.now.beginning_of_day + legacy_difference_in_day.day + t
@@ -106,20 +103,23 @@ module Registry
       auction.min_bids_step = legacy_auction.starting_price
       auction.slipping_end = legacy_auction.slipping_end
       auction.platform = legacy_auction.platform
-      auction.starts_at = Time.zone.now
+      auction.starts_at = nil
 
-      additional_day = reassign_ends_at(legacy_auction, auction)
-      auction.ends_at = new_ends_at.present? ? new_ends_at.to_s : nil
-      auction.ends_at = auction.ends_at + additional_day.day
-      auction.initial_ends_at = new_ends_at.present? ? new_ends_at.to_s : nil
-      auction.initial_ends_at = auction.initial_ends_at + additional_day.day
+      auction.ends_at = nil
+      auction.initial_ends_at = nil
+
+      if legacy_auction.initial_ends_at.present?
+        auction.starts_at = Time.zone.now
+        additional_day = reassign_ends_at(legacy_auction, auction)
+        auction.ends_at = new_ends_at.to_s
+        auction.ends_at = auction.ends_at + additional_day.day
+        auction.initial_ends_at = new_ends_at.to_s
+        auction.initial_ends_at = auction.initial_ends_at + additional_day.day
+      end
 
       auction.skip_broadcast = true
-      auction.skip_validation = true if auction.english?
-
+      auction.skip_validation = true
       auction.save!
-
-      auction
     end
 
     def reassign_ends_at(legacy_auction, new_auction)
@@ -145,7 +145,7 @@ module Registry
       end
 
       auction.skip_broadcast = true
-      auction.skip_validation = true if auction.english?
+      auction.skip_validation = true
       auction.save
     end
 

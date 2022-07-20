@@ -115,6 +115,7 @@ class Auction < ApplicationRecord
   end
 
   def starts_at_cannot_be_in_the_past
+    return if skip_validation
     return unless starts_at
     return if starts_at >= Time.now.utc
 

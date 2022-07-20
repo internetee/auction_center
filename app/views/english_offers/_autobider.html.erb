@@ -5,7 +5,7 @@
     <%= f.hidden_field :user_id, value: offer.user_id %>
 
     <%= f.label t('english_offers.form.autobider'), style: "valign-item: center; padding-top: 10px; padding-right: 3px;"%>
-    <%= f.number_field :price, class: "form-control", min: 0, step: "0.01", disabled: offer.auction.finished? ? true : false, style: "padding: 10px 5px;" %>
+    <%= f.number_field :price, class: "form-control", min: 0, step: 0.01, value: autobider.price, disabled: offer.auction.finished? ? true : false, style: "padding: 10px 5px;" %>
 
     <%= f.submit t(:submit), class: "ui button primary", data: { turbo: false }, id: 'autobidder_action', style: 'margin-left: 10px;' %>
     </div>
