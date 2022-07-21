@@ -5,22 +5,22 @@ class EnglishOffersController < ApplicationController
   before_action :authorize_offer_for_user, except: %i[new create]
   before_action :set_captcha_required
   before_action :prevent_check_for_invalid_bid, only: [:update]
-  # before_action :captcha_check, only: [:update, :create]
+  before_action :captcha_check, only: [:update, :create]
 
   protect_from_forgery with: :null_session
 
   # GET /auctions/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/offers/new
   def new
-    auction = Auction.find_by!(uuid: params[:auction_uuid])
+    @auction = Auction.find_by!(uuid: params[:auction_uuid])
 
-    offer = auction.offer_from_user(current_user.id)
+    offer = @auction.offer_from_user(current_user.id)
     redirect_to edit_english_offer_path(offer.uuid), notice: t('offers.already_exists') if offer
 
-    @autobider = Autobider.find_by(domain_name: auction.domain_name, user: current_user)
-    @autobider = current_user.autobiders.build(domain_name: auction.domain_name) if @autobider.nil?
+    @autobider = Autobider.find_by(domain_name: @auction.domain_name, user: current_user)
+    @autobider = current_user.autobiders.build(domain_name: @auction.domain_name) if @autobider.nil?
 
     BillingProfile.create_default_for_user(current_user.id)
-    @offer = Offer.new(auction_id: auction.id, user_id: current_user.id)
+    @offer = Offer.new(auction_id: @auction.id, user_id: current_user.id)
   end
 
   # POST /auctions/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/offers
@@ -53,10 +53,10 @@ class EnglishOffersController < ApplicationController
 
   # GET /offers/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/edit
   def edit
-    auction = @offer.auction
+    @auction = @offer.auction
 
-    @autobider = Autobider.find_by(domain_name: auction.domain_name, user: current_user)
-    @autobider = current_user.autobiders.build(domain_name: auction.domain_name) if @autobider.nil?
+    @autobider = Autobider.find_by(domain_name: @auction.domain_name, user: current_user)
+    @autobider = current_user.autobiders.build(domain_name: @auction.domain_name) if @autobider.nil?
   end
 
   # PUT /offers/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b

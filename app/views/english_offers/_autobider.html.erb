@@ -1,5 +1,7 @@
+<% url = autobider.new_record? ? autobider_index_path : autobider_path(uuid: @autobider.uuid)  %>
+
 <%= form_with model: autobider, url: url, class: 'centrilize-form' do |f| %>
-  <div class="ui one column grid centered"", style='margin-top: 20px; margin-bottom: 40px;' style: "">
+  <div class="ui one column grid centered"", style='margin-top: 20px; margin-bottom: 40px;'>
     <div class="column">
     <%= f.hidden_field :domain_name, value: offer.auction.domain_name %>
     <%= f.hidden_field :user_id, value: offer.user_id %>

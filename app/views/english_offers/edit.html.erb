@@ -39,8 +39,13 @@
 
         <hr>
 
-        <% url = @autobider.new_record? ? autobider_index_path : autobider_path(uuid: @autobider.uuid)  %>
-        <%= render partial: 'autobider', locals: { offer: @offer, autobider: @autobider, url: url } %>
+        <%# url = @autobider.new_record? ? autobider_index_path : autobider_path(uuid: @autobider.uuid)  %>
+        <%#= render partial: 'autobider', locals: { offer: @offer, autobider: @autobider, url: url } %>
+        <div data-turbo="true">
+            <%= turbo_frame_tag 'autobider_scope' do %>
+                <%= render partial: 'autobider_value', locals: { autobider: @autobider } %>
+            <% end %>
+        </div>
 
             <div>
                 <%= render partial: 'form', locals: { offer: @offer, url: english_offer_path(@offer.uuid) } %>

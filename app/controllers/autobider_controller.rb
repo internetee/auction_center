@@ -1,5 +1,6 @@
 class AutobiderController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_auction, only: [:new, :edit, :update, :create]
   before_action :allow_any_action_with_autobider
   before_action :set_captcha_required
   before_action :captcha_check, only: [:update, :create]
@@ -16,7 +17,17 @@ class AutobiderController < ApplicationController
       flash[:alert] = I18n.t('something_went_wrong')
     end
 
-    redirect_to auctions_path
+    redirect_to request.referrer
+  end
+
+  def edit
+    @auction = Auction.find_by(uuid: params[:auction_uuid])
+    @autobider = Autobider.find_by(uuid: params[:uuid])
+  end
+
+  def new
+    @auction = Auction.find_by(uuid: params[:auction_uuid])
+    @autobider = Autobider.new
   end
 
   def create
@@ -26,9 +37,9 @@ class AutobiderController < ApplicationController
       auction = Auction.where(domain_name: @autobider.domain_name).order(:created_at).last
       AutobiderService.autobid(auction)
 
-      redirect_to auctions_path, notice: 'Autobider created'
+      redirect_to request.referrer, notice: 'Autobider created'
     else
-      redirect_to auctions_path, notice: t(:something_went_wrong)
+      redirect_to request.referrer, notice: t(:something_went_wrong)
     end
   end
 
@@ -54,8 +65,13 @@ class AutobiderController < ApplicationController
     offer.user == @autobider.user
   end
 
+  def set_auction
+    @auction = Auction.find_by(uuid: params[:auction_uuid])
+    @auction = Auction.find_by(domain_name: strong_params[:domain_name]) if @auction.nil?
+  end
+
   def allow_any_action_with_autobider
-    return true if restrict_for_banned_user(strong_params[:domain_name])
+    return true if restrict_for_banned_user(@auction.domain_name)
 
     flash[:alert] = 'You are banned from this auction'
     redirect_to auctions_path and return

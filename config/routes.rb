@@ -106,7 +106,7 @@ Rails.application.routes.draw do
   end
 
   resources :wishlist_items, param: :uuid, only: %i[index edit create destroy update]
-  resources :autobider, param: :uuid, only: [:create, :update]
+  resources :autobider, param: :uuid, only: [:create, :update, :edit, :new]
 
   mount OkComputer::Engine, at: '/healthcheck', as: :healthcheck
 end
