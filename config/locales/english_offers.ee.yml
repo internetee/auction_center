@@ -48,6 +48,8 @@ et:
       captcha_verification: "Captcha kontroll ebaõnnestus"
       offer_title: Tee oma pakkumus
       autobider: "Automaatpakkuja"
+      autobidder_value: Automaatpakkuja lagi
+      set_autobidder_value: Seadista automaatpakkuja
 
   activerecord:
     attributes:

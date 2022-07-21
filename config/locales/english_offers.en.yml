@@ -51,6 +51,8 @@ en:
       captcha_verification: "Captcha verification failed"
       offer_title: Offer
       autobider: "Autobidder"
+      autobidder_value: Automaatpakkuja lagi
+      set_autobidder_value: Set value
 
     number_form_field:
       offer: "Offer"

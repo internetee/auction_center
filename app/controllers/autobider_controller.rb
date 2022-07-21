@@ -46,12 +46,11 @@ class AutobiderController < ApplicationController
   private
 
   def set_captcha_required
-    @captcha_required = current_user.requires_captcha?
+    @captcha_autobidder_required = current_user.requires_captcha?
   end
 
   def captcha_check
-    captcha_predicate = !@captcha_required || verify_recaptcha(model: @autobider)
-
+    captcha_predicate = !@captcha_autobidder_required || verify_recaptcha(model: @offer)
     return if captcha_predicate
 
     flash[:alert] = t('english_offers.form.captcha_verification')
