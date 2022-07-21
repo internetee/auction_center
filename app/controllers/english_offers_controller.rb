@@ -5,7 +5,7 @@ class EnglishOffersController < ApplicationController
   before_action :authorize_offer_for_user, except: %i[new create]
   before_action :set_captcha_required
   before_action :prevent_check_for_invalid_bid, only: [:update]
-  before_action :captcha_check, only: [:update, :create]
+  # before_action :captcha_check, only: [:update, :create]
 
   protect_from_forgery with: :null_session
 
@@ -43,7 +43,7 @@ class EnglishOffersController < ApplicationController
                                     locals: { offer_value: auction.min_bids_step,
                                               offer_disabled: auction.finished? ? true : false }
     else
-      flash[:alert] = @offer.errors
+      flash[:alert] = @offer.errors.full_messages.join('; ')
       redirect_to request.referrer
     end
   end
@@ -64,13 +64,13 @@ class EnglishOffersController < ApplicationController
     auction = Auction.with_user_offers(current_user.id).find_by(uuid: @offer.auction.uuid)
 
     if update_predicate(auction)
-      update_auction_values(auction, 'Bid updated')
+      update_auction_values(auction, t('english_offers.edit.bid_updated'))
       auction.broadcast_replace_to "auctions_offer_#{auction.id}",
                                   target: "offer_#{auction.id}_form",
                                   partial: 'english_offers/number_form_field',
                                   locals: {offer_value: auction.min_bids_step , offer_disabled: auction.finished? ? true : false }
     else
-      flash[:alert] = @offer.errors
+      flash[:alert] = @offer.errors.full_messages.join('; ')
       redirect_to request.referrer
     end
   end

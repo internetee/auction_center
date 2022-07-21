@@ -61,7 +61,11 @@ class Offer < ApplicationRecord
     active_auction = Auction.active.find_by(id: auction_id)
     return if active_auction
 
-    errors.add(:auction, I18n.t('offers.must_be_active'))
+    if self.auction.blind?
+      errors.add(:auction, I18n.t('offers.must_be_active'))
+    else
+      errors.add(:auction, :blank, message: I18n.t('english_offers.must_be_active'))
+    end
   end
 
   def must_be_higher_than_minimum_offer

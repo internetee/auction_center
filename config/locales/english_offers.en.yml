@@ -8,6 +8,7 @@ en:
     price_is_without_vat: "The offer does not include VAT."
     already_exists: "You already have an offer for this auction."
     must_be_active: "This auction has ended"
+    must_be_active_err: "has ended"
     must_be_higher_than: "must be higher than %{minimum}"
     reminder: |
       NB: This is a blind auction where bids are not public.
@@ -35,6 +36,7 @@ en:
     edit:
       title: "Offer for the reservation of the domain name"
       errors: "prohibited this offer from being saved"
+      bid_updated: "Bid updated"
 
     index:
       your_last_offer: "Your last offer"

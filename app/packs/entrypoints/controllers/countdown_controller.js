@@ -4,8 +4,8 @@ export default class extends Controller {
   static values = {
     date: String,
     refreshInterval: { type: Number, default: 1000 },
-    expiredMessage: { type: String, default: 'Auction has been ended.' },
     messageTimer: { type: String, default: "<b>${days}d ${hours}h ${minutes}m ${seconds}s</b>" },
+    expiredMessage: String,
     message: String,
   }
 
