@@ -57,7 +57,8 @@ module Registry
 
     def request_body
       { status: result.status,
-        registration_deadline: registration_deadline }.to_json
+        registration_deadline: registration_deadline,
+        platform: result.auction.platform }.to_json
     end
 
     def registration_deadline
