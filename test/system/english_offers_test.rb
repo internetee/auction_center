@@ -92,21 +92,6 @@ class EnglishOffersTest < ApplicationSystemTestCase
     assert_equal current_price.to_f, 6.8
   end
 
-  # AUTOBIDER CASE ---------------------------
-
-  def test_autobider_can_be_set_by_user
-    sign_in(@user)
-    visit auction_path(@english.uuid)
-    assert(page.has_link?('Bid'))
-    click_link('Bid')
-
-    fill_in('autobider[price]', with: '15')
-    find('#autobidder_action').click
-    assert(page.has_css?('div.notice', text: 'Autobider created'))
-  end
-
-  private
-
   def calculate_min_bid(bid)
     update_value = 0.01
 

@@ -162,7 +162,7 @@ class OffersTest < ApplicationSystemTestCase
     fill_in('offer[price]', with: '5.00')
     click_link_or_button('Submit')
 
-    assert(page.has_text?('Auction must be active'))
+    assert(page.has_text?('This auction has ended'))
   end
 
   def test_participant_cannot_update_an_offer_for_an_inactive_auction
@@ -174,6 +174,6 @@ class OffersTest < ApplicationSystemTestCase
     fill_in('offer[price]', with: '5.00')
     click_link_or_button('Submit')
 
-    assert(page.has_text?('Auction must be active'))
+    assert(page.has_text?('This auction has ended'))
   end
 end
