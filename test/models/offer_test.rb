@@ -23,7 +23,7 @@ class OfferTest < ActiveSupport::TestCase
     offer = Offer.new
 
     assert_not(offer.valid?)
-    assert_equal(['must exist', 'must be active'], offer.errors[:auction])
+    assert_equal(['must exist', 'This auction has ended'], offer.errors[:auction])
     assert_equal(['is not a number'], offer.errors[:cents])
     assert_equal(['must exist'], offer.errors[:billing_profile])
 
@@ -41,7 +41,7 @@ class OfferTest < ActiveSupport::TestCase
     offer.user = @user
 
     assert_not(offer.valid?(:create))
-    assert_equal(['must be active'], offer.errors[:auction])
+    assert_equal(['This auction has ended'], offer.errors[:auction])
   end
 
   def test_cents_must_be_an_integer

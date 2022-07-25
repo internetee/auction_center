@@ -130,6 +130,11 @@ class AutobiderServiceTest < ActionDispatch::IntegrationTest
     autobider_two = Autobider.create(user: @user_two, domain_name: @english_auction.domain_name, cents: 20_000)
     assert_equal @autobider.cents, autobider_two.cents
 
+    @autobider.update(updated_at: Time.zone.now - 20.minutes)
+    @autobider.reload
+    autobider_two.update(updated_at: Time.zone.now - 10.minutes)
+    autobider_two.reload
+
     AutobiderService.autobid(@english_auction)
     @english_auction.reload
 
