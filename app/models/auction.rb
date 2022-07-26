@@ -33,26 +33,26 @@ class Auction < ApplicationRecord
     where(ends_at: start_date.beginning_of_day..end_date.end_of_day)
   }
 
-  scope :without_offers, -> { includes(:offers).where(offers: { auction_id: nil }) }
-  scope :with_offers, -> { includes(:offers).where.not(offers: { auction_id: nil }) }
-  scope :with_domain_name, ->(domain_name) { where('domain_name like ?', "%#{domain_name}%") if domain_name.present? }
+  scope :without_offers, -> { self.includes(:offers).where(offers: { auction_id: nil }) }
+  scope :with_offers, -> { self.includes(:offers).where.not(offers: { auction_id: nil }) }
+  scope :with_domain_name, ->(domain_name) { self.where('domain_name like ?', "%#{domain_name}%") if domain_name.present? }
   scope :with_type, ->(type) do
     if type.present?
-      return where(platform: [type, nil]) if type == BLIND
+      return self.where(platform: [type, nil]) if type == BLIND
 
-      where(platform: type)
+      self.where(platform: type)
     end
   end
 
   scope :with_starts_at, ->(starts_at) do
-    where('starts_at >= ?', starts_at.to_date.beginning_of_day) if starts_at.present?
+    self.where('starts_at >= ?', starts_at.to_date.beginning_of_day) if starts_at.present?
   end
 
-  scope :with_ends_at, ->(ends_at) { where('ends_at <= ?', ends_at.to_date.end_of_day) if ends_at.present? }
-  scope :with_starts_at_nil, ->(state) { where(starts_at: nil) if state.present? }
+  scope :with_ends_at, ->(ends_at) { self.where('ends_at <= ?', ends_at.to_date.end_of_day) if ends_at.present? }
+  scope :with_starts_at_nil, ->(state) { self.where(starts_at: nil) if state.present? }
 
-  scope :english, -> { where(platform: :english) }
-  scope :not_english, -> { where.not(platform: :english) }
+  scope :english, -> { self.where(platform: :english) }
+  scope :not_english, -> { self.where.not(platform: :english) }
 
   delegate :count, to: :offers, prefix: true
   delegate :size, to: :offers, prefix: true
