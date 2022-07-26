@@ -54,6 +54,14 @@ class Auction < ApplicationRecord
   scope :english, -> { self.where(platform: :english) }
   scope :not_english, -> { self.where.not(platform: :english) }
 
+  scope :with_offers, ->(auction_offer_type) do
+    if auction_offer_type == 'with_offers'
+      # TODO
+    elsif auction_offer_type == 'without_offers'
+      # TODO
+    end
+  end
+
   delegate :count, to: :offers, prefix: true
   delegate :size, to: :offers, prefix: true
 

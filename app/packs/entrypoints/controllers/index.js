@@ -19,3 +19,5 @@ import CountdownController from "./countdown_controller"
 application.register("countdown", CountdownController)
 import WishlistController from "./wishlist_controller"
 application.register("wishlist", WishlistController)
+import AuctionTypeHandlerController from "./auction_type_handler_controller"
+application.register("auction_type_handler", AuctionTypeHandlerController)
