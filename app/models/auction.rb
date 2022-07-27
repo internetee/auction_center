@@ -54,12 +54,17 @@ class Auction < ApplicationRecord
   scope :english, -> { self.where(platform: :english) }
   scope :not_english, -> { self.where.not(platform: :english) }
 
-  scope :with_offers, ->(auction_offer_type) do
+  scope :with_offers, ->(auction_offer_type, type) do
+    return unless auction_offer_type.present?
+    return if type == BLIND || type.empty?
+
     if auction_offer_type == 'with_offers'
-      # TODO
+      auction_id_list = self.select { |a| a.offers.present? }.pluck(:id)
     elsif auction_offer_type == 'without_offers'
-      # TODO
+      auction_id_list = self.select { |a| a.offers.empty? }.pluck(:id)
     end
+
+    self.where(id: auction_id_list)
   end
 
   delegate :count, to: :offers, prefix: true
@@ -110,6 +115,7 @@ class Auction < ApplicationRecord
         .with_starts_at(params[:starts_at])
         .with_ends_at(params[:ends_at])
         .with_starts_at_nil(params[:starts_at_nil])
+        .with_offers(params[:auction_offer_type], params[:type])
         .order("#{sort_column} #{sort_direction}")
   end
 
