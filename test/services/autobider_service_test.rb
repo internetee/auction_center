@@ -244,7 +244,7 @@ class AutobiderServiceTest < ActionDispatch::IntegrationTest
     assert_equal @english_auction.currently_winning_offer.cents, 400
   end
 
-  def test_no_inspirate
+  def test_should_be_set_actual_highest_value_from_autobidder
     # still not OK. set autobidder on one user to 2.0 current price1,8. Another user made a bid for 1,99 - internal error! going back revealed that the autobid failed and the 2nd users 1,99 was set as the new highest bid.
     Autobider.destroy_all
     @english_auction.offers.destroy_all
@@ -266,8 +266,6 @@ class AutobiderServiceTest < ActionDispatch::IntegrationTest
     @english_auction.reload
 
     Autobider.create(user: @user, domain_name: @english_auction.domain_name, cents: 200)
-
-    # p @english_auction.currently_winning_offer
 
     offer = Offer.new
     offer.auction = @english_auction

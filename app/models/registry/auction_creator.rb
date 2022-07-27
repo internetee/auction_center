@@ -84,6 +84,7 @@ module Registry
 
     def put_same_values_as_before_for_new_round(domain_name, auction_type)
       auctions = Auction.where(domain_name: domain_name).order(created_at: :asc)
+
       return nil if auctions.empty?
       return nil if auctions.count < 2
 

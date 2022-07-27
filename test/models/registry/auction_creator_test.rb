@@ -129,4 +129,98 @@ class RegistryAuctionCreatorTest < ActiveSupport::TestCase
       end
     end
   end
+
+  def test_english_auction_in_new_round_should_appear_with_the_same_values
+    travel_back
+
+    auction = Auction.find_by(domain_name: 'english_auction.test')
+    auction.update(starts_at: Time.zone.now - 2.day, ends_at: Time.zone.now - 1.day, initial_ends_at: Time.zone.now - 1.day)
+    auction.reload
+
+    instance = Registry::AuctionCreator.new
+
+    body = [{ 'id' => '362589b9-dc74-484d-8fef-7282816d5c76', 'domain' => "#{auction.domain_name}", 'status' => 'started', 'platform' => 'manual'}]
+    response = Minitest::Mock.new
+
+    response.expect(:code, '200')
+    response.expect(:body, body.to_json)
+
+    http = Minitest::Mock.new
+    http.expect(:request, nil, [instance.request])
+
+    Net::HTTP.stub(:start, response, http) do
+      instance.call
+
+      auctions = Auction.where(domain_name: auction.domain_name)
+
+      assert_equal auctions.count, 2
+      assert_equal auctions.first.starting_price, auctions.last.starting_price
+      assert_equal auctions.first.platform, auctions.last.platform
+      assert_equal auctions.first.min_bids_step, auctions.last.min_bids_step
+      assert_equal auctions.first.slipping_end, auctions.last.slipping_end
+    end
+  end
+
+  def test_incoming_data_should_assign_auction_type
+    travel_back
+
+    auction = Auction.find_by(domain_name: 'english_auction.test')
+    auction.update(starts_at: Time.zone.now - 2.day, ends_at: Time.zone.now - 1.day, initial_ends_at: Time.zone.now - 1.day)
+    auction.reload
+
+    assert_equal auction.platform, 'english'
+
+    instance = Registry::AuctionCreator.new
+
+    body = [{ 'id' => '362589b9-dc74-484d-8fef-7282816d5c76', 'domain' => "#{auction.domain_name}", 'status' => 'started', 'platform' => 'auto'}]
+    response = Minitest::Mock.new
+
+    response.expect(:code, '200')
+    response.expect(:body, body.to_json)
+
+    http = Minitest::Mock.new
+    http.expect(:request, nil, [instance.request])
+
+    Net::HTTP.stub(:start, response, http) do
+      instance.call
+
+      auctions = Auction.where(domain_name: auction.domain_name)
+
+      assert_equal auctions.last.platform, 'blind'
+    end
+  end
+
+  def test_initialize_ends_at_and_starts_at_data_based_on_the_previous_round
+    travel_back
+
+    auction = Auction.find_by(domain_name: 'english_auction.test')
+    auction.update(starts_at: '2022-07-11 10:24:00', ends_at: '2022-07-14 10:57:21.599999', initial_ends_at: '2022-07-14 10:45:00')
+    auction.reload
+
+    assert_equal auction.platform, 'english'
+
+    instance = Registry::AuctionCreator.new
+
+    body = [{ 'id' => '362589b9-dc74-484d-8fef-7282816d5c76', 'domain' => "#{auction.domain_name}", 'status' => 'started', 'platform' => 'manual'}]
+    response = Minitest::Mock.new
+
+    response.expect(:code, '200')
+    response.expect(:body, body.to_json)
+
+    http = Minitest::Mock.new
+    http.expect(:request, nil, [instance.request])
+
+    Net::HTTP.stub(:start, response, http) do
+      instance.call
+
+      auctions = Auction.where(domain_name: auction.domain_name)
+
+      as = auctions.first.initial_ends_at.strftime("%H:%M:%S")
+      new_ends_at = (Date.current + Rational(4)).in_time_zone + Time.parse(as).seconds_since_midnight.second
+
+      assert_equal auctions.last.ends_at.change(usec: 0), new_ends_at.change(usec: 0)
+      assert_equal auctions.last.initial_ends_at.change(usec: 0), new_ends_at.change(usec: 0)
+      assert_equal auctions.last.starts_at.change(usec: 0), Time.zone.now.change(usec: 0)
+    end
+  end
 end
