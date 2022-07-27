@@ -175,4 +175,129 @@ class AutobiderServiceTest < ActionDispatch::IntegrationTest
 
     assert_equal @auction.offers.count, 0
   end
+
+  def test_autobidder_should_set_higher_bid
+    # set autobidder to 4 with user1 and 3,99 with user2. current price was 2,99, next min price 3,09. Price was raised to 3,19 for the user1. Correct results is current price of 4 for the U1 as they had set their autobidder value higher
+    Autobider.destroy_all
+    @english_auction.offers.destroy_all
+    @english_auction.update(min_bids_step: 1.0)
+    @english_auction.update(starting_price: 1.0)
+    @english_auction.reload
+    offer = Offer.new
+    offer.auction = @english_auction
+    offer.user = @user
+    offer.cents = 299
+    offer.billing_profile = @user.billing_profiles.first
+    offer.save!
+    offer.reload
+
+    @english_auction.update(min_bids_step: 3.09)
+    @english_auction.reload
+
+    assert_equal @english_auction.currently_winning_offer.cents, 299
+    assert_equal @english_auction.min_bids_step, 3.09
+
+    Autobider.create(user: @user_two, domain_name: @english_auction.domain_name, cents: 399)
+    AutobiderService.autobid(@english_auction)
+    @english_auction.reload
+
+    Autobider.create(user: @user, domain_name: @english_auction.domain_name, cents: 400)
+    AutobiderService.autobid(@english_auction)
+    @english_auction.reload
+
+    assert_equal @english_auction.currently_winning_offer.cents, 400
+  end
+
+  def test_with_equal_bid_offer_should_be_who_set_first
+    #   set autobidder to 4 with user1 and did the same with user2. Current price 3,19, next min price 3,29. User1 had the highest bid. Nothing changed when U2 set its autobidder to 4 - current price was not changed. Whilst the correct result would have been 4.0 highest offer for U1 as they set their autobidder first at 4
+    Autobider.destroy_all
+    @english_auction.offers.destroy_all
+    @english_auction.update(min_bids_step: 1.0)
+    @english_auction.update(starting_price: 1.0)
+    @english_auction.reload
+
+    offer = Offer.new
+    offer.auction = @english_auction
+    offer.user = @user
+    offer.cents = 319
+    offer.billing_profile = @user.billing_profiles.first
+    offer.save!
+    offer.reload
+    offer.update(updated_at: Time.zone.now - 2.minute)
+    offer.reload
+
+    @english_auction.update(min_bids_step: 3.29)
+    @english_auction.reload
+
+    assert_equal @english_auction.currently_winning_offer.cents, 319
+    assert_equal @english_auction.min_bids_step, 3.29
+
+    Autobider.create(user: @user_two, domain_name: @english_auction.domain_name, cents: 400)
+    AutobiderService.autobid(@english_auction)
+    @english_auction.reload
+
+    Autobider.create(user: @user, domain_name: @english_auction.domain_name, cents: 400)
+    AutobiderService.autobid(@english_auction)
+    @english_auction.reload
+
+    assert_equal @english_auction.currently_winning_offer.user, @user_two
+    assert_equal @english_auction.currently_winning_offer.cents, 400
+  end
+
+  def test_no_inspirate
+    # still not OK. set autobidder on one user to 2.0 current price1,8. Another user made a bid for 1,99 - internal error! going back revealed that the autobid failed and the 2nd users 1,99 was set as the new highest bid.
+    Autobider.destroy_all
+    @english_auction.offers.destroy_all
+    @english_auction.update(min_bids_step: 1.0)
+    @english_auction.update(starting_price: 1.0)
+    @english_auction.reload
+
+    offer = Offer.new
+    offer.auction = @english_auction
+    offer.user = @user
+    offer.cents = 180
+    offer.billing_profile = @user.billing_profiles.first
+    offer.save!
+    offer.reload
+    offer.update(updated_at: Time.zone.now - 2.minute)
+    offer.reload
+
+    @english_auction.update_minimum_bid_step(1.8)
+    @english_auction.reload
+
+    Autobider.create(user: @user, domain_name: @english_auction.domain_name, cents: 200)
+
+    # p @english_auction.currently_winning_offer
+
+    offer = Offer.new
+    offer.auction = @english_auction
+    offer.user = @user_two
+    offer.cents = 199
+    offer.billing_profile = @user.billing_profiles.last
+    offer.save!
+    offer.reload
+    offer.update(updated_at: Time.zone.now - 1.minute)
+    offer.reload
+
+    @english_auction.update_minimum_bid_step(offer.cents)
+    @english_auction.reload
+
+    AutobiderService.autobid(@english_auction)
+    @english_auction.reload
+    @english_auction.offers.first.reload
+    @english_auction.offers.last.reload
+
+    assert_equal @english_auction.currently_winning_offer.cents, 200
+  end
+
+  def test_autobider_should_change_ends_at_if_bid_set_in_slipping_time
+    @english_auction.update(ends_at: Time.zone.now + 3.minute)
+    @english_auction.reload
+
+    assert_equal @english_auction.ends_at, Time.zone.now + 3.minute
+    assert_equal @english_auction.slipping_end, 5
+
+    AutobiderService.autobid(@english_auction)
+    assert_equal @english_auction.ends_at, Time.zone.now + 5.minute
+  end
 end
