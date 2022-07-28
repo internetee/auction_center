@@ -93,6 +93,51 @@ class UserTest < ActiveSupport::TestCase
     assert_not(user.valid?)
   end
 
+  def test_allow_to_use_chezh_name
+    user = User.new
+
+    user.surname = 'ÁdsdÉ'
+    user.given_names = 'ÁdsdÉ ÁdsdÉ'
+    user.email = 'email@example.com'
+    user.password = 'email@example.com'
+    user.password_confirmation = 'email@example.com'
+    user.mobile_phone = '+372500100300'
+    user.country_code = 'CZ'
+    user.accepts_terms_and_conditions = 'true'
+
+    assert(user.valid?)
+  end
+
+  def test_allow_to_use_portuguese_name
+    user = User.new
+
+    user.surname = 'Salomão'
+    user.given_names = 'Rómulo'
+    user.email = 'email@example.com'
+    user.password = 'email@example.com'
+    user.password_confirmation = 'email@example.com'
+    user.mobile_phone = '+372500100300'
+    user.country_code = 'CZ'
+    user.accepts_terms_and_conditions = 'true'
+
+    assert(user.valid?)
+  end
+
+  def test_not_allow_to_use_russian_name
+    user = User.new
+
+    user.surname = 'Рудольф'
+    user.given_names = 'Якобсон'
+    user.email = 'email@example.com'
+    user.password = 'email@example.com'
+    user.password_confirmation = 'email@example.com'
+    user.mobile_phone = '+372500100300'
+    user.country_code = 'CZ'
+    user.accepts_terms_and_conditions = 'true'
+
+    assert_not(user.valid?)
+  end
+
   def test_can_be_banned
     first_ban = Ban.create(user_id: @administrator.id, valid_until: Date.tomorrow)
     Ban.create(user_id: @administrator.id, valid_until: Date.today + 3.days)
