@@ -19,19 +19,14 @@ class Offer < ApplicationRecord
   after_create_commit :broadcast_update_auction
   after_update_commit :broadcast_update_auction
 
-  attr_accessor :skip_autobider
-  attr_accessor :skip_if_wishlist_case
-  attr_accessor :skip_validation
+  attr_accessor :skip_autobider, :skip_if_wishlist_case, :skip_validation
 
   def broadcast_update_auction
     broadcast_replace_to('auctions',
-                        target: dom_id(self.auction).to_s,
-                        partial: 'auctions/auction',
-                        locals:
-                                {
-                                  auction: Auction.with_user_offers(user.id).find_by(uuid: auction.uuid),
-                                  current_user: self.user,
-                                })
+                         target: dom_id(self.auction).to_s,
+                         partial: 'auctions/auction',
+                         locals: { auction: Auction.with_user_offers(user.id).find_by(uuid: auction.uuid),
+                                   current_user: self.user })
   end
 
   def next_bid_should_be_equal_or_higher_than_min_bid_steps
@@ -58,6 +53,7 @@ class Offer < ApplicationRecord
 
   def auction_must_be_active
     return if skip_if_wishlist_case
+
     active_auction = Auction.active.find_by(id: auction_id)
     return if active_auction
 

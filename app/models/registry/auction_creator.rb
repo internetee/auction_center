@@ -70,7 +70,6 @@ module Registry
         auction.save!
       end
 
-      # indicate_correct_platform_and_assign_it(domain_name)
       put_same_values_as_before_for_new_round(domain_name, auction_type)
       destroy_autobider(domain_name)
     end
@@ -93,8 +92,8 @@ module Registry
       new_ends_at = legacy_auction.ends_at
       if legacy_auction.initial_ends_at.present?
         legacy_time_difference = (legacy_auction.initial_ends_at - legacy_auction.starts_at).to_i.abs
-        legacy_difference_in_day = legacy_time_difference / 86400
-        legacy_time = legacy_auction.initial_ends_at.strftime("%H:%M:%S")
+        legacy_difference_in_day = legacy_time_difference / 86_400
+        legacy_time = legacy_auction.initial_ends_at.strftime('%H:%M:%S')
         t = Time.parse(legacy_time).seconds_since_midnight.seconds
         new_ends_at = Time.zone.now.beginning_of_day + legacy_difference_in_day.day + t
       end
@@ -128,8 +127,8 @@ module Registry
     def reassign_ends_at(legacy_auction, new_auction)
       t1 = legacy_auction.starts_at
       t2 = new_auction.starts_at
-      t1_time = t1.strftime("%H:%M:%S")
-      t2_time = t2.strftime("%H:%M:%S")
+      t1_time = t1.strftime('%H:%M:%S')
+      t2_time = t2.strftime('%H:%M:%S')
 
       t1_time < t2_time ? 1 : 0
     end
@@ -140,13 +139,7 @@ module Registry
 
       platform = auctions.order(created_at: :asc).first.platform
       auction = Auction.where(domain_name: domain_name).order(created_at: :asc).last
-
-      if platform.nil?
-        auction.platform = :blind
-      else
-        auction.platform = platform.to_sym
-      end
-
+      auction.platform = platform.nil? ? :blind : platform.to_sym
       auction.skip_broadcast = true
       auction.skip_validation = true
       auction.save

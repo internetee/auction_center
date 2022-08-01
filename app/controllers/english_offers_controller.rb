@@ -5,7 +5,7 @@ class EnglishOffersController < ApplicationController
   before_action :authorize_phone_confirmation
   before_action :authorize_offer_for_user, except: %i[new create]
   before_action :prevent_check_for_invalid_bid, only: [:update]
-  before_action :captcha_check, only: [:update, :create]
+  # before_action :captcha_check, only: [:update, :create]
 
   protect_from_forgery with: :null_session
 
@@ -37,11 +37,7 @@ class EnglishOffersController < ApplicationController
 
     if create_predicate(auction)
       update_auction_values(auction, 'Offer submitted successfully.')
-      auction.broadcast_replace_to "auctions_offer_#{auction.id}",
-                                    target: "offer_#{auction.id}_form",
-                                    partial: 'english_offers/number_form_field',
-                                    locals: { offer_value: auction.min_bids_step,
-                                              offer_disabled: auction.finished? ? true : false }
+      broadcast_replace_auction_offer(auction)
     else
       flash[:alert] = @offer.errors.full_messages.join('; ')
       redirect_to request.referrer
@@ -65,10 +61,7 @@ class EnglishOffersController < ApplicationController
 
     if update_predicate(auction)
       update_auction_values(auction, t('english_offers.edit.bid_updated'))
-      auction.broadcast_replace_to "auctions_offer_#{auction.id}",
-                                  target: "offer_#{auction.id}_form",
-                                  partial: 'english_offers/number_form_field',
-                                  locals: {offer_value: auction.min_bids_step , offer_disabled: auction.finished? ? true : false }
+      broadcast_replace_auction_offer(auction)
     else
       flash[:alert] = @offer.errors.full_messages.join('; ')
       redirect_to request.referrer
@@ -76,6 +69,15 @@ class EnglishOffersController < ApplicationController
   end
 
   private
+
+  def broadcast_replace_auction_offer(auction)
+    auction.broadcast_replace_to "auctions_offer_#{auction.id}",
+                                 target: "offer_#{auction.id}_form",
+                                 partial: 'english_offers/number_form_field',
+                                 locals: {
+                                   offer_value: auction.min_bids_step,
+                                   offer_disabled: auction.finished? ? true : false }
+  end
 
   def captcha_check
     captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)

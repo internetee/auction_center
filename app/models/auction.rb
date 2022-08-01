@@ -6,8 +6,7 @@ class Auction < ApplicationRecord
   after_create :find_auction_turns
   validates :domain_name, presence: true
 
-  attr_accessor :skip_broadcast
-  attr_accessor :skip_validation
+  attr_accessor :skip_broadcast, :skip_validation
 
   validate :does_not_overlap
   validate :ends_at_later_than_starts_at
@@ -35,7 +34,12 @@ class Auction < ApplicationRecord
 
   scope :without_offers, -> { self.includes(:offers).where(offers: { auction_id: nil }) }
   scope :with_offers, -> { self.includes(:offers).where.not(offers: { auction_id: nil }) }
-  scope :with_domain_name, ->(domain_name) { self.where('domain_name like ?', "%#{domain_name}%") if domain_name.present? }
+  scope :with_domain_name, ->(domain_name) do
+    return unless domain_name.present?
+
+    self.where('domain_name like ?', "%#{domain_name}%") 
+  end
+
   scope :with_type, ->(type) do
     if type.present?
       return self.where(platform: [type, nil]) if type == BLIND
@@ -55,12 +59,12 @@ class Auction < ApplicationRecord
   scope :not_english, -> { self.where.not(platform: :english) }
 
   scope :with_offers, ->(auction_offer_type, type) do
-    return unless auction_offer_type.present?
-    return if type == BLIND || type.empty?
+    return if auction_offer_type.blank? || type == BLIND || type.empty?
 
-    if auction_offer_type == 'with_offers'
+    case auction_offer_type
+    when 'with_offers'
       auction_id_list = self.select { |a| a.offers.present? }.pluck(:id)
-    elsif auction_offer_type == 'without_offers'
+    when 'without_offers'
       auction_id_list = self.select { |a| a.offers.empty? }.pluck(:id)
     end
 
@@ -86,23 +90,22 @@ class Auction < ApplicationRecord
 
   def broadcast_update_min_bid
     broadcast_update_to("auctions_offer_#{self.id}",
-                         target: 'mini',
-                         html: "<h5>Minimum bid is #{min_bids_step}</h5>".html_safe)
+                        target: 'mini',
+                        html: "<h5>Minimum bid is #{min_bids_step}</h5>".html_safe)
   end
 
   def broadcast_update_highest_bid
     broadcast_update_to("auctions_offer_#{self.id}",
-                         target: "current_#{self.id}_price",
+                        target: "current_#{self.id}_price",
                         partial: 'english_offers/current_price',
-                        locals: { auction: self }
-                        )
+                        locals: { auction: self })
   end
 
   def broadcast_update_timer
     broadcast_update_to("auctions_offer_#{self.id}",
-                         target: 'auction_timer',
-                         partial: 'english_offers/timer',
-                         locals: { auction: self })
+                        target: 'auction_timer',
+                        partial: 'english_offers/timer',
+                        locals: { auction: self })
   end
 
   def self.search(params = {})
