@@ -89,9 +89,6 @@ class AutobiderService
                              price: min_bid_step_in_cents,
                              skip_validation: skip_validation)
 
-      # s = Money.new(min_bid_step_in_cents.round(2))
-      # auction.update_minimum_bid_step(s.to_f)
-
       if skip_validation
         tranformed_money = Money.new(min_bid_step_in_cents)
         auction.update_minimum_bid_step(tranformed_money.to_f, force: true)

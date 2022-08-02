@@ -44,34 +44,43 @@ module Registry
       end
     end
 
+    def assign_platform(platform)
+      return :blind if platform.nil? || platform == 'auto'
+
+      :english
+    end
+
     def create_auction_from_api(domain_name, remote_id, platform)
-      auction_type = :english
-      auction_type = :blind if platform.nil? || platform == 'auto'
+      auction_type = assign_platform(platform)
 
       duplicate = Auction.where(domain_name: domain_name).last
       return if duplicate && duplicate.in_progress?
 
       Auction.find_or_initialize_by(domain_name: domain_name, remote_id: remote_id) do |auction|
-        auction.platform = auction_type
-
-        unless duplicate.nil?
-          auction.starts_at = Time.zone.now + 1.minute
-          auction.ends_at = Time.zone.now + 10.days
-        else
-          auction.starts_at = nil
-          auction.ends_at = nil
-        end
-
-        auction.skip_broadcast = true
-        auction.skip_validation = true
-
-        auction = put_initialize_data_for_blind_auction(auction) if auction_type == :blind
-
-        auction.save!
+        assign_auctions_value(auction: auction, duplicate: duplicate, auction_type: auction_type)
       end
 
       put_same_values_as_before_for_new_round(domain_name, auction_type)
       destroy_autobider(domain_name)
+    end
+
+    def assign_auctions_value(auction:, duplicate:, auction_type:)
+      auction.platform = auction_type
+
+      unless duplicate.nil?
+        auction.starts_at = Time.zone.now + 1.minute
+        auction.ends_at = Time.zone.now + 10.days
+      else
+        auction.starts_at = nil
+        auction.ends_at = nil
+      end
+
+      auction.skip_broadcast = true
+      auction.skip_validation = true
+
+      auction = put_initialize_data_for_blind_auction(auction) if auction_type == :blind
+
+      auction.save!
     end
 
     def put_initialize_data_for_blind_auction(auction)

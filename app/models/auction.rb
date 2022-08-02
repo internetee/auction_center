@@ -8,7 +8,7 @@ class Auction < ApplicationRecord
 
   attr_accessor :skip_broadcast, :skip_validation
 
-  validate :does_not_overlap
+  validate :does_not_overlap, unless: :skip_validation
   validate :ends_at_later_than_starts_at
   validate :starts_at_cannot_be_in_the_past, on: :create
 
@@ -37,7 +37,7 @@ class Auction < ApplicationRecord
   scope :with_domain_name, ->(domain_name) do
     return unless domain_name.present?
 
-    self.where('domain_name like ?', "%#{domain_name}%") 
+    self.where('domain_name like ?', "%#{domain_name}%")
   end
 
   scope :with_type, ->(type) do
@@ -123,7 +123,6 @@ class Auction < ApplicationRecord
   end
 
   def does_not_overlap
-    return if skip_validation
     return unless starts_at && ends_at
     return unless overlaping_auctions&.exists?
 

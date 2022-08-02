@@ -190,6 +190,29 @@ class RegistryAuctionCreatorTest < ActiveSupport::TestCase
     end
   end
 
+  def test_incoming_data_should_assign_blind_if_platform_is_nil
+    travel_back
+
+    instance = Registry::AuctionCreator.new
+
+    body = [{ 'id' => '362589b9-dc74-484d-8fef-7282816d5c76', 'domain' => "doople.ee", 'status' => 'started', 'platform' => nil}]
+    response = Minitest::Mock.new
+
+    response.expect(:code, '200')
+    response.expect(:body, body.to_json)
+
+    http = Minitest::Mock.new
+    http.expect(:request, nil, [instance.request])
+
+    Net::HTTP.stub(:start, response, http) do
+      instance.call
+
+      auctions = Auction.where(domain_name: 'doople.ee')
+
+      assert_equal auctions.last.platform, 'blind'
+    end
+  end
+
   def test_initialize_ends_at_and_starts_at_data_based_on_the_previous_round
     travel_back
 
@@ -216,7 +239,7 @@ class RegistryAuctionCreatorTest < ActiveSupport::TestCase
       auctions = Auction.where(domain_name: auction.domain_name)
 
       as = auctions.first.initial_ends_at.strftime("%H:%M:%S")
-      new_ends_at = (Date.current + Rational(3)).in_time_zone + Time.parse(as).seconds_since_midnight.second
+      new_ends_at = (Date.current + Rational(4)).in_time_zone + Time.parse(as).seconds_since_midnight.second
 
       assert_equal auctions.last.ends_at.change(usec: 0), new_ends_at.change(usec: 0)
       assert_equal auctions.last.initial_ends_at.change(usec: 0), new_ends_at.change(usec: 0)
