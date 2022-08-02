@@ -16,6 +16,8 @@ class OfferTest < ActiveSupport::TestCase
   def teardown
     super
 
+    clear_email_deliveries
+
     travel_back
   end
 

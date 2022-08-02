@@ -67,8 +67,6 @@ class WishlistItemsController < ApplicationController
   end
 
   def domain_wishlist_availability
-    return if Rails.env.test?
-
     wishlist_item = current_user.wishlist_items.build(domain_name: params[:domain_name])
     if wishlist_item.valid?
       msg = { status: 'fine', domain_name: params[:domain_name] }
