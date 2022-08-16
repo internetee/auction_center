@@ -5,6 +5,8 @@ default: &default
   # Timezone and locale
   time_zone: "Tallinn"
   #  locale: "en"
+  start_of_procedure: "09:00"
+  end_of_procedure: "10:00"
 
   # Generate your own with rails secret
   devise_secret_key: "Your very secret key used for devise tokens"

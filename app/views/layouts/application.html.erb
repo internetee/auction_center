@@ -29,6 +29,12 @@
                     </div>
                 <% end %>
 
+                <% if Time.zone.now.between?(Time.zone.parse(start_of_procedure), Time.zone.parse(end_of_procdure))%>
+                    <div class="ui message flash" style="background-color: red; color: white;">
+                        <div class="header"><%= t('procedure_warning') %></div>
+                    </div>
+                <% end %>
+
                 <%= banned_banner %>
                 <%= invalid_data_banner %>
 
