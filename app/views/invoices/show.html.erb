@@ -102,13 +102,33 @@
             </div>
 
             <% if @invoice.payable? %>
-                <% if @invoice.payment_link.present? %>
-                    <%= link_to @invoice.payment_link, target: '_blank', style: "margin-top: 20px;" do %>
-                        <%= image_tag '/images/payment_methods/everypay.png', style: 'max-width: 150px !important;' %>
+                <div class="column sixteen wide">
+                    <h3><%= t('.pay') %></h3>
+                    <% if @invoice.cancelled? %>
+                        <p><%= t('.redeem') %></p>
                     <% end %>
-                <% else  %>
-                    No everypay link
-                <% end %>
+                    <% PaymentOrder.supported_methods.each do |method| %>
+                        <%= form_with(model: PaymentOrder, local: true,
+                                      url: invoice_payment_orders_path(@invoice.uuid),
+                                      id: method.config_namespace_name) do |f| %>
+                            <%= f.hidden_field :user_id, value: @invoice.user_id %>
+                            <%= f.hidden_field :invoice_id, value: @invoice.id %>
+                            <%= f.hidden_field :invoice_ids, value: @invoice.id %>
+                            <%= f.hidden_field :type, value: method %>
+                            <%= f.submit t(:submit), type: :image, src: method.icon %>
+                        <% end %>
+                    <% end %>
+                </div>
+
+                <div>
+                    <% if @invoice.payment_link.present? %>
+                        <%= link_to @invoice.payment_link, target: '_blank', style: "margin-top: 20px;" do %>
+                            <%= image_tag '/images/payment_methods/everypay.png', style: 'max-width: 150px !important;' %>
+                        <% end %>
+                    <% else  %>
+                        No everypay link
+                    <% end %>
+                </div>
             <% end %>
             
         </div>

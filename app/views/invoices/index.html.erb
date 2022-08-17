@@ -20,7 +20,7 @@
             <tbody class="invoices-table-body issued">
                 <% @issued_invoices.each do |invoice| %>
                     <tr class="invoices-table-row">
-                        <td><%= link_to invoice.items.first.name, invoice_path(invoice.uuid) %></td>
+                        <td><%= link_to invoice&.items&.first&.name, invoice_path(invoice.uuid) %></td>
                         <td><%= I18n.l(invoice.due_date) %></td>
                         <td><%= t('offers.price_in_currency', price: invoice.total) %></td>
                     </tr>
@@ -57,7 +57,7 @@
                 <tbody class="invoices-table-body paid">
                     <% @paid_invoices.each do |invoice| %>
                         <tr class="invoices-table-row">
-                            <td><%= link_to invoice.items.first.name, invoice_path(invoice.uuid) %></td>
+                            <td><%= link_to invoice&.items&.first&.name, invoice_path(invoice.uuid) %></td>
                             <td><%= I18n.l(invoice.due_date) %></td>
                             <td><%= invoice.total %></td>
                         </tr>
@@ -82,7 +82,7 @@
                 <tbody class="invoices-table-body cancelled">
                 <% @cancelled_payable_invoices.each do |invoice| %>
                     <tr class="invoices-table-row">
-                        <td><%= link_to invoice.items.first.name, invoice_path(invoice.uuid) %></td>
+                        <td><%= link_to invoice&.items&.first&.name, invoice_path(invoice.uuid) %></td>
                         <td><%= I18n.l(invoice.due_date) %></td>
                         <td><%= invoice.total %></td>
                     </tr>
@@ -107,7 +107,7 @@
                 <tbody class="invoices-table-body cancelled">
                 <% @cancelled_expired_invoices.each do |invoice| %>
                     <tr class="invoices-table-row">
-                        <td><%= link_to invoice.items.first.name, invoice_path(invoice.uuid) %></td>
+                        <td><%= link_to invoice&.items&.first&.name, invoice_path(invoice.uuid) %></td>
                         <td><%= I18n.l(invoice.due_date) %></td>
                         <td><%= invoice.total %></td>
                     </tr>

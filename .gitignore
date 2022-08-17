@@ -42,3 +42,6 @@
 /public/packs-test
 yarn-debug.log*
 .yarn-integrity
+
+/test/fixtures/files/seb_key.pem
+/test/fixtures/files/seb_pub.pem

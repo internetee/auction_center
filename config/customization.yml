@@ -130,12 +130,20 @@ development:
       linkpay_token: 'rucd4v'
       icon: '/images/payment_methods/everypay.png'
 
+    # seb:
+    #   url: 'https://pangalink.bitweb.ee/banklink/seb'
+    #   seller_account: 'uid482'
+    #   seller_private_key: 'test/fixtures/files/seb_seller_key.pem'
+    #   bank_certificate: 'test/fixtures/files/seb_bank_cert.pem'
+    #   icon: '/images/payment_methods/seb.png'
+
     seb:
-      url: 'https://pangalink.bitweb.ee/banklink/seb'
-      seller_account: 'uid482'
-      seller_private_key: 'test/fixtures/files/seb_test.key.pem'
-      bank_certificate: 'test/fixtures/files/seb_test.crt.pem'
+      url: 'https://www.seb.ee/cgi-bin/dv.sh/ipank.r'
+      seller_account: 'testvpos'
+      seller_private_key: 'test/fixtures/files/seb_key.pem'
+      bank_certificate: 'test/fixtures/files/seb_pub.pem'
       icon: '/images/payment_methods/seb.png'
+
 test:
   <<: *default
 
