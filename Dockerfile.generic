@@ -1,4 +1,4 @@
-FROM internetee/ruby_base:3.0
+FROM ghcr.io/internetee/auction_center:gems-latest
 LABEL org.opencontainers.image.source=https://github.com/internetee/auction_center
 ARG RAILS_ENV
 ARG SECRET_KEY_BASE
@@ -7,8 +7,8 @@ ENV RAILS_ENV "$RAILS_ENV"
 ENV SECRET_KEY_BASE "$SECRET_KEY_BASE"
 
 
-COPY Gemfile Gemfile.lock ./    
-RUN gem install bundler && bundle config set without 'development test' && bundle install --jobs 20 --retry 5
+# COPY Gemfile Gemfile.lock ./    
+# RUN gem install bundler && bundle config set without 'development test' && bundle install --jobs 20 --retry 5
 RUN yarn install --check-files
 
 COPY . .
