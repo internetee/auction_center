@@ -1,7 +1,7 @@
 class InvoicesController < ApplicationController
   before_action :authenticate_user!
   before_action :authorize_user
-  before_action :set_invoice, except: [:index, :pay_all_bills]
+  before_action :set_invoice, except: [:index, :pay_all_bills, :one_off]
 
   # GET /invoices/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/edit
   def edit; end
@@ -51,15 +51,26 @@ class InvoicesController < ApplicationController
 
     @everypay_link = JSON.parse(result.body, symbolize_names: true)[:everypay_link]
 
-    p "@@@@@@"
-    p @everypay_link
-    p "@@@@@@@@@"
-
     respond_to do |format|
       format.json { render status: :ok, json: @everypay_link }
       format.html { redirect_to :back, :notice => 'Run was successfully created.' }
       format.js
     end
+  end
+
+  def oneoff
+    body = EisBilling::OneoffPaymentSender.send_request(invoice: @invoice)
+    parsed_response = JSON.parse(body)
+
+    if parsed_response["error"].presence
+      flash[:error] = parsed_response["error"]["message"]
+
+      redirect_to invoice_path(uuid: @invoice.uuid) and return
+    end
+
+    payment_link = parsed_response["payment_link"]
+
+    redirect_to payment_link
   end
 
   def update_predicate

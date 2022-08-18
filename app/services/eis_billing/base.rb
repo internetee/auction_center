@@ -6,6 +6,21 @@ module EisBilling
 
     INITIATOR = 'auction'.freeze
 
+    ONEOFF_ENDPOINT = AuctionCenter::Application.config
+                                                .customization[:billing_system_integration]
+                                                &.compact&.fetch(:oneoff_endpoint, '')
+    API_USERNAME = AuctionCenter::Application.config
+                                             .customization
+                                             .dig(:payment_methods, :every_pay, :user)
+    KEY = AuctionCenter::Application.config
+                                    .customization
+                                    .dig(:payment_methods, :every_pay, :key)
+
+    ACCOUNT_NAME = AuctionCenter::Application.config
+                                             .customization[:billing_system_integration]
+                                             &.compact&.fetch(:account_name, '')
+
+
     def self.base_request(url:)
       uri = URI(url)
       http = Net::HTTP.new(uri.host, uri.port)

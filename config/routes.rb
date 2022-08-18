@@ -71,6 +71,7 @@ Rails.application.routes.draw do
   resources :invoices, only: %i[show edit update index], param: :uuid do
     member do
       get 'download'
+      post 'oneoff'
     end
 
     collection do

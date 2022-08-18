@@ -110,6 +110,7 @@ default: &default
     secret_word: 'this-secret-should-be-change'
     billing_system_integrated: 'true'
     billing_secret: ''
+    test_env: false
 
 development:
   <<: *default

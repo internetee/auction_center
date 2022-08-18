@@ -9,6 +9,9 @@ default: &default
     billing_system_integrated: 'true'
 
     billing_secret: '0fb3661d89134de0cbcdd6b29780e23f2ec05e744c4d15feb381b1e7d7549d5ec960989c6471c9a31835ee455865cf7b2641529ae7cf1e6b4c3675f6361e98d0'
+    test_env: true
+    oneoff_endpoint: 'https://igw-demo.every-pay.com/api/v4/payments/oneoff'
+    account_name: "EUR3D2"
 
   # This is your application name, as displayed in the UI
   application_name: "EIS Auction Center"
@@ -126,7 +129,7 @@ development:
       account_id: 'EUR3D1'
       icon: '/images/payment_methods/every_pay.png'
       linkpay_prefix: 'https://igw-demo.every-pay.com/lp'
-      linkpay_check_prefix: 'https://igw-demo.every-pay.com/api/v3/payments/'
+      linkpay_check_prefix: 'https://igw-demo.every-pay.com/api/v4/payments/'
       linkpay_token: 'rucd4v'
       icon: '/images/payment_methods/everypay.png'
 

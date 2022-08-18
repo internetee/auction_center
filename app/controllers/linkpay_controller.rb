@@ -2,12 +2,13 @@ class LinkpayController < ApplicationController
   skip_before_action :verify_authenticity_token, only: %i[callback]
 
   def callback
-    save_response
-    render status: :ok, json: { status: 'ok' }
+    invoice = Invoice.find_by(number: linkpay_params[:order_reference])
+    save_response(invoice)
+
+    redirect_to invoice_path(uuid: invoice.uuid)
   end
 
-  def save_response
-    invoice = Invoice.find_by(number: linkpay_params[:order_reference])
+  def save_response(invoice)
     payment_reference = linkpay_params[:payment_reference]
 
     return unless invoice
@@ -21,6 +22,7 @@ class LinkpayController < ApplicationController
     }
     payment_order.save
     CheckLinkpayStatusJob.set(wait: 1.minute).perform_later(payment_order.id)
+    # CheckLinkpayStatusJob.perform_now(payment_order.id)
   end
 
   private

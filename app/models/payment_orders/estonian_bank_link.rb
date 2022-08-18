@@ -19,6 +19,11 @@ module PaymentOrders
     CANCEL_MESSAGE_KEYS  = %w[VK_SERVICE VK_VERSION VK_SND_ID VK_REC_ID VK_STAMP
                               VK_REF VK_MSG].freeze
 
+    TEST_PROD_ENV_STATE = AuctionCenter::Application.config
+                                                    .customization[:billing_system_integration]
+                                                    &.compact
+                                                    &.fetch(:test_env, '')
+
     def self.icon
       with_cache do
         AuctionCenter::Application.config
@@ -89,6 +94,10 @@ module PaymentOrders
         Invoice.transaction do
           invoices.each do |invoice|
             invoice.mark_as_paid_at_with_payment_order(time, self)
+
+            if TEST_PROD_ENV_STATE
+              EisBilling::SendInvoiceStatus.send_info(invoice_number: invoice.number, status: 'paid')
+            end
           end
         end
       elsif valid_response? && valid_cancel_notice?
