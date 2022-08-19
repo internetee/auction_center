@@ -93,16 +93,20 @@ module PaymentOrders
         paid!
         Invoice.transaction do
           invoices.each do |invoice|
-            invoice.mark_as_paid_at_with_payment_order(time, self)
-
-            if TEST_PROD_ENV_STATE
-              EisBilling::SendInvoiceStatus.send_info(invoice_number: invoice.number, status: 'paid')
-            end
+            process_payment(invoice, time)
           end
         end
       elsif valid_response? && valid_cancel_notice?
         cancelled!
         false
+      end
+    end
+
+    def process_payment(invoice, time)
+      invoice.mark_as_paid_at_with_payment_order(time, self)
+
+      if TEST_PROD_ENV_STATE && !Rails.env.test?
+        EisBilling::SendInvoiceStatus.send_info(invoice_number: invoice.number, status: 'paid')
       end
     end
 
