@@ -39,6 +39,11 @@ module PaymentOrders
     LANGUAGE_CODE_EN = 'en'.freeze
     TRUSTED_DATA = 'trusted_data'.freeze
 
+    TEST_PROD_ENV_STATE = AuctionCenter::Application.config
+                                                    .customization[:billing_system_integration]
+                                                    &.compact
+                                                    &.fetch(:test_env, '')
+
     # Base interface for creating payments.
     def form_fields
       base_json = base_params
@@ -80,6 +85,10 @@ module PaymentOrders
       Invoice.transaction do
         invoices.each do |invoice|
           invoice.mark_as_paid_at_with_payment_order(time, self)
+
+          if TEST_PROD_ENV_STATE
+            EisBilling::SendInvoiceStatus.send_info(invoice_number: invoice.number, status: 'paid')
+          end
         end
       end
     end

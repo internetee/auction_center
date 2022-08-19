@@ -20,7 +20,11 @@ class InvoicesController < ApplicationController
   end
 
   # GET /invoices/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
-  def show; end
+  def show
+    if params[:state] == "payment"
+      flash[:notice] = 'Payment was successfully created. Your payment will be processed as soon as possible. Thank you!'
+    end
+  end
 
   # GET /invoices
   def index

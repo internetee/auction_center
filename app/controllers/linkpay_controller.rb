@@ -5,7 +5,7 @@ class LinkpayController < ApplicationController
     invoice = Invoice.find_by(number: linkpay_params[:order_reference])
     save_response(invoice)
 
-    redirect_to invoice_path(uuid: invoice.uuid)
+    redirect_to invoice_path(uuid: invoice.uuid, state: 'payment')
   end
 
   def save_response(invoice)
