@@ -147,7 +147,7 @@ class TaraUsersTest < ApplicationSystemTestCase
 
     visit edit_user_path(@user.uuid)
     fill_in('user[email]', with: 'new-user@auction.test')
-    click_link_or_button('Submit')
+    click_link_or_button('Update')
 
     assert_text 'Confirmation link was sent to new email address. Please confirm the address for the change to take an effect!'
   end

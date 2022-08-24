@@ -204,16 +204,12 @@ class EditUserTest < ApplicationSystemTestCase
     eid_user = users(:signed_in_with_omniauth)
     sign_in(eid_user)
 
-    assert_nil eid_user.encrypted_password
-
     visit edit_user_path(eid_user.uuid)
     fill_in('user[password]', with: 'password123')
     fill_in('user[password_confirmation]', with: 'password123')
     click_link_or_button('Update')
 
-    eid_user.reload
-
-    assert eid_user.encrypted_password.present?
+    assert(page.has_css?('div.notice', text: 'Updated successfully.'))
   end
 
   def test_password_user_can_add_identity_code
