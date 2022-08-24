@@ -199,4 +199,31 @@ class EditUserTest < ApplicationSystemTestCase
 
     assert checkbox.checked?
   end
+
+  def test_eid_user_can_create_password
+    eid_user = users(:signed_in_with_omniauth)
+    sign_in(eid_user)
+
+    assert_nil eid_user.encrypted_password
+
+    visit edit_user_path(eid_user.uuid)
+    fill_in('user[password]', with: 'password123')
+    fill_in('user[password_confirmation]', with: 'password123')
+    click_link_or_button('Update')
+
+    eid_user.reload
+
+    assert eid_user.encrypted_password.present?
+  end
+
+  def test_password_user_can_add_identity_code
+    visit edit_user_path(@user.uuid)
+    fill_in('user[identity_code]', with: '51007050118')
+    fill_in('user[current_password]', with: 'password123')
+    click_link_or_button('Update')
+
+    @user.reload
+
+    assert_equal @user.identity_code, '51007050118'
+  end
 end

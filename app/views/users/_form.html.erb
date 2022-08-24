@@ -18,26 +18,58 @@
                     placeholder: "+372xxxxxxxx" %>
             </div>
             <div class="field">
-                <%= f.label :given_names, t('users.given_names') %>
-                <%= f.text_field :given_names, autofocus: true, autocomplete: "off" %>
+              <%= f.label :given_names, t('users.given_names') %>
+              <% if user.signed_in_with_identity_document? %>
+                <div class="ui disbled input">
+                  <%= f.text_field :given_names, readonly: true, value: user.given_names %>
+                </div>
+              <% else %>
+                <%= f.text_field :given_names, readonly: false, autofocus: true, autocomplete: "off" %>
+              <% end %>
             </div>
             <div class="field">
-                <%= f.label :surname, t('users.surname') %>
-                <%= f.text_field :surname, autofocus: true, autocomplete: "off" %>
+              <%= f.label :surname, t('users.surname') %>
+
+              <% if user.signed_in_with_identity_document? %>
+                <div class="ui disbled input">
+                  <%= f.text_field :surname, readonly: true, value: user.surname %>
+                </div>
+              <% else %>
+                <%= f.text_field :surname, readonly: false, autofocus: true, autocomplete: "off" %>
+              <% end %>
             </div>
         </div>
 
         <div class="column">
-            <h3 class="p3"><%= t('.personal_data') %></h3>
+          <h3 class="p3"><%= t('auth.tara.form.data_from_identity_document') %></h3>
+          <div class="field">
+            <%= f.label :identity_code, t('users.identity_code') %>
+            <% if user.identity_code.present? %>
+              <div class="ui disbled input">
+                <%= f.text_field :identity_code, readonly: true, value: user.identity_code %>
+              </div>
+            <% else %>
+              <%= f.text_field :identity_code, readonly: false %>
+            <% end %>
+          </div>
+
             <div class="field">
-                <%= f.label :country, t('users.country') %>
-                <%= f.select :country_code,
-                options_for_select(
-                    Countries.for_selection,
-                    user.country_code || Setting.find_by(code: 'default_country').retrieve
-                ),
-                { readonly: false },
-                class: "ui dropdown" %>
+              <%= f.label :country, t('users.country_code') %>
+                <% if user.signed_in_with_identity_document? %>
+                  <div class="ui disbled input">
+                    <%= f.text_field :country_code,
+                        value: user.country_code || Setting.find_by(code: 'default_country').retrieve,
+                        readonly: true %>
+                  </div>
+                <% else %>
+                  <%= f.select :country_code,
+                    options_for_select(
+                        Countries.for_selection,
+                        user.country_code || Setting.find_by(code: 'default_country').retrieve
+                    ),
+                    { readonly: false },
+                  class: "ui dropdown" %>
+                <% end %>
             </div>
 
             <div class="field">
@@ -49,6 +81,7 @@
                     <% end %>
                 </div>
             </div>
+
             <h3 class="p3"><%= t('.daily_summary') %></h3>
             <div class="field">
                 <div class="ui checkbox">
@@ -59,7 +92,7 @@
         </div>
 
         <div class="column">
-            <% if user.persisted? %>
+            <% if user.persisted? || (user.signed_in_with_identity_document? && user.encrypted_password.blank?) %>
                 <h3 class="p3"><%= t('.new_password') %></h3>
             <% else %>
                 <h3 class="p3"><%= t('users.password') %></h3>
@@ -67,7 +100,7 @@
             <div class="field">
                 <%= f.label :password, t('users.password'), class: 'label-password' %>
                 <%= f.password_field :password, autocomplete: "new-password" %>
-                <% if user.persisted? %>
+                <% if user.persisted? || (user.signed_in_with_identity_document? && user.encrypted_password.blank?) %>
                     <br><em><%= t('.you_can_leave_blank') %></em><br>
                 <% end %>
                 <% if @minimum_password_length %>
@@ -81,7 +114,7 @@
             </div>
         </div>
 
-        <% if user.persisted? %>
+        <% if user.persisted? && !user.signed_in_with_identity_document? %>
             <div class="column sixteen wide">
                 <hr>
                 <div class="field">
