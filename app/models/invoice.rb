@@ -64,10 +64,10 @@ class Invoice < ApplicationRecord
 
     result = EisBilling::GetInvoiceNumber.take_it
 
-    billing_restrictions_issue if JSON.parse(result.body)['code'] == '403'
-    billing_out_of_range_issue if JSON.parse(result.body)['error'] == 'out of range'
+    billing_restrictions_issue if result['code'] == '403'
+    billing_out_of_range_issue if result['error'] == 'out of range'
 
-    self.number = JSON.parse(result.body)['invoice_number'].to_i
+    self.number = result['invoice_number'].to_i
   end
 
   def items

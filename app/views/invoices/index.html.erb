@@ -31,6 +31,10 @@
         <% if @issued_invoices.any? %>
             <div class="column sixteen wide">
                 <h3><%= t('.pay') %></h3>
+                    <%#= form_with url: pay_all_bills_invoices_path do |f| %>
+                        <%#= f.submit 'Test pay', class: 'ui button primary' %>
+                    <%# end %>
+
                 <%= button_to "Generate invoice", 
                               pay_all_bills_invoices_path,
                               method: :post,

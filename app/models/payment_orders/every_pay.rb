@@ -77,10 +77,11 @@ module PaymentOrders
 
     # Perform necessary checks and mark the invoice as paid
     def mark_invoice_as_paid
-      return unless settled_payment? && valid_response?
+      return unless settled_payment?
+
       system_response = response.with_indifferent_access
       paid!
-      time = generate_time(system_response)
+      time = response['transaction_time'].to_datetime
 
       Invoice.transaction do
         invoices.each do |invoice|
@@ -100,24 +101,24 @@ module PaymentOrders
     # Check if response is there and if basic security methods are fullfilled.
     # Skip the check if data was previously requested by us from EveryPay
     # (response['type'] == TRUSTED_DATA) e.g. we know data was originated from trusted source
-    def valid_response?
-      return false unless response
-      return true if response['type'] == TRUSTED_DATA
+    # def valid_response?
+    #   return false unless response
+    #   return true if response['type'] == TRUSTED_DATA
 
-      valid_hmac? && valid_amount? && valid_account?
-    end
+    #   valid_hmac? && valid_amount? && valid_account?
+    # end
 
-    def check_linkpay_status
-      return if paid?
+    # def check_linkpay_status
+    #   return if paid?
 
-      url = "#{LINKPAY_CHECK_PREFIX}#{response['payment_reference']}?api_username=#{USER}"
-      body = basic_auth_get(url: url, username: USER, password: KEY)
-      return unless body
+    #   url = "#{LINKPAY_CHECK_PREFIX}#{response['payment_reference']}?api_username=#{USER}"
+    #   body = basic_auth_get(url: url, username: USER, password: KEY)
+    #   return unless body
 
-      self.response = body.merge(type: TRUSTED_DATA, timestamp: Time.zone.now)
-      save
-      mark_invoice_as_paid if body['payment_state'] == 'settled'
-    end
+    #   self.response = body.merge(type: TRUSTED_DATA, timestamp: Time.zone.now)
+    #   save
+    #   mark_invoice_as_paid if body['payment_state'] == 'settled'
+    # end
 
     # Check if the intermediary reports payment as settled and we can expect money on
     # our accounts
@@ -136,13 +137,13 @@ module PaymentOrders
 
     private
 
-    def generate_time(system_response)
-      time = Time.strptime(system_response['timestamp'], '%s')
-      if time.to_date == Date.new(1970, 01, 01)
-        time = created_at
-      end
-      time
-    end
+    # def generate_time(system_response)
+    #   time = Time.strptime(system_response['timestamp'], '%s')
+    #   if time.to_date == Date.new(1970, 01, 01)
+    #     time = created_at
+    #   end
+    #   time
+    # end
 
     def language
       if user&.locale == LANGUAGE_CODE_ET
@@ -152,17 +153,17 @@ module PaymentOrders
       end
     end
 
-    def valid_hmac?
-      hmac_fields = response['hmac_fields'].split(',')
-      hmac_hash = {}
-      hmac_fields.map do |field|
-        hmac_hash[field] = response[field]
-      end
+    # def valid_hmac?
+    #   hmac_fields = response['hmac_fields'].split(',')
+    #   hmac_hash = {}
+    #   hmac_fields.map do |field|
+    #     hmac_hash[field] = response[field]
+    #   end
 
-      hmac_string = hmac_hash.map { |key, _v| "#{key}=#{hmac_hash[key]}" }.join('&')
-      expected_hmac = OpenSSL::HMAC.hexdigest('sha1', KEY, hmac_string)
-      expected_hmac == response['hmac']
-    end
+    #   hmac_string = hmac_hash.map { |key, _v| "#{key}=#{hmac_hash[key]}" }.join('&')
+    #   expected_hmac = OpenSSL::HMAC.hexdigest('sha1', KEY, hmac_string)
+    #   expected_hmac == response['hmac']
+    # end
 
     def valid_amount?
       invoices_total.to_d == BigDecimal(response['amount'])

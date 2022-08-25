@@ -20,11 +20,7 @@ class InvoicesController < ApplicationController
   end
 
   # GET /invoices/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
-  def show
-    if params[:state] == "payment"
-      flash[:notice] = 'Payment was successfully created. Your payment will be processed as soon as possible. Thank you!'
-    end
-  end
+  def show; end
 
   # GET /invoices
   def index
@@ -32,6 +28,10 @@ class InvoicesController < ApplicationController
     @paid_invoices = invoices_list_by_status(Invoice.statuses[:paid])
     @cancelled_payable_invoices = invoices_list_by_status(Invoice.statuses[:cancelled]).with_ban
     @cancelled_expired_invoices = invoices_list_by_status(Invoice.statuses[:cancelled]).without_ban
+
+    if params[:state] == "payment"
+      flash[:notice] = 'Payment was successfully created. Your payment will be processed as soon as possible. Thank you!'
+    end
   end
 
   # GET /invoices/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/download
@@ -51,9 +51,8 @@ class InvoicesController < ApplicationController
 
   def pay_all_bills
     issued_invoices = invoices_list_by_status(Invoice.statuses[:issued])
-    result = EisBilling::BulkInvoices.generate_link(issued_invoices)
-
-    @everypay_link = JSON.parse(result.body, symbolize_names: true)[:everypay_link]
+    response = EisBilling::BulkInvoices.call(issued_invoices)
+    @everypay_link = response['everypay_link']
 
     respond_to do |format|
       format.json { render status: :ok, json: @everypay_link }
@@ -63,18 +62,16 @@ class InvoicesController < ApplicationController
   end
 
   def oneoff
-    body = EisBilling::OneoffPaymentSender.send_request(invoice: @invoice)
-    parsed_response = JSON.parse(body)
+    invoice = Invoice.accessible_by(current_ability).find_by!(uuid: params[:uuid])
+    response = EisBilling::Oneoff.send_invoice(invoice_number: invoice.number.to_s,
+                                               customer_url: linkpay_callback_url)
 
-    if parsed_response["error"].presence
-      flash[:error] = parsed_response["error"]["message"]
-
-      redirect_to invoice_path(uuid: @invoice.uuid) and return
+    if response['error'].present?
+      flash.alert = response['error']['message']
+      redirect_to invoices_path and return
     end
 
-    payment_link = parsed_response["payment_link"]
-
-    redirect_to payment_link
+    redirect_to response['oneoff_redirect_link'], allow_other_host: true
   end
 
   def update_predicate

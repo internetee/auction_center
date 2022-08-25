@@ -1,24 +1,34 @@
 module EisBilling
   class BulkInvoices < EisBilling::Base
+    include EisBilling::Request
     INITIATOR = 'auction'.freeze
 
-    def self.generate_link(invoices)
-      parsed_data = parse_data(invoices)
-      prepared_data = prepare_data(parsed_data: parsed_data)
+    attr_reader :invoices
 
-      send_request(json_obj: prepared_data)
+    def initialize(invoices)
+      @invoices = invoices
     end
 
-    def self.send_request(json_obj:)
-      http = EisBilling::Base.base_request(url: invoice_generator_url)
-      http.post(invoice_generator_url, json_obj.to_json, EisBilling::Base.headers)
+    def self.call(invoices)
+      fetcher = new(invoices)
+      parsed_data = fetcher.parse_data(invoices)
+      prepared_data = fetcher.prepare_data(parsed_data: parsed_data)
+
+      fetcher.send_request(json_obj: prepared_data)
     end
 
-    def self.invoice_generator_url
-      "#{BASE_URL}/api/v1/invoice_generator/invoice_generator"
+    def send_request(json_obj:)
+      # http = EisBilling::Base.base_request(url: invoice_generator_url)
+      # http.post(invoice_generator_url, json_obj.to_json, EisBilling::Base.headers)
+
+      post invoice_generator_url, json_obj
     end
 
-    def self.parse_data(invoices)
+    def invoice_generator_url
+      "/api/v1/invoice_generator/invoice_generator"
+    end
+
+    def parse_data(invoices)
       parsed_data = {}
 
       data_of_first_invoice = extract_data_from_invoice(invoices[0])
@@ -31,7 +41,7 @@ module EisBilling
       parsed_data
     end
 
-    def self.prepare_description(invoices)
+    def prepare_description(invoices)
       data = []
       invoices.each do |i|
         data << i.number.to_s
@@ -40,22 +50,22 @@ module EisBilling
       data.join(' ')
     end
 
-    def self.extract_data_from_invoice(invoice)
+    def extract_data_from_invoice(invoice)
       {
         customer_name: "#{invoice.user.given_names} #{invoice.user.surname}",
         customer_email: invoice.user.email,
       }
     end
 
-    def self.total_transaction_amount(invoices)
+    def total_transaction_amount(invoices)
       invoices.sum { |invoice| invoice.total.to_i }.to_s
     end
 
-    def self.prepare_data(parsed_data:)
+    def prepare_data(parsed_data:)
       data = {}
 
       generated_number_result = EisBilling::GetInvoiceNumber.take_it
-      generated_number = JSON.parse(generated_number_result.body, symbolize_names: true)[:invoice_number]
+      generated_number = generated_number_result['invoice_number']
 
       data[:custom_field1] = parsed_data[:invoice_description]
       data[:transaction_amount] = parsed_data[:invoices_total_sum]
@@ -64,6 +74,7 @@ module EisBilling
       data[:custom_field2] = INITIATOR
       data[:order_reference] = generated_number
       data[:invoice_number] = generated_number
+      data[:multiple] = 'true'
 
       data
     end

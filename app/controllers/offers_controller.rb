@@ -80,6 +80,8 @@ class OffersController < ApplicationController
   private
 
   def set_captcha_required
+    return if Rails.env.development?
+
     @captcha_required = current_user.requires_captcha?
   end
 

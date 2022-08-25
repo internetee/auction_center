@@ -5,7 +5,7 @@ class LinkpayController < ApplicationController
     invoice = Invoice.find_by(number: linkpay_params[:order_reference])
     save_response(invoice)
 
-    redirect_to invoice_path(uuid: invoice.uuid, state: 'payment')
+    redirect_to invoices_path(state: 'payment')
   end
 
   def save_response(invoice)
@@ -21,8 +21,9 @@ class LinkpayController < ApplicationController
       payment_reference: linkpay_params[:payment_reference],
     }
     payment_order.save
-    CheckLinkpayStatusJob.set(wait: 1.minute).perform_later(payment_order.id)
+    # CheckLinkpayStatusJob.set(wait: 1.minute).perform_later(payment_order.id)
     # CheckLinkpayStatusJob.perform_now(payment_order.id)
+    EisBilling::SendCallback.send(reference_number: payment_order.response['payment_reference'])
   end
 
   private

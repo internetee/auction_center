@@ -2,8 +2,7 @@ module EisBilling
   class BaseController < ApplicationController
     protect_from_forgery with: :null_session
     # skip_authorization_check # Temporary solution
-    # skip_before_action :verify_authenticity_token # Temporary solution
-    before_action :persistent
+    skip_before_action :verify_authenticity_token # Temporary solution
     before_action :authorized
 
     INITIATOR = 'billing'.freeze
@@ -44,12 +43,6 @@ module EisBilling
 
     def logger
       @logger ||= Rails.logger
-    end
-
-    def persistent
-      return true if Feature.billing_system_integration_enabled?
-
-      render json: { message: "We don't work yet!" }, status: :unauthorized
     end
   end
 end

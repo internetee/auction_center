@@ -5,8 +5,10 @@ class CheckLinkpayStatusJob < ApplicationJob
     payment_order = PaymentOrder.find(payment_order_id)
     return unless payment_order_valid?(payment_order)
 
-    payment_order.check_linkpay_status
+    EisBilling::SendCallback.send(reference_number: payment_order.response['payment_reference'])
   end
+
+  private
 
   def payment_order_valid?(order)
     order.present? && order.is_a?(PaymentOrders::EveryPay) && order.response.present?

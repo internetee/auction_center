@@ -102,14 +102,11 @@
             </div>
 
             <% if @invoice.payable? %>
-                <% if PaymentOrders::EstonianBankLink::TEST_PROD_ENV_STATE  %>
-                    <div>
-                        <%= form_with url: oneoff_invoice_path(uuid: @invoice.uuid) do |f| %>
-                            <%= f.submit 'Test pay', class: 'ui button primary' %>
-                        <% end %>
-                    </div>
-                <% end %>
-                
+                <div>
+                    <%= form_with url: oneoff_invoice_path(uuid: @invoice.uuid) do |f| %>
+                        <%= f.submit 'Test pay', class: 'ui button primary' %>
+                    <% end %>
+                </div>
 
                 <div>
                     <% if @invoice.payment_link.present? %>
