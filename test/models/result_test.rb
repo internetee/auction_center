@@ -79,6 +79,8 @@ class ResultTest < ActiveSupport::TestCase
     eis_response = OpenStruct.new(body: "{\"payment_link\":\"http://link.test\"}")
     Spy.on_instance_method(EisBilling::Invoice, :send_invoice).and_return(eis_response)
     Spy.on(EisBilling::SendInvoiceStatus, :send_info).and_return(true)
+    stub_request(:post, "https://eis_billing_system:3000/api/v1/invoice_generator/invoice_number_generator")
+      .to_return(status: 200, body: @invoice_number.to_json, headers: {})
 
     mock = Minitest::Mock.new
     def mock.authorized; true; end

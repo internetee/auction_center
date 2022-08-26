@@ -80,9 +80,9 @@ Rails.application.routes.draw do
 
     resources :payment_orders, only: %i[new show create], shallow: true, param: :uuid do
       member do
-        get 'return'
-        put 'return'
-        post 'return'
+        # get 'return'
+        # put 'return'
+        # post 'return'
 
         post 'callback'
       end

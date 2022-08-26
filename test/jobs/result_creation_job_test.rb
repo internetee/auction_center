@@ -7,20 +7,26 @@ class ResultCreationJobTest < ActiveJob::TestCase
     @auction_with_result = auctions(:expired)
     @auction_without_result = auctions(:valid_with_offers)
 
-    if Feature.billing_system_integration_enabled?
-      invoice_n = Invoice.order(number: :desc).last.number
+      @invoice_n = Invoice.order(number: :desc).last.number
+      @invoice_number = {
+        invoice_number: @invoice_n + 3,
+        date: Time.zone.now-10.minutes
+      }
+      @invoice_link = {
+        everypay_link: "http://link.test"
+      }
+
       stub_request(:post, "https://eis_billing_system:3000/api/v1/invoice_generator/invoice_number_generator")
-        .to_return(status: 200, body: "{\"invoice_number\":\"#{invoice_n + 3}\"}", headers: {})
+        .to_return(status: 200, body: @invoice_number.to_json, headers: {})
 
       stub_request(:post, "https://eis_billing_system:3000/api/v1/invoice_generator/invoice_generator")
-        .to_return(status: 200, body: "{\"everypay_link\":\"http://link.test\"}", headers: {})
+        .to_return(status: 200, body: @invoice_link.to_json, headers: {})
 
       stub_request(:put, "https://registry:3000/eis_billing/e_invoice_response").
-        to_return(status: 200, body: "{\"invoice_number\":\"#{invoice_n + 3}\"}, {\"date\":\"#{Time.zone.now-10.minutes}\"}", headers: {})
+        to_return(status: 200, body: @invoice_number.to_json, headers: {})
 
       stub_request(:post, "https://eis_billing_system:3000/api/v1/e_invoice/e_invoice").
         to_return(status: 200, body: "", headers: {})
-    end
   end
 
   def teardown
@@ -41,7 +47,7 @@ class ResultCreationJobTest < ActiveJob::TestCase
   end
 
   def test_job_schedules_invoice_creation
-    eis_response = OpenStruct.new(body: "{\"payment_link\":\"http://link.test\"}")
+    eis_response = OpenStruct.new(body: @invoice_link.to_json)
     Spy.on_instance_method(EisBilling::Invoice, :send_invoice).and_return(eis_response)
     Spy.on(EisBilling::SendInvoiceStatus, :send_info).and_return(true)
     mock = Minitest::Mock.new

@@ -53,40 +53,40 @@ class PaymentOrdersTest < ActionDispatch::IntegrationTest
   #   end
   # end
 
-  def test_response_from_return_payment_redirects_to_invoice
-    post return_payment_order_path(@payment_order.uuid), params: request_params
+  # def test_response_from_return_payment_redirects_to_invoice
+  #   post return_payment_order_path(@payment_order.uuid), params: request_params
 
-    assert_equal(302, response.status)
-  end
+  #   assert_equal(302, response.status)
+  # end
 
-  def test_response_from_return_payment_schedules_result_status_update_job
-    assert_enqueued_with(job: ResultStatusUpdateJob) do
-      post return_payment_order_path(@payment_order.uuid), params: request_params
-    end
-  end
+  # def test_response_from_return_payment_schedules_result_status_update_job
+  #   assert_enqueued_with(job: ResultStatusUpdateJob) do
+  #     post return_payment_order_path(@payment_order.uuid), params: request_params
+  #   end
+  # end
 
-  def test_return_does_nothing_when_payment_order_is_already_paid
-    @payment_order.update!(status: :paid)
-    post return_payment_order_path(@payment_order.uuid), params: request_params
+  # def test_return_does_nothing_when_payment_order_is_already_paid
+  #   @payment_order.update!(status: :paid)
+  #   post return_payment_order_path(@payment_order.uuid), params: request_params
 
-    assert_equal(302, response.status)
-    assert_not @payment_order.response
-  end
+  #   assert_equal(302, response.status)
+  #   assert_not @payment_order.response
+  # end
 
-  def test_invoice_ids_are_shown_after_successful_mass_payment
-    @user = users(:participant)
-    sign_in @user
+  # def test_invoice_ids_are_shown_after_successful_mass_payment
+  #   @user = users(:participant)
+  #   sign_in @user
 
-    PaymentOrder.stub(:find_by, @payment_order) do
-      @payment_order.stub(:invoices, [invoices(:payable), invoices(:orphaned)]) do
-        @payment_order.stub(:mark_invoice_as_paid, true) do
-          post return_payment_order_path(@payment_order.uuid), params: request_params
-          follow_redirect!
-          assert_includes response.body, "Payment successful! Following invoices were marked as paid: #{invoices(:payable).number}, #{invoices(:orphaned).number}"
-        end
-      end
-    end
-  end
+  #   PaymentOrder.stub(:find_by, @payment_order) do
+  #     @payment_order.stub(:invoices, [invoices(:payable), invoices(:orphaned)]) do
+  #       @payment_order.stub(:mark_invoice_as_paid, true) do
+  #         post return_payment_order_path(@payment_order.uuid), params: request_params
+  #         follow_redirect!
+  #         assert_includes response.body, "Payment successful! Following invoices were marked as paid: #{invoices(:payable).number}, #{invoices(:orphaned).number}"
+  #       end
+  #     end
+  #   end
+  # end
 
   def request_params
     {
