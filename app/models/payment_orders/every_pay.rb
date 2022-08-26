@@ -92,8 +92,6 @@ module PaymentOrders
 
     def process_payment(invoice, time)
       invoice.mark_as_paid_at_with_payment_order(time, self)
-
-      EisBilling::SendInvoiceStatus.send_info(invoice_number: invoice.number, status: 'paid')
     end
 
     # Check if response is there and if basic security methods are fullfilled.

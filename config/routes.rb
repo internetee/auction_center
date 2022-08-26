@@ -25,7 +25,7 @@ Rails.application.routes.draw do
   match '/profile/toggle_subscription', via: :get, to: 'users#toggle_subscription',
         as: :user_toggle_sub
 
-  namespace :eis_billing do
+  namespace :eis_billing, defaults: { format: 'json' } do
     put '/payment_status', to: 'payment_status#update', as: 'payment_status'
     put '/directo_response', to: 'directo_response#update', as: 'directo_response'
   end
