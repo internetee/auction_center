@@ -10,20 +10,18 @@ class AutomaticBanTest < ActiveSupport::TestCase
     @user = users(:participant)
     @domain_name = 'example.test'
 
-    if Feature.billing_system_integration_enabled?
-      invoice_n = Invoice.order(number: :desc).last.number
-      stub_request(:post, "https://eis_billing_system:3000/api/v1/invoice_generator/invoice_number_generator")
-        .to_return(status: 200, body: "{\"invoice_number\":\"#{invoice_n + 3}\"}", headers: {})
+    invoice_n = Invoice.order(number: :desc).last.number
+    stub_request(:post, "http://eis_billing_system:3000/api/v1/invoice_generator/invoice_number_generator")
+      .to_return(status: 200, body: "{\"invoice_number\":\"#{invoice_n + 3}\"}", headers: {})
 
-      stub_request(:post, "https://eis_billing_system:3000/api/v1/invoice_generator/invoice_generator")
-        .to_return(status: 200, body: "{\"everypay_link\":\"http://link.test\"}", headers: {})
+    stub_request(:post, "http://eis_billing_system:3000/api/v1/invoice_generator/invoice_generator")
+      .to_return(status: 200, body: "{\"everypay_link\":\"http://link.test\"}", headers: {})
 
-      stub_request(:put, "https://registry:3000/eis_billing/e_invoice_response").
-        to_return(status: 200, body: "{\"invoice_number\":\"#{invoice_n + 3}\"}, {\"date\":\"#{Time.zone.now-10.minutes}\"}", headers: {})
+    stub_request(:put, "http://registry:3000/eis_billing/e_invoice_response").
+      to_return(status: 200, body: "{\"invoice_number\":\"#{invoice_n + 3}\"}, {\"date\":\"#{Time.zone.now-10.minutes}\"}", headers: {})
 
-      stub_request(:post, "https://eis_billing_system:3000/api/v1/e_invoice/e_invoice").
-        to_return(status: 200, body: "", headers: {})
-    end
+    stub_request(:post, "http://eis_billing_system:3000/api/v1/e_invoice/e_invoice").
+      to_return(status: 200, body: "", headers: {})
   end
 
   def teardown
@@ -49,10 +47,6 @@ class AutomaticBanTest < ActiveSupport::TestCase
   end
 
   def test_bans_are_based_on_number_of_cancelled_invoices_without_bans
-    eis_response = OpenStruct.new(body: "{\"payment_link\":\"http://link.test\"}")
-    Spy.on_instance_method(EisBilling::Invoice, :send_invoice).and_return(eis_response)
-    Spy.on(EisBilling::SendInvoiceStatus, :send_info).and_return(true)
-
     invoice, domain_name = create_bannable_offence(@user)
 
     mock = Minitest::Mock.new
@@ -71,9 +65,6 @@ class AutomaticBanTest < ActiveSupport::TestCase
   end
 
   def test_ban_without_bannable_invoice_fails
-    eis_response = OpenStruct.new(body: "{\"payment_link\":\"http://link.test\"}")
-    Spy.on_instance_method(EisBilling::Invoice, :send_invoice).and_return(eis_response)
-    Spy.on(EisBilling::SendInvoiceStatus, :send_info).and_return(true)
     mock = Minitest::Mock.new
     def mock.authorized; true; end
 
@@ -91,10 +82,6 @@ class AutomaticBanTest < ActiveSupport::TestCase
   end
 
   def test_ban_for_second_invoice_is_also_long
-    eis_response = OpenStruct.new(body: "{\"payment_link\":\"http://link.test\"}")
-    Spy.on_instance_method(EisBilling::Invoice, :send_invoice).and_return(eis_response)
-    Spy.on(EisBilling::SendInvoiceStatus, :send_info).and_return(true)
-
     mock = Minitest::Mock.new
     def mock.authorized; true; end
 
@@ -113,9 +100,6 @@ class AutomaticBanTest < ActiveSupport::TestCase
   end
 
   def test_third_ban_is_long
-    eis_response = OpenStruct.new(body: "{\"payment_link\":\"http://link.test\"}")
-    Spy.on_instance_method(EisBilling::Invoice, :send_invoice).and_return(eis_response)
-    Spy.on(EisBilling::SendInvoiceStatus, :send_info).and_return(true)
     mock = Minitest::Mock.new
     def mock.authorized; true; end
 
@@ -136,9 +120,6 @@ class AutomaticBanTest < ActiveSupport::TestCase
   end
 
   def test_number_of_ban_offences_before_long_ban_is_configurable_in_settings
-    eis_response = OpenStruct.new(body: "{\"payment_link\":\"http://link.test\"}")
-    Spy.on_instance_method(EisBilling::Invoice, :send_invoice).and_return(eis_response)
-    Spy.on(EisBilling::SendInvoiceStatus, :send_info).and_return(true)
     mock = Minitest::Mock.new
     def mock.authorized; true; end
 
@@ -157,10 +138,6 @@ class AutomaticBanTest < ActiveSupport::TestCase
   end
 
   def test_creating_a_short_ban_sends_an_email
-    eis_response = OpenStruct.new(body: "{\"payment_link\":\"http://link.test\"}")
-    Spy.on_instance_method(EisBilling::Invoice, :send_invoice).and_return(eis_response)
-    Spy.on(EisBilling::SendInvoiceStatus, :send_info).and_return(true)
-
     invoice, domain_name = create_bannable_offence(@user)
     clear_email_deliveries
 
@@ -174,9 +151,6 @@ class AutomaticBanTest < ActiveSupport::TestCase
   end
 
   def test_creating_a_long_ban_sends_an_email
-    eis_response = OpenStruct.new(body: "{\"payment_link\":\"http://link.test\"}")
-    Spy.on_instance_method(EisBilling::Invoice, :send_invoice).and_return(eis_response)
-    Spy.on(EisBilling::SendInvoiceStatus, :send_info).and_return(true)
     create_bannable_offence(@user)
     create_bannable_offence(@user)
 
@@ -193,10 +167,6 @@ class AutomaticBanTest < ActiveSupport::TestCase
   end
 
   def test_automatic_ban_clear_for_active_bid_of_active_auction
-    eis_response = OpenStruct.new(body: "{\"payment_link\":\"http://link.test\"}")
-    Spy.on_instance_method(EisBilling::Invoice, :send_invoice).and_return(eis_response)
-    Spy.on(EisBilling::SendInvoiceStatus, :send_info).and_return(true)
-
     invoice, domain_name = create_bannable_offence(@user)
     auction = Auction.find_by(domain_name: domain_name)
     auction.update(starts_at: Time.now - 2.days, ends_at: Time.now + 1.day)
@@ -209,10 +179,6 @@ class AutomaticBanTest < ActiveSupport::TestCase
   end
 
   def test_automatic_ban_clear_or_active_bids_for_long_ban
-    eis_response = OpenStruct.new(body: "{\"payment_link\":\"http://link.test\"}")
-    Spy.on_instance_method(EisBilling::Invoice, :send_invoice).and_return(eis_response)
-    Spy.on(EisBilling::SendInvoiceStatus, :send_info).and_return(true)
-
     invoice, domain_name1 = create_bannable_offence(@user)
     invoice, domain_name2 = create_bannable_offence(@user)
     invoice, domain_name3 = create_bannable_offence(@user)

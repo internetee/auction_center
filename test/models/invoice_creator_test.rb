@@ -16,28 +16,29 @@ class InvoiceCreatorTest < ActiveSupport::TestCase
     @invoice_link = {
       everypay_link: "http://link.test"
     }
+
+    @message = {
+      message: 'ok'
+    }
     
-    # stub_request(:post, "https://eis_billing_system:3000/api/v1/invoice_generator/invoice_number_generator")
-    #   .to_return(status: 200, body: @invoice_number.to_json, headers: {})
+    stub_request(:post, "http://eis_billing_system:3000/api/v1/invoice_generator/invoice_number_generator")
+      .to_return(status: 200, body: @invoice_number.to_json, headers: {})
 
-    # stub_request(:post, "https://eis_billing_system:3000/api/v1/invoice_generator/invoice_generator")
-    #   .to_return(status: 200, body: @invoice_link.to_json, headers: {})
+    stub_request(:post, "http://eis_billing_system:3000/api/v1/invoice_generator/invoice_generator")
+      .to_return(status: 200, body: @invoice_link.to_json, headers: {})
 
-    # stub_request(:put, "https://registry:3000/eis_billing/e_invoice_response").
-    #   to_return(status: 200, body: @invoice_number.to_json, headers: {})
+    stub_request(:put, "http://registry:3000/eis_billing/e_invoice_response").
+      to_return(status: 200, body: @invoice_number.to_json, headers: {})
 
-    # stub_request(:post, "https://eis_billing_system:3000/api/v1/e_invoice/e_invoice").
-    #   to_return(status: 200, body: "", headers: {})
+    stub_request(:post, "http://eis_billing_system:3000/api/v1/e_invoice/e_invoice").
+      to_return(status: 200, body: "", headers: {})
+
+    stub_request(:post, 'http://eis_billing_system:3000/api/v1/invoice_generator/oneoff')
+        .to_return(status: 200, body: @message.to_json, headers: {})
 
   end
 
   def test_an_invoice_is_prefilled_with_data_from_winning_offer
-    # eis_response = OpenStruct.new(body: @invoice_link.to_json)
-    # Spy.on_instance_method(EisBilling::Invoice, :send_invoice).and_return(eis_response)
-    # Spy.on(EisBilling::SendInvoiceStatus, :send_info).and_return(true)
-    # stub_request(:post, "https://eis_billing_system:3000/api/v1/invoice_generator/invoice_number_generator")
-    #   .to_return(status: 200, body: @invoice_number.to_json, headers: {})
-
     mock = Minitest::Mock.new
     def mock.authorized; true; end
 
@@ -69,12 +70,6 @@ class InvoiceCreatorTest < ActiveSupport::TestCase
   end
 
   def test_invoice_creator_also_creates_invoice_items
-    eis_response = OpenStruct.new(body: @invoice_link.to_json)
-    # Spy.on_instance_method(EisBilling::Invoice, :send_invoice).and_return(eis_response)
-    # Spy.on(EisBilling::SendInvoiceStatus, :send_info).and_return(true)
-    # stub_request(:post, "https://eis_billing_system:3000/api/v1/invoice_generator/invoice_number_generator")
-    #   .to_return(status: 200, body: @invoice_number.to_json, headers: {})
-
     mock = Minitest::Mock.new
     def mock.authorized; true; end
 

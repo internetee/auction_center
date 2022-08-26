@@ -60,8 +60,6 @@ class Invoice < ApplicationRecord
   end
 
   def set_invoice_number
-    return unless Feature.billing_system_integration_enabled?
-
     result = EisBilling::GetInvoiceNumber.take_it
 
     billing_restrictions_issue if result['code'] == '403'

@@ -12,6 +12,10 @@ class DirectoInvoiceForwardJob < ApplicationJob
     send_data_to_billing_directo(collected_data)
   end
 
+  def self.needs_to_run?
+    Setting.find_by(code: 'directo_integration_enabled').retrieve
+  end
+
   private
 
   def send_data_to_billing_directo(collected_data)

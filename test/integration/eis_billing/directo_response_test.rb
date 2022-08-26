@@ -12,18 +12,16 @@ class DirectoResponseTest < ActionDispatch::IntegrationTest
   end
 
   def test_should_update_related_invoice
-    if Feature.billing_system_integration_enabled?
-      directo_response_from_billing = {
-        response: @response_xml
-      }
+    directo_response_from_billing = {
+      response: @response_xml
+    }
 
-      refute @invoice.in_directo
+    refute @invoice.in_directo
 
-      put eis_billing_directo_response_path, params: JSON.parse(directo_response_from_billing.to_json),
-      headers: { 'HTTP_COOKIE' => 'session=customer' }
+    put eis_billing_directo_response_path, params: JSON.parse(directo_response_from_billing.to_json),
+    headers: { 'HTTP_COOKIE' => 'session=customer' }
 
-      @invoice.reload
-      assert @invoice.in_directo
-    end
+    @invoice.reload
+    assert @invoice.in_directo
   end
 end

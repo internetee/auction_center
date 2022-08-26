@@ -16,16 +16,16 @@ class ResultCreationJobTest < ActiveJob::TestCase
         everypay_link: "http://link.test"
       }
 
-      stub_request(:post, "https://eis_billing_system:3000/api/v1/invoice_generator/invoice_number_generator")
+      stub_request(:post, "http://eis_billing_system:3000/api/v1/invoice_generator/invoice_number_generator")
         .to_return(status: 200, body: @invoice_number.to_json, headers: {})
 
-      stub_request(:post, "https://eis_billing_system:3000/api/v1/invoice_generator/invoice_generator")
+      stub_request(:post, "http://eis_billing_system:3000/api/v1/invoice_generator/invoice_generator")
         .to_return(status: 200, body: @invoice_link.to_json, headers: {})
 
-      stub_request(:put, "https://registry:3000/eis_billing/e_invoice_response").
+      stub_request(:put, "http://registry:3000/eis_billing/e_invoice_response").
         to_return(status: 200, body: @invoice_number.to_json, headers: {})
 
-      stub_request(:post, "https://eis_billing_system:3000/api/v1/e_invoice/e_invoice").
+      stub_request(:post, "http://eis_billing_system:3000/api/v1/e_invoice/e_invoice").
         to_return(status: 200, body: "", headers: {})
   end
 

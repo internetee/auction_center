@@ -8,20 +8,18 @@ class ResultCreatorTest < ActiveSupport::TestCase
     @auction_with_offers = auctions(:valid_with_offers)
     @auction_without_offers = auctions(:valid_without_offers)
 
-    if Feature.billing_system_integration_enabled?
-      invoice_n = Invoice.order(number: :desc).last.number
-      stub_request(:post, "https://eis_billing_system:3000/api/v1/invoice_generator/invoice_number_generator")
-        .to_return(status: 200, body: "{\"invoice_number\":\"#{invoice_n + 3}\"}", headers: {})
+    invoice_n = Invoice.order(number: :desc).last.number
+    stub_request(:post, "http://eis_billing_system:3000/api/v1/invoice_generator/invoice_number_generator")
+      .to_return(status: 200, body: "{\"invoice_number\":\"#{invoice_n + 3}\"}", headers: {})
 
-      stub_request(:post, "https://eis_billing_system:3000/api/v1/invoice_generator/invoice_generator")
-        .to_return(status: 200, body: "{\"everypay_link\":\"http://link.test\"}", headers: {})
+    stub_request(:post, "http://eis_billing_system:3000/api/v1/invoice_generator/invoice_generator")
+      .to_return(status: 200, body: "{\"everypay_link\":\"http://link.test\"}", headers: {})
 
-      stub_request(:put, "https://registry:3000/eis_billing/e_invoice_response").
-        to_return(status: 200, body: "{\"invoice_number\":\"#{invoice_n + 3}\"}, {\"date\":\"#{Time.zone.now-10.minutes}\"}", headers: {})
+    stub_request(:put, "http://registry:3000/eis_billing/e_invoice_response").
+      to_return(status: 200, body: "{\"invoice_number\":\"#{invoice_n + 3}\"}, {\"date\":\"#{Time.zone.now-10.minutes}\"}", headers: {})
 
-      stub_request(:post, "https://eis_billing_system:3000/api/v1/e_invoice/e_invoice").
-        to_return(status: 200, body: "", headers: {})
-    end
+    stub_request(:post, "http://eis_billing_system:3000/api/v1/e_invoice/e_invoice").
+      to_return(status: 200, body: "", headers: {})
   end
 
   def teardown
@@ -31,10 +29,6 @@ class ResultCreatorTest < ActiveSupport::TestCase
   end
 
   def test_a_result_is_created_for_auction_with_offers
-    eis_response = OpenStruct.new(body: "{\"payment_link\":\"http://link.test\"}")
-    Spy.on_instance_method(EisBilling::Invoice, :send_invoice).and_return(eis_response)
-    Spy.on(EisBilling::SendInvoiceStatus, :send_info).and_return(true)
-
     Result.destroy_all
 
     mock = Minitest::Mock.new
@@ -78,10 +72,6 @@ class ResultCreatorTest < ActiveSupport::TestCase
   end
 
   def test_result_is_created_even_after_a_user_is_deleted
-    eis_response = OpenStruct.new(body: "{\"payment_link\":\"http://link.test\"}")
-    Spy.on_instance_method(EisBilling::Invoice, :send_invoice).and_return(eis_response)
-    Spy.on(EisBilling::SendInvoiceStatus, :send_info).and_return(true)
-
     Result.destroy_all
 
     mock = Minitest::Mock.new
@@ -135,10 +125,6 @@ class ResultCreatorTest < ActiveSupport::TestCase
   end
 
   def test_creator_emails_particiapants_for_auction_with_offers
-    eis_response = OpenStruct.new(body: "{\"payment_link\":\"http://link.test\"}")
-    Spy.on_instance_method(EisBilling::Invoice, :send_invoice).and_return(eis_response)
-    Spy.on(EisBilling::SendInvoiceStatus, :send_info).and_return(true)
-
     result_creator = ResultCreator.new(@auction_with_offers.id)
     result_creator.call
 
@@ -150,10 +136,6 @@ class ResultCreatorTest < ActiveSupport::TestCase
   end
 
   def test_creator_emails_winner_for_auction_with_offers
-    eis_response = OpenStruct.new(body: "{\"payment_link\":\"http://link.test\"}")
-    Spy.on_instance_method(EisBilling::Invoice, :send_invoice).and_return(eis_response)
-    Spy.on(EisBilling::SendInvoiceStatus, :send_info).and_return(true)
-
     ActionMailer::Base.deliveries.clear
     result_creator = ResultCreator.new(@auction_with_offers.id)
     result_creator.call
