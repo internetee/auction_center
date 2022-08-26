@@ -1,5 +1,5 @@
 module EisBilling
-  class GetInvoiceNumber < EisBilling::Base
+  class GetInvoiceNumber
     include EisBilling::Request
 
     def self.take_it
@@ -12,7 +12,7 @@ module EisBilling
     end
 
     def invoice_number_generator_url
-      "/api/v1/invoice_generator/invoice_number_generator"
+      '/api/v1/invoice_generator/invoice_number_generator'
     end
   end
 end

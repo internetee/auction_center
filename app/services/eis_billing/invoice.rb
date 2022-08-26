@@ -1,5 +1,5 @@
 module EisBilling
-  class Invoice < EisBilling::Base
+  class Invoice
     include EisBilling::Request
 
     attr_reader :invoice
@@ -9,7 +9,7 @@ module EisBilling
     end
 
     def send_invoice
-      send_request(json_obj: parse_invoice)
+      send_request(payload: parse_invoice)
     end
 
     private
@@ -27,15 +27,12 @@ module EisBilling
       data
     end
 
-    def send_request(json_obj:)
-      # http = EisBilling::Base.base_request(url: invoice_generator_url)
-      # http.post(invoice_generator_url, json_obj.to_json, EisBilling::Base.headers)
-
-      post invoice_generator_url, json_obj
+    def send_request(payload:)
+      post invoice_generator_url, payload
     end
 
     def invoice_generator_url
-      "/api/v1/invoice_generator/invoice_generator"
+      '/api/v1/invoice_generator/invoice_generator'
     end
   end
 end

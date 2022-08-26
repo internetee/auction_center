@@ -37,38 +37,38 @@ module PaymentOrders
 
     LANGUAGE_CODE_ET = 'et'.freeze
     LANGUAGE_CODE_EN = 'en'.freeze
-    TRUSTED_DATA = 'trusted_data'.freeze
+    # TRUSTED_DATA = 'trusted_data'.freeze
 
-    TEST_PROD_ENV_STATE = AuctionCenter::Application.config
-                                                    .customization[:billing_system_integration]
-                                                    &.compact
-                                                    &.fetch(:test_env, '')
+    # TEST_PROD_ENV_STATE = AuctionCenter::Application.config
+    #                                                 .customization[:billing_system_integration]
+    #                                                 &.compact
+    #                                                 &.fetch(:test_env, '')
 
     # Base interface for creating payments.
-    def form_fields
-      base_json = base_params
-      base_json[:nonce] = SecureRandom.hex(15)
-      hmac_fields = (base_json.keys + ['hmac_fields']).sort.uniq!
+    # def form_fields
+    #   base_json = base_params
+    #   base_json[:nonce] = SecureRandom.hex(15)
+    #   hmac_fields = (base_json.keys + ['hmac_fields']).sort.uniq!
 
-      base_json[:hmac_fields] = hmac_fields.join(',')
-      hmac_string = hmac_fields.map { |key, _v| "#{key}=#{base_json[key]}" }.join('&')
-      hmac = OpenSSL::HMAC.hexdigest('sha1', KEY, hmac_string)
-      base_json[:hmac] = hmac
+    #   base_json[:hmac_fields] = hmac_fields.join(',')
+    #   hmac_string = hmac_fields.map { |key, _v| "#{key}=#{base_json[key]}" }.join('&')
+    #   hmac = OpenSSL::HMAC.hexdigest('sha1', KEY, hmac_string)
+    #   base_json[:hmac] = hmac
 
-      base_json
-    end
+    #   base_json
+    # end
 
     def self.config_namespace_name
       CONFIG_NAMESPACE
     end
 
-    def self.icon
-      with_cache do
-        AuctionCenter::Application.config
-                                  .customization
-                                  .dig(:payment_methods, config_namespace_name.to_sym, :icon)
-      end
-    end
+    # def self.icon
+    #   with_cache do
+    #     AuctionCenter::Application.config
+    #                               .customization
+    #                               .dig(:payment_methods, config_namespace_name.to_sym, :icon)
+    #   end
+    # end
 
     # Where to send the POST request with payment creation.
     def form_url
@@ -79,7 +79,7 @@ module PaymentOrders
     def mark_invoice_as_paid
       return unless settled_payment?
 
-      system_response = response.with_indifferent_access
+      response.with_indifferent_access
       paid!
       time = response['transaction_time'].to_datetime
 
@@ -93,9 +93,7 @@ module PaymentOrders
     def process_payment(invoice, time)
       invoice.mark_as_paid_at_with_payment_order(time, self)
 
-      if TEST_PROD_ENV_STATE && !Rails.env.test?
-        EisBilling::SendInvoiceStatus.send_info(invoice_number: invoice.number, status: 'paid')
-      end
+      EisBilling::SendInvoiceStatus.send_info(invoice_number: invoice.number, status: 'paid')
     end
 
     # Check if response is there and if basic security methods are fullfilled.
@@ -126,14 +124,14 @@ module PaymentOrders
       SUCCESSFUL_PAYMENT.include?(response['payment_state'])
     end
 
-    def linkpay_url_builder
-      total = invoices_total&.format(symbol: nil, thousands_separator: false, decimal_mark: '.')
-      create_predicate
-      data = linkpay_params(total).to_query
+    # def linkpay_url_builder
+    #   total = invoices_total&.format(symbol: nil, thousands_separator: false, decimal_mark: '.')
+    #   create_predicate
+    #   data = linkpay_params(total).to_query
 
-      hmac = OpenSSL::HMAC.hexdigest('sha256', KEY, data)
-      "#{LINKPAY_PREFIX}?#{data}&hmac=#{hmac}"
-    end
+    #   hmac = OpenSSL::HMAC.hexdigest('sha256', KEY, data)
+    #   "#{LINKPAY_PREFIX}?#{data}&hmac=#{hmac}"
+    # end
 
     private
 
@@ -173,9 +171,9 @@ module PaymentOrders
       invoices.map(&:total).reduce(:+)
     end
 
-    def valid_account?
-      response['account_id'] == ACCOUNT_ID
-    end
+    # def valid_account?
+    #   response['account_id'] == ACCOUNT_ID
+    # end
 
     def base_params
       {

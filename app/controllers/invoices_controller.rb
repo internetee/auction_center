@@ -1,7 +1,7 @@
 class InvoicesController < ApplicationController
   before_action :authenticate_user!
   before_action :authorize_user
-  before_action :set_invoice, except: [:index, :pay_all_bills, :one_off]
+  before_action :set_invoice, except: %i[index pay_all_bills oneoff]
 
   # GET /invoices/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/edit
   def edit; end
@@ -29,9 +29,10 @@ class InvoicesController < ApplicationController
     @cancelled_payable_invoices = invoices_list_by_status(Invoice.statuses[:cancelled]).with_ban
     @cancelled_expired_invoices = invoices_list_by_status(Invoice.statuses[:cancelled]).without_ban
 
-    if params[:state] == "payment"
-      flash[:notice] = 'Payment was successfully created. Your payment will be processed as soon as possible. Thank you!'
-    end
+    return unless params[:state] == 'payment'
+
+    message = 'Payment was successfully created. Your payment will be processed as soon as possible. Thank you!'
+    flash[:notice] = message
   end
 
   # GET /invoices/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/download
@@ -56,7 +57,7 @@ class InvoicesController < ApplicationController
 
     respond_to do |format|
       format.json { render status: :ok, json: @everypay_link }
-      format.html { redirect_to :back, :notice => 'Run was successfully created.' }
+      format.html { redirect_to :back, notice: 'Run was successfully created.' }
       format.js
     end
   end
