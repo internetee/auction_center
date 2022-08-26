@@ -2,38 +2,12 @@ class LinkpayController < ApplicationController
   skip_before_action :verify_authenticity_token, only: %i[callback]
 
   def callback
-    invoice = Invoice.find_by(number: linkpay_params[:order_reference])
-    save_response(invoice)
+    EisBilling::SendCallback.send(reference_number: linkpay_params[:payment_reference])
 
     redirect_to invoices_path(state: 'payment')
   end
 
-  def save_response(invoice)
-    payment_reference = linkpay_params[:payment_reference]
-
-    return unless invoice
-    return unless PaymentOrder.supported_methods.include?('PaymentOrders::EveryPay'.constantize)
-
-    payment_order = find_payment_order(invoice: invoice, ref: payment_reference)
-
-    payment_order.response = {
-      order_reference: linkpay_params[:order_reference],
-      payment_reference: linkpay_params[:payment_reference],
-    }
-    payment_order.save
-    # CheckLinkpayStatusJob.set(wait: 1.minute).perform_later(payment_order.id)
-    # CheckLinkpayStatusJob.perform_now(payment_order.id)
-    EisBilling::SendCallback.send(reference_number: payment_order.response['payment_reference'])
-  end
-
   private
-
-  def find_payment_order(invoice:, ref:)
-    order = invoice.payment_orders.every_pay.for_payment_reference(ref).first
-    return order if order
-
-    PaymentOrders::EveryPay.create(invoices: [invoice], user: invoice.user)
-  end
 
   def linkpay_params
     params.permit(:order_reference, :payment_reference)

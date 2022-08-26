@@ -105,6 +105,7 @@ class PaymentOrdersTest < ActionDispatch::IntegrationTest
       cc_month: '10',
       cc_year: '2018',
       cc_holder_name: 'John Doe',
+      transaction_time: (Time.zone.now - 1.minute).to_s,
       hmac_fields: 'account_id,amount,api_username,cc_holder_name,cc_last_four_digits,cc_month,cc_type,cc_year,hmac_fields,nonce,order_reference,payment_reference,payment_state,timestamp,transaction_result',
       hmac: 'efac1c732835668cd86023a7abc140506c692f0d',
       invoice_id: '1',

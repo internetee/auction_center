@@ -1,4 +1,4 @@
-class DirectoInvoiceForwardTwoJob < ApplicationJob
+class DirectoInvoiceForwardJob < ApplicationJob
   def perform
     collected_data = []
 

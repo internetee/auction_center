@@ -17,10 +17,6 @@ module EisBilling
     private
 
     def respond_with(response)
-      p '------- body'
-      p response.body
-      p '-----------'
-      
       JSON.parse response.body
     end
   end

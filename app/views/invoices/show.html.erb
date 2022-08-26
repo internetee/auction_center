@@ -103,18 +103,8 @@
 
             <% if @invoice.payable? %>
                 <div>
-                    <%= form_with url: oneoff_invoice_path(uuid: @invoice.uuid) do |f| %>
-                        <%= f.submit 'Test pay', class: 'ui button primary' %>
-                    <% end %>
-                </div>
-
-                <div>
-                    <% if @invoice.payment_link.present? %>
-                        <%= link_to @invoice.payment_link, target: '_blank', style: "margin-top: 20px;" do %>
-                            <%= image_tag '/images/payment_methods/everypay.png', style: 'max-width: 150px !important;' %>
-                        <% end %>
-                    <% else  %>
-                        No everypay link
+                    <%= button_to oneoff_invoice_path(uuid: @invoice.uuid), style: 'padding: 5px 10px; cursor: pointer;' do %>
+                        <%= image_tag '/images/payment_methods/everypay.png', style: 'max-width: 150px !important;' %>
                     <% end %>
                 </div>
             <% end %>

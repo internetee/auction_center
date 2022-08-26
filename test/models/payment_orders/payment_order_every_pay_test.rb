@@ -28,6 +28,7 @@ class PaymentOrderEveryPayTest < ActiveSupport::TestCase
       cc_last_four_digits: '0487',
       cc_month: '10',
       cc_year: '2018',
+      transaction_time: (Time.zone.now - 1.minute).to_s,
       cc_holder_name: 'John Doe',
       hmac_fields: 'account_id,amount,api_username,cc_holder_name,cc_last_four_digits,cc_month,cc_type,cc_year,hmac_fields,nonce,order_reference,payment_reference,payment_state,timestamp,transaction_result',
       hmac: 'efac1c732835668cd86023a7abc140506c692f0d',
@@ -102,13 +103,11 @@ class PaymentOrderEveryPayTest < ActiveSupport::TestCase
     @every_pay.mark_invoice_as_paid
 
     assert(@every_pay.invoices.all?(&:paid?))
-    assert(@every_pay.valid_response?)
   end
 
   def test_mark_invoice_as_paid_does_not_work_when_response_is_invalid
     @fake_every_pay.mark_invoice_as_paid
 
     assert_not(@fake_every_pay.invoices.all?(&:paid?))
-    assert_not(@fake_every_pay.valid_response?)
   end
 end
