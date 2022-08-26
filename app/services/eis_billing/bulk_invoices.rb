@@ -59,7 +59,7 @@ module EisBilling
 
     def prepare_data(parsed_data:)
       data = {}
-      generated_number = EisBilling::GetInvoiceNumber.take_it['invoice_number']
+      generated_number = EisBilling::GetInvoiceNumber.call['invoice_number']
 
       data[:custom_field1] = parsed_data[:invoice_description]
       data[:transaction_amount] = parsed_data[:invoices_total_sum]

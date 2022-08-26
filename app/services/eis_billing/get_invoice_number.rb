@@ -2,7 +2,7 @@ module EisBilling
   class GetInvoiceNumber
     include EisBilling::Request
 
-    def self.take_it
+    def self.call
       fetcher = new
       fetcher.send_request
     end
