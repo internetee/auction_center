@@ -163,13 +163,13 @@ class User < ApplicationRecord
     uid = omniauth_hash['uid']
     provider = omniauth_hash['provider']
 
-    user = User.find_or_initialize_by(identity_code: uid[2..-1])
+    user = User.find_or_initialize_by(identity_code: uid[2..])
     user.provider = provider
     user.uid = uid
     user.given_names = omniauth_hash.dig('info', 'first_name')
     user.surname = omniauth_hash.dig('info', 'last_name')
     user.country_code = uid.slice(0..1)
-    user.save!
+    user.save
 
     user
   end

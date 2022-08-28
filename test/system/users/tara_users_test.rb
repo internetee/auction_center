@@ -165,7 +165,10 @@ class TaraUsersTest < ApplicationSystemTestCase
 
     fill_in('user[email]', with: @user.email)
     fill_in('user[password]', with: password)
-    find('#password-sign-in').click
+
+    within('#password-sign-in') do
+      click_link_or_button('Sign in')
+    end
 
     assert(page.has_css?('div.notice', text: 'Signed in successfully.'))
   end
