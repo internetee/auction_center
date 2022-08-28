@@ -214,6 +214,9 @@ class EditUserTest < ApplicationSystemTestCase
 
   def test_password_user_can_add_identity_code
     visit edit_user_path(@user.uuid)
+
+    @user.update!(identity_code: nil)
+
     fill_in('user[identity_code]', with: '51007050118')
     fill_in('user[current_password]', with: 'password123')
     click_link_or_button('Update')
