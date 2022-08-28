@@ -200,29 +200,48 @@ class EditUserTest < ApplicationSystemTestCase
     assert checkbox.checked?
   end
 
-  def test_eid_user_can_create_password
-    eid_user = users(:signed_in_with_omniauth)
-    sign_in(eid_user)
-
-    visit edit_user_path(eid_user.uuid)
-    fill_in('user[password]', with: 'password123')
-    fill_in('user[password_confirmation]', with: 'password123')
-    click_link_or_button('Update')
-
-    assert(page.has_css?('div.notice', text: 'Updated successfully.'))
-  end
-
-  def test_password_user_can_add_identity_code
+  def test_password_user_can_login_with_tara
+    @user.update!(identity_code: nil)
     visit edit_user_path(@user.uuid)
 
-    @user.update!(identity_code: nil)
-
-    fill_in('user[identity_code]', with: '51007050118')
+    fill_in('user[identity_code]', with: '51007050120')
     fill_in('user[current_password]', with: 'password123')
     click_link_or_button('Update')
 
     @user.reload
 
-    assert_equal @user.identity_code, '51007050118'
+    assert_equal @user.identity_code, '51007050120'
+
+    sign_out(@user)
+
+    omniauth_hash = {
+      'provider' => 'tara',
+      'uid' => 'EE51007050120',
+      'info' => {
+        'first_name' => @user.given_names,
+        'last_name' => @user.surname,
+        'name' => 'EE51007050120',
+      },
+    }
+
+    OmniAuth.config.test_mode = true
+    OmniAuth.config.mock_auth[:tara] = OmniAuth::AuthHash.new(omniauth_hash)
+
+    visit root_path
+    click_link('Sign in')
+
+    within('#tara-sign-in') do
+      click_link('Sign in')
+    end
+
+    @user.reload
+
+    assert_text('Signed in successfully')
+    assert_equal @user.provider, 'tara'
+    assert_equal @user.uid, 'EE51007050120'
+
+    OmniAuth.config.test_mode = false
+    OmniAuth.config.mock_auth['tara'] = nil
+    clear_email_deliveries
   end
 end

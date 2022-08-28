@@ -12,11 +12,13 @@
                                email: user.unconfirmed_email) %></div>
                 <% end %>
             </div>
-            <div class="field">
-                <%= f.label :mobile_phone, t('users.mobile_phone') %>
-                <%= f.telephone_field :mobile_phone, autofocus: true, autocomplete: "off",
-                    placeholder: "+372xxxxxxxx" %>
-            </div>
+            <% unless user.signed_in_with_identity_document? %>
+              <div class="field">
+                  <%= f.label :mobile_phone, t('users.mobile_phone') %>
+                  <%= f.telephone_field :mobile_phone, autofocus: true, autocomplete: "off",
+                      placeholder: "+372xxxxxxxx" %>
+              </div>
+            <% end %>
             <div class="field">
               <%= f.label :given_names, t('users.given_names') %>
               <% if user.signed_in_with_identity_document? %>

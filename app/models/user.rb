@@ -163,14 +163,15 @@ class User < ApplicationRecord
     uid = omniauth_hash['uid']
     provider = omniauth_hash['provider']
 
-    User.find_or_initialize_by(provider: provider, uid: uid) do |user|
-      user.given_names = omniauth_hash.dig('info', 'first_name')
-      user.surname = omniauth_hash.dig('info', 'last_name')
-      if provider == TARA_PROVIDER
-        user.country_code = uid.slice(0..1)
-        user.identity_code = uid.slice(2..-1)
-      end
-    end
+    user = User.find_or_initialize_by(identity_code: uid[2..-1])
+    user.provider = provider
+    user.uid = uid
+    user.given_names = omniauth_hash.dig('info', 'first_name')
+    user.surname = omniauth_hash.dig('info', 'last_name')
+    user.country_code = uid.slice(0..1)
+    user.save!
+
+    user
   end
 
   def mobile_phone_must_not_be_already_confirmed

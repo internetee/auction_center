@@ -151,4 +151,22 @@ class TaraUsersTest < ApplicationSystemTestCase
 
     assert_text 'Confirmation link was sent to new email address. Please confirm the address for the change to take an effect!'
   end
+
+  def test_existing_user_can_create_password
+    sign_in(@user)
+
+    visit edit_user_path(@user.uuid)
+    password = 'password123'
+    fill_in('user[password]', with: password)
+    fill_in('user[password_confirmation]', with: password)
+    click_link_or_button('Update')
+
+    assert(new_user_session_path, page.current_path)
+
+    fill_in('user[email]', with: @user.email)
+    fill_in('user[password]', with: password)
+    find('#password-sign-in').click
+
+    assert(page.has_css?('div.notice', text: 'Signed in successfully.'))
+  end
 end
