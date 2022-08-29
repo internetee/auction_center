@@ -1,3 +1,6 @@
+29.08.2022
+* Option to add pw and ident code to all user accounts [#467](https://github.com/internetee/auction_center/issues/467)
+
 26.05.2022
 * New whislist auto-bid price feature [#893](https://github.com/internetee/auction_center/issues/893)
 
