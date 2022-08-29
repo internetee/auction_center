@@ -18,12 +18,7 @@
                 </ul>
             </div>
         <% end %>
-
-        <% if @user.signed_in_with_identity_document? %>
-            <%= render 'tara_form', user: @user, url: user_path(@user.uuid) %>
-        <% else %>
-            <%= render 'form', user: @user, url: user_path(@user.uuid) %>
-        <% end %>
+        <%= render 'form', user: @user, url: user_path(@user.uuid) %>
     </div>
 </div>
 
