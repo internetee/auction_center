@@ -103,9 +103,7 @@
 
             <% if @invoice.payable? %>
                 <div>
-                    <%= button_to oneoff_invoice_path(uuid: @invoice.uuid), style: 'padding: 5px 10px; cursor: pointer;' do %>
-                        <%= image_tag '/images/payment_methods/everypay.png', style: 'max-width: 150px !important;' %>
-                    <% end %>
+                    <%= button_to t('invoices.show.pay'), oneoff_invoice_path(uuid: @invoice.uuid), class: 'ui button primary' %>
                 </div>
             <% end %>
             

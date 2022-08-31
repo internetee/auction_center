@@ -53,13 +53,13 @@ class InvoicesController < ApplicationController
   def pay_all_bills
     issued_invoices = invoices_list_by_status(Invoice.statuses[:issued])
     response = EisBilling::BulkInvoices.call(issued_invoices)
-    @everypay_link = response['everypay_link']
+    redirect_to response['everypay_link']
 
-    respond_to do |format|
-      format.json { render status: :ok, json: @everypay_link }
-      format.html { redirect_to :back, notice: 'Run was successfully created.' }
-      format.js
-    end
+    # respond_to do |format|
+    #   format.json { render status: :ok, json: @everypay_link }
+    #   format.html { redirect_to :back, notice: 'Run was successfully created.' }
+    #   format.js
+    # end
   end
 
   def oneoff
