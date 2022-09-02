@@ -10,23 +10,6 @@ class DirectoInvoiceForwardJobTest < ActiveJob::TestCase
     @invoice = invoices(:payable)
   end
 
-  def test_delivered_invoices_are_marked_as_synced_with_deleted_user
-    @invoice.mark_as_paid_at(Time.now)
-    @invoice.update!(number: 1337)
-
-    user = @invoice.user
-    user.destroy!
-
-    xml = '<?xml version="1.0" encoding="UTF-8"?><results><Result Type="0" Desc="OK" docid="1337" doctype="ARVE" submit="Invoices"/></results>'
-    stub_request(:post, @directo_api_url.retrieve)
-      .to_return(body: xml, status: 200, headers: {})
-
-    DirectoInvoiceForwardJob.perform_now
-
-    @invoice.reload
-    assert @invoice.in_directo
-  end
-
   def test_collection_of_empty_paid_invoices_returns_nil
     assert Invoice.where(status: 'paid').empty?
 
