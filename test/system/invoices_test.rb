@@ -95,40 +95,4 @@ class InvoicesTest < ApplicationSystemTestCase
       assert_text('10.00')
     end
   end
-
-  def test_a_user_can_pay_invoice_via_every_pay
-    visit invoice_path(@invoice.uuid)
-
-    assert(page.has_css?('form#every_pay'))
-
-    within('form#every_pay') do
-      click_link_or_button('Submit')
-    end
-
-    assert(page.has_text?('You are being redirected to the payment gateway'))
-  end
-
-  def test_a_user_can_pay_for_cancelled_invoice_with_valid_ban
-    @invoice.update!(status: Invoice.statuses[:cancelled])
-    AutomaticBan.new(invoice: @invoice, user: @user, domain_name: 'some-domain.test').create
-
-    visit invoice_path(@invoice.uuid)
-    assert(page.has_css?('form#every_pay'))
-  end
-
-  def test_a_user_cannot_pay_for_cancelled_invoice_with_expired_ban
-    @invoice.update!(status: Invoice.statuses[:cancelled])
-    AutomaticBan.new(invoice: @invoice, user: @user, domain_name: 'some-domain.test').create
-    Ban.last.update(valid_from: Time.zone.now - 10.days,
-                    valid_until: Time.zone.now - 1.day)
-
-    visit invoice_path(@invoice.uuid)
-    assert_not(page.has_css?('form#every_pay'))
-  end
-
-  def test_a_user_cannot_pay_for_paid_invoice
-    @invoice.update!(status: Invoice.statuses[:paid], paid_at: Time.zone.now)
-    visit invoice_path(@invoice.uuid)
-    assert_not(page.has_css?('form#every_pay'))
-  end
 end

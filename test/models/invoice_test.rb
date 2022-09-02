@@ -11,6 +11,19 @@ class InvoiceTest < ActiveSupport::TestCase
     @company_billing_profile = billing_profiles(:company)
     @payable_invoice = invoices(:payable)
     @orphaned_invoice = invoices(:orphaned)
+
+    invoice_n = Invoice.order(number: :desc).last.number
+    stub_request(:post, "http://eis_billing_system:3000/api/v1/invoice_generator/invoice_number_generator")
+      .to_return(status: 200, body: "{\"invoice_number\":\"#{invoice_n + 3}\"}", headers: {})
+
+    stub_request(:post, "http://eis_billing_system:3000/api/v1/invoice_generator/invoice_generator")
+      .to_return(status: 200, body: "{\"everypay_link\":\"http://link.test\"}", headers: {})
+
+    stub_request(:put, "http://registry:3000/eis_billing/e_invoice_response").
+      to_return(status: 200, body: "{\"invoice_number\":\"#{invoice_n + 3}\"}, {\"date\":\"#{Time.zone.now-10.minutes}\"}", headers: {})
+
+    stub_request(:post, "http://eis_billing_system:3000/api/v1/e_invoice/e_invoice").
+      to_return(status: 200, body: "", headers: {})
   end
 
   def teardown
@@ -84,17 +97,24 @@ class InvoiceTest < ActiveSupport::TestCase
   end
 
   def test_user_id_must_be_present_on_creation
-    invoice = prefill_invoice
-    invoice.user = nil
-    assert_not(invoice.valid?(:create))
+    mock = Minitest::Mock.new
+    def mock.authorized; true; end
 
-    invoice.user = @user
-    assert(invoice.valid?(:create))
+    clazz = EisBilling::BaseController.new
 
-    invoice.save
-    invoice.user = nil
+    clazz.stub :authorized, mock do
+      invoice = prefill_invoice
+      invoice.user = nil
+      assert_not(invoice.valid?(:create))
 
-    assert(invoice.valid?)
+      invoice.user = @user
+      assert(invoice.valid?(:create))
+
+      invoice.save
+      invoice.user = nil
+
+      assert(invoice.valid?)
+    end
   end
 
   def test_default_status_is_issued
