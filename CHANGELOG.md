@@ -1,3 +1,6 @@
+02.09.2022
+* Added integration to billing system [#878](https://github.com/internetee/auction_center/pull/878)
+
 29.08.2022
 * Option to add pw and ident code to all user accounts [#467](https://github.com/internetee/auction_center/issues/467)
 
