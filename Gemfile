@@ -13,6 +13,7 @@ gem 'delayed_job'
 gem 'delayed_job_active_record'
 gem 'devise'
 gem 'directo', github: 'internetee/directo', branch: 'master'
+gem 'faraday'
 gem 'jbuilder', '~> 2.11'
 gem 'kaminari'
 gem 'mimemagic', '~> 0.4.3'
@@ -34,6 +35,9 @@ gem 'sprockets', '~> 4.0'
 gem 'turbolinks', '~> 5'
 gem 'webpacker', '~> 6.0.0.rc.5'
 
+# token
+gem 'jwt'
+
 group :development, :test do
   gem 'bullet'
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
@@ -48,6 +52,7 @@ end
 group :test do
   gem 'capybara', '>= 2.15'
   gem 'simplecov', '~> 0.10', '< 0.18', require: false
+  gem 'spy'
   gem 'webdrivers'
   gem 'webmock'
 end

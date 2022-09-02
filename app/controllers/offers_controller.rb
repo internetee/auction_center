@@ -80,10 +80,13 @@ class OffersController < ApplicationController
   private
 
   def set_captcha_required
+    return if Rails.env.development?
+
     @captcha_required = current_user.requires_captcha?
   end
 
   def create_predicate
+    # captcha_predicate = true
     captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
     captcha_predicate && @offer.save && @offer.reload
   end

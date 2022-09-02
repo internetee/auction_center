@@ -25,6 +25,11 @@ Rails.application.routes.draw do
   match '/profile/toggle_subscription', via: :get, to: 'users#toggle_subscription',
         as: :user_toggle_sub
 
+  namespace :eis_billing, defaults: { format: 'json' } do
+    put '/payment_status', to: 'payment_status#update', as: 'payment_status'
+    put '/directo_response', to: 'directo_response#update', as: 'directo_response'
+  end
+
   namespace :admin, constraints: Constraints::Administrator.new do
     resources :auctions, except: disallowed_auction_actions, concerns: %i[auditable searchable]
 
@@ -62,16 +67,22 @@ Rails.application.routes.draw do
   resources :billing_profiles, param: :uuid
   match '/status', via: :get, to: 'health_checks#index'
 
+
   resources :invoices, only: %i[show edit update index], param: :uuid do
     member do
       get 'download'
+      post 'oneoff'
+    end
+
+    collection do
+      post 'invoices/pay_all_bills', to: 'invoices#pay_all_bills', as: 'pay_all_bills'
     end
 
     resources :payment_orders, only: %i[new show create], shallow: true, param: :uuid do
       member do
-        get 'return'
-        put 'return'
-        post 'return'
+        # get 'return'
+        # put 'return'
+        # post 'return'
 
         post 'callback'
       end

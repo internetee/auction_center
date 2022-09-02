@@ -8,7 +8,10 @@ ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'
 require 'rails/test_help'
 require 'minitest/mock'
+require 'capybara/rails'
+require 'capybara/minitest'
 require 'webmock/minitest'
+require 'spy/integration'
 
 class ActiveSupport::TestCase
   WebMock.allow_net_connect!

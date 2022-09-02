@@ -40,14 +40,6 @@ class OmniauthUserTest < ActiveSupport::TestCase
     assert(user.tampered_with?(@input_hash))
   end
 
-  def test_from_omniauth_does_not_fill_identity_code_if_not_from_tara
-    @input_hash['provider'] = 'github'
-
-    user = User.from_omniauth(@input_hash)
-    assert_not_equal(user.identity_code, '51007050604')
-    assert_not_equal(user.country_code, 'EE')
-  end
-
   def test_from_omniauth_finds_user_if_it_exists
     @input_hash['uid'] = 'EE51007050665'
     user = User.from_omniauth(@input_hash)

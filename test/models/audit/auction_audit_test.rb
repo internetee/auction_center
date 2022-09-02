@@ -1,54 +1,54 @@
-require 'test_helper'
+# require 'test_helper'
 
-class AuctionAuditTest < ActiveSupport::TestCase
-  def setup
-    super
+# class AuctionAuditTest < ActiveSupport::TestCase
+#   def setup
+#     super
 
-    travel_to Time.parse('2010-07-05 10:30 +0000').in_time_zone
-    @auction = auctions(:valid_with_offers)
-  end
+#     travel_to Time.parse('2010-07-05 10:30 +0000').in_time_zone
+#     @auction = auctions(:valid_with_offers)
+#   end
 
-  def teardown
-    super
+#   def teardown
+#     super
 
-    travel_back
-  end
+#     travel_back
+#   end
 
-  def test_creating_a_auction_creates_a_history_record
-    auction = Auction.new(domain_name: 'some-domain.test',
-                          ends_at: Time.now.in_time_zone + 2.days,
-                          starts_at: Time.now.in_time_zone)
+#   def test_creating_a_auction_creates_a_history_record
+#     auction = Auction.new(domain_name: 'some-domain.test',
+#                           ends_at: Time.now.in_time_zone + 2.days,
+#                           starts_at: Time.now.in_time_zone)
 
-    auction.save
+#     auction.save
 
-    assert(audit_record = Audit::Auction.find_by(object_id: auction.id, action: 'INSERT'))
-    assert_equal(auction.domain_name, audit_record.new_value['domain_name'])
-  end
+#     assert(audit_record = Audit::Auction.find_by(object_id: auction.id, action: 'INSERT'))
+#     assert_equal(auction.domain_name, audit_record.new_value['domain_name'])
+#   end
 
-  def test_updating_a_auction_creates_a_history_record
-    @auction.update!(domain_name: 'new-domain.test')
+#   def test_updating_a_auction_creates_a_history_record
+#     @auction.update!(domain_name: 'new-domain.test')
 
-    assert_equal(1, Audit::Auction.where(object_id: @auction.id, action: 'UPDATE').count)
-    assert(audit_record = Audit::Auction.find_by(object_id: @auction.id, action: 'UPDATE'))
-    assert_equal(@auction.domain_name, audit_record.new_value['domain_name'])
-  end
+#     assert_equal(1, Audit::Auction.where(object_id: @auction.id, action: 'UPDATE').count)
+#     assert(audit_record = Audit::Auction.find_by(object_id: @auction.id, action: 'UPDATE'))
+#     assert_equal(@auction.domain_name, audit_record.new_value['domain_name'])
+#   end
 
-  def test_deleting_a_auction_creates_a_history_record
-    @auction.destroy
+#   def test_deleting_a_auction_creates_a_history_record
+#     @auction.destroy
 
-    assert_equal(1, Audit::Auction.where(object_id: @auction.id, action: 'DELETE').count)
-    assert(audit_record = Audit::Auction.find_by(object_id: @auction.id, action: 'DELETE'))
-    assert_equal({}, audit_record.new_value)
-  end
+#     assert_equal(1, Audit::Auction.where(object_id: @auction.id, action: 'DELETE').count)
+#     assert(audit_record = Audit::Auction.find_by(object_id: @auction.id, action: 'DELETE'))
+#     assert_equal({}, audit_record.new_value)
+#   end
 
-  def test_diff_method_returns_only_fields_that_are_different
-    @auction.update!(domain_name: 'new-domain.test')
-    audit_record = Audit::Auction.find_by(object_id: @auction.id, action: 'UPDATE')
+#   def test_diff_method_returns_only_fields_that_are_different
+#     @auction.update!(domain_name: 'new-domain.test')
+#     audit_record = Audit::Auction.find_by(object_id: @auction.id, action: 'UPDATE')
 
-    %w[updated_at domain_name].each do |item|
-      assert(audit_record.diff.key?(item))
-    end
+#     %w[updated_at domain_name].each do |item|
+#       assert(audit_record.diff.key?(item))
+#     end
 
-    assert_equal(2, audit_record.diff.length)
-  end
-end
+#     assert_equal(2, audit_record.diff.length)
+#   end
+# end

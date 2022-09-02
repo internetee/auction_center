@@ -28,6 +28,8 @@ class Invoice < ApplicationRecord
   validate :user_id_must_be_the_same_as_on_billing_profile_or_nil
   before_update :update_billing_address
 
+  before_create :set_invoice_number
+
   scope :overdue, -> { where('due_date < ? AND status = ?', Time.zone.today, statuses[:issued]) }
 
   scope :pending_payment_reminder,
@@ -43,6 +45,27 @@ class Invoice < ApplicationRecord
     raise(Errors::ResultNotSold, result_id) unless result.awaiting_payment?
 
     InvoiceCreator.new(result_id).call
+  end
+
+  def billing_restrictions_issue
+    errors.add(:base, I18n.t('cannot get access'))
+    logger.error('PROBLEM WITH TOKEN')
+    throw(:abort)
+  end
+
+  def billing_out_of_range_issue
+    errors.add(:base, I18n.t('failed_to_generate_invoice_invoice_number_limit_reached'))
+    logger.error('INVOICE NUMBER LIMIT REACHED, COULD NOT GENERATE INVOICE')
+    throw(:abort)
+  end
+
+  def set_invoice_number
+    result = EisBilling::GetInvoiceNumber.call
+
+    billing_restrictions_issue if result['code'] == '403'
+    billing_out_of_range_issue if result['error'] == 'out of range'
+
+    self.number = result['invoice_number'].to_i
   end
 
   def items

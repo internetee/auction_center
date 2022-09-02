@@ -101,15 +101,16 @@ class UsersController < ApplicationController
     params.require(:user)
           .permit(:email, :password, :password_confirmation, :country_code,
                   :given_names, :surname, :mobile_phone, :accepts_terms_and_conditions,
-                  :locale, :daily_summary)
+                  :locale, :daily_summary, :identity_code)
   end
 
   def params_for_update
     update_params = params.require(:user)
                           .permit(:email, :password, :password_confirmation, :country_code,
-                                  :given_names, :surname, :mobile_phone,
+                                  :identity_code, :given_names, :surname, :mobile_phone,
                                   :accepts_terms_and_conditions, :daily_summary)
-    update_params.reject! { |_k, v| v.empty? }
+
+    update_params.reject! { |k, v| v.empty? || (k == 'identity_code' && @user.identity_code.present?) }
     merge_updated_by(update_params)
   end
 

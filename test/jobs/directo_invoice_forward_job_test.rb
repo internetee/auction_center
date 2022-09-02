@@ -10,21 +10,6 @@ class DirectoInvoiceForwardJobTest < ActiveJob::TestCase
     @invoice = invoices(:payable)
   end
 
-  def test_delivered_invoices_are_marked_as_synced
-    @invoice.mark_as_paid_at(Time.now)
-    @invoice.update!(number: 1337)
-
-    xml = '<?xml version="1.0" encoding="UTF-8"?><results><Result Type="0" Desc="OK" ' \
-            'docid="1337" doctype="ARVE" submit="Invoices"/></results>'
-    stub_request(:post, @directo_api_url.retrieve)
-      .to_return(body: xml, status: 200, headers: {})
-
-    DirectoInvoiceForwardJob.perform_now
-
-    @invoice.reload
-    assert @invoice.in_directo
-  end
-
   def test_delivered_invoices_are_marked_as_synced_with_deleted_user
     @invoice.mark_as_paid_at(Time.now)
     @invoice.update!(number: 1337)
@@ -42,18 +27,25 @@ class DirectoInvoiceForwardJobTest < ActiveJob::TestCase
     assert @invoice.in_directo
   end
 
-  def test_failed_invoices_are_not_marked_as_synced
-    @invoice.mark_as_paid_at(Time.now)
-    @invoice.update!(number: 1337)
+  def test_collection_of_empty_paid_invoices_returns_nil
+    assert Invoice.where(status: 'paid').empty?
 
-    xml = '<?xml version="1.0" encoding="UTF-8"?><results><Result Type="1" Desc="Failed" docid="1337" doctype="ARVE" submit="Invoices"/></results>'
-    stub_request(:post, @directo_api_url.retrieve)
-      .to_return(body: xml, status: 200, headers: {})
+    assert_nil DirectoInvoiceForwardJob.perform_now
+  end
 
-    DirectoInvoiceForwardJob.perform_now
-
+  def test_collection_of_paid_invoice_returns_true
+    @invoice.mark_as_paid_at(Time.zone.now)
     @invoice.reload
-    assert_not @invoice.in_directo
+
+    assert DirectoInvoiceForwardJob.perform_now
+  end
+
+  def test_job_cannot_contain_paid_invoices_what_have_been_in_directo
+    @invoice.mark_as_paid_at(Time.zone.now)
+    @invoice.update!(in_directo: true)
+    @invoice.reload
+
+    assert_nil DirectoInvoiceForwardJob.perform_now
   end
 
   def test_job_runnability_is_determined_by_setting_value
