@@ -13,6 +13,6 @@ RUN gem install bundler && bundle config set without 'development test' && bundl
 COPY package.json yarn.lock ./
 RUN yarn install --check-files
 COPY . .
-RUN bundle exec rails assets:precompile
+RUN rails assets:clobber assets:precompile
 
 EXPOSE 3000
