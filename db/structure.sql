@@ -886,10 +886,6 @@ CREATE TABLE public.auctions (
     min_bids_step numeric,
     slipping_end integer,
     initial_ends_at timestamp without time zone,
-<<<<<<< HEAD
-
-=======
->>>>>>> added new column for initials ends_at datetime and added possobility to add value starts_at and ends_at for auctions which comes to the seconds round
     CONSTRAINT starts_at_earlier_than_ends_at CHECK ((starts_at < ends_at))
 );
 
@@ -1205,7 +1201,7 @@ CREATE TABLE public.invoices (
     cents integer NOT NULL,
     paid_at timestamp without time zone,
     status public.invoice_status DEFAULT 'issued'::public.invoice_status,
-    number integer NOT NULL,
+    number_old integer NOT NULL,
     uuid uuid DEFAULT public.gen_random_uuid(),
     vat_rate numeric,
     paid_amount numeric,
@@ -1221,6 +1217,8 @@ CREATE TABLE public.invoices (
     postal_code character varying,
     alpha_two_country_code character varying,
     in_directo boolean DEFAULT false NOT NULL,
+    payment_link character varying,
+    number integer,
     CONSTRAINT invoices_cents_are_positive CHECK ((cents > 0)),
     CONSTRAINT invoices_due_date_is_not_before_issue_date CHECK ((issue_date <= due_date)),
     CONSTRAINT paid_at_is_filled_when_status_is_paid CHECK ((NOT ((status = 'paid'::public.invoice_status) AND (paid_at IS NULL)))),
@@ -1263,7 +1261,7 @@ CREATE SEQUENCE public.invoices_number_seq
 -- Name: invoices_number_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.invoices_number_seq OWNED BY public.invoices.number;
+ALTER SEQUENCE public.invoices_number_seq OWNED BY public.invoices.number_old;
 
 
 --
@@ -1713,10 +1711,10 @@ ALTER TABLE ONLY public.invoices ALTER COLUMN id SET DEFAULT nextval('public.inv
 
 
 --
--- Name: invoices number; Type: DEFAULT; Schema: public; Owner: -
+-- Name: invoices number_old; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.invoices ALTER COLUMN number SET DEFAULT nextval('public.invoices_number_seq'::regclass);
+ALTER TABLE ONLY public.invoices ALTER COLUMN number_old SET DEFAULT nextval('public.invoices_number_seq'::regclass);
 
 
 --
@@ -2892,6 +2890,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200205092158'),
 ('20200206090106'),
 ('20200212081434'),
+('20220214124251'),
+('20220214130432'),
+('20220419064621'),
 ('20220419091123'),
 ('20220422094307'),
 ('20220422094556'),
@@ -2902,5 +2903,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220527064738'),
 ('20220601052131'),
 ('20220606110658'),
-('20220617123124'),
-('20220419064621');
+('20220617123124');
+
+
