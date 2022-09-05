@@ -1,6 +1,6 @@
 // app/javascript/controllers/debounce_controller.js
 import { Controller } from "@hotwired/stimulus"
-import { log } from "qunit";
+// import { log } from "qunit";
 
 export default class extends Controller {
 
