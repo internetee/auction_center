@@ -1,3 +1,6 @@
+05.09.2022
+* Fixed accounting export issues in case of deleted account [#915](https://github.com/internetee/auction_center/issues/915)
+
 02.09.2022
 * Added integration to billing system [#878](https://github.com/internetee/auction_center/pull/878)
 
