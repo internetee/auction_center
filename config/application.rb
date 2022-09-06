@@ -16,6 +16,7 @@ module AuctionCenter
     config.active_model.i18n_customize_full_message = true
 
     config.autoload_paths += Dir[Rails.root.join('app', 'presenters', '**/')]
+    config.autoload_paths += Dir[Rails.root.join('app', 'broadcasts', '**/')]
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers

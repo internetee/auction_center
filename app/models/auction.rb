@@ -17,11 +17,14 @@ class Auction < ApplicationRecord
 
   enum platform: %i[blind english]
 
-  after_update_commit :broadcast_add_new_auction, unless: :skip_broadcast
-  after_update_commit :broadcast_update_auction_count
-  after_update_commit :broadcast_update_min_bid
-  after_update_commit :broadcast_update_highest_bid, unless: :skip_broadcast
-  after_update_commit :broadcast_update_timer, unless: :skip_broadcast
+  # after_update_commit :broadcast_add_new_auction, unless: :skip_broadcast
+  # after_update_commit :broadcast_update_auction_count
+  # after_update_commit :broadcast_update_min_bid
+  # after_update_commit :broadcast_update_highest_bid, unless: :skip_broadcast
+  # after_update_commit :broadcast_update_timer, unless: :skip_broadcast
+
+  after_update_commit :update_list_broadcast, unless: :skip_broadcast
+  after_update_commit :update_offer_broadcast, unless: :skip_broadcast
 
   scope :active, -> { where('starts_at <= ? AND ends_at >= ?', Time.now.utc, Time.now.utc) }
   scope :without_result, lambda {
@@ -74,39 +77,47 @@ class Auction < ApplicationRecord
   delegate :count, to: :offers, prefix: true
   delegate :size, to: :offers, prefix: true
 
-  def broadcast_add_new_auction
-    broadcast_prepend_to('auctions',
-                         target: 'bids',
-                         partial: 'auctions/auction',
-                         locals: { auction: Auction.with_user_offers(nil).find_by(uuid: uuid),
-                                   current_user: nil })
+  def update_list_broadcast
+    Auctions::UpdateListBroadcastService.call({auction: self})
   end
 
-  def broadcast_update_auction_count
-    broadcast_replace_to('auctions',
-                         target: 'auction_count',
-                         html: "<strong>#{Auction.with_user_offers(nil).active.size}</strong>".html_safe)
+  def update_offer_broadcast
+    Auctions::UpdateOfferBroadcastService.call({auction: self})
   end
 
-  def broadcast_update_min_bid
-    broadcast_update_to("auctions_offer_#{self.id}",
-                        target: 'mini',
-                        html: "<h5>Minimum bid is #{min_bids_step}</h5>".html_safe)
-  end
+  # def broadcast_add_new_auction
+  #   broadcast_prepend_to('auctions',
+  #                        target: 'bids',
+  #                        partial: 'auctions/auction',
+  #                        locals: { auction: Auction.with_user_offers(nil).find_by(uuid: uuid),
+  #                                  current_user: nil })
+  # end
 
-  def broadcast_update_highest_bid
-    broadcast_update_to("auctions_offer_#{self.id}",
-                        target: "current_#{self.id}_price",
-                        partial: 'english_offers/current_price',
-                        locals: { auction: self })
-  end
+  # def broadcast_update_auction_count
+  #   broadcast_replace_to('auctions',
+  #                        target: 'auction_count',
+  #                        html: "<strong>#{Auction.with_user_offers(nil).active.size}</strong>".html_safe)
+  # end
 
-  def broadcast_update_timer
-    broadcast_update_to("auctions_offer_#{self.id}",
-                        target: 'auction_timer',
-                        partial: 'english_offers/timer',
-                        locals: { auction: self })
-  end
+  # def broadcast_update_min_bid
+  #   broadcast_update_to("auctions_offer_#{self.id}",
+  #                       target: 'mini',
+  #                       html: "<h5>Minimum bid is #{min_bids_step}</h5>".html_safe)
+  # end
+
+  # def broadcast_update_highest_bid
+  #   broadcast_update_to("auctions_offer_#{self.id}",
+  #                       target: "current_#{self.id}_price",
+  #                       partial: 'english_offers/current_price',
+  #                       locals: { auction: self })
+  # end
+
+  # def broadcast_update_timer
+  #   broadcast_update_to("auctions_offer_#{self.id}",
+  #                       target: 'auction_timer',
+  #                       partial: 'english_offers/timer',
+  #                       locals: { auction: self })
+  # end
 
   def self.search(params = {})
     sort_column = params[:sort].presence_in(%w[domain_name ends_at platform users_price]) || 'domain_name'

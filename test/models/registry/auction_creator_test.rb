@@ -214,7 +214,7 @@ class RegistryAuctionCreatorTest < ActiveSupport::TestCase
   end
 
   def test_initialize_ends_at_and_starts_at_data_based_on_the_previous_round
-    travel_back
+    # travel_back
 
     auction = Auction.find_by(domain_name: 'english_auction.test')
     auction.update(starts_at: '2022-07-11 10:24:00', ends_at: '2022-07-14 10:57:21.599999', initial_ends_at: '2022-07-14 10:45:00')

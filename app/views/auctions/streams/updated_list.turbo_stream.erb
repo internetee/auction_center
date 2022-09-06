@@ -1,0 +1,17 @@
+<%= turbo_stream.prepend "bids",
+                         partial: 'auctions/auction',
+                         locals: { auction: Auction.with_user_offers(nil).find_by(uuid: auction.uuid),
+                                   current_user: nil } %>
+
+<%= turbo_stream.replace "auction_count",
+                         html: "<strong>#{Auction.with_user_offers(nil).active.size}</strong>".html_safe %>
+
+  <%# #   broadcast_prepend_to('auctions',
+  #                        target: 'bids',
+  #                        partial: 'auctions/auction',
+  #                        locals: { auction: Auction.with_user_offers(nil).find_by(uuid: uuid),
+  #                                  current_user: nil })
+
+    #   broadcast_replace_to('auctions',
+  #                        target: 'auction_count',
+  #                        html: "<strong>#{Auction.with_user_offers(nil).active.size}</strong>".html_safe) %>
