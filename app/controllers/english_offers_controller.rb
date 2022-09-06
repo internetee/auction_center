@@ -40,7 +40,7 @@ class EnglishOffersController < ApplicationController
       broadcast_replace_auction_offer(auction)
     else
       flash[:alert] = @offer.errors.full_messages.join('; ')
-      redirect_to request.referrer
+      redirect_to request.referer
     end
   end
 
@@ -64,7 +64,7 @@ class EnglishOffersController < ApplicationController
       broadcast_replace_auction_offer(auction)
     else
       flash[:alert] = @offer.errors.full_messages.join('; ')
-      redirect_to request.referrer
+      redirect_to request.referer
     end
   end
 
@@ -76,7 +76,8 @@ class EnglishOffersController < ApplicationController
                                  partial: 'english_offers/number_form_field',
                                  locals: {
                                    offer_value: auction.min_bids_step,
-                                   offer_disabled: auction.finished? ? true : false }
+                                   offer_disabled: auction.finished? ? true : false
+                                 }
   end
 
   def captcha_check
@@ -84,7 +85,7 @@ class EnglishOffersController < ApplicationController
     return if captcha_predicate
 
     flash[:alert] = t('english_offers.form.captcha_verification')
-    redirect_to request.referrer and return
+    redirect_to request.referer and return
   end
 
   def update_auction_values(auction, message_text)
@@ -146,8 +147,8 @@ class EnglishOffersController < ApplicationController
 
   def update_predicate(auction)
     @offer.update(update_params) &&
-    auction.update_minimum_bid_step(create_params[:price].to_f) &&
-    @offer.reload
+      auction.update_minimum_bid_step(create_params[:price].to_f) &&
+      @offer.reload
   end
 
   def update_params

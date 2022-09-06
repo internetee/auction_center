@@ -1,8 +1,8 @@
 et:
   admin:
-    finished_auctions:
+    auctions:
       index:
-        title: "Finished auctions"
+        title: "Domeenioksjonid"
         new_auction: "Uus oksjon"
         no_price: "NaN"
 

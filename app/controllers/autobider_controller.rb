@@ -17,7 +17,7 @@ class AutobiderController < ApplicationController
       flash[:alert] = I18n.t('something_went_wrong')
     end
 
-    redirect_to request.referrer
+    redirect_to request.referer
   end
 
   def edit
@@ -37,9 +37,9 @@ class AutobiderController < ApplicationController
       auction = Auction.where(domain_name: @autobider.domain_name).order(:created_at).last
       AutobiderService.autobid(auction)
 
-      redirect_to request.referrer, notice: 'Autobider created'
+      redirect_to request.referer, notice: 'Autobider created'
     else
-      redirect_to request.referrer, notice: t(:something_went_wrong)
+      redirect_to request.referer, notice: t(:something_went_wrong)
     end
   end
 
@@ -54,7 +54,7 @@ class AutobiderController < ApplicationController
     return if captcha_predicate
 
     flash[:alert] = t('english_offers.form.captcha_verification')
-    redirect_to request.referrer and return
+    redirect_to request.referer and return
   end
 
   def skip_autobid(auction)
