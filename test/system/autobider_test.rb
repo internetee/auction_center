@@ -2,20 +2,24 @@ require 'application_system_test_case'
 
 class AutobiderTest < ApplicationSystemTestCase
   def setup
+    super
+
     @participant = users(:participant)
     @auction = auctions(:english)
 
     travel_to Time.parse('2010-07-05 10:30 +0000').in_time_zone
     sign_in(@participant)
 
-    @original_wait_time = Capybara.default_max_wait_time
-    Capybara.default_max_wait_time = 10
+    # @original_wait_time = Capybara.default_max_wait_time
+    # Capybara.default_max_wait_time = 10
   end
 
-  def teardown
-    Capybara.default_max_wait_time = @original_wait_time
-    travel_back
-  end
+  # def teardown
+    # super
+
+    # Capybara.default_max_wait_time = @original_wait_time
+    # travel_back
+  # end
 
   def test_should_set_autobider_value_and_update_it
     @auction.offers.destroy_all
