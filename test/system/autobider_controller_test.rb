@@ -1,6 +1,6 @@
 require 'application_system_test_case'
 
-class AutobiderTest < ApplicationSystemTestCase
+class AutobiderControllerTest < ApplicationSystemTestCase
   def setup
     super
 
