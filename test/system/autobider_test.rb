@@ -2,8 +2,6 @@ require 'application_system_test_case'
 
 class AutobiderTest < ApplicationSystemTestCase
   def setup
-    super
-
     @participant = users(:participant)
     @auction = auctions(:english)
 
@@ -15,8 +13,6 @@ class AutobiderTest < ApplicationSystemTestCase
   end
 
   def teardown
-    super
-
     Capybara.default_max_wait_time = @original_wait_time
     travel_back
   end

@@ -19,7 +19,7 @@ class AvilabilityCheckerService
     uri = URI(url)
     http = Net::HTTP.new(uri.host, uri.port)
 
-    http.use_ssl = true unless Rails.env.development?
+    http.use_ssl = true unless Rails.env.development? || Rails.env.test?
     http.verify_mode = OpenSSL::SSL::VERIFY_NONE if Rails.env.development?
 
     response = http.get(url)
