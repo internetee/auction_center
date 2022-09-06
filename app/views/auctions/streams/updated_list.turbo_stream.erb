@@ -6,6 +6,8 @@
 <%= turbo_stream.replace "auction_count",
                          html: "<strong>#{Auction.with_user_offers(nil).active.size}</strong>".html_safe %>
 
+
+
   <%# #   broadcast_prepend_to('auctions',
   #                        target: 'bids',
   #                        partial: 'auctions/auction',

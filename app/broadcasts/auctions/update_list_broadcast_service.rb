@@ -17,7 +17,7 @@ module Auctions
     private
 
     def post_call
-      broadcast_later "auctions",
+      broadcast_later 'auctions',
                       'auctions/streams/updated_list',
                       locals: { auction: auction }
     end
