@@ -54,7 +54,7 @@ module EisBilling
     end
 
     def total_transaction_amount(invoices)
-      invoices.sum { |invoice| invoice.total.to_i }.to_s
+      invoices.sum { |invoice| invoice.total.to_f }.to_s
     end
 
     def prepare_data(parsed_data:)
