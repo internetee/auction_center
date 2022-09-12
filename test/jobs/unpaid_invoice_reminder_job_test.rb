@@ -5,6 +5,7 @@ class UnpaidInvoiceReminderJobTest < ActiveJob::TestCase
     super
 
     @invoice = invoices(:payable)
+
     travel_to(@invoice.due_date - Setting.find_by(code: 'invoice_reminder_in_days').retrieve)
     clear_email_deliveries
   end

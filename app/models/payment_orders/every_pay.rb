@@ -15,7 +15,6 @@ module PaymentOrders
                                     .customization
                                     .dig(:payment_methods, CONFIG_NAMESPACE.to_sym, :url)
 
-
     SUCCESSFUL_PAYMENT = %w[settled authorized].freeze
 
     LANGUAGE_CODE_ET = 'et'.freeze
@@ -56,7 +55,6 @@ module PaymentOrders
     end
 
     private
-
 
     def language
       if user&.locale == LANGUAGE_CODE_ET
