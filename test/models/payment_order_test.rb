@@ -29,14 +29,6 @@ class PaymentOrderTest < ActiveSupport::TestCase
     assert_equal(['PaymentOrders::EveryPay', 'PaymentOrders::SEB'], PaymentOrder::ENABLED_METHODS)
   end
 
-  def test_supported_method_raises_error_on_wrong_superclass
-    assert_raises Errors::ExpectedPaymentOrder do
-      PaymentOrder.supported_method?(Auction)
-    end
-
-    assert_not(PaymentOrder.supported_method?(PaymentOrders::LHV))
-  end
-
   def test_supported_method_returns_true_or_false
     assert(PaymentOrder.supported_method?(PaymentOrders::EveryPay))
   end

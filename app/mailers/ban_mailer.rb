@@ -4,7 +4,7 @@ class BanMailer < ApplicationMailer
     @user = @ban.user
     @domain_name = domain_name
     invoice = @ban.invoice
-    @linkpay_url = invoice.linkpay_url
+    @linkpay_url = invoice.payment_link
 
     I18n.locale = @user.locale
     @past_due_invoices = I18n.locale == :en ? ban_strikes.ordinalize : ban_strikes
