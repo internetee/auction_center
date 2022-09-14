@@ -169,7 +169,7 @@ class User < ApplicationRecord
     user.given_names = omniauth_hash.dig('info', 'first_name')
     user.surname = omniauth_hash.dig('info', 'last_name')
     user.country_code = uid.slice(0..1)
-    user.save
+    user.save if user.valid?
 
     user
   end
