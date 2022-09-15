@@ -1,7 +1,7 @@
 class DirectoInvoiceForwardJob < ApplicationJob
   def perform
     collected_data = []
-    invoices = Invoice.where(status: 'paid', in_directo: false)
+    invoices = Invoice.where(status: 'paid', in_directo: false).where(number: 150005..199999)
     return unless invoices.any?
     
     invoices.each do |i|
