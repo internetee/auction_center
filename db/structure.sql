@@ -2379,6 +2379,13 @@ CREATE INDEX index_invoices_on_billing_profile_id ON public.invoices USING btree
 
 
 --
+-- Name: index_invoices_on_number; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_invoices_on_number ON public.invoices USING btree (number);
+
+
+--
 -- Name: index_invoices_on_paid_with_payment_order_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2818,6 +2825,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220527064738'),
 ('20220601052131'),
 ('20220606110658'),
-('20220617123124');
+('20220617123124'),
+('20220916065732');
 
 
