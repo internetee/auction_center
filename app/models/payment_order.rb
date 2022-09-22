@@ -57,16 +57,16 @@ class PaymentOrder < ApplicationRecord
     type.gsub('PaymentOrders::', '')
   end
 
-  def self.supported_methods
-    enabled = []
+  # def self.supported_methods
+  #   enabled = []
 
-    ENABLED_METHODS.each do |method|
-      class_name = method.constantize
-      raise(Errors::ExpectedPaymentOrder, class_name) unless class_name < PaymentOrder
+  #   ENABLED_METHODS.each do |method|
+  #     class_name = method.constantize
+  #     raise(Errors::ExpectedPaymentOrder, class_name) unless class_name < PaymentOrder
 
-      enabled << class_name
-    end
+  #     enabled << class_name
+  #   end
 
-    enabled
-  end
+  #   enabled
+  # end
 end

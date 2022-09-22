@@ -68,7 +68,6 @@ default: &default
   payment_methods:
     enabled_methods:
       - "PaymentOrders::EveryPay"
-      - "PaymentOrders::SEB"
 
     every_pay:
       url: ''

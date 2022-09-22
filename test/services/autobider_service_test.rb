@@ -177,7 +177,9 @@ class AutobiderServiceTest < ActionDispatch::IntegrationTest
   end
 
   def test_autobidder_should_set_higher_bid
-    # set autobidder to 4 with user1 and 3,99 with user2. current price was 2,99, next min price 3,09. Price was raised to 3,19 for the user1. Correct results is current price of 4 for the U1 as they had set their autobidder value higher
+    # set autobidder to 4 with user1 and 3,99 with user2. current price was 2,99, next min price 3,09. 
+    #Price was raised to 3,19 for the user1. Correct results is current price of 4 for the U1 as they had set their autobidder value higher
+
     Autobider.destroy_all
     @english_auction.offers.destroy_all
     @english_auction.update(min_bids_step: 1.0)

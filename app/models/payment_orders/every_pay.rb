@@ -37,38 +37,10 @@ module PaymentOrders
 
     LANGUAGE_CODE_ET = 'et'.freeze
     LANGUAGE_CODE_EN = 'en'.freeze
-    # TRUSTED_DATA = 'trusted_data'.freeze
-
-    # TEST_PROD_ENV_STATE = AuctionCenter::Application.config
-    #                                                 .customization[:billing_system_integration]
-    #                                                 &.compact
-    #                                                 &.fetch(:test_env, '')
-
-    # Base interface for creating payments.
-    # def form_fields
-    #   base_json = base_params
-    #   base_json[:nonce] = SecureRandom.hex(15)
-    #   hmac_fields = (base_json.keys + ['hmac_fields']).sort.uniq!
-
-    #   base_json[:hmac_fields] = hmac_fields.join(',')
-    #   hmac_string = hmac_fields.map { |key, _v| "#{key}=#{base_json[key]}" }.join('&')
-    #   hmac = OpenSSL::HMAC.hexdigest('sha1', KEY, hmac_string)
-    #   base_json[:hmac] = hmac
-
-    #   base_json
-    # end
 
     def self.config_namespace_name
       CONFIG_NAMESPACE
     end
-
-    # def self.icon
-    #   with_cache do
-    #     AuctionCenter::Application.config
-    #                               .customization
-    #                               .dig(:payment_methods, config_namespace_name.to_sym, :icon)
-    #   end
-    # end
 
     # Where to send the POST request with payment creation.
     def form_url
@@ -94,52 +66,13 @@ module PaymentOrders
       invoice.mark_as_paid_at_with_payment_order(time, self)
     end
 
-    # Check if response is there and if basic security methods are fullfilled.
-    # Skip the check if data was previously requested by us from EveryPay
-    # (response['type'] == TRUSTED_DATA) e.g. we know data was originated from trusted source
-    # def valid_response?
-    #   return false unless response
-    #   return true if response['type'] == TRUSTED_DATA
-
-    #   valid_hmac? && valid_amount? && valid_account?
-    # end
-
-    # def check_linkpay_status
-    #   return if paid?
-
-    #   url = "#{LINKPAY_CHECK_PREFIX}#{response['payment_reference']}?api_username=#{USER}"
-    #   body = basic_auth_get(url: url, username: USER, password: KEY)
-    #   return unless body
-
-    #   self.response = body.merge(type: TRUSTED_DATA, timestamp: Time.zone.now)
-    #   save
-    #   mark_invoice_as_paid if body['payment_state'] == 'settled'
-    # end
-
     # Check if the intermediary reports payment as settled and we can expect money on
     # our accounts
     def settled_payment?
       SUCCESSFUL_PAYMENT.include?(response['payment_state'])
     end
 
-    # def linkpay_url_builder
-    #   total = invoices_total&.format(symbol: nil, thousands_separator: false, decimal_mark: '.')
-    #   create_predicate
-    #   data = linkpay_params(total).to_query
-
-    #   hmac = OpenSSL::HMAC.hexdigest('sha256', KEY, data)
-    #   "#{LINKPAY_PREFIX}?#{data}&hmac=#{hmac}"
-    # end
-
     private
-
-    # def generate_time(system_response)
-    #   time = Time.strptime(system_response['timestamp'], '%s')
-    #   if time.to_date == Date.new(1970, 01, 01)
-    #     time = created_at
-    #   end
-    #   time
-    # end
 
     def language
       if user&.locale == LANGUAGE_CODE_ET
@@ -149,18 +82,6 @@ module PaymentOrders
       end
     end
 
-    # def valid_hmac?
-    #   hmac_fields = response['hmac_fields'].split(',')
-    #   hmac_hash = {}
-    #   hmac_fields.map do |field|
-    #     hmac_hash[field] = response[field]
-    #   end
-
-    #   hmac_string = hmac_hash.map { |key, _v| "#{key}=#{hmac_hash[key]}" }.join('&')
-    #   expected_hmac = OpenSSL::HMAC.hexdigest('sha1', KEY, hmac_string)
-    #   expected_hmac == response['hmac']
-    # end
-
     def valid_amount?
       invoices_total.to_d == BigDecimal(response['amount'])
     end
@@ -168,10 +89,6 @@ module PaymentOrders
     def invoices_total
       invoices.map(&:total).reduce(:+)
     end
-
-    # def valid_account?
-    #   response['account_id'] == ACCOUNT_ID
-    # end
 
     def base_params
       {
