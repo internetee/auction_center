@@ -10,8 +10,8 @@ class AutobiderController < ApplicationController
 
     if @autobider.update(strong_params)
       auction = Auction.where(domain_name: @autobider.domain_name).order(:created_at).last
-
       AutobiderService.autobid(auction) unless skip_autobid(auction)
+
       flash[:notice] = 'Updated'
     else
       flash[:alert] = I18n.t('something_went_wrong')

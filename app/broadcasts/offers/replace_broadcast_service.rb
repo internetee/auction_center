@@ -21,9 +21,3 @@ module Offers
     end
   end
 end
-
-    # broadcast_replace_to('auctions',
-    #                      target: dom_id(self.auction).to_s,
-    #                      partial: 'auctions/auction',
-    #                      locals: { auction: Auction.with_user_offers(user.id).find_by(uuid: auction.uuid),
-    #                                current_user: self.user })

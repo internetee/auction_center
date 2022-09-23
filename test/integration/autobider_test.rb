@@ -103,45 +103,26 @@ class AutobiderIntegrationTest < ActionDispatch::IntegrationTest
     assert_equal autobider.cents, 1200
   end
 
-  # def test_updated_autobider_can_outbid_existed_offer
-  #   params = {
-  #     autobider: {
-  #       user_id: @user.id,
-  #       domain_name: @auction.domain_name,
-  #       price: 6.0
-  #     }
-  #   }
-  #   assert @auction.offers.empty?
-  #   post autobider_index_path, params: params, headers: { "HTTP_REFERER" => root_path }
-  #   @auction.reload
+  def test_banned_user_cannot_set_the_autobider
+    params = {
+      autobider: {
+        user_id: @user.id,
+        domain_name: @auction.domain_name,
+        price: 10.0
+      }
+    }
 
-  #   autobider = Autobider.last
-  #   assert_equal autobider.cents, 600
-  #   assert @auction.offers.present?
-  #   assert_equal @auction.currently_winning_offer.cents, 500
+    valid_from = Time.parse('2010-07-05 10:30 +0000').in_time_zone
+    Ban.create!(user: @user,
+                domain_name: @auction.domain_name,
+                valid_from: valid_from, valid_until: valid_from + 3.days)
 
-  #   Offer.create!(
-  #     auction: @auction,
-  #     user: @user_two,
-  #     cents: @auction.currently_winning_offer.cents + 110,
-  #     billing_profile: @user.billing_profiles.first
-  #   )
+    @user.reload
+    assert @user.banned?
 
-  #   @auction.reload
-  #   @auction.update_minimum_bid_step(@auction.min_bids_step)
-  #   assert_equal @auction.currently_winning_offer.cents, 610
-
-  #   p '----'
-  #   p @auction.offers
-  #   p '-----'
-
-  #   put autobider_path(uuid: autobider.uuid), params: { autobider: { cents: 700, domain_name: autobider.domain_name } },
-  #                                             headers: { "HTTP_REFERER" => root_path }
-  #   autobider.reload
-
-  #   p '----'
-  #   p @auction.offers
-  #   p '-----'
-  #   # assert_equal @auction.currently_winning_offer.cents, 610
-  # end
+    assert_no_difference -> { Autobider.count } do
+      post autobider_index_path, params: params, headers: { "HTTP_REFERER" => root_path }
+      @user.reload
+    end
+  end
 end

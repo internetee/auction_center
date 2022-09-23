@@ -71,14 +71,6 @@ class EnglishOffersController < ApplicationController
   private
 
   def broadcast_replace_auction_offer(auction)
-    # auction.broadcast_replace_to "auctions_offer_#{auction.id}",
-    #                              target: "offer_#{auction.id}_form",
-    #                              partial: 'english_offers/number_form_field',
-    #                              locals: {
-    #                                offer_value: auction.min_bids_step,
-    #                                offer_disabled: auction.finished? ? true : false
-    #                              }
-
     Offers::UpdateBroadcastService.call({ auction: auction })
   end
 
