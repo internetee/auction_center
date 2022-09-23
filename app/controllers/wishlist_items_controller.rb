@@ -66,6 +66,7 @@ class WishlistItemsController < ApplicationController
     end
   end
 
+  # this method used by wishlist stimulus controller
   def domain_wishlist_availability
     wishlist_item = current_user.wishlist_items.build(domain_name: params[:domain_name])
     if wishlist_item.valid?
