@@ -59,6 +59,7 @@ class WishlistItemsController < ApplicationController
                                                        locals: { wishlist_item: wishlist_item })
           ]
         end
+        format.html { redirect_to wishlist_items_path }
       else
         flash[:alert] = I18n.t('something_went_wrong')
         format.html { redirect_to wishlist_items_path }

@@ -77,31 +77,45 @@ class WishlistItemsIntegrationTest < ActionDispatch::IntegrationTest
     end
   end
 
-  def test_cannot_create_domain_if_it_unavailable_from_registry
-  #   payload = {
-  #     avail: 1
-  #   }
-  #   stub_request(:get, "http://registry3000/api/v1/auctions/avilability_check?domain_name=awesome.ee")
-  #     .to_return(status: 200, body: payload.to_json, headers: {})
-
-  #   params = {
-  #     wishlist_item: {
-  #       user_id: @user.id,
-  #       domain_name: 'dodo.dodo',
-  #       price: 20.0
-  #     }
-  #   }
-
-  #   assert_no_difference -> { WishlistItem.count } do
-  #     post wishlist_items_path, params: params, headers: {}
-  #   end
-  end
-
   def test_can_update_wishlist_item
-    # wishlist_item PATCH           /wishlist_items/:uuid
+    assert_equal WishlistItem.count, 0
+
+    params = {
+      wishlist_item: {
+        user_id: @user.id,
+        domain_name: 'dodo.ee',
+        price: 20.0
+      }
+    }
+
+    post wishlist_items_path, params: params, headers: {}
+
+    wishlist_item = WishlistItem.last
+    assert_equal wishlist_item.cents, 2000
+
+    params = {
+      wishlist_item: {
+        user_id: @user.id,
+        domain_name: 'dodo.ee',
+        price: 30.0
+      }
+    }
+
+    put wishlist_item_path(uuid: wishlist_item.uuid), params: params, headers: {}
+    wishlist_item.reload
+
+    assert_equal wishlist_item.cents, 3000
   end
 
   def test_user_can_delete_wishlist_item
-    # wishlist_item DELETE          /wishlist_items/:uuid
+    assert_equal WishlistItem.count, 0
+    wishlist = WishlistItem.create!(user: @user, domain_name: 'dodo.ee', cents: 2000)
+    wishlist.reload
+
+    assert_equal wishlist.domain_name, 'dodo.ee'
+    assert_equal WishlistItem.count, 1
+
+    delete wishlist_item_path(uuid: wishlist.uuid), headers: {}
+    assert_equal WishlistItem.count, 0
   end
 end
