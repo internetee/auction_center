@@ -147,6 +147,20 @@ class AdminAuctionsTest < ApplicationSystemTestCase
     assert(page.has_text?('Deleted successfully'))
   end
 
+  def test_administrator_can_remove_auction_if_does_not_have_any_offers
+    travel_to Time.parse('2010-07-04 10:30 +0000').in_time_zone
+
+    visit(admin_auction_path(@auction_without_offers))
+
+    assert(page.has_link?('Delete'))
+
+    accept_confirm do
+      click_link_or_button('Delete')
+    end
+
+    assert(page.has_text?('Deleted successfully'))
+  end
+
   def test_auction_details_contain_a_list_of_offers
     visit(admin_auction_path(@auction))
 
