@@ -69,13 +69,32 @@ class WishlistItemsIntegrationTest < ActionDispatch::IntegrationTest
       }
     }
 
+    setting = Setting.find_by_code(:wishlist_supported_domain_extensions)
+    setting.update!(value: ['ee'])
+
     assert_no_difference -> { WishlistItem.count } do
       post wishlist_items_path, params: params, headers: {}
     end
   end
 
   def test_cannot_create_domain_if_it_unavailable_from_registry
+  #   payload = {
+  #     avail: 1
+  #   }
+  #   stub_request(:get, "http://registry3000/api/v1/auctions/avilability_check?domain_name=awesome.ee")
+  #     .to_return(status: 200, body: payload.to_json, headers: {})
 
+  #   params = {
+  #     wishlist_item: {
+  #       user_id: @user.id,
+  #       domain_name: 'dodo.dodo',
+  #       price: 20.0
+  #     }
+  #   }
+
+  #   assert_no_difference -> { WishlistItem.count } do
+  #     post wishlist_items_path, params: params, headers: {}
+  #   end
   end
 
   def test_can_update_wishlist_item
