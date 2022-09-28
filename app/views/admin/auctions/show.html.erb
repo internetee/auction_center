@@ -39,7 +39,7 @@
                 <%= button_to t(:delete), admin_auction_path(@auction),
                 method: :delete,
                 data: { confirm: t(:are_you_sure) } ,
-                class: "ui button secondary" %>
+                remote: true, class: "ui button secondary" %>
 
                 <%- if @auction.result %>
                     <%= link_to t(:result_name), admin_result_path(@auction.result),

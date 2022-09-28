@@ -1,7 +1,7 @@
 require 'constraints/administrator'
 
 disallowed_auction_actions = if Feature.registry_integration_enabled?
-                               %i[new create edit update destroy]
+                               %i[new create edit update]
                              else
                                %i[edit update]
                              end
