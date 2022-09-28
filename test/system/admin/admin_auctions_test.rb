@@ -138,7 +138,7 @@ class AdminAuctionsTest < ApplicationSystemTestCase
 
     visit(admin_auction_path(@auction))
 
-    assert(page.has_button?('Delete'))
+    assert(page.has_link?('Delete'))
 
     accept_confirm do
       click_link_or_button('Delete')
@@ -152,7 +152,7 @@ class AdminAuctionsTest < ApplicationSystemTestCase
 
     visit(admin_auction_path(@auction_without_offers))
 
-    assert(page.has_button?('Delete'))
+    assert(page.has_link?('Delete'))
 
     accept_confirm do
       click_link_or_button('Delete')
@@ -177,7 +177,7 @@ class AdminAuctionsTest < ApplicationSystemTestCase
 
     visit(admin_auction_path(@auction))
 
-    assert(page.has_button?('Delete'))
+    assert(page.has_link?('Delete'))
     assert_no_changes('Auction.count') do
       accept_confirm do
         click_link_or_button('Delete')

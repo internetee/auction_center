@@ -36,7 +36,7 @@
 
 
             <div class="buttons">
-                <%= button_to t(:delete), admin_auction_path(@auction),
+                <%= link_to t(:delete), admin_auction_path(@auction),
                 method: :delete,
                 data: { confirm: t(:are_you_sure) } ,
                 remote: true, class: "ui button secondary" %>
