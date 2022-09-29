@@ -239,7 +239,8 @@ class RegistryAuctionCreatorTest < ActiveSupport::TestCase
       auctions = Auction.where(domain_name: auction.domain_name)
 
       as = auctions.first.initial_ends_at.strftime("%H:%M:%S")
-      new_ends_at = (Date.current + Rational(3)).in_time_zone + Time.parse(as).seconds_since_midnight.second
+      rational_day = Time.zone.now > Time.zone.now.midday ? 3 : 4
+      new_ends_at = (Date.current + Rational(rational_day)).in_time_zone + Time.parse(as).seconds_since_midnight.second
 
       assert_equal auctions.last.ends_at.change(usec: 0), new_ends_at.change(usec: 0)
       assert_equal auctions.last.initial_ends_at.change(usec: 0), new_ends_at.change(usec: 0)

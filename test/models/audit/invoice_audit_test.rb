@@ -35,6 +35,10 @@ class InvoiceAuditTest < ActiveSupport::TestCase
     mock = Minitest::Mock.new
     def mock.authorized; true; end
 
+    invoice_n = Invoice.order(number: :desc).last.number
+    stub_request(:post, "http://eis_billing_system:3000/api/v1/invoice_generator/invoice_number_generator")
+      .to_return(status: 200, body: "{\"invoice_number\":\"#{invoice_n + 3}\"}", headers: {})
+
     clazz = EisBilling::BaseController.new
 
     clazz.stub :authorized, mock do
