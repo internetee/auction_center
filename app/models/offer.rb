@@ -22,12 +22,6 @@ class Offer < ApplicationRecord
   attr_accessor :skip_autobider, :skip_if_wishlist_case, :skip_validation
 
   def broadcast_update_auction
-    # broadcast_replace_to('auctions',
-    #                      target: dom_id(self.auction).to_s,
-    #                      partial: 'auctions/auction',
-    #                      locals: { auction: Auction.with_user_offers(user.id).find_by(uuid: auction.uuid),
-    #                                current_user: self.user })\
-
     Offers::ReplaceBroadcastService.call({ offer: self })
   end
 
