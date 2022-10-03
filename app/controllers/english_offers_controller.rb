@@ -33,6 +33,7 @@ class EnglishOffersController < ApplicationController
     end
 
     @offer = Offer.new(create_params)
+    @offer.username = Username::GenerateUsernameService.new.call
     authorize! :manage, @offer
 
     if create_predicate(auction)
@@ -118,7 +119,7 @@ class EnglishOffersController < ApplicationController
   end
 
   def create_params
-    params.require(:offer).permit(:auction_id, :user_id, :price, :billing_profile_id)
+    params.require(:offer).permit(:auction_id, :user_id, :price, :billing_profile_id, :username)
   end
 
   def check_first_bid_for_english_auction(params, auction)

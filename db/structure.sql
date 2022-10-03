@@ -445,7 +445,7 @@ $$;
 
 SET default_tablespace = '';
 
-SET default_with_oids = false;
+SET default_table_access_method = heap;
 
 --
 -- Name: auctions; Type: TABLE; Schema: audit; Owner: -
@@ -950,7 +950,7 @@ CREATE TABLE public.autobiders (
     user_id bigint,
     domain_name character varying,
     cents integer,
-    uuid uuid DEFAULT public.gen_random_uuid(),
+    uuid uuid DEFAULT gen_random_uuid(),
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -1278,6 +1278,7 @@ CREATE TABLE public.offers (
     billing_profile_id integer NOT NULL,
     uuid uuid DEFAULT public.gen_random_uuid(),
     updated_by character varying,
+    username character varying,
     CONSTRAINT offers_cents_are_positive CHECK ((cents > 0))
 );
 
@@ -2564,84 +2565,84 @@ CREATE UNIQUE INDEX users_by_identity_code_and_country ON public.users USING btr
 -- Name: auctions process_auction_audit; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER process_auction_audit AFTER INSERT OR DELETE OR UPDATE ON public.auctions FOR EACH ROW EXECUTE PROCEDURE public.process_auction_audit();
+CREATE TRIGGER process_auction_audit AFTER INSERT OR DELETE OR UPDATE ON public.auctions FOR EACH ROW EXECUTE FUNCTION public.process_auction_audit();
 
 
 --
 -- Name: bans process_ban_audit; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER process_ban_audit AFTER INSERT OR DELETE OR UPDATE ON public.bans FOR EACH ROW EXECUTE PROCEDURE public.process_ban_audit();
+CREATE TRIGGER process_ban_audit AFTER INSERT OR DELETE OR UPDATE ON public.bans FOR EACH ROW EXECUTE FUNCTION public.process_ban_audit();
 
 
 --
 -- Name: billing_profiles process_billing_profile_audit; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER process_billing_profile_audit AFTER INSERT OR DELETE OR UPDATE ON public.billing_profiles FOR EACH ROW EXECUTE PROCEDURE public.process_billing_profile_audit();
+CREATE TRIGGER process_billing_profile_audit AFTER INSERT OR DELETE OR UPDATE ON public.billing_profiles FOR EACH ROW EXECUTE FUNCTION public.process_billing_profile_audit();
 
 
 --
 -- Name: invoices process_invoice_audit; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER process_invoice_audit AFTER INSERT OR DELETE OR UPDATE ON public.invoices FOR EACH ROW EXECUTE PROCEDURE public.process_invoice_audit();
+CREATE TRIGGER process_invoice_audit AFTER INSERT OR DELETE OR UPDATE ON public.invoices FOR EACH ROW EXECUTE FUNCTION public.process_invoice_audit();
 
 
 --
 -- Name: invoice_items process_invoice_item_audit; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER process_invoice_item_audit AFTER INSERT OR DELETE OR UPDATE ON public.invoice_items FOR EACH ROW EXECUTE PROCEDURE public.process_invoice_item_audit();
+CREATE TRIGGER process_invoice_item_audit AFTER INSERT OR DELETE OR UPDATE ON public.invoice_items FOR EACH ROW EXECUTE FUNCTION public.process_invoice_item_audit();
 
 
 --
 -- Name: invoice_payment_orders process_invoice_payment_order_audit; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER process_invoice_payment_order_audit AFTER INSERT OR DELETE OR UPDATE ON public.invoice_payment_orders FOR EACH ROW EXECUTE PROCEDURE public.process_invoice_payment_order_audit();
+CREATE TRIGGER process_invoice_payment_order_audit AFTER INSERT OR DELETE OR UPDATE ON public.invoice_payment_orders FOR EACH ROW EXECUTE FUNCTION public.process_invoice_payment_order_audit();
 
 
 --
 -- Name: offers process_offer_audit; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER process_offer_audit AFTER INSERT OR DELETE OR UPDATE ON public.offers FOR EACH ROW EXECUTE PROCEDURE public.process_offer_audit();
+CREATE TRIGGER process_offer_audit AFTER INSERT OR DELETE OR UPDATE ON public.offers FOR EACH ROW EXECUTE FUNCTION public.process_offer_audit();
 
 
 --
 -- Name: payment_orders process_payment_order_audit; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER process_payment_order_audit AFTER INSERT OR DELETE OR UPDATE ON public.payment_orders FOR EACH ROW EXECUTE PROCEDURE public.process_payment_order_audit();
+CREATE TRIGGER process_payment_order_audit AFTER INSERT OR DELETE OR UPDATE ON public.payment_orders FOR EACH ROW EXECUTE FUNCTION public.process_payment_order_audit();
 
 
 --
 -- Name: results process_result_audit; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER process_result_audit AFTER INSERT OR DELETE OR UPDATE ON public.results FOR EACH ROW EXECUTE PROCEDURE public.process_result_audit();
+CREATE TRIGGER process_result_audit AFTER INSERT OR DELETE OR UPDATE ON public.results FOR EACH ROW EXECUTE FUNCTION public.process_result_audit();
 
 
 --
 -- Name: settings process_setting_audit; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER process_setting_audit AFTER INSERT OR DELETE OR UPDATE ON public.settings FOR EACH ROW EXECUTE PROCEDURE public.process_setting_audit();
+CREATE TRIGGER process_setting_audit AFTER INSERT OR DELETE OR UPDATE ON public.settings FOR EACH ROW EXECUTE FUNCTION public.process_setting_audit();
 
 
 --
 -- Name: users process_user_audit; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER process_user_audit AFTER INSERT OR DELETE OR UPDATE ON public.users FOR EACH ROW EXECUTE PROCEDURE public.process_user_audit();
+CREATE TRIGGER process_user_audit AFTER INSERT OR DELETE OR UPDATE ON public.users FOR EACH ROW EXECUTE FUNCTION public.process_user_audit();
 
 
 --
 -- Name: wishlist_items process_wishlist_item_audit; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER process_wishlist_item_audit AFTER INSERT OR DELETE OR UPDATE ON public.wishlist_items FOR EACH ROW EXECUTE PROCEDURE public.process_wishlist_item_audit();
+CREATE TRIGGER process_wishlist_item_audit AFTER INSERT OR DELETE OR UPDATE ON public.wishlist_items FOR EACH ROW EXECUTE FUNCTION public.process_wishlist_item_audit();
 
 
 --
@@ -2892,7 +2893,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200212081434'),
 ('20220214124251'),
 ('20220214130432'),
-('20220419064621'),
 ('20220419091123'),
 ('20220422094307'),
 ('20220422094556'),
@@ -2903,6 +2903,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220527064738'),
 ('20220601052131'),
 ('20220606110658'),
-('20220617123124');
+('20220617123124'),
+('20221003065216');
 
 

@@ -70,3 +70,6 @@ gem 'pg_search'
 
 # For pagination
 gem 'pagy', '~> 5.5'
+
+# For mock username
+gem 'faker'
