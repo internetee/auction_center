@@ -86,7 +86,7 @@ class Auction < ApplicationRecord
 
   def can_be_deleted?
     if valid?
-      !in_progress? && !finished?
+      (!in_progress? || offers.blank?) && !finished?
     else
       false
     end
