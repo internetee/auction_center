@@ -186,7 +186,7 @@ class AdminAuctionsTest < ApplicationSystemTestCase
 
     assert_not(page.has_text?('Deleted successfully'))
     assert(
-      page.has_text?('You cannot delete an auction that is already in progress or has finished.')
+      page.has_text?('It is not allowed to delete an action that is already in progress and has bids or has already finished.')
     )
   end
 end
