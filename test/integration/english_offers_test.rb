@@ -153,4 +153,24 @@ class EnglishOffersIntegrationTest < ActionDispatch::IntegrationTest
                                      headers: {}
     assert @auction.offers.empty?
   end
+
+  def test_for_offer_owner_should_be_generated_the_name
+    @auction.offers.destroy_all
+    @auction.reload
+    assert @auction.offers.empty?
+
+    params = {
+      offer: {
+        auction_id: @auction.id,
+        user_id: @user.id,
+        price: 5.0,
+        billing_profile_id: @user.billing_profiles.first.id
+      }
+    }
+
+    post auction_english_offers_path(auction_uuid: @auction.uuid),
+                                     params: params,
+                                     headers: {}
+    assert @auction.offers.last.username.present?
+  end
 end

@@ -39,13 +39,13 @@ class Result < ApplicationRecord
   scope :registered, -> { where(status: statuses[:domain_registered]) }
   scope :unregistered, -> { where(status: statuses[:domain_not_registered]) }
 
-  scope :with_domain_name, ->(domain_name) do
+  scope :with_domain_name, lambda { |domain_name|
     if domain_name.present?
-      self.joins(:auction)
-          .includes(:offer, :invoice)
-          .where('auctions.domain_name ILIKE ?', "%#{domain_name}%")
+      joins(:auction)
+        .includes(:offer, :invoice)
+        .where('auctions.domain_name ILIKE ?', "%#{domain_name}%")
     end
-  end
+  }
 
   scope :with_status, ->(status) { where(status: [status]) if status.present? }
 
@@ -77,7 +77,7 @@ class Result < ApplicationRecord
   end
 
   def self.search(params = {})
-    self.with_domain_name(params[:domain_name]).with_status(params[:statuses_contains])
+    with_domain_name(params[:domain_name]).with_status(params[:statuses_contains])
   end
 
   def winning_offer
@@ -85,7 +85,12 @@ class Result < ApplicationRecord
   end
 
   def mark_as_payment_received(time)
-    date = time.to_date + Setting.find_by(code: 'registration_term').retrieve
+    registration_term = if auction.english?
+                          Setting.find_by(code: 'registration_english_term')&.retrieve || 30
+                        else
+                          Setting.find_by(code: 'registration_term').retrieve
+                        end
+    date = time.to_date + registration_term
     update!(status: Result.statuses[:payment_received],
             registration_due_date: date)
   end
