@@ -37,6 +37,14 @@ module ApplicationHelper
     end
   end
 
+  def start_of_procedure
+    Rails.configuration.customization[:start_of_procedure]
+  end
+
+  def end_of_procdure
+    Rails.configuration.customization[:end_of_procedure]
+  end
+
   private
 
   def ban_error_message(domains, valid_until)
