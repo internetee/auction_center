@@ -5,11 +5,13 @@ class WishlistAutoOfferJob < ApplicationJob
     return if item.cents.blank?
 
     auction = Auction.find(auction_id)
-    Offer.create!(
+    offer = Offer.create!(
       auction: auction,
       user: item.user,
       cents: item.cents,
       billing_profile: item.user.billing_profiles.first
     )
+
+    WishlistMailer.auto_offer_notification_mail(item, auction, offer).deliver_later
   end
 end

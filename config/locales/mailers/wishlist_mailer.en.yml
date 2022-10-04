@@ -9,3 +9,9 @@ en:
         The auction ends at %{ends_at}.
       call_to_action_html: "Make your bid %{link}."
       call_to_action_link: "here"
+    auto_offer_notification_mail:
+      subject: Automated bid for the %{domain_name} domain was successful"
+      salutation: "Dear %{display_name},"
+      introduction: The domain name %{domain_name} from the wishlist was auctioned and an automated bid of %{offer_price} was made
+      call_to_action_html: "See your bid %{link}."
+      call_to_action_link: "here"

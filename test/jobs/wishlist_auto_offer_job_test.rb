@@ -1,6 +1,8 @@
 require 'test_helper'
 
 class WishlistAutoOfferJobTest < ActiveJob::TestCase
+  include ActionMailer::TestHelper
+
   def setup
     super
 
@@ -21,5 +23,13 @@ class WishlistAutoOfferJobTest < ActiveJob::TestCase
     WishlistAutoOfferJob.perform_now(@item.id, @auction.id)
 
     assert_not @user.offers.find_by(auction: @auction).present?
+  end
+
+  def test_it_sends_auto_offer_email
+    @item.update!(cents: 5000)
+
+    assert_enqueued_emails(1) do
+      WishlistAutoOfferJob.perform_now(@item.id, @auction.id)
+    end
   end
 end
