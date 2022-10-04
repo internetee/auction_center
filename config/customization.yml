@@ -13,6 +13,8 @@ default: &default
     oneoff_endpoint: 'https://igw-demo.every-pay.com/api/v4/payments/oneoff'
     account_name: "EUR3D2"
 
+  start_of_procedure: "09:00"
+  end_of_procedure: "10:00"
   # This is your application name, as displayed in the UI
   application_name: "EIS Auction Center"
 
