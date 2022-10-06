@@ -27,6 +27,7 @@ class Offer < ApplicationRecord
   end
 
   def validate_accessebly_to_set_bid
+    return if auction.nil?
     return if auction.allow_to_set_bid?(user)
 
     errors.add(:base, 'You need to make deposit first')
@@ -41,7 +42,7 @@ class Offer < ApplicationRecord
     min_bids_step_in_cents = Money.from_amount(auction.min_bids_step).cents
     return if min_bids_step_in_cents <= cents
 
-    errors.add(:base, 'Next bid should be higher or equal than minimum bid step')
+    errors.add(:price, 'Next bid should be higher or equal than minimum bid step')
   end
 
   def must_be_higher_that_starting_price
@@ -51,7 +52,7 @@ class Offer < ApplicationRecord
     starting_price_in_cents = Money.from_amount(auction.starting_price).cents
     return if starting_price_in_cents <= cents
 
-    errors.add(:base, 'First bid should be more or equal than starting price')
+    errors.add(:price, 'First bid should be more or equal than starting price')
   end
 
   def auction_must_be_active
