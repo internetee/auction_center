@@ -17,6 +17,8 @@ et:
 
     new:
       title: "Domeeni registreerimise eelisõiguse pakkumus"
+      deposit_enable: Nõutav tagatisraha
+      make_deposit: Tehke deposiit
 
     create:
       created: "Pakkumus edukalt esitatud"

@@ -48,6 +48,16 @@ class AdminBulkActionService
     auction.min_bids_step = auction.starting_price unless auction_elements[:starting_price].empty?
     auction.slipping_end = auction_elements[:slipping_end] unless auction_elements[:slipping_end].empty?
 
+    auction = deposit_handler(auction)
     auction.save!
+  end
+
+  def deposit_handler(auction)
+    return auctiom unless auction.english?
+
+    auction.enable_deposit = true if auction_elements[:enable_deposit].present?
+    auction.enable_deposit = false if auction_elements[:disable_deposit].present?
+
+    auction
   end
 end

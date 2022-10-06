@@ -17,6 +17,8 @@ en:
     new:
       title: "Offer for the reservation of the domain name"
       errors: "prohibited this offer from being saved"
+      deposit_enable: Deposit required
+      make_deposit: Make a deposit
 
     show:
       title: "Your offer"

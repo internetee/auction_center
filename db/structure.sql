@@ -886,6 +886,7 @@ CREATE TABLE public.auctions (
     min_bids_step numeric,
     slipping_end integer,
     initial_ends_at timestamp without time zone,
+    enable_deposit boolean DEFAULT false NOT NULL,
     CONSTRAINT starts_at_earlier_than_ends_at CHECK ((starts_at < ends_at))
 );
 
@@ -1119,6 +1120,38 @@ CREATE SEQUENCE public.directo_customers_id_seq
 --
 
 ALTER SEQUENCE public.directo_customers_id_seq OWNED BY public.directo_customers.id;
+
+
+--
+-- Name: domain_participate_auctions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.domain_participate_auctions (
+    id bigint NOT NULL,
+    user_id bigint,
+    auction_id bigint,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: domain_participate_auctions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.domain_participate_auctions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: domain_participate_auctions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.domain_participate_auctions_id_seq OWNED BY public.domain_participate_auctions.id;
 
 
 --
@@ -1691,6 +1724,13 @@ ALTER TABLE ONLY public.directo_customers ALTER COLUMN id SET DEFAULT nextval('p
 
 
 --
+-- Name: domain_participate_auctions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.domain_participate_auctions ALTER COLUMN id SET DEFAULT nextval('public.domain_participate_auctions_id_seq'::regclass);
+
+
+--
 -- Name: invoice_items id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1981,6 +2021,14 @@ ALTER TABLE ONLY public.delayed_jobs
 
 ALTER TABLE ONLY public.directo_customers
     ADD CONSTRAINT directo_customers_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: domain_participate_auctions domain_participate_auctions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.domain_participate_auctions
+    ADD CONSTRAINT domain_participate_auctions_pkey PRIMARY KEY (id);
 
 
 --
@@ -2342,6 +2390,20 @@ CREATE UNIQUE INDEX index_directo_customers_on_customer_code ON public.directo_c
 --
 
 CREATE UNIQUE INDEX index_directo_customers_on_vat_number ON public.directo_customers USING btree (vat_number);
+
+
+--
+-- Name: index_domain_participate_auctions_on_auction_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_domain_participate_auctions_on_auction_id ON public.domain_participate_auctions USING btree (auction_id);
+
+
+--
+-- Name: index_domain_participate_auctions_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_domain_participate_auctions_on_user_id ON public.domain_participate_auctions USING btree (user_id);
 
 
 --
@@ -2904,6 +2966,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220601052131'),
 ('20220606110658'),
 ('20220617123124'),
-('20221003065216');
+('20221003065216'),
+('20221005105336'),
+('20221006094111');
 
 

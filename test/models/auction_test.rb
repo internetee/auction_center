@@ -272,4 +272,20 @@ class AuctionTest < ActiveSupport::TestCase
     assert(object.errors[:ends_at].include?('overlaps with another auction'))
     assert(object.errors[:starts_at].include?('overlaps with another auction'))
   end
+
+  def test_should_set_enable_deposit_for_english_auction
+    refute @english.enable_deposit?
+    @english.update(enable_deposit: true)
+    @english.reload
+
+    assert @english.enable_deposit?
+  end
+
+  def test_should_not_set_enable_deposit_for_non_english_auction
+    refute @other_persisted_auction.enable_deposit?
+    @other_persisted_auction.update(enable_deposit: true)
+    @other_persisted_auction.reload
+
+    refute @other_persisted_auction.enable_deposit?
+  end
 end

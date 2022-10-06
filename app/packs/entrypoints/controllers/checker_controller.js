@@ -5,7 +5,6 @@ export default class extends Controller {
     static targets = ["bulkactionform"]
 
     connect() {
-        console.log(this.bulkactionformTarget);
     }
 
     collect_ids() {

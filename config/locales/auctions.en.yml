@@ -29,6 +29,8 @@ en:
       search: "Search by domain name"
       auction_list_tooltip: "Send me daily auctioned domain list by email"
       auction_list_unsubscribe_tooltip: "Unsubscribe me from daily auctioned domain lists"
+      enable_deposit: "Enable deposit"
+      disable_deposit: "Disable deposit"
 
     search:
       title: "Auction search"
@@ -39,6 +41,9 @@ en:
 
     show:
       title: "Auction details"
+      user_list: "List of users"
+      apply: "Apply"
+      allow: "Allow to participate?"
 
     top_grid:
       title: "Domains in auction:"

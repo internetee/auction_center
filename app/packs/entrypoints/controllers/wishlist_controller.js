@@ -3,7 +3,6 @@ import Rails from 'rails-ujs';
 
 export default class extends Controller {
   connect() {
-    console.log('checker connected');
   }
 
   domainCheck() {

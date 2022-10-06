@@ -13,6 +13,7 @@ class Offer < ApplicationRecord
            if: proc { |offer| offer&.auction&.platform == 'blind' || offer&.auction&.platform.nil? }
   validate :must_be_higher_that_starting_price
   validate :next_bid_should_be_equal_or_higher_than_min_bid_steps
+  validate :validate_accessebly_to_set_bid, on: :create
 
   DEFAULT_PRICE_VALUE = 1
 
@@ -25,6 +26,12 @@ class Offer < ApplicationRecord
     Offers::ReplaceBroadcastService.call({ offer: self })
   end
 
+  def validate_accessebly_to_set_bid
+    return if auction.allow_to_set_bid?(user)
+
+    errors.add(:base, 'You need to make deposit first')
+  end
+
   def next_bid_should_be_equal_or_higher_than_min_bid_steps
     return if skip_validation
 
@@ -34,7 +41,7 @@ class Offer < ApplicationRecord
     min_bids_step_in_cents = Money.from_amount(auction.min_bids_step).cents
     return if min_bids_step_in_cents <= cents
 
-    errors.add(:price, 'Next bid should be higher or equal than minimum bid step')
+    errors.add(:base, 'Next bid should be higher or equal than minimum bid step')
   end
 
   def must_be_higher_that_starting_price
@@ -44,7 +51,7 @@ class Offer < ApplicationRecord
     starting_price_in_cents = Money.from_amount(auction.starting_price).cents
     return if starting_price_in_cents <= cents
 
-    errors.add(:price, 'First bid should be more or equal than starting price')
+    errors.add(:base, 'First bid should be more or equal than starting price')
   end
 
   def auction_must_be_active

@@ -2,6 +2,7 @@ module Admin
   class AuctionsController < BaseController
     before_action :authorize_user
     before_action :set_auction, only: %i[show destroy]
+    before_action :validate_enable_and_disable_option_in_same_action, only: %i[bulk_starts_at]
 
     # GET /admin/auctions/new
     def new
@@ -72,7 +73,24 @@ module Admin
       redirect_to admin_auctions_path
     end
 
+    def apply_auction_participants
+      p '@@@@@@@@'
+      p params
+      p '@@@@@@@@'
+    end
+
     private
+
+    def validate_enable_and_disable_option_in_same_action
+      auction_elements = params[:auction_elements]
+
+      if auction_elements[:enable_deposit] == 'true' &&
+         auction_elements[:disable_deposit] == 'true'
+
+        flash[:alert] = 'it cannot be enable and disable deposit in same action'
+        redirect_to admin_auctions_path and return
+      end
+    end
 
     def create_params
       params.require(:auction).permit(:domain_name, :starts_at, :ends_at)

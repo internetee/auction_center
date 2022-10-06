@@ -11,8 +11,10 @@ class Auction < ApplicationRecord
   validate :does_not_overlap, unless: :skip_validation
   validate :ends_at_later_than_starts_at
   validate :starts_at_cannot_be_in_the_past, on: :create
+  validate :enable_deposit_only_for_english_auction, on: :update
 
   has_many :offers, dependent: :delete_all
+  has_many :domain_participate_auctions
   has_one :result, required: false, dependent: :destroy
 
   enum platform: %i[blind english]
@@ -97,6 +99,19 @@ class Auction < ApplicationRecord
         .with_starts_at_nil(params[:starts_at_nil])
         .with_offers(params[:auction_offer_type], params[:type])
         .order("#{sort_column} #{sort_direction}")
+  end
+
+  def enable_deposit_only_for_english_auction
+    return if english? || !enable_deposit
+
+    errors.add(:enable_deposit, 'could not be applied for non english auction')
+  end
+
+  def allow_to_set_bid?(user)
+    return true unless english?
+    return true unless enable_deposit?
+
+    user.domain_participate_auctions.any? { |item| item.auction_id == self.id }
   end
 
   def does_not_overlap

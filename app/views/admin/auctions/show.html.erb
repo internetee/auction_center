@@ -76,4 +76,35 @@
                 </tbody>
         </table>
     </div>
+
+    <div class="margin-block">
+        <h2><%= t('auctions.show.user_list') %></h2>
+        <div class="content">
+            <%= form_with url: apply_auction_participants_admin_auctions_path do |form| %>
+
+                <div class="buttons">
+                    <%= form.submit t('auctions.show.apply'), class: 'ui button primary' %>
+                </div>
+
+                <table class="ui table" id="auctions-offers-table">
+                    <thead>
+                        <tr>
+                            <th scope="col"><%= t('offers.price') %></th>
+                            <th scope="col">Email</th>
+                            <th scope="col" style="text-align: center"><%= t('auctions.show.allow') %></th>
+                        </tr>
+
+                        <tbody id="offers-table-body">
+                            <% User.all.each do |user| %>
+                                <tr class="offers-table-row">
+                                    <td><%= user.display_name %></td>
+                                    <td><%= user.email %></td>
+                                    <td style="text-align: center"><%= form.check_box :user_ids, { multiple: true }, user.id, nil %></td>
+                                </tr>
+                            <% end %>
+                        </tbody>
+                </table>
+            <% end %>
+        </div>
+    </div>
 </div>
