@@ -68,6 +68,9 @@ Rails.application.routes.draw do
   resources :auctions, only: %i[index show], param: :uuid do
     resources :offers, only: %i[new show create edit update destroy], shallow: true, param: :uuid
     resources :english_offers, only: %i[new show create edit update], shallow: true, param: :uuid
+    member do
+      post 'pay_deposit', to: 'invoices#pay_deposit', as: 'english_offer_deposit'
+    end
   end
   match '*auctions', controller: 'auctions', action: 'cors_preflight_check', via: [:options]
 
@@ -97,6 +100,7 @@ Rails.application.routes.draw do
   end
 
   match '/linkpay_callback', via: %i[get], to: 'linkpay#callback', as: :linkpay_callback
+  match '/linkpay_deposit_callback', via: %i[get], to: 'linkpay#deposit_callback', as: :deposit_callback
 
   resource :locale, only: :update
   resources :offers, only: :index

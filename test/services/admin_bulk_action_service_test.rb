@@ -95,7 +95,8 @@ class AdminBulkActionServiceTest < ActionDispatch::IntegrationTest
       set_ends_at: '2010-08-05',
       starting_price: '5.0',
       slipping_end: '5',
-      elements_id: auction_id.to_s
+      elements_id: auction_id.to_s,
+      deposit: 0.0
     }
   end
 end

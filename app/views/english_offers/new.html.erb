@@ -25,20 +25,6 @@
         <% end %>
 
         
-        <% if @auction.enable_deposit? %>            
-            <p style='text-align: center; margin-bottom: 1rem; text-size: 20px; color: red;'>
-                <strong>
-                    <%= t('offers.new.deposit_enable') %>
-                </strong>
-            </p>
-            <div style='text-align: center; margin-bottom: 4rem;'>
-                <%= button_to t('offers.new.make_deposit'), 
-                        '#',
-                        method: :post,
-                        class: 'ui button primary' %>
-            </div>
-        <% end %>
-
         <div class="ui two column grid centered" style="margin-bottom: 20px;">
             <div class="">
                 <%= tag.h5 id: 'mini' do %>
@@ -53,14 +39,33 @@
 
         <hr>
 
-        <div data-turbo="true">
-            <%= turbo_frame_tag 'autobider_scope' do %>
-                <%= render partial: 'autobider_value', locals: { autobider: @autobider, auction: @auction } %>
-            <% end %>
-        </div>
+        <% if @offer.auction.allow_to_set_bid?(current_user) %>        
+            <div data-turbo="true">
+                <%= turbo_frame_tag 'autobider_scope' do %>
+                    <%= render partial: 'autobider_value', locals: { autobider: @autobider, auction: @auction } %>
+                <% end %>
+            </div>
 
-        <%= tag.div id: 'offer_form' do %>
-            <%= render 'form', offer: @offer, url: auction_english_offers_path(auction_uuid: params[:auction_uuid]), data: { turbo: false } %>
+            <%= tag.div id: 'offer_form' do %>
+                <%= render 'form', offer: @offer, url: auction_english_offers_path(auction_uuid: params[:auction_uuid]), data: { turbo: false } %>
+            <% end %>
+        <% else %>
+            <div class="ui one column grid centered aligned", style='margin-top: 10em; margin-bottom: 10em; align-items: center;'>
+                <div>
+                    <p style='text-align: center; margin-bottom: 1rem; text-size: 20px; color: red;'>
+                        <strong>
+                            <%= t('offers.new.deposit_enable') %>
+                        </strong>
+                    </p>
+                    <div style='text-align: center; margin-bottom: 4rem;'>
+                        <%= button_to t('offers.new.make_deposit'), 
+                                        english_offer_deposit_auction_path(uuid: @offer.auction.uuid, current_user: current_user),
+                                        method: :post,
+                                        class: 'ui button primary' %>
+                    </div>
+                </div>
+            </div>
         <% end %>
+
     </div>
 </div>

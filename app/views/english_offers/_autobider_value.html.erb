@@ -5,7 +5,7 @@
     </div>
     <div>
       <% url = @autobider.new_record? ? new_autobider_path(auction_uuid: @auction.uuid) : edit_autobider_path(uuid: @autobider.uuid, auction_uuid: @auction.uuid)  %>
-      <%= link_to  t('english_offers.form.set_autobidder_value'), url, data: { turbo_frame: 'autobider_scope', turbo: true }, class: "ui button primary", id: 'autobider-value-btn' %>
+      <%= link_to t('english_offers.form.set_autobidder_value'), url, data: { turbo_frame: 'autobider_scope', turbo: true }, class: "ui button primary", id: 'autobider-value-btn' %>
     </div>
   </div>
 <% end %>

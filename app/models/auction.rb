@@ -12,6 +12,7 @@ class Auction < ApplicationRecord
   validate :ends_at_later_than_starts_at
   validate :starts_at_cannot_be_in_the_past, on: :create
   validate :enable_deposit_only_for_english_auction, on: :update
+  validate :deposit_and_enable_deposit_should_be_togeter, on: :update
 
   has_many :offers, dependent: :delete_all
   has_many :domain_participate_auctions
@@ -87,6 +88,16 @@ class Auction < ApplicationRecord
     Auctions::UpdateOfferBroadcastService.call({ auction: self })
   end
 
+  def deposit
+    Money.new(requirement_deposit_in_cents, Setting.find_by(code: 'auction_currency').retrieve)
+  end
+
+  def deposit=(value)
+    number = value.to_d
+    deposit = Money.from_amount(number, Setting.find_by(code: 'auction_currency').retrieve)
+    self.requirement_deposit_in_cents = deposit.cents
+  end
+
   def self.search(params = {})
     sort_column = params[:sort].presence_in(%w[domain_name ends_at platform users_price]) || 'domain_name'
     sort_direction = params[:direction].presence_in(%w[asc desc]) || 'desc'
@@ -99,6 +110,14 @@ class Auction < ApplicationRecord
         .with_starts_at_nil(params[:starts_at_nil])
         .with_offers(params[:auction_offer_type], params[:type])
         .order("#{sort_column} #{sort_direction}")
+  end
+
+  def deposit_and_enable_deposit_should_be_togeter
+    return unless english?
+    return if (requirement_deposit_in_cents.nil? || requirement_deposit_in_cents.zero?) && !enable_deposit
+    return if requirement_deposit_in_cents > 0 && enable_deposit
+
+    errors.add(:base, 'the deposit amount and the "enable deposit" flag must be specified together or not')
   end
 
   def enable_deposit_only_for_english_auction

@@ -107,15 +107,15 @@
                     <%= form.hidden_field :elements_id %>
 
                     <div class="eight fields"
-                         style="margin: 0 auto; display: flex; justify-between: center; align-items: baseline;"
-                         data-controller="enable_deposit_toggle">
+                         style="margin: 0 auto; display: flex; justify-between: center; align-items: center;"
+                         >
                         <div class='field'></div>
                         <div class='field'></div>
 
                         <div class='field'>
-                            <div class="ui checkbox">
-                                <%= check_box_tag :check_all %>
-                                <label>Check all</label>
+                            <div class="column">
+                                <%= form.label :deposit, t('auctions.deposit') %>
+                                <%= form.number_field :deposit, class: "form-control", step: :any, value: 0.0 %>
                             </div>
                         </div>
                         <div class='field'>
@@ -135,6 +135,15 @@
                         </div>
                         <div class='field'></div>
                         <div class='field'></div>
+                    </div>
+
+                    <div data-controller="enable_deposit_toggle" style="margin-top: 30px;">
+                        <div class='field'>
+                            <div class="ui checkbox">
+                                <%= check_box_tag :check_all %>
+                                <label>Check all</label>
+                            </div>
+                        </div>
                     </div>
                     
             </div>
@@ -194,8 +203,12 @@
                                     <%= sort_link_to "", "platform" %>
                                 </th>
                                 <th scope="col">
+                                    <%= t('auctions.deposit') %>
+                                    <%= sort_link_to "", "requirement_deposit_in_cents" %>
+                                </th>
+                                <th scope="col">
                                     <%= t('auctions.enable_deposit') %>
-                                    <%= sort_link_to "", "platform" %>
+                                    <%= sort_link_to "", "enable_deposit" %>
                                 </th>
                             </tr>
                         </thead>

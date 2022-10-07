@@ -7,6 +7,15 @@ class LinkpayController < ApplicationController
     redirect_to invoices_path(state: 'payment')
   end
 
+  def deposit_callback
+    # TODO
+    EisBilling::SendCallback.send(reference_number: linkpay_params[:payment_reference])
+    # EisBilling::CheckForDepositService.send
+
+    # here should be redirected to enable deposit auction
+    redirect_to invoices_path(state: 'payment')
+  end
+
   private
 
   def linkpay_params

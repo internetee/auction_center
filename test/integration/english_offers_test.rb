@@ -176,7 +176,7 @@ class EnglishOffersIntegrationTest < ActionDispatch::IntegrationTest
 
   def test_restict_for_bid_for_auction_with_enable_deposit
     @auction.offers.destroy_all
-    @auction.update(enable_deposit: true)
+    @auction.update(enable_deposit: true, requirement_deposit_in_cents: 5000)
     @auction.reload
     assert @auction.offers.empty?
     assert @auction.enable_deposit?
@@ -220,7 +220,7 @@ class EnglishOffersIntegrationTest < ActionDispatch::IntegrationTest
 
   def test_enable_to_bid_if_you_have_association_with_auction
     @auction.offers.destroy_all
-    @auction.update(enable_deposit: true)
+    @auction.update(enable_deposit: true, requirement_deposit_in_cents: 5000)
     @auction.reload
     assert @auction.offers.empty?
     assert @auction.enable_deposit?

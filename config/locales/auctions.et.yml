@@ -35,6 +35,7 @@ et:
       auction_list_unsubscribe_tooltip: "Ära saada mulle igal päeval oksjoninimekirja meilile"
       enable_deposit: "Võimaldage tagatisraha"
       disable_deposit: "Deaktiveeri tagatisraha"
+      deposit: Tagatisraha
 
     search:
       title: "Otsing"

@@ -275,7 +275,7 @@ class AuctionTest < ActiveSupport::TestCase
 
   def test_should_set_enable_deposit_for_english_auction
     refute @english.enable_deposit?
-    @english.update(enable_deposit: true)
+    @english.update(enable_deposit: true, requirement_deposit_in_cents: 5000)
     @english.reload
 
     assert @english.enable_deposit?
@@ -287,5 +287,21 @@ class AuctionTest < ActiveSupport::TestCase
     @other_persisted_auction.reload
 
     refute @other_persisted_auction.enable_deposit?
+  end
+
+  def test_no_change_if_deposit_enabled_without_the_deposit_price
+    refute @english.enable_deposit?
+    @english.update(enable_deposit: true, requirement_deposit_in_cents: 0)
+    @english.reload
+
+    refute @english.enable_deposit?
+  end
+
+  def test_no_change_if_deposit_price_but_deposit_is_disable
+    refute @english.enable_deposit?
+    @english.update(enable_deposit: false, requirement_deposit_in_cents: 5000)
+    @english.reload
+
+    refute @english.enable_deposit?
   end
 end

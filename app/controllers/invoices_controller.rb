@@ -1,7 +1,7 @@
 class InvoicesController < ApplicationController
   before_action :authenticate_user!
   before_action :authorize_user
-  before_action :set_invoice, except: %i[index pay_all_bills oneoff]
+  before_action :set_invoice, except: %i[index pay_all_bills oneoff pay_deposit]
 
   # GET /invoices/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/edit
   def edit; end
@@ -53,13 +53,28 @@ class InvoicesController < ApplicationController
   def pay_all_bills
     issued_invoices = invoices_list_by_status(Invoice.statuses[:issued])
     response = EisBilling::BulkInvoices.call(issued_invoices)
-    redirect_to response['everypay_link']
 
-    # respond_to do |format|
-    #   format.json { render status: :ok, json: @everypay_link }
-    #   format.html { redirect_to :back, notice: 'Run was successfully created.' }
-    #   format.js
-    # end
+    if response['error'].present?
+      flash.alert = response['error']['message']
+      redirect_to invoices_path and return
+    end
+
+    redirect_to response['everypay_link']
+  end
+
+  def pay_deposit
+    auction = Auction.find_by(uuid: params[:uuid])
+    description = "prepayment #{auction.domain_name}, user_uuid #{current_user.uuid}, user_email #{current_user.email}"
+    response = EisBilling::PayDepositService.call(amount: auction.deposit,
+                                                  customer_url: deposit_callback_url,
+                                                  description: description)
+
+    if response['error'].present?
+      flash.alert = response['error']['message']
+      redirect_to invoices_path and return
+    end
+
+    redirect_to response['oneoff_redirect_link'], allow_other_host: true
   end
 
   def oneoff

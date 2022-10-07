@@ -887,6 +887,7 @@ CREATE TABLE public.auctions (
     slipping_end integer,
     initial_ends_at timestamp without time zone,
     enable_deposit boolean DEFAULT false NOT NULL,
+    requirement_deposit_in_cents integer,
     CONSTRAINT starts_at_earlier_than_ends_at CHECK ((starts_at < ends_at))
 );
 
@@ -2968,6 +2969,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220617123124'),
 ('20221003065216'),
 ('20221005105336'),
-('20221006094111');
+('20221006094111'),
+('20221007082951');
 
 

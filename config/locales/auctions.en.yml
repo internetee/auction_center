@@ -31,6 +31,7 @@ en:
       auction_list_unsubscribe_tooltip: "Unsubscribe me from daily auctioned domain lists"
       enable_deposit: "Enable deposit"
       disable_deposit: "Disable deposit"
+      deposit: Deposit
 
     search:
       title: "Auction search"

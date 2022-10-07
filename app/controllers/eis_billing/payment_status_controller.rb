@@ -1,6 +1,9 @@
 module EisBilling
   class PaymentStatusController < EisBilling::BaseController
     def update
+      # TODO
+      # check_for_deposit(params) if params[:auction_name].present? && params[:user_email].present?
+
       invoice = ::Invoice.find_by(number: params[:order_reference])
       define_payment_option(invoice: invoice)
 
@@ -13,6 +16,10 @@ module EisBilling
     end
 
     private
+
+    def check_for_deposit(params)
+      EisBilling::CheckForDepositService.send(auction_name: params[:auction_name], user_uuid: params[:user_uuid])
+    end
 
     def define_payment_option(invoice:)
       if params[:invoice_number_collection].nil?
