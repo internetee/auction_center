@@ -5,6 +5,7 @@ en:
         title: "Finished auctions"
         new_auction: "New auction"
         no_price: "NaN"
+        deposit: Deposit
 
       search:
         title: "Auction search"

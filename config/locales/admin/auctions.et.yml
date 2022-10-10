@@ -5,6 +5,7 @@ et:
         title: "Finished auctions"
         new_auction: "Uus oksjon"
         no_price: "NaN"
+        deposit: Tagatisraha
 
       search:
         title: "Oksjoni otsing"
