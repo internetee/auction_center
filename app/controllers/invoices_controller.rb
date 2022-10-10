@@ -64,7 +64,7 @@ class InvoicesController < ApplicationController
 
   def pay_deposit
     auction = Auction.find_by(uuid: params[:uuid])
-    description = "prepayment #{auction.domain_name}, user_uuid #{current_user.uuid}, user_email #{current_user.email}"
+    description = "auction_deposit #{auction.domain_name}, user_uuid #{current_user.uuid}, user_email #{current_user.email}"
     response = EisBilling::PayDepositService.call(amount: auction.deposit,
                                                   customer_url: deposit_callback_url,
                                                   description: description)
