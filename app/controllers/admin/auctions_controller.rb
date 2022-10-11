@@ -74,9 +74,13 @@ module Admin
     end
 
     def apply_auction_participants
-      p '@@@@@@@@'
-      p params
-      p '@@@@@@@@'
+      auction = Auction.find_by_uuid(params[:auction_uuid])
+      users = User.where(id: params[:user_ids])
+      users.each do |user|
+        DomainParticipateAuction.create!(user: user, auction: auction)
+      end
+
+      redirect_to admin_auction_path(auction)
     end
 
     private

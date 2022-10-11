@@ -3,7 +3,7 @@ class DirectoInvoiceForwardJob < ApplicationJob
     collected_data = []
     invoices = Invoice.where(status: 'paid', in_directo: false)
     return unless invoices.any?
-    
+
     invoices.each do |i|
       collected_data << i.as_directo_json
     end

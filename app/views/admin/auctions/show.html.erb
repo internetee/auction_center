@@ -81,6 +81,7 @@
         <h2><%= t('auctions.show.user_list') %></h2>
         <div class="content">
             <%= form_with url: apply_auction_participants_admin_auctions_path do |form| %>
+                <%= form.hidden_field :auction_uuid, value: @auction.uuid %>
 
                 <div class="buttons">
                     <%= form.submit t('auctions.show.apply'), class: 'ui button primary' %>
@@ -99,7 +100,13 @@
                                 <tr class="offers-table-row">
                                     <td><%= user.display_name %></td>
                                     <td><%= user.email %></td>
-                                    <td style="text-align: center"><%= form.check_box :user_ids, { multiple: true }, user.id, nil %></td>
+                                    <td style="text-align: center">
+                                        <%= form.check_box :user_ids,
+                                                           { multiple: true,
+                                                             checked: @auction.allow_to_set_bid?(user) },
+                                                           user.id,
+                                                           nil %>
+                                    </td>
                                 </tr>
                             <% end %>
                         </tbody>
