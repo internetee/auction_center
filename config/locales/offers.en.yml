@@ -19,6 +19,7 @@ en:
       errors: "prohibited this offer from being saved"
       deposit_enable: Deposit required
       make_deposit: Make a deposit
+      deposit_description: To participate in the auction, you need to make a deposit of %{deposit} (VAT included) euros. If you lose, the deposit will be returned to your account.
 
     show:
       title: "Your offer"

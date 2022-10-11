@@ -47,7 +47,7 @@ class AdminBulkActionService
     auction.starting_price = auction_elements[:starting_price] unless auction_elements[:starting_price].empty?
     auction.min_bids_step = auction.starting_price unless auction_elements[:starting_price].empty?
     auction.slipping_end = auction_elements[:slipping_end] unless auction_elements[:slipping_end].empty?
-    auction.deposit = auction_elements[:deposit] unless auction_elements[:deposit].zero?
+    auction.deposit = auction_elements[:deposit] unless auction_elements[:deposit].to_f.zero?
 
     auction = deposit_handler(auction)
     auction.save!

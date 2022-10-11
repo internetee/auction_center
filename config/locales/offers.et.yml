@@ -19,6 +19,7 @@ et:
       title: "Domeeni registreerimise eelisõiguse pakkumus"
       deposit_enable: Nõutav tagatisraha
       make_deposit: Tehke deposiit
+      deposit_description: Oksjonil osalemiseks tuleb teha %{deposit} (Sisaldab käibemaksu) euro suurune sissemakse. Kui kaotate, tagastatakse deposiit teie kontole.
 
     create:
       created: "Pakkumus edukalt esitatud"

@@ -57,6 +57,9 @@
                             <%= t('offers.new.deposit_enable') %>
                         </strong>
                     </p>
+                    <p>
+                        <%= t('offers.new.deposit_description', deposit: @auction.deposit) %>
+                    </p>
                     <div style='text-align: center; margin-bottom: 4rem;'>
                         <%= button_to t('offers.new.make_deposit'), 
                                         english_offer_deposit_auction_path(uuid: @offer.auction.uuid, current_user: current_user),
