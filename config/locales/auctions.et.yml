@@ -14,6 +14,9 @@ et:
     min_bids_step: "Minimaalne panuse samm eurod"
     slipping_end: "Pikenev lõpp minutites"
     offer_owner: "Offer owner"
+    enable_deposit: "Võimaldage tagatisraha"
+    disable_deposit: "Deaktiveeri tagatisraha"
+    deposit: Tagatisraha
 
 
     still_in_progress: "Töötlemisel"

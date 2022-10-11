@@ -16,6 +16,9 @@ en:
     min_bids_step: "Minimum bid steps in euros"
     slipping_end: "Slipping end condition in minutes"
     offer_owner: "Offer owner"
+    enable_deposit: "Enable deposit"
+    disable_deposit: "Disable deposit"
+    deposit: Deposit
 
 
     still_in_progress: "Still in progress"

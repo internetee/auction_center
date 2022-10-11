@@ -97,17 +97,6 @@ class AdminAuctionsTest < ApplicationSystemTestCase
     assert(page.has_text?('Deleted successfully'))
   end
 
-  def test_auction_details_contain_a_list_of_offers
-    visit(admin_auction_path(@auction))
-
-    assert(page.has_table?('auctions-offers-table'))
-
-    within('tbody#offers-table-body') do
-      assert_text('50.00 €')
-      assert_text('Joe John Participant')
-    end
-  end
-
   def test_administrator_cannot_remove_auction_if_it_has_started
     travel_to Time.parse('2010-07-05 11:30 +0000').in_time_zone
 

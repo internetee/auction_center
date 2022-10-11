@@ -13,6 +13,9 @@ et:
       new:
         title: "Uus oksjon"
         errors: "ei võimaldanud toimingut salvestada"
+        enable_deposit: "Võimaldage tagatisraha"
+        disable_deposit: "Deaktiveeri tagatisraha"
+        deposit: Tagatisraha
 
       show:
         title: "Oksjon"
