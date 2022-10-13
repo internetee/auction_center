@@ -1,6 +1,7 @@
 module EisBilling
   class PayDepositService
     include EisBilling::Request
+    include EisBilling::BaseService
 
     INITIATOR = 'auction'.freeze
 
@@ -15,9 +16,14 @@ module EisBilling
     end
 
     def self.call(amount:, customer_url:, description:)
-      fetcher = new(amount: amount, customer_url: customer_url, description: description)
-      fetcher.send_request
+      new(amount: amount, customer_url: customer_url, description: description).call
     end
+
+    def call
+      struct_response(send_request)
+    end
+
+    private
 
     def send_request
       post deposit_prepayment_url, params

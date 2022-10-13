@@ -14,6 +14,6 @@ class GetInvoiceNumberTest < ActiveSupport::TestCase
       .to_return(status: 200, body: message.to_json, headers: {})
 
     response = EisBilling::GetInvoiceNumber.call
-    assert_equal response['message'], '12345'
+    assert_equal response.instance['message'], '12345'
   end
 end

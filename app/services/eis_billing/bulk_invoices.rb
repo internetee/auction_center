@@ -59,15 +59,17 @@ module EisBilling
 
     def prepare_data(parsed_data:)
       data = {}
-      generated_number = EisBilling::GetInvoiceNumber.call['invoice_number']
+      generated_number = EisBilling::GetInvoiceNumber.call
+
+      raise(StandardError, generated_number.errors) unless generated_number.result?
 
       data[:custom_field1] = parsed_data[:invoice_description]
       data[:transaction_amount] = parsed_data[:invoices_total_sum]
       data[:customer_name] = parsed_data[:customer_name]
       data[:customer_email] = parsed_data[:customer_email]
       data[:custom_field2] = INITIATOR
-      data[:order_reference] = generated_number
-      data[:invoice_number] = generated_number
+      data[:order_reference] = generated_number.instance['number']
+      data[:invoice_number] = generated_number.instance['number']
       data[:multiple] = 'true'
 
       data

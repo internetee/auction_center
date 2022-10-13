@@ -87,12 +87,14 @@ class Invoice < ApplicationRecord
   end
 
   def set_invoice_number
-    result = EisBilling::GetInvoiceNumber.call
+    invoice_number = EisBilling::GetInvoiceNumber.call
 
-    billing_restrictions_issue if result['code'] == '403'
-    billing_out_of_range_issue if result['error'] == 'out of range'
-
-    self.number = result['invoice_number'].to_i
+    if invoice_number.result?
+      self.number = invoice_number.instance['invoice_number'].to_i
+    else
+      billing_restrictions_issue if invoice_number.errors['code'] == '403'
+      billing_out_of_range_issue if invoice_number.errors['error'] == 'out of range'
+    end
   end
 
   def items

@@ -68,26 +68,24 @@ class InvoicesController < ApplicationController
     response = EisBilling::PayDepositService.call(amount: auction.deposit,
                                                   customer_url: deposit_callback_url,
                                                   description: description)
-
-    if response['error'].present?
-      flash.alert = response['error']['message']
-      redirect_to invoices_path and return
+    if response.result?
+      redirect_to response.instance['oneoff_redirect_link'], allow_other_host: true
+    else
+      flash.alert = response.errors
+      redirect_to invoices_path
     end
-
-    redirect_to response['oneoff_redirect_link'], allow_other_host: true
   end
 
   def oneoff
     invoice = Invoice.accessible_by(current_ability).find_by!(uuid: params[:uuid])
-    response = EisBilling::Oneoff.send_invoice(invoice_number: invoice.number.to_s,
-                                               customer_url: linkpay_callback_url)
-
-    if response['error'].present?
-      flash.alert = response['error']['message']
-      redirect_to invoices_path and return
+    response = EisBilling::OneoffService.call(invoice_number: invoice.number.to_s,
+                                              customer_url: linkpay_callback_url)
+    if response.result?
+      redirect_to response.instance['oneoff_redirect_link'], allow_other_host: true
+    else
+      flash.alert = response.errors
+      redirect_to invoices_path
     end
-
-    redirect_to response['oneoff_redirect_link'], allow_other_host: true
   end
 
   def update_predicate

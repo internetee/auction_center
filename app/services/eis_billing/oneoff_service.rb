@@ -1,6 +1,8 @@
 module EisBilling
-  class Oneoff
+  class OneoffService
     include EisBilling::Request
+    include EisBilling::BaseService
+
     attr_reader :invoice_number, :customer_url
 
     def initialize(invoice_number:, customer_url:)
@@ -8,12 +10,17 @@ module EisBilling
       @customer_url = customer_url
     end
 
-    def self.send_invoice(invoice_number:, customer_url:)
-      fetcher = new(invoice_number: invoice_number, customer_url: customer_url)
-      fetcher.send_it
+    def self.call(invoice_number:, customer_url:)
+      new(invoice_number: invoice_number, customer_url: customer_url).call
     end
 
-    def send_it
+    def call
+      struct_response(fetch)
+    end
+
+    private
+
+    def fetch
       post invoice_oneoff_url, params
     end
 

@@ -1,11 +1,17 @@
 module EisBilling
   class GetInvoiceNumber
     include EisBilling::Request
+    include EisBilling::BaseService
 
     def self.call
-      fetcher = new
-      fetcher.send_request
+      new.call
     end
+
+    def call
+      struct_response(send_request)
+    end
+
+    private
 
     def send_request
       post invoice_number_generator_url, nil

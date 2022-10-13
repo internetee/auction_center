@@ -21,6 +21,6 @@ class PayDepositServiceTest < ActiveSupport::TestCase
       description: 'deposit_prepayment'
     )
 
-    assert_equal res['oneoff_redirect_link'], 'http://oneoff.redirect'
+    assert_equal res.instance['oneoff_redirect_link'], 'http://oneoff.redirect'
   end
 end
