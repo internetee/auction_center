@@ -1,5 +1,5 @@
 module EisBilling
-  class SendCallback
+  class SendCallbackService
     include EisBilling::Request
     attr_reader :reference_number
 
@@ -7,10 +7,15 @@ module EisBilling
       @reference_number = reference_number
     end
 
-    def self.send(reference_number:)
-      fetcher = new(reference_number: reference_number)
-      fetcher.send_it
+    def self.call(reference_number:)
+      new(reference_number: reference_number).call
     end
+
+    def call
+      send_it
+    end
+
+    private
 
     def send_it
       get billing_callback_url

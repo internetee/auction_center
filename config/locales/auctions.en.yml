@@ -19,6 +19,8 @@ en:
     enable_deposit: "Enable deposit"
     disable_deposit: "Disable deposit"
     deposit: Deposit
+    bid: Bid!
+    participate: Participate!
 
 
     still_in_progress: "Still in progress"

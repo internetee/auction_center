@@ -1,4 +1,5 @@
 class Auction < ApplicationRecord
+  include Presentable
   include PgSearch::Model
 
   BLIND = '0'.freeze
@@ -129,6 +130,7 @@ class Auction < ApplicationRecord
   def allow_to_set_bid?(user)
     return true unless english?
     return true unless enable_deposit?
+    return false if user.nil?
 
     user.domain_participate_auctions.any? { |item| item.auction_id == self.id }
   end

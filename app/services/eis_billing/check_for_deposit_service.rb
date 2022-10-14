@@ -14,12 +14,17 @@ module EisBilling
     end
 
     def self.call(domain_name:, user_uuid:, user_email:, transaction_amount:)
-      service = new(domain_name: domain_name,
-                    user_uuid: user_uuid,
-                    user_email: user_email,
-                    transaction_amount: transaction_amount)
-      service.set_available_for_user
+      new(domain_name: domain_name,
+          user_uuid: user_uuid,
+          user_email: user_email,
+          transaction_amount: transaction_amount).call
     end
+
+    def call
+      set_available_for_user
+    end
+
+    private
 
     def set_available_for_user
       auction = Auction.find_by_domain_name(domain_name)

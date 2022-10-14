@@ -21,5 +21,5 @@ import WishlistController from "./wishlist_controller"
 application.register("wishlist", WishlistController)
 import AuctionTypeHandlerController from "./auction_type_handler_controller"
 application.register("auction_type_handler", AuctionTypeHandlerController)
-import EnableDepositToggleController from "./enable_deposit_toggle_controller"
-application.register("enable_deposit_toggle", EnableDepositToggleController)
+import CheckboxToggleController from "./checkbox_toggle_controller"
+application.register("checkbox_toggle", CheckboxToggleController)

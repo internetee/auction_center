@@ -16,7 +16,7 @@ class SendCallbackTest < ActiveSupport::TestCase
     stub_request(:get, "http://eis_billing_system:3000/api/v1/callback_handler/callback?payment_reference=#{@reference_number}")
       .to_return(status: 200, body: incoming.to_json, headers: {})
 
-    response = EisBilling::SendCallback.send(reference_number: @reference_number)
+    response = EisBilling::SendCallbackService.call(reference_number: @reference_number)
     assert_equal response['message'], 'received'
   end
 end

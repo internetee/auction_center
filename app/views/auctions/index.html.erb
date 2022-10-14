@@ -100,7 +100,7 @@
 
                     <%= tag.tbody id: "bids", class: 'contents' do %>
                         <% @auctions.uniq.each do |auction| %>
-                            <%= render partial: 'auction', locals: { auction: auction, q_user: current_user } %>
+                            <%= render partial: 'auction', locals: { auction: auction.decorate, q_user: current_user } %>
                         <% end %>
                     <% end %>
                 </table>

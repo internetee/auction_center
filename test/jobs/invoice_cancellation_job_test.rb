@@ -10,7 +10,7 @@ class InvoiceCancellationJobTest < ActiveJob::TestCase
   def test_overdue_invoices_are_cancelled_automatically
     eis_response = OpenStruct.new(body: "{\"payment_link\":\"http://link.test\"}")
     Spy.on_instance_method(EisBilling::Invoice, :send_invoice).and_return(eis_response)
-    Spy.on(EisBilling::SendInvoiceStatus, :send_info).and_return(true)
+    Spy.on(EisBilling::SendInvoiceStatusService, :call).and_return(true)
 
     InvoiceCancellationJob.perform_now
 
@@ -22,7 +22,7 @@ class InvoiceCancellationJobTest < ActiveJob::TestCase
   def test_user_is_banned_if_exists
     eis_response = OpenStruct.new(body: "{\"payment_link\":\"http://link.test\"}")
     Spy.on_instance_method(EisBilling::Invoice, :send_invoice).and_return(eis_response)
-    Spy.on(EisBilling::SendInvoiceStatus, :send_info).and_return(true)
+    Spy.on(EisBilling::SendInvoiceStatusService, :call).and_return(true)
 
     payable = invoices(:payable)
     InvoiceCancellationJob.perform_now

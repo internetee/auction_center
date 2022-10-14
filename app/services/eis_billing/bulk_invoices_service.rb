@@ -1,6 +1,8 @@
 module EisBilling
-  class BulkInvoices
+  class BulkInvoicesService
     include EisBilling::Request
+    include EisBilling::BaseService
+
     INITIATOR = 'auction'.freeze
 
     attr_reader :invoices
@@ -10,12 +12,18 @@ module EisBilling
     end
 
     def self.call(invoices)
-      fetcher = new(invoices)
-      parsed_data = fetcher.parse_data(invoices)
-      prepared_data = fetcher.prepare_data(parsed_data: parsed_data)
-
-      fetcher.send_request(payload: prepared_data)
+      new(invoices).call
     end
+
+    def call
+      parsed_data = parse_data(invoices)
+      prepared_data = prepare_data(parsed_data: parsed_data)
+
+      response = send_request(payload: prepared_data)
+      struct_response(response)
+    end
+
+    private
 
     def send_request(payload:)
       post invoice_generator_url, payload

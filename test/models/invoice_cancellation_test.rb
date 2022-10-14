@@ -42,7 +42,7 @@ class InvoiceCancellationTest < ActiveSupport::TestCase
   def test_cancel_sets_the_status_on_results
     eis_response = OpenStruct.new(body: "{\"payment_link\":\"http://link.test\"}")
     Spy.on_instance_method(EisBilling::Invoice, :send_invoice).and_return(eis_response)
-    Spy.on(EisBilling::SendInvoiceStatus, :send_info).and_return(true)
+    Spy.on(EisBilling::SendInvoiceStatusService, :call).and_return(true)
 
     invoice_cancellation = InvoiceCancellation.new(@overdue_invoice)
     assert(invoice_cancellation.cancel)
@@ -61,7 +61,7 @@ class InvoiceCancellationTest < ActiveSupport::TestCase
   def test_cancel_bans_the_offender
     eis_response = OpenStruct.new(body: "{\"payment_link\":\"http://link.test\"}")
     Spy.on_instance_method(EisBilling::Invoice, :send_invoice).and_return(eis_response)
-    Spy.on(EisBilling::SendInvoiceStatus, :send_info).and_return(true)
+    Spy.on(EisBilling::SendInvoiceStatusService, :call).and_return(true)
 
     invoice_cancellation = InvoiceCancellation.new(@overdue_invoice)
     assert(invoice_cancellation.cancel)
@@ -74,7 +74,7 @@ class InvoiceCancellationTest < ActiveSupport::TestCase
   def test_cancel_sends_ban_notice
     eis_response = OpenStruct.new(body: "{\"payment_link\":\"http://link.test\"}")
     Spy.on_instance_method(EisBilling::Invoice, :send_invoice).and_return(eis_response)
-    Spy.on(EisBilling::SendInvoiceStatus, :send_info).and_return(true)
+    Spy.on(EisBilling::SendInvoiceStatusService, :call).and_return(true)
 
     invoice_cancellation = InvoiceCancellation.new(@overdue_invoice)
     assert(invoice_cancellation.cancel)

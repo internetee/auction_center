@@ -8,7 +8,7 @@ class DirectoInvoiceForwardJob < ApplicationJob
       collected_data << i.as_directo_json
     end
 
-    EisBilling::SendDataToDirecto.send_request(object_data: collected_data)
+    EisBilling::SendDataToDirectoService.call(object_data: collected_data)
   end
 
   def self.needs_to_run?

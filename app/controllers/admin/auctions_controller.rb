@@ -48,6 +48,8 @@ module Admin
     # GET /admin/auctions/1
     def show
       @offers = @auction.offers.order(cents: :desc)
+      users = User.search_deposit_participants(params)
+      @pagy, @users = pagy(users, items: params[:per_page] ||= 20, link_extra: 'data-turbo-action="advance"')
     end
 
     # DELETE /admin/auctions/1

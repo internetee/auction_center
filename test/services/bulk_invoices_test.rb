@@ -12,9 +12,10 @@ class BulkInvoicesTest < ActiveSupport::TestCase
   end
 
   def test_sum_invoices_calculation
-    bulk = EisBilling::BulkInvoices.new([@invoice, @invoice_two])
-    assert_equal bulk.total_transaction_amount([@invoice, @invoice_two]),
-                 (@invoice.total.to_f + @invoice_two.total.to_f).to_s
+    bulk = EisBilling::BulkInvoicesService.new([@invoice, @invoice_two])
+    total = bulk.send :total_transaction_amount, [@invoice, @invoice_two]
+
+    assert_equal total, (@invoice.total.to_f + @invoice_two.total.to_f).to_s
   end
 
   def test_should_send_bulk_invoices
@@ -24,8 +25,8 @@ class BulkInvoicesTest < ActiveSupport::TestCase
     stub_request(:post, 'http://eis_billing_system:3000/api/v1/invoice_generator/invoice_generator')
       .to_return(status: 200, body: '{"everypay_link":"http://link.test"}', headers: {})
 
-    result = EisBilling::BulkInvoices.call([@invoice, @invoice_two])
+    result = EisBilling::BulkInvoicesService.call([@invoice, @invoice_two])
 
-    assert_equal result['everypay_link'], 'http://link.test'
+    assert_equal result.instance['everypay_link'], 'http://link.test'
   end
 end

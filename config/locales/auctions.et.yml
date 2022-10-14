@@ -17,6 +17,8 @@ et:
     enable_deposit: "Võimaldage tagatisraha"
     disable_deposit: "Deaktiveeri tagatisraha"
     deposit: Tagatisraha
+    bid: Pakkumine!
+    participate: Osale!
 
 
     still_in_progress: "Töötlemisel"

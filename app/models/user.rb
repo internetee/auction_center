@@ -59,8 +59,28 @@ class User < ApplicationRecord
     end
   }
 
+  scope :with_deposit_participants, ->(enable, auction_id) do
+    if enable.present?
+      self.includes(:domain_participate_auctions).where(domain_participate_auctions: { auction_id: auction_id })
+    end
+  end
+
+  scope :without_deposit_participants, ->(enable, auction_id) do
+    if enable.present?
+      self.includes(:domain_participate_auctions).where.not(domain_participate_auctions: { auction_id: auction_id })
+    end
+  end
+
   def self.search(params = {})
     self.with_search_scope(params[:search_string])
+  end
+
+  def self.search_deposit_participants(params = {})
+    self.with_search_scope(params[:search_string])
+        .with_deposit_participants(params[:with_deposit_participants],
+                                   params[:auction_id])
+        .without_deposit_participants(params[:without_deposit_participants],
+                                      params[:auction_id])
   end
 
   def identity_code_must_be_valid_for_estonia
