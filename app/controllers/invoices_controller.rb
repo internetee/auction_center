@@ -52,10 +52,10 @@ class InvoicesController < ApplicationController
 
   def pay_all_bills
     issued_invoices = invoices_list_by_status(Invoice.statuses[:issued])
-    response = EisBilling::BulkInvoicesService.call(issued_invoices)
+    response = EisBilling::BulkInvoicesService.call(invoices: issued_invoices, customer_url: linkpay_callback_url)
 
     if response.result?
-      redirect_to response.instance['everypay_link']
+      redirect_to response.instance['oneoff_redirect_link']
     else
       flash.alert = response.errors
       redirect_to invoices_path and return

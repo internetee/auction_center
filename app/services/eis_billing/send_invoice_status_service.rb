@@ -1,8 +1,9 @@
 module EisBilling
   class SendInvoiceStatusService
     include EisBilling::Request
+    include EisBilling::BaseService
 
-    attr_reader :invoice_status, :status
+    attr_reader :invoice_number, :status
 
     def initialize(invoice_number:, status:)
       @invoice_number = invoice_number
@@ -14,7 +15,7 @@ module EisBilling
     end
 
     def call
-      send_request
+      struct_response(send_request)
     end
 
     def send_request

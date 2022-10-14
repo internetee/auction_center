@@ -21,6 +21,6 @@
   <%= auction&.currently_winning_offer&.username %>
 </td>
 <td class="center aligned">
-  <%= auction.auction_offer_button(current_user) %>
+  <%= auction.decorate.auction_offer_button(current_user) %>
 </td>
 </tr>

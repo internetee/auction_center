@@ -5,44 +5,39 @@ module EisBilling
 
     INITIATOR = 'auction'.freeze
 
-    attr_reader :invoices
+    attr_reader :invoices,
+                :customer_url
 
-    def initialize(invoices)
+    def initialize(invoices:, customer_url:)
       @invoices = invoices
+      @customer_url = customer_url
     end
 
-    def self.call(invoices)
-      new(invoices).call
+    def self.call(invoices:, customer_url:)
+      new(invoices: invoices, customer_url: customer_url).call
     end
 
     def call
-      parsed_data = parse_data(invoices)
-      prepared_data = prepare_data(parsed_data: parsed_data)
-
-      response = send_request(payload: prepared_data)
-      struct_response(response)
+      struct_response(send_request)
     end
 
     private
 
-    def send_request(payload:)
-      post invoice_generator_url, payload
+    def send_request
+      post invoice_generator_url, params
     end
 
     def invoice_generator_url
-      '/api/v1/invoice_generator/invoice_generator'
+      '/api/v1/invoice_generator/bulk_payment'
     end
 
-    def parse_data(invoices)
-      parsed_data = {}
-
-      data_of_first_invoice = extract_data_from_invoice(invoices[0])
-      parsed_data[:customer_name] = data_of_first_invoice[:customer_name]
-      parsed_data[:customer_email] = data_of_first_invoice[:customer_email]
-      parsed_data[:invoices_total_sum] = total_transaction_amount(invoices)
-      parsed_data[:invoice_description] = prepare_description(invoices)
-
-      parsed_data
+    def params
+      {
+        transaction_amount: total_transaction_amount(invoices),
+        customer_url: customer_url,
+        description: prepare_description(invoices),
+        custom_field2: INITIATOR
+      }
     end
 
     def prepare_description(invoices)
@@ -54,33 +49,8 @@ module EisBilling
       data.join(' ')
     end
 
-    def extract_data_from_invoice(invoice)
-      {
-        customer_name: "#{invoice.user.given_names} #{invoice.user.surname}",
-        customer_email: invoice.user.email,
-      }
-    end
-
     def total_transaction_amount(invoices)
       invoices.sum { |invoice| invoice.total.to_f }.to_s
-    end
-
-    def prepare_data(parsed_data:)
-      data = {}
-      generated_number = EisBilling::GetInvoiceNumber.call
-
-      raise(StandardError, generated_number.errors) unless generated_number.result?
-
-      data[:custom_field1] = parsed_data[:invoice_description]
-      data[:transaction_amount] = parsed_data[:invoices_total_sum]
-      data[:customer_name] = parsed_data[:customer_name]
-      data[:customer_email] = parsed_data[:customer_email]
-      data[:custom_field2] = INITIATOR
-      data[:order_reference] = generated_number.instance['number']
-      data[:invoice_number] = generated_number.instance['number']
-      data[:multiple] = 'true'
-
-      data
     end
   end
 end
