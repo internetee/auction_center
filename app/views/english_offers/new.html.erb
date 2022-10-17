@@ -28,7 +28,7 @@
         <div class="ui two column grid centered" style="margin-bottom: 20px;">
             <div class="">
                 <%= tag.h5 id: 'mini' do %>
-                    <%= t('english_offers.show.min_bid') %> <%= @offer.auction.min_bids_step %>
+                    <%= t('english_offers.show.min_bid') %> <%= @offer.auction.min_bids_step.to_f %>
                 <% end %>
             </div>
 

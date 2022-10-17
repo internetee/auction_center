@@ -125,7 +125,7 @@ class Invoice < ApplicationRecord
   end
 
   def total
-    price * (1 + vat_rate)
+    (price.to_f * (1 + vat_rate)).round(2)
   end
 
   def vat
