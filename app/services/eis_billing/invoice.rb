@@ -19,7 +19,7 @@ module EisBilling
 
     private
 
-    def payload
+    def params
       data = {}
       data[:transaction_amount] = invoice.total.to_s
       data[:order_reference] = invoice.number
@@ -33,7 +33,7 @@ module EisBilling
     end
 
     def send_request
-      post invoice_generator_url, payload
+      post invoice_generator_url, params
     end
 
     def invoice_generator_url
