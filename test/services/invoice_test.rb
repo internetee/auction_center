@@ -14,8 +14,7 @@ class InvoiceTest < ActiveSupport::TestCase
     stub_request(:post, 'http://eis_billing_system:3000/api/v1/invoice_generator/invoice_generator')
       .to_return(status: 200, body: @everypay_link.to_json, headers: {})
 
-    requier = EisBilling::Invoice.new(@invoice)
-    response = requier.send_invoice
-    assert_equal response['everypay_link'], 'http://link.test'
+    response = EisBilling::Invoice.call(invoice: @invoice)
+    assert_equal response.instance['everypay_link'], 'http://link.test'
   end
 end

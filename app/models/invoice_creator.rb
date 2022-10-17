@@ -40,11 +40,13 @@ class InvoiceCreator
   end
 
   def send_invoice_to_billing_system(invoice)
-    add_invoice_instance = EisBilling::Invoice.new(invoice)
-    result = add_invoice_instance.send_invoice
-    link = result['everypay_link']
-
-    invoice.update(payment_link: link)
+    response = EisBilling::Invoice.call(invoice: invoice)
+    if response.result?
+      link = response.instance['everypay_link']
+      invoice.update(payment_link: link)
+    else
+      response.errors
+    end
   end
 
   def assign_price

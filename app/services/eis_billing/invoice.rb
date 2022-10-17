@@ -1,20 +1,25 @@
 module EisBilling
   class Invoice
     include EisBilling::Request
+    include EisBilling::BaseService
 
     attr_reader :invoice
 
-    def initialize(invoice)
+    def initialize(invoice:)
       @invoice = invoice
     end
 
-    def send_invoice
-      send_request(payload: parse_invoice)
+    def self.call(invoice:)
+      new(invoice: invoice).call
+    end
+
+    def call
+      struct_response(send_request)
     end
 
     private
 
-    def parse_invoice
+    def payload
       data = {}
       data[:transaction_amount] = invoice.total.to_s
       data[:order_reference] = invoice.number
@@ -27,7 +32,7 @@ module EisBilling
       data
     end
 
-    def send_request(payload:)
+    def send_request
       post invoice_generator_url, payload
     end
 
