@@ -21,12 +21,6 @@ class Auction < ApplicationRecord
 
   enum platform: %i[blind english]
 
-  # after_update_commit :broadcast_add_new_auction, unless: :skip_broadcast
-  # after_update_commit :broadcast_update_auction_count
-  # after_update_commit :broadcast_update_min_bid
-  # after_update_commit :broadcast_update_highest_bid, unless: :skip_broadcast
-  # after_update_commit :broadcast_update_timer, unless: :skip_broadcast
-
   after_update_commit :update_list_broadcast, unless: :skip_broadcast
   after_update_commit :update_offer_broadcast, unless: :skip_broadcast
 

@@ -883,7 +883,7 @@ CREATE TABLE public.auctions (
     turns_count integer,
     platform integer,
     starting_price numeric,
-    min_bids_step numeric,
+    min_bids_step numeric(5,2),
     slipping_end integer,
     initial_ends_at timestamp without time zone,
     enable_deposit boolean DEFAULT false NOT NULL,
@@ -2970,6 +2970,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221003065216'),
 ('20221005105336'),
 ('20221006094111'),
-('20221007082951');
+('20221007082951'),
+('20221017133559');
 
 
