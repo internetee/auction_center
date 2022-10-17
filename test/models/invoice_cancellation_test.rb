@@ -40,9 +40,11 @@ class InvoiceCancellationTest < ActiveSupport::TestCase
   end
 
   def test_cancel_sets_the_status_on_results
-    eis_response = OpenStruct.new(body: "{\"payment_link\":\"http://link.test\"}")
-    Spy.on_instance_method(EisBilling::Invoice, :send_invoice).and_return(eis_response)
-    Spy.on(EisBilling::SendInvoiceStatusService, :call).and_return(true)
+    message = {
+      message: 'Status updated'
+    }
+    stub_request(:post, "http://eis_billing_system:3000/api/v1/invoice_generator/invoice_status")
+      .to_return(status: 200, body: message.to_json, headers: {})
 
     invoice_cancellation = InvoiceCancellation.new(@overdue_invoice)
     assert(invoice_cancellation.cancel)
@@ -59,9 +61,11 @@ class InvoiceCancellationTest < ActiveSupport::TestCase
   end
 
   def test_cancel_bans_the_offender
-    eis_response = OpenStruct.new(body: "{\"payment_link\":\"http://link.test\"}")
-    Spy.on_instance_method(EisBilling::Invoice, :send_invoice).and_return(eis_response)
-    Spy.on(EisBilling::SendInvoiceStatusService, :call).and_return(true)
+    message = {
+      message: 'Status updated'
+    }
+    stub_request(:post, "http://eis_billing_system:3000/api/v1/invoice_generator/invoice_status")
+      .to_return(status: 200, body: message.to_json, headers: {})
 
     invoice_cancellation = InvoiceCancellation.new(@overdue_invoice)
     assert(invoice_cancellation.cancel)
@@ -72,9 +76,11 @@ class InvoiceCancellationTest < ActiveSupport::TestCase
   end
 
   def test_cancel_sends_ban_notice
-    eis_response = OpenStruct.new(body: "{\"payment_link\":\"http://link.test\"}")
-    Spy.on_instance_method(EisBilling::Invoice, :send_invoice).and_return(eis_response)
-    Spy.on(EisBilling::SendInvoiceStatusService, :call).and_return(true)
+    message = {
+      message: 'Status updated'
+    }
+    stub_request(:post, "http://eis_billing_system:3000/api/v1/invoice_generator/invoice_status")
+      .to_return(status: 200, body: message.to_json, headers: {})
 
     invoice_cancellation = InvoiceCancellation.new(@overdue_invoice)
     assert(invoice_cancellation.cancel)

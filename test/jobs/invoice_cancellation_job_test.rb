@@ -8,21 +8,26 @@ class InvoiceCancellationJobTest < ActiveJob::TestCase
   end
 
   def test_overdue_invoices_are_cancelled_automatically
-    eis_response = OpenStruct.new(body: "{\"payment_link\":\"http://link.test\"}")
-    Spy.on_instance_method(EisBilling::Invoice, :send_invoice).and_return(eis_response)
-    Spy.on(EisBilling::SendInvoiceStatusService, :call).and_return(true)
+    message = {
+      message: 'Status updated'
+    }
+    stub_request(:post, 'http://eis_billing_system:3000/api/v1/invoice_generator/invoice_status')
+      .to_return(status: 200, body: message.to_json, headers: {})
 
     InvoiceCancellationJob.perform_now
 
     @invoice.reload
+
     assert_equal('cancelled', @invoice.status)
     assert_equal('payment_not_received', @invoice.result.status)
   end
 
   def test_user_is_banned_if_exists
-    eis_response = OpenStruct.new(body: "{\"payment_link\":\"http://link.test\"}")
-    Spy.on_instance_method(EisBilling::Invoice, :send_invoice).and_return(eis_response)
-    Spy.on(EisBilling::SendInvoiceStatusService, :call).and_return(true)
+    message = {
+      message: 'Status updated'
+    }
+    stub_request(:post, 'http://eis_billing_system:3000/api/v1/invoice_generator/invoice_status')
+      .to_return(status: 200, body: message.to_json, headers: {})
 
     payable = invoices(:payable)
     InvoiceCancellationJob.perform_now

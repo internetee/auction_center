@@ -33,14 +33,14 @@ module EisBilling
 
     def params
       {
-        transaction_amount: total_transaction_amount(invoices),
+        transaction_amount: total_transaction_amount,
         customer_url: customer_url,
-        description: prepare_description(invoices),
+        description: prepare_description,
         custom_field2: INITIATOR
       }
     end
 
-    def prepare_description(invoices)
+    def prepare_description
       data = []
       invoices.each do |i|
         data << i.number.to_s
@@ -49,7 +49,7 @@ module EisBilling
       data.join(' ')
     end
 
-    def total_transaction_amount(invoices)
+    def total_transaction_amount
       invoices.sum { |invoice| invoice.total.to_f }.to_s
     end
   end
