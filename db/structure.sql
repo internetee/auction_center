@@ -883,7 +883,7 @@ CREATE TABLE public.auctions (
     turns_count integer,
     platform integer,
     starting_price numeric,
-    min_bids_step numeric(5,2),
+    min_bids_step numeric(10,2),
     slipping_end integer,
     initial_ends_at timestamp without time zone,
     enable_deposit boolean DEFAULT false NOT NULL,

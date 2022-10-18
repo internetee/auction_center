@@ -21,7 +21,7 @@ module EisBilling
 
     def params
       data = {}
-      data[:transaction_amount] = invoice.total.to_s
+      data[:transaction_amount] = invoice.total.to_f
       data[:order_reference] = invoice.number
       data[:customer_name] = "#{invoice.user.given_names} #{invoice.user.surname}"
       data[:customer_email] = invoice.user.email
