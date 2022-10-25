@@ -278,8 +278,7 @@ module Countries
                { code: 'SK', rate: BigDecimal('0.2') },
                { code: 'SI', rate: BigDecimal('0.22') },
                { code: 'ES', rate: BigDecimal('0.21') },
-               { code: 'SE', rate: BigDecimal('0.25') },
-               { code: 'GB', rate: BigDecimal('0.2') }].freeze
+               { code: 'SE', rate: BigDecimal('0.25') },].freeze
 
   def self.for_selection
     ALPHA_2_SELECTION.collect { |i| [i[:name], i[:code]] }
