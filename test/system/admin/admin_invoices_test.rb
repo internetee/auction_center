@@ -21,12 +21,12 @@ class AdminInvoicesTest < ApplicationSystemTestCase
     travel_back
   end
 
-  def test_invoice_list_contains_all_invoices
+  def test_invoice_list_contains_all_invoices_UK_profile
     visit admin_invoices_path
 
     within('tbody.invoices-table-body') do
       assert_text('Orphan Profile')
-      assert_text('12.00 €')
+      assert_text('10.00 €')
       assert_text('10.00 €')
     end
 
