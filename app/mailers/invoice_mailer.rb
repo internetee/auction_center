@@ -3,7 +3,7 @@ class InvoiceMailer < ApplicationMailer
     @invoice = invoice
     @user = invoice.user
     @auction = invoice.result.auction
-    @linkpay_url = invoice.linkpay_url
+    @linkpay_url = invoice.payment_link
 
     I18n.locale = @user&.locale || 'en'
 

@@ -5,7 +5,7 @@ class ResultMailer < ApplicationMailer
     @auction = result.auction
     I18n.locale = @user.locale
 
-    @linkpay_url = result.invoice&.linkpay_url
+    @linkpay_url = result.invoice&.payment_link
 
     mail(to: @user.email, subject: t('.subject', domain_name: @auction.domain_name))
   end
