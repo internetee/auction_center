@@ -202,7 +202,7 @@ GEM
       validate_url
       webfinger (>= 1.0.1)
     orm_adapter (0.5.0)
-    pdfkit (0.8.7)
+    pdfkit (0.8.7.2)
     pg (1.2.3)
     pry (0.14.1)
       coderay (~> 1.1)
