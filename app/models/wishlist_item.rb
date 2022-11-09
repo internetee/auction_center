@@ -25,7 +25,7 @@ class WishlistItem < ApplicationRecord
   validate :must_fit_in_wishlist_size, on: :create
   validate :valid_domain_extension, on: :create
   validate :restrictions_for_active_auctions, on: :create
-  validate :avilability_check, on: :create
+  # validate :avilability_check, on: :create
 
   scope :for_user, ->(user_id) { where(user_id: user_id) }
 
