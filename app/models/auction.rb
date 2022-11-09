@@ -12,8 +12,8 @@ class Auction < ApplicationRecord
   validate :does_not_overlap, unless: :skip_validation
   validate :ends_at_later_than_starts_at
   validate :starts_at_cannot_be_in_the_past, on: :create
-  validate :enable_deposit_only_for_english_auction, on: :update
-  validate :deposit_and_enable_deposit_should_be_togeter, on: :update
+  # validate :enable_deposit_only_for_english_auction, on: :update
+  # validate :deposit_and_enable_deposit_should_be_togeter, on: :update
 
   has_many :offers, dependent: :delete_all
   has_many :domain_participate_auctions
@@ -21,8 +21,8 @@ class Auction < ApplicationRecord
 
   enum platform: %i[blind english]
 
-  after_update_commit :update_list_broadcast, unless: :skip_broadcast
-  after_update_commit :update_offer_broadcast, unless: :skip_broadcast
+  # after_update_commit :update_list_broadcast, unless: :skip_broadcast
+  # after_update_commit :update_offer_broadcast, unless: :skip_broadcast
 
   scope :active, -> { where('starts_at <= ? AND ends_at >= ?', Time.now.utc, Time.now.utc) }
   scope :without_result, lambda {
@@ -75,13 +75,13 @@ class Auction < ApplicationRecord
   delegate :count, to: :offers, prefix: true
   delegate :size, to: :offers, prefix: true
 
-  def update_list_broadcast
-    Auctions::UpdateListBroadcastService.call({ auction: self })
-  end
+  # def update_list_broadcast
+  #   Auctions::UpdateListBroadcastService.call({ auction: self })
+  # end
 
-  def update_offer_broadcast
-    Auctions::UpdateOfferBroadcastService.call({ auction: self })
-  end
+  # def update_offer_broadcast
+  #   Auctions::UpdateOfferBroadcastService.call({ auction: self })
+  # end
 
   def deposit
     Money.new(requirement_deposit_in_cents, Setting.find_by(code: 'auction_currency').retrieve)
@@ -107,23 +107,23 @@ class Auction < ApplicationRecord
         .order("#{sort_column} #{sort_direction}")
   end
 
-  def deposit_and_enable_deposit_should_be_togeter
-    return unless english?
-    return if (requirement_deposit_in_cents.nil? || requirement_deposit_in_cents.zero?) && !enable_deposit
-    return if requirement_deposit_in_cents > 0 && enable_deposit
+  # def deposit_and_enable_deposit_should_be_togeter
+  #   return unless english?
+  #   return if (requirement_deposit_in_cents.nil? || requirement_deposit_in_cents.zero?) && !enable_deposit
+  #   return if requirement_deposit_in_cents > 0 && enable_deposit
 
-    errors.add(:base, 'the deposit amount and the "enable deposit" flag must be specified together or not')
-  end
+  #   errors.add(:base, 'the deposit amount and the "enable deposit" flag must be specified together or not')
+  # end
 
-  def enable_deposit_only_for_english_auction
-    return if english? || !enable_deposit
+  # def enable_deposit_only_for_english_auction
+  #   return if english? || !enable_deposit
 
-    errors.add(:enable_deposit, 'could not be applied for non english auction')
-  end
+  #   errors.add(:enable_deposit, 'could not be applied for non english auction')
+  # end
 
   def allow_to_set_bid?(user)
     return true unless english?
-    return true unless enable_deposit?
+    # return true unless enable_deposit?
     return false if user.nil?
 
     user.domain_participate_auctions.any? { |item| item.auction_id == self.id }

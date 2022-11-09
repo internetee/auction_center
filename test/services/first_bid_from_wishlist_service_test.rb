@@ -54,21 +54,21 @@ class FirstBidFromWishlistServiceTest < ActionDispatch::IntegrationTest
     assert_equal @english_auction.offers.count, 0
   end
 
-  def test_can_set_first_bid_for_english_auction_from_wishlist_bid
-    @english_auction.offers.destroy_all
-    @english_auction.reload
+  # def test_can_set_first_bid_for_english_auction_from_wishlist_bid
+  #   @english_auction.offers.destroy_all
+  #   @english_auction.reload
 
-    wishlist_item = WishlistItem.new(domain_name: @english_auction.domain_name, user: @user, cents: 6000)
-    wishlist_item.save(validate: false)
+  #   wishlist_item = WishlistItem.new(domain_name: @english_auction.domain_name, user: @user, cents: 6000)
+  #   wishlist_item.save(validate: false)
 
-    assert_equal @english_auction.offers.count, 0
+  #   assert_equal @english_auction.offers.count, 0
 
-    FirstBidFromWishlistService.apply_bid(auction: @english_auction)
-    @english_auction.reload
+  #   FirstBidFromWishlistService.apply_bid(auction: @english_auction)
+  #   @english_auction.reload
 
-    assert_equal @english_auction.offers.count, 1
-    assert_equal @english_auction.offers.first.cents, 6000
-  end
+  #   assert_equal @english_auction.offers.count, 1
+  #   assert_equal @english_auction.offers.first.cents, 6000
+  # end
 
   def test_should_be_set_early_bid_if_price_are_same_from_wishlists
     billing_profile = @user_two.billing_profiles.build
@@ -92,52 +92,52 @@ class FirstBidFromWishlistServiceTest < ActionDispatch::IntegrationTest
     assert_equal @auction.currently_winning_offer.user, @user
   end
 
-  def test_should_be_set_early_bid_if_price_are_same_from_wishlists_for_english_auction
-    billing_profile = @user_two.billing_profiles.build
-    billing_profile.name = 'Private Person'
-    billing_profile.street = 'Baker Street 221B'
-    billing_profile.city = 'London'
-    billing_profile.postal_code = 'NW1 6XE'
-    billing_profile.country_code = 'GB'
-    billing_profile.save
+  # def test_should_be_set_early_bid_if_price_are_same_from_wishlists_for_english_auction
+  #   billing_profile = @user_two.billing_profiles.build
+  #   billing_profile.name = 'Private Person'
+  #   billing_profile.street = 'Baker Street 221B'
+  #   billing_profile.city = 'London'
+  #   billing_profile.postal_code = 'NW1 6XE'
+  #   billing_profile.country_code = 'GB'
+  #   billing_profile.save
 
-    @english_auction.update(starting_price: 10.0)
-    @english_auction.offers.destroy_all
-    wishlist_item = WishlistItem.new(domain_name: @english_auction.domain_name, user: @user, cents: 6000)
-    wishlist_item.save(validate: false)
-    wishlist_item = WishlistItem.new(domain_name: @english_auction.domain_name, user: @user_two, cents: 6000)
-    wishlist_item.save(validate: false)
+  #   @english_auction.update(starting_price: 10.0)
+  #   @english_auction.offers.destroy_all
+  #   wishlist_item = WishlistItem.new(domain_name: @english_auction.domain_name, user: @user, cents: 6000)
+  #   wishlist_item.save(validate: false)
+  #   wishlist_item = WishlistItem.new(domain_name: @english_auction.domain_name, user: @user_two, cents: 6000)
+  #   wishlist_item.save(validate: false)
 
-    assert_equal @english_auction.offers.count, 0
+  #   assert_equal @english_auction.offers.count, 0
 
-    FirstBidFromWishlistService.apply_bid(auction: @english_auction)
-    @english_auction.reload
+  #   FirstBidFromWishlistService.apply_bid(auction: @english_auction)
+  #   @english_auction.reload
 
-    assert_equal @english_auction.currently_winning_offer.user, @user
-  end
+  #   assert_equal @english_auction.currently_winning_offer.user, @user
+  # end
 
-  def test_should_be_set_highest_bid_from_wishlist
-    billing_profile = @user_two.billing_profiles.build
-    billing_profile.name = 'Private Person'
-    billing_profile.street = 'Baker Street 221B'
-    billing_profile.city = 'London'
-    billing_profile.postal_code = 'NW1 6XE'
-    billing_profile.country_code = 'GB'
-    billing_profile.save
+  # def test_should_be_set_highest_bid_from_wishlist
+  #   billing_profile = @user_two.billing_profiles.build
+  #   billing_profile.name = 'Private Person'
+  #   billing_profile.street = 'Baker Street 221B'
+  #   billing_profile.city = 'London'
+  #   billing_profile.postal_code = 'NW1 6XE'
+  #   billing_profile.country_code = 'GB'
+  #   billing_profile.save
 
-    @english_auction.update(starting_price: 10.0)
-    @english_auction.offers.destroy_all
-    wishlist_item = WishlistItem.new(domain_name: @english_auction.domain_name, user: @user, cents: 6000)
-    wishlist_item.save(validate: false)
-    wishlist_item = WishlistItem.new(domain_name: @english_auction.domain_name, user: @user_two, cents: 10000)
-    wishlist_item.save(validate: false)
+  #   @english_auction.update(starting_price: 10.0)
+  #   @english_auction.offers.destroy_all
+  #   wishlist_item = WishlistItem.new(domain_name: @english_auction.domain_name, user: @user, cents: 6000)
+  #   wishlist_item.save(validate: false)
+  #   wishlist_item = WishlistItem.new(domain_name: @english_auction.domain_name, user: @user_two, cents: 10000)
+  #   wishlist_item.save(validate: false)
 
-    assert_equal @english_auction.offers.count, 0
+  #   assert_equal @english_auction.offers.count, 0
 
-    FirstBidFromWishlistService.apply_bid(auction: @english_auction)
-    @english_auction.reload
+  #   FirstBidFromWishlistService.apply_bid(auction: @english_auction)
+  #   @english_auction.reload
 
-    assert_equal @english_auction.currently_winning_offer.cents, 10000
-    assert_equal @english_auction.currently_winning_offer.user, @user_two
-  end
+  #   assert_equal @english_auction.currently_winning_offer.cents, 10000
+  #   assert_equal @english_auction.currently_winning_offer.user, @user_two
+  # end
 end

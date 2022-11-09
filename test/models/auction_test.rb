@@ -219,54 +219,54 @@ class AuctionTest < ActiveSupport::TestCase
     assert_not_equal auction.min_bids_step, 4.9
   end
 
-  def test_slipping_time_should_be_added_when_bid_added_in_specific_time
-    slipping_end  = 7
+  # def test_slipping_time_should_be_added_when_bid_added_in_specific_time
+  #   slipping_end  = 7
 
-    auction = auctions(:english)
-    user = users(:participant)
-    billing_profile = billing_profiles(:private_person)
+  #   auction = auctions(:english)
+  #   user = users(:participant)
+  #   billing_profile = billing_profiles(:private_person)
 
-    auction.update(ends_at: Time.zone.now + 6.minute, slipping_end: slipping_end)
-    auction.reload
+  #   auction.update(ends_at: Time.zone.now + 6.minute, slipping_end: slipping_end)
+  #   auction.reload
 
-    offer = Offer.new
-    offer.auction = auction
-    offer.user = user
-    offer.cents = 600
-    offer.billing_profile = billing_profile
-    offer.save
+  #   offer = Offer.new
+  #   offer.auction = auction
+  #   offer.user = user
+  #   offer.cents = 600
+  #   offer.billing_profile = billing_profile
+  #   offer.save
 
-    auction.update_ends_at(offer)
-    auction.reload
+  #   auction.update_ends_at(offer)
+  #   auction.reload
 
-    minutes = (auction.ends_at - Time.zone.now) / 60
-    assert_equal minutes.to_i, slipping_end
-  end
+  #   minutes = (auction.ends_at - Time.zone.now) / 60
+  #   assert_equal minutes.to_i, slipping_end
+  # end
 
-  def test_slipping_time_should_not_be_added_when_bid_added_in_not_slipping_time
-    slipping_end  = 5
-    added_minutes = 6
+  # def test_slipping_time_should_not_be_added_when_bid_added_in_not_slipping_time
+  #   slipping_end  = 5
+  #   added_minutes = 6
 
-    auction = auctions(:english)
-    user = users(:participant)
-    billing_profile = billing_profiles(:private_person)
+  #   auction = auctions(:english)
+  #   user = users(:participant)
+  #   billing_profile = billing_profiles(:private_person)
 
-    auction.update(ends_at: Time.zone.now + added_minutes.minutes, slipping_end: slipping_end)
-    auction.reload
+  #   auction.update(ends_at: Time.zone.now + added_minutes.minutes, slipping_end: slipping_end)
+  #   auction.reload
 
-    offer = Offer.new
-    offer.auction = auction
-    offer.user = user
-    offer.cents = 600
-    offer.billing_profile = billing_profile
-    offer.save
+  #   offer = Offer.new
+  #   offer.auction = auction
+  #   offer.user = user
+  #   offer.cents = 600
+  #   offer.billing_profile = billing_profile
+  #   offer.save
 
-    auction.update_ends_at(offer)
-    auction.reload
+  #   auction.update_ends_at(offer)
+  #   auction.reload
 
-    minutes = (auction.ends_at - Time.zone.now) / 60
-    assert_equal minutes.to_i, added_minutes
-  end
+  #   minutes = (auction.ends_at - Time.zone.now) / 60
+  #   assert_equal minutes.to_i, added_minutes
+  # end
 
   def assert_overlap_error_messages(object)
     assert(object.errors[:ends_at].include?('overlaps with another auction'))
@@ -281,21 +281,21 @@ class AuctionTest < ActiveSupport::TestCase
     assert @english.enable_deposit?
   end
 
-  def test_should_not_set_enable_deposit_for_non_english_auction
-    refute @other_persisted_auction.enable_deposit?
-    @other_persisted_auction.update(enable_deposit: true)
-    @other_persisted_auction.reload
+  # def test_should_not_set_enable_deposit_for_non_english_auction
+  #   refute @other_persisted_auction.enable_deposit?
+  #   @other_persisted_auction.update(enable_deposit: true)
+  #   @other_persisted_auction.reload
 
-    refute @other_persisted_auction.enable_deposit?
-  end
+  #   refute @other_persisted_auction.enable_deposit?
+  # end
 
-  def test_no_change_if_deposit_enabled_without_the_deposit_price
-    refute @english.enable_deposit?
-    @english.update(enable_deposit: true, requirement_deposit_in_cents: 0)
-    @english.reload
+  # def test_no_change_if_deposit_enabled_without_the_deposit_price
+  #   refute @english.enable_deposit?
+  #   @english.update(enable_deposit: true, requirement_deposit_in_cents: 0)
+  #   @english.reload
 
-    refute @english.enable_deposit?
-  end
+  #   refute @english.enable_deposit?
+  # end
 
   def test_no_change_if_deposit_price_but_deposit_is_disable
     refute @english.enable_deposit?

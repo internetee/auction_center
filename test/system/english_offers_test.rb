@@ -18,79 +18,79 @@ class EnglishOffersTest < ApplicationSystemTestCase
     travel_back
   end
 
-  def test_possible_to_make_offer
-    sign_in(@user)
-    visit auction_path(@english.uuid)
+  # def test_possible_to_make_offer
+  #   sign_in(@user)
+  #   visit auction_path(@english.uuid)
 
-    assert(page.has_link?('Bid'))
-    click_link('Bid')
+  #   assert(page.has_link?('Bid'))
+  #   click_link('Bid')
 
-    fill_in('offer[price]', with: '52.12')
-    find('#bid_action').click
+  #   fill_in('offer[price]', with: '52.12')
+  #   find('#bid_action').click
 
-    assert(page.has_css?('div.notice', text: 'Offer submitted successfully.'))
-  end
+  #   assert(page.has_css?('div.notice', text: 'Offer submitted successfully.'))
+  # end
 
-  def test_user_cannot_to_make_bid_what_less_than_minimum_bid
-    bid = rand(51.0...999.9).round(2)
-    min_next_bid = calculate_min_bid(bid)
-    sign_in(@user)
-    visit auction_path(@english.uuid)
+  # def test_user_cannot_to_make_bid_what_less_than_minimum_bid
+  #   bid = rand(51.0...999.9).round(2)
+  #   min_next_bid = calculate_min_bid(bid)
+  #   sign_in(@user)
+  #   visit auction_path(@english.uuid)
 
-    assert(page.has_link?('Bid'))
-    click_link('Bid')
+  #   assert(page.has_link?('Bid'))
+  #   click_link('Bid')
 
-    fill_in('offer[price]', with: bid)
-    find('#bid_action').click
+  #   fill_in('offer[price]', with: bid)
+  #   find('#bid_action').click
 
-    @english.reload
+  #   @english.reload
 
-    assert(page.has_css?('div.notice', text: 'Offer submitted successfully.'))
-    # assert find('#mini').has_text?(min_next_bid)
+  #   assert(page.has_css?('div.notice', text: 'Offer submitted successfully.'))
+  #   # assert find('#mini').has_text?(min_next_bid)
 
-    fill_in('offer[price]', with: min_next_bid - 0.01)
-    find('#bid_action').click
+  #   fill_in('offer[price]', with: min_next_bid - 0.01)
+  #   find('#bid_action').click
 
-    # assert(page.has_css?('div.alert', text: "Bid failed, current price is #{bid}"))
-  end
+  #   # assert(page.has_css?('div.alert', text: "Bid failed, current price is #{bid}"))
+  # end
 
-  def test_one_player_can_overbid_another_one
-    Autobider.destroy_all
+  # def test_one_player_can_overbid_another_one
+  #   Autobider.destroy_all
 
-    @english.offers.destroy_all
-    @english.reload
+  #   @english.offers.destroy_all
+  #   @english.reload
 
-    sign_in(@user)
-    visit auction_path(@english.uuid)
+  #   sign_in(@user)
+  #   visit auction_path(@english.uuid)
 
-    assert(page.has_link?('Bid'))
-    click_link('Bid')
+  #   assert(page.has_link?('Bid'))
+  #   click_link('Bid')
 
-    fill_in('offer[price]', with: '5.8')
-    find('#bid_action').click
+  #   fill_in('offer[price]', with: '5.8')
+  #   find('#bid_action').click
 
-    @english.reload
-    current_price = Money.new(@english.highest_price)
+  #   @english.reload
+  #   current_price = Money.new(@english.highest_price)
 
-    assert(page.has_css?('div.notice', text: 'Offer submitted successfully.'))
-    assert_equal current_price.to_f, 5.8
+  #   assert(page.has_css?('div.notice', text: 'Offer submitted successfully.'))
+  #   assert_equal current_price.to_f, 5.8
 
-    sign_out(@user)
-    sign_in(@user_two)
+  #   sign_out(@user)
+  #   sign_in(@user_two)
 
-    visit auction_path(@english.uuid)
-    assert(page.has_link?('Bid'))
-    click_link('Bid')
+  #   visit auction_path(@english.uuid)
+  #   assert(page.has_link?('Bid'))
+  #   click_link('Bid')
 
-    fill_in('offer[price]', with: '6.8')
-    find('#bid_action').click
+  #   fill_in('offer[price]', with: '6.8')
+  #   find('#bid_action').click
 
-    @english.reload
-    current_price = Money.new(@english.highest_price)
+  #   @english.reload
+  #   current_price = Money.new(@english.highest_price)
 
-    assert(page.has_css?('div.notice', text: 'Offer submitted successfully.'))
-    assert_equal current_price.to_f, 6.8
-  end
+  #   assert(page.has_css?('div.notice', text: 'Offer submitted successfully.'))
+  #   assert_equal current_price.to_f, 6.8
+  # end
 
   def calculate_min_bid(bid)
     update_value = 0.01

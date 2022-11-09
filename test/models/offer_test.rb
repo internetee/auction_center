@@ -154,74 +154,74 @@ class OfferTest < ActiveSupport::TestCase
     assert_equal auction.offers.count, 0
   end
 
-  def test_create_first_bid_from_wishlist_if_it_price_higher_that_starting_price
-    auction = auctions(:english)
-    auction.offers.destroy_all
-    assert_equal auction.starting_price, 5.0
+  # def test_create_first_bid_from_wishlist_if_it_price_higher_that_starting_price
+  #   auction = auctions(:english)
+  #   auction.offers.destroy_all
+  #   assert_equal auction.starting_price, 5.0
 
-    wishlist_item = WishlistItem.new(domain_name: auction.domain_name, user: @user, cents: 600)
-    wishlist_item.save(validate: false)
+  #   wishlist_item = WishlistItem.new(domain_name: auction.domain_name, user: @user, cents: 600)
+  #   wishlist_item.save(validate: false)
 
-    FirstBidFromWishlistService.apply_bid(auction: auction)
-    auction.reload
+  #   FirstBidFromWishlistService.apply_bid(auction: auction)
+  #   auction.reload
 
-    assert_equal auction.offers.count, 1
-  end
+  #   assert_equal auction.offers.count, 1
+  # end
 
-  def test_next_bid_should_be_higher_than_previous_for_english_auction_by_min_bid_step
-    auction = auctions(:english)
-    offer = Offer.new
-    offer.auction = auction
-    offer.user = @user
-    offer.cents = 500
-    offer.billing_profile = @billing_profile
-    offer.save
-    auction.reload
+  # def test_next_bid_should_be_higher_than_previous_for_english_auction_by_min_bid_step
+  #   auction = auctions(:english)
+  #   offer = Offer.new
+  #   offer.auction = auction
+  #   offer.user = @user
+  #   offer.cents = 500
+  #   offer.billing_profile = @billing_profile
+  #   offer.save
+  #   auction.reload
 
-    assert_equal auction.currently_winning_offer.cents, 500
+  #   assert_equal auction.currently_winning_offer.cents, 500
 
-    offer = Offer.new
-    offer.auction = auction
-    offer.user = @user
-    offer.cents = 400
-    offer.billing_profile = @billing_profile
-    offer.save
-    auction.reload
+  #   offer = Offer.new
+  #   offer.auction = auction
+  #   offer.user = @user
+  #   offer.cents = 400
+  #   offer.billing_profile = @billing_profile
+  #   offer.save
+  #   auction.reload
 
-    assert_equal(['First bid should be more or equal than starting price',
-                  'Next bid should be higher or equal than minimum bid step'], offer.errors[:price])
-  end
+  #   assert_equal(['First bid should be more or equal than starting price',
+  #                 'Next bid should be higher or equal than minimum bid step'], offer.errors[:price])
+  # end
 
-  def test_if_next_bid_higher_or_equal_that_min_bid_then_no_any_errors
-    auction = auctions(:english)
-    offer = Offer.new
-    offer.auction = auction
-    offer.user = @user
-    offer.cents = 500
-    offer.billing_profile = @billing_profile
-    offer.save
-    auction.reload
+  # def test_if_next_bid_higher_or_equal_that_min_bid_then_no_any_errors
+  #   auction = auctions(:english)
+  #   offer = Offer.new
+  #   offer.auction = auction
+  #   offer.user = @user
+  #   offer.cents = 500
+  #   offer.billing_profile = @billing_profile
+  #   offer.save
+  #   auction.reload
 
-    assert_equal auction.currently_winning_offer.cents, 500
+  #   assert_equal auction.currently_winning_offer.cents, 500
 
-    offer = Offer.new
-    offer.auction = auction
-    offer.user = @user
-    offer.cents = 510
-    offer.billing_profile = @billing_profile
-    offer.save
-    auction.reload
+  #   offer = Offer.new
+  #   offer.auction = auction
+  #   offer.user = @user
+  #   offer.cents = 510
+  #   offer.billing_profile = @billing_profile
+  #   offer.save
+  #   auction.reload
 
-    assert_equal([], offer.errors[:price])
+  #   assert_equal([], offer.errors[:price])
 
-    offer = Offer.new
-    offer.auction = auction
-    offer.user = @user
-    offer.cents = 700
-    offer.billing_profile = @billing_profile
-    offer.save
-    auction.reload
+  #   offer = Offer.new
+  #   offer.auction = auction
+  #   offer.user = @user
+  #   offer.cents = 700
+  #   offer.billing_profile = @billing_profile
+  #   offer.save
+  #   auction.reload
 
-    assert_equal([], offer.errors[:price])
-  end
+  #   assert_equal([], offer.errors[:price])
+  # end
 end

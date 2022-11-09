@@ -38,7 +38,7 @@ class EnglishOffersController < ApplicationController
 
     if create_predicate(auction)
       update_auction_values(auction, 'Offer submitted successfully.')
-      broadcast_replace_auction_offer(auction)
+      # broadcast_replace_auction_offer(auction)
     else
       flash[:alert] = @offer.errors.full_messages.join('; ')
       redirect_to request.referer
@@ -62,7 +62,7 @@ class EnglishOffersController < ApplicationController
 
     if update_predicate(auction)
       update_auction_values(auction, t('english_offers.edit.bid_updated'))
-      broadcast_replace_auction_offer(auction)
+      # broadcast_replace_auction_offer(auction)
     else
       flash[:alert] = @offer.errors.full_messages.join('; ')
       redirect_to request.referer
@@ -71,9 +71,9 @@ class EnglishOffersController < ApplicationController
 
   private
 
-  def broadcast_replace_auction_offer(auction)
-    Offers::UpdateBroadcastService.call({ auction: auction })
-  end
+  # def broadcast_replace_auction_offer(auction)
+  #   Offers::UpdateBroadcastService.call({ auction: auction })
+  # end
 
   def captcha_check
     captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
