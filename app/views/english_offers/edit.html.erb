@@ -1,0 +1,52 @@
+<%= turbo_stream_from "auctions_offer_#{@offer.auction.id}" %>
+
+<% content_for :hero do %>
+    <div class="hero green">
+        <h1><%= @offer.auction.domain_name %></h1>
+        <div id="auction_timer">
+            <%= render partial: 'english_offers/timer', locals: { auction: @offer.auction } %>
+        </div>
+    </div>
+<% end %>
+
+<div class="u-container centered">
+    <div class="u-container margin-block">
+        <% if @offer.errors.any? %>
+            <div class="ui message">
+                <div class="header">
+                    <%= t(:errors_name) %>
+                </div>
+                <ul id="errors">
+                    <% @offer.errors.full_messages.each do |message| %>
+                        <li><%= message %></li>
+                    <% end %>
+                </ul>
+            </div>
+        <% end %>
+
+        <div class="ui two column grid centered" style="margin-bottom: 20px;">
+            <div class="">
+                <%= tag.h5 id: 'mini' do %>
+                    <%= t('english_offers.show.min_bid') %> <%= @offer.auction.min_bids_step.to_f %>
+                <% end %>
+            </div>
+
+            <div class="" id="current_<%=@offer.auction.id%>_price">
+                <%= render partial: 'current_price', locals: { auction: @offer.auction } %>
+            </div>
+        </div>
+
+
+        <hr>
+
+        <div data-turbo="true">
+            <%= turbo_frame_tag 'autobider_scope' do %>
+                <%= render partial: 'autobider_value', locals: { autobider: @autobider } %>
+            <% end %>
+        </div>
+
+            <div>
+                <%= render partial: 'form', locals: { offer: @offer, url: english_offer_path(@offer.uuid) } %>
+            </div>
+    </div>
+</div>

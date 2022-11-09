@@ -1,0 +1,5 @@
+                
+<h5 class="initial-color">
+  <% english_auction_presenter = EnglishBidsPresenter.new(offer.auction) %>
+  <%= t('english_offers.show.current_price') %> <%= english_auction_presenter.maximum_bids %>
+</h5>

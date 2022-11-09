@@ -42,9 +42,46 @@ class User < ApplicationRecord
   has_many :invoices, dependent: :nullify
   has_many :bans, dependent: :destroy
   has_many :wishlist_items, dependent: :destroy
+  has_many :autobiders, dependent: :destroy
+  has_many :domain_participate_auctions
 
   scope :subscribed_to_daily_summary, -> { where(daily_summary: true) }
   scope :with_confirmed_phone, -> { where.not(mobile_phone_confirmed_at: nil) }
+
+  scope :with_search_scope, ->(origin) {
+    if origin.present?
+      self.where('email ILIKE ? OR surname ILIKE ? OR given_names ILIKE ? ' \
+                 'OR mobile_phone ILIKE ?',
+                 "%#{origin}%",
+                 "%#{origin}%",
+                 "%#{origin}%",
+                 "%#{origin}%")
+    end
+  }
+
+  scope :with_deposit_participants, ->(enable, auction_id) do
+    if enable.present?
+      self.includes(:domain_participate_auctions).where(domain_participate_auctions: { auction_id: auction_id })
+    end
+  end
+
+  scope :without_deposit_participants, ->(enable, auction_id) do
+    if enable.present?
+      self.includes(:domain_participate_auctions).where.not(domain_participate_auctions: { auction_id: auction_id })
+    end
+  end
+
+  def self.search(params = {})
+    self.with_search_scope(params[:search_string])
+  end
+
+  def self.search_deposit_participants(params = {})
+    self.with_search_scope(params[:search_string])
+        .with_deposit_participants(params[:with_deposit_participants],
+                                   params[:auction_id])
+        .without_deposit_participants(params[:without_deposit_participants],
+                                      params[:auction_id])
+  end
 
   def identity_code_must_be_valid_for_estonia
     return if IdentityCode.new(country_code, identity_code).valid?
@@ -103,7 +140,7 @@ class User < ApplicationRecord
 
   def completely_banned?
     num_of_strikes = Setting.find_by(code: 'ban_number_of_strikes').retrieve
-    bans_count = bans.valid.count
+    bans_count = bans.valid.size
     bans_count >= num_of_strikes
   end
 

@@ -24,7 +24,7 @@
                 <%= f.select :billing_profile_id,
                 billing_profiles = BillingProfile.where(user_id: offer.user_id).collect { |b| [b.name, b.id] },
                 {},
-                class: billing_profiles.count == 1 ? "ui dropdown disabled" : "ui dropdown" %><br>
+                class: billing_profiles.size == 1 ? "ui dropdown disabled" : "ui dropdown" %><br>
             </div>
 
             <%= link_to t(:new_billing_profile),  new_billing_profile_path %>
@@ -40,7 +40,7 @@
         </div>
 
         <div class="column wide sixteen">
-            <%= f.submit t(:submit), class: "ui button primary" %>
+            <%= f.submit t(:submit), class: "ui button primary", data: { turbo: false } %>
             <%= link_to t(:back), :back, class: "ui button secondary" %>
             <%- if offer.uuid.present? %>
                 <%= link_to t('auctions.delete_your_offer'), 

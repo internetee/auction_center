@@ -23,7 +23,7 @@
                 <%= f.password_field :password_confirmation, autocomplete: "off" %>
             </div>
 
-            <%= f.submit nil, class: 'ui button primary' %>
+            <%= f.submit nil, class: 'ui button primary', data: { turbo: false } %>
         <% end %>
 
         <%= render "devise/shared/links" %>

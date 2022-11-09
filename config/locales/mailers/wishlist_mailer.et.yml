@@ -15,3 +15,14 @@ et:
       introduction: Sooviloendis olev domeeninimi %{domain_name} pandi oksjonile ja tehti automaatne pakkumine %{offer_price}
       call_to_action_html: "Vaadake oma pakkumist %{link}."
       call_to_action_link: "siin"
+        
+    auction_wishlist_bid:
+      subject: "%{domain_name} is now on auction"
+      salutation: "Dear %{display_name},"
+      introduction: |
+        Oled lisanud domeeninime %{domain_name} oma soovitud domeenide nimekirja.
+        %{domain_name} on nüüd oksjonil .ee oksjonikeskkonnas
+        Oksjon lõppeb %{ends_at}
+      bid_introduction: |
+        Et olite märkinud soovide nimekirja ka oma pakkumise, siis tehti teie nimel ka pakkumine vastavale summale.
+        Soovi korral saate oksjoniportaalis (oksjon.internet.ee) oma pakkumist oksjoni lõpuni muuta või kustutada.

@@ -19,11 +19,11 @@
                         </tr>
                         <tr>
                             <td><strong><%= t('auctions.starts_at') %></strong></td>
-                            <td><%= I18n.l(@auction.starts_at) %>
+                            <td><%= I18n.l(@auction.starts_at) if @auction.starts_at.present? %>
                         </tr>
                         <tr>
                             <td><strong><%= t('auctions.ends_at') %></strong></td>
-                            <td><%= I18n.l(@auction.ends_at) %></td>
+                            <td><%= I18n.l(@auction.ends_at) if @auction.ends_at.present? %></td>
                         </tr>
                         <%- if @auction.offer_from_user(current_user).present? %>
                             <tr>
@@ -76,4 +76,10 @@
                 </tbody>
         </table>
     </div>
+
+    <% if @auction.enable_deposit? %>
+        <%= render partial: 'deposit_participants', locals: { auction: @auction } %>
+    <% end %>
+
+
 </div>

@@ -1,37 +1,13 @@
 class AuctionsController < ApplicationController
-  include OrderableHelper
-
   skip_before_action :verify_authenticity_token, only: [:cors_preflight_check]
   before_action :authorize_user
 
   # GET /auctions
   def index
     set_cors_header
+    auctions = Auction.active.search(params).with_user_offers(current_user&.id)
 
-    unpaginated_auctions = ParticipantAuctionDecorator.with_user_offers(current_user&.id)
-                                                      .active
-                                                      .order(orderable_array)
-
-    respond_to do |format|
-      format.html do
-        @collection = unpaginated_auctions.page(params[:page])
-        @auctions = @collection.map { |auction| ParticipantAuctionDecorator.new(auction) }
-      end
-      format.json { @auctions = unpaginated_auctions }
-    end
-  end
-
-  # GET /auctions/search
-  def search
-    domain_name = search_params[:domain_name]
-
-    collection = ParticipantAuctionDecorator.with_user_offers(current_user&.id)
-                                            .where('domain_name ILIKE ?', "#{domain_name}%")
-                                            .order(orderable_array)
-                                            .accessible_by(current_ability)
-                                            .page(1)
-
-    @auctions = collection.map { |auction| ParticipantAuctionDecorator.new(auction) }
+    @pagy, @auctions = pagy(auctions, items: params[:per_page] ||= 15, link_extra: 'data-turbo-action="advance"')
   end
 
   # OPTIONS /auctions
@@ -43,15 +19,10 @@ class AuctionsController < ApplicationController
 
   # GET /auctions/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
   def show
-    @auction = Auction.accessible_by(current_ability).find_by!(uuid: params[:uuid])
+    @auction = Auction.with_user_offers(current_user).accessible_by(current_ability).find_by!(uuid: params[:uuid])
   end
 
   private
-
-  def search_params
-    search_params_copy = params.dup
-    search_params_copy.permit(:domain_name)
-  end
 
   def set_cors_header
     response.headers['Access-Control-Allow-Origin'] = request.headers['Origin']

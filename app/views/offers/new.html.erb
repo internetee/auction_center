@@ -20,6 +20,6 @@
             </div>
         <% end %>
 
-        <%= render 'form', offer: @offer, url: auction_offers_path(auction_uuid: params[:auction_uuid]) %>
+        <%= render 'form', offer: @offer, url: auction_offers_path(auction_uuid: params[:auction_uuid]), data: { turbo: false } %>
     </div>
 </div>

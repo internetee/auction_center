@@ -7,7 +7,7 @@
 <div class="features-grid top narrow grey">
     <div class="ui search">
         <div class="ui massive input icon">
-            <%= form_with(url: search_admin_billing_profiles_path, local: true, method: :get) do |f| %>
+            <%= form_with(url: admin_billing_profiles_path, local: true, method: :get) do |f| %>
                 <div class="ui input icon">
                     <%= f.text_field :search_string, placeholder: t('search') %>
                 </div>
@@ -18,6 +18,10 @@
             <% end %>
         </div>
     </div>
+
+    <div class="field">
+        <%= link_to 'Clear', request.path, class: 'ui primary button' %>
+    </div>
 </div>
 
 <div class="ui container">
@@ -27,18 +31,20 @@
                 <tr>
                     <th scope="col">
                         <%= t('billing_profiles.user') %>
-                        <%= order_buttons('users.surname') %>
+                        <%= sort_link_to "", "users.surname" %>
                     </th>
                     <th scope="col">
                         <%= t('billing_profiles.name') %>
-                        <%= order_buttons('billing_profiles.name') %>
+                        <%= sort_link_to "", "name" %>
                     </th>
                     <th scope="col">
                         <%= t('billing_profiles.vat_code') %>
-                        <%= order_buttons('billing_profiles.vat_code') %>
+                        <%= sort_link_to "", "vat_code" %>
                     </th>
-                    <th scope="col"><%= t('billing_profiles.address') %></th>
-                    <th scope="col"><%= clear_order_button %></th>
+                    <th scope="col">
+                        <%= t('billing_profiles.address') %>
+                    </th>
+                    <th></th>
                 </tr>
             </thead>
 
@@ -63,6 +69,13 @@
             </tbody>
         </table>
 
-        <%= paginate @billing_profiles %>
+      <div style="margin-top:10px; text-align: center;">
+        <% if @pagy.pages > 1 %>
+            <div class="footer">
+            <%== pagy_nav(@pagy) %>
+            </div>
+        <% end %>
+      </div>
+
     </div>
 </div>

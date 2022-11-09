@@ -52,7 +52,7 @@
         </div>
 
         <div class="column sixteen wide">
-            <%= f.submit t('.sign_up'), class: "ui button big primary", id: "user_form_commit" %>
+            <%= f.submit t('.sign_up'), class: "ui button big primary", id: "user_form_commit", data: { turbo: false } %>
         </div>
     </div>
 <% end %>

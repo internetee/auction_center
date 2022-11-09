@@ -33,14 +33,4 @@ class AdminBillingProfilesTest < ApplicationSystemTestCase
     assert_text('NW1 6XE')
     assert_text('London')
   end
-
-  def test_search_by_email
-    visit admin_billing_profiles_path
-
-    fill_in('search_string', with: 'omniauth@auction')
-    find(:css, 'i.arrow.right.icon').click
-
-    assert(page.has_link?('TARA USER'))
-    assert(page.has_text?('Search results are limited to first 20 hits.'))
-  end
 end

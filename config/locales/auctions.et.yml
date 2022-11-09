@@ -5,10 +5,21 @@ et:
     ends_at: 'Lõpp'
     finished: "Oksjon on lõppenud"
     highest_price: "Kõrgeim hind"
+    auction_type: "Oksjoni tüüp"
     offers: "Pakkumused"
     offer_actions: "Pakkumistegevused"
     your_current_price: "Sinu pakkumus"
     cancel_bid: "Pakkumise tühistamine"
+    starting_price: "Alghind eurodes"
+    min_bids_step: "Minimaalne panuse samm eurod"
+    slipping_end: "Pikenev lõpp minutites"
+    offer_owner: "Offer owner"
+    enable_deposit: "Võimaldage tagatisraha"
+    disable_deposit: "Deaktiveeri tagatisraha"
+    deposit: Tagatisraha
+    bid: Pakkumine!
+    participate: Osale!
+
 
     still_in_progress: "Töötlemisel"
 
@@ -18,12 +29,18 @@ et:
 
     show:
       title: "Oksjoni andmed"
+      user_list: "Kasutajate nimekiri"
+      apply: "Kohaldatakse"
+      allow: "Lubatakse osaleda?"
 
     index:
       title: "Domeenioksjonid"
       search: "Domeeni otsing"
       auction_list_tooltip: "Saada mulle iga päev värske oksjoninimekiri meilile"
       auction_list_unsubscribe_tooltip: "Ära saada mulle igal päeval oksjoninimekirja meilile"
+      enable_deposit: "Võimaldage tagatisraha"
+      disable_deposit: "Deaktiveeri tagatisraha"
+      deposit: Tagatisraha
 
     search:
       title: "Otsing"

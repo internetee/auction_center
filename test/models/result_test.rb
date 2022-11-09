@@ -99,6 +99,16 @@ class ResultTest < ActiveSupport::TestCase
     assert_equal(Result.statuses[:payment_received], @invoiceable_result.status)
   end
 
+  def test_marking_as_payment_received_updates_registration_due_dat_for_english_auction
+    auction = auctions(:english)
+    @invoiceable_result.update(auction: auction)
+    @invoiceable_result.reload
+    @invoiceable_result.mark_as_payment_received(Time.parse('2010-07-06 10:30 +0000').in_time_zone)
+
+    assert_equal(Date.parse('2010-08-05'), @invoiceable_result.registration_due_date)
+    assert_equal(Result.statuses[:payment_received], @invoiceable_result.status)
+  end
+
   def test_pending_invoice_scope_does_not_return_results_that_had_no_bids
     assert_equal([@invoiceable_result].to_set, Result.pending_invoice.to_set)
     assert_equal([@invoiceable_result, @noninvoiceable_result,

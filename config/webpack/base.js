@@ -1,3 +1,7 @@
+// const { webpackConfig } = require('@rails/webpacker')
+
+// module.exports = webpackConfig
+
 const { webpackConfig, merge } = require('@rails/webpacker')
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");

@@ -1,9 +1,8 @@
 module Admin
   class AuctionsController < BaseController
-    include OrderableHelper
-
     before_action :authorize_user
     before_action :set_auction, only: %i[show destroy]
+    before_action :validate_enable_and_disable_option_in_same_action, only: %i[bulk_starts_at]
 
     # GET /admin/auctions/new
     def new
@@ -27,30 +26,30 @@ module Admin
 
     # GET /admin/auctions
     def index
-      @collection = AdminAuctionDecorator.with_highest_offers
-                                         .order(orderable_array(default_order_params))
-                                         .page(params[:page])
+      sort_column = params[:sort].presence_in(%w[domain name
+                                                 starts_at
+                                                 ends_at
+                                                 highest_offer_cents
+                                                 number_of_offers
+                                                 turns_count
+                                                 starting_price
+                                                 min_bids_step
+                                                 slipping_end
+                                                 platform]) || 'id'
+      sort_direction = params[:direction].presence_in(%w[asc desc]) || 'desc'
 
-      auction_currency = Setting.find_by(code: 'auction_currency').retrieve
-      @auctions = @collection.map { |auction| AdminAuctionDecorator.new(auction, auction_currency) }
-    end
+      collection_one = Auction.where.not('ends_at <= ?', Time.zone.now).pluck(:id)
+      collection_two = Auction.where(starts_at: nil).pluck(:id)
+      collection = Auction.where(id: collection_one + collection_two).search(params).order(sort_column => sort_direction)
 
-    # GET /admin/auctions/search
-    def search
-      domain_name = search_params[:domain_name]
-      @origin = domain_name || search_params.dig(:order, :origin)
-      auction_currency = Setting.find_by(code: 'auction_currency').retrieve
-      collection = AdminAuctionDecorator.with_highest_offers
-                                        .where('domain_name ILIKE ?', "%#{@origin}%")
-                                        .order(orderable_array)
-                                        .page(1)
-
-      @auctions = collection.map { |auction| AdminAuctionDecorator.new(auction, auction_currency) }
+      @pagy, @auctions = pagy(collection, items: params[:per_page] ||= 20, link_extra: 'data-turbo-action="advance"')
     end
 
     # GET /admin/auctions/1
     def show
       @offers = @auction.offers.order(cents: :desc)
+      users = User.search_deposit_participants(params)
+      @pagy, @users = pagy(users, items: params[:per_page] ||= 20, link_extra: 'data-turbo-action="advance"')
     end
 
     # DELETE /admin/auctions/1
@@ -67,11 +66,36 @@ module Admin
       end
     end
 
+    def bulk_starts_at
+      skipped_auctions = AdminBulkActionService.apply_for_english_auction(auction_elements: params[:auction_elements])
+
+      flash[:notice] = "These auctions were skipped: #{skipped_auctions.join(' ')}"
+      flash[:notice] = 'New value was set' if skipped_auctions.empty?
+
+      redirect_to admin_auctions_path
+    end
+
+    def apply_auction_participants
+      auction = Auction.find_by_uuid(params[:auction_uuid])
+      users = User.where(id: params[:user_ids])
+      users.each do |user|
+        DomainParticipateAuction.create!(user: user, auction: auction)
+      end
+
+      redirect_to admin_auction_path(auction)
+    end
+
     private
 
-    def search_params
-      search_params_copy = params.dup
-      search_params_copy.permit(:domain_name, order: :origin)
+    def validate_enable_and_disable_option_in_same_action
+      auction_elements = params[:auction_elements]
+
+      if auction_elements[:enable_deposit] == 'true' &&
+         auction_elements[:disable_deposit] == 'true'
+
+        flash[:alert] = 'it cannot be enable and disable deposit in same action'
+        redirect_to admin_auctions_path and return
+      end
     end
 
     def create_params
@@ -84,10 +108,6 @@ module Admin
 
     def set_auction
       @auction = Auction.find(params[:id])
-    end
-
-    def default_order_params
-      { 'auctions.starts_at' => 'desc' }
     end
   end
 end

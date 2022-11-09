@@ -83,7 +83,9 @@ class ResultStatusReporterTest < ActiveSupport::TestCase
 
     instance = Registry::StatusReporter.new(@awaiting_payment)
 
-    body = { "status"=>"payment_received", "registration_deadline"=> result_deadline}
+    body = { "status"=>"payment_received",
+             "registration_deadline"=> result_deadline,
+             "platform" => nil }
 
     with_successful_request(instance, body) do
       instance.call
@@ -101,7 +103,9 @@ class ResultStatusReporterTest < ActiveSupport::TestCase
 
     instance = Registry::StatusReporter.new(@awaiting_payment)
 
-    body = { "status"=>"awaiting_payment", "registration_deadline"=> result_deadline}
+    body = { "status"=>"awaiting_payment",
+             "registration_deadline"=> result_deadline,
+             "platform" => nil }
 
     with_successful_request(instance, body) do
       instance.call

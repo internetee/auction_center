@@ -1,0 +1,29 @@
+
+<%# url = @autobider.new_record? ? autobider_index_path : autobider_path(uuid: @autobider.uuid)  %>
+
+<%= turbo_frame_tag 'autobider_scope', class: 'contents' do %>
+  <%= form_with model: @autobider, local: true, url: autobider_index_path, data: { turbo: false }, class: 'centrilize-form' do |f| %>
+    <div class="ui one column grid centered"", style='margin-top: 20px; margin-bottom: 40px;'>
+      <div class="column">
+      <%= f.hidden_field :domain_name, value: @auction.domain_name %>
+      <%= f.hidden_field :user_id, value: current_user.id %>
+
+      <%= f.label t('english_offers.form.autobider'), style: "valign-item: center; padding-top: 10px; padding-right: 3px;"%>
+      <%= f.number_field :price, class: "form-control", min: 0, step: 0.01, value: @autobider.price, disabled: @auction.finished? ? true : false, style: "padding: 10px 5px;" %>
+
+      <%= f.submit t(:submit), class: "ui button primary", id: 'autobidder_action', style: 'margin-left: 10px;' %>
+      <%= button_tag "Cancel", class: "ui button secondary" %>
+
+        <div class="column">
+          <% if @captcha_autobidder_required %>
+            <div class="field">
+              <br>
+              <%= recaptcha_tags noscript: false %>
+            </div>
+          <% end %>
+        </div>
+      
+      </div>
+    </div>
+  <% end %>
+<% end %>

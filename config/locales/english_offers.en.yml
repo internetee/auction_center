@@ -1,0 +1,58 @@
+en:
+  english_offers:
+    auction: "Auction"
+    price: "Price"
+    total: "Total with VAT"
+    i_accept_terms_and_conditions: "I accept terms and conditions"
+    price_in_currency: "%{price} €"
+    price_is_without_vat: "The offer does not include VAT."
+    already_exists: "You already have an offer for this auction."
+    must_be_active: "This auction has ended"
+    must_be_active_err: "has ended"
+    must_be_higher_than: "must be higher than %{minimum}"
+    reminder: |
+      NB: This is a blind auction where bids are not public.
+      There might be other bids.
+      Make an offer according to the value the domain name holds to you.
+    timer: Auction will finish in
+
+    new:
+      title: "Offer for the reservation of the domain name"
+      errors: "prohibited this offer from being saved"
+      minimum_offer: "Minimum offer is %{minimum}."
+
+    show:
+      title: "Your offer"
+      we_will_contact_winner: |
+        Once the auction time has ended, we will send an email to
+        the auction winner.
+      min_bid: Minimum bid is
+      current_price: Current price is
+      bid_failed: Bid failed, current price is
+
+    create:
+      created: "Offer submitted successfully."
+
+    edit:
+      title: "Offer for the reservation of the domain name"
+      errors: "prohibited this offer from being saved"
+      bid_updated: "Bid updated"
+
+    index:
+      your_last_offer: "Your last offer"
+      claim_your_domain: "Claim your domain"
+      you_won: "You won"
+      you_lost: "Someone else won"
+
+    form:
+      bidder: "Bidder"
+      offer: "Offer"
+      minimum_offer: "Minimum offer is %{minimum}."
+      captcha_verification: "Captcha verification failed"
+      offer_title: Offer
+      autobider: "Autobidder"
+      autobidder_value: Automaatpakkuja lagi
+      set_autobidder_value: Set value
+
+    number_form_field:
+      offer: "Offer"

@@ -83,6 +83,18 @@ registration_term_setting = Setting.new(code: :registration_term, value: '14',
 
 registration_term_setting.save
 
+# English auction default registration term
+registration_english_auction_term_description = <<~TEXT.squish
+  Number of days before the auctioned domain in english type of auction must be registered, starting from release of
+  registration code. Default: 30
+TEXT
+
+registration_english_term_setting = Setting.new(code: :registration_english_term, value: '30',
+                                        description: registration_english_auction_term_description,
+                                        value_format: 'integer')
+
+registration_english_term_setting.save
+
 # Default auction duration
 auction_duration_description = <<~TEXT.squish
   Number of hours for which an auction is created. You can also use 'end_of_day'

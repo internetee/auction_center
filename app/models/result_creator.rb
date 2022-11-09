@@ -36,7 +36,7 @@ class ResultCreator
   delegate :present?, to: :auction, prefix: true
 
   def auction_not_finished?
-    !auction.finished?
+    !auction.finished? && (auction.blind? || auction.platform.nil?)
   end
 
   def result_already_present?
@@ -44,6 +44,7 @@ class ResultCreator
   end
 
   def send_email_to_participants
+    return if auction.english?
     return if result.status == Result.statuses[:no_bids]
 
     recipients = User.joins(:offers)

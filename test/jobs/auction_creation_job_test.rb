@@ -31,12 +31,4 @@ class AuctionCreationJobTest < ActiveJob::TestCase
       end
     end
   end
-
-  def test_needs_to_run_depends_on_a_configuration_variable
-    AuctionCreationJob.stub(:registry_integration_enabled?, true) do
-      assert(AuctionCreationJob.needs_to_run?)
-    end
-
-    assert_not(AuctionCreationJob.needs_to_run?)
-  end
 end

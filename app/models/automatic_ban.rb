@@ -46,7 +46,7 @@ class AutomaticBan
   end
 
   def send_email
-    BanMailer.ban_mail(@ban, unpaid_invoices_ids.count, @domain_name).deliver_later
+    BanMailer.ban_mail(@ban, unpaid_invoices_ids.size, @domain_name).deliver_later
   end
 
   def remove_offer_from_active_auction
@@ -61,7 +61,7 @@ class AutomaticBan
 
   def remove_offers_from_active_auctions
     ban_number_of_strikes = Setting.find_by(code: 'ban_number_of_strikes')
-    return unless ban_number_of_strikes.value.to_i <= @user.bans.count
+    return unless ban_number_of_strikes.value.to_i <= @user.bans.size
 
     @user.offers.each do |offer|
       auction_id = offer.auction_id
@@ -71,7 +71,7 @@ class AutomaticBan
   end
 
   def raise_no_cancelled_invoices
-    return unless @unpaid_invoices_ids.count == @existing_bans_ids.count
+    return unless @unpaid_invoices_ids.size == @existing_bans_ids.size
 
     raise Errors::NoCancelledInvoices.new(user.id, domain_name)
   end

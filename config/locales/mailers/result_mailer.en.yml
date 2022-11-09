@@ -1,27 +1,18 @@
 en:
   result_mailer:
     winner_email:
-      subject: "Bid for the %{domain_name} domain was successful"
+      subject: "Bid for the %{domain_name} domain was successful"  
       salutation: "Dear %{display_name},"
       introduction: |
         Congratulations! Your bid in the domain registration priority
         auction for the %{domain_name} domain was successful.
       details_html: |
-        In order to acquire the priority for the %{domain_name} domain,
-        a prepayment invoice must be paid within 7 days. You can also
-        assign another person to be the receiver of the prepayment
-        invoice in the %{link}.
+        In order to acquire the priority for the %{domain_name} domain, a prepayment invoice must be paid within 7 days in  %{link}. If needed you can change the invoice recipient data of the prepayment invoice in the portal.
       linkpay_html: |
         You can pay for this invoice using following <a href=%{linkpay_url}>link</a>.
-      auction_link: ".ee auction environment"
+      auction_link: ".ee auction portal"
       details_second_para_html: |
-        If you pay the invoice on time, you can find the appropriate registration
-        code in your user account that will allow you to register the %{domain_name}
-        domain name won in the auction within 14 days. To register the %{domain_name}
-        domain, contact an <a href="https://www.internet.ee/registrars/accredited-registrars">
-        accredited .ee registrar</a> as soon as possible! If you
-        leave it to the last minute, your service provider may not be able to
-        register the domain.
+        You will find the registration code in your user account once you have paid the invoice on time. The code will allow you to register the %{domain_name} domain namewithin 14 days. To register the %{domain_name} domain, contact an a href="https://www.internet.ee/registrars/accredited-registrars">accredited .ee registrar</a> as soon as possible! If you leave it to the last minute, your service provider may not be able to register the domain.
       details_third_para: |
         The prepayment invoice must be paid within 7 days. If you fail to pay, you will
         lose the right to the auctioned priority and priority for the %{domain_name} domain

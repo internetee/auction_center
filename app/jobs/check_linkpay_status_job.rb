@@ -5,7 +5,7 @@ class CheckLinkpayStatusJob < ApplicationJob
     payment_order = PaymentOrder.find(payment_order_id)
     return unless payment_order_valid?(payment_order)
 
-    EisBilling::SendCallback.send(reference_number: payment_order.response['payment_reference'])
+    EisBilling::SendCallbackService.call(reference_number: payment_order.response['payment_reference'])
   end
 
   private

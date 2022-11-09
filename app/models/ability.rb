@@ -22,6 +22,7 @@ class Ability
     end
     can :read, Result, user_id: user.id
     can %i[read create delete], WishlistItem, user_id: user.id
+    can %i[read create update delete], Autobider, user_id: user.id
 
     if user.banned?
       restrictions_from_bans
@@ -53,6 +54,7 @@ class Ability
 
   def no_restrictions_on_offers_and_users
     can :manage, Offer, user_id: user.id
+    can %i[create update], Autobider, user_id: user.id
     can :manage, User, id: user.id
   end
 

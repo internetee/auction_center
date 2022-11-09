@@ -4,8 +4,12 @@ class StatisticsReportTest < ActiveSupport::TestCase
 
   def setup
     super
-    @start_date = Auction.first.starts_at.to_date
-    @end_date = Auction.last.ends_at.to_date
+    # @start_date = Auction.first.starts_at.to_date
+    # @end_date = Auction.last.ends_at.to_date
+    auction_one = auctions(:valid_with_offers)
+    auction_two = auctions(:orphaned)
+    @start_date = auction_one.starts_at.to_date
+    @end_date = auction_two.ends_at.to_date
     [StatisticsReport::Auction,
      StatisticsReport::Result,
      StatisticsReport::Invoice].each { |klass| klass.refresh }

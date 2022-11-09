@@ -1,10 +1,11 @@
 et:
   admin:
-    auctions:
+    finished_auctions:
       index:
-        title: "Domeenioksjonid"
+        title: "Finished auctions"
         new_auction: "Uus oksjon"
         no_price: "NaN"
+        deposit: Tagatisraha
 
       search:
         title: "Oksjoni otsing"
@@ -12,6 +13,9 @@ et:
       new:
         title: "Uus oksjon"
         errors: "ei võimaldanud toimingut salvestada"
+        enable_deposit: "Võimaldage tagatisraha"
+        disable_deposit: "Deaktiveeri tagatisraha"
+        deposit: Tagatisraha
 
       show:
         title: "Oksjon"
@@ -21,4 +25,6 @@ et:
         errors: "ei võimaldanud toimingut salvestada"
 
       destroy:
-        cannot_delete: "Oksjonit, mis on alanud ja millele on tehtud pakkumine või mis on juba lõppenud, ei saa kustutada."
+        cannot_delete: "Oksjonit mis on alanud või lõppenud ei saa kustutada."
+      auction:
+        no_price: "NaN"

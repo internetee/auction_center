@@ -35,7 +35,7 @@
                 </div>
 
 
-                <%= f.submit "Sign up", class: "btn btn-lg btn-primary btn-block form-control" %>
+                <%= f.submit "Sign up", class: "btn btn-lg btn-primary btn-block form-control", data: { turbo: false } %>
             <% end %>
 
             <%= render "devise/shared/links" %>

@@ -1,4 +1,7 @@
 module ApplicationHelper
+  include PagyHelper
+  include OrderableHelper
+
   def application_name
     Rails.configuration.customization['application_name']
   end
@@ -31,7 +34,7 @@ module ApplicationHelper
     content_tag(:div, class: 'ui message ban') do
       result = content_tag(:div, message, class: 'header')
       if eligible_violations_present?(domains: domains)
-        result << content_tag(:p, violation_message(domains.count), class: 'violation-message')
+        result << content_tag(:p, violation_message(domains.size), class: 'violation-message')
       end
       result
     end
@@ -69,7 +72,7 @@ module ApplicationHelper
 
   def eligible_violations_present?(domains: nil)
     num_of_strikes = Setting.find_by(code: 'ban_number_of_strikes').retrieve
-    return true if domains && domains.count < num_of_strikes
+    return true if domains && domains.size < num_of_strikes
 
     false
   end
@@ -106,6 +109,7 @@ module ApplicationHelper
   def administrator_link_list
     [{ name: t(:auctions_name), path: admin_auctions_path },
      { name: t(:results_name), path: admin_results_path },
+     { name: t(:finished_auctions), path: admin_finished_auctions_index_path },
      { name: t(:billing_profiles_name), path: admin_billing_profiles_path },
      { name: t(:users_name), path: admin_users_path },
      { name: t(:bans_name), path: admin_bans_path },

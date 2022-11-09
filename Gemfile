@@ -15,7 +15,6 @@ gem 'devise'
 gem 'directo', github: 'internetee/directo', branch: 'master'
 gem 'faraday'
 gem 'jbuilder', '~> 2.11'
-gem 'kaminari'
 gem 'mimemagic', '~> 0.4.3'
 gem 'money'
 gem 'okcomputer', '~> 1.18.4'
@@ -42,6 +41,9 @@ group :development, :test do
   gem 'bullet'
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'pry'
+
+  # https://github.com/rubocop/rubocop-performance
+  gem 'rubocop-performance', require: false
 end
 
 group :development do
@@ -56,3 +58,18 @@ group :test do
   gem 'webdrivers'
   gem 'webmock'
 end
+
+# frontend
+gem 'hotwire-rails', '~> 0.1.3'
+# Use Redis for Action Cable
+
+gem 'redis', '~> 4.0'
+
+# For search
+gem 'pg_search'
+
+# For pagination
+gem 'pagy', '~> 5.5'
+
+# For mock username
+gem 'faker'

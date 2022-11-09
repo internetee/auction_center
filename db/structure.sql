@@ -445,7 +445,7 @@ $$;
 
 SET default_tablespace = '';
 
-SET default_with_oids = false;
+SET default_table_access_method = heap;
 
 --
 -- Name: auctions; Type: TABLE; Schema: audit; Owner: -
@@ -883,9 +883,11 @@ CREATE TABLE public.auctions (
     turns_count integer,
     platform integer,
     starting_price numeric,
-    min_bids_step numeric,
+    min_bids_step numeric(10,2),
     slipping_end integer,
     initial_ends_at timestamp without time zone,
+    enable_deposit boolean DEFAULT false NOT NULL,
+    requirement_deposit_in_cents integer,
     CONSTRAINT starts_at_earlier_than_ends_at CHECK ((starts_at < ends_at))
 );
 
@@ -950,7 +952,7 @@ CREATE TABLE public.autobiders (
     user_id bigint,
     domain_name character varying,
     cents integer,
-    uuid uuid DEFAULT public.gen_random_uuid(),
+    uuid uuid DEFAULT gen_random_uuid(),
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -1122,6 +1124,38 @@ ALTER SEQUENCE public.directo_customers_id_seq OWNED BY public.directo_customers
 
 
 --
+-- Name: domain_participate_auctions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.domain_participate_auctions (
+    id bigint NOT NULL,
+    user_id bigint,
+    auction_id bigint,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: domain_participate_auctions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.domain_participate_auctions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: domain_participate_auctions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.domain_participate_auctions_id_seq OWNED BY public.domain_participate_auctions.id;
+
+
+--
 -- Name: invoice_items; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1278,6 +1312,7 @@ CREATE TABLE public.offers (
     billing_profile_id integer NOT NULL,
     uuid uuid DEFAULT public.gen_random_uuid(),
     updated_by character varying,
+    username character varying,
     CONSTRAINT offers_cents_are_positive CHECK ((cents > 0))
 );
 
@@ -1690,6 +1725,13 @@ ALTER TABLE ONLY public.directo_customers ALTER COLUMN id SET DEFAULT nextval('p
 
 
 --
+-- Name: domain_participate_auctions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.domain_participate_auctions ALTER COLUMN id SET DEFAULT nextval('public.domain_participate_auctions_id_seq'::regclass);
+
+
+--
 -- Name: invoice_items id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1980,6 +2022,14 @@ ALTER TABLE ONLY public.delayed_jobs
 
 ALTER TABLE ONLY public.directo_customers
     ADD CONSTRAINT directo_customers_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: domain_participate_auctions domain_participate_auctions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.domain_participate_auctions
+    ADD CONSTRAINT domain_participate_auctions_pkey PRIMARY KEY (id);
 
 
 --
@@ -2344,6 +2394,20 @@ CREATE UNIQUE INDEX index_directo_customers_on_vat_number ON public.directo_cust
 
 
 --
+-- Name: index_domain_participate_auctions_on_auction_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_domain_participate_auctions_on_auction_id ON public.domain_participate_auctions USING btree (auction_id);
+
+
+--
+-- Name: index_domain_participate_auctions_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_domain_participate_auctions_on_user_id ON public.domain_participate_auctions USING btree (user_id);
+
+
+--
 -- Name: index_invoice_items_on_invoice_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2558,6 +2622,90 @@ CREATE INDEX index_wishlist_items_on_domain_name ON public.wishlist_items USING 
 --
 
 CREATE UNIQUE INDEX users_by_identity_code_and_country ON public.users USING btree (alpha_two_country_code, identity_code) WHERE ((alpha_two_country_code)::text = 'EE'::text);
+
+
+--
+-- Name: auctions process_auction_audit; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER process_auction_audit AFTER INSERT OR DELETE OR UPDATE ON public.auctions FOR EACH ROW EXECUTE FUNCTION public.process_auction_audit();
+
+
+--
+-- Name: bans process_ban_audit; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER process_ban_audit AFTER INSERT OR DELETE OR UPDATE ON public.bans FOR EACH ROW EXECUTE FUNCTION public.process_ban_audit();
+
+
+--
+-- Name: billing_profiles process_billing_profile_audit; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER process_billing_profile_audit AFTER INSERT OR DELETE OR UPDATE ON public.billing_profiles FOR EACH ROW EXECUTE FUNCTION public.process_billing_profile_audit();
+
+
+--
+-- Name: invoices process_invoice_audit; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER process_invoice_audit AFTER INSERT OR DELETE OR UPDATE ON public.invoices FOR EACH ROW EXECUTE FUNCTION public.process_invoice_audit();
+
+
+--
+-- Name: invoice_items process_invoice_item_audit; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER process_invoice_item_audit AFTER INSERT OR DELETE OR UPDATE ON public.invoice_items FOR EACH ROW EXECUTE FUNCTION public.process_invoice_item_audit();
+
+
+--
+-- Name: invoice_payment_orders process_invoice_payment_order_audit; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER process_invoice_payment_order_audit AFTER INSERT OR DELETE OR UPDATE ON public.invoice_payment_orders FOR EACH ROW EXECUTE FUNCTION public.process_invoice_payment_order_audit();
+
+
+--
+-- Name: offers process_offer_audit; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER process_offer_audit AFTER INSERT OR DELETE OR UPDATE ON public.offers FOR EACH ROW EXECUTE FUNCTION public.process_offer_audit();
+
+
+--
+-- Name: payment_orders process_payment_order_audit; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER process_payment_order_audit AFTER INSERT OR DELETE OR UPDATE ON public.payment_orders FOR EACH ROW EXECUTE FUNCTION public.process_payment_order_audit();
+
+
+--
+-- Name: results process_result_audit; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER process_result_audit AFTER INSERT OR DELETE OR UPDATE ON public.results FOR EACH ROW EXECUTE FUNCTION public.process_result_audit();
+
+
+--
+-- Name: settings process_setting_audit; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER process_setting_audit AFTER INSERT OR DELETE OR UPDATE ON public.settings FOR EACH ROW EXECUTE FUNCTION public.process_setting_audit();
+
+
+--
+-- Name: users process_user_audit; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER process_user_audit AFTER INSERT OR DELETE OR UPDATE ON public.users FOR EACH ROW EXECUTE FUNCTION public.process_user_audit();
+
+
+--
+-- Name: wishlist_items process_wishlist_item_audit; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER process_wishlist_item_audit AFTER INSERT OR DELETE OR UPDATE ON public.wishlist_items FOR EACH ROW EXECUTE FUNCTION public.process_wishlist_item_audit();
 
 
 --
@@ -2818,6 +2966,11 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220527064738'),
 ('20220601052131'),
 ('20220606110658'),
-('20220617123124');
+('20220617123124'),
+('20221003065216'),
+('20221005105336'),
+('20221006094111'),
+('20221007082951'),
+('20221017133559');
 
 

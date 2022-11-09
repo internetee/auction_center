@@ -57,7 +57,7 @@ class AdminResultsTest < ApplicationSystemTestCase
     find(:css, 'i.arrow.right.icon').click
 
     assert(page.has_link?('expired.test'))
-    assert(page.has_text?('Search results are limited to first 20 hits.'))
+    # assert(page.has_text?('Search results are limited to first 20 hits.'))
   end
 
   def test_administrator_can_see_details_of_an_orphaned_result

@@ -1,0 +1,26 @@
+en:
+  admin:
+    auctions:
+      index:
+        title: "Domain auctions"
+        new_auction: "New auction"
+        no_price: "NaN"
+
+      search:
+        title: "Auction search"
+
+      new:
+        title: "New auction"
+        errors: "prohibited this auction from being saved"
+
+      show:
+        title: "Auction"
+
+      edit:
+        title: "Edit auction"
+        errors: "prohibited this auction from being saved"
+
+      destroy:
+        cannot_delete: "You cannot delete an auction that is already in progress or has finished."
+      auction:
+        no_price: "NaN"

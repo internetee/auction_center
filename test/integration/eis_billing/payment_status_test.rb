@@ -10,6 +10,7 @@ class PaymentStatusTest < ActionDispatch::IntegrationTest
     @payment_order = payment_orders(:issued)
     @payment_order.update(invoice_id: @invoice.id)
     @payment_order.reload
+    @auction = auctions(:english)
 
     sign_in users(:participant)
     Spy.on_instance_method(EisBilling::BaseController, :authorized).and_return(true)
@@ -72,5 +73,26 @@ class PaymentStatusTest < ActionDispatch::IntegrationTest
     assert_not_nil @invoice.paid_at
     assert_not_nil invoice_from_result.paid_at
     assert_response :ok
+  end
+
+  def test_should_allow_user_to_participate_if_deposit_was_added
+    @auction.update(enable_deposit: true, requirement_deposit_in_cents: 50000)
+    @auction.reload
+
+    payload = {
+      domain_name: @auction.domain_name,
+      user_uuid: @user.uuid,
+      user_email: @user.email,
+      transaction_amount: 500.0,
+      description: 'deposit'
+    }
+
+    refute @auction.allow_to_set_bid?(@user)
+
+    put eis_billing_payment_status_path, params: payload, headers: { 'HTTP_COOKIE' => 'session=customer' }
+
+    @user.reload
+
+    assert @auction.allow_to_set_bid?(@user)
   end
 end

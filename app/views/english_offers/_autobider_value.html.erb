@@ -1,0 +1,11 @@
+<%= turbo_frame_tag 'autobider_scope' do %>
+  <div class="ui one column grid centered aligned", style='margin-top: 20px; margin-bottom: 40px; align-items: center;'>
+    <div>
+      <span style="font-weight: bold;"><%= t('english_offers.form.autobidder_value') %>:</span> <span style="font-weight: bold; color: red;" id='autobider-current' class='autobider-current'><%= @autobider.price %></span>
+    </div>
+    <div>
+      <% url = @autobider.new_record? ? new_autobider_path(auction_uuid: @auction.uuid) : edit_autobider_path(uuid: @autobider.uuid, auction_uuid: @auction.uuid)  %>
+      <%= link_to t('english_offers.form.set_autobidder_value'), url, data: { turbo_frame: 'autobider_scope', turbo: true }, class: "ui button primary", id: 'autobider-value-btn' %>
+    </div>
+  </div>
+<% end %>

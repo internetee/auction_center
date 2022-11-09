@@ -6,7 +6,7 @@
     <ul>
         <li>
             <% if current_user %>
-                <%= link_to(destroy_user_session_path, method: :delete, class: "item") do %>
+                <%= link_to(destroy_user_session_path, method: :delete, class: "item", data: {  "turbo-method": 'delete' }) do %>
                     <i aria-hidden="true" class="user icon"></i><%= t(:sign_out) %>
                 <% end %>
             <% else %>

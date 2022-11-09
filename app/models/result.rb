@@ -2,6 +2,8 @@ require 'auction_not_finished'
 require 'auction_not_found'
 
 class Result < ApplicationRecord
+  include PgSearch::Model
+
   enum status: { no_bids: 'no_bids',
                  awaiting_payment: 'awaiting_payment',
                  payment_received: 'payment_received',
@@ -37,6 +39,16 @@ class Result < ApplicationRecord
   scope :registered, -> { where(status: statuses[:domain_registered]) }
   scope :unregistered, -> { where(status: statuses[:domain_not_registered]) }
 
+  scope :with_domain_name, lambda { |domain_name|
+    if domain_name.present?
+      joins(:auction)
+        .includes(:offer, :invoice)
+        .where('auctions.domain_name ILIKE ?', "%#{domain_name}%")
+    end
+  }
+
+  scope :with_status, ->(status) { where(status: [status]) if status.present? }
+
   scope :pending_registration_everyday_reminder, lambda {
     without_current_reminders
       .before_registration_date
@@ -64,12 +76,21 @@ class Result < ApplicationRecord
     ResultCreator.new(auction_id).call
   end
 
+  def self.search(params = {})
+    with_domain_name(params[:domain_name]).with_status(params[:statuses_contains])
+  end
+
   def winning_offer
     offer
   end
 
   def mark_as_payment_received(time)
-    date = time.to_date + Setting.find_by(code: 'registration_term').retrieve
+    registration_term = if auction.english?
+                          Setting.find_by(code: 'registration_english_term')&.retrieve || 30
+                        else
+                          Setting.find_by(code: 'registration_term').retrieve
+                        end
+    date = time.to_date + registration_term
     update!(status: Result.statuses[:payment_received],
             registration_due_date: date)
   end

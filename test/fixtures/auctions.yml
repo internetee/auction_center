@@ -30,3 +30,20 @@ orphaned:
   starts_at: <%= Time.parse('2010-07-05 10:30 +0000') %>
   ends_at: <%= Time.parse('2010-07-06 10:30 +0000') %>
   uuid: "29dffa2b-ba9e-4648-8155-9de23dadf99c"
+
+english:
+  domain_name: 'english_auction.test'
+  starts_at: <%= Time.parse('2010-07-05 10:30 +0000') %>
+  ends_at: <%= Time.parse('2010-07-06 10:30 +0000') %>
+  uuid: "561ce6f3-16ad-4e77-8857-a0dd0950754f"
+  platform: "english"
+  starting_price: 5.0
+  min_bids_step: 5.0
+  slipping_end: 5
+
+english_nil_starts:
+  domain_name: 'english_nil_auction.test'
+  starts_at: 
+  ends_at: 
+  uuid: "33bfde79-0e9b-4965-b473-770077147f71"
+  platform: "english"

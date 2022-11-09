@@ -1,0 +1,59 @@
+et:
+  english_offers:
+    auction: "Oksjon"
+    price: "Hind"
+    i_accept_terms_and_conditions: "Nõustun tingimustega"
+    price_in_currency: "%{price} €"
+    price_is_without_vat: "Pakkumus ei sisalda käibemaksu."
+    already_exists: "Oled sellele oksjonile pakkumuse juba esitanud."
+    errors: "seda pakkumust ei saa salvestada"
+    total: "Käibemaksuga kokku"
+    must_be_active: "Oksjon on lõppenud"
+    must_be_active_err: "on lõppenud"
+    must_be_higher_than: "peab olema suurem kui %{minimum}"
+    reminder: |
+      NB: Tegemist on pimeoksjoniga, kus pakkumised ei ole nähtavad.
+      Domeeninimele võib olla ka teisi pakkujaid.
+      Tee pakkumine vastavalt oma hinnangule domeeninime väärtuse kohta.
+    timer: Oksjoni lõpuni on jäänud
+
+    new:
+      title: "Domeeni registreerimise eelisõiguse pakkumus"
+
+    create:
+      created: "Pakkumus edukalt esitatud"
+
+    show:
+      title: "Sinu pakkumus"
+      we_will_contact_winner: |
+        Kui oksjon on lõppenud, saadameoksjoni võitjale e-kirja aadressile
+      min_bid: Vähim võimalik pakkumus
+      current_price: Hetke parim pakkumus
+      bid_failed: Pakkumine ebaõnnestus, hetke parim pakkumus
+
+    edit:
+      title: "Domeeni registreerimise eelisõiguse pakkumus"
+      bid_updated: "Pakkumine uuendatud"
+
+    index:
+      your_last_offer: "Sinu viimane pakkumus"
+      claim_your_domain: "Võta domeen"
+      you_won: "Oled võitnud"
+      you_lost: "Teine pakkuja võitis"
+
+    form:
+      bidder: "Pakkuja"
+      offer: "Pakkumus"
+      minimum_offer: "Pakkumus peab olema vähemalt %{minimum}."
+      captcha_verification: "Captcha kontroll ebaõnnestus"
+      offer_title: Tee oma pakkumus
+      autobider: "Automaatpakkuja"
+      autobidder_value: Automaatpakkuja lagi
+      set_autobidder_value: Seadista automaatpakkuja
+
+  activerecord:
+    attributes:
+      offer:
+        auction: "oksjon"
+        price: "hind"
+        cents: "hind"

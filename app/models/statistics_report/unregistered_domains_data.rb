@@ -15,7 +15,7 @@ class StatisticsReport
     def gather_data
       results = results_query
       (start_date..end_date).each do |date|
-        @unregistered_domains[date] = results[date]&.count.to_i
+        @unregistered_domains[date] = results[date]&.size.to_i
       end
     end
 

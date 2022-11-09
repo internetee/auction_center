@@ -24,6 +24,8 @@ class WishlistItem < ApplicationRecord
 
   validate :must_fit_in_wishlist_size, on: :create
   validate :valid_domain_extension, on: :create
+  validate :restrictions_for_active_auctions, on: :create
+  validate :avilability_check, on: :create
 
   scope :for_user, ->(user_id) { where(user_id: user_id) }
 
@@ -75,5 +77,26 @@ class WishlistItem < ApplicationRecord
     return if domain_extension.empty? || domain_extension.include?(domain_name.split('.', 2).last)
 
     errors.add(:domain_name, :invalid) if errors[:domain_name].blank?
+  end
+
+  def restrictions_for_active_auctions
+    return if Rails.env.test?
+
+    auction = Auction.find_by(domain_name: domain_name)
+
+    return if auction.nil?
+    return unless auction.in_progress?
+
+    errors.add(:domain_name, I18n.t('wishlist_items.in_progress'))
+  end
+
+  def avilability_check
+    return if Rails.env.test?
+
+    result = AvilabilityCheckerService.call(domain_name: domain_name)
+
+    return if result
+
+    errors.add(:domain_name, "isn't registered")
   end
 end

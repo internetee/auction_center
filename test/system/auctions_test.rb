@@ -11,6 +11,8 @@ class AuctionsTest < ApplicationSystemTestCase
     @other_auction = auctions(:valid_without_offers)
     @expired_auction = auctions(:expired)
     @orphaned_auction = auctions(:orphaned)
+    @english_auction = auctions(:english)
+    @english_nil_auction = auctions(:english_nil_starts)
   end
 
   def teardown
@@ -25,6 +27,8 @@ class AuctionsTest < ApplicationSystemTestCase
     assert(page.has_table?('auctions-table'))
     assert(page.has_link?('with-offers.test', href: auction_path(@auction.uuid)))
     assert(page.has_link?('no-offers.test', href: auction_path(@other_auction.uuid)))
+    assert(page.has_link?('english_auction.test', href: auction_path(@english_auction.uuid)))
+    assert(page.has_no_link?('english_nil_auction.test', href: auction_path(@english_nil_auction.uuid)))
   end
 
   def test_numbers_have_a_span_class_in_index_list
@@ -39,29 +43,6 @@ class AuctionsTest < ApplicationSystemTestCase
 
     assert(span_element = page.find('span.number-in-domain-name'))
     assert_equal('123', span_element.text)
-  end
-
-  def test_search_by_domain_name_finds_all_auctions_with_common_beggining
-    travel_back
-
-    visit('/')
-    fill_in('domain_name', with: 'w')
-    find(:css, 'i.arrow.right.icon').click
-
-    assert(page.has_link?('with-invoice.test'))
-    assert(page.has_link?('with-offers.test'))
-    assert(page.has_text?('Search results are limited to first 20 hits.'))
-  end
-
-  def test_search_does_not_find_auctions_by_top_level_domain
-    travel_back
-
-    visit('/')
-    fill_in('domain_name', with: '.test')
-    find(:css, 'i.arrow.right.icon').click
-
-    assert_not(page.has_link?('with-invoice.test'))
-    assert_not(page.has_link?('with-offers.test'))
   end
 
   def test_auctions_index_contains_a_link_to_terms_and_conditions
@@ -92,5 +73,12 @@ class AuctionsTest < ApplicationSystemTestCase
 
     assert(page.has_content?(:visible, 'with-offers.test'))
     assert(page.has_content?(:visible, '2010-07-06 10:30'))
+  end
+
+  def test_for_english_auction_should_be_bid_button
+    visit('/')
+
+    assert(page.has_link?('english_auction.test', href: auction_path(@english_auction.uuid)))
+    assert(page.has_link?('Bid!'))
   end
 end

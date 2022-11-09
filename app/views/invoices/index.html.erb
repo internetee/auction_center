@@ -31,7 +31,6 @@
         <% if @issued_invoices.any? %>
             <div class="column sixteen wide">
                 <h3><%= t('.pay') %></h3>
-
                 <%= button_to t('invoices.index.pay'), 
                               pay_all_bills_invoices_path,
                               method: :post,

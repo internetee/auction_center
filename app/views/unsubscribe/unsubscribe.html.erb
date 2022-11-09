@@ -9,7 +9,7 @@
         <%= form_for(@user, url: unsubscribe_update_path(id: @user.id)) do |f| %>
             <h3><%= t('unsubscribe_text') %></h3>
             <%= f.hidden_field(:daily_summary, value: false) %>
-            <%= f.submit t('unsubscribe_btn'), class: "ui button big primary red" %>
+            <%= f.submit t('unsubscribe_btn'), class: "ui button big primary red", data: { turbo: false } %>
             <%= link_to t('cancel_btn'), root_url, class: "ui button big secondary" %>
         <% end %>
     </div>

@@ -1,6 +1,7 @@
 et:
   wishlist_items:
     too_many_items: "suuruse piirang on ületatud"
+    in_progress: "auction already in game"
 
     index:
       new_item: "Lisa uus domeeninimi"
@@ -15,6 +16,7 @@ et:
       notification_description: |
         Saadame epostiga teate, kui soovitud domeeninimi läheb oksjonile.
         Võib minna väga kaua aega enne kui domeeninimi jõuab oksjonile seepärast kirjed nimekirjas ei aegu.
+      change_starting_price: Muuda
 
   activerecord:
     attributes:

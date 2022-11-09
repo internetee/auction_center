@@ -12,8 +12,8 @@ class OneoffTest < ActiveSupport::TestCase
     }
     stub_request(:post, 'http://eis_billing_system:3000/api/v1/invoice_generator/oneoff')
       .to_return(status: 200, body: message.to_json, headers: {})
-    response = EisBilling::Oneoff.send_invoice(invoice_number: @invoice.number.to_s, customer_url: 'eeid.test ')
+    response = EisBilling::OneoffService.call(invoice_number: @invoice.number.to_s, customer_url: 'eeid.test ')
 
-    assert_equal response['message'], 'ok'
+    assert_equal response.instance['message'], 'ok'
   end
 end

@@ -30,6 +30,29 @@ class Invoice < ApplicationRecord
 
   before_create :set_invoice_number
 
+  scope :with_search_scope, ->(origin) {
+    if origin.present?
+      if numeric?(origin)
+        self.where('number = ?', origin)
+      else
+        self.joins(:user)
+            .joins(:billing_profile)
+            .joins(:invoice_items)
+            .where('billing_profiles.name ILIKE ? OR ' \
+                   'users.email ILIKE ? OR users.surname ILIKE ? OR ' \
+                   'invoice_items.name ILIKE ?',
+                   "%#{origin}%",
+                   "%#{origin}%",
+                   "%#{origin}%",
+                   "%#{origin}%")
+      end
+    end
+  }
+
+  scope :with_statuses, ->(statuses) {
+    self.where(status: [statuses]) if statuses.present?
+  }
+
   scope :overdue, -> { where('due_date < ? AND status = ?', Time.zone.today, statuses[:issued]) }
 
   scope :pending_payment_reminder,
@@ -37,6 +60,10 @@ class Invoice < ApplicationRecord
           where('due_date = ? AND status = ?',
                 Time.zone.today + number_of_days, statuses[:issued])
         }
+
+  def self.search(params={})
+    self.with_search_scope(params[:search_string]).with_statuses(params[:statuses_contains])
+  end
 
   def self.create_from_result(result_id)
     result = Result.find_by(id: result_id)
@@ -60,12 +87,14 @@ class Invoice < ApplicationRecord
   end
 
   def set_invoice_number
-    result = EisBilling::GetInvoiceNumber.call
+    invoice_number = EisBilling::GetInvoiceNumber.call
 
-    billing_restrictions_issue if result['code'] == '403'
-    billing_out_of_range_issue if result['error'] == 'out of range'
-
-    self.number = result['invoice_number'].to_i
+    if invoice_number.result?
+      self.number = invoice_number.instance['invoice_number'].to_i
+    else
+      billing_restrictions_issue if invoice_number.errors['code'] == '403'
+      billing_out_of_range_issue if invoice_number.errors['error'] == 'out of range'
+    end
   end
 
   def items
@@ -96,7 +125,7 @@ class Invoice < ApplicationRecord
   end
 
   def total
-    price * (1 + vat_rate)
+    (price * (1 + vat_rate)).round(2)
   end
 
   def vat
@@ -169,6 +198,16 @@ class Invoice < ApplicationRecord
 
   def self.with_billing_profile(billing_profile_id:)
     Invoice.where(billing_profile_id: billing_profile_id)
+  end
+
+  def self.numeric?(string)
+    return true if string =~ /\A\d+\Z/
+
+    begin
+      true if Float(string)
+    rescue StandardError
+      false
+    end
   end
 
   private

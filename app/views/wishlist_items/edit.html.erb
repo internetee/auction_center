@@ -1,0 +1,8 @@
+<%= turbo_frame_tag dom_id(@wishlist_item), class: 'contents' do %>
+  <%= form_for(@wishlist_item, url: wishlist_item_path(uuid: @wishlist_item.uuid), html: { method: "patch" }, remote: true) do |f| %>
+    <%= f.number_field :price, style: "border: 2px solid #A7A8AA; border-radius: 3px; font-family: 'Raleway', 'Helvetica Neue', Arial, Helvetica, sans-serif; margin-right: 10px", min: 5, step: "0.01", placeholder: @wishlist_item.price %>
+    <%= f.button(class: "ui icon primary button") do %>
+      <i aria-hidden="true" class="arrow right icon"></i>
+    <% end %>
+  <% end %>
+<% end %>

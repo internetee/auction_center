@@ -2,10 +2,8 @@ require 'countries'
 
 module Admin
   class UsersController < BaseController
-    include OrderableHelper
-
     before_action :authorize_user
-    before_action :set_user, except: %i[index new create search]
+    before_action :set_user, except: %i[index new create]
     before_action :set_phone_confirmation_toggle, only: %i[index show]
 
     # GET /admin/users/new
@@ -15,22 +13,12 @@ module Admin
 
     # GET /admin/users
     def index
-      @users = User.order(orderable_array(default_order_params))
-                   .page(params[:page])
-    end
+      sort_column = params[:sort].presence_in(%w[surname mobile_phone email roles]) || 'id'
+      sort_direction = params[:direction].presence_in(%w[asc desc]) || 'desc'
 
-    # GET /admin/users/search
-    def search
-      search_string = search_params[:search_string]
-      @origin = search_string || search_params.dig(:order, :origin)
+      users = User.accessible_by(current_ability).search(params).order("#{sort_column} #{sort_direction}")
 
-      @users = User.where('email ILIKE ? OR surname ILIKE ? OR given_names ILIKE ? ' \
-                          'OR mobile_phone ILIKE ?',
-                          "%#{@origin}%", "%#{@origin}%", "%#{@origin}%",
-                          "%#{@origin}%")
-                   .accessible_by(current_ability)
-                   .order(orderable_array)
-                   .page(1)
+      @pagy, @users = pagy(users, items: params[:per_page] ||= 15)
     end
 
     # POST /admin/users
@@ -85,11 +73,6 @@ module Admin
 
     private
 
-    def search_params
-      search_params_copy = params.dup
-      search_params_copy.permit(:search_string, order: :origin)
-    end
-
     def create_params
       params.require(:user)
             .permit(:email, :password, :password_confirmation, :identity_code, :country_code,
@@ -116,10 +99,6 @@ module Admin
 
     def set_phone_confirmation_toggle
       @phone_confirmation_toggle = Setting.find_by(code: 'require_phone_confirmation').retrieve
-    end
-
-    def default_order_params
-      { 'users.created_at' => 'desc' }
     end
   end
 end

@@ -24,7 +24,7 @@ module Concerns
                                                      CONFIG_NAMESPACE.to_sym, :linkpay_token)
 
       def linkpay_url
-        return unless PaymentOrder.supported_methods.include?('PaymentOrders::EveryPay'.constantize)
+        # return unless PaymentOrder.supported_methods.include?('PaymentOrders::EveryPay'.constantize)
         return if paid?
 
         linkpay_url_builder

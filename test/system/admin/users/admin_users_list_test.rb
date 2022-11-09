@@ -23,16 +23,6 @@ class AdminUsersListTest < ApplicationSystemTestCase
     assert_current_path(admin_user_path(edited_user))
   end
 
-  def test_search_by_email
-    visit admin_users_path
-
-    fill_in('search_string', with: "omniauth@auction")
-    find(:css, "i.arrow.right.icon").click
-
-    assert(page.has_link?('TARA USER'))
-    assert(page.has_text?('Search results are limited to first 20 hits.'))
-  end
-
   def test_can_create_new_user_accounts
     click_link('New user')
 
@@ -73,11 +63,6 @@ class AdminUsersListTest < ApplicationSystemTestCase
                        "Surname: can't be blank"]
 
     assert_equal(errors_array.to_set, expected_errors.to_set)
-  end
-
-  def test_newer_users_are_showed_on_top
-    visit admin_users_path
-    assert_appears_before('user@auction.test', 'administrator@auction.test')
   end
 
   private

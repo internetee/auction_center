@@ -3,8 +3,6 @@ require 'invoice_already_paid'
 
 module Admin
   class InvoicesController < BaseController
-    include OrderableHelper
-
     before_action :authorize_user
     before_action :create_invoice_if_needed
     before_action :set_invoice, only: %i[show download update edit]
@@ -17,56 +15,23 @@ module Admin
 
     # GET /admin/invoices
     def index
-      @invoices = Invoice.accessible_by(current_ability)
-                         .includes(:paid_with_payment_order)
-                         .order(orderable_array(default_order_params))
-                         .page(params[:page])
-    end
+      sort_column = params[:sort].presence_in(%w[paid_through
+                                                 paid_amount
+                                                 vat_rate
+                                                 cents
+                                                 notes
+                                                 status
+                                                 number
+                                                 due_date
+                                                 billing_profile_id]) || 'id'
+      sort_direction = params[:direction].presence_in(%w[asc desc]) || 'desc'
 
-    # GET /admin/invoices/search
-    def search
-      @_params = search_params.compact_blank
-      @origin = @_params[:order].present? ? @_params.dig(:order, :origin) : @_params
-      @full_list = @_params[:full_list] || @_params.dig(:order, :origin, :full_list)
-      @search_string = @_params[:search_string] || @_params.dig(:order, :origin, :search_string)
-      @statuses_contains = @_params[:statuses_contains] || @_params.dig(:order, :origin,
-                                                                        :statuses_contains)
+      invoices = Invoice.accessible_by(current_ability)
+                        .includes(:paid_with_payment_order)
+                        .search(params)
+                        .order("#{sort_column} #{sort_direction}")
 
-      set_invoices_search_scope
-
-      return paginate_result if @statuses_contains.nil?
-
-      statuses_filter(@statuses_contains)
-      paginate_result
-    end
-
-    def search_scope(origin)
-      return Invoice if origin.nil?
-
-      if numeric?(origin)
-        Invoice.where('number = ?', origin)
-      else
-        Invoice.joins(:user)
-               .joins(:billing_profile)
-               .joins(:invoice_items)
-               .where('billing_profiles.name ILIKE ? OR ' \
-                      'users.email ILIKE ? OR users.surname ILIKE ? OR ' \
-                      'invoice_items.name ILIKE ?',
-                      "%#{origin}%",
-                      "%#{origin}%",
-                      "%#{origin}%",
-                      "%#{origin}%")
-      end
-    end
-
-    def numeric?(string)
-      return true if string =~ /\A\d+\Z/
-
-      begin
-        true if Float(string)
-      rescue StandardError
-        false
-      end
+      @pagy, @invoices = pagy(invoices, items: params[:per_page] ||= 15)
     end
 
     # GET /admin/invoices/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/download
@@ -111,20 +76,6 @@ module Admin
 
     private
 
-    def set_invoices_search_scope
-      @invoices = search_scope(@search_string).accessible_by(current_ability)
-                                              .includes(:paid_with_payment_order)
-                                              .order(orderable_array(default_order_params))
-    end
-
-    def statuses_filter(statuses)
-      @invoices = @invoices.select { |invoice| statuses.include? invoice.status }
-    end
-
-    def paginate_result
-      @invoices = Kaminari.paginate_array(@invoices).page(params[:page])
-    end
-
     def set_invoice
       @invoice = Invoice.includes(:invoice_items).find(params[:id])
     end
@@ -141,13 +92,6 @@ module Admin
       @invoice.mark_as_paid_at(Time.zone.now)
     end
 
-    def search_params
-      search_params_copy = params.dup
-      search_params_copy.permit(:search_string, :full_list, :page,
-                                order: {},
-                                statuses_contains: [])
-    end
-
     def authorize_user
       authorize! :read, Invoice
     end
@@ -158,10 +102,6 @@ module Admin
 
     def create_invoice_if_needed
       InvoiceCreationJob.perform_later if InvoiceCreationJob.needs_to_run?
-    end
-
-    def default_order_params
-      { 'invoices.due_date' => 'desc', 'invoices.created_at' => 'desc' }
     end
   end
 end

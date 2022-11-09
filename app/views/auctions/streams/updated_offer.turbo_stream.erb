@@ -1,0 +1,10 @@
+<%= turbo_stream.update "mini",
+                         html: "<h5>Minimum bid is #{auction.min_bids_step}</h5>".html_safe %>
+
+<%= turbo_stream.update "current_#{auction.id}_price",
+                         partial: 'english_offers/current_price',
+                         locals: { auction: auction } %>
+
+<%= turbo_stream.update "auction_timer",
+                         partial: 'english_offers/timer',
+                         locals: { auction: auction } %>

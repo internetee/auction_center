@@ -21,7 +21,7 @@
                         <%- @payment_order.form_fields.each do |k, v| %>
                             <%= f.hidden_field k, value: v %>
                         <% end %>
-                        <%= f.submit t(:submit) %>
+                        <%= f.submit t(:submit), data: { turbo: false } %>
                     <% end %>
                 </div>
             </div>
@@ -29,5 +29,5 @@
     </div>
 </div>
 
-<%= stylesheet_pack_tag 'stylesheets/payment_orders', media: 'all', 'data-turbolinks-track': 'reload' %>
+<%#= stylesheet_pack_tag 'stylesheets/payment_orders', media: 'all', 'data-turbolinks-track': 'reload' %>
 <%= javascript_pack_tag 'payment_orders', 'data-turbolinks-track': 'reload' %>

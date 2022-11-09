@@ -33,15 +33,15 @@ class StatisticsReport
       unreg_domains = domains_query('domain_not_registered')
       reg_domains = domains_query('domain_registered')
       (start_date..end_date).each do |date|
-        @unregistered_domains_daily[date] = unreg_domains[date]&.count.to_i
-        @registered_domains_daily[date] = reg_domains[date]&.count.to_i
+        @unregistered_domains_daily[date] = unreg_domains[date]&.size.to_i
+        @registered_domains_daily[date] = reg_domains[date]&.size.to_i
       end
     end
 
     def daily_auctions
       auctions = auctions_query
       (start_date..end_date).each do |date|
-        @auctions_by_end_daily[date] = auctions[date]&.count.to_i
+        @auctions_by_end_daily[date] = auctions[date]&.size.to_i
       end
     end
 

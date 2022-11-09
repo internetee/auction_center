@@ -47,9 +47,11 @@
                                 <%- if offer.result %>
                                     <%= link_to t('.claim_your_domain'), result_path(offer.result.uuid) %>
                                 <%- else %>
-                                    <%= link_to t('auctions.delete_your_offer'), 
-                                        offer_path(offer.uuid),
-                                        method: :delete, data: { confirm: t(:are_you_sure) }, class: "ui button red"%>
+                                    <% unless offer.auction.english? %>
+                                        <%= link_to t('auctions.delete_your_offer'), 
+                                            offer_path(offer.uuid),
+                                            method: :delete, data: { confirm: t(:are_you_sure) }, class: "ui button red"%>
+                                    <% end %>
                                 <% end %>
                             </td>
                         </tr>
@@ -58,8 +60,13 @@
             </table>
         </div>
 
-        <div class="column">
-            <%= paginate @offers %>
+        <div class="column" style="margin-top:10px; text-align: center;">
+            <% if @pagy.pages > 1 %>
+                <div class="footer">
+                    <%== pagy_nav(@pagy) %>
+                </div>
+            <% end %>
+
         </div>
     </div>
 </div>

@@ -41,11 +41,12 @@ class OffersController < ApplicationController
 
   # GET /offers
   def index
-    @offers = Offer.includes(:auction)
-                   .includes(:result)
-                   .where(user_id: current_user)
-                   .order('auctions.ends_at DESC')
-                   .page(params[:page])
+    offers = Offer.includes(:auction)
+                  .includes(:result)
+                  .where(user_id: current_user)
+                  .order('auctions.ends_at DESC')
+
+    @pagy, @offers = pagy(offers, items: params[:per_page] ||= 15)
   end
 
   # GET /offers/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
@@ -56,6 +57,8 @@ class OffersController < ApplicationController
 
   # PUT /offers/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
   def update
+    redirect_to auction_path(@offer.auction.uuid) and return if @offer.auction.english?
+
     respond_to do |format|
       if update_predicate
         format.html { redirect_to offer_path(@offer.uuid), notice: t(:updated) }
@@ -69,6 +72,7 @@ class OffersController < ApplicationController
 
   # DELETE /offers/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
   def destroy
+    return if @offer.auction.english?
     return unless @offer.can_be_modified? && @offer.destroy
 
     respond_to do |format|
@@ -96,6 +100,7 @@ class OffersController < ApplicationController
   end
 
   def update_predicate
+    # captcha_predicate = true
     captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
     captcha_predicate && @offer.update(update_params)
   end

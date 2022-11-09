@@ -12,6 +12,24 @@ class BillingProfile < ApplicationRecord
   belongs_to :user, optional: true
   after_update :mirror_address_to_attached_invoices
 
+  scope :with_search_scope, ->(origin) {
+    if origin.present?
+      joins(:user)
+        .includes(:user)
+        .where(
+          'billing_profiles.name ILIKE ? OR ' \
+          'users.email ILIKE ? OR users.surname ILIKE ?',
+          "%#{origin}%",
+          "%#{origin}%",
+          "%#{origin}%"
+        )
+    end
+  }
+
+  def self.search(params = {})
+    self.with_search_scope(params[:search_string])
+  end
+
   def user_name
     user ? user.display_name : I18n.t('billing_profiles.orphaned')
   end

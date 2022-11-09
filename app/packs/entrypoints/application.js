@@ -14,10 +14,19 @@ import Turbolinks from 'turbolinks';
 Rails.start();
 Turbolinks.start();
 
+import { Turbo } from "@hotwired/turbo-rails"
+Turbo.session.drive = false
+
+import "@hotwired/turbo-rails"
+// import "controllers"
+import "./controllers"
+import './stylesheets/application.scss'
+
 // UI modules
 import '../src/semantic/definitions/modules/transition.js';
 import '../src/semantic/definitions/modules/checkbox.js';
 import '../src/semantic/definitions/modules/dropdown.js';
+import '../src/semantic/definitions/modules/accordion.js';
 import '../src/semantic/definitions/modules/sidebar.js';
 import '../src/semantic/definitions/modules/popup.js';
 import '../src/semantic/semantic.less';
@@ -27,6 +36,7 @@ import 'typeface-raleway';
 
 $(document).on('turbolinks:load', function() {
     $('.ui.dropdown').dropdown();
+    $('.ui.accordion').accordion();
 
     $('.btn-menu').on('click', function(e) {
         $('.ui.sidebar')
@@ -42,3 +52,6 @@ $(document).on('turbolinks:load', function() {
         }
     });
 });
+
+$(document).ready(function(){
+    $('.ui.accordion').accordion()});

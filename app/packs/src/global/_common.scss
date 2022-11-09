@@ -164,6 +164,7 @@ strong {
 
     .auctions-table-mobile-infotainment {
         @media only screen and (min-width: 768px) {
+            background: #212224;
             display: none;
         }
     }
@@ -172,6 +173,7 @@ strong {
         th.auctions-table-cell-name-no-mobile {
             @media only screen and (max-width: 767px) {
                 display: none !important;
+                background: #212224;
             }
         }
     }
@@ -192,6 +194,10 @@ strong {
 @media only screen and (max-width: 767px) {
     .ui.search input {
         width: 19.5em;
+    }
+
+    .ui.table.stackable thead {
+        background: #212224;
     }
 }
 

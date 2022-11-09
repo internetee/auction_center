@@ -1,0 +1,26 @@
+et:
+  admin:
+    auctions:
+      index:
+        title: "Domeenioksjonid"
+        new_auction: "Uus oksjon"
+        no_price: "NaN"
+
+      search:
+        title: "Oksjoni otsing"
+
+      new:
+        title: "Uus oksjon"
+        errors: "ei võimaldanud toimingut salvestada"
+
+      show:
+        title: "Oksjon"
+
+      edit:
+        title: "Muuda oksjonit"
+        errors: "ei võimaldanud toimingut salvestada"
+
+      destroy:
+        cannot_delete: "Oksjonit mis on alanud või lõppenud ei saa kustutada."
+      auction:
+        no_price: "NaN"

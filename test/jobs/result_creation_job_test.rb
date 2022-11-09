@@ -48,8 +48,8 @@ class ResultCreationJobTest < ActiveJob::TestCase
 
   def test_job_schedules_invoice_creation
     eis_response = OpenStruct.new(body: @invoice_link.to_json)
-    Spy.on_instance_method(EisBilling::Invoice, :send_invoice).and_return(eis_response)
-    Spy.on(EisBilling::SendInvoiceStatus, :send_info).and_return(true)
+    Spy.on(EisBilling::Invoice, :call).and_return(eis_response)
+    Spy.on(EisBilling::SendInvoiceStatusService, :call).and_return(true)
     mock = Minitest::Mock.new
     def mock.authorized; true; end
 

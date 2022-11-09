@@ -15,3 +15,15 @@ en:
       introduction: The domain name %{domain_name} from the wishlist was auctioned and an automated bid of %{offer_price} was made
       call_to_action_html: "See your bid %{link}."
       call_to_action_link: "here"
+
+    auction_wishlist_bid:
+      subject: "%{domain_name} is now on auction"
+      salutation: "Dear %{display_name},"
+      introduction: |
+        You have added %{domain_name} to your wishlist of .ee domains.
+        %{domain_name} is now on auction at .ee auction environment.
+        The auction ends at %{ends_at}.
+      bid_introduction: |
+        As you had entered your bid into the wishlist, the auctions system created a bid for you for that sum.
+        You can change or delete your bid at any time before the end of the auction at the auction portal (oksjon.internet.ee)
+

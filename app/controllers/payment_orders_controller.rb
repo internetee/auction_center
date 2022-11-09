@@ -79,7 +79,6 @@ class PaymentOrdersController < ApplicationController
   # def successful_update_notice
   #   invoice_ids = @payment_order.invoices.map(&:number).join(', ')
   #   return t('.bulk_update', ids: invoice_ids) if @payment_order.invoices.count > 1
-
   #   t(:updated)
   # end
 
