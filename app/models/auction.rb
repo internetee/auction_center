@@ -9,8 +9,7 @@ class Auction < ApplicationRecord
 
   attr_accessor :skip_broadcast, :skip_validation
 
-  # unless: :skip_validation
-  validate :does_not_overlap
+  validate :does_not_overlap, unless: :skip_validation
   validate :ends_at_later_than_starts_at
   validate :starts_at_cannot_be_in_the_past, on: :create
   # validate :enable_deposit_only_for_english_auction, on: :update
@@ -150,7 +149,7 @@ class Auction < ApplicationRecord
   end
 
   def starts_at_cannot_be_in_the_past
-    # return if skip_validation
+    return if skip_validation
     return unless starts_at
     return if starts_at >= Time.now.utc
 
@@ -224,7 +223,7 @@ class Auction < ApplicationRecord
   end
 
   def ends_at_later_than_starts_at
-    # return if skip_validation
+    return if skip_validation
     return unless starts_at && ends_at
     return if ends_at > starts_at
 
