@@ -26,21 +26,11 @@ module Admin
 
     # GET /admin/auctions
     def index
-      sort_column = params[:sort].presence_in(%w[domain name
-                                                 starts_at
-                                                 ends_at
-                                                 highest_offer_cents
-                                                 number_of_offers
-                                                 turns_count
-                                                 starting_price
-                                                 min_bids_step
-                                                 slipping_end
-                                                 platform]) || 'id'
-      sort_direction = params[:direction].presence_in(%w[asc desc]) || 'desc'
+      params[:admin] = 'true'
 
       collection_one = Auction.where.not('ends_at <= ?', Time.zone.now).pluck(:id)
       collection_two = Auction.where(starts_at: nil).pluck(:id)
-      collection = Auction.where(id: collection_one + collection_two).search(params).order(sort_column => sort_direction)
+      collection = Auction.where(id: collection_one + collection_two).search(params)
 
       @pagy, @auctions = pagy(collection, items: params[:per_page] ||= 20, link_extra: 'data-turbo-action="advance"')
     end
