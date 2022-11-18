@@ -61,14 +61,13 @@ class OffersTest < ApplicationSystemTestCase
     assert_text(expected_text)
   end
 
-  def test_offers_table_rows_have_links_to_each_offer
+  def test_offers_table_rows_have_links_to_each_offer_in_UK_profile
     sign_in(@user)
     visit offers_path
 
     within('tbody#offers-table-body') do
       assert_text('with-offers.test')
       assert_text('50.00 €')
-      assert_text('60.00 €')
 
       assert(page.has_link?('with-offers.test', href: offer_path(@offer.uuid)))
     end

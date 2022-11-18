@@ -112,25 +112,6 @@ class BillingProfilesTest < ApplicationSystemTestCase
     assert(page.has_css?('div.notice', text: 'Updated successfully.'))
     assert(BillingProfile.find_by(street: 'New Street 12', name: 'Joe John Participant-New',
                                   country_code: 'PL'))
-
-    @billing_profile.reload
-    assert_equal("#{@user.id} - Joe John Participant", @billing_profile.updated_by)
-  end
-
-  def test_empty_vat_code_values_are_ignored
-    visit billing_profile_path(@billing_profile.uuid)
-    click_link_or_button('Edit')
-
-    fill_in('billing_profile[street]', with: 'New Street 12')
-
-    assert_no_changes('BillingProfile.count') do
-      click_link_or_button('Submit')
-    end
-
-    assert(page.has_css?('div.notice', text: 'Updated successfully.'))
-
-    @billing_profile.reload
-    assert_not(@billing_profile.vat_code)
   end
 
   def test_edit_form_contains_existing_values

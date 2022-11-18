@@ -78,12 +78,9 @@ class BillingProfilesController < ApplicationController
   end
 
   def update_params
-    update_params = params.require(:billing_profile).permit(
+    params.require(:billing_profile).permit(
       :name, :vat_code, :legal_entity, :street, :city, :postal_code, :country_code
     )
-
-    update_params.reject! { |_k, v| v.empty? }
-    merge_updated_by(update_params)
   end
 
   def set_billing_profile
