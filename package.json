@@ -24,7 +24,7 @@
       "less-loader": "^7.3.0",
       "libphonenumber-js": "^1.9.25",
       "mini-css-extract-plugin": "^2.4.3",
-      "normalize-url": "^7.0.1",
+      "normalize-url": "^8.0.0",
       "optimize-css-assets-webpack-plugin": "^6.0.1",
       "postcss": "^8.3.11",
       "postcss-flexbugs-fixes": "^5.0.2",
