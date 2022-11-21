@@ -107,7 +107,6 @@ class Auction < ApplicationRecord
                                                      slipping_end
                                                      platform]) || 'id'
     sort_direction = params[:direction].presence_in(%w[asc desc]) || 'desc'
-
     is_from_admin = params[:admin] == 'true'
 
     self.with_highest_offers
@@ -117,7 +116,7 @@ class Auction < ApplicationRecord
         .with_ends_at(params[:ends_at])
         .with_starts_at_nil(params[:starts_at_nil])
         .with_offers(params[:auction_offer_type], params[:type])
-        .order("#{is_from_admin ? sort_admin_column : sort_column} #{sort_direction}")
+        .order("#{is_from_admin ? sort_admin_column : sort_column} #{sort_direction} NULLS LAST")
   end
 
   # def deposit_and_enable_deposit_should_be_togeter
