@@ -45,18 +45,18 @@ jobs:
         run: |
           docker build -t $TAG --build-arg RAILS_ENV=staging --build-arg SECRET_KEY_BASE="$KEY_BASE" -f Dockerfile.generic .
 
-      - name: Build static content image
-        env:
-          PASSWORD: ${{ secrets.GHCR }}
-        run: |
-          echo $PASSWORD | docker login ghcr.io -u eisbot --password-stdin
-          docker create -ti --name rails $TAG bash
-          docker cp rails:/opt/webapps/app/public/ ./public/
-          docker build -t $STATIC_TAG -f Dockerfile.generic-static .
+      # - name: Build static content image
+      #   env:
+      #     PASSWORD: ${{ secrets.GHCR }}
+      #   run: |
+      #     echo $PASSWORD | docker login ghcr.io -u eisbot --password-stdin
+      #     docker create -ti --name rails $TAG bash
+      #     docker cp rails:/opt/webapps/app/public/ ./public/
+      #     docker build -t $STATIC_TAG -f Dockerfile.generic-static .
 
-      - name: Clone registry project
-        run: |
-          git clone https://github.com/internetee/registry.git
+      # - name: Clone registry project
+      #   run: |
+      #     git clone https://github.com/internetee/registry.git
 
 #       - name: Build registry image
 #         env:
