@@ -1,3 +1,39 @@
+23.11.2022
+* Update dependency pdfkit to v0.8.7 [SECURITY] by @renovate in https://github.com/internetee/auction_center/pull/942
+* Update actions/download-artifact action to v3.0.1 by @renovate in https://github.com/internetee/auction_center/pull/947
+* Update actions/upload-artifact action to v3.1.1 by @renovate in https://github.com/internetee/auction_center/pull/948
+* Update dependency pdfkit to v0.8.7.2 [SECURITY] by @renovate in https://github.com/internetee/auction_center/pull/951
+* Bump rails-html-sanitizer from 1.4.1 to 1.4.3 by @dependabot in https://github.com/internetee/auction_center/pull/918
+* Bump terser from 5.7.0 to 5.15.1 by @dependabot in https://github.com/internetee/auction_center/pull/953
+* Bump omniauth from 1.9.0 to 1.9.2 by @dependabot in https://github.com/internetee/auction_center/pull/928
+* Update postgres Docker tag to v15 by @renovate in https://github.com/internetee/auction_center/pull/944
+* Bump loader-utils from 1.4.0 to 1.4.1 by @dependabot in https://github.com/internetee/auction_center/pull/952
+* fixed ci staging deploy by @OlegPhenomenon in https://github.com/internetee/auction_center/pull/954
+* English Auction by @OlegPhenomenon in https://github.com/internetee/auction_center/pull/900
+* Broadcast turn off by @OlegPhenomenon in https://github.com/internetee/auction_center/pull/955
+* pagy overflow issue handler by @OlegPhenomenon in https://github.com/internetee/auction_center/pull/957
+* rollback auction creator by @OlegPhenomenon in https://github.com/internetee/auction_center/pull/958
+* 946 incorrect vat calculation by @OlegPhenomenon in https://github.com/internetee/auction_center/pull/949
+* Bump socket.io-parser from 4.0.4 to 4.0.5 by @dependabot in https://github.com/internetee/auction_center/pull/956
+* Update dependency normalize-url to v8 by @renovate in https://github.com/internetee/auction_center/pull/959
+* Update dependency redis to v5 by @renovate in https://github.com/internetee/auction_center/pull/960
+* admin order fix by @OlegPhenomenon in https://github.com/internetee/auction_center/pull/963
+* Update dependency ssri to v10 by @renovate in https://github.com/internetee/auction_center/pull/961
+* Bump loader-utils from 2.0.2 to 2.0.4 by @dependabot in https://github.com/internetee/auction_center/pull/964
+* Bump engine.io from 6.2.0 to 6.2.1 by @dependabot in https://github.com/internetee/auction_center/pull/966
+* fixed json auction list response by @OlegPhenomenon in https://github.com/internetee/auction_center/pull/969
+
+04.10.2022
+* Update dependency postcss-import to v15 by @renovate in https://github.com/internetee/auction_center/pull/935
+* Update postgres Docker tag to v14 by @renovate in https://github.com/internetee/auction_center/pull/936
+* fix eid sign up by @thiagoyoussef in https://github.com/internetee/auction_center/pull/931
+* Allow to delete auctions when does not have any offers by @thiagoyoussef in https://github.com/internetee/auction_center/pull/937
+* added warning banner for procedures by @OlegPhenomenon in https://github.com/internetee/auction_center/pull/923
+* Add email notification when auto offer is created by @thiagoyoussef in https://github.com/internetee/auction_center/pull/916
+
+09.09.2022
+* change total invoice calculation by @OlegPhenomenon in https://github.com/internetee/auction_center/pull/929
+
 05.09.2022
 * Fixed accounting export issues in case of deleted account [#915](https://github.com/internetee/auction_center/issues/915)
 
