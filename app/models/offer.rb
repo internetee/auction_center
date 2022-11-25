@@ -17,14 +17,14 @@ class Offer < ApplicationRecord
 
   DEFAULT_PRICE_VALUE = 1
 
-  # after_create_commit :broadcast_update_auction
-  # after_update_commit :broadcast_update_auction
+  after_create_commit :broadcast_update_auction
+  after_update_commit :broadcast_update_auction
 
   attr_accessor :skip_autobider, :skip_if_wishlist_case, :skip_validation
 
-  # def broadcast_update_auction
-  #   Offers::ReplaceBroadcastService.call({ offer: self })
-  # end
+  def broadcast_update_auction
+    Offers::ReplaceBroadcastService.call({ offer: self })
+  end
 
   def validate_accessebly_to_set_bid
     return if auction.nil?
