@@ -7,7 +7,8 @@ class AuctionsController < ApplicationController
     set_cors_header
     @auctions_list = Auction.active.search(params).with_user_offers(current_user&.id)
 
-    @pagy, @auctions = pagy(@auctions_list, items: params[:per_page] ||= 15, link_extra: 'data-turbo-action="advance"')
+    count = params[:show_all] == 'true' ? @auctions_list.count : 15
+    @pagy, @auctions = pagy(@auctions_list, items: params[:per_page] ||= count, link_extra: 'data-turbo-action="advance"')
   end
 
   # OPTIONS /auctions
