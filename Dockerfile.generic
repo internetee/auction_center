@@ -9,8 +9,10 @@ ENV SECRET_KEY_BASE "$SECRET_KEY_BASE"
 
 COPY Gemfile Gemfile.lock ./    
 RUN gem install bundler && bundle config set without 'development test' && bundle install --jobs 20 --retry 5
+COPY package.json yarn.lock ./
 RUN yarn install --check-files
 
 COPY . .
 
+RUN bundle exec rails assets:clobber
 RUN bundle exec rails assets:precompile
