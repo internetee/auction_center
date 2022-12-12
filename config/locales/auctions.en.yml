@@ -21,6 +21,8 @@ en:
     deposit: Deposit
     bid: Bid!
     participate: Participate!
+    all_list: list all auctions
+    pagination_list: list 15 auctions per page
 
 
     still_in_progress: "Still in progress"

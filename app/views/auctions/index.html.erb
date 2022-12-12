@@ -70,9 +70,9 @@
     <div class="margin-block">
         
         <% if params[:show_all] == 'true' %>
-            <%= link_to 'Return back', auctions_path(show_all: 'false'), style: 'margin-bottom: 20px; display: block; font-size: 18px; color: #03456f;' %>
+            <%= link_to t('auctions.pagination_list'), auctions_path(show_all: 'false'), style: 'margin-bottom: 20px; display: block; font-size: 18px; color: #03456f;' %>
         <% else %>
-            <%= link_to 'Show all', auctions_path(show_all: 'true'), style: 'margin-bottom: 20px; display: block; font-size: 18px; color: #03456f;' %>
+            <%= link_to t('auctions.all_list'), auctions_path(show_all: 'true'), style: 'margin-bottom: 20px; display: block; font-size: 18px; color: #03456f;' %>
         <% end %>
         
         <div class="grid one column">

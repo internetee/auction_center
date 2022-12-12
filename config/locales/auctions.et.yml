@@ -19,6 +19,8 @@ et:
     deposit: Tagatisraha
     bid: Pakkumine!
     participate: Osale!
+    all_list: loetleda kõik oksjonid
+    pagination_list: loetleda 15 oksjonit lehekülje kohta
 
 
     still_in_progress: "Töötlemisel"
