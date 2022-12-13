@@ -1,3 +1,6 @@
+13.12.2022
+* Fixed frozen isikukood field issue on user creation https://github.com/internetee/auction_center/issues/973
+
 23.11.2022
 * Update dependency pdfkit to v0.8.7 [SECURITY] by @renovate in https://github.com/internetee/auction_center/pull/942
 * Update actions/download-artifact action to v3.0.1 by @renovate in https://github.com/internetee/auction_center/pull/947
