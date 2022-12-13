@@ -48,7 +48,7 @@
             <%= f.label :identity_code, t('users.identity_code') %>
             <% if user.identity_code.present? %>
               <div class="ui disbled input">
-                <%= f.text_field :identity_code, readonly: true, value: user.identity_code %>
+                <%= f.text_field :identity_code, readonly: user.new_record? ? false : true, value: user.identity_code %>
               </div>
             <% else %>
               <%= f.text_field :identity_code, readonly: false %>
