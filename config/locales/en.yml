@@ -61,6 +61,7 @@ en:
   my_offers: "My offers"
   my_invoices: "My invoices"
   my_wishlist: "My wishlist"
+  finished: "Finished"
   actions: "Actions"
   job_enqueued: "Job enqueued. Check in a few minutes for results."
   status: "Status"

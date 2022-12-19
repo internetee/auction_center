@@ -59,6 +59,7 @@ et:
   my_offers: "Minu pakkumised"
   my_invoices: "Minu arved"
   my_wishlist: "Minu soovide nimekiri"
+  finished: "Lõppenud"
   actions: "Toimingud"
   job_enqueued: "Tegevus on järjekorras. Kontrolli tulemusi mõne minuti pärast."
 

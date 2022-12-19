@@ -20,6 +20,8 @@ Rails.application.routes.draw do
     resources :versions, only: :index
   end
 
+  resources :histories, only: :index
+
   get 'domain_wishlist_availability', to: 'wishlist_items#domain_wishlist_availability', as: :domain_wishlist_availability
 
   match 'profile/edit', via: :get, to: 'users#edit_authwall', as: :user_edit_authwall
