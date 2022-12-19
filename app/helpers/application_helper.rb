@@ -104,8 +104,7 @@ module ApplicationHelper
      { name: t(:my_invoices), path: invoices_path },
      { name: t(:my_offers), path: offers_path },
      { name: t(:my_wishlist), path: wishlist_items_path },
-     { name: t(:finished), path: histories_path }
-    ]
+     { name: t(:finished), path: histories_path }]
   end
 
   def administrator_link_list
