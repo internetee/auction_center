@@ -44,8 +44,14 @@
                                     <%= t('auctions.domain_name') %>
                                     <%= sort_link_to "", "domain_name" %>
                                 </th>
-                                <th scope="col"><%= t('auctions.finished_at') %></th>
-                                <th scope="col">Type</th>
+                                <th scope="col">
+                                  <%= t('auctions.finished_at') %>
+                                  <%= sort_link_to "", "ends_at" %>  
+                                </th>
+                                <th scope="col">
+                                  Type
+                                  <%= sort_link_to "", "platform" %>  
+                                </th>
                                 <th scope="col">Last offer</th>
                                 <th scope="col">Last participant</th>
                             </tr>
