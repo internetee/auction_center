@@ -44,9 +44,18 @@
                                     <%= t('auctions.domain_name') %>
                                     <%= sort_link_to "", "domain_name" %>
                                 </th>
-                                <th scope="col"><%= t('auctions.start_at') %></th>
-                                <th scope="col"><%= t('auctions.finished_at') %></th>
-                                <th scope="col">Type</th>
+                                <th scope="col">
+                                  <%= t('auctions.start_at') %>
+                                  <%= sort_link_to "", "starts_at" %>  
+                                </th>
+                                <th scope="col">
+                                  <%= t('auctions.finished_at') %>
+                                  <%= sort_link_to "", "ends_at" %> 
+                                </th>
+                                <th scope="col">
+                                  Type
+                                  <%= sort_link_to "", "platform" %>   
+                                </th>
                             </tr>
                         </thead>
 
@@ -54,8 +63,8 @@
                             <% @auctions.each do |auction| %>
                                 <tr class="auctions-needing-results-table-row">
                                     <td class="monospace"><%= auction.domain_name %></td>
-                                    <td><%= auction.starts_at %></td>
-                                    <td><%= auction.ends_at %></td>
+                                    <td><%= auction.starts_at.to_formatted_s(:long) %></td>
+                                    <td><%= auction.ends_at.to_formatted_s(:long) %></td>
                                     <td>
                                       <% if auction.platform.nil? %>
                                         Blind
