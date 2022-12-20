@@ -4,6 +4,5 @@ namespace :auction do
     Auction.where(platform: nil).in_batches do |batch_auctions|
       batch_auctions.update_all(platform: 'blind')
     end
-    # auctions.update_all(platform: 'blind')
   end
 end
