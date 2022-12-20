@@ -37,7 +37,7 @@
             <%= turbo_frame_tag "results" do %>
                 <div class="column">
                     <h3>Finished auctions</h3>
-                    <table class="ui table" id="auctions-needing-results-table">
+                    <table class="ui table" id="finished-auctions-table">
                         <thead>
                             <tr>
                                 <th scope="col">
@@ -45,7 +45,7 @@
                                     <%= sort_link_to "", "domain_name" %>
                                 </th>
                                 <th scope="col">
-                                  <%= t('auctions.start_at') %>
+                                  <%= t('auctions.starts_at') %>
                                   <%= sort_link_to "", "starts_at" %>  
                                 </th>
                                 <th scope="col">
@@ -59,9 +59,9 @@
                             </tr>
                         </thead>
 
-                        <tbody id="auctions-needing-results-table">
+                        <tbody id="finished-auctions-table">
                             <% @auctions.each do |auction| %>
-                                <tr class="auctions-needing-results-table-row">
+                                <tr class="finished-auctions-table-row">
                                     <td class="monospace"><%= auction.domain_name %></td>
                                     <td><%= auction.starts_at.to_formatted_s(:long) %></td>
                                     <td><%= auction.ends_at.to_formatted_s(:long) %></td>
