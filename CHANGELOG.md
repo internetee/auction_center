@@ -1,3 +1,7 @@
+20.12.2022
+* Improved sorting in admin for finished auctions https://github.com/internetee/auction_center/pull/981
+* Set type to all auctions with missing auction type https://github.com/internetee/auction_center/pull/980
+
 13.12.2022
 * Fixed frozen isikukood field issue on user creation https://github.com/internetee/auction_center/issues/973
 
