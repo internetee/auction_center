@@ -8,6 +8,7 @@ class AuctionsController < ApplicationController
     @auctions_list = Auction.active.search(params).with_user_offers(current_user&.id)
 
     count = params[:show_all] == 'true' ? @auctions_list.count : 15
+    count = nil if @auctions_list.empty?
     @pagy, @auctions = pagy(@auctions_list, items: params[:per_page] ||= count, link_extra: 'data-turbo-action="advance"')
   end
 
