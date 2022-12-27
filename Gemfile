@@ -69,7 +69,7 @@ gem 'redis', '~> 5.0'
 gem 'pg_search'
 
 # For pagination
-gem 'pagy', '~> 5.5'
+gem 'pagy', '~> 6.0'
 
 # For mock username
 gem 'faker'
