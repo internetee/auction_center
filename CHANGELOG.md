@@ -1,3 +1,6 @@
+28.12.2022
+* List all option for auction listing https://github.com/internetee/auction_center/issues/967
+
 20.12.2022
 * Improved sorting in admin for finished auctions https://github.com/internetee/auction_center/pull/981
 * Set type to all auctions with missing auction type https://github.com/internetee/auction_center/pull/980
