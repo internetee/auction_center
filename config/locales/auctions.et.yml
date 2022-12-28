@@ -19,6 +19,8 @@ et:
     deposit: Tagatisraha
     bid: Pakkumine!
     participate: Osale!
+    all_list: Kuva kõik
+    pagination_list: Kuva 15 leheküljel
 
 
     still_in_progress: "Töötlemisel"
