@@ -49,15 +49,18 @@ class AdminBulkActionService
     auction.slipping_end = auction_elements[:slipping_end] unless auction_elements[:slipping_end].empty?
     auction.deposit = auction_elements[:deposit] unless auction_elements[:deposit].to_f.zero?
 
-    # auction = deposit_handler(auction)
+    auction = deposit_handler(auction)
+
+    auction.skip_broadcast = true if Time.zone.now < auction.starts_at
+
     auction.save!
   end
 
   def deposit_handler(auction)
     return auction unless auction.english?
 
-    # auction.enable_deposit = true if auction_elements[:enable_deposit].present?
-    # auction.enable_deposit = false if auction_elements[:disable_deposit].present?
+    auction.enable_deposit = true if auction_elements[:enable_deposit].present?
+    auction.enable_deposit = false if auction_elements[:disable_deposit].present?
 
     auction
   end

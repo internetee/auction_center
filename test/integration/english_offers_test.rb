@@ -196,27 +196,27 @@ class EnglishOffersIntegrationTest < ActionDispatch::IntegrationTest
     assert @auction.offers.empty?
   end
 
-  # def test_user_can_made_bid_id_deposit_disable
-  #   @auction.offers.destroy_all
-  #   @auction.update(enable_deposit: false)
-  #   @auction.reload
-  #   assert @auction.offers.empty?
-  #   refute @auction.enable_deposit?
+  def test_user_can_made_bid_id_deposit_disable
+    @auction.offers.destroy_all
+    @auction.update(enable_deposit: false)
+    @auction.reload
+    assert @auction.offers.empty?
+    refute @auction.enable_deposit?
 
-  #   params = {
-  #     offer: {
-  #       auction_id: @auction.id,
-  #       user_id: @user.id,
-  #       price: 5.0,
-  #       billing_profile_id: @user.billing_profiles.first.id
-  #     }
-  #   }
+    params = {
+      offer: {
+        auction_id: @auction.id,
+        user_id: @user.id,
+        price: 5.0,
+        billing_profile_id: @user.billing_profiles.first.id
+      }
+    }
 
-  #   post auction_english_offers_path(auction_uuid: @auction.uuid),
-  #        params: params,
-  #        headers: { "HTTP_REFERER" => root_path }
-  #   assert_equal @auction.offers.count, 1
-  # end
+    post auction_english_offers_path(auction_uuid: @auction.uuid),
+         params: params,
+         headers: { "HTTP_REFERER" => root_path }
+    assert_equal @auction.offers.count, 1
+  end
 
   def test_enable_to_bid_if_you_have_association_with_auction
     @auction.offers.destroy_all

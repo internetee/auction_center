@@ -36,7 +36,7 @@ module AuctionCenter
     config.customization = config_for(:customization)
 
     # Available locales
-    config.i18n.available_locales = [:en, :et]
+    config.i18n.available_locales = %i[en et]
     config.i18n.default_locale = config.customization['locale'] || 'en'
 
     # Default to UTC if not set
@@ -45,20 +45,20 @@ module AuctionCenter
     config.action_mailer.delivery_job = 'ActionMailer::MailDeliveryJob'
 
     config.action_mailer.smtp_settings = {
-      address:              config.customization.dig(:mailer, :address),
-      port:                 config.customization.dig(:mailer, :port),
+      address: config.customization.dig(:mailer, :address),
+      port: config.customization.dig(:mailer, :port),
       enable_starttls_auto: config.customization.dig(:mailer, :enable_starttls_auto),
-      user_name:            config.customization.dig(:mailer, :user_name),
-      password:             config.customization.dig(:mailer, :password),
-      authentication:       config.customization.dig(:mailer, :authentication),
-      domain:               config.customization.dig(:mailer, :domain),
-      openssl_verify_mode:  config.customization.dig(:mailer, :openssl_verify_mode)
+      user_name: config.customization.dig(:mailer, :user_name),
+      password: config.customization.dig(:mailer, :password),
+      authentication: config.customization.dig(:mailer, :authentication),
+      domain: config.customization.dig(:mailer, :domain),
+      openssl_verify_mode: config.customization.dig(:mailer, :openssl_verify_mode)
     }
 
     config.action_mailer.default_url_options = {
-      host: config.customization.dig(:mailer, :host),
+      host: config.customization.dig(:mailer, :host)
     }
 
-    config.skylight.environments = ["development", "staging"]
+    config.skylight.environments = %w[development staging]
   end
 end
