@@ -1,3 +1,6 @@
+13.01.2023
+* English auction fixes https://github.com/internetee/auction_center/pull/962
+
 28.12.2022
 * List all option for auction listing https://github.com/internetee/auction_center/issues/967
 
