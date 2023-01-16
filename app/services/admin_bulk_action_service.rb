@@ -14,6 +14,7 @@ class AdminBulkActionService
     return if parse_auction_ids.nil?
 
     auctions = Auction.where(id: parse_auction_ids)
+    problematic_auctions = []
     skipped_auctions = []
     auctions.each do |auction|
       if skip?(auction)
@@ -22,11 +23,20 @@ class AdminBulkActionService
         next
       end
 
-      apply_values(auction)
-      FirstBidFromWishlistService.apply_bid(auction: auction)
+      auction = apply_values(auction)
+
+      if auction.save
+        FirstBidFromWishlistService.apply_bid(auction: auction)
+      else
+        problematic_auctions << wrap_problematic_auction(auction)
+      end
     end
 
-    skipped_auctions
+    [skipped_auctions, problematic_auctions]
+  end
+
+  def wrap_problematic_auction(auction)
+    Struct.new(:name, :errors).new(auction.domain_name, auction.errors.full_messages)
   end
 
   def parse_auction_ids
@@ -41,26 +51,30 @@ class AdminBulkActionService
   end
 
   def apply_values(auction)
-    auction.starts_at = auction_elements[:set_starts_at] unless auction_elements[:set_starts_at].empty?
-    auction.ends_at = auction_elements[:set_ends_at] unless auction_elements[:set_ends_at].empty?
-    auction.initial_ends_at = auction_elements[:set_ends_at] unless auction_elements[:set_ends_at].empty?
-    auction.starting_price = auction_elements[:starting_price] unless auction_elements[:starting_price].empty?
-    auction.min_bids_step = auction.starting_price unless auction_elements[:starting_price].empty?
-    auction.slipping_end = auction_elements[:slipping_end] unless auction_elements[:slipping_end].empty?
+    auction.starts_at = auction_elements[:set_starts_at] if auction_elements[:set_starts_at].present?
+    auction.ends_at = auction_elements[:set_ends_at] if auction_elements[:set_ends_at].present?
+    auction.initial_ends_at = auction_elements[:set_ends_at] if auction_elements[:set_ends_at].present?
+    auction.starting_price = auction_elements[:starting_price] if auction_elements[:starting_price].present?
+    auction.min_bids_step = auction.starting_price if auction_elements[:starting_price].present?
+    auction.slipping_end = auction_elements[:slipping_end] if auction_elements[:slipping_end].present?
     auction.deposit = auction_elements[:deposit] unless auction_elements[:deposit].to_f.zero?
 
     auction = deposit_handler(auction)
 
-    auction.skip_broadcast = true if Time.zone.now < auction.starts_at
+    auction.skip_broadcast = true if auction.starts_at.nil? || Time.zone.now < auction.starts_at
 
-    auction.save!
+    # auction.save!
+    auction
   end
 
   def deposit_handler(auction)
     return auction unless auction.english?
 
     auction.enable_deposit = true if auction_elements[:enable_deposit].present?
-    auction.enable_deposit = false if auction_elements[:disable_deposit].present?
+    if auction_elements[:disable_deposit].present?
+      auction.enable_deposit = false
+      auction.deposit = 0
+    end
 
     auction
   end
