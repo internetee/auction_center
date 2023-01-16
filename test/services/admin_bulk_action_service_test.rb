@@ -86,6 +86,69 @@ class AdminBulkActionServiceTest < ActionDispatch::IntegrationTest
     assert @english_auction.in_progress?
   end
 
+  def test_enable_to_set_deposit_and_disable_deposit
+    starts_at = Time.zone.now + 10.seconds
+    ends_at = Time.zone.now + 7.days
+    payload = {
+                set_starts_at: starts_at,
+                set_ends_at: ends_at,
+                starting_price: '5.0',
+                slipping_end: '5',
+                elements_id: @english_auction.id.to_s,
+                deposit: 100.0,
+                enable_deposit: 'true'
+              }
+    AdminBulkActionService.apply_for_english_auction(auction_elements: payload)
+    @english_auction.reload
+
+    assert @english_auction.enable_deposit
+    assert_equal @english_auction.deposit.to_f, 100.0
+
+    payload = {
+      set_starts_at: starts_at,
+      set_ends_at: ends_at,
+      elements_id: [@english_auction.id.to_s],
+      disable_deposit: 'true'
+    }
+    AdminBulkActionService.apply_for_english_auction(auction_elements: payload)
+    @english_auction.reload
+
+    refute @english_auction.enable_deposit
+    assert_equal @english_auction.deposit.to_f, 0.0
+  end
+
+  def test_it_should_return_list_of_auctions_what_have_errros
+    starts_at = Time.zone.now + 10.seconds
+    ends_at = Time.zone.now + 7.days
+    payload = {
+                set_starts_at: starts_at,
+                set_ends_at: ends_at,
+                starting_price: '5.0',
+                slipping_end: '5',
+                elements_id: @english_auction.id.to_s,
+                enable_deposit: 'true'
+              }
+    result = AdminBulkActionService.apply_for_english_auction(auction_elements: payload)[1]
+    @english_auction.reload
+
+    assert_equal result[0].name, @english_auction.domain_name
+    assert_equal result[0].errors[0], "the deposit amount and the \"enable deposit\" flag must be specified together or not"
+  end
+
+  def test_it_should_return_list_of_auctions_what_are_skipped
+    starts_at = Time.zone.now + 10.seconds
+
+    payload = {
+      set_starts_at: starts_at + 1.day,
+      elements_id: @auction.id.to_s,
+    }
+
+    result = AdminBulkActionService.apply_for_english_auction(auction_elements: payload)[0]
+    @auction.reload
+
+    assert_equal result[0], @auction.domain_name
+  end
+
   private
 
   def valid_incoming_data(auction_id)

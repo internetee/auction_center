@@ -57,10 +57,19 @@ module Admin
     end
 
     def bulk_starts_at
-      skipped_auctions = AdminBulkActionService.apply_for_english_auction(auction_elements: params[:auction_elements])
+      results = AdminBulkActionService.apply_for_english_auction(auction_elements: params[:auction_elements])
+      skipped_auctions = results[0]
+      problematic_auctions = results[1]
 
-      flash[:notice] = "These auctions were skipped: #{skipped_auctions.join(' ')}"
-      flash[:notice] = 'New value was set' if skipped_auctions.empty?
+      skipped_text = "These auctions were skipped: #{skipped_auctions.join(' ')}" if skipped_auctions.present?
+      problematic_text = if problematic_auctions.present?
+                           problematic_auctions.map { |auction| "#{auction.name} - #{auction.errors}; " }.join('; ')
+                         end
+
+      problematic_text.insert(0, 'These auction have problems: ') if problematic_text.present?
+
+      flash[:notice] = "#{skipped_text} #{problematic_text}"
+      flash[:notice] = 'New value was set' unless flash[:notice].presence
 
       redirect_to admin_auctions_path
     end

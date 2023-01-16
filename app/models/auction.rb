@@ -121,7 +121,7 @@ class Auction < ApplicationRecord
   def deposit_and_enable_deposit_should_be_togeter
     return unless english?
     return if (requirement_deposit_in_cents.nil? || requirement_deposit_in_cents.zero?) && !enable_deposit
-    return if enable_deposit && requirement_deposit_in_cents.positive?
+    return if enable_deposit && requirement_deposit_in_cents && requirement_deposit_in_cents.positive?
 
     errors.add(:base, 'the deposit amount and the "enable deposit" flag must be specified together or not')
   end
