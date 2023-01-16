@@ -1,3 +1,6 @@
+16.01.2023
+* fixed error in disabling deposit https://github.com/internetee/auction_center/issues/989
+
 13.01.2023
 * English auction fixes https://github.com/internetee/auction_center/pull/962
 
