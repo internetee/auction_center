@@ -1,3 +1,4 @@
 en:
   invoice_items:
     name: "%{domain_name} (auction %{auction_end}) registration code"
+    deposit: "%{domain_name} deposit"
