@@ -99,11 +99,6 @@ class InvoiceCreator
                                     domain_name: result_auction.domain_name,
                                     auction_end: result_auction.ends_at.to_date,
                                     locale: I18n.default_locale)),
-      InvoiceItem.new(invoice: invoice,
-                      cents: result_auction.requirement_deposit_in_cents,
-                      name: I18n.t('invoice_items.deposit',
-                                    domain_name: result_auction.domain_name,
-                                    locale: I18n.default_locale)),
     ]
   end
 end

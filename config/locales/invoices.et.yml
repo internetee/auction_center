@@ -24,6 +24,8 @@ et:
     vat_rate_on_payment: "käibemaksu protsent"
     total_paid: "kokku makstud"
     paid_through: "makseviis"
+    deposit: "Ettemaks"
+    amount_due: "Tasuda"
 
     outstanding: "tasumata arved"
     paid: "tasutud arved"

@@ -117,7 +117,5 @@ class InvoiceCreatorTest < ActiveSupport::TestCase
     result = Result.last
     assert_equal result.auction.domain_name, auction.domain_name
     assert_equal result.invoice.cents, offer_bid_value - deposit_value
-
-    assert_equal result.invoice.items.count, 2
   end
 end
