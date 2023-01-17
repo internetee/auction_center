@@ -97,6 +97,8 @@ module Registry
         auction.starting_price = legacy_auction.starting_price
         auction.min_bids_step = legacy_auction.starting_price
         auction.slipping_end = legacy_auction.slipping_end
+        auction.enable_deposit = legacy_auction.enable_deposit
+        auction.requirement_deposit_in_cents = legacy_auction.requirement_deposit_in_cents
 
         auction.starts_at = Time.zone.now + 1.minute
         additional_day = reassign_ends_at(legacy_auction, auction)

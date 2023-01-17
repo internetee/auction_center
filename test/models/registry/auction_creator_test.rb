@@ -342,6 +342,64 @@ class RegistryAuctionCreatorTest < ActiveSupport::TestCase
     end
   end
 
+  def test_next_round_auctions_should_be_comes_with_enabled_deposit_for_previous_participants
+    user1 = users(:participant)
+    user2 = users(:second_place_participant)
+    deposit_value = 50_000
+    travel_back
+
+    auction = auctions(:english)
+    auction.update(enable_deposit: true, requirement_deposit_in_cents: deposit_value, ends_at: Time.zone.now + 10.minutes)
+    auction.reload
+    assert auction.offers.empty?
+    assert auction.enable_deposit?
+
+    DomainParticipateAuction.create(user_id: user1.id, auction_id: auction.id)
+    DomainParticipateAuction.create(user_id: user2.id, auction_id: auction.id)
+
+    user1.reload && user2.reload
+    assert auction.allow_to_set_bid?(user1)
+    assert auction.allow_to_set_bid?(user2)
+
+    auction.update(ends_at: Time.zone.now - 1.minute) && auction.reload
+    ResultCreationJob.perform_now
+    auction.reload
+    user1.reload && user2.reload
+
+    result = Result.last
+    assert_equal result.auction.domain_name, auction.domain_name
+
+    instance = Registry::AuctionCreator.new
+
+    body = [{ 'id' => '362589b9-dc74-484d-8fef-7282816d5c76',
+              'domain' => auction.domain_name,
+              'status' => 'started',
+              'platform' => 'manual'}]
+    response = Minitest::Mock.new
+
+    response.expect(:code, '200')
+    response.expect(:body, body.to_json)
+
+    http = Minitest::Mock.new
+    http.expect(:request, nil, [instance.request])
+
+    Net::HTTP.stub(:start, response, http) do
+      instance.call
+
+      auctions = Auction.where(domain_name: auction.domain_name)
+      assert_equal auctions.count, 2
+      auction = auctions.last
+
+      assert_equal auction.platform, 'english'
+
+      auction.reload && user1.reload && user2.reload
+
+      assert auction.enable_deposit?
+      refute auction.allow_to_set_bid?(user1)
+      refute auction.allow_to_set_bid?(user2)
+    end
+  end
+
   def reassign_ends_at(legacy_auction, new_auction)
     t1 = legacy_auction.starts_at
     t2 = new_auction.starts_at
