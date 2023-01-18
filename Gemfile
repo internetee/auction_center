@@ -33,6 +33,7 @@ gem 'skylight'
 gem 'sprockets', '~> 4.0'
 gem 'turbolinks', '~> 5'
 gem 'webpacker', '~> 6.0.0.rc.5'
+gem 'i18n-debug', group: :development
 
 # token
 gem 'jwt'

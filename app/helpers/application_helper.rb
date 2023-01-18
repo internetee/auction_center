@@ -116,6 +116,7 @@ module ApplicationHelper
      { name: t(:invoices_name), path: admin_invoices_path },
      { name: t(:jobs_name), path: admin_jobs_path },
      { name: t(:settings_name), path: admin_settings_path },
+     { name: t(:paid_deposits_name), path: admin_paid_deposits_path },
      { name: t(:statistics_name), path: admin_statistics_path, data: { turbolinks: false } }]
   end
 

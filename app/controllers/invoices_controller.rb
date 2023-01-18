@@ -28,6 +28,7 @@ class InvoicesController < ApplicationController
     @paid_invoices = invoices_list_by_status(Invoice.statuses[:paid])
     @cancelled_payable_invoices = invoices_list_by_status(Invoice.statuses[:cancelled]).with_ban
     @cancelled_expired_invoices = invoices_list_by_status(Invoice.statuses[:cancelled]).without_ban
+    @deposit_paid = current_user.domain_participate_auctions
 
     return unless params[:state] == 'payment'
 

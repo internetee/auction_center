@@ -23,3 +23,5 @@ import AuctionTypeHandlerController from "./auction_type_handler_controller"
 application.register("auction_type_handler", AuctionTypeHandlerController)
 import CheckboxToggleController from "./checkbox_toggle_controller"
 application.register("checkbox_toggle", CheckboxToggleController)
+import AutosaveController from "./autosave_controller"
+application.register("autosave", AutosaveController)

@@ -912,38 +912,6 @@ ALTER SEQUENCE public.auctions_id_seq OWNED BY public.auctions.id;
 
 
 --
--- Name: auto_bids; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.auto_bids (
-    id bigint NOT NULL,
-    wishlist_item_id bigint NOT NULL,
-    cents integer NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: auto_bids_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.auto_bids_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: auto_bids_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.auto_bids_id_seq OWNED BY public.auto_bids.id;
-
-
---
 -- Name: autobiders; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1132,7 +1100,9 @@ CREATE TABLE public.domain_participate_auctions (
     user_id bigint,
     auction_id bigint,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    status integer DEFAULT 0 NOT NULL,
+    refund_time timestamp without time zone
 );
 
 
@@ -1533,7 +1503,6 @@ CREATE TABLE public.users (
     uid character varying,
     updated_by character varying,
     daily_summary boolean DEFAULT false NOT NULL,
-    discarded_at timestamp without time zone,
     CONSTRAINT users_roles_are_known CHECK ((roles <@ ARRAY['participant'::character varying, 'administrator'::character varying]))
 );
 
@@ -1680,13 +1649,6 @@ ALTER TABLE ONLY audit.wishlist_items ALTER COLUMN id SET DEFAULT nextval('audit
 --
 
 ALTER TABLE ONLY public.auctions ALTER COLUMN id SET DEFAULT nextval('public.auctions_id_seq'::regclass);
-
-
---
--- Name: auto_bids id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.auto_bids ALTER COLUMN id SET DEFAULT nextval('public.auto_bids_id_seq'::regclass);
 
 
 --
@@ -1974,14 +1936,6 @@ ALTER TABLE ONLY audit.wishlist_items
 
 ALTER TABLE ONLY public.ar_internal_metadata
     ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
-
-
---
--- Name: auto_bids auto_bids_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.auto_bids
-    ADD CONSTRAINT auto_bids_pkey PRIMARY KEY (id);
 
 
 --
@@ -2314,13 +2268,6 @@ CREATE UNIQUE INDEX index_auctions_on_remote_id ON public.auctions USING btree (
 --
 
 CREATE UNIQUE INDEX index_auctions_on_uuid ON public.auctions USING btree (uuid);
-
-
---
--- Name: index_auto_bids_on_wishlist_item_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_auto_bids_on_wishlist_item_id ON public.auto_bids USING btree (wishlist_item_id);
 
 
 --
@@ -2741,14 +2688,6 @@ ALTER TABLE ONLY public.autobiders
 
 
 --
--- Name: auto_bids fk_rails_473d19add3; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.auto_bids
-    ADD CONSTRAINT fk_rails_473d19add3 FOREIGN KEY (wishlist_item_id) REFERENCES public.wishlist_items(id);
-
-
---
 -- Name: wishlist_items fk_rails_5c10acf6bc; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2941,14 +2880,11 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20191025092912'),
 ('20191028092316'),
 ('20191121162323'),
-('20191129102035'),
-('20191206123023'),
 ('20191209073454'),
 ('20191209083000'),
 ('20191209085222'),
 ('20191213082941'),
 ('20191220131845'),
-('20200109093043'),
 ('20200110135003'),
 ('20200115145246'),
 ('20200205092158'),
@@ -2960,7 +2896,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220422094307'),
 ('20220422094556'),
 ('20220422095751'),
-('20220422121056'),
 ('20220425103701'),
 ('20220426082102'),
 ('20220527064738'),
@@ -2971,6 +2906,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221005105336'),
 ('20221006094111'),
 ('20221007082951'),
-('20221017133559');
+('20221017133559'),
+('20230118124747');
 
 

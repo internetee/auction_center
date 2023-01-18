@@ -32,6 +32,13 @@ et:
     mark_as_paid: "Märgi makstuks."
     marked_as_paid: "Arve makstuks märgitud."
     already_paid: "Arve on juba makstud."
+    paid_deposit_title: Paid Deposit
+    paid_deposit: 
+      date: Date
+      sum: Sum
+      auction_name: Auction Name
+      status: Status
+      refund_time: Refund Time
 
     show:
       change_billing_profile: "Muuda arve aadressi"
