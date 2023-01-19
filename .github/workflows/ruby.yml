@@ -26,6 +26,10 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+
+      - name: Hack sources.list
+        run: sudo sed -i 's|http://azure.archive.ubuntu.com/ubuntu/|http://mirror.arizona.edu/ubuntu/|g' /etc/apt/sources.list
+
       - name: config bundler
         run:  |
           bundle config set without 'development staging production'
@@ -35,6 +39,7 @@ jobs:
 
       - name: Install wkhtmlpdf (push)
         run: |
+          sudo apt-get update
           wget http://se.archive.ubuntu.com/ubuntu/pool/main/libp/libpng/libpng12-0_1.2.54-1ubuntu1_amd64.deb
           sudo dpkg -i libpng12-0_1.2.54-1ubuntu1_amd64.deb
           wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.xenial_amd64.deb
