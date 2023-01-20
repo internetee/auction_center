@@ -1,3 +1,6 @@
+20.01.2023
+* fixed ban count issue https://github.com/internetee/auction_center/issues/988
+
 16.01.2023
 * fixed error in disabling deposit https://github.com/internetee/auction_center/issues/989
 
