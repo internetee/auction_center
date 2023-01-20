@@ -240,6 +240,7 @@
                                 <tr>
                                     <th class="col-xs-1">#</th>
                                     <th class="col-xs-9"><%= t('invoices.item') %></th>
+                                    <th></th>
                                     <th class="col-xs-3"><%= t('invoices.price') %></th>
                                 </tr>
                             </thead>
@@ -248,31 +249,22 @@
                                     <tr>
                                         <td><%= index + 1 %></td>
                                         <td><%= item.name %></td>
+                                        <td></td>
                                         <td><%= item.price %></td>
                                     </tr>
                                 <% end %>
                             </tbody>
                             <tfoot>
-                                <td scope="col"></td>
-                                <td scope="col"><%= t('invoices.vat_exclusive', price: @invoice.price) %></td>
-                                <td scope="col"><%= t('offers.price_in_currency', price: @invoice.price) %></td>
-                                </tr>
-
-                                <tr>
-                                    <td scope="col"></td>
-                                    <td scope="col"><%= t('invoices.vat_rate', price: @invoice.price) %></td>
-                                    <td scope="col">
-                                        <%= number_to_percentage(@invoice.billing_profile.vat_rate * 100, precision: 0) %>
-                                    </td>
-                                </tr>
                                 <tr>
                                     <td scope="col"></td>
                                     <td scope="col"><%= t('invoices.vat_amount') %></td>
+                                    <td><%= number_to_percentage(@invoice.billing_profile.vat_rate * 100, precision: 0) %></td>
                                     <td scope="col"><%= t('offers.price_in_currency', price: @invoice.vat) %></td>
                                 </tr>
                                 <tr>
                                     <th scope="col"></th>
                                     <th scope="col"><%= t('invoices.total') %></th>
+                                    <th></th>
                                     <th scope="col"><%= t('offers.price_in_currency', price: @invoice.total + (@invoice.enable_deposit? ? @invoice.deposit : 0.0)) %></th>
                                 </tr>
 
@@ -280,11 +272,13 @@
                                     <tr style=''>
                                         <td scope="col" style='font-weight: bold; background-color: #f0e68c; border-top-color: "#ccc";'></td>
                                         <td scope="col" style='font-weight: bold; background-color: #f0e68c; border-top-color: "#ccc";'><%= t('invoices.deposit') %></td>
+                                        <td style='background-color: #f0e68c;'></td>
                                         <td scope="col" style='font-weight: bold; background-color: #f0e68c; border-top-color: "#ccc";'><%= t('offers.price_in_currency', price: @invoice.deposit) %></td>
                                     </tr>
                                     <tr>
                                         <td scope="col" style='font-weight: bold; background-color: #f0e68c;'></td>
                                         <td scope="col" style='font-weight: bold; background-color: #f0e68c;'><%= t('invoices.amount_due') %></td>
+                                        <td style='background-color: #f0e68c;'></td>
                                         <td scope="col" style='font-weight: bold; color: red; background-color: #f0e68c;'><%= t('offers.price_in_currency', price: @invoice.total) %></td>
                                     </tr>
                                 <% end %>
