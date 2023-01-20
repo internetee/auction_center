@@ -59,21 +59,24 @@
                 </tr>
             </thead>
             <tbody class="invoices-table-body">
-              <% @deposits.each do |deposit| %>
-                <tr>
-                  <td><%= link_to deposit&.user&.email, admin_user_path(id: deposit&.user.id) %></td>
-                  <td><%= deposit&.created_at %></td>
-                  <td><%= deposit&.auction&.deposit %></td>
-                  <td><%= link_to deposit&.auction&.domain_name, admin_auction_path(deposit&.auction) %></td>
-                  <td>
-                    <%= form_with url: admin_paid_deposit_deposit_status_path(deposit.id), method: :patch, 
-                                                                    data: { controller: 'autosave', target: 'autosave.form'} do |f| %>
-                        <%= f.select :status, options_for_select(DomainParticipateAuction.statuses.invert.values, deposit&.status), {},
-                                        selected: deposit&.status, data: { action: 'autosave#save', target: 'autosave.select' } %>
-                    <% end %> 
-                  </td>
-                </tr>
-              <% end %>
+                <% if @deposits.any? %>
+                    <% @deposits.each do |deposit| %>
+                        <tr>
+                        <td><%= link_to deposit.user.email, admin_user_path(id: deposit.user.id) %></td>
+                        <td><%= deposit.created_at %></td>
+                        <td><%= deposit.auction&.deposit %></td>
+                        <td><%= link_to deposit&.auction&.domain_name, admin_auction_path(deposit.auction) %></td>
+                        <td>
+                            <%= form_with url: admin_paid_deposit_deposit_status_path(deposit.id), method: :patch, 
+                                                                            data: { controller: 'autosave', target: 'autosave.form'} do |f| %>
+                                <%= f.select :status, options_for_select(DomainParticipateAuction.statuses.invert.values, deposit&.status), {},
+                                                selected: deposit&.status, data: { action: 'autosave#save', target: 'autosave.select' } %>
+                            <% end %> 
+                        </td>
+                        </tr>
+                    <% end %>
+                <% end %>
+
             </tbody>
         </table>
 
