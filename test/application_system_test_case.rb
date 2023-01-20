@@ -18,4 +18,15 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
 
   driven_by :headless_chrome
   Capybara.server = :puma, { Silent: true }
+
+  private
+
+  def extract_primary_link_from_last_mail
+    mail = ActionMailer::Base.deliveries.last
+    mail_html = Nokogiri::HTML(mail.html_part.body.decoded)
+
+    primary_link = mail_html.css('a.button').attr('href').value
+    primary_link = URI(primary_link)
+    "#{primary_link.path}?#{primary_link.query}"
+  end
 end

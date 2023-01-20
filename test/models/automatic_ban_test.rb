@@ -31,6 +31,33 @@ class AutomaticBanTest < ActiveSupport::TestCase
     travel_back
   end
 
+  def test_count_of_overdue_invoices_should_be_count_of_bans
+    invoice = @user.invoices.issued.last
+    invoice.issue_date = Time.zone.now - 2.days
+    invoice.due_date = Time.zone.now - 1.day
+    invoice.status = 'cancelled'
+    invoice.payment_link = 'http://link.ee'
+    invoice.save && invoice.reload
+
+    ban = AutomaticBan.new(invoice: invoice, user: @user, domain_name: 'some-domain.test')
+    @user.reload
+
+    mock = Minitest::Mock.new
+    def mock.authorized; true; end
+
+    clazz = EisBilling::BaseController.new
+
+    clazz.stub :authorized, mock do
+      ban.create
+      mail = ActionMailer::Base.deliveries.last
+      mail_html = Nokogiri::HTML(mail.body.decoded)
+
+      text_content = mail_html.css('p#number-of-strikes').text
+      assert_equal text_content, I18n.t('ban_mailer.ban_mail.number_of_strikes',
+                                        number: I18n.locale == :en ? @user.bans.count.ordinalize : @user.bans.count)
+    end
+  end
+
   def test_automatic_ban_on_user_without_overdue_invoices_fails
     ban = AutomaticBan.new(invoice: Invoice.new, user: @user, domain_name: 'some-domain.test')
 
