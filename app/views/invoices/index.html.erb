@@ -92,7 +92,7 @@
             <h2>
                 <%= t('invoices.cancelled_expired') %>
             </h2>
-            <table class="ui selectable stackable table" id="my-cancelled-invoices-table mt-4">
+            <table class="ui selectable stackable table" id="my-cancelled-expired-invoices-table mt-4">
                 <thead>
                 <tr>
                     <th scope="col"><%= t('invoices.item') %></th>
@@ -101,7 +101,7 @@
                 </tr>
                 </thead>
 
-                <tbody class="invoices-table-body cancelled">
+                <tbody class="invoices-table-body expired cancelled">
                 <% @cancelled_expired_invoices.each do |invoice| %>
                     <tr class="invoices-table-row">
                         <td><%= link_to invoice&.items&.first&.name, invoice_path(invoice.uuid) %></td>
@@ -117,7 +117,7 @@
             <h2>
                 <%= t('invoices.paid_deposit_title') %>
             </h2>
-            <table class="ui selectable stackable table" id="my-cancelled-invoices-table mt-4">
+            <table class="ui selectable stackable table" id="my-paid-deposits-invoices-table mt-4">
                 <thead>
                 <tr>
                     <th scope="col"><%= t('invoices.paid_deposit.date') %></th>
@@ -128,7 +128,7 @@
                 </tr>
                 </thead>
 
-                <tbody class="invoices-table-body cancelled">
+                <tbody class="invoices-table-body deposits">
                 <% @deposit_paid.each do |deposit| %>
                     <tr class="invoices-table-row">
                         <td><%= deposit.created_at.strftime("%Y-%m-%d") %></td>

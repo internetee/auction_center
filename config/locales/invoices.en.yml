@@ -36,9 +36,9 @@ en:
     paid_deposit: 
       date: Date
       sum: Sum
-      auction_name: Auction Name
+      auction_name: Domain
       status: Status
-      refund_time: Refund Time
+      refund_time: Refunded
 
     show:
       change_billing_profile: "Change billing profile"

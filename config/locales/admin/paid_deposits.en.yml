@@ -3,9 +3,9 @@ en:
     paid_deposits:
       index:
         search: Search by user email or by domain name
-        title: Paid Deposits
+        title: Deposits
         user_email: User's Email
         date: Creation date
         sum: Sum
-        auction: Auction name
-        status: Deposit status
+        auction: Domain
+        status: Status

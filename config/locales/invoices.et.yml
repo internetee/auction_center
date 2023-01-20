@@ -34,11 +34,11 @@ et:
     already_paid: "Arve on juba makstud."
     paid_deposit_title: Paid Deposit
     paid_deposit: 
-      date: Date
-      sum: Sum
-      auction_name: Auction Name
-      status: Status
-      refund_time: Refund Time
+      date: Kuupäev
+      sum: Summa
+      auction_name: Domeen
+      status: Olek
+      refund_time: Tagastatud
 
     show:
       change_billing_profile: "Muuda arve aadressi"

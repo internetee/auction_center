@@ -2,10 +2,10 @@ et:
   admin:
     paid_deposits:
       index:
-        search: Search by user email or by domain name
-        title: Paid Deposits
-        user_email: User's Email
-        date: Creation date
-        sum: Sum
-        auction: Auction name
-        status: Deposit status
+        search: Otsi kasutaja e-posti või domeeninime järgi
+        title: Deposiidimaksed
+        user_email: E-post
+        date: Makse kuupäev
+        sum: Summa
+        auction: Domeen
+        status: Olek
