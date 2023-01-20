@@ -94,7 +94,7 @@ class InvoiceCreator
     invoice.cents = total
     invoice.invoice_items = [
       InvoiceItem.new(invoice: invoice,
-                      cents: total,
+                      cents: result_offer.cents,
                       name: I18n.t('invoice_items.name',
                                     domain_name: result_auction.domain_name,
                                     auction_end: result_auction.ends_at.to_date,
