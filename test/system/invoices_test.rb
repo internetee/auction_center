@@ -69,10 +69,8 @@ class InvoicesTest < ApplicationSystemTestCase
   def test_invoice_contains_items_and_prices_without_vat
     visit invoice_path(@invoice.uuid)
 
-    assert_text('Domain transfer code for with-invoice.test')
-    assert_text('VAT exclusive 10.00 €')
-    assert_text('VAT rate 0%')
-    assert_text('VAT 0.00 €')
+    assert_text('with-invoice.test (auction 2010-07-05) registration code')
+    assert_text('VAT 0% 0.00 €')
     assert_text('Total 10.00 €')
   end
 

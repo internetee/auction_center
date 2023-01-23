@@ -68,7 +68,12 @@
                         <% @invoice.items.each_with_index do |item, index| %>
                             <tr>
                                 <td><%= index + 1 %></td>
-                                <td><%= item.name %></td>
+                                <td>
+                                    <%#= item.name %>
+                                    <%= I18n.t('invoice_items.name',
+                                   domain_name: item.invoice.result.auction.domain_name,
+                                   auction_end: item.invoice.result.auction.ends_at.to_date) %>
+                                </td>
                                 <td></td>
                                 <td><%= item.price %></td>
                             </tr>
