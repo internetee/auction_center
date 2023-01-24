@@ -1102,7 +1102,8 @@ CREATE TABLE public.domain_participate_auctions (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     status integer DEFAULT 0 NOT NULL,
-    refund_time timestamp without time zone
+    refund_time timestamp without time zone,
+    invoice_number character varying
 );
 
 
@@ -2907,6 +2908,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221006094111'),
 ('20221007082951'),
 ('20221017133559'),
-('20230118124747');
+('20230118124747'),
+('20230124110241');
 
 

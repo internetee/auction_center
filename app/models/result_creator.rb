@@ -89,6 +89,19 @@ class ResultCreator
     assign_attributes_from_winning_offer
     result.save!
 
+    refund_deposit
+
     result
+  end
+
+  def refund_deposit
+    return unless auction.enable_deposit?
+
+    participants = DomainParticipateAuction.where(auction_id: auction.id)
+    participants.each do |participant|
+      next if participant.user.id == winning_offer.user_id
+
+      RefundJob.perform_later(participant.id, participant.invoice_number)
+    end
   end
 end

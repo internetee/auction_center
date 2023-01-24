@@ -4,20 +4,22 @@ module EisBilling
 
     INITIATOR = 'auction'.freeze
 
-    attr_reader :domain_name, :user_uuid, :user_email, :transaction_amount
+    attr_reader :domain_name, :user_uuid, :user_email, :transaction_amount, :invoice_number
 
-    def initialize(domain_name:, user_uuid:, user_email:, transaction_amount:)
+    def initialize(domain_name:, user_uuid:, user_email:, transaction_amount:, invoice_number:)
       @domain_name = domain_name
       @user_uuid = user_uuid
       @user_email = user_email
       @transaction_amount = transaction_amount
+      @invoice_number = invoice_number
     end
 
-    def self.call(domain_name:, user_uuid:, user_email:, transaction_amount:)
+    def self.call(domain_name:, user_uuid:, user_email:, transaction_amount:, invoice_number:)
       new(domain_name: domain_name,
           user_uuid: user_uuid,
           user_email: user_email,
-          transaction_amount: transaction_amount).call
+          transaction_amount: transaction_amount,
+          invoice_number: invoice_number).call
     end
 
     def call
@@ -33,7 +35,7 @@ module EisBilling
       return false unless auction.deposit.to_f <= transaction_amount.to_f
 
       user = User.find_by_uuid(user_uuid)
-      DomainParticipateAuction.create!(user: user, auction: auction)
+      DomainParticipateAuction.create!(user: user, auction: auction, invoice_number: invoice_number)
     end
   end
 end

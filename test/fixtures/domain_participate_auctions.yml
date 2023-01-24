@@ -7,9 +7,11 @@
 one:
   user: participant
   auction: deposit_english
+  invoice_number: 1221
 # column: value
 #
 two:
   user: second_place_participant
   auction: deposit_english
+  invoice_number: 2112
 # column: value
