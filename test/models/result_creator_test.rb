@@ -1,7 +1,9 @@
 require 'test_helper'
 
 class ResultCreatorTest < ActiveSupport::TestCase
-  include ActiveJob::TestHelper 
+  include ActiveJob::TestHelper
+  include ActionMailer::TestHelper
+
   def setup
     super
 
@@ -129,6 +131,7 @@ class ResultCreatorTest < ActiveSupport::TestCase
     result_creator = ResultCreator.new(@auction_with_offers.id)
     result_creator.call
 
+    perform_enqueued_jobs
     assert_not(ActionMailer::Base.deliveries.empty?)
     last_email = ActionMailer::Base.deliveries.last
 
@@ -141,6 +144,7 @@ class ResultCreatorTest < ActiveSupport::TestCase
     result_creator = ResultCreator.new(@auction_with_offers.id)
     result_creator.call
 
+    perform_enqueued_jobs
     assert_not(ActionMailer::Base.deliveries.empty?)
     last_email = ActionMailer::Base.deliveries.first
 
@@ -151,7 +155,6 @@ class ResultCreatorTest < ActiveSupport::TestCase
   end
 
   def test_should_be_runned_refund_jobs
-    clear_enqueued_jobs
     assert_no_enqueued_jobs
 
     auction = auctions(:deposit_english)
