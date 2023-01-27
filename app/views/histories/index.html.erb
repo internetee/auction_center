@@ -36,10 +36,17 @@
         <div class="grid one column">
             <%= turbo_frame_tag "results" do %>
                 <div class="column">
-                    <h3>Finished auctions</h3>
-                    <div>
-                      <%= link_to t('histories.current_auctions'), auctions_path, style: 'margin-bottom: 20px; display: block; font-size: 18px; color: #03456f;' %>
+                    <div class="ui grid">
+                      <div class="four wide column"><h3>Finished auctions</h3></div>
+
+                      <div class="four wide column"></div>
+                      <div class="four wide column"></div>
+
+                      <div class="four wide column" style='text-align: right;'>
+                        <%= link_to t('histories.current_auctions'), auctions_path, style: 'margin-bottom: 20px; display: block; font-size: 18px; color: #03456f;' %>
+                      </div>
                     </div>
+
                     <table class="ui table" id="finished-auctions-table">
                         <thead>
                             <tr>
