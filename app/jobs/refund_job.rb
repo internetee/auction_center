@@ -22,7 +22,9 @@ class RefundJob < ApplicationJob
   end
 
   def inform(domain_participate_auction, error_message)
-    InvoiceMailer.refund_failed(domain_participate_auction.auction, domain_participate_auction.user, error_message).deliver_later
+    admin_emails = User.where(roles: ["administrator"]).pluck(:email)
+
+    InvoiceMailer.refund_failed(admin_emails, domain_participate_auction.auction, domain_participate_auction.user, error_message).deliver_later
     Rails.logger.info error_message
   end
 

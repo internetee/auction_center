@@ -10,14 +10,14 @@ class InvoiceMailer < ApplicationMailer
     mail(to: @user.email, subject: t('.subject', domain_name: @auction.domain_name))
   end
 
-  def refund_failed(auction, user, error_message)
-    # @invoice = invoice
+  def refund_failed(admin_emails, auction, user, error_message)
+    @admin_emails = admin_emails
     @user = user
     @auction = auction
     @error_message = error_message
 
     I18n.locale = @user&.locale || 'en'
 
-    mail(to: @user.email, subject: t('.subject', domain_name: @auction.domain_name))
+    mail(to: @admin_emails, subject: 'Deposit refund failed')
   end
 end
