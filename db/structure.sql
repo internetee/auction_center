@@ -912,38 +912,6 @@ ALTER SEQUENCE public.auctions_id_seq OWNED BY public.auctions.id;
 
 
 --
--- Name: auto_bids; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.auto_bids (
-    id bigint NOT NULL,
-    wishlist_item_id bigint NOT NULL,
-    cents integer NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: auto_bids_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.auto_bids_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: auto_bids_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.auto_bids_id_seq OWNED BY public.auto_bids.id;
-
-
---
 -- Name: autobiders; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1124,6 +1092,39 @@ ALTER SEQUENCE public.directo_customers_id_seq OWNED BY public.directo_customers
 
 
 --
+-- Name: domain_offer_histories; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.domain_offer_histories (
+    id bigint NOT NULL,
+    auction_id bigint NOT NULL,
+    billing_profile_id bigint NOT NULL,
+    bid_in_cents integer,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: domain_offer_histories_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.domain_offer_histories_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: domain_offer_histories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.domain_offer_histories_id_seq OWNED BY public.domain_offer_histories.id;
+
+
+--
 -- Name: domain_participate_auctions; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1132,7 +1133,10 @@ CREATE TABLE public.domain_participate_auctions (
     user_id bigint,
     auction_id bigint,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    status integer DEFAULT 0 NOT NULL,
+    refund_time timestamp without time zone,
+    invoice_number character varying
 );
 
 
@@ -1533,7 +1537,6 @@ CREATE TABLE public.users (
     uid character varying,
     updated_by character varying,
     daily_summary boolean DEFAULT false NOT NULL,
-    discarded_at timestamp without time zone,
     CONSTRAINT users_roles_are_known CHECK ((roles <@ ARRAY['participant'::character varying, 'administrator'::character varying]))
 );
 
@@ -1683,13 +1686,6 @@ ALTER TABLE ONLY public.auctions ALTER COLUMN id SET DEFAULT nextval('public.auc
 
 
 --
--- Name: auto_bids id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.auto_bids ALTER COLUMN id SET DEFAULT nextval('public.auto_bids_id_seq'::regclass);
-
-
---
 -- Name: autobiders id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1722,6 +1718,13 @@ ALTER TABLE ONLY public.delayed_jobs ALTER COLUMN id SET DEFAULT nextval('public
 --
 
 ALTER TABLE ONLY public.directo_customers ALTER COLUMN id SET DEFAULT nextval('public.directo_customers_id_seq'::regclass);
+
+
+--
+-- Name: domain_offer_histories id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.domain_offer_histories ALTER COLUMN id SET DEFAULT nextval('public.domain_offer_histories_id_seq'::regclass);
 
 
 --
@@ -1977,14 +1980,6 @@ ALTER TABLE ONLY public.ar_internal_metadata
 
 
 --
--- Name: auto_bids auto_bids_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.auto_bids
-    ADD CONSTRAINT auto_bids_pkey PRIMARY KEY (id);
-
-
---
 -- Name: autobiders autobiders_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2022,6 +2017,14 @@ ALTER TABLE ONLY public.delayed_jobs
 
 ALTER TABLE ONLY public.directo_customers
     ADD CONSTRAINT directo_customers_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: domain_offer_histories domain_offer_histories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.domain_offer_histories
+    ADD CONSTRAINT domain_offer_histories_pkey PRIMARY KEY (id);
 
 
 --
@@ -2317,13 +2320,6 @@ CREATE UNIQUE INDEX index_auctions_on_uuid ON public.auctions USING btree (uuid)
 
 
 --
--- Name: index_auto_bids_on_wishlist_item_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_auto_bids_on_wishlist_item_id ON public.auto_bids USING btree (wishlist_item_id);
-
-
---
 -- Name: index_autobiders_on_domain_name; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2391,6 +2387,20 @@ CREATE UNIQUE INDEX index_directo_customers_on_customer_code ON public.directo_c
 --
 
 CREATE UNIQUE INDEX index_directo_customers_on_vat_number ON public.directo_customers USING btree (vat_number);
+
+
+--
+-- Name: index_domain_offer_histories_on_auction_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_domain_offer_histories_on_auction_id ON public.domain_offer_histories USING btree (auction_id);
+
+
+--
+-- Name: index_domain_offer_histories_on_billing_profile_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_domain_offer_histories_on_billing_profile_id ON public.domain_offer_histories USING btree (billing_profile_id);
 
 
 --
@@ -2725,6 +2735,14 @@ ALTER TABLE ONLY public.invoice_items
 
 
 --
+-- Name: domain_offer_histories fk_rails_2bb761abe5; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.domain_offer_histories
+    ADD CONSTRAINT fk_rails_2bb761abe5 FOREIGN KEY (billing_profile_id) REFERENCES public.billing_profiles(id);
+
+
+--
 -- Name: invoices fk_rails_3d1522a0d8; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2738,14 +2756,6 @@ ALTER TABLE ONLY public.invoices
 
 ALTER TABLE ONLY public.autobiders
     ADD CONSTRAINT fk_rails_3d4f798ed7 FOREIGN KEY (user_id) REFERENCES public.users(id);
-
-
---
--- Name: auto_bids fk_rails_473d19add3; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.auto_bids
-    ADD CONSTRAINT fk_rails_473d19add3 FOREIGN KEY (wishlist_item_id) REFERENCES public.wishlist_items(id);
 
 
 --
@@ -2778,6 +2788,14 @@ ALTER TABLE ONLY public.results
 
 ALTER TABLE ONLY public.billing_profiles
     ADD CONSTRAINT fk_rails_8fda547d9d FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: domain_offer_histories fk_rails_914194a97f; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.domain_offer_histories
+    ADD CONSTRAINT fk_rails_914194a97f FOREIGN KEY (auction_id) REFERENCES public.auctions(id);
 
 
 --
@@ -2941,14 +2959,11 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20191025092912'),
 ('20191028092316'),
 ('20191121162323'),
-('20191129102035'),
-('20191206123023'),
 ('20191209073454'),
 ('20191209083000'),
 ('20191209085222'),
 ('20191213082941'),
 ('20191220131845'),
-('20200109093043'),
 ('20200110135003'),
 ('20200115145246'),
 ('20200205092158'),
@@ -2960,7 +2975,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220422094307'),
 ('20220422094556'),
 ('20220422095751'),
-('20220422121056'),
 ('20220425103701'),
 ('20220426082102'),
 ('20220527064738'),
@@ -2971,6 +2985,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221005105336'),
 ('20221006094111'),
 ('20221007082951'),
-('20221017133559');
+('20221017133559'),
+('20230118124747'),
+('20230124110241'),
+('20230130135037');
 
 
