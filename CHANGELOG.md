@@ -1,3 +1,6 @@
+31.01.2023
+* added list of finished auctions https://github.com/internetee/auction_center/issues/978
+
 20.01.2023
 * fixed ban count issue https://github.com/internetee/auction_center/issues/988
 
