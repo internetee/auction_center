@@ -43,7 +43,7 @@ RUN apt-get update > /dev/null && apt-get install -y --no-install-recommends > /
 # add repository for Node.js in the LTS version
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
 
-RUN apt-get install -y --no-install-recommends > /dev/null \
+RUN apt-get update > /dev/null && apt-get install -y --no-install-recommends > /dev/null \
   nodejs=* \
   qt5-default=* \
   libqt5webkit5-dev=* \
