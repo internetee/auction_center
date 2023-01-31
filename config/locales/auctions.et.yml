@@ -21,7 +21,7 @@ et:
     participate: Osale!
     all_list: Kuva kõik
     pagination_list: Kuva 15 leheküljel
-
+    finished_auctions: Lõppenud oksjonid
 
     still_in_progress: "Töötlemisel"
 

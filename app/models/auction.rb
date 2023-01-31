@@ -94,7 +94,7 @@ class Auction < ApplicationRecord
   end
 
   def self.search(params = {})
-    sort_column = params[:sort].presence_in(%w[domain_name ends_at platform users_price]) || 'domain_name'
+    sort_column = params[:sort].presence_in(%w[domain_name starts_at ends_at platform users_price]) || 'domain_name'
     sort_admin_column = params[:sort].presence_in(%w[domain name
                                                      starts_at
                                                      ends_at
