@@ -1,11 +1,5 @@
 require 'constraints/administrator'
 
-# disallowed_auction_actions = if Feature.registry_integration_enabled?
-#                                %i[new create edit update destroy]
-#                              else
-#                                %i[edit update]
-#                              end
-
 Rails.application.routes.draw do
   namespace :admin do
     get 'finished_auctions/index'
@@ -20,7 +14,9 @@ Rails.application.routes.draw do
     resources :versions, only: :index
   end
 
-  resources :histories, only: :index
+  resources :histories, only: :index do
+    resources :bids, only: :show
+  end
 
   get 'domain_wishlist_availability', to: 'wishlist_items#domain_wishlist_availability', as: :domain_wishlist_availability
 

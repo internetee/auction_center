@@ -19,20 +19,8 @@ class Offer < ApplicationRecord
 
   after_create_commit :broadcast_update_auction
   after_update_commit :broadcast_update_auction
-  after_create :add_participant_to_history
-  after_update :add_participant_to_history
 
   attr_accessor :skip_autobider, :skip_if_wishlist_case, :skip_validation
-
-  def add_participant_to_history
-    return unless auction.english?
-
-    DomainOfferHistory.create(
-      auction: auction,
-      billing_profile: billing_profile,
-      bid_in_cents: cents
-    )
-  end
 
   def broadcast_update_auction
     Offers::ReplaceBroadcastService.call({ offer: self })

@@ -64,6 +64,12 @@
 
             </div>
         </div>
+
+        <% if current_user&.participated_in_english_auction?(@auction) %>
+            <div style='margin-top: 20px'>
+                <%= render 'offers/participants_table', auction: @auction %>
+            </div>
+        <% end %>
     </div>
 </div>
 

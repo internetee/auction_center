@@ -294,6 +294,108 @@ class UserTest < ActiveSupport::TestCase
     end
   end
 
+  def test_user_is_participant_of_auction_if_he_made_bid
+    travel_to Time.parse('2010-07-06 09:30 +0000').in_time_zone
+    
+    user = users(:participant)
+    auction = auctions(:english)
+
+    assert auction.in_progress?
+    refute user.participated_in_english_auction?(auction)
+
+    Offer.create!(
+      auction: auction,
+      user: user,
+      cents: 10_000,
+      billing_profile: user.billing_profiles.first
+    )
+
+    user.reload && auction.reload
+    assert user.participated_in_english_auction?(auction)
+  end
+
+  def test_user_is_not_participant_of_auction_if_he_not_made_bid
+    travel_to Time.parse('2010-07-06 09:30 +0000').in_time_zone
+
+    user = users(:participant)
+    user_2 = users(:second_place_participant)
+    billing = billing_profiles(:company)
+    auction = auctions(:english)
+
+    refute user.participated_in_english_auction?(auction)
+    assert auction.in_progress?
+
+    Offer.create!(
+      auction: auction,
+      user: user_2,
+      cents: 10_000,
+      billing_profile: billing
+    )
+
+    user.reload
+    user_2.reload
+    auction.reload
+
+    refute user.participated_in_english_auction?(auction)
+    assert user_2.participated_in_english_auction?(auction)
+  end
+
+  def test_user_is_participant_of_auction_if_he_added_deposit
+    travel_to Time.parse('2010-07-06 09:30 +0000').in_time_zone
+    user = users(:participant)
+    auction = auctions(:english)
+
+    refute user.participated_in_english_auction?(auction)
+    assert auction.in_progress?
+
+    DomainParticipateAuction.create(
+      user: user, auction: auction
+    )
+
+    user.reload && auction.reload
+    refute auction.offers.any? { |offer| offer.user == user }
+    assert user.participated_in_english_auction?(auction)
+  end
+
+  def test_user_is_not_participant_of_auction_if_he_not_added_deposit
+    travel_to Time.parse('2010-07-06 09:30 +0000').in_time_zone
+    user = users(:participant)
+    user_2 = users(:second_place_participant)
+    auction = auctions(:english)
+
+    refute user.participated_in_english_auction?(auction)
+    assert auction.in_progress?
+
+    DomainParticipateAuction.create(
+      user: user_2, auction: auction
+    )
+
+    user.reload && user_2.reload && auction.reload
+    
+    refute user.participated_in_english_auction?(auction)
+    assert user_2.participated_in_english_auction?(auction)
+  end
+
+  def test_if_user_made_deposit_participant_method_not_work_for_non_english_auction
+    travel_to Time.parse('2010-07-06 09:30 +0000').in_time_zone
+    
+    user = users(:participant)
+    auction = auctions(:valid_without_offers)
+
+    assert auction.in_progress?
+    refute user.participated_in_english_auction?(auction)
+
+    Offer.create!(
+      auction: auction,
+      user: user,
+      cents: 10_000,
+      billing_profile: user.billing_profiles.first
+    )
+
+    user.reload && auction.reload
+    refute user.participated_in_english_auction?(auction)
+  end
+
   def boilerplate_user
     user = User.new
     user.email = 'email@example.com'

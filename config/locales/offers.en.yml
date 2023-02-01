@@ -26,6 +26,12 @@ en:
       we_will_contact_winner: |
         Once the auction time has ended, we will send an email to
         the auction winner.
+      participants: Bidder
+      your_last_offer: Last bid
+      offers_time: Time
+      participants_title: Bidders
+      deposit_title: Deposit Payments
+      deposit_participants: Participant
 
     create:
       created: "Offer submitted successfully."

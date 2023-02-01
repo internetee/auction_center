@@ -45,9 +45,6 @@ class EnglishOffersController < ApplicationController
     end
   end
 
-  # GET /offers/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
-  def show; end
-
   # GET /offers/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/edit
   def edit
     @auction = @offer.auction
