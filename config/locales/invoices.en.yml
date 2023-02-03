@@ -32,7 +32,7 @@ en:
     mark_as_paid: "Mark as paid"
     marked_as_paid: "Invoice marked as paid."
     already_paid: "Invoice is already paid."
-    paid_deposit_title: Paid Deposit
+    paid_deposit_title: "Paid deposits"
     paid_deposit: 
       date: Date
       sum: Sum

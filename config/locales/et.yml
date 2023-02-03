@@ -42,7 +42,7 @@ et:
   jobs_name: "Tegevused"
   bans_name: "Keelud"
   errors_name: "Vead"
-  paid_deposits_name: "Paid deposits"
+  paid_deposits_name: "Deposiidi maksed"
 
   unsubscribe_mailer_text: "Ei soovi enam saada oksjonil olevate domeenide nimekirja meilile"
 

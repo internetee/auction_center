@@ -32,7 +32,7 @@ et:
     mark_as_paid: "Märgi makstuks."
     marked_as_paid: "Arve makstuks märgitud."
     already_paid: "Arve on juba makstud."
-    paid_deposit_title: Paid Deposit
+    paid_deposit_title: Deposiidi maksed
     paid_deposit: 
       date: Kuupäev
       sum: Summa

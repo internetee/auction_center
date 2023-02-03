@@ -6,7 +6,7 @@ module Admin
                                                  created_at
                                                  auctions.requirement_deposit_in_cents
                                                  auctions.domain_name
-                                                 status]) || 'users.email'
+                                                 status]) || 'created_at'
       sort_direction = params[:direction].presence_in(%w[asc desc]) || 'desc'
 
       deposits = DomainParticipateAuction.includes(:user)
