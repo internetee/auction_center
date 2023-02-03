@@ -110,7 +110,7 @@
                             <th scope="col"></th>
                             <th scope="col"><%= t('invoices.total') %></th>
                             <td></td>
-                            <th scope="col"><%= t('offers.price_in_currency', price: @invoice.total) %></th>
+                            <th scope="col"><%= t('offers.price_in_currency', price: @invoice.total + (@invoice.enable_deposit? ? @invoice.deposit : 0.0)) %></th>
                         </tr>
 
                         <% if @invoice.paid? %>
