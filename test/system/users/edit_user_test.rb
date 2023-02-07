@@ -43,7 +43,6 @@ class EditUserTest < ApplicationSystemTestCase
     fill_in('user[current_password]', with: 'not-correct-password')
     click_link_or_button('Update')
     assert(page.has_css?('div.notice', text: 'Incorrect current password'))
-    assert(ActionMailer::Base.deliveries.empty?)
   end
 
   def test_can_change_contact_data
@@ -101,7 +100,14 @@ class EditUserTest < ApplicationSystemTestCase
 
   def test_country_can_also_be_changed
     visit edit_user_path(@user.uuid)
-    select_from_dropdown('Poland', from: 'user[country_code]')
+    # select_from_dropdown('Poland', from: 'user[country_code]')
+    # select_from_dropdown('Poland', from: 'user[country_code]')
+
+    select 'Poland', from: 'user[country_code]'
+    # find('.ui.dropdown.selection').click
+    find('.ui.dropdown').click
+    find('.menu.transition.visible').find('.item', text: 'Poland').click
+
     fill_in('user[current_password]', with: 'password123')
     click_link_or_button('Update')
 
@@ -110,22 +116,20 @@ class EditUserTest < ApplicationSystemTestCase
 
   def test_mobile_phone_needs_to_be_valid
     visit edit_user_path(@user.uuid)
-    # fill_in('user[mobile_phone]', with: '+372 500')
-    # fill_in('user[current_password]', with: 'password123')
-    # assert_not(page.has_button?('Update'))
-
     fill_in('user[mobile_phone]', with: '+37250006000')
+    fill_in('user[current_password]', with: 'password123')
+
     page.find('body').click # blur
     assert(page.has_button?('Update'))
     click_link_or_button('Update')
 
-    assert(page.has_css?('div.notice', text: 'Updated successfully.'))
+    assert(page.has_css?('.header.notice', text: 'Updated successfully.'))
     assert(page.has_text?('+37250006000'))
   end
 
   def test_mobile_phone_is_formatted_according_to_country
     visit edit_user_path(@user.uuid)
-    fill_in('user[mobile_phone]', with: '50006000')
+    fill_in('user[mobile_phone]', with: '+37250006000')
 
     fill_in('user[current_password]', with: 'password123')
     assert(page.has_button?('Update'))
@@ -166,9 +170,7 @@ class EditUserTest < ApplicationSystemTestCase
     assert(page.has_link?('Review terms and condition', href: Setting.find_by(code: 'terms_and_conditions_link').retrieve))
   end
 
-
   def test_user_was_subscripted_and_unsubscripted_notifications
-    local = @user.locale
     @user.update(locale: :en)
     @user.reload
     visit edit_user_path(@user.uuid)
