@@ -1,3 +1,6 @@
+08.02.2023
+* deposit payments are considered as prepayment on invoicing https://github.com/internetee/auction_center/issues/990
+
 31.01.2023
 * added list of finished auctions https://github.com/internetee/auction_center/issues/978
 
