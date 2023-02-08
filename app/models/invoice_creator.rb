@@ -80,11 +80,25 @@ class InvoiceCreator
 
     ActiveRecord::Base.transaction do
       assign_invoice_associations
-      assign_price
+      result_auction.enable_deposit ? assign_price_with_deposit : assign_price
       set_issue_and_due_date
       assign_billing_address
 
       invoice.save
     end
+  end
+
+  def assign_price_with_deposit
+    total = result_offer.cents - result_auction.requirement_deposit_in_cents
+
+    invoice.cents = total
+    invoice.invoice_items = [
+      InvoiceItem.new(invoice: invoice,
+                      cents: result_offer.cents,
+                      name: I18n.t('invoice_items.name',
+                                    domain_name: result_auction.domain_name,
+                                    auction_end: result_auction.ends_at.to_date,
+                                    locale: I18n.default_locale)),
+    ]
   end
 end

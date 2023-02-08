@@ -20,7 +20,7 @@ class InvoiceCreatorTest < ActiveSupport::TestCase
     @message = {
       message: 'ok'
     }
-    
+
     stub_request(:post, "http://eis_billing_system:3000/api/v1/invoice_generator/invoice_number_generator")
       .to_return(status: 200, body: @invoice_number.to_json, headers: {})
 
@@ -35,7 +35,6 @@ class InvoiceCreatorTest < ActiveSupport::TestCase
 
     stub_request(:post, 'http://eis_billing_system:3000/api/v1/invoice_generator/oneoff')
         .to_return(status: 200, body: @message.to_json, headers: {})
-
   end
 
   def test_an_invoice_is_prefilled_with_data_from_winning_offer
@@ -84,5 +83,39 @@ class InvoiceCreatorTest < ActiveSupport::TestCase
 
       assert_equal('expired.test (auction 1999-07-05) registration code', invoice.items.first.name)
     end
+  end
+
+  def test_if_deposit_include_should_gerentate_balance_invoice
+    deposit_value = 50_000
+    offer_bid_value = 70_000
+
+    user = users(:participant)
+    auction = auctions(:english)
+
+    auction.update(enable_deposit: true, requirement_deposit_in_cents: deposit_value, ends_at: Time.zone.now + 10.minutes)
+    auction.reload
+    assert auction.offers.empty?
+    assert auction.enable_deposit?
+
+    DomainParticipateAuction.create(user_id: user.id, auction_id: auction.id)
+    auction.reload
+    user.reload
+
+    Offer.create!(
+      auction: auction,
+      user: user,
+      cents: offer_bid_value,
+      billing_profile: user.billing_profiles.first
+    )
+
+    assert auction.offers.present?
+    auction.update(ends_at: Time.zone.now - 1.minute) && auction.reload
+
+    ResultCreationJob.perform_now
+    auction.reload
+
+    result = Result.last
+    assert_equal result.auction.domain_name, auction.domain_name
+    assert_equal result.invoice.cents, offer_bid_value - deposit_value
   end
 end

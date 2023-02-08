@@ -30,6 +30,9 @@ class Invoice < ApplicationRecord
 
   before_create :set_invoice_number
 
+  delegate :enable_deposit?, to: :enable_deposit?
+  delegate :deposit, to: :deposit
+
   scope :with_search_scope, ->(origin) {
     if origin.present?
       if numeric?(origin)
@@ -72,6 +75,14 @@ class Invoice < ApplicationRecord
     raise(Errors::ResultNotSold, result_id) unless result.awaiting_payment?
 
     InvoiceCreator.new(result_id).call
+  end
+
+  def enable_deposit?
+    result.auction.enable_deposit?
+  end
+
+  def deposit
+    result.auction.deposit
   end
 
   def billing_restrictions_issue
