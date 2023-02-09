@@ -1,3 +1,6 @@
+09.02.2023
+* deposits are reset for every auction round https://github.com/internetee/auction_center/issues/991
+
 08.02.2023
 * deposit payments are considered as prepayment on invoicing https://github.com/internetee/auction_center/issues/990
 
