@@ -27,7 +27,7 @@ module EisBilling
     private
 
     def set_available_for_user
-      auction = Auction.find_by_domain_name(domain_name)
+      auction = Auction.where(domain_name: domain_name).order(created_at: :desc).first
 
       return false unless auction.enable_deposit?
       return false unless auction.deposit.to_f <= transaction_amount.to_f

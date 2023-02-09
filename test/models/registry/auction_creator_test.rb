@@ -342,6 +342,74 @@ class RegistryAuctionCreatorTest < ActiveSupport::TestCase
     end
   end
 
+  def test_next_round_auctions_should_be_comes_with_enabled_deposit_for_previous_participants
+    stub_request(:post, "http://eis_billing_system:3000/api/v1/invoice_generator/invoice_number_generator")
+    .to_return(status: 200, body: @invoice_number.to_json, headers: {})
+
+    stub_request(:post, "http://eis_billing_system:3000/api/v1/invoice_generator/invoice_generator")
+      .to_return(status: 200, body: @invoice_link.to_json, headers: {})
+
+    stub_request(:put, "http://registry:3000/eis_billing/e_invoice_response").
+      to_return(status: 200, body: @invoice_number.to_json, headers: {})
+
+    stub_request(:post, "http://eis_billing_system:3000/api/v1/e_invoice/e_invoice").
+      to_return(status: 200, body: "", headers: {})
+
+    user1 = users(:participant)
+    user2 = users(:second_place_participant)
+    deposit_value = 50_000
+    travel_back
+
+    auction = auctions(:english)
+    auction.update(enable_deposit: true, requirement_deposit_in_cents: deposit_value, ends_at: Time.now.utc + 10.minutes)
+    auction.reload
+    assert auction.offers.empty?
+    assert auction.enable_deposit?
+
+    DomainParticipateAuction.create(user_id: user1.id, auction_id: auction.id)
+    DomainParticipateAuction.create(user_id: user2.id, auction_id: auction.id)
+
+    user1.reload && user2.reload
+    assert auction.allow_to_set_bid?(user1)
+    assert auction.allow_to_set_bid?(user2)
+    travel_to 3.hours.from_now
+
+    ResultCreationJob.perform_now
+
+    auction.reload
+    user1.reload && user2.reload
+
+    instance = Registry::AuctionCreator.new
+
+    body = [{ 'id' => '362589b9-dc74-484d-8fef-7282816d5c76',
+              'domain' => auction.domain_name,
+              'status' => 'started',
+              'platform' => 'manual'}]
+    response = Minitest::Mock.new
+
+    response.expect(:code, '200')
+    response.expect(:body, body.to_json)
+
+    http = Minitest::Mock.new
+    http.expect(:request, nil, [instance.request])
+
+    Net::HTTP.stub(:start, response, http) do
+      instance.call
+
+      auctions = Auction.where(domain_name: auction.domain_name)
+      assert_equal auctions.count, 2
+      auction = auctions.last
+
+      assert_equal auction.platform, 'english'
+
+      auction.reload && user1.reload && user2.reload
+
+      assert auction.enable_deposit?
+      refute auction.allow_to_set_bid?(user1)
+      refute auction.allow_to_set_bid?(user2)
+    end
+  end
+
   def reassign_ends_at(legacy_auction, new_auction)
     t1 = legacy_auction.starts_at
     t2 = new_auction.starts_at
