@@ -1,13 +1,13 @@
 development:
   adapter: redis
-  url: <%= ENV.fetch("REDIS_URL") { "redis://redis:6379/4" } %>
+  url: <%= ENV.fetch("REDIS_URL") { AuctionCenter::Application.config.customization[:cable_redis_url] } %>
   channel_prefix: auction_center_development
 
 test:
   adapter: async
 
 staging:
-  url: <%= ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" } %>
+  url: <%= AuctionCenter::Application.config.customization[:cable_redis_url] %>
   adapter: redis
   channel_prefix: auction_center_staging
 
@@ -20,3 +20,4 @@ production:
   #adapter: redis
   #url: <%= ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" } %>
   #channel_prefix: auction_center_production
+# AuctionCenter::Application.config.customization[:cable_redis_url]
