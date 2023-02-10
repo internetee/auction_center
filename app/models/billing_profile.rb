@@ -12,6 +12,8 @@ class BillingProfile < ApplicationRecord
   belongs_to :user, optional: true
   after_update :mirror_address_to_attached_invoices
 
+  has_many :domain_offer_histories
+
   scope :with_search_scope, ->(origin) {
     if origin.present?
       joins(:user)

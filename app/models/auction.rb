@@ -17,6 +17,7 @@ class Auction < ApplicationRecord
 
   has_many :offers, dependent: :delete_all
   has_many :domain_participate_auctions
+  has_many :domain_offer_histories
   has_one :result, required: false, dependent: :destroy
 
   enum platform: %i[blind english]

@@ -214,4 +214,10 @@ class User < ApplicationRecord
   def mobile_phone_must_not_be_already_confirmed
     errors.add(:mobile_phone, I18n.t(:already_confirmed)) if phone_number_was_already_confirmed?
   end
+
+  def participated_in_english_auction?(auction)
+    return false unless auction.english?
+
+    auction.offers.any? { |offer| offer.user == self } || auction.domain_participate_auctions.any? { |p| p.user == self }
+  end
 end

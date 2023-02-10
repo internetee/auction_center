@@ -28,6 +28,12 @@ et:
       title: "Sinu pakkumus"
       we_will_contact_winner: |
         Kui oksjon on lõppenud, saadameoksjoni võitjale e-kirja aadressile
+      participants: Pakkuja
+      your_last_offer: Viimane pakkumine
+      offers_time: Aeg
+      participants_title: Pakkujad
+      deposit_title: Deposiidimaksed
+      deposit_participants: Osaleja
 
     edit:
       title: "Domeeni registreerimise eelisõiguse pakkumus"

@@ -1,0 +1,22 @@
+<h2><%= I18n.t('offers.show.participants_title') %></h2>
+
+<table class="ui table selectable celled center aligned" id="my-offers-table">
+  <thead>
+    <tr>
+      <th scope="col"><%= t('offers.show.participants') %></th>
+      <th scope="col"><%= t('offers.show.your_last_offer') %></th>
+      <th scope="col"><%= t('offers.show.offers_time') %></th>
+    </tr>
+  </thead>
+  <tbody id="offers-table-body">
+    <% auction.offers.each do |offer| %>
+      <tr class="offers-table-row">
+        <td class="monospace" style="<%= offer.billing_profile.user_id == current_user.id ? 'color: green;' : '' %>">
+          <%= auction.in_progress? ? offer.username : offer.billing_profile.name %>
+        </td>
+        <td><%= t('offers.price_in_currency', price: offer.price) %></td>
+        <td><%= I18n.l(offer.updated_at) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
