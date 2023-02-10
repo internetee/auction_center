@@ -34,6 +34,13 @@ et:
     mark_as_paid: "Märgi makstuks."
     marked_as_paid: "Arve makstuks märgitud."
     already_paid: "Arve on juba makstud."
+    paid_deposit_title: Deposiidi maksed
+    paid_deposit: 
+      date: Kuupäev
+      sum: Summa
+      auction_name: Domeen
+      status: Olek
+      refund_time: Tagastatud
 
     show:
       change_billing_profile: "Muuda arve aadressi"

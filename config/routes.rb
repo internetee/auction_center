@@ -50,6 +50,10 @@ Rails.application.routes.draw do
       end
     end
     resources :jobs, only: %i[index create]
+    resources :paid_deposits, only: %i[index]
+    namespace :paid_deposit do
+      resources :deposit_statuses, only: %i[update]
+    end
     resources :offers, only: [:show], concerns: [:auditable]
     resources :results, only: %i[index create show], concerns: %i[auditable]
 

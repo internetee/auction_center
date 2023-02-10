@@ -18,7 +18,8 @@ class CheckForDepositServiceTest < ActiveSupport::TestCase
       domain_name: @auction.domain_name,
       user_uuid: @user.uuid,
       user_email: @user.email,
-      transaction_amount: 500.0
+      transaction_amount: 500.0,
+      invoice_number: @invoice.number
     )
     @user.reload
 
@@ -35,7 +36,8 @@ class CheckForDepositServiceTest < ActiveSupport::TestCase
       domain_name: @auction.domain_name,
       user_uuid: @user.uuid,
       user_email: @user.email,
-      transaction_amount: 300.0
+      transaction_amount: 300.0,
+      invoice_number: @invoice_number
     )
     @user.reload
 

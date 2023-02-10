@@ -42,6 +42,19 @@ english:
   min_bids_step: 5.0
   slipping_end: 5
 
+deposit_english:
+  domain_name: 'deposit_auction.test'
+  starts_at: <%= Time.parse('2010-07-05 10:30 +0000') %>
+  ends_at: <%= Time.parse('2010-07-06 10:30 +0000') %>
+  initial_ends_at: <%= Time.parse('2010-07-06 10:30 +0000') %>
+  uuid: "01ed89b1-033e-4e09-be3f-d83b4caa0da4"
+  platform: "english"
+  starting_price: 5.0
+  min_bids_step: 5.0
+  slipping_end: 5
+  enable_deposit: true
+  requirement_deposit_in_cents: 50_000
+
 english_nil_starts:
   domain_name: 'english_nil_auction.test'
   starts_at: 

@@ -1,6 +1,9 @@
 require 'test_helper'
 
 class ResultCreatorTest < ActiveSupport::TestCase
+  include ActiveJob::TestHelper
+  include ActionMailer::TestHelper
+
   def setup
     super
 
@@ -128,6 +131,7 @@ class ResultCreatorTest < ActiveSupport::TestCase
     result_creator = ResultCreator.new(@auction_with_offers.id)
     result_creator.call
 
+    perform_enqueued_jobs
     assert_not(ActionMailer::Base.deliveries.empty?)
     last_email = ActionMailer::Base.deliveries.last
 
@@ -140,6 +144,7 @@ class ResultCreatorTest < ActiveSupport::TestCase
     result_creator = ResultCreator.new(@auction_with_offers.id)
     result_creator.call
 
+    perform_enqueued_jobs
     assert_not(ActionMailer::Base.deliveries.empty?)
     last_email = ActionMailer::Base.deliveries.first
 
@@ -147,5 +152,56 @@ class ResultCreatorTest < ActiveSupport::TestCase
     assert_equal(['user@auction.test'], last_email.to)
     linkpay_text = 'You can pay for this invoice using following'
     assert CGI::unescapeHTML(last_email.body.raw_source).include? linkpay_text
+  end
+
+  def test_should_be_runned_refund_jobs
+    assert_no_enqueued_jobs
+
+    auction = auctions(:deposit_english)
+
+    auction.ends_at = Time.zone.now + 1.day
+    auction.save && auction.reload
+
+    auction.domain_participate_auctions.destroy_all && auction.reload
+
+    user1 = users(:participant)
+    user2 = users(:second_place_participant)
+    billing = billing_profiles(:orphaned)
+    user2.billing_profiles << billing
+    user2.save && user2.reload
+
+    DomainParticipateAuction.create!(user: user1, auction: auction, invoice_number: '223344')
+    DomainParticipateAuction.create!(user: user2, auction: auction, invoice_number: '223345')
+
+    Offer.create!(
+      auction: auction,
+      user: user1,
+      cents: 60_000,
+      billing_profile: user1.billing_profiles.first,
+      skip_if_wishlist_case: true
+    )
+
+    Offer.create!(
+      auction: auction,
+      user: user2,
+      cents: 55_000,
+      billing_profile: user2.billing_profiles.first,
+      skip_if_wishlist_case: true
+    )
+
+    auction.reload
+    assert_equal auction.offers.count, 2
+    assert_equal auction.domain_participate_auctions.count, 2
+
+    assert auction.in_progress?
+    auction.update(ends_at: Time.zone.now - 10.seconds) && auction.reload
+
+    auction.finished?
+
+    result_creator = ResultCreator.new(auction.id)
+    result_creator.call
+
+    # one of them creation results job
+    assert_enqueued_jobs 2
   end
 end

@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
+    </head>
+    <body>
+        <p>Deposit refund failed to the user <%= @user.display_name %> for the auction of <%= @auction.domain_name %></p>
+        <p><%= @error_message %></p>
+        <%= t('common_mailer.footer_html') %>
+    </body>
+</html>

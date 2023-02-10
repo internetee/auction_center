@@ -44,6 +44,7 @@ en:
   bans_name: "Bans"
   errors_name: "Errors"
   statistics_name: "Statistics"
+  paid_deposits_name: "Paid deposits"
 
   unsubscribe_mailer_text: "I do not wish to receive daily summary about currently auctioned domains any more"
 

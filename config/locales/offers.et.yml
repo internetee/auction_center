@@ -18,7 +18,7 @@ et:
     new:
       title: "Domeeni registreerimise eelisõiguse pakkumus"
       deposit_enable: Nõutav tagatisraha
-      make_deposit: Tehke deposiit
+      make_deposit: Tasuge deposiit
       deposit_description: Oksjonil osalemiseks tuleb tasuda %{deposit} eurot deposiiti (sisaldab käibemaksu). Võites oksjoni jääb see teile ettemaksuks. Teistele oksjonil osalejatele kantakse raha nädala jooksul pärast oksjoni lõppu tagasi.
 
     create:

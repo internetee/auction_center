@@ -41,7 +41,7 @@ class ApiAuctionsListTest < ActionDispatch::IntegrationTest
     get(auctions_path, headers: { 'Accept': 'application/json' })
     response_json = JSON.parse(response.body)
 
-    assert_equal(response_json.count, 5)
+    assert_equal(response_json.count, 6)
 
     response_json.each do |item|
       assert(item.key?('domain_name'))
@@ -51,7 +51,7 @@ class ApiAuctionsListTest < ActionDispatch::IntegrationTest
     end
 
     expected_domains = ['with-offers.test', 'no-offers.test', 'with-invoice.test',
-                        'orphaned123.test', 'english_auction.test']
+                        'orphaned123.test', 'english_auction.test', 'deposit_auction.test']
     assert_equal(expected_domains.to_set, response_json.map { |e| e['domain_name'] }.to_set)
   end
 

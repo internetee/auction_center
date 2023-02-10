@@ -1,0 +1,11 @@
+en:
+  admin:
+    paid_deposits:
+      index:
+        search: Search by user email or by domain name
+        title: Deposits
+        user_email: User's Email
+        date: Creation date
+        sum: Sum
+        auction: Domain
+        status: Status

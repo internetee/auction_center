@@ -1,0 +1,11 @@
+et:
+  admin:
+    paid_deposits:
+      index:
+        search: Otsi kasutaja e-posti või domeeninime järgi
+        title: Deposiidimaksed
+        user_email: E-post
+        date: Makse kuupäev
+        sum: Summa
+        auction: Domeen
+        status: Olek

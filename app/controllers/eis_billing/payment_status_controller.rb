@@ -25,7 +25,8 @@ module EisBilling
       EisBilling::CheckForDepositService.call(domain_name: params[:domain_name],
                                               user_uuid: params[:user_uuid],
                                               user_email: params[:user_email],
-                                              transaction_amount: params[:transaction_amount])
+                                              transaction_amount: params[:transaction_amount],
+                                              invoice_number: params[:invoice_number])
     end
 
     def define_payment_option(invoice:)
