@@ -1,3 +1,6 @@
+10.02.2023
+* deposit management and autorefund https://github.com/internetee/auction_center/issues/992
+
 09.02.2023
 * deposits are reset for every auction round https://github.com/internetee/auction_center/issues/991
 
