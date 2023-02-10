@@ -1,6 +1,9 @@
 require 'test_helper'
 
 class AdminBulkActionServiceTest < ActionDispatch::IntegrationTest
+  include ActiveJob::TestHelper, ActionCable::TestHelper
+  include Turbo::Streams::ActionHelper
+
   def setup
     super
 
@@ -149,6 +152,66 @@ class AdminBulkActionServiceTest < ActionDispatch::IntegrationTest
     assert_equal result[0], @auction.domain_name
   end
 
+  def test_auction_could_not_be_broadcasted_if_starts_at_not_come
+    assert_nil @english_auction_nil.starts_at, nil
+    assert_nil @english_auction_nil.ends_at, nil
+    assert_nil @english_auction_nil.starting_price, nil
+    assert_nil @english_auction_nil.min_bids_step, nil
+    assert_nil @english_auction_nil.slipping_end, nil
+
+    clear_enqueued_jobs
+
+    incoming_data = incoming_data_for_auction_in_progress(@english_auction_nil.id)
+    AdminBulkActionService.apply_for_english_auction(auction_elements: incoming_data)
+    @english_auction_nil.reload
+
+    assert_not_nil @english_auction_nil.starts_at
+    assert_not_nil @english_auction_nil.ends_at
+    assert_equal @english_auction_nil.starting_price, 5.0
+    assert_equal @english_auction_nil.min_bids_step, 5.0
+    assert_equal @english_auction_nil.slipping_end, 5
+
+    assert @english_auction_nil.in_progress?
+
+    list_signed_name = Turbo::StreamsChannel.signed_stream_name 'auctions'
+    list_stream_name = Turbo::StreamsChannel.verified_stream_name list_signed_name
+
+    assert_enqueued_jobs 2
+    perform_enqueued_jobs
+
+    assert_broadcasts list_stream_name, 1
+  end
+
+  def test_auction_can_be_broadcasted_if_start_at_already_begin
+    assert_nil @english_auction_nil.starts_at, nil
+    assert_nil @english_auction_nil.ends_at, nil
+    assert_nil @english_auction_nil.starting_price, nil
+    assert_nil @english_auction_nil.min_bids_step, nil
+    assert_nil @english_auction_nil.slipping_end, nil
+
+    clear_enqueued_jobs
+
+    incoming_data = incoming_data_for_auction_should_start_in_future(@english_auction_nil.id)
+    AdminBulkActionService.apply_for_english_auction(auction_elements: incoming_data)
+    @english_auction_nil.reload
+
+    assert_not_nil @english_auction_nil.starts_at
+    assert_not_nil @english_auction_nil.ends_at
+    assert_equal @english_auction_nil.starting_price, 5.0
+    assert_equal @english_auction_nil.min_bids_step, 5.0
+    assert_equal @english_auction_nil.slipping_end, 5
+
+    refute @english_auction_nil.in_progress?
+
+    list_signed_name = Turbo::StreamsChannel.signed_stream_name 'auctions'
+    list_stream_name = Turbo::StreamsChannel.verified_stream_name list_signed_name
+
+    assert_enqueued_jobs 0
+    perform_enqueued_jobs
+
+    assert_broadcasts list_stream_name, 0
+  end
+
   private
 
   def valid_incoming_data(auction_id)
@@ -156,6 +219,30 @@ class AdminBulkActionServiceTest < ActionDispatch::IntegrationTest
     {
       set_starts_at: '2010-07-05',
       set_ends_at: '2010-08-05',
+      starting_price: '5.0',
+      slipping_end: '5',
+      elements_id: auction_id.to_s,
+      deposit: 0.0
+    }
+  end
+
+  def incoming_data_for_auction_in_progress(auction_id)
+    auction_id = auction_id.join(' ') if auction_id.kind_of?(Array)
+    {
+      set_starts_at: '2010-07-04',
+      set_ends_at: '2010-08-05',
+      starting_price: '5.0',
+      slipping_end: '5',
+      elements_id: auction_id.to_s,
+      deposit: 0.0
+    }
+  end
+
+  def incoming_data_for_auction_should_start_in_future(auction_id)
+    auction_id = auction_id.join(' ') if auction_id.kind_of?(Array)
+    {
+      set_starts_at: '2010-07-10',
+      set_ends_at: '2010-08-15',
       starting_price: '5.0',
       slipping_end: '5',
       elements_id: auction_id.to_s,

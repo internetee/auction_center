@@ -57,6 +57,8 @@ Rails.application.configure do
   # Performs jobs in the same thread
   config.active_job.queue_adapter = :inline
 
+  config.action_cable.allowed_request_origins = [/ws:\/\/*/, /wss:\/\/*/, /http:\/\/*/, /https:\/\/*/]
+
   # config.after_initialize do
   #   Bullet.enable = true
   #   Bullet.bullet_logger = true
