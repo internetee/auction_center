@@ -1,3 +1,6 @@
+13.02.2023
+* websockets for realtime bid updates https://github.com/internetee/auction_center/pull/1008
+
 10.02.2023
 * deposit management and autorefund https://github.com/internetee/auction_center/issues/992
 * reveal bid history to auction participants https://github.com/internetee/auction_center/issues/999
