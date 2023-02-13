@@ -198,6 +198,8 @@ class ResultCreatorTest < ActiveSupport::TestCase
 
     auction.finished?
 
+    clear_enqueued_jobs
+
     result_creator = ResultCreator.new(auction.id)
     result_creator.call
 

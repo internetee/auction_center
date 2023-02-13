@@ -9,7 +9,7 @@ gem 'bootsnap', '>= 1.1.0', require: false
 gem 'cancancan'
 gem 'chartkick'
 gem 'data_migrate'
-gem 'delayed_job'
+gem 'delayed_job', '~> 4.1.0'
 gem 'delayed_job_active_record'
 gem 'devise'
 gem 'directo', github: 'internetee/directo', branch: 'master'
@@ -64,7 +64,8 @@ end
 gem 'hotwire-rails', '~> 0.1.3'
 # Use Redis for Action Cable
 
-gem 'redis', '~> 5.0'
+# gem 'redis', '~> 5.0'
+gem 'redis', '~> 4.0'
 
 # For search
 gem 'pg_search'

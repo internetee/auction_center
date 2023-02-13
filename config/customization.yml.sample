@@ -24,6 +24,8 @@ default: &default
   # Address from which the emails come from
   email_from_address: "noreply@internet.ee"
 
+  cable_redis_url: redis://redis:6379/4
+
   mailer:
     # Host to which links from emails should redirect to
     host: 'https://auction.example.test'
