@@ -171,7 +171,8 @@ class AutobiderService
       auction: auction,
       user: owner,
       cents: cents,
-      billing_profile: owner.billing_profiles.first
+      billing_profile: owner.billing_profiles.first,
+      username: Username::GenerateUsernameService.new.call
     )
   end
 end
