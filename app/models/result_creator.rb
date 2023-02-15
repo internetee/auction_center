@@ -89,8 +89,6 @@ class ResultCreator
     assign_attributes_from_winning_offer
     result.save!
 
-    # refund_deposit
-
     result
   end
 
