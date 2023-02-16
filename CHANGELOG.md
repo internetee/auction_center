@@ -1,5 +1,6 @@
 15.02.2023
 * fix for nickname issue with autobidder https://github.com/internetee/auction_center/pull/1011
+
 13.02.2023
 * websockets for realtime bid updates https://github.com/internetee/auction_center/pull/1008
 
