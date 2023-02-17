@@ -7,63 +7,58 @@
 <div class="features-grid top narrow grey" data-controller="sort-link">
     <div class="ui search">
         <div class="ui massive input icon">
-<%= form_with url: admin_auctions_path, 
-        method: :get,
-        data: { controller: 'debounce',
-                debounce_target: 'form',
-                turbo_action: "advance",
-                turbo_frame: "results",
-                action: 'input->debounce#search' 
-                }, class: 'ui form' do |form| %>
-  <div class="field">
-    <%= form.search_field :domain_name, value: params[:domain_name], placeholder: t('search_by_domain_name'), class: 'prompt' %>
-  </div>
+            <%= form_with url: admin_auctions_path, 
+                method: :get,
+                data: { controller: 'debounce',
+                        debounce_target: 'form',
+                        turbo_action: "advance",
+                        turbo_frame: "results",
+                        action: 'input->debounce#search' 
+                        }, class: 'ui form' do |form| %>
+                <div class="field">
+                    <%= form.search_field :domain_name, value: params[:domain_name], placeholder: t('search_by_domain_name'), class: 'prompt' %>
+                </div>
 
-      <%= form.hidden_field :sort, value: params[:sort],
-              data: { sort_link_target: "sort" } %>
+                <%= form.hidden_field :sort, value: params[:sort],
+                        data: { sort_link_target: "sort" } %>
 
-      <%= form.hidden_field :direction, value: params[:direction],
-              data: { sort_link_target: "direction" } %>
+                <%= form.hidden_field :direction, value: params[:direction],
+                        data: { sort_link_target: "direction" } %>
 
-  <div class="three fields">
-    <div class="field">
-            <%= form.label :type, 'Select type of auction' %>
-            <%= form.select :type, options_for_select(Auction.platforms, selected: params[:type]), {include_blank: 'All'}, {class: '' } %>
-    </div>
-    <div class="field">
-        <div class="column">
-            <%= form.label :starts_at, t('auctions.starts_at') %>
-            <%= form.datetime_field :starts_at, class: "form-control" %>
-        </div>
-    </div>
-    <div class="field">
-        <div class="column">
-            <%= form.label :ends_at, t('auctions.ends_at') %>
-            <%= form.datetime_field :ends_at, class: "form-control" %>
-        </div>
-    </div>
-  </div>
+                <div class="three fields">
+                    <div class="field">
+                        <%= form.label :type, 'Select type of auction' %>
+                        <%= form.select :type, options_for_select(Auction.platforms, selected: params[:type]), {include_blank: 'All'}, {class: '' } %>
+                    </div>
+                    <div class="field">
+                        <div class="column">
+                            <%= form.label :starts_at, t('auctions.starts_at') %>
+                            <%= form.datetime_field :starts_at, class: "form-control" %>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="column">
+                            <%= form.label :ends_at, t('auctions.ends_at') %>
+                            <%= form.datetime_field :ends_at, class: "form-control" %>
+                        </div>
+                    </div>
+                </div>
 
-    <div class="two fields" style="align-items: center">
-        <div class="field">
-            <div class="ui checkbox">
-            <%= form.check_box :starts_at_nil, { }, 1, nil %>
-            <label>Show auctions with no start date</label>
-            </div>
-        </div>
-<% end %>
-
-            <div class="field">
-                <%= link_to 'Clear', request.path, class: 'ui primary button' %>
-            </div>
-
-        </div>
-            </div>
+                <div class="two fields" style="align-items: center">
+                    <div class="field">
+                        <div class="ui checkbox">
+                            <%= form.check_box :starts_at_nil, { }, 1, nil %>
+                            <label>Show auctions with no start date</label>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <%= link_to 'Clear', request.path, class: 'ui primary button' %>
+                    </div>
+                </div>
+            <% end %>
         </div>
     </div>
 </div>
-
-
 
 <div class="features-grid top narrow grey">
     <div class="ui search">
@@ -73,98 +68,91 @@
                     Set value
                 </div>
                 <div class="content">
-                <%= form_for :auction_elements, 
-                             url: bulk_starts_at_admin_auctions_path,
-                             html: { class: 'ui form', autocomplete: 'off' },
-                             data: { controller: 'checker', checker_target: 'bulkactionform' } do |form| %>
-                    <div class="four fields" style="padding: 0 300px";>
-                        <div class="field">
-                            <div class="column">
-                                <%= form.label :set_starts_at, t('auctions.starts_at') %>
-                                <%= form.datetime_field :set_starts_at, class: "form-control", min: Time.zone.today %>
+                    <%= form_for :auction_elements, 
+                                  url: bulk_starts_at_admin_auctions_path,
+                                  html: { class: 'ui form', autocomplete: 'off' },
+                                  data: { controller: 'checker', checker_target: 'bulkactionform' } do |form| %>
+                        <div class="four fields" style="padding: 0 300px;">
+                            <div class="field">
+                                <div class="column">
+                                    <%= form.label :set_starts_at, t('auctions.starts_at') %>
+                                    <%= form.datetime_field :set_starts_at, class: "form-control", min: Time.zone.today %>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="column">
+                                    <%= form.label :set_ends_at, t('auctions.ends_at') %>
+                                    <%= form.datetime_field :set_ends_at, class: "form-control", min: Time.zone.today %>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="column">
+                                    <%= form.label :starting_price, t('auctions.starting_price') %>
+                                    <%= form.number_field :starting_price, class: "form-control", step: :any, value: 5.0 %>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="column">
+                                    <%= form.label :slipping_end, t('auctions.slipping_end') %>
+                                    <%= form.number_field :slipping_end, class: "form-control", step: 1, value: 5 %>
+                                </div>
                             </div>
                         </div>
-                        <div class="field">
-                            <div class="column">
-                                <%= form.label :set_ends_at, t('auctions.ends_at') %>
-                                <%= form.datetime_field :set_ends_at, class: "form-control", min: Time.zone.today %>
-                            </div>
-                        </div>
-                        <div class="field">
-                            <div class="column">
-                                <%= form.label :starting_price, t('auctions.starting_price') %>
-                                <%= form.number_field :starting_price, class: "form-control", step: :any, value: 5.0 %>
-                            </div>
-                        </div>
-                        <div class="field">
-                            <div class="column">
-                                <%= form.label :slipping_end, t('auctions.slipping_end') %>
-                                <%= form.number_field :slipping_end, class: "form-control", step: 1, value: 5 %>
-                            </div>
-                        </div>
-                    </div>
 
-                    <%= form.hidden_field :elements_id %>
+                        <%= form.hidden_field :elements_id %>
 
-                    <div class="eight fields"
-                         style="margin: 0 auto; display: flex; justify-between: center; align-items: center;"
-                         data-controller="checkbox_toggle">
-                        <div class='field'></div>
-                        <div class='field'></div>
+                        <div class="eight fields"
+                            style="margin: 0 auto; display: flex; justify-between: center; align-items: center;"
+                            data-controller="checkbox_toggle">
+                            <div class='field'></div>
+                            <div class='field'></div>
 
-                        <div class='field'>
-                            <div class="column">
-                                <%= form.label :deposit, t('auctions.deposit') %>
-                                <%= form.number_field :deposit, class: "form-control", step: :any, value: 0.0 %>
+                            <div class='field'>
+                                <div class="column">
+                                    <%= form.label :deposit, t('auctions.deposit') %>
+                                    <%= form.number_field :deposit, class: "form-control", step: :any, value: 0.0 %>
+                                </div>
                             </div>
-                        </div>
-                        <div class='field'>
-                            <div class="ui checkbox">
-                                <%= form.check_box :enable_deposit, { data: { name: 'first_checkbox' } }, true, nil %>
-                                <label><%= t('auctions.index.enable_deposit') %></label>
+                            <div class='field'>
+                                <div class="ui checkbox">
+                                    <%= form.check_box :enable_deposit, { data: { name: 'first_checkbox' } }, true, nil %>
+                                    <label><%= t('auctions.index.enable_deposit') %></label>
+                                </div>
                             </div>
-                        </div>
-                        <div class='field'>
-                            <div class="ui checkbox">
-                                <%= form.check_box :disable_deposit, { data: { name: 'second_checkbox' } }, true, nil %>
-                                <label><%= t('auctions.index.disable_deposit') %></label>
+                            <div class='field'>
+                                <div class="ui checkbox">
+                                    <%= form.check_box :disable_deposit, { data: { name: 'second_checkbox' } }, true, nil %>
+                                    <label><%= t('auctions.index.disable_deposit') %></label>
+                                </div>
                             </div>
+                            <div class="field">
+                                <%= form.submit 'Run bulk operation', id: 'bulk-operation', class: 'ui inverted red button', data: { action: 'click->checker#collect_ids' } %>
+                            </div>
+                            <div class='field'></div>
+                            <div class='field'></div>
                         </div>
-                        <div class="field">
-                            <%= form.submit 'Run bulk operation', id: 'bulk-operation', class: 'ui inverted red button', data: { action: 'click->checker#collect_ids' } %>
-                        </div>
-                        <div class='field'></div>
-                        <div class='field'></div>
-                    </div>
 
-                    <div style="margin-top: 30px;">
-                        <div class='field'>
+                        <div class='field' style="margin-top: 30px;">
                             <div class="ui checkbox">
                                 <%= check_box_tag :check_all %>
                                 <label>Check all</label>
                             </div>
                         </div>
-                    </div>
-                    
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-
-
 <div class="u-container" data-controller='check'>
-
     <div class="margin-block">
         <div class="grid one column">
-        
             <%= turbo_frame_tag "results" do %>
                 <div class="column">
                     <table class="ui table selectable unstackable" id="auctions-table">
                         <thead>
                             <tr>
                                 <th class="col-xs-1 text-center">
-                                    
                                 </th>
                                 <th scope="col">
                                     <%= t('auctions.domain_name') %>
@@ -218,17 +206,15 @@
                         </tbody>
                     </table>
                 </div>
-
                 <div class="column" style="margin-top:10px; text-align: center;">
-                <% if @pagy.pages > 1 %>
-                    <div class="footer">
-                        <%== pagy_nav(@pagy) %>
-                    </div>
-                <% end %>
+                    <% if @pagy.pages > 1 %>
+                        <div class="footer">
+                            <%== pagy_nav(@pagy) %>
+                        </div>
+                    <% end %>
                 </div>
             <% end %>
-
         </div>
     </div>
 </div>
-<% end %>
+                    <% end %>

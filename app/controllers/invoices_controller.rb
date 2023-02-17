@@ -32,7 +32,8 @@ class InvoicesController < ApplicationController
 
     return unless params[:state] == 'payment'
 
-    message = 'Payment was successfully created. Your payment will be processed as soon as possible. Thank you!'
+    message = 'Payment was successfully created. ' \
+      'Your payment will be processed as soon as possible. Thank you!'
     flash[:notice] = message
   end
 
@@ -53,7 +54,8 @@ class InvoicesController < ApplicationController
 
   def pay_all_bills
     issued_invoices = invoices_list_by_status(Invoice.statuses[:issued])
-    response = EisBilling::BulkInvoicesService.call(invoices: issued_invoices, customer_url: linkpay_callback_url)
+    response = EisBilling::BulkInvoicesService.call(invoices: issued_invoices,
+                                                    customer_url: linkpay_callback_url)
 
     if response.result?
       redirect_to response.instance['oneoff_redirect_link']
@@ -105,5 +107,6 @@ class InvoicesController < ApplicationController
   def authorize_user
     authorize! :read, Invoice
     authorize! :update, Invoice
+    authorize! :manage, EisBilling::PayDepositService
   end
 end

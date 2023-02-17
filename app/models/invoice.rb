@@ -33,28 +33,28 @@ class Invoice < ApplicationRecord
   delegate :enable_deposit?, to: :enable_deposit?
   delegate :deposit, to: :deposit
 
-  scope :with_search_scope, ->(origin) {
+  scope :with_search_scope, (lambda do |origin|
     if origin.present?
       if numeric?(origin)
-        self.where('number = ?', origin)
+        where('number = ?', origin)
       else
-        self.joins(:user)
-            .joins(:billing_profile)
-            .joins(:invoice_items)
-            .where('billing_profiles.name ILIKE ? OR ' \
-                   'users.email ILIKE ? OR users.surname ILIKE ? OR ' \
-                   'invoice_items.name ILIKE ?',
-                   "%#{origin}%",
-                   "%#{origin}%",
-                   "%#{origin}%",
-                   "%#{origin}%")
+        joins(:user)
+        .joins(:billing_profile)
+        .joins(:invoice_items)
+        .where('billing_profiles.name ILIKE ? OR ' \
+                'users.email ILIKE ? OR users.surname ILIKE ? OR ' \
+                'invoice_items.name ILIKE ?',
+                "%#{origin}%",
+                "%#{origin}%",
+                "%#{origin}%",
+                "%#{origin}%")
       end
     end
-  }
+  end)
 
-  scope :with_statuses, ->(statuses) {
-    self.where(status: [statuses]) if statuses.present?
-  }
+  scope :with_statuses, (lambda do |statuses|
+    where(status: [statuses]) if statuses.present?
+  end)
 
   scope :overdue, -> { where('due_date < ? AND status = ?', Time.zone.today, statuses[:issued]) }
 
@@ -64,8 +64,8 @@ class Invoice < ApplicationRecord
                 Time.zone.today + number_of_days, statuses[:issued])
         }
 
-  def self.search(params={})
-    self.with_search_scope(params[:search_string]).with_statuses(params[:statuses_contains])
+  def self.search(params = {})
+    with_search_scope(params[:search_string]).with_statuses(params[:statuses_contains])
   end
 
   def self.create_from_result(result_id)

@@ -15,6 +15,7 @@ class Ability
 
   def participant
     can :manage, BillingProfile, user_id: user.id
+    can :manage, EisBilling::PayDepositService
     can %i[read update], Invoice
     can %i[read create], PaymentOrder, user_id: user.id
     can :manage, PhoneConfirmation do |phone_confirmation|
@@ -44,6 +45,7 @@ class Ability
          .any?
     end
     cannot :manage, Offer if user.completely_banned?
+    cannot :manage, EisBilling::PayDepositService if user.completely_banned?
   end
 
   def phone_not_unique_restrictions
