@@ -34,7 +34,7 @@ class OffersController < ApplicationController
         format.html { redirect_to offer_path(@offer.uuid), notice: t('.created') }
         format.json { render :show, status: :created, location: @offer }
       else
-        format.html { render :new }
+        format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @offer.errors, status: :unprocessable_entity }
       end
     end
@@ -67,7 +67,7 @@ class OffersController < ApplicationController
         format.html { redirect_to offer_path(@offer.uuid), notice: t(:updated) }
         format.json { render :show, status: :ok, location: @offer }
       else
-        format.html { render :edit }
+        format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @offer.errors, status: :unprocessable_entity }
       end
     end

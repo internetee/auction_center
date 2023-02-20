@@ -195,8 +195,9 @@ class EnglishOffersIntegrationTest < ActionDispatch::IntegrationTest
     }
 
     post auction_english_offers_path(auction_uuid: @auction.uuid),
-         params: params,
-         headers: { "HTTP_REFERER" => root_path }
+         params: params
+
+    assert_equal response.status, 422
     assert @auction.offers.empty?
   end
 
@@ -403,5 +404,28 @@ class EnglishOffersIntegrationTest < ActionDispatch::IntegrationTest
     end
 
     assert_equal @auction.currently_winning_offer.cents, 10_000
+  end
+
+  def test_should_return_an_error_if_bid_out_of_range
+    minimum_offer = Setting.find_by(code: 'auction_minimum_offer').retrieve
+    assert_equal minimum_offer, 500
+
+    params = {
+      offer: {
+        auction_id: @auction.id,
+        user_id: @user.id,
+        price: (2**31 + 1).to_f,
+        billing_profile_id: @user.billing_profiles.first.id
+      }
+    }
+
+    post auction_english_offers_path(auction_uuid: @auction.uuid),
+         params: params,
+         headers: {}
+
+    assert_equal response.status, 422
+
+    @auction.reload
+    assert @auction.offers.empty?
   end
 end

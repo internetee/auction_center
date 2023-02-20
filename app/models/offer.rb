@@ -7,7 +7,7 @@ class Offer < ApplicationRecord
 
   has_one :result, required: false, dependent: :nullify
 
-  validates :cents, numericality: { only_integer: true, greater_than: 0 }
+  validates :cents, numericality: { only_integer: true, greater_than: 0, less_than: 2**31 }
   validate :auction_must_be_active
   validate :must_be_higher_than_minimum_offer,
            if: proc { |offer| offer&.auction&.platform == 'blind' || offer&.auction&.platform.nil? }

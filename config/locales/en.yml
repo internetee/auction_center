@@ -135,3 +135,11 @@ en:
       user:
         update: "Change my password"
         create: "Change my password"
+
+  activerecord:
+    errors:
+      models:
+        offer:
+          attributes:
+            cents:
+              less_than: Your bid is denied - maximum allowed bid sum exceeded!

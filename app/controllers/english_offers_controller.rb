@@ -41,8 +41,14 @@ class EnglishOffersController < ApplicationController
       update_auction_values(auction, 'Offer submitted successfully.')
       broadcast_replace_auction_offer(auction)
     else
-      flash[:alert] = @offer.errors.full_messages.join('; ')
-      redirect_to request.referer
+      if @offer.errors.full_messages_for(:cents).present?
+        flash[:alert] = @offer.errors.full_messages_for(:cents).join
+      else
+        flash[:alert] = @offer.errors.full_messages.join('; ')
+      end
+
+      # redirect_to request.referer, status: :unprocessable_entity
+      render 'english_offers/show', status: :unprocessable_entity
     end
   end
 
@@ -62,8 +68,13 @@ class EnglishOffersController < ApplicationController
       update_auction_values(auction, t('english_offers.edit.bid_updated'))
       broadcast_replace_auction_offer(auction)
     else
-      flash[:alert] = @offer.errors.full_messages.join('; ')
-      redirect_to request.referer
+      if @offer.errors.full_messages_for(:cents).present?
+        flash[:alert] = @offer.errors.full_messages_for(:cents).join
+      else
+        flash[:alert] = @offer.errors.full_messages.join('; ')
+      end
+
+      render 'english_offers/show', status: :unprocessable_entity
     end
   end
 

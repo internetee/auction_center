@@ -156,4 +156,27 @@ class OffersIntegrationTest < ActionDispatch::IntegrationTest
 
     assert_equal offer.cents, 1500
   end
+
+  def test_should_return_an_error_if_bid_out_of_range
+    minimum_offer = Setting.find_by(code: 'auction_minimum_offer').retrieve
+    assert_equal minimum_offer, 500
+
+    params = {
+      offer: {
+        auction_id: @auction.id,
+        user_id: @user.id,
+        price: 2**31 + 1,
+        billing_profile_id: @user.billing_profiles.first.id
+      }
+    }
+
+    post auction_offers_path(auction_uuid: @auction.uuid),
+         params: params,
+         headers: {}
+
+    assert_equal response.status, 422
+
+    @auction.reload
+    assert @auction.offers.empty?
+  end
 end

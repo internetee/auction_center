@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   namespace :admin do
     get 'finished_auctions/index'
   end
-  mount ActionCable.server => '/cable'
+  # mount ActionCable.server => '/cable'
 
   get 'unsubscribe/unsubscribe'
   patch 'unsubscribe/update'
