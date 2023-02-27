@@ -1,5 +1,5 @@
 <%= turbo_stream.update "mini",
-                         html: Money.from_amount(auction.min_bids_step, Setting.find_by(code: 'auction_currency').retrieve) %>
+                         html: Money.from_amount(auction.min_bids_step.to_f, Setting.find_by(code: 'auction_currency').retrieve) %>
 
 <%= turbo_stream.update "current_#{auction.id}_price",
                          partial: 'english_offers/current_price',

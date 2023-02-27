@@ -33,7 +33,7 @@
             <div class="">
                 <%= tag.h5 do %>
                     <%= t('english_offers.show.min_bid') %>
-                    <span id="mini"><%= Money.from_amount(@auction.min_bids_step, Setting.find_by(code: 'auction_currency').retrieve) %></span>
+                    <span id="mini"><%= Money.from_amount(@auction.min_bids_step.to_f, Setting.find_by(code: 'auction_currency').retrieve) %></span>
                 <% end %>
             </div>
             <div class="">

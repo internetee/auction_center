@@ -7,6 +7,8 @@ et:
     winning_bid: "Võidupakkumus"
     highest_price: "Kõrgeim hind"
     auction_type: "Oksjoni tüüp"
+    english: "Inglise"
+    blind: "Pime"
     offers: "Pakkumused"
     offer_actions: "Pakkumistegevused"
     your_current_price: "Sinu pakkumus"
@@ -18,7 +20,7 @@ et:
     enable_deposit: "Võimaldage tagatisraha"
     disable_deposit: "Deaktiveeri tagatisraha"
     deposit: Tagatisraha
-    bid: Pakkumine!
+    bid: Paku hind!
     participate: Osale!
     all_list: Kuva kõik
     pagination_list: Kuva 15 leheküljel

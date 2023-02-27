@@ -8,6 +8,8 @@ en:
     winning_bid: Winning bid
     highest_price: "Highest price"
     auction_type: "Auction type"
+    english: "English"
+    blind: "Blind"
     offers: "Offers"
     turns_count: "Turns count"
     offer_actions: "Offer actions"

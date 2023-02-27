@@ -8,7 +8,7 @@
   <td>
     <span class="auctions-table-mobile-infotainment"><%= t('auctions.ends_at') %> </span><%= I18n.l(auction.ends_at) %>
   </td>
-  <td><span class="auctions-table-mobile-infotainment"><%= t('auctions.auction_type') %> </span><%= auction.platform %></td>
+  <td><span class="auctions-table-mobile-infotainment"><%= t('auctions.auction_type') %> </span><%= t("auctions.#{auction.platform&.downcase.presence || 'blind'}") %></td>
   <td>
     <% if auction.platform == 'blind' || auction.platform.nil? %>
       <span class="auctions-table-mobile-infotainment"><%= t('auctions.your_current_price') %>: </span><%= auction.users_price %>
