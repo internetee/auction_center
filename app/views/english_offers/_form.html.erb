@@ -17,20 +17,26 @@
         <div class="column">
             <%= f.hidden_field :user_id, value: offer.user_id %>
             <%= f.hidden_field :auction_id, value: offer.auction_id %>
-
-            <div id="offer_<%=offer.auction.id%>_form">
-                <%= render partial: 'number_form_field', locals: {offer_value: offer.auction.min_bids_step.to_f, offer_disabled: offer.auction.finished? ? true : false } %>
+            <div class="field">
+                <%= f.label :price, t('english_offers.form.offer_title') %>
+                <span id="offer_<%=offer.auction.id%>_form">
+                    <%= render partial: 'number_form_field', locals: { offer_value: offer.auction.min_bids_step.to_f, offer_disabled: offer.auction.finished? ? true : false } %>
+                </span>
+                <em>
+                    <small>
+                        <%= t('offers.price_is_without_vat') %>
+                    </small>
+                </em>
             </div>
-            <br>
 
             <div class="field">
                 <%= f.label :billing_profile, t('.bidder') %>
                 <%= f.select :billing_profile_id,
-                billing_profiles = BillingProfile.where(user_id: offer.user_id).collect { |b| [b.name, b.id] },
-                {},
-                class: billing_profiles.size == 1 ? "ui dropdown disabled" : "ui dropdown" %><br>
+                    billing_profiles = BillingProfile.where(user_id: offer.user_id).collect { |b| [b.name, b.id] },
+                    {},
+                    class: billing_profiles.size == 1 ? "ui dropdown disabled" : "ui dropdown" %>
             </div>
-
+            <br>
             <%= link_to t(:new_billing_profile),  new_billing_profile_path %>
         </div>
 

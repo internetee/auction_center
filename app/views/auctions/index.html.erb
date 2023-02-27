@@ -66,7 +66,11 @@
     </div>
 </div>
 
-<div class="u-container">
+<div class="u-container" data-controller="english-offers" 
+                         data-action="turbo:before-stream-render@document->english-offers#beforeStreamRender"
+                         data-english-offers-user-id-value="<%= current_user&.id %>"
+                         data-english-offers-bid-text-value="<%= t('auctions.bid') %>"
+                         data-english-offers-participate-text-value="<%= t('auctions.participate') %>">
     <div class="margin-block">
 
     <div class="ui grid">
@@ -108,17 +112,17 @@
                                 <%= t('auctions.your_current_price') %>
                                 <%= sort_link_to "", "users_offer_cents" %>
                             </th>
-                            <th>
+                            <th class="four wide">
                                 <%= t('auctions.offer_owner') %>
                                 <%= sort_link_to "", "platform" %>
                             </th>
-                            <th class="auctions-table-cell-name-no-mobile center aligned five wide"><%= t('auctions.offer_actions') %></th>
+                            <th class="auctions-table-cell-name-no-mobile center aligned"><%= t('auctions.offer_actions') %></th>
                         </tr>
                     </thead>
 
                     <%= tag.tbody id: "bids", class: 'contents' do %>
                         <% @auctions.uniq.each do |auction| %>
-                            <%= render partial: 'auction', locals: { auction: auction, q_user: current_user } %>
+                            <%= render partial: 'auction', locals: { auction: auction, user: current_user, turbo_stream: false } %>
                         <% end %>
                     <% end %>
                 </table>

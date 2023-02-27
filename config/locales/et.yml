@@ -86,6 +86,12 @@ et:
   search_by_email: "Otsi e-posti aadressi järgil"
   search_limit: "Otsingu tulemusena kuvatakse %{limit} esimest tulemust."
 
+  number:
+    currency:
+      format:
+        delimiter: ""
+        separator: ","
+
   time:
     formats:
       default: "%Y-%m-%d %H:%M:%S"

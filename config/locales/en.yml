@@ -111,6 +111,12 @@ en:
   search_by_email: "Search by email"
   search_limit: "Search results are limited to first %{limit} hits."
 
+  number:
+    currency:
+      format:
+        delimiter: ""
+        separator: ","
+
   time:
     formats:
       default: "%Y-%m-%d %H:%M:%S"

@@ -25,6 +25,7 @@ en:
     all_list: List all auctions
     pagination_list: List 15 auctions per page
     finished_auctions: Finished auctions
+    you: You
 
     still_in_progress: "Still in progress"
 

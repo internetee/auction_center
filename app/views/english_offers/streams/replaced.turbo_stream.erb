@@ -1,7 +1,7 @@
 <%= turbo_stream.replace dom_id(offer.auction),
                          partial: 'auctions/auction',
                          locals: { auction: Auction.with_user_offers(offer.user.id).find_by(uuid: offer.auction.uuid),
-                                   current_user: offer.user } %>
+                                   user: nil } %>
 
 
     <%# # broadcast_replace_to('auctions',

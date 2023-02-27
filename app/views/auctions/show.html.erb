@@ -43,25 +43,26 @@
             </table>
 
             <div class="buttons">
-                <% unless @auction.english? %>
-                    <%- if @auction.offer_from_user(current_user).present? %>
-                        <%= link_to t('auctions.edit_your_offer'),
-                        edit_offer_path(@auction.offer_from_user(current_user).uuid), class: "ui button primary" %>
-                        <%= link_to t('auctions.delete_your_offer'),
-                        offer_path(@auction.offer_from_user(current_user).uuid),
-                        method: :delete, data: { confirm: t(:are_you_sure) }, class: "ui button red"%>
-                    <% elsif @auction.in_progress? %>
-                        <%= link_to t('auctions.submit_offer'),
-                        new_auction_offer_path(auction_uuid: @auction.uuid), class: "ui button primary" %>
-                    <% end %>
-                <% else %>
-                    <%- if @auction.offer_from_user(current_user).present? %>
-                        <%= link_to "Bid!", edit_english_offer_path(@auction.users_offer_uuid), class: "ui button blue" %>
-                    <% elsif @auction.in_progress? %>
-                        <%= link_to "Bid!", new_auction_english_offer_path(auction_uuid: @auction.uuid), class: "ui button blue" %>
-                    <% end %>
+                <%- unless @auction.finished? %>
+                  <% unless @auction.english? %>
+                      <%- if @auction.offer_from_user(current_user).present? %>
+                          <%= link_to t('auctions.edit_your_offer'),
+                          edit_offer_path(@auction.offer_from_user(current_user).uuid), class: "ui button primary" %>
+                          <%= link_to t('auctions.delete_your_offer'),
+                          offer_path(@auction.offer_from_user(current_user).uuid),
+                          method: :delete, data: { confirm: t(:are_you_sure) }, class: "ui button red"%>
+                      <% elsif @auction.in_progress? %>
+                          <%= link_to t('auctions.submit_offer'),
+                          new_auction_offer_path(auction_uuid: @auction.uuid), class: "ui button primary" %>
+                      <% end %>
+                  <% else %>
+                      <%- if @auction.offer_from_user(current_user).present? %>
+                          <%= link_to "Bid!", edit_english_offer_path(@auction.users_offer_uuid), class: "ui button blue" %>
+                      <% elsif @auction.in_progress? %>
+                          <%= link_to "Bid!", new_auction_english_offer_path(auction_uuid: @auction.uuid), class: "ui button blue" %>
+                      <% end %>
+                  <% end %>
                 <% end %>
-
             </div>
         </div>
 
