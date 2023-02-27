@@ -37,7 +37,7 @@ class OffersTest < ApplicationSystemTestCase
     assert(page.has_link?('Submit offer'))
     click_link('Submit offer')
 
-    fill_in('offer[price]', with: '5.12')
+    fill_in('offer[price]', with: '5,12')
     page.evaluate_script("document.getElementById('offer_user_id').value = '#{other_user.id}'")
 
     click_link_or_button('Submit')
@@ -51,7 +51,7 @@ class OffersTest < ApplicationSystemTestCase
     assert(page.has_link?('Submit offer'))
     click_link('Submit offer')
 
-    expected_minimum_offer_text = 'Minimum offer is 5.00. The offer does not include VAT'
+    expected_minimum_offer_text = 'Minimum offer is 5,00. The offer does not include VAT'
     assert(page.has_text?(expected_minimum_offer_text))
 
     expected_text =
@@ -67,7 +67,7 @@ class OffersTest < ApplicationSystemTestCase
 
     within('tbody#offers-table-body') do
       assert_text('with-offers.test')
-      assert_text('50.00 €')
+      assert_text('50,00 €')
 
       assert(page.has_link?('with-offers.test', href: offer_path(@offer.uuid)))
     end
@@ -95,7 +95,7 @@ class OffersTest < ApplicationSystemTestCase
     assert(page.has_link?('Submit offer'))
     click_link('Submit offer')
 
-    fill_in('offer[price]', with: '5.12')
+    fill_in('offer[price]', with: '5,12')
     click_link_or_button('Submit')
 
     assert(page.has_text?('Offer submitted successfully.'))
@@ -108,7 +108,7 @@ class OffersTest < ApplicationSystemTestCase
     assert(page.has_link?('Submit offer'))
     click_link('Submit offer')
 
-    fill_in('offer[price]', with: '5.121')
+    fill_in('offer[price]', with: '5,121')
 
     assert_no_changes('Offer.count') do
       click_link_or_button('Submit')

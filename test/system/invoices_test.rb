@@ -70,8 +70,8 @@ class InvoicesTest < ApplicationSystemTestCase
     visit invoice_path(@invoice.uuid)
 
     assert_text('with-invoice.test (auction 2010-07-05) registration code')
-    assert_text('VAT 0% 0.00 €')
-    assert_text('Total 10.00 €')
+    assert_text('VAT 0% 0,00 €')
+    assert_text('Total 10,00 €')
   end
 
   def test_invoice_list_contains_issued_invoices
@@ -79,7 +79,7 @@ class InvoicesTest < ApplicationSystemTestCase
 
     within('tbody.invoices-table-body.issued') do
       assert_text('Domain transfer code for with-invoice.test')
-      assert_text('10.00 €')
+      assert_text('10,00 €')
     end
   end
 
@@ -90,7 +90,7 @@ class InvoicesTest < ApplicationSystemTestCase
 
     within('tbody.invoices-table-body.cancelled') do
       assert_text('Domain transfer code for with-invoice.test')
-      assert_text('10.00')
+      assert_text('10,00')
     end
   end
 end
