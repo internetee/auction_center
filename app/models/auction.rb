@@ -36,33 +36,33 @@ class Auction < ApplicationRecord
 
   scope :without_offers, -> { includes(:offers).where(offers: { auction_id: nil }) }
   scope :with_offers, -> { includes(:offers).where.not(offers: { auction_id: nil }) }
-  scope :with_domain_name, lambda do |domain_name|
+  scope :with_domain_name, (lambda do |domain_name|
     return unless domain_name.present?
 
     where('domain_name like ?', "%#{domain_name}%")
-  end
+  end)
 
-  scope :with_type, lambda do |type|
+  scope :with_type, (lambda do |type|
     if type.present?
       return where(platform: [type, nil]) if type == BLIND
 
       where(platform: type)
     end
-  end
+  end)
 
-  scope :with_starts_at, lambda do |starts_at|
+  scope :with_starts_at, (lambda do |starts_at|
     where('starts_at >= ?', starts_at.to_date.beginning_of_day) if starts_at.present?
-  end
+  end)
 
-  scope :with_ends_at, lambda do |ends_at|
+  scope :with_ends_at, (lambda do |ends_at|
     where('ends_at <= ?', ends_at.to_date.end_of_day) if ends_at.present?
-  end
+  end)
   scope :with_starts_at_nil, ->(state) { where(starts_at: nil) if state.present? }
 
   scope :english, -> { where(platform: :english) }
   scope :not_english, -> { where.not(platform: :english) }
 
-  scope :with_offers, lambda do |auction_offer_type, type|
+  scope :with_offers, (lambda do |auction_offer_type, type|
     return if auction_offer_type.blank? || type == BLIND || type.empty?
 
     case auction_offer_type
@@ -73,7 +73,7 @@ class Auction < ApplicationRecord
     end
 
     where(id: auction_id_list)
-  end
+  end)
 
   delegate :count, to: :offers, prefix: true
   delegate :size, to: :offers, prefix: true
