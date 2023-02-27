@@ -70,7 +70,9 @@
                          data-action="turbo:before-stream-render@document->english-offers#beforeStreamRender"
                          data-english-offers-user-id-value="<%= current_user&.id %>"
                          data-english-offers-bid-text-value="<%= t('auctions.bid') %>"
-                         data-english-offers-participate-text-value="<%= t('auctions.participate') %>">
+                         data-english-offers-participate-text-value="<%= t('auctions.participate') %>"
+                         data-english-offers-english-text-value="<%= t('auctions.english') %>"
+                         data-english-offers-blind-text-value="<%= t('auctions.blind') %>">
     <div class="margin-block">
 
     <div class="ui grid">
@@ -122,7 +124,7 @@
 
                     <%= tag.tbody id: "bids", class: 'contents' do %>
                         <% @auctions.uniq.each do |auction| %>
-                            <%= render partial: 'auction', locals: { auction: auction, user: current_user, turbo_stream: false } %>
+                            <%= render partial: 'auction', locals: { auction: auction, user: current_user } %>
                         <% end %>
                     <% end %>
                 </table>

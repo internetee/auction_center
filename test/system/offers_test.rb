@@ -37,7 +37,7 @@ class OffersTest < ApplicationSystemTestCase
     assert(page.has_link?('Submit offer'))
     click_link('Submit offer')
 
-    fill_in('offer[price]', with: '5,12')
+    fill_in('offer[price]', with: '5.12')
     page.evaluate_script("document.getElementById('offer_user_id').value = '#{other_user.id}'")
 
     click_link_or_button('Submit')
@@ -95,7 +95,7 @@ class OffersTest < ApplicationSystemTestCase
     assert(page.has_link?('Submit offer'))
     click_link('Submit offer')
 
-    fill_in('offer[price]', with: '5,12')
+    fill_in('offer[price]', with: '5.12')
     click_link_or_button('Submit')
 
     assert(page.has_text?('Offer submitted successfully.'))
@@ -108,7 +108,7 @@ class OffersTest < ApplicationSystemTestCase
     assert(page.has_link?('Submit offer'))
     click_link('Submit offer')
 
-    fill_in('offer[price]', with: '5,121')
+    fill_in('offer[price]', with: '5.121')
 
     assert_no_changes('Offer.count') do
       click_link_or_button('Submit')

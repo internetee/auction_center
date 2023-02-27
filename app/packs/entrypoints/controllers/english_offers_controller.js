@@ -6,13 +6,15 @@ export default class extends Controller {
       userId: String,
       decimalMark: String,
       bidText: String,
-      participateText: String
+      participateText: String,
+      englishText: String,
+      blindText: String
     }
 
     beforeStreamRender(e){
         var content = e.target.templateElement.content;
         var currentPrice = content.querySelector(".current_price");
-        var bidButton = content.querySelector(".bid_button");
+        var auctionRow = content.querySelector(".auctions-table-row");
         if (currentPrice){
             let offerUserId = currentPrice.dataset.userId;
             let you = currentPrice.dataset.you;
@@ -27,8 +29,10 @@ export default class extends Controller {
                 $("#current_price_wrapper").removeClass();
             }
         }
-        if (bidButton){
-          $(bidButton).text(this.bidTextValue);
+        if (auctionRow){
+            let platform = auctionRow.dataset.platform;
+            $(auctionRow).find(".bid_button").text(this.bidTextValue);
+            $(auctionRow).find(".auction_platform").text(this[platform + 'TextValue']);
         }
     }
 }
