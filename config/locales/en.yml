@@ -48,6 +48,13 @@ en:
 
   unsubscribe_mailer_text: "I do not wish to receive daily summary about currently auctioned domains any more"
 
+  notification_received: "Notification reveived at %{datetime}"
+  notification_unread: Notifcation unread
+  notification_read: Notifcation read
+  participant_outbid: "The auction for %{name} has new bid"
+  participant_win_auction: Domain auction for %{name} is finished. Congratulations your bid was the highes!
+  participant_lost_auction: Domain auction for %{name} is finished. Unfortunately your bid was not enough to win!
+
   user: "User"
   deleted_user: "User was deleted"
   banned: |

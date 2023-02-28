@@ -18,6 +18,8 @@ Rails.application.routes.draw do
     resources :bids, only: :show
   end
 
+  resources :notifications, only: %i[index show update]
+
   get 'domain_wishlist_availability', to: 'wishlist_items#domain_wishlist_availability', as: :domain_wishlist_availability
 
   match 'profile/edit', via: :get, to: 'users#edit_authwall', as: :user_edit_authwall

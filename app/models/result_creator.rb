@@ -53,11 +53,13 @@ class ResultCreator
 
     recipients.each do |recipient|
       ResultMailer.participant_email(recipient, auction).deliver_later
+      AuctionLooserNotification.with(auction: auction).deliver_later(recipient) unless result.user == recipient
     end
   end
 
   def send_email_to_winner
     result.send_email_to_winner
+    AuctionWinnerNotification.with(auction: result.auction).deliver_later(result.user)
   end
 
   def assign_attributes_from_winning_offer

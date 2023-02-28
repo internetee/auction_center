@@ -1,0 +1,17 @@
+<%= turbo_frame_tag "notifications" do %>
+  <div style='position: relative; display: flex; 
+                                flex-direction: column; justify-content: center;
+                                cursor: pointer;' data-controller='dropdown'>
+
+    <div id='bell-broadcast'>
+      <%= render partial: 'bell', locals: { any_unread: current_user.notifications.any?(&:unread?) } %>
+    </div>
+
+
+    <div style='position: absolute; top: 40px; right: -60px; border: 2px solid black; visibility: hidden; background: white;' data-dropdown-target='menu'>
+      <ul id='notifications-list' style='list-style-type: none; padding: 0; margin: 0;'>
+          <%= render @notifications %>
+      </ul>
+    </div>
+  </div>
+<% end %>

@@ -1,4 +1,4 @@
-class EnglishOffersController < ApplicationController
+class EnglishOffersController < ApplicationController  
   before_action :authenticate_user!
   before_action :set_captcha_required
   before_action :set_offer, only: %i[show edit update]
@@ -7,9 +7,10 @@ class EnglishOffersController < ApplicationController
   before_action :authorize_offer_for_user, except: %i[new create]
   before_action :prevent_check_for_invalid_bid, only: [:update]
   # before_action :captcha_check, only: [:update, :create]
-
+  
   protect_from_forgery with: :null_session
-
+  
+  # include OfferNotification
   # GET /auctions/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/offers/new
   def new
     @auction = Auction.find_by!(uuid: params[:auction_uuid])
@@ -40,6 +41,13 @@ class EnglishOffersController < ApplicationController
     if create_predicate(auction)
       update_auction_values(auction, 'Offer submitted successfully.')
       broadcast_replace_auction_offer(auction)
+
+      # TODO: send notfication after create
+      participant_ids = auction.offers.pluck(:user_id) - [current_user.id]
+      participants = User.where(id: participant_ids)
+      participants.each do |participant|
+        OfferNotification.with(offer: @offer).deliver_later(participant)
+      end
     else
       if @offer.errors.full_messages_for(:cents).present?
         flash[:alert] = @offer.errors.full_messages_for(:cents).join

@@ -1270,6 +1270,41 @@ ALTER SEQUENCE public.invoices_number_seq OWNED BY public.invoices.number_old;
 
 
 --
+-- Name: notifications; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.notifications (
+    id bigint NOT NULL,
+    recipient_type character varying NOT NULL,
+    recipient_id bigint NOT NULL,
+    type character varying NOT NULL,
+    params jsonb,
+    read_at timestamp without time zone,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: notifications_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.notifications_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: notifications_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.notifications_id_seq OWNED BY public.notifications.id;
+
+
+--
 -- Name: offers; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1723,6 +1758,13 @@ ALTER TABLE ONLY public.invoices ALTER COLUMN number_old SET DEFAULT nextval('pu
 
 
 --
+-- Name: notifications id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.notifications ALTER COLUMN id SET DEFAULT nextval('public.notifications_id_seq'::regclass);
+
+
+--
 -- Name: offers id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2009,6 +2051,14 @@ ALTER TABLE ONLY public.invoice_payment_orders
 
 ALTER TABLE ONLY public.invoices
     ADD CONSTRAINT invoices_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: notifications notifications_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.notifications
+    ADD CONSTRAINT notifications_pkey PRIMARY KEY (id);
 
 
 --
@@ -2416,6 +2466,20 @@ CREATE INDEX index_invoices_on_user_id ON public.invoices USING btree (user_id);
 --
 
 CREATE UNIQUE INDEX index_invoices_on_uuid ON public.invoices USING btree (uuid);
+
+
+--
+-- Name: index_notifications_on_read_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_notifications_on_read_at ON public.notifications USING btree (read_at);
+
+
+--
+-- Name: index_notifications_on_recipient; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_notifications_on_recipient ON public.notifications USING btree (recipient_type, recipient_id);
 
 
 --
@@ -2909,6 +2973,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221007082951'),
 ('20221017133559'),
 ('20230118124747'),
-('20230124110241');
+('20230124110241'),
+('20230227085236');
 
 

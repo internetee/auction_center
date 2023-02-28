@@ -75,3 +75,5 @@ gem 'pagy', '~> 6.0'
 
 # For mock username
 gem 'faker'
+
+gem "noticed", "~> 1.6"

@@ -25,3 +25,5 @@ import CheckboxToggleController from "./checkbox_toggle_controller"
 application.register("checkbox_toggle", CheckboxToggleController)
 import AutosaveController from "./autosave_controller"
 application.register("autosave", AutosaveController)
+import DropdownController from "./dropdown_controller"
+application.register("dropdown", DropdownController)
