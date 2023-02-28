@@ -23,8 +23,8 @@ class BillingOffersTest < ApplicationSystemTestCase
     sign_in(@user_without_billing_profile)
     visit auction_path(@valid_auction_with_no_offers.uuid)
 
-    assert(page.has_link?('Submit offer'))
-    click_link('Submit offer')
+    assert(page.has_link?('Bid!'))
+    click_link('Bid!')
     fill_in('offer[price]', with: '5.12')
 
     click_link_or_button('Submit')
@@ -35,8 +35,8 @@ class BillingOffersTest < ApplicationSystemTestCase
     sign_in(@user)
     visit auction_path(@valid_auction_with_no_offers.uuid)
 
-    assert(page.has_link?('Submit offer'))
-    click_link('Submit offer')
+    assert(page.has_link?('Bid!'))
+    click_link('Bid!')
 
     fill_in('offer[price]', with: '5.12')
     select_from_dropdown('ACME Inc.', from: 'offer[billing_profile_id]')

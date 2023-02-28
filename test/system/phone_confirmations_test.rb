@@ -36,8 +36,8 @@ class PhoneConfirmationsTest < ApplicationSystemTestCase
   def test_user_cannot_submit_an_offer_without_phone_confirmation
     PhoneConfirmationJob.stub(:perform_later, nil, @user.id) do
       visit auction_path(@valid_auction_with_no_offers.uuid)
-      assert(page.has_link?('Submit offer'))
-      click_link('Submit offer')
+      assert(page.has_link?('Bid!'))
+      click_link('Bid!')
 
       assert(page.has_css?('div.notice',
                            text: 'You need to confirm your phone number before making an offer'))
@@ -48,8 +48,8 @@ class PhoneConfirmationsTest < ApplicationSystemTestCase
       assert current_url.include?("/users/#{@user.uuid}")
 
       visit auction_path(@valid_auction_with_no_offers.uuid)
-      assert(page.has_link?('Submit offer'))
-      click_link('Submit offer')
+      assert(page.has_link?('Bid!'))
+      click_link('Bid!')
 
       fill_in('offer[price]', with: '5.12')
       click_link_or_button('Submit')
