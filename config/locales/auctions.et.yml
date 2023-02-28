@@ -3,6 +3,7 @@ et:
     domain_name: 'Domeeninimi'
     starts_at: 'Algus'
     ends_at: 'Lõpp'
+    finished_at: "Oksjoni lõppkuupäev"
     finished: "Oksjon on lõppenud"
     winning_bid: "Võidupakkumus"
     highest_price: "Kõrgeim hind"
@@ -26,6 +27,7 @@ et:
     pagination_list: Kuva 15 leheküljel
     finished_auctions: Lõppenud oksjonid
     you: Sinu pakkumus
+    finished_auctions: Lõppenud oksjonid
 
     still_in_progress: "Töötlemisel"
 

@@ -14,6 +14,7 @@ class ApplicationController < ActionController::Base
 
   def set_locale
     I18n.locale = current_user&.locale || cookies[:locale] || I18n.default_locale
+    @pagy_locale = I18n.locale.to_s
   end
 
   # If needed, add updated_by to the params hash. Updated by takes format of "123 - User Surname"

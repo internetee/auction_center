@@ -5,30 +5,29 @@
 <% end %>
 
 <div class="features-grid top narrow grey ">
-        <div class="ui input">
-
-          <%= form_with url: histories_path, 
-            method: :get,
-            data: { controller: 'debounce',
-                    debounce_target: 'form',
-                    turbo_action: "advance",
-                    turbo_frame: "results",
-                    action: 'input->debounce#search' 
-                    }, class: 'ui big form' do |form| %>
+    <div class="ui input">
+        <%= form_with url: histories_path, 
+                      method: :get,
+                      data: { controller: 'debounce',
+                              debounce_target: 'form',
+                              turbo_action: "advance",
+                              turbo_frame: "results",
+                              action: 'input->debounce#search' 
+                              }, class: 'ui big form' do |form| %>
             <div class="inline fields">
-              <div class="field">
-                <%= form.search_field :domain_name, value: params[:domain_name], placeholder: t('search_by_domain_name'), class: 'prompt' %>
-              </div>
-              <div class="field">
-                <%= form.label :type, 'Select type of auction' %>
-                <%= form.select :type, options_for_select(Auction.platforms, selected: params[:type]), {include_blank: 'All'}, {class: '' } %>
-              </div>
-              <div class="field">
-                <%= link_to 'Clear', request.path, class: 'ui primary button' %>
-              </div>
+                <div class="field">
+                    <%= form.search_field :domain_name, value: params[:domain_name], placeholder: t('search_by_domain_name'), class: 'prompt' %>
+                </div>
+                <div class="field">
+                    <%= form.label :type, t('auctions.index.select_type') %>
+                    <%= form.select :type, options_for_select(Auction.platforms.map {|k, v| [t("auctions.#{k}"), v]}, selected: params[:type]), { include_blank: t(:all) }, { class: '' } %>
+                </div>
+                <div class="field">
+                    <%= link_to t(:clear), request.path, class: 'ui primary button' %>
+                </div>
             </div>
-          <% end %>
-        </div>
+        <% end %>
+    </div>
 </div>
 
 <div class="u-container">
@@ -37,7 +36,7 @@
             <%= turbo_frame_tag "results" do %>
                 <div class="column">
                     <div class="ui grid">
-                      <div class="four wide column"><h3>Finished auctions</h3></div>
+                      <div class="four wide column"><h3><%= t('auctions.finished_auctions') %></h3></div>
 
                       <div class="four wide column"></div>
                       <div class="four wide column"></div>
@@ -66,7 +65,7 @@
                                   <%= t('auctions.winning_bid') %>
                                 </th>
                                 <th scope="col">
-                                  Type
+                                  <%= t('auctions.auction_type') %>
                                   <%= sort_link_to "", "platform" %>   
                                 </th>
                             </tr>
@@ -80,27 +79,23 @@
                                     <td><%= auction.ends_at.to_formatted_s(:long) %></td>
                                     <td><%= auction.currently_winning_offer&.price if auction.platform == 'english' %></td>
                                     <td>
-                                      <% if auction.platform.nil? %>
-                                        Blind
-                                      <% else %>
-                                        <%= auction.platform %>
-                                      <% end %>
+                                        <%= t("auctions.#{auction.platform&.downcase.presence || 'blind'}") %>
                                     </td>
                                 </tr>
                             <% end %>
                         </tbody>
                     </table>
                 </div>
-              
-                <div class="column" style="margin-top:10px; text-align: center;">
-                <% if @pagy.pages > 1 %>
-                    <div class="footer">
-                        <%== pagy_nav(@pagy) %>
+                <div class="column">
+                    <div style="margin-top:10px; text-align: center;">
+                        <% if @pagy.pages > 1 %>
+                            <div class="footer">
+                                <%== pagy_nav(@pagy) %>
+                            </div>
+                        <% end %>
                     </div>
-                <% end %>
                 </div>
             <% end %>
-
         </div>
     </div>
 </div>
