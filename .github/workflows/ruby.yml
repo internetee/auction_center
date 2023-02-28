@@ -41,8 +41,8 @@ jobs:
           sudo add-apt-repository ppa:linuxuprising/libpng12
           sudo apt update
           sudo apt install libpng12-0
-          wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2_amd64.deb
-          sudo dpkg -i libssl1.1_1.1.1f-1ubuntu2_amd64.deb
+          wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2.17_amd64.deb
+          sudo dpkg -i libssl1.1_1.1.1f-1ubuntu2.17_amd64.deb
           wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.xenial_amd64.deb
           sudo apt-get install -y gdebi
           sudo gdebi --non-interactive wkhtmltox_0.12.6-1.focal_amd64.deb
