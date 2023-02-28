@@ -26,6 +26,13 @@ Rails.application.configure do
   # Apache or NGINX already handles this.
   config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
 
+  # config.action_cable.url = "wss://#{AuctionCenter::Application.config.customization[:auction_hostname]}/cable"
+  # config.action_cable.url = "ws://0.0.0.0:3000/cable"
+  config.action_cable.mount_path = "/websockets"
+  # config.action_cable.allowed_request_origins = [ /https?:\/\/localhost:\d+/, /https?:\/\/192.168.0.5:\d+/, /https?:\/\/192.168.176.1:\d+/ ]
+  config.action_cable.allowed_request_origins = [/http:\/\/*/, /https:\/\/*/, /file:\/\/*/, 'file://', nil]
+  config.action_cable.disable_request_forgery_protection = true
+
   # Do not fallback to assets pipeline if a precompiled asset is missed.
   config.assets.compile = false
 
