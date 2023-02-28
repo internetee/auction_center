@@ -31,8 +31,8 @@ en:
 
     still_in_progress: "Still in progress"
 
-    submit_offer: "Submit offer"
-    edit_your_offer: "Edit"
+    submit_offer: "Bid!"
+    edit_your_offer: "Edit offer"
     delete_your_offer: "Delete"
 
     index:
@@ -43,6 +43,10 @@ en:
       enable_deposit: "Enable deposit"
       disable_deposit: "Disable deposit"
       deposit: Deposit
+      select_type: Select type of auction
+      select_offer_type: Select type of auction offers
+      with_offers: With Offers
+      without_offers: Without Offers
 
     search:
       title: "Auction search"

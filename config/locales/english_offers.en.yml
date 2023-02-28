@@ -54,6 +54,9 @@ en:
       autobider: "Autobidder"
       autobidder_value: Autobidder value
       set_autobidder_value: Set value
+      autobidder_updated: Autobidder updated
+      autobidder_created: Autobidder created
+      banned: 'You are banned from this auction'
 
     number_form_field:
       offer: "Offer"

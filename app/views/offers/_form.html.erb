@@ -1,7 +1,7 @@
-<%= form_with(model: offer, local: true, url: url, class: "ui form big") do |f| %>
+<%= form_with(model: offer, local: true, url: url, class: "ui form big centrilize-form") do |f| %>
     <h4><%= t('offers.reminder') %></h4>
 
-    <div class="ui two column doubling stackable grid">
+    <div class="ui one column grid centered">
         <div class="column">
             <%= f.hidden_field :user_id, value: offer.user_id %>
             <%= f.hidden_field :auction_id, value: offer.auction_id %>
@@ -11,10 +11,12 @@
                 <%= f.number_field :price, class: "form-control", min: 0, step: "0.01" %>
                 <br>
                 <em>
-                    <%= t('.minimum_offer',
-                          minimum: Money.new(Setting.find_by(code: 'auction_minimum_offer').retrieve,
-                                             Setting.find_by(code: 'auction_currency').retrieve)) %>
-                    <%= t('offers.price_is_without_vat') %>
+                    <small>
+                        <%= t('.minimum_offer',
+                              minimum: Money.new(Setting.find_by(code: 'auction_minimum_offer').retrieve,
+                                                Setting.find_by(code: 'auction_currency').retrieve)) %>
+                        <%= t('offers.price_is_without_vat') %>
+                    </small>
                 </em>
                 <br>
             </div>
@@ -26,7 +28,7 @@
                 {},
                 class: billing_profiles.size == 1 ? "ui dropdown disabled" : "ui dropdown" %><br>
             </div>
-
+            <br>
             <%= link_to t(:new_billing_profile),  new_billing_profile_path %>
         </div>
 

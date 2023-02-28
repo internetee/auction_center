@@ -135,7 +135,7 @@ module Registry
 
     def indicate_correct_platform_and_assign_it(domain_name)
       auctions = Auction.where(domain_name: domain_name)
-      return nil if auctions.empty?
+      return if auctions.empty?
 
       platform = auctions.order(created_at: :asc).first.platform
       auction = Auction.where(domain_name: domain_name).order(created_at: :asc).last

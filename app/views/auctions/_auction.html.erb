@@ -22,7 +22,9 @@
         <% end %>
     </td>
     <td class="initial-color current_<%= auction.currently_winning_offer&.user_id %>_user">
-        <%= english_auction_presenter.bidder_name(auction.currently_winning_offer, user) %>
+        <% if auction.platform != 'blind' && !auction.platform.nil? %>
+            <%= english_auction_presenter.bidder_name(auction.currently_winning_offer, user) %>
+        <% end %>
     </td>
     <td class="center aligned">
         <%= auction.decorate.auction_offer_button(user) %>

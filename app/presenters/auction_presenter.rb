@@ -33,7 +33,8 @@ class AuctionPresenter < SimpleDelegator
       end
     else
       define_blind_auction_button(url: new_auction_offer_path(auction_uuid: uuid),
-                                  text: I18n.t('auctions.submit_offer'), color: 'secondary')
+                                  text: I18n.t('auctions.submit_offer'),
+                                  color: 'blue')
     end
   end
 

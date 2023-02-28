@@ -5,6 +5,9 @@ et:
   edit: "Muuda"
   submit: "Esita"
   delete: "Kustuta"
+  cancel: "Katkesta"
+  all: "Kõik"
+  clear: "Tühista"
 
   in_local_language: "Eesti keeles"
 

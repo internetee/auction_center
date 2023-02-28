@@ -51,6 +51,9 @@ et:
       autobider: "Automaatpakkuja"
       autobidder_value: Automaatpakkuja lagi
       set_autobidder_value: Seadista automaatpakkuja
+      autobidder_updated: Automaatpakkuja uuendatud
+      autobidder_created: Automaatpakkuja edukalt loodud
+      banned: "Teil on sellel oksjonil osalemine keelatud"
 
   activerecord:
     attributes:

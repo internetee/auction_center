@@ -10,7 +10,7 @@
         }
 </style>
 
-<%= turbo_stream_from "auctions" %>
+<%= turbo_stream_from 'auctions' %>
 
 <% content_for :hero do %>
     <div class="hero green">
@@ -48,12 +48,12 @@
             <%# two fields %>
                 <div class="" id='auction_type_filter_wrapper' data-controller='auction_type_handler'>
                     <div class="field">
-                            <%= f.label :type, 'Select type of auction' %>
-                            <%= f.select :type, options_for_select(Auction.platforms, selected: params[:type]), {include_blank: 'All'}, {class: '', data: { action: 'change->auction_type_handler#add_dropdown'} } %>
+                            <%= f.label :type, t('auctions.index.select_type') %>
+                            <%= f.select :type, options_for_select(Auction.platforms.map {|k, v| [t("auctions.#{k}"), v]}, selected: params[:type]), { include_blank: t(:all) }, { class: '', data: { action: 'change->auction_type_handler#add_dropdown'} } %>
                     </div>
                     <div class="field" style="display: none;" id="auction_with_offers">
-                            <%= f.label :auction_offer_type, 'Select type of auction offers' %>
-                            <%= f.select :auction_offer_type, [['With Offers', 'with_offers'], ['Without Offers', 'without_offers']], {include_blank: 'All'}, {class: '' } %>
+                            <%= f.label :auction_offer_type, t('auctions.index.select_offer_type') %>
+                            <%= f.select :auction_offer_type, [[t('auctions.index.with_offers'), 'with_offers'], [t('auctions.index.without_offers'), 'without_offers']], { include_blank: t(:all) }, { class: '' } %>
                     </div>
                 </div>
 
@@ -62,7 +62,7 @@
         
     </div>
     <div class="field">
-        <%= link_to 'Clear', request.path, class: 'ui primary button' %>
+        <%= link_to t(:clear), request.path, class: 'ui primary button' %>
     </div>
 </div>
 

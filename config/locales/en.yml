@@ -5,6 +5,9 @@ en:
   edit: "Edit"
   submit: "Submit"
   delete: "Delete"
+  cancel: Cancel
+  all: All
+  clear: Clear
 
   in_local_language: "English"
 

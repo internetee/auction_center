@@ -1,6 +1,6 @@
 class AutobiderController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_auction, only: [:new, :edit, :update, :create]
+  before_action :set_auction, only: %i[new edit update create]
   before_action :allow_any_action_with_autobider
   before_action :set_captcha_required
   # before_action :captcha_check, only: [:update, :create]
@@ -12,7 +12,7 @@ class AutobiderController < ApplicationController
       auction = Auction.where(domain_name: @autobider.domain_name).order(:created_at).last
       AutobiderService.autobid(auction) unless skip_autobid(auction)
 
-      flash[:notice] = 'Updated'
+      flash[:notice] = I18n.t('english_offers.form.autobidder_updated')
     else
       flash[:alert] = I18n.t('something_went_wrong')
     end
@@ -37,7 +37,7 @@ class AutobiderController < ApplicationController
       auction = Auction.where(domain_name: @autobider.domain_name).order(:created_at).last
       AutobiderService.autobid(auction)
 
-      redirect_to request.referer, notice: 'Autobider created'
+      redirect_to request.referer, notice: I18n.t('english_offers.form.autobidder_created')
     else
       redirect_to request.referer, notice: t(:something_went_wrong)
     end
@@ -72,7 +72,7 @@ class AutobiderController < ApplicationController
   def allow_any_action_with_autobider
     return true if restrict_for_banned_user(@auction.domain_name)
 
-    flash[:alert] = 'You are banned from this auction'
+    flash[:alert] = I18n.t('english_offers.form.banned')
     redirect_to auctions_path and return
   end
 

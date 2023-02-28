@@ -5,7 +5,7 @@ class Autobider < ApplicationRecord
   validates :domain_name, uniqueness: { scope: :user_id }
 
   def price
-    Money.new(cents, Setting.find_by(code: 'auction_currency').retrieve).to_f
+    Money.new(cents, Setting.find_by(code: 'auction_currency').retrieve)
   end
 
   def price=(value)

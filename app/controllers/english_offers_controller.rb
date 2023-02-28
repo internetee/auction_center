@@ -58,7 +58,7 @@ class EnglishOffersController < ApplicationController
   def edit
     @auction = @offer.auction
 
-    @autobider = Autobider.find_by(domain_name: @auction.domain_name, user: current_user)
+    @autobider = current_user.autobiders.find_by(domain_name: @auction.domain_name)
     @autobider = current_user.autobiders.build(domain_name: @auction.domain_name) if @autobider.nil?
   end
 
