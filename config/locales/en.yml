@@ -54,6 +54,7 @@ en:
   participant_outbid: "The auction for %{name} has new bid"
   participant_win_auction: Domain auction for %{name} is finished. Congratulations your bid was the highes!
   participant_lost_auction: Domain auction for %{name} is finished. Unfortunately your bid was not enough to win!
+  no_any_notifications: No new notifications
 
   user: "User"
   deleted_user: "User was deleted"
