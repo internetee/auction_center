@@ -27,3 +27,5 @@ import AutosaveController from "./autosave_controller"
 application.register("autosave", AutosaveController)
 import DropdownController from "./dropdown_controller"
 application.register("dropdown", DropdownController)
+import UpdateNotificationsController from "./update_notifications_controller"
+application.register("update_notifications", UpdateNotificationsController)

@@ -3,11 +3,13 @@ class Notification < ApplicationRecord
   belongs_to :recipient, polymorphic: true
 
   after_create_commit :broadcast_to_bell
-  # after_update :broadcast_to_bell_mark_as_read
   after_create_commit :broadcast_to_recipient
 
+  after_create_commit :mobile_broadcast_to_bell
+  after_create_commit :mobile_broadcast_to_recipient
+
   def broadcast_to_recipient
-    broadcast_append_to(
+    broadcast_append_later_to(
       recipient,
       :notifications,
       target: 'notifications-list',
@@ -18,22 +20,34 @@ class Notification < ApplicationRecord
     )
   end
 
-  def broadcast_to_bell_mark_as_read
-    broadcast_replace_later_to(
+  def broadcast_to_bell
+    broadcast_update_later_to(
       recipient,
       :notifications,
       target: 'bell-broadcast',
       partial: 'notifications/bell',
       locals: {
-        any_unread: nil
+        any_unread: true
       }
     )
   end
 
-  def broadcast_to_bell
-    broadcast_replace_later_to(
+  def mobile_broadcast_to_recipient
+    broadcast_append_later_to(
       recipient,
-      :notifications,
+      :mobile_notifications,
+      target: 'notifications-list',
+      partial: 'notifications/notification',
+      locals: {
+        notification: self
+      }
+    )
+  end
+
+  def mobile_broadcast_to_bell
+    broadcast_update_later_to(
+      recipient,
+      :mobile_notifications,
       target: 'bell-broadcast',
       partial: 'notifications/bell',
       locals: {

@@ -18,7 +18,11 @@ Rails.application.routes.draw do
     resources :bids, only: :show
   end
 
-  resources :notifications, only: %i[index show update]
+  resources :notifications, only: :index do
+    scope module: :notifications do
+      patch :mark_as_read, to: 'mark_as_read#update', on: :collection
+    end
+  end
 
   get 'domain_wishlist_availability', to: 'wishlist_items#domain_wishlist_availability', as: :domain_wishlist_availability
 

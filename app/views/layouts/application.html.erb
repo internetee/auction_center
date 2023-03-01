@@ -1,63 +1,54 @@
 <!DOCTYPE html>
 <html lang="<%= locale %>">
-    <head>
-        <title><%= t('common.header.auction_portal') %></title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <%= csrf_meta_tags %>
-        <%= csp_meta_tag %>
+  <head>
+    <title><%= t('common.header.auction_portal') %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= javascript_pack_tag 'application' %>
+    <%= stylesheet_pack_tag 'application', "data-turbo-track": "reload" %>
+    <script src="https://code.jquery.com/jquery-3.6.0.slim.js" integrity="sha256-HwWONEZrpuoh951cQD1ov2HUK5zA5DwJ1DNUXaM6FsY=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/components/transition.css">
+    <style>
+      table thead {
+          background-color: black !important;
+      }
+      
+      <%= ".current_#{current_user&.id}_user" %> {
+          color: green !important;
+      }
+      
+      .initial-color {
+          color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-wrapper">
+      <%= render 'common/header' %>
+      <main class="main-layout">
+  
+        <%= yield :hero %>
+    
+        <%= turbo_frame_tag :flash do %>
+          <%= turbo_stream_from current_user, :flash %>
+          <div id='flash-notice'>
+            <%= render partial: 'common/flash', locals: { flash: flash } %>
+          </div>
+        <% end %>
 
-        <%= javascript_pack_tag 'application' %>
-        <%= stylesheet_pack_tag 'application', "data-turbo-track": "reload" %>
-        <script src="https://code.jquery.com/jquery-3.6.0.slim.js" integrity="sha256-HwWONEZrpuoh951cQD1ov2HUK5zA5DwJ1DNUXaM6FsY=" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/components/transition.css">
-
-        <style>
-            table thead {
-                background-color: black !important;
-            }
-
-            <%= ".current_#{current_user&.id}_user" %> {
-                color: green !important;
-            }
-
-            .initial-color {
-                color: red;
-            }
-        </style>
-    </head>
-
-    <body>
-        <div class="app-wrapper">
-            <%= render 'common/header' %>
-
-            <main class="main-layout">
-                <%= yield :hero %>
-
-                <% unless flash.empty? %>
-                    <div class="ui message flash">
-                        <% flash.each do |key, value| -%>
-                            <% if ['notice', 'alert'].include?(key) %>
-                                <div class="header <%= key %>" id="flash"><%= h value %></div>
-                            <% end %>
-                        <% end %>
-                    </div>
-                <% end %>
-
-                <% if Time.zone.now.between?(Time.zone.parse(start_of_procedure), Time.zone.parse(end_of_procdure))%>
-                    <div class="ui message flash" style="background-color: red; color: white;">
-                        <div class="header"><%= t('procedure_warning') %></div>
-                    </div>
-                <% end %>
-
-                <%= banned_banner %>
-                <%= invalid_data_banner %>
-
-                <%= yield %>
-            </main>
-
-            <%= render 'common/footer' %>
-            <%= render 'google_analytics', tracking_id: google_analytics.tracking_id if google_analytics.enabled? %>
-        </div>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/components/transition.js"></script>
-    </body>
+        <% if Time.zone.now.between?(Time.zone.parse(start_of_procedure), Time.zone.parse(end_of_procdure))%>
+          <div class="ui message flash" style="background-color: red; color: white;">
+            <div class="header"><%= t('procedure_warning') %></div>
+          </div>
+        <% end %>
+        <%= banned_banner %>
+        <%= invalid_data_banner %>
+        <%= yield %>
+      </main>
+      <%= render 'common/footer' %>
+      <%= render 'google_analytics', tracking_id: google_analytics.tracking_id if google_analytics.enabled? %>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/components/transition.js"></script>
+  </body>
 </html>

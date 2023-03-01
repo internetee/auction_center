@@ -10,7 +10,7 @@ class EnglishOffersController < ApplicationController
   
   protect_from_forgery with: :null_session
   
-  # include OfferNotification
+  include OfferNotifable
   # GET /auctions/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/offers/new
   def new
     @auction = Auction.find_by!(uuid: params[:auction_uuid])
@@ -39,15 +39,9 @@ class EnglishOffersController < ApplicationController
     authorize! :manage, @offer
 
     if create_predicate(auction)
-      update_auction_values(auction, 'Offer submitted successfully.')
       broadcast_replace_auction_offer(auction)
-
-      # TODO: send notfication after create
-      participant_ids = auction.offers.pluck(:user_id) - [current_user.id]
-      participants = User.where(id: participant_ids)
-      participants.each do |participant|
-        OfferNotification.with(offer: @offer).deliver_later(participant)
-      end
+      send_outbided_notification(auction: auction, offer: @offer, flash: flash)
+      update_auction_values(auction, t('english_offers.create.created'))
     else
       if @offer.errors.full_messages_for(:cents).present?
         flash[:alert] = @offer.errors.full_messages_for(:cents).join
@@ -72,8 +66,9 @@ class EnglishOffersController < ApplicationController
     auction = Auction.with_user_offers(current_user.id).find_by(uuid: @offer.auction.uuid)
 
     if update_predicate(auction)
-      update_auction_values(auction, t('english_offers.edit.bid_updated'))
       broadcast_replace_auction_offer(auction)
+      send_outbided_notification(auction: auction, offer: @offer, flash: flash)
+      update_auction_values(auction, t('english_offers.edit.bid_updated'))
     else
       if @offer.errors.full_messages_for(:cents).present?
         flash[:alert] = @offer.errors.full_messages_for(:cents).join

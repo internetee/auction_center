@@ -7,7 +7,7 @@
     <ul>
         <li>
             <% if current_user %>
-              <%#= turbo_frame_tag :notification do %>
+              <%#= turbo_frame_tag :mobile_notification do %>
                 <%#= turbo_stream_from current_user, :mobile_notifications %>
                 <%#= turbo_frame_tag "notifications", src: notifications_path %>
               <%# end %>
