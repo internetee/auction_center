@@ -63,6 +63,9 @@
                                   <%= sort_link_to "", "ends_at" %> 
                                 </th>
                                 <th scope="col">
+                                  <%= t('auctions.winning_bid') %>
+                                </th>
+                                <th scope="col">
                                   Type
                                   <%= sort_link_to "", "platform" %>   
                                 </th>
@@ -75,6 +78,7 @@
                                     <td class="monospace"><%= auction.domain_name %></td>
                                     <td><%= auction.starts_at.to_formatted_s(:long) %></td>
                                     <td><%= auction.ends_at.to_formatted_s(:long) %></td>
+                                    <td><%= auction.currently_winning_offer&.price if auction.platform == 'english' %></td>
                                     <td>
                                       <% if auction.platform.nil? %>
                                         Blind

@@ -5,6 +5,7 @@ en:
     ends_at: 'Ends at'
     finished_at: "Finished at"
     finished: "This auction has finished"
+    winning_bid: Winning bid
     highest_price: "Highest price"
     auction_type: "Auction type"
     offers: "Offers"
