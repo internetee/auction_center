@@ -53,6 +53,7 @@ en:
     index:
       title: "Your invoices"
       pay: "Pay all issued invoices"
+      payment_success: 'Your payment will be processed as soon as possible. Thank you!'
 
   activerecord:
     enums:

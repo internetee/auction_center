@@ -53,6 +53,7 @@ et:
     index:
       title: "Sinu arved"
       pay: "Tasu kõik maksmata arved"
+      payment_success: 'Teie makse töödeldakse niipea kui võimalik. Aitäh!'
 
   activerecord:
     enums:

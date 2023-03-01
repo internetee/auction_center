@@ -32,9 +32,7 @@ class InvoicesController < ApplicationController
 
     return unless params[:state] == 'payment'
 
-    message = 'Payment was successfully created. ' \
-      'Your payment will be processed as soon as possible. Thank you!'
-    flash[:notice] = message
+    flash[:notice] = I18n.t('invoices.index.payment_success')
   end
 
   # GET /invoices/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/download
@@ -68,7 +66,8 @@ class InvoicesController < ApplicationController
   def pay_deposit
     auction = Auction.find_by(uuid: params[:uuid])
     authorize! :pay_deposit, auction
-    description = "auction_deposit #{auction.domain_name}, user_uuid #{current_user.uuid}, user_email #{current_user.email}"
+    description = "auction_deposit #{auction.domain_name}, user_uuid #{current_user.uuid}, " \
+      "user_email #{current_user.email}"
     response = EisBilling::PayDepositService.call(amount: auction.deposit,
                                                   customer_url: deposit_callback_url,
                                                   description: description)
