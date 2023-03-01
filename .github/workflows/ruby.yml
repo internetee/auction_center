@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-18.04]
+        os: [ubuntu-20.04]
         ruby: [ '2.7', '3.0.2' ]
     runs-on: ${{ matrix.os }}
     continue-on-error: ${{ endsWith(matrix.ruby, 'head') || matrix.ruby == 'debug' }}
@@ -36,15 +36,14 @@ jobs:
           bundle config set deployment '[secure]'
           bundle env
           head -n1 $(which bundle)
-
       - name: Install wkhtmlpdf (push)
         run: |
           sudo apt-get update
-          wget http://se.archive.ubuntu.com/ubuntu/pool/main/libp/libpng/libpng12-0_1.2.54-1ubuntu1_amd64.deb
-          sudo dpkg -i libpng12-0_1.2.54-1ubuntu1_amd64.deb
-          wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.xenial_amd64.deb
+          wget http://ppa.launchpad.net/linuxuprising/libpng12/ubuntu/pool/main/libp/libpng/libpng12-0_1.2.54-1ubuntu1.1+1~ppa0~eoan_amd64.deb
+          sudo dpkg -i libpng12-0_1.2.54-1ubuntu1.1+1~ppa0~eoan_amd64.deb
+          wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.focal_amd64.deb
           sudo apt-get install -y gdebi
-          sudo gdebi --non-interactive wkhtmltox_0.12.5-1.xenial_amd64.deb
+          sudo gdebi --non-interactive wkhtmltox_0.12.6-1.focal_amd64.deb
         if: github.event_name == 'push'
 
       - name: Set ENV for codeclimate (pull_request)
@@ -67,7 +66,6 @@ jobs:
           curl -LSs 'https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64' >./cc-test-reporter;
           chmod +x ./cc-test-reporter
           ./cc-test-reporter before-build
-
       - name: Run Tests
         env:
           PG_DATABASE: postgres
@@ -98,9 +96,9 @@ jobs:
   upload_coverage:
     strategy:
       matrix:
-        os: [ ubuntu-18.04 ]
+        os: [ ubuntu-20.04 ]
         ruby: [ '2.7', '3.0.2' ]
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
 
     env:
       CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
@@ -124,4 +122,3 @@ jobs:
         run: |
           ./cc-test-reporter sum-coverage coverage/codeclimate.*.json
           ./cc-test-reporter upload-coverage
-
