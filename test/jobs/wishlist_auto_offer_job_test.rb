@@ -14,7 +14,7 @@ class WishlistAutoOfferJobTest < ActiveJob::TestCase
   end
 
   def test_offer_is_not_created_when_item_does_not_have_cents
-    WishlistAutoOfferJob.perform_now(@item.id, @auction.id)
+    WishlistAutoOfferJob.perform_now(@auction.id)
 
     assert_not @user.offers.find_by(auction: @auction).present?
   end

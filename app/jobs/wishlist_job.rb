@@ -10,7 +10,7 @@ class WishlistJob < ApplicationJob
 
     wishlist_items.each do |item|
       WishlistMailer.auction_notification_mail(item, auction).deliver_later
-      WishlistAutoOfferJob.set(wait_until: auction.starts_at).perform_later(item.id, auction.id)
+      WishlistAutoOfferJob.set(wait_until: auction.starts_at).perform_later(auction.id)
     end
   end
 

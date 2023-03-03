@@ -61,9 +61,9 @@ class WishlistJobTest < ActiveJob::TestCase
   end
 
   def test_schedulle_auto_offer_job_when_there_is_a_wishlist_item
-    wishlist_item = WishlistItem.create!(user: @user, domain_name: @auction.domain_name)
+    WishlistItem.create!(user: @user, domain_name: @auction.domain_name)
     WishlistJob.perform_now(@auction.domain_name, @auction.remote_id)
 
-    assert_enqueued_with(job: WishlistAutoOfferJob, args: [wishlist_item.id, @auction.id], at: @auction.starts_at)
+    assert_enqueued_with(job: WishlistAutoOfferJob, args: [@auction.id], at: @auction.starts_at)
   end
 end
