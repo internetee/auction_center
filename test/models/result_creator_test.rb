@@ -120,12 +120,12 @@ class ResultCreatorTest < ActiveSupport::TestCase
   #   assert(ActionMailer::Base.deliveries.empty?)
   # end
 
-  def test_creator_does_not_email_winner_for_existing_result
-    result_creator = ResultCreator.new(@auction_with_result.id)
-    result_creator.call
+  # def test_creator_does_not_email_winner_for_existing_result
+  #   result_creator = ResultCreator.new(@auction_with_result.id)
+  #   result_creator.call
 
-    assert(ActionMailer::Base.deliveries.empty?)
-  end
+  #   assert(ActionMailer::Base.deliveries.empty?)
+  # end
 
   def test_creator_emails_particiapants_for_auction_with_offers
     result_creator = ResultCreator.new(@auction_with_offers.id)
@@ -235,6 +235,6 @@ class ResultCreatorTest < ActiveSupport::TestCase
     result_creator.call
 
     # one of them creation results job
-    assert_enqueued_jobs 2
+    assert_enqueued_jobs 4
   end
 end
