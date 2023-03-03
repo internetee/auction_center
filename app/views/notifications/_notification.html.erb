@@ -1,6 +1,5 @@
 <li style='padding: 10px 20px; display: flex; flex-direction: column; width: 400px; z-index: 9999;'>
   <span><%= I18n.t('.notification_received', datetime: notification.created_at.to_date) %></span>
-  <span>Status: <%= notification.read? ? I18n.t('.notification_read') : I18n.t('.notification_unread') %></span>
   <p style='margin-top: 10px; text-weight: bold; font-size: 20px;'>
     <%= notification.to_notification.message %>
   </p>
