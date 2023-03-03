@@ -333,6 +333,47 @@ class EnglishOffersIntegrationTest < ActionDispatch::IntegrationTest
     assert_broadcasts list_stream_name, 2
   end
 
+  def test_broadcast_notifications_when_made_bid
+    assert @auction.offers.empty?
+    assert_equal @user.notifications.count, 0
+    assert_equal @user_two.notifications.count, 0
+
+    BillingProfile.create_default_for_user(@user_two.id)
+    @user_two.reload
+
+    Offer.create!(
+      auction: @auction,
+      user: @user_two,
+      cents: 100_0,
+      billing_profile: @user_two.billing_profiles.first
+    )
+
+    params = {
+      offer: {
+        auction_id: @auction.id,
+        user_id: @user.id,
+        price: 100_00,
+        billing_profile_id: @user.billing_profiles.first.id
+      }
+    }
+
+    post auction_english_offers_path(auction_uuid: @auction.uuid),
+         params: params,
+         headers: {}
+
+    @user.reload && @user_two.reload
+
+    assert_equal @user.notifications.count, 0
+    assert_equal @user_two.notifications.count, 1
+
+    notify_signed_name = Turbo::StreamsChannel.signed_stream_name [@user_two, :flash]
+    notify_stream_name = Turbo::StreamsChannel.verified_stream_name notify_signed_name
+
+    perform_enqueued_jobs
+
+    assert_broadcasts notify_stream_name, 1
+  end
+
   def test_multiple_users_can_set_bids
     10.times do |i|
       u = User.create(
