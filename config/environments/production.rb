@@ -26,12 +26,12 @@ Rails.application.configure do
   # Apache or NGINX already handles this.
   config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
 
-  # config.action_cable.url = "wss://#{AuctionCenter::Application.config.customization[:auction_hostname]}/cable"
+  # config.action_cable.url = "wss://testauction-ks.infra.tld.ee/cable"
   # config.action_cable.url = "ws://0.0.0.0:3000/cable"
-  config.action_cable.mount_path = "/websockets"
+  # config.action_cable.mount_path = "/cable"
   # config.action_cable.allowed_request_origins = [ /https?:\/\/localhost:\d+/, /https?:\/\/192.168.0.5:\d+/, /https?:\/\/192.168.176.1:\d+/ ]
-  config.action_cable.allowed_request_origins = [/http:\/\/*/, /https:\/\/*/, /file:\/\/*/, 'file://', nil]
-  config.action_cable.disable_request_forgery_protection = true
+  config.action_cable.allowed_request_origins = AuctionCenter::Application.config&.customization[:allowed_request_origins]
+  config.action_cable.disable_request_forgery_protection = AuctionCenter::Application.config&.customization[:disable_request_forgery_protection] == 'true'
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
   config.assets.compile = false
@@ -54,7 +54,7 @@ Rails.application.configure do
   # config.action_cable.allowed_request_origins = [ 'http://example.com', /http:\/\/example.*/ ]
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  config.force_ssl = true
+  config.force_ssl = false
 
   # Use the lowest log level to ensure availability of diagnostic information
   # when problems arise.

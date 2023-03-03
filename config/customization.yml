@@ -18,6 +18,11 @@ default: &default
   # This is your application name, as displayed in the UI
   application_name: "EIS Auction Center"
 
+  allowed_request_origins:
+    - !ruby/regexp '/http:\/\/.*/'
+    - !ruby/regexp '/https:\/\/.*/'
+  disable_request_forgery_protection: 'true'
+
   # Timezone and locale
   time_zone: "Tallinn"
   #  locale: "en"

@@ -18,6 +18,12 @@ default: &default
   start_of_procedure: "09:00"
   end_of_procedure: "10:00"
 
+  allowed_request_origins:
+    - !ruby/regexp '/http:\/\/.*/'
+    - !ruby/regexp '/https:\/\/.*/'
+  disable_request_forgery_protection: 'true'
+
+
   # Generate your own with rails secret
   devise_secret_key: "Your very secret key used for devise tokens"
 
