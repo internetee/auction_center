@@ -4,6 +4,7 @@ et:
     starts_at: 'Algus'
     ends_at: 'Lõpp'
     finished: "Oksjon on lõppenud"
+    winning_bid: "Võidupakkumus"
     highest_price: "Kõrgeim hind"
     auction_type: "Oksjoni tüüp"
     offers: "Pakkumused"
