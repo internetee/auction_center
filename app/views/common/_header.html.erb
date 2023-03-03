@@ -32,10 +32,10 @@
     </nav>
     <nav class="menu-user aligned">
       <% if current_user %>
-        <%= turbo_frame_tag :notification do %>
-          <%= turbo_stream_from current_user, :notifications %>
-          <%= turbo_frame_tag "notifications", src: notifications_path %>
-        <% end %>
+        <%#= turbo_frame_tag :notification do %>
+          <%#= turbo_stream_from current_user, :notifications %>
+          <%#= turbo_frame_tag "notifications", src: notifications_path %>
+        <%# end %>
         <%= link_to(destroy_user_session_path, method: :delete) do %>
           <i aria-hidden="true" class="user icon"></i><%= t(:sign_out) %>
         <% end %>
@@ -61,14 +61,17 @@
     <nav class="menu-main">
       <%= navigation_links(current_user) %>
     </nav>
-      <div>
-    <%= turbo_frame_tag :notifications_mobile do %>
-      <%= turbo_stream_from current_user, :notifications_mobile %>
-      <%= turbo_frame_tag "notifications_mobile", src: notifications_path %>
-    <% end if current_user%>
-  </div>
+
   
-    <div class="actions">
+    <div class="actions" style='display: flex; flex-direction: row; justify-content: center; align-items: baseline;'>
+
+      <div>
+        <%= turbo_frame_tag :notification do %>
+          <%= turbo_stream_from current_user, :notifications %>
+          <%= turbo_frame_tag "notifications", src: notifications_path %>
+        <% end if current_user%>
+      </div>
+
       <button type="button" class="btn btn-menu" data-menu-toggle="">
         <i aria-hidden="true" class="bars icon"></i>
       </button>

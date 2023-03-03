@@ -6,7 +6,6 @@ class Notifications::MarkAsReadController < ApplicationController
       format.turbo_stream do
         render turbo_stream: [ 
           turbo_stream.update('bell-broadcast', partial: 'notifications/bell', locals: { any_unread: false }),
-          turbo_stream.update('bell-broadcast-mobile', partial: 'notifications/bell', locals: { any_unread: false }),
         ]
       end
     end

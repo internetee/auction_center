@@ -1,4 +1,4 @@
-<li style='padding: 10px 20px; display: flex; flex-direction: column; width: 400px; z-index: 9999;'>
+<li style='padding: 10px 20px; display: flex; flex-direction: column;'>
   <span><%= I18n.t('.notification_received', datetime: I18n.l(notification.created_at)) %></span>
   <p style='margin-top: 10px; text-weight: bold; font-size: 20px;'>
     <%= notification.to_notification.message %>
