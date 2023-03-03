@@ -16,7 +16,7 @@ class OfferNotification < Noticed::Base
   param :offer
 
   def message
-    I18n.t('.participant_outbid', name: params[:offer].auction.domain_name)
+    I18n.t('.participant_outbid_broadcast', name: params[:offer].auction.domain_name)
   end
   # Define helper methods to make rendering easier.
   #
