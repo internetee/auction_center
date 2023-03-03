@@ -1,3 +1,5 @@
+
+
 <div class="ui sidebar inverted vertical menu right mobile-menu">
   <%= navigation_links(current_user) %>
   <%= locale_links %>
@@ -7,10 +9,7 @@
         <%= link_to(destroy_user_session_path, method: :delete, class: "item", data: {  "turbo-method": 'delete' }) do %>
           <i aria-hidden="true" class="user icon"></i><%= t(:sign_out) %>
         <% end %>
-        <%= turbo_frame_tag :notifications_mobile do %>
-          <%= turbo_stream_from current_user, :notifications_mobile %>
-          <%= turbo_frame_tag "notifications_mobile", src: notifications_path %>
-        <% end %>
+
       <% else %>
         <%= link_to(new_user_session_path, class: "item") do %>
           <i aria-hidden="true" class="user icon"></i><%= t(:sign_in) %>
@@ -19,6 +18,7 @@
     </li>
   </ul>
 </div>
+
 <header class="main-header">
   <div class="main-header-top">
     <nav class="menu-portal">
@@ -61,6 +61,13 @@
     <nav class="menu-main">
       <%= navigation_links(current_user) %>
     </nav>
+      <div>
+    <%= turbo_frame_tag :notifications_mobile do %>
+      <%= turbo_stream_from current_user, :notifications_mobile %>
+      <%= turbo_frame_tag "notifications_mobile", src: notifications_path %>
+    <% end if current_user%>
+  </div>
+  
     <div class="actions">
       <button type="button" class="btn btn-menu" data-menu-toggle="">
         <i aria-hidden="true" class="bars icon"></i>

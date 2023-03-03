@@ -13,12 +13,19 @@ export default class extends Controller {
         if (!event.target.closest('.dropdown-custom') && !event.target.closest('.bell-broadcast')) {
           box.style.visibility = 'hidden';
         }
+
+        if (!event.target.closest('.dropdown-custom-mobile') && !event.target.closest('.bell-broadcast')) {
+          box.style.visibility = 'hidden';
+        }
       });
     }
 
     showMenu() {
+      // const mobileBox = document.querySelector('.dropdown-custom-mobile');
+
       if (this.menuTarget.style.visibility === 'hidden') {
         this.menuTarget.style.visibility = 'visible';
+        this.menuTarget.style.zIndex = 999999;
       } else {
         this.menuTarget.style.visibility = 'hidden';
       }

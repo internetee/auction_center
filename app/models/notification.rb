@@ -32,18 +32,6 @@ class Notification < ApplicationRecord
     )
   end
 
-  def broadcast_to_bell
-    broadcast_update_later_to(
-      recipient,
-      :notifications_mobile,
-      target: 'bell-broadcast',
-      partial: 'notifications/bell',
-      locals: {
-        any_unread: true
-      }
-    )
-  end
-
   def mobile_broadcast_to_recipient
     broadcast_append_later_to(
       recipient,
