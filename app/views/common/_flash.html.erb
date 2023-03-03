@@ -1,5 +1,5 @@
 <% unless flash.empty? %>
-  <div class="ui message flash" style='display: block; margin-bottom: 20px;'>
+  <div class="ui message flash" style='display: block; margin-bottom: 20px;' data-controller='notificable_handler' data-notificable_handler-target='notification'>
     <% flash.each do |key, value| -%>
       <% if ['notice', 'alert'].include?(key) %>
         <div class="header <%= key %>" id="flash"><%= h value %></div>

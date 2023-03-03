@@ -6,7 +6,8 @@ module OfferNotifable
     participants = User.where(id: participant_ids)
     participants.each do |participant|
       OfferNotification.with(offer: @offer).deliver_later(participant)
-      flash[:notice] = I18n.t('.participant_outbid', name: auction.domain_name)
+      # flash[:notice] = I18n.t('.participant_outbid', name: auction.domain_name)
+      flash[:notice] = "websocket_domain_name, #{auction.domain_name}"
       broadcast_outbid_to_notifications(participant: participant, flash: flash)
     end
   end

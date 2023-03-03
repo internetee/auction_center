@@ -32,10 +32,6 @@
     </nav>
     <nav class="menu-user aligned">
       <% if current_user %>
-        <%#= turbo_frame_tag :notification do %>
-          <%#= turbo_stream_from current_user, :notifications %>
-          <%#= turbo_frame_tag "notifications", src: notifications_path %>
-        <%# end %>
         <%= link_to(destroy_user_session_path, method: :delete) do %>
           <i aria-hidden="true" class="user icon"></i><%= t(:sign_out) %>
         <% end %>

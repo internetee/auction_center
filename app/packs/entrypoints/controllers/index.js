@@ -29,3 +29,5 @@ import DropdownController from "./dropdown_controller"
 application.register("dropdown", DropdownController)
 import UpdateNotificationsController from "./update_notifications_controller"
 application.register("update_notifications", UpdateNotificationsController)
+import NotificableHandlerController from "./notificable_handler_controller"
+application.register("notificable_handler", NotificableHandlerController)
