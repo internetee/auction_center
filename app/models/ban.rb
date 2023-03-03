@@ -16,7 +16,7 @@ class Ban < ApplicationRecord
     where('valid_until >= ? AND valid_from <= ?', Time.now.utc, Time.now.utc)
   }
 
-  scope :with_name, ->(search_string) {
+  scope :with_name, (lambda do |search_string|
     if search_string.present?
       users = User.where('given_names ILIKE ? OR surname ILIKE ? OR email ILIKE ?',
                          "%#{search_string}%",
@@ -28,10 +28,10 @@ class Ban < ApplicationRecord
 
       where(user_id: user_ids)
     end
-  }
+  end)
 
-  def self.search(params={})
-    self.with_name(params[:search_string])
+  def self.search(params = {})
+    with_name(params[:search_string])
   end
 
   def lift

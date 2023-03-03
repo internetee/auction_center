@@ -35,7 +35,7 @@ module EisBilling
         customer_url: customer_url,
         description: description,
         custom_field2: INITIATOR,
-        affiliation: 'auction_deposit'
+        affiliation: 'auction_deposit',
       }
     end
 

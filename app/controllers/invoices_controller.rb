@@ -32,8 +32,7 @@ class InvoicesController < ApplicationController
 
     return unless params[:state] == 'payment'
 
-    message = 'Payment was successfully created. Your payment will be processed as soon as possible. Thank you!'
-    flash[:notice] = message
+    flash[:notice] = I18n.t('invoices.index.payment_success')
   end
 
   # GET /invoices/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/download
@@ -53,7 +52,8 @@ class InvoicesController < ApplicationController
 
   def pay_all_bills
     issued_invoices = invoices_list_by_status(Invoice.statuses[:issued])
-    response = EisBilling::BulkInvoicesService.call(invoices: issued_invoices, customer_url: linkpay_callback_url)
+    response = EisBilling::BulkInvoicesService.call(invoices: issued_invoices,
+                                                    customer_url: linkpay_callback_url)
 
     if response.result?
       redirect_to response.instance['oneoff_redirect_link']
@@ -65,7 +65,9 @@ class InvoicesController < ApplicationController
 
   def pay_deposit
     auction = Auction.find_by(uuid: params[:uuid])
-    description = "auction_deposit #{auction.domain_name}, user_uuid #{current_user.uuid}, user_email #{current_user.email}"
+    authorize! :pay_deposit, auction
+    description = "auction_deposit #{auction.domain_name}, user_uuid #{current_user.uuid}, " \
+      "user_email #{current_user.email}"
     response = EisBilling::PayDepositService.call(amount: auction.deposit,
                                                   customer_url: deposit_callback_url,
                                                   description: description)

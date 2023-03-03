@@ -15,6 +15,7 @@ class Ability
 
   def participant
     can :manage, BillingProfile, user_id: user.id
+    can :pay_deposit, Auction
     can %i[read update], Invoice
     can %i[read create], PaymentOrder, user_id: user.id
     can :manage, PhoneConfirmation do |phone_confirmation|
@@ -38,12 +39,13 @@ class Ability
 
     can :manage, Offer, user_id: user.id unless user.completely_banned?
     cannot :manage, Offer do |offer|
-      Ban.valid
-         .where(user_id: user.id)
-         .where(domain_name: offer.auction.domain_name)
-         .any?
+      any_valid_bans?(user.id, offer.auction.domain_name)
     end
     cannot :manage, Offer if user.completely_banned?
+    cannot :pay_deposit, Auction do |auction|
+      any_valid_bans?(user.id, auction.domain_name)
+    end
+    cannot :pay_deposit, Auction if user.completely_banned?
   end
 
   def phone_not_unique_restrictions
@@ -86,5 +88,14 @@ class Ability
     can :read, Audit::Setting
     can :read, Audit::Result
     can :read, Audit::PaymentOrder
+  end
+
+  private
+
+  def any_valid_bans?(user_id, domain_name)
+    Ban.valid
+       .where(user_id: user_id)
+       .where(domain_name: domain_name)
+       .any?
   end
 end

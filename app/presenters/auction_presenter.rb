@@ -16,9 +16,11 @@ class AuctionPresenter < SimpleDelegator
     return default_english_auction_button if current_user.nil?
 
     if users_offer_uuid
-      define_english_auction_button url: edit_english_offer_path(users_offer_uuid), current_user: current_user
+      define_english_auction_button url: edit_english_offer_path(users_offer_uuid),
+                                    current_user: current_user
     else
-      define_english_auction_button url: new_auction_english_offer_path(auction_uuid: uuid), current_user: current_user
+      define_english_auction_button url: new_auction_english_offer_path(auction_uuid: uuid),
+                                    current_user: current_user
     end
   end
 
@@ -31,15 +33,16 @@ class AuctionPresenter < SimpleDelegator
       end
     else
       define_blind_auction_button(url: new_auction_offer_path(auction_uuid: uuid),
-                                  text: I18n.t('auctions.submit_offer'),
-                                  color: 'secondary')
+                                  text: I18n.t('auctions.submit_offer'), color: 'secondary')
     end
   end
 
   private
 
   def delete_auction_button
-    content_tag(:a, href: offer_path(users_offer_uuid), data: { method: :delete, confirm: I18n.t(:are_you_sure) }, class: "ui button red") do
+    content_tag(:a, href: offer_path(users_offer_uuid),
+                    data: { method: :delete, confirm: I18n.t(:are_you_sure) },
+                    class: 'ui button red') do
       I18n.t('auctions.delete_your_offer')
     end
   end
@@ -51,13 +54,15 @@ class AuctionPresenter < SimpleDelegator
   end
 
   def default_english_auction_button
-    content_tag(:a, href: new_auction_english_offer_path(auction_uuid: uuid), class: "ui button blue") do
+    content_tag(:a, href: new_auction_english_offer_path(auction_uuid: uuid),
+                    class: 'ui button blue') do
       I18n.t('auctions.bid')
     end
   end
 
   def define_english_auction_button(url:, current_user:)
-    content_tag(:a, href: url, class: "ui button #{allow_to_set_bid?(current_user) ? 'blue' : 'orange'}") do
+    content_tag(:a, href: url,
+                    class: "ui button #{allow_to_set_bid?(current_user) ? 'blue' : 'orange'}") do
       participate_bid_text(current_user)
     end
   end
