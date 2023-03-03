@@ -1,5 +1,6 @@
 03.03.2023
 * banned users must not be able to make deposit https://github.com/internetee/auction_center/issues/1009
+* fixed extra arg in whishlist job https://github.com/internetee/auction_center/pull/1017
 
 15.02.2023
 * fix for nickname issue with autobidder https://github.com/internetee/auction_center/pull/1011
