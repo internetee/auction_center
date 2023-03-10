@@ -26,6 +26,11 @@ Rails.application.routes.draw do
 
   get 'domain_wishlist_availability', to: 'wishlist_items#domain_wishlist_availability', as: :domain_wishlist_availability
 
+  resource :push_subscriptions, only: %i[create destroy]
+  # delete 'push_subscriptions', to: 'push_subscriptions#destroy', on: :collection
+  get '/service-worker.js', to: 'service_workers/workers#index'
+  get '/manifest.json', to: 'service_workers/manifests#index'
+
   match 'profile/edit', via: :get, to: 'users#edit_authwall', as: :user_edit_authwall
   match '/profile/toggle_subscription', via: :get, to: 'users#toggle_subscription',
         as: :user_toggle_sub

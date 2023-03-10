@@ -5,6 +5,34 @@ class Notification < ApplicationRecord
   after_create_commit :broadcast_to_bell
   after_create_commit :broadcast_to_recipient
 
+  def self.notify
+    # Получить список всех активных подписок из базы данных
+    subscriptions = WebpushSubscription.all
+
+    # Сформировать тело сообщения для веб-пуш уведомления
+    message = {
+      title: 'Заголовок уведомления',
+      body: 'Текст уведомления',
+      icon: 'https://example.com/icon.png'
+    }
+
+    # Отправить каждому подписчику веб-пуш уведомление
+    subscriptions.each do |subscription|
+      Webpush.payload_send(
+        message: JSON.generate(message),
+        endpoint: subscription.endpoint,
+        p256dh: subscription.p256dh,
+        auth: subscription.auth,
+        ttl: 60,
+        vapid: {
+          subject: 'mailto:example@example.com',
+          public_key: Rails.configuration.customization[:vapid_public],
+          private_key: Rails.configuration.customization[:vapid_private]
+        }
+      )
+    end
+  end
+
   def broadcast_to_recipient
     broadcast_append_later_to(
       recipient,

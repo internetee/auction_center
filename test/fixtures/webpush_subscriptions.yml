@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  endpoint: MyString
+  p256dh: MyString
+  auth: MyString
+  user: participant
+
+two:
+  endpoint: MyString
+  p256dh: MyString
+  auth: MyString
+  user: second_place_participant

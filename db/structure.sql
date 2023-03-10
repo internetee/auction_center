@@ -1563,6 +1563,40 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 
 --
+-- Name: webpush_subscriptions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.webpush_subscriptions (
+    id bigint NOT NULL,
+    endpoint character varying,
+    p256dh character varying,
+    auth character varying,
+    user_id bigint,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: webpush_subscriptions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.webpush_subscriptions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: webpush_subscriptions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.webpush_subscriptions_id_seq OWNED BY public.webpush_subscriptions.id;
+
+
+--
 -- Name: wishlist_items; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1804,6 +1838,13 @@ ALTER TABLE ONLY public.settings ALTER COLUMN id SET DEFAULT nextval('public.set
 --
 
 ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
+
+
+--
+-- Name: webpush_subscriptions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.webpush_subscriptions ALTER COLUMN id SET DEFAULT nextval('public.webpush_subscriptions_id_seq'::regclass);
 
 
 --
@@ -2115,6 +2156,14 @@ ALTER TABLE ONLY public.auctions
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: webpush_subscriptions webpush_subscriptions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.webpush_subscriptions
+    ADD CONSTRAINT webpush_subscriptions_pkey PRIMARY KEY (id);
 
 
 --
@@ -2623,6 +2672,13 @@ CREATE UNIQUE INDEX index_users_on_uuid ON public.users USING btree (uuid);
 
 
 --
+-- Name: index_webpush_subscriptions_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_webpush_subscriptions_on_user_id ON public.webpush_subscriptions USING btree (user_id);
+
+
+--
 -- Name: index_wishlist_items_on_domain_name; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2974,6 +3030,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221017133559'),
 ('20230118124747'),
 ('20230124110241'),
-('20230227085236');
+('20230227085236'),
+('20230309094132');
 
 

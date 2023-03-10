@@ -46,6 +46,8 @@ class User < ApplicationRecord
   has_many :domain_participate_auctions
   has_many :notifications, as: :recipient, dependent: :destroy
 
+  has_one :webpush_subscription
+
   scope :subscribed_to_daily_summary, -> { where(daily_summary: true) }
   scope :with_confirmed_phone, -> { where.not(mobile_phone_confirmed_at: nil) }
 
