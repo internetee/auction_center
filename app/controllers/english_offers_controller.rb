@@ -2,6 +2,7 @@ class EnglishOffersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_captcha_required
   before_action :set_offer, only: %i[show edit update]
+  before_action :check_for_ban, only: [:create]
   before_action :authorize_phone_confirmation
   before_action :authorize_offer_for_user, except: %i[new create]
   before_action :prevent_check_for_invalid_bid, only: [:update]
@@ -34,7 +35,7 @@ class EnglishOffersController < ApplicationController
 
     @offer = Offer.new(create_params)
     @offer.username = Username::GenerateUsernameService.new.call
-    authorize! :manage, @offer, message: I18n.t('.english_offers.create.ban')
+    authorize! :manage, @offer
 
     if create_predicate(auction)
       update_auction_values(auction, 'Offer submitted successfully.')
@@ -67,6 +68,13 @@ class EnglishOffersController < ApplicationController
   end
 
   private
+
+  def check_for_ban
+    auction = Auction.find_by!(uuid: params[:auction_uuid])
+    if Ban.valid.where(user_id: current_user).where(domain_name: auction.domain_name).any? || current_user.completely_banned?
+      redirect_to root_path, flash: { alert: I18n.t('.english_offers.create.ban') } and return
+    end
+  end
 
   def broadcast_replace_auction_offer(auction)
     Offers::UpdateBroadcastService.call({ auction: auction })

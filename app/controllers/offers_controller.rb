@@ -1,6 +1,7 @@
 class OffersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_offer, only: %i[show edit update destroy]
+  before_action :check_for_ban, only: %i[create]
   before_action :authorize_phone_confirmation
   before_action :authorize_offer_for_user, except: %i[new index create]
   before_action :set_captcha_required
@@ -22,7 +23,7 @@ class OffersController < ApplicationController
     existing_offer = auction.offer_from_user(current_user.id)
 
     @offer = Offer.new(create_params)
-    authorize! :manage, @offer, message: I18n.t('.offers.create.ban')
+    authorize! :manage, @offer
 
     respond_to do |format|
       if existing_offer
@@ -84,6 +85,14 @@ class OffersController < ApplicationController
   end
 
   private
+
+  def check_for_ban
+    auction = Auction.find_by!(uuid: params[:auction_uuid])
+    if Ban.valid.where(user_id: current_user).where(domain_name: auction.domain_name).any? || current_user.completely_banned?
+      redirect_to root_path, flash: { alert: I18n.t('.offers.create.ban') } and return
+    end
+  end
+
 
   def set_captcha_required
     return if Rails.env.development?
