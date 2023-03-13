@@ -3,7 +3,7 @@
   <h2><%= t('.webpush_title') %></h2>
   <p><%= t('.webpush_descr') %></p>
   <div class='webpush--buttons_area'>
-    <button id='webpush-decline' class='ui button danger' data-action='push-notification#decline'>Decline</button>
-    <button id='webpush-accept' class='ui button primary' data-action='push-notification#setupPushNotifications'>Accept</button>
+    <button id='webpush-decline' class='ui button danger' data-action='push-notification#decline'><%= t('.webpush_decline') %></button>
+    <button id='webpush-accept' class='ui button primary' data-action='push-notification#setupPushNotifications'><%= t('.webpush_agree') %></button>
   </div>
 <% end %>

@@ -21,6 +21,6 @@ class OfferNotificationTest < ActiveSupport::TestCase
     notification = @user.notifications.first
 
     assert_equal notification.to_notification.message,
-                 I18n.t('.participant_outbid', name: @offer.auction.domain_name)
+                 I18n.t('.participant_outbid_broadcast', name: @offer.auction.domain_name)
   end
 end

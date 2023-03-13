@@ -30,5 +30,11 @@ en:
       documents: "Documents"
       registrars_working_group: "Registrar's Working group"
 
+    webpush_modal:
+      webpush_title: Web Push
+      webpush_descr: .ee auction portal uses web push notifications to keep you informed when you have been over-bid without you needing to have the site open all the time.
+      webpush_agree: Agree
+      webpush_decline: "No, thanks"
+
     pdf:
       payment_information: "We accept payments only in the Estonian Internet Foundation’s .ee auction center at %{link}"

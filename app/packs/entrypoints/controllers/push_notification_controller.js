@@ -7,12 +7,12 @@ export default class extends Controller {
   };
 
   connect() {
+    if(!this.userLoginValue) return;
+
     let subscribed = localStorage.getItem('block-webpush-modal');
     if (subscribed === 'true') {
       document.querySelector('.webpush-modal').style.display = 'none';
     }
-
-    if(!this.userLoginValue) return;
 
     if ('serviceWorker' in navigator && 'PushManager' in window) {
       navigator.serviceWorker.ready.then(registration => {

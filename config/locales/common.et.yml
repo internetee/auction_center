@@ -30,5 +30,11 @@ et:
       management: "Juhtimine"
       documents: "Dokumendid"
 
+    webpush_modal:
+      webpush_title: Veebitõuketeated
+      webpush_descr: .ee oksjoni keskkond kasutab veebitõuketeateid et hoida teid kursis teid huvitavate oksjonite arengutest andes koheselt teada kui teie pakkumine on üle pakutud.
+      webpush_agree: Nõustun
+      webpush_decline: "Ei soovi"
+
     pdf:
       payment_information: "Arvet saab maksta vaid Eesti Interneti Sihtasutuse .ee domeenioksjoni keskkonnas %{link}"

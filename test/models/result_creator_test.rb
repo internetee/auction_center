@@ -235,6 +235,6 @@ class ResultCreatorTest < ActiveSupport::TestCase
     result_creator.call
 
     # one of them creation results job
-    assert_enqueued_jobs 4
+    assert_enqueued_jobs 5  
   end
 end
