@@ -22,7 +22,7 @@ class OffersController < ApplicationController
     existing_offer = auction.offer_from_user(current_user.id)
 
     @offer = Offer.new(create_params)
-    authorize! :manage, @offer
+    authorize! :manage, @offer, message: I18n.t('.offers.create.ban')
 
     respond_to do |format|
       if existing_offer

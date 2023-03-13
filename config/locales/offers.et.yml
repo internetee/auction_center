@@ -23,6 +23,7 @@ et:
 
     create:
       created: "Pakkumus edukalt esitatud"
+      ban: You are banned from participating in this auction!
 
     show:
       title: "Sinu pakkumus"

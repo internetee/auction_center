@@ -34,7 +34,7 @@ class EnglishOffersController < ApplicationController
 
     @offer = Offer.new(create_params)
     @offer.username = Username::GenerateUsernameService.new.call
-    authorize! :manage, @offer
+    authorize! :manage, @offer, message: I18n.t('.english_offers.create.ban')
 
     if create_predicate(auction)
       update_auction_values(auction, 'Offer submitted successfully.')
