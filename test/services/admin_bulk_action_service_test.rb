@@ -10,6 +10,8 @@ class AdminBulkActionServiceTest < ActionDispatch::IntegrationTest
     @auction = auctions(:valid_without_offers)
     @english_auction = auctions(:english)
     @english_auction_nil = auctions(:english_nil_starts)
+    @user = users(:participant)
+    @second_place_participant = users(:second_place_participant)
 
     travel_to Time.parse('2010-07-05 10:30 +0000').in_time_zone
   end
@@ -210,6 +212,221 @@ class AdminBulkActionServiceTest < ActionDispatch::IntegrationTest
     perform_enqueued_jobs
 
     assert_broadcasts list_stream_name, 0
+  end
+
+  def test_for_english_auction_set_autobider_if_participant_is_one
+    Autobider.destroy_all
+
+    assert_nil @english_auction_nil.starts_at, nil
+    assert_nil @english_auction_nil.ends_at, nil
+    assert_nil @english_auction_nil.starting_price, nil
+    assert_nil @english_auction_nil.min_bids_step, nil
+    assert_nil @english_auction_nil.slipping_end, nil
+
+    wishlist_item = WishlistItem.new(domain_name: @english_auction_nil.domain_name, user: @user, cents: 6000)
+    wishlist_item.save(validate: false) && wishlist_item.reload
+
+    assert_equal Autobider.where(domain_name: @english_auction_nil.domain_name).count, 0
+
+    assert @english_auction_nil.offers.empty?
+
+    clear_enqueued_jobs
+
+    incoming_data = incoming_data_for_auction_should_start_in_future(@english_auction_nil.id)
+    AdminBulkActionService.apply_for_english_auction(auction_elements: valid_incoming_data(@english_auction_nil.id))
+    @english_auction_nil.reload
+
+    assert_equal Autobider.where(domain_name: @english_auction_nil.domain_name).count, 1
+    autobider = Autobider.where(domain_name: @english_auction_nil.domain_name).first
+    
+    assert_equal autobider.cents, wishlist_item.cents
+    assert_equal autobider.user, wishlist_item.user
+    assert_equal autobider.domain_name, wishlist_item.domain_name
+
+    assert_equal @english_auction_nil.offers.count, 1
+    offer = @english_auction_nil.offers.first
+
+    assert_equal offer.price.to_f, @english_auction_nil.starting_price
+    assert_equal offer.user, autobider.user
+    assert_equal offer.auction, @english_auction_nil
+  end
+
+  def test_for_english_auction_set_autobider_if_participant_is_serial
+    Autobider.destroy_all
+
+    assert_nil @english_auction_nil.starts_at, nil
+    assert_nil @english_auction_nil.ends_at, nil
+    assert_nil @english_auction_nil.starting_price, nil
+    assert_nil @english_auction_nil.min_bids_step, nil
+    assert_nil @english_auction_nil.slipping_end, nil
+
+    10.times do |i|
+      u = User.create(
+        email: "user_t#{i}@auction.test",
+        password: "password123",
+        alpha_two_country_code: 'LV',
+        identity_code: nil,
+        given_names: 'Joe John',
+        surname: 'Participant',
+        confirmed_at: Time.parse("2010-07-05 00:16:00 UTC"),
+        created_at: Time.parse("2010-07-05 00:16:00 UTC"),
+        mobile_phone: "+37255000#{i}",
+        mobile_phone_confirmation_code: "0000",
+        mobile_phone_confirmed_at: Time.parse("2010-07-05 00:17:00 UTC"),
+        roles: ['participant'],
+        terms_and_conditions_accepted_at: Time.parse("2010-07-05 00:16:00 UTC"),
+        locale: 'en',
+      )
+
+      BillingProfile.create_default_for_user(u.id)
+      u.reload
+
+      wishlist_item = WishlistItem.new(domain_name: @english_auction_nil.domain_name, user: u, cents: "#{i+1}000".to_i)
+      wishlist_item.save(validate: false) && wishlist_item.reload
+    end
+
+    assert_equal Autobider.where(domain_name: @english_auction_nil.domain_name).count, 0
+    assert @english_auction_nil.offers.empty?
+    clear_enqueued_jobs
+
+    incoming_data = incoming_data_for_auction_should_start_in_future(@english_auction_nil.id)
+    AdminBulkActionService.apply_for_english_auction(auction_elements: valid_incoming_data(@english_auction_nil.id))
+    @english_auction_nil.reload
+
+    assert_equal Autobider.where(domain_name: @english_auction_nil.domain_name).count, 10
+    max_autobider = Autobider.where(domain_name: @english_auction_nil.domain_name).order(:cents).last
+
+    assert_equal max_autobider.user, @english_auction_nil.currently_winning_offer.user
+  end
+
+  def test_priority_bidder_for_create_wishlist_first_with_the_same_cents
+    travel_back
+
+    Autobider.destroy_all
+
+    assert_nil @english_auction_nil.starts_at, nil
+    assert_nil @english_auction_nil.ends_at, nil
+    assert_nil @english_auction_nil.starting_price, nil
+    assert_nil @english_auction_nil.min_bids_step, nil
+    assert_nil @english_auction_nil.slipping_end, nil
+
+    wishlist_item = WishlistItem.new(domain_name: @english_auction_nil.domain_name, user: @user, cents: 3000)
+    wishlist_item.save(validate: false) && wishlist_item.reload
+
+    5.times do |i|
+      u = User.create(
+        email: "user_t#{i}@auction.test",
+        password: "password123",
+        alpha_two_country_code: 'LV',
+        identity_code: nil,
+        given_names: 'Joe John',
+        surname: 'Participant',
+        confirmed_at: Time.zone.now,
+        created_at: Time.zone.now - 1.minute,
+        mobile_phone: "+37255000#{i}",
+        mobile_phone_confirmation_code: "0000",
+        mobile_phone_confirmed_at: Time.zone.now - 1.minute,
+        roles: ['participant'],
+        terms_and_conditions_accepted_at: Time.zone.now - 1.minute,
+        locale: 'en',
+      )
+
+      BillingProfile.create_default_for_user(u.id)
+      u.reload
+
+      wishlist_item = WishlistItem.new(domain_name: @english_auction_nil.domain_name, user: u, cents: 6000)
+      wishlist_item.save(validate: false) && wishlist_item.reload
+    end
+
+    assert_equal Autobider.where(domain_name: @english_auction_nil.domain_name).count, 0
+    assert @english_auction_nil.offers.empty?
+    clear_enqueued_jobs
+
+    # incoming_data = incoming_data_for_auction_should_start_in_future(@english_auction_nil.id)
+    AdminBulkActionService.apply_for_english_auction(
+      auction_elements: {
+        set_starts_at: Time.zone.now,
+        set_ends_at: Time.zone.now + 1.day,
+        starting_price: '5.0',
+        slipping_end: '5',
+        elements_id: @english_auction_nil.id.to_s,
+        deposit: 0.0
+      }
+    )
+    @english_auction_nil.reload
+
+    assert_equal Autobider.where(domain_name: @english_auction_nil.domain_name).count, 6
+    first_autobidder = Autobider.where(domain_name: @english_auction_nil.domain_name).order(cents: :desc, created_at: :asc).first
+
+    assert_equal first_autobidder.user, @english_auction_nil.currently_winning_offer.user
+  end
+
+  def test_priority_bidder_is_always_who_has_hifghest_bid
+    travel_back
+
+    Autobider.destroy_all
+
+    assert_nil @english_auction_nil.starts_at, nil
+    assert_nil @english_auction_nil.ends_at, nil
+    assert_nil @english_auction_nil.starting_price, nil
+    assert_nil @english_auction_nil.min_bids_step, nil
+    assert_nil @english_auction_nil.slipping_end, nil
+
+    BillingProfile.create_default_for_user(@second_place_participant.id)
+    @second_place_participant.reload
+
+    wishlist_item = WishlistItem.new(domain_name: @english_auction_nil.domain_name, user: @user, cents: 3000)
+    wishlist_item.save(validate: false) && wishlist_item.reload
+
+    wishlist_item = WishlistItem.new(domain_name: @english_auction_nil.domain_name, user: @second_place_participant, cents: 7000)
+    wishlist_item.save(validate: false) && wishlist_item.reload
+
+    5.times do |i|
+      u = User.create(
+        email: "user_t#{i}@auction.test",
+        password: "password123",
+        alpha_two_country_code: 'LV',
+        identity_code: nil,
+        given_names: 'Joe John',
+        surname: 'Participant',
+        confirmed_at: Time.zone.now,
+        created_at: Time.zone.now - 1.minute,
+        mobile_phone: "+37255000#{i}",
+        mobile_phone_confirmation_code: "0000",
+        mobile_phone_confirmed_at: Time.zone.now - 1.minute,
+        roles: ['participant'],
+        terms_and_conditions_accepted_at: Time.zone.now - 1.minute,
+        locale: 'en',
+      )
+
+      BillingProfile.create_default_for_user(u.id)
+      u.reload
+
+      wishlist_item = WishlistItem.new(domain_name: @english_auction_nil.domain_name, user: u, cents: 5000)
+      wishlist_item.save(validate: false) && wishlist_item.reload
+    end
+
+    assert_equal Autobider.where(domain_name: @english_auction_nil.domain_name).count, 0
+    assert @english_auction_nil.offers.empty?
+    clear_enqueued_jobs
+
+    # incoming_data = incoming_data_for_auction_should_start_in_future(@english_auction_nil.id)
+    AdminBulkActionService.apply_for_english_auction(
+      auction_elements: {
+        set_starts_at: Time.zone.now,
+        set_ends_at: Time.zone.now + 1.day,
+        starting_price: '5.0',
+        slipping_end: '5',
+        elements_id: @english_auction_nil.id.to_s,
+        deposit: 0.0
+      }
+    )
+    @english_auction_nil.reload
+
+    assert_equal Autobider.where(domain_name: @english_auction_nil.domain_name).count, 7
+
+    priority_autobidder = Autobider.where(domain_name: @english_auction_nil.domain_name).order(cents: :desc, created_at: :asc).first
+    assert_equal priority_autobidder.user, @second_place_participant
   end
 
   private
