@@ -197,7 +197,7 @@ class EnglishOffersIntegrationTest < ActionDispatch::IntegrationTest
     post auction_english_offers_path(auction_uuid: @auction.uuid),
          params: params
 
-    assert_equal response.status, 422
+    assert_equal response.status, 302
     assert @auction.offers.empty?
   end
 
@@ -423,7 +423,7 @@ class EnglishOffersIntegrationTest < ActionDispatch::IntegrationTest
          params: params,
          headers: {}
 
-    assert_equal response.status, 422
+    assert_equal response.status, 302
 
     @auction.reload
     assert @auction.offers.empty?

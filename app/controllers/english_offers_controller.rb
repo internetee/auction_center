@@ -47,8 +47,7 @@ class EnglishOffersController < ApplicationController
         flash[:alert] = @offer.errors.full_messages.join('; ')
       end
 
-      # redirect_to request.referer, status: :unprocessable_entity
-      render 'english_offers/show', status: :unprocessable_entity
+      redirect_to root_path
     end
   end
 
@@ -74,7 +73,7 @@ class EnglishOffersController < ApplicationController
         flash[:alert] = @offer.errors.full_messages.join('; ')
       end
 
-      render 'english_offers/show', status: :unprocessable_entity
+      redirect_to root_path
     end
   end
 
