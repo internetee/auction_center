@@ -1,3 +1,7 @@
+12.04.2023
+* Added translation for denial of deposit and bid payments https://github.com/internetee/auction_center/issues/1028
+
+
 03.03.2023
 * banned users must not be able to make deposit https://github.com/internetee/auction_center/issues/1009
 * fixed extra arg in whishlist job https://github.com/internetee/auction_center/pull/1017
