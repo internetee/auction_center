@@ -153,6 +153,8 @@ class EnglishOffersIntegrationTest < ActionDispatch::IntegrationTest
     post auction_english_offers_path(auction_uuid: @auction.uuid),
                                      params: params,
                                      headers: {}
+    
+    assert_equal flash[:alert], I18n.t('.english_offers.create.ban')
     assert @auction.offers.empty?
   end
 

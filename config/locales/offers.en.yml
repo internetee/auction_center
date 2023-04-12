@@ -35,6 +35,7 @@ en:
 
     create:
       created: "Offer submitted successfully."
+      ban: Teil ei ole lubatud antud oksjonil osaleda!
 
     edit:
       title: "Offer for the reservation of the domain name"

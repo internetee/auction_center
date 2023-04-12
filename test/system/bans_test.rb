@@ -50,7 +50,7 @@ class BansTest < ApplicationSystemTestCase
 
     click_link_or_button('Submit')
 
-    assert(page.has_css?('div.alert', text: 'You are not authorized to access this page'))
+    assert(page.has_css?('div.alert', text: I18n.t('.offers.create.ban')))
   end
 
   def test_banned_user_can_submit_offers_for_other_auctions

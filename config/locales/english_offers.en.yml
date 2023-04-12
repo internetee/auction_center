@@ -32,6 +32,7 @@ en:
 
     create:
       created: "Offer submitted successfully."
+      ban: You are banned from participating in this auction!
 
     edit:
       title: "Offer for the reservation of the domain name"
