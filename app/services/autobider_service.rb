@@ -17,6 +17,9 @@ class AutobiderService
 
     return if filtered_autobiders.empty?
 
+    # filtered_ids = filtered_autobiders.group_by(&:cents).map { |cents, autobidders| autobidders.min_by(&:created_at) }.pluck(:id)
+    # filtered_autobiders = Autobider.where(id: filtered_ids)
+
     if filtered_autobiders.size == 1
       bider.autobid_for_single_pericipant(autobider: filtered_autobiders.first)
     elsif filtered_autobiders.size > 1
@@ -110,8 +113,11 @@ class AutobiderService
 
     owner = highest_autobider.user
 
-    last_created_autobider = autobiders.order(:created_at).last
-    owner = last_created_autobider.user if last_created_autobider.cents == highest_price
+    # last_created_autobider = autobiders.order(:created_at).last
+    # owner = last_created_autobider.user if last_created_autobider.cents == highest_price
+
+    # offer = auction.currently_winning_offer
+    # return if offer.present? && offer.cents >= highest_price
 
     offer = create_or_update_offer(owner: owner, auction: auction, price: highest_price)
 
@@ -121,15 +127,17 @@ class AutobiderService
 
     higher_autobider = autobiders.order('cents DESC').first
 
-    update_bid_if_somebody_has_higher(highest_autobider: higher_autobider, auction: auction)
+    update_bid_if_somebody_has_higher(highest_autobider: higher_autobider, auction: auction, highest_price: highest_price)
     auction.update_ends_at(offer)
   end
 
-  def update_bid_if_somebody_has_higher(highest_autobider:, auction:)
+  def update_bid_if_somebody_has_higher(highest_autobider:, auction:, highest_price:)
     highest_autobider_owner = highest_autobider.user
-    last_offer_owner = auction.currently_winning_offer.user
+    offer = auction.currently_winning_offer
+    last_offer_owner = offer.user
 
     return if highest_autobider_owner == last_offer_owner
+    # return if offer.present? && offer.cents >= highest_price
 
     min_bid_step_in_cents = transform_money_to_cents(auction.min_bids_step)
     skip_validation = min_bid_step_in_cents > highest_autobider.cents ? true : false

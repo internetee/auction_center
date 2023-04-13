@@ -26,7 +26,17 @@ class AdminBulkActionService
       auction = apply_values(auction)
 
       if auction.save
-        FirstBidFromWishlistService.apply_bid(auction: auction)
+        # FirstBidFromWishlistService.apply_bid(auction: auction)
+        wishlists = WishlistItem.where(domain_name: auction.domain_name)
+        wishlists.each do |wishlist|
+          Autobider.create(
+            user_id: wishlist.user_id, 
+            domain_name: wishlist.domain_name, 
+            cents: wishlist.cents
+          )
+        end
+
+        AutobiderService.autobid(auction) if wishlists.present?
       else
         problematic_auctions << wrap_problematic_auction(auction)
       end
