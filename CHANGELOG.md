@@ -1,5 +1,6 @@
 13.04.2023
 * Deposit sum added to deposit payment view https://github.com/internetee/auction_center/issues/1029
+* Wishlist price sets autobidder for english auctions https://github.com/internetee/auction_center/issues/1031
 
 12.04.2023
 * Added translation for denial of deposit and bid payments https://github.com/internetee/auction_center/issues/1028
