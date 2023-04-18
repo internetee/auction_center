@@ -1,3 +1,6 @@
+18.04.2023
+* Fixed auction and registry syncronisation due to invoicing issues https://github.com/internetee/auction_center/issues/1030
+
 13.04.2023
 * Deposit sum added to deposit payment view https://github.com/internetee/auction_center/issues/1029
 * Wishlist price sets autobidder for english auctions https://github.com/internetee/auction_center/issues/1031
