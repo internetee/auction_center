@@ -22,7 +22,7 @@ class Invoice < ApplicationRecord
   validates :user_id, presence: true, on: :create
   validates :issue_date, :due_date, presence: true
   validates :paid_at, presence: true, if: proc { |invoice| invoice.paid? }
-  validates :cents, numericality: { only_integer: true, greater_than: 0 }
+  validates :cents, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
   validates :billing_profile, presence: true, on: :create
 
   validate :user_id_must_be_the_same_as_on_billing_profile_or_nil
