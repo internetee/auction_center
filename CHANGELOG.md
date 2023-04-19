@@ -1,3 +1,6 @@
+19.04.2023
+* Handling of bids over designed upper limit https://github.com/internetee/auction_center/pull/1016
+
 18.04.2023
 * Fixed auction and registry syncronisation due to invoicing issues https://github.com/internetee/auction_center/issues/1030
 
