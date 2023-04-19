@@ -136,6 +136,8 @@ en:
         update: "Change my password"
         create: "Change my password"
 
+  errors:
+    format: "%{message}"
   activerecord:
     errors:
       models:

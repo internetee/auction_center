@@ -111,6 +111,8 @@ et:
         update: "Muuda mu parool"
         create: "Muuda mu parool"
 
+  errors:
+    format: "%{message}"
   activerecord:
     errors:
       models:
