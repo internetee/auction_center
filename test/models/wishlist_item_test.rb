@@ -30,7 +30,7 @@ class WishlistItemTest < ActiveSupport::TestCase
     item.save
 
     assert_not(item.valid?)
-    assert_equal(['has too many items'], item.errors[:wishlist])
+    assert_equal(['Wishlist has too many items'], item.errors[:wishlist])
   end
 
   def test_domain_name_is_automatically_converted_to_unicode

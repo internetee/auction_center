@@ -14,6 +14,7 @@ et:
       NB: Tegemist on pimeoksjoniga, kus pakkumised ei ole nähtavad.
       Domeeninimele võib olla ka teisi pakkujaid.
       Tee pakkumine vastavalt oma hinnangule domeeninime väärtuse kohta.
+    out_of_range: Pakkumine ebaõnnestus! Pakkumine ületab süsteemi poolt lubatud maksimaalset summat!
 
     new:
       title: "Domeeni registreerimise eelisõiguse pakkumus"

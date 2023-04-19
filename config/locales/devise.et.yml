@@ -110,7 +110,7 @@ et:
   errors:
     messages:
       already_confirmed: "on juba kinnitatud, palun proovi sisse logida"
-      confirmation_period_expired: "tuleb kinnitada 3 päeva jooksul kinnitus teate väljastamisest, palun esita uus taotlus e-posti aadressi kinnitamiseks."
+      confirmation_period_expired: "E-post tuleb kinnitada 3 päeva jooksul kinnitus teate väljastamisest, palun esita uus taotlus e-posti aadressi kinnitamiseks."
       expired: "on aegunud, palun küsi uus"
       not_found: "ei leitud"
       not_locked: "ei ole lukustatud"

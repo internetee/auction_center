@@ -1,6 +1,6 @@
 en:
   wishlist_items:
-    too_many_items: "has too many items"
+    too_many_items: "Wishlist has too many items"
     in_progress: "already in game"
 
     index:

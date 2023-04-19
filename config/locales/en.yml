@@ -135,3 +135,28 @@ en:
       user:
         update: "Change my password"
         create: "Change my password"
+
+  errors:
+    format: "%{message}"
+  activerecord:
+    errors:
+      models:
+        user:
+          attributes:
+            email:
+              blank: Email can't be blank
+            password:
+              blank: Password can't be blank
+        wishlist:
+          attributes:
+            domain_name:
+              invalid: Domain name is invalid
+        offer:
+          attributes:
+            cents:
+              less_than: Your bid is denied - maximum allowed bid sum exceeded!
+  okcomputer:
+    check:
+      passed: Passed
+      failed: Failed
+      

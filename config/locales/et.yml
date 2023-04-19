@@ -110,3 +110,28 @@ et:
       user:
         update: "Muuda mu parool"
         create: "Muuda mu parool"
+
+  errors:
+    format: "%{message}"
+  activerecord:
+    errors:
+      models:
+        user:
+          attributes:
+            email:
+              blank: E-post ei saa olla tühi
+            password:
+              blank: Parool ei saa olla tühi
+        wishlist:
+          attributes:
+            domain_name:
+              invalid: Domeeninimi on vigane
+        offer:
+          attributes:
+            cents:
+              less_than: Pakkumine ebaõnnestus! Pakkumine ületab süsteemi poolt lubatud maksiaalset summat!
+  okcomputer:
+    check:
+      passed: Passed
+      failed: Failed
+      
