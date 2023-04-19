@@ -11,8 +11,8 @@ class UserTest < ActiveSupport::TestCase
     user = User.new
 
     assert_not(user.valid?)
-    assert_equal(["can't be blank"], user.errors[:password])
-    assert_equal(["can't be blank"], user.errors[:email])
+    assert_equal(["Password can't be blank"], user.errors[:password])
+    assert_equal(["Email can't be blank"], user.errors[:email])
     assert_equal(["can't be blank", 'is invalid'], user.errors[:mobile_phone])
     assert_equal(['Terms and conditions must be accepted'], user.errors[:terms_and_conditions])
     assert_equal(["can't be blank"], user.errors[:given_names])
