@@ -42,7 +42,11 @@ export default class extends Controller {
   setupPushNotifications() {
     const applicationServerKey = this.urlBase64ToUint8Array(this.vapidPublicValue);
 
+    console.log(this.vapidPublicValue);
+
     navigator.serviceWorker.register("/service-worker.js", {scope: "./" }).then((registration) => {
+      console.log('Service Worker registered successfully:', registration);
+
       registration.pushManager.subscribe({
         userVisibleOnly: true,
         applicationServerKey: applicationServerKey
@@ -70,7 +74,9 @@ export default class extends Controller {
         localStorage.setItem('block-webpush-modal', 'true');
         document.querySelector('.webpush-modal').style.display = 'none'
       });
-    });
+    }).catch(err => {
+      console.log('Service Worker registration failed:', err);
+    });;
   }
 
   close() {

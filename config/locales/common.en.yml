@@ -32,7 +32,7 @@ en:
 
     webpush_modal:
       webpush_title: Web Push
-      webpush_descr: .ee auction portal uses web push notifications to keep you informed when you have been over-bid without you needing to have the site open all the time.
+      webpush_descr: The .ee auction portal employs web push notifications to keep you informed of any over-bidding activity, without requiring you to keep the website open constantly.
       webpush_agree: Agree
       webpush_decline: "No, thanks"
 
