@@ -72,6 +72,7 @@ en:
       delete: "Delete account"
       review_terms_and_conditions: "Review terms and conditions"
       daily_summary: "Daily summary to email"
+      webpush_available: Webpush Available
 
     destroy:
       deleted: "You have been logged out and your account has been deleted."
