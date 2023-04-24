@@ -550,4 +550,79 @@ class EnglishOffersIntegrationTest < ActionDispatch::IntegrationTest
     assert_equal @user.notifications.count, 0
     assert_equal @user_two.notifications.count, 1
   end
+
+
+  def test_notification_should_receive_only_participant_who_bid_was_overbidded
+    assert @auction.offers.empty?
+
+    5.times do |i|
+      u = User.create(
+        email: "user_t#{i}@auction.test",
+        password: "password123",
+        alpha_two_country_code: 'LV',
+        identity_code: nil,
+        given_names: 'Joe John',
+        surname: 'Participant',
+        confirmed_at: Time.zone.now,
+        created_at: Time.zone.now - 1.minute,
+        mobile_phone: "+37255000#{i}",
+        mobile_phone_confirmation_code: "0000",
+        mobile_phone_confirmed_at: Time.zone.now - 1.minute,
+        roles: ['participant'],
+        terms_and_conditions_accepted_at: Time.zone.now - 1.minute,
+        locale: 'en',
+      )
+
+      u.reload
+      b = BillingProfile.create_default_for_user(u.id)
+
+      params = {
+        offer: {
+          auction_id: @auction.id,
+          user_id: u.id,
+          price: "1#{i}.0".to_i,
+          billing_profile_id:b.id
+        }
+      }
+
+      sign_in u
+  
+      post auction_english_offers_path(auction_uuid: @auction.uuid),
+           params: params,
+           headers: {}
+
+      u.reload && @auction.reload
+
+      sign_out u
+    end
+
+    five_last_users = User.last(5)
+
+    4.times do |i|
+      assert_equal five_last_users[i].notifications.count, 1
+    end
+
+    assert_equal five_last_users.last.notifications.count, 0
+
+    assert_equal @user.notifications.count, 0
+    params = {
+      offer: {
+        auction_id: @auction.id,
+        user_id: @user.id,
+        price: 20.0,
+        billing_profile_id:@user.billing_profiles.first.id
+      }
+    }
+
+    sign_in @user
+
+    post auction_english_offers_path(auction_uuid: @auction.uuid),
+         params: params,
+         headers: {}
+
+    @auction.reload && five_last_users.last.reload
+
+    assert_equal five_last_users.last.notifications.count, 1
+    assert_equal @user.notifications.count, 0
+  end
 end
