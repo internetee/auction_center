@@ -51,6 +51,8 @@ class InvoicesController < ApplicationController
   end
 
   def pay_all_bills
+    return
+
     issued_invoices = invoices_list_by_status(Invoice.statuses[:issued])
     response = EisBilling::BulkInvoicesService.call(invoices: issued_invoices,
                                                     customer_url: linkpay_callback_url)
