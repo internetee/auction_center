@@ -28,13 +28,16 @@
             </tbody>
         </table>
 
-        <% if @issued_invoices.any? %>
+        <%# <% if @issued_invoices.any? %>
+        
+        <% if false %>        
             <div class="column sixteen wide">
                 <h3><%= t('.pay') %></h3>
                 <%= button_to t('invoices.index.pay'), 
                               pay_all_bills_invoices_path,
                               method: :post,
-                              class: 'ui button primary' %>
+                              class: 'ui button primary',
+                              disabled: true %>
             </div>
         <% end %>
 
