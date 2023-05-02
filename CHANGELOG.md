@@ -1,3 +1,6 @@
+02.05.2023
+* Temporarily hide pay all invoices option https://github.com/internetee/auction_center/pull/1045
+
 19.04.2023
 * Handling of bids over designed upper limit https://github.com/internetee/auction_center/pull/1016
 
