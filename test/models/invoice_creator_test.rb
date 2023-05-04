@@ -118,4 +118,39 @@ class InvoiceCreatorTest < ActiveSupport::TestCase
     assert_equal result.auction.domain_name, auction.domain_name
     assert_equal result.invoice.cents, offer_bid_value - deposit_value
   end
+
+  def test_if_invoice_cents_is_zero_it_should_be_marked_as_paid
+    deposit_value = 50_000
+    offer_bid_value = 50_000
+
+    user = users(:participant)
+    auction = auctions(:english)
+
+    auction.update(enable_deposit: true, requirement_deposit_in_cents: deposit_value, ends_at: Time.zone.now + 10.minutes)
+    auction.reload
+    assert auction.offers.empty?
+    assert auction.enable_deposit?
+
+    DomainParticipateAuction.create(user_id: user.id, auction_id: auction.id)
+    auction.reload
+    user.reload
+
+    Offer.create!(
+      auction: auction,
+      user: user,
+      cents: offer_bid_value,
+      billing_profile: user.billing_profiles.first
+    )
+
+    assert auction.offers.present?
+    auction.update(ends_at: Time.zone.now - 1.minute) && auction.reload
+
+    ResultCreationJob.perform_now
+    auction.reload
+
+    result = Result.last
+    assert_equal result.auction.domain_name, auction.domain_name
+    assert result.invoice.cents.zero?
+    assert_equal result.invoice.status, 'paid'
+  end
 end

@@ -83,7 +83,7 @@ class InvoiceTest < ActiveSupport::TestCase
 
     assert_not(invoice.valid?)
 
-    assert_equal(['must be greater than 0'], invoice.errors[:cents])
+    assert_equal(['must be greater than or equal to 0'], invoice.errors[:cents])
   end
 
   def test_user_must_be_the_same_as_the_one_on_billing_or_nil

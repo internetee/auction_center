@@ -18,6 +18,7 @@ class InvoiceCreator
 
     create_invoice
     send_invoice_to_billing_system(invoice)
+    mark_as_paid_if_sum_is_zero
     invoice
   end
 
@@ -100,5 +101,11 @@ class InvoiceCreator
                                     auction_end: result_auction.ends_at.to_date,
                                     locale: I18n.default_locale)),
     ]
+  end
+
+  def mark_as_paid_if_sum_is_zero
+    return unless invoice.cents.zero?
+
+    invoice.mark_as_paid_at(Time.zone.now)
   end
 end
