@@ -1,5 +1,6 @@
 04.05.2023
 * Web push notifications https://github.com/internetee/auction_center/pull/1023
+* Handling 0 invoices for auctions with deposit requirement https://github.com/internetee/auction_center/issues/1042
 
 03.05.2023
 * Restore the pay all invoices option https://github.com/internetee/auction_center/pull/1046
