@@ -106,6 +106,6 @@ class InvoiceCreator
   def mark_as_paid_if_sum_is_zero
     return unless invoice.cents.zero?
 
-    invoice.update!(status: 'paid', paid_at: Time.zone.now)
+    invoice.mark_as_paid_at(Time.zone.now)
   end
 end
