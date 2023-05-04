@@ -32,8 +32,7 @@
     </nav>
     <nav class="menu-user aligned">
       <% if current_user %>
-        <%#= link_to destroy_user_session_path, method: :delete, data: {turbo_method: :delete}, "data-turbo-method": "delete" do %>
-        <%= button_to destroy_user_session_path, method: :delete, style: 'padding: unset; border: none; background: transparent;' do %>
+        <%= link_to(destroy_user_session_path, method: :delete) do %>
           <i aria-hidden="true" class="user icon"></i><%= t(:sign_out) %>
         <% end %>
       <% else %>
