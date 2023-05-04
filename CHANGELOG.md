@@ -1,3 +1,6 @@
+04.05.2023
+* Web push notifications https://github.com/internetee/auction_center/pull/1023
+
 03.05.2023
 * Restore the pay all invoices option https://github.com/internetee/auction_center/pull/1046
 * Added rake task to change settings in the database https://github.com/internetee/auction_center/issues/1047
