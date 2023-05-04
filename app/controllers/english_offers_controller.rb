@@ -1,4 +1,4 @@
-class EnglishOffersController < ApplicationController
+class EnglishOffersController < ApplicationController  
   before_action :authenticate_user!
   before_action :set_captcha_required
   before_action :set_offer, only: %i[show edit update]
@@ -7,9 +7,11 @@ class EnglishOffersController < ApplicationController
   before_action :authorize_offer_for_user, except: %i[new create]
   before_action :prevent_check_for_invalid_bid, only: [:update]
   # before_action :captcha_check, only: [:update, :create]
-
+  
   protect_from_forgery with: :null_session
-
+  
+  include OfferNotifable
+  
   # GET /auctions/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/offers/new
   def new
     @auction = Auction.find_by!(uuid: params[:auction_uuid])
@@ -38,8 +40,9 @@ class EnglishOffersController < ApplicationController
     authorize! :manage, @offer
 
     if create_predicate(auction)
-      update_auction_values(auction, 'Offer submitted successfully.')
       broadcast_replace_auction_offer(auction)
+      send_outbided_notification(auction: auction, offer: @offer, flash: flash)
+      update_auction_values(auction, t('english_offers.create.created'))
     else
       if @offer.errors.full_messages_for(:cents).present?
         flash[:alert] = @offer.errors.full_messages_for(:cents).join
@@ -64,8 +67,9 @@ class EnglishOffersController < ApplicationController
     auction = Auction.with_user_offers(current_user.id).find_by(uuid: @offer.auction.uuid)
 
     if update_predicate(auction)
-      update_auction_values(auction, t('english_offers.edit.bid_updated'))
       broadcast_replace_auction_offer(auction)
+      send_outbided_notification(auction: auction, offer: @offer, flash: flash)
+      update_auction_values(auction, t('english_offers.edit.bid_updated'))
     else
       if @offer.errors.full_messages_for(:cents).present?
         flash[:alert] = @offer.errors.full_messages_for(:cents).join

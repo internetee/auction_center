@@ -31,7 +31,7 @@ class InvoicesTest < ApplicationSystemTestCase
 
     @invoice.reload
 
-    page.find :css, '#flash', wait: 10
+    page.find :css, '#flash', wait: 10, match: :first
     assert_text('Updated successfully')
     page.html.include? 'Joe John Participant'
 

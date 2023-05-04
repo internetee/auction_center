@@ -60,6 +60,11 @@
                 </table>
 
                 <div class="buttons">
+                    <button data-controller='profile-webpush'
+                            data-profile-webpush-target='button'
+                            data-profile-webpush-vapid-public-value="<%= Rails.configuration.customization[:vapid_public] %>"
+                            data-action='push-notification#setupPushNotifications'
+                            class="ui button primary"><%= t('.webpush_available') %></button>
                     <%= link_to t(:edit), edit_user_path(@user.uuid), class: "ui button primary" %>
                     <%= link_to t(:billing), billing_profiles_path, class: "ui button primary" %>
                     <%= link_to t('.delete'), user_path(@user.uuid),

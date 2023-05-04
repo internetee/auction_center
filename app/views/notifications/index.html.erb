@@ -1,0 +1,28 @@
+<%= turbo_frame_tag "notifications" do %>
+  <div style='position: relative; display: flex; 
+                                flex-direction: column; justify-content: center; align-items: center;
+                                cursor: pointer;' data-controller='dropdown update_notifications'
+                                data-update_notifications-url-value="<%= mark_as_read_notifications_path(format: :turbo_stream) %>">
+
+    <div id='bell-broadcast' class='bell-broadcast'>
+      <%= render partial: 'bell', locals: { any_unread: current_user.notifications.any?(&:unread?) } %>
+    </div>
+
+
+    <div style='position: absolute; top: 40px; right: -60px; border: 2px solid black; visibility: hidden; background: white; overflow-y: auto; margin-bottom: 30px;' data-dropdown-target='menu' class='dropdown-custom'>
+      <ul id='notifications-list' style='list-style-type: none; padding: 0; margin: 0; width: 350px; max-height: 600px;' >
+          
+          <% if @notifications.present? %>
+            <%= render @notifications %>
+          <% else %>
+            <li style='padding: 10px 20px; display: flex; flex-direction: column; width: 400px;'>
+              <p style='margin-top: 10px; text-weight: bold; font-size: 20px;'>
+                <%= I18n.t('.no_any_notifications') %>
+              </p>
+            </li>
+          <% end %>
+          
+      </ul>
+    </div>
+  </div>
+<% end %>

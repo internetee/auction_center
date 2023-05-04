@@ -113,12 +113,12 @@ class ResultCreatorTest < ActiveSupport::TestCase
     assert_nil(result_creator.call)
   end
 
-  # def test_creator_does_not_email_winner_for_auction_without_offers
-  #   result_creator = ResultCreator.new(@auction_without_offers.id)
-  #   result_creator.call
+  def test_creator_does_not_email_winner_for_auction_without_offers
+    result_creator = ResultCreator.new(@auction_without_offers.id)
+    result_creator.call
 
-  #   assert(ActionMailer::Base.deliveries.empty?)
-  # end
+    assert(ActionMailer::Base.deliveries.empty?)
+  end
 
   def test_creator_does_not_email_winner_for_existing_result
     result_creator = ResultCreator.new(@auction_with_result.id)
@@ -137,6 +137,37 @@ class ResultCreatorTest < ActiveSupport::TestCase
 
     assert_equal('Bid for the with-offers.test domain was unsuccessful', last_email.subject)
     assert_equal(['second_place@auction.test'], last_email.to)
+  end
+
+  def test_participants_should_receive_notifications_if_they_lose
+    users_ids = @auction_with_offers.offers.pluck(:user_id)
+    participants = User.where(id: users_ids)
+
+    winner_user = @auction_with_offers.currently_winning_offer.user
+
+    assert_equal winner_user.notifications.count, 0
+    result_creator = ResultCreator.new(@auction_with_offers.id)
+    result_creator.call
+
+    perform_enqueued_jobs
+    winner_user.reload
+
+    participants.each do |participant|
+      next if participant == winner_user
+      assert_equal participant.notifications.count, 1
+      notification = participant.notifications.first
+      assert_not_equal notification.to_notification.message,
+                   I18n.t('.participant_win_auction', name: @auction_with_offers.domain_name)
+      assert_equal notification.to_notification.message,
+                   I18n.t('.participant_lost_auction', name: @auction_with_offers.domain_name)
+    end
+
+    assert_equal winner_user.notifications.count, 1
+    notification = winner_user.notifications.first
+    assert_equal notification.to_notification.message,
+                 I18n.t('.participant_win_auction', name: @auction_with_offers.domain_name)
+    assert_not_equal notification.to_notification.message,
+                 I18n.t('.participant_lost_auction', name: @auction_with_offers.domain_name)
   end
 
   def test_creator_emails_winner_for_auction_with_offers
@@ -204,6 +235,6 @@ class ResultCreatorTest < ActiveSupport::TestCase
     result_creator.call
 
     # one of them creation results job
-    assert_enqueued_jobs 2
+    assert_enqueued_jobs 5  
   end
 end

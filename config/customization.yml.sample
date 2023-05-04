@@ -25,6 +25,8 @@ default: &default
   email_from_address: "noreply@internet.ee"
 
   cable_redis_url: redis://redis:6379/4
+  vapid_public: "BGgFbsalgk-emt7f0f279JsxF15NOfEJKQ-7w04FmXseeWt4pRvCaD7EMl6PqS-BHrwO3QWsPUOGkAjNWNBOVLY="
+  vapid_private: "2xl1lvaQARjFHRCKrPo2B-MbTAc1IZ3UrfugDh6cJiE="
 
   mailer:
     # Host to which links from emails should redirect to

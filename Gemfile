@@ -33,6 +33,7 @@ gem 'skylight'
 gem 'sprockets', '~> 4.0'
 gem 'turbolinks', '~> 5'
 gem 'webpacker', '~> 6.0.0.rc.5'
+gem 'webpush'
 gem 'i18n-debug', group: :development
 
 # token
@@ -75,3 +76,5 @@ gem 'pagy', '~> 6.0'
 
 # For mock username
 gem 'faker'
+
+gem "noticed", "~> 1.6"

@@ -64,6 +64,7 @@ et:
       delete: "Kustuta konto"
       review_terms_and_conditions: "Tutvu tingimustega"
       daily_summary: "Igapäevane oksjoninimekiri meilile"
+      webpush_available: Webpush saadaval
 
     destroy:
       deleted: "Oled välja logitud ja sinu konto on kustutatud."

@@ -333,6 +333,47 @@ class EnglishOffersIntegrationTest < ActionDispatch::IntegrationTest
     assert_broadcasts list_stream_name, 2
   end
 
+  def test_broadcast_notifications_when_made_bid
+    assert @auction.offers.empty?
+    assert_equal @user.notifications.count, 0
+    assert_equal @user_two.notifications.count, 0
+
+    BillingProfile.create_default_for_user(@user_two.id)
+    @user_two.reload
+
+    Offer.create!(
+      auction: @auction,
+      user: @user_two,
+      cents: 100_0,
+      billing_profile: @user_two.billing_profiles.first
+    )
+
+    params = {
+      offer: {
+        auction_id: @auction.id,
+        user_id: @user.id,
+        price: 100_00,
+        billing_profile_id: @user.billing_profiles.first.id
+      }
+    }
+
+    post auction_english_offers_path(auction_uuid: @auction.uuid),
+         params: params,
+         headers: {}
+
+    @user.reload && @user_two.reload
+
+    assert_equal @user.notifications.count, 0
+    assert_equal @user_two.notifications.count, 1
+
+    notify_signed_name = Turbo::StreamsChannel.signed_stream_name [@user_two, :flash]
+    notify_stream_name = Turbo::StreamsChannel.verified_stream_name notify_signed_name
+
+    perform_enqueued_jobs
+
+    assert_broadcasts notify_stream_name, 1
+  end
+
   def test_multiple_users_can_set_bids
     10.times do |i|
       u = User.create(
@@ -420,12 +461,168 @@ class EnglishOffersIntegrationTest < ActionDispatch::IntegrationTest
     }
 
     post auction_english_offers_path(auction_uuid: @auction.uuid),
-         params: params,
-         headers: {}
+    params: params,
+    headers: {}
 
     assert_equal response.status, 302
 
     @auction.reload
     assert @auction.offers.empty?
+  end
+
+  def test_participants_should_receive_notfication_if_someone_outbid_by_creating
+    assert @auction.offers.empty?
+    assert_equal @user.notifications.count, 0
+    assert_equal @user_two.notifications.count, 0
+
+    BillingProfile.create_default_for_user(@user_two.id)
+    @user_two.reload
+
+    Offer.create!(
+      auction: @auction,
+      user: @user_two,
+      cents: 100_0,
+      billing_profile: @user_two.billing_profiles.first
+    )
+
+    params = {
+      offer: {
+        auction_id: @auction.id,
+        user_id: @user.id,
+        price: 100_00,
+        billing_profile_id: @user.billing_profiles.first.id
+      }
+    }
+
+    post auction_english_offers_path(auction_uuid: @auction.uuid),
+         params: params,
+         headers: {}
+
+    @user.reload && @user_two.reload
+
+    assert_equal @user.notifications.count, 0
+    assert_equal @user_two.notifications.count, 1
+  end
+
+  def test_participants_should_receive_notfication_if_someone_outbid_by_updating
+    assert @auction.offers.empty?
+    assert_equal @user.notifications.count, 0
+    assert_equal @user_two.notifications.count, 0
+
+    BillingProfile.create_default_for_user(@user_two.id)
+    @user_two.reload
+
+    Offer.create!(
+      auction: @auction,
+      user: @user,
+      cents: 100_0,
+      billing_profile: @user.billing_profiles.first
+    )
+
+    Offer.create!(
+      auction: @auction,
+      user: @user_two,
+      cents: 120_0,
+      billing_profile: @user_two.billing_profiles.first
+    )
+
+    @user.reload && @user_two.reload
+    assert_equal @user.notifications.count, 0
+    assert_equal @user_two.notifications.count, 0
+
+    params = {
+      offer: {
+        auction_id: @auction.id,
+        user_id: @user.id,
+        price: 160.0,
+        billing_profile_id: @user.billing_profiles.first.id
+      }
+    }
+
+    clear_enqueued_jobs
+
+    patch english_offer_path(uuid: @auction.offers.first.uuid),
+          params: params,
+          headers: {}
+
+    @user.reload && @user_two.reload
+
+    assert_equal @user.notifications.count, 0
+    assert_equal @user_two.notifications.count, 1
+  end
+
+
+  def test_notification_should_receive_only_participant_who_bid_was_overbidded
+    assert @auction.offers.empty?
+
+    5.times do |i|
+      u = User.create(
+        email: "user_t#{i}@auction.test",
+        password: "password123",
+        alpha_two_country_code: 'LV',
+        identity_code: nil,
+        given_names: 'Joe John',
+        surname: 'Participant',
+        confirmed_at: Time.zone.now,
+        created_at: Time.zone.now - 1.minute,
+        mobile_phone: "+37255000#{i}",
+        mobile_phone_confirmation_code: "0000",
+        mobile_phone_confirmed_at: Time.zone.now - 1.minute,
+        roles: ['participant'],
+        terms_and_conditions_accepted_at: Time.zone.now - 1.minute,
+        locale: 'en',
+      )
+
+      u.reload
+      b = BillingProfile.create_default_for_user(u.id)
+
+      params = {
+        offer: {
+          auction_id: @auction.id,
+          user_id: u.id,
+          price: "1#{i}.0".to_i,
+          billing_profile_id:b.id
+        }
+      }
+
+      sign_in u
+  
+      post auction_english_offers_path(auction_uuid: @auction.uuid),
+           params: params,
+           headers: {}
+
+      u.reload && @auction.reload
+
+      sign_out u
+    end
+
+    five_last_users = User.last(5)
+
+    4.times do |i|
+      assert_equal five_last_users[i].notifications.count, 1
+    end
+
+    assert_equal five_last_users.last.notifications.count, 0
+
+    assert_equal @user.notifications.count, 0
+    params = {
+      offer: {
+        auction_id: @auction.id,
+        user_id: @user.id,
+        price: 20.0,
+        billing_profile_id:@user.billing_profiles.first.id
+      }
+    }
+
+    sign_in @user
+
+    post auction_english_offers_path(auction_uuid: @auction.uuid),
+         params: params,
+         headers: {}
+
+    @auction.reload && five_last_users.last.reload
+
+    assert_equal five_last_users.last.notifications.count, 1
+    assert_equal @user.notifications.count, 0
   end
 end
