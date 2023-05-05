@@ -34,8 +34,8 @@ class OffersTest < ApplicationSystemTestCase
 
     visit auction_path(@valid_auction_with_no_offers.uuid)
 
-    assert(page.has_link?('Submit offer'))
-    click_link('Submit offer')
+    assert(page.has_link?('Bid!'))
+    click_link('Bid!')
 
     fill_in('offer[price]', with: '5.12')
     page.evaluate_script("document.getElementById('offer_user_id').value = '#{other_user.id}'")
@@ -48,10 +48,10 @@ class OffersTest < ApplicationSystemTestCase
     sign_in(@user)
     visit auction_path(@valid_auction_with_no_offers.uuid)
 
-    assert(page.has_link?('Submit offer'))
-    click_link('Submit offer')
+    assert(page.has_link?('Bid!'))
+    click_link('Bid!')
 
-    expected_minimum_offer_text = 'Minimum offer is 5.00. The offer does not include VAT'
+    expected_minimum_offer_text = 'Minimum offer is 5,00. The offer does not include VAT'
     assert(page.has_text?(expected_minimum_offer_text))
 
     expected_text =
@@ -67,7 +67,7 @@ class OffersTest < ApplicationSystemTestCase
 
     within('tbody#offers-table-body') do
       assert_text('with-offers.test')
-      assert_text('50.00 €')
+      assert_text('50,00 €')
 
       assert(page.has_link?('with-offers.test', href: offer_path(@offer.uuid)))
     end
@@ -75,7 +75,7 @@ class OffersTest < ApplicationSystemTestCase
 
   def test_needs_to_be_signed_in_to_submit_an_offer
     visit auction_path(@valid_auction.uuid)
-    click_link('Submit offer')
+    click_link('Bid!')
 
     assert_text('You need to sign in or sign up before continuing')
   end
@@ -92,8 +92,8 @@ class OffersTest < ApplicationSystemTestCase
     sign_in(@user)
     visit auction_path(@valid_auction_with_no_offers.uuid)
 
-    assert(page.has_link?('Submit offer'))
-    click_link('Submit offer')
+    assert(page.has_link?('Bid!'))
+    click_link('Bid!')
 
     fill_in('offer[price]', with: '5.12')
     click_link_or_button('Submit')
@@ -105,8 +105,8 @@ class OffersTest < ApplicationSystemTestCase
     sign_in(@user)
     visit auction_path(@valid_auction_with_no_offers.uuid)
 
-    assert(page.has_link?('Submit offer'))
-    click_link('Submit offer')
+    assert(page.has_link?('Bid!'))
+    click_link('Bid!')
 
     fill_in('offer[price]', with: '5.121')
 
@@ -154,7 +154,7 @@ class OffersTest < ApplicationSystemTestCase
     sign_in(@user)
     visit auction_path(@expired_auction.uuid)
 
-    assert_not(page.has_link?('Submit offer'))
+    assert_not(page.has_link?('Bid!'))
 
     visit new_auction_offer_path(@expired_auction.uuid)
 

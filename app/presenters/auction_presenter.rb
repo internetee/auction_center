@@ -33,7 +33,8 @@ class AuctionPresenter < SimpleDelegator
       end
     else
       define_blind_auction_button(url: new_auction_offer_path(auction_uuid: uuid),
-                                  text: I18n.t('auctions.submit_offer'), color: 'secondary')
+                                  text: I18n.t('auctions.submit_offer'),
+                                  color: 'blue')
     end
   end
 
@@ -55,7 +56,7 @@ class AuctionPresenter < SimpleDelegator
 
   def default_english_auction_button
     content_tag(:a, href: new_auction_english_offer_path(auction_uuid: uuid),
-                    class: 'ui button blue') do
+                    class: 'bid_button ui button blue') do
       I18n.t('auctions.bid')
     end
   end

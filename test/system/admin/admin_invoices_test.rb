@@ -26,8 +26,8 @@ class AdminInvoicesTest < ApplicationSystemTestCase
 
     within('tbody.invoices-table-body') do
       assert_text('Orphan Profile')
-      assert_text('10.00 €')
-      assert_text('10.00 €')
+      assert_text('10,00 €')
+      assert_text('10,00 €')
     end
 
     click_link('Orphan Profile')

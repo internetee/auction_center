@@ -26,7 +26,7 @@ class RecaptchaOffersTest < ApplicationSystemTestCase
     visit auction_path(@valid_auction_with_no_offers.uuid)
 
     with_recaptcha_test_keys do
-      click_link('Submit offer')
+      click_link('Bid!')
 
       fill_in('offer[price]', with: '5.12')
       select_from_dropdown('ACME Inc.', from: 'offer[billing_profile_id]')
@@ -46,7 +46,7 @@ class RecaptchaOffersTest < ApplicationSystemTestCase
     visit auction_path(@valid_auction_with_no_offers.uuid)
 
     with_recaptcha_test_keys do
-      click_link('Submit offer')
+      click_link('Bid!')
 
       fill_in('offer[price]', with: '5.12')
       click_link_or_button('Submit')
@@ -60,7 +60,7 @@ class RecaptchaOffersTest < ApplicationSystemTestCase
   def test_recaptcha_skips_in_test_environment
     sign_in(@user)
     visit auction_path(@valid_auction_with_no_offers.uuid)
-    click_link('Submit offer')
+    click_link('Bid!')
 
     fill_in('offer[price]', with: '5.12')
     select_from_dropdown('ACME Inc.', from: 'offer[billing_profile_id]')

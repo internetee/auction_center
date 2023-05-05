@@ -99,7 +99,7 @@ class OfferTest < ActiveSupport::TestCase
 
     offer.billing_profile = nil
     assert_equal(offer.total, Money.new('600', 'EUR'))
-  end	
+  end
 
   def test_offer_must_be_higher_than_minimum_value_allowed_in_settings
     offer = Offer.new
@@ -109,7 +109,7 @@ class OfferTest < ActiveSupport::TestCase
     offer.billing_profile = @billing_profile
 
     assert_not(offer.valid?)
-    assert_equal(['must be higher than 5.00'], offer.errors[:price])
+    assert_equal(['must be higher than 5,00'], offer.errors[:price])
 
     offer.cents = 500
     assert(offer.valid?)

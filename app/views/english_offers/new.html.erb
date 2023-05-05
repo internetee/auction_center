@@ -3,8 +3,13 @@
 <% content_for :hero do %>
     <div class="hero green">
         <h1><%= @offer.auction.domain_name %></h1>
-        <div class="monospace" id="auction_timer" style='margin-top: 30px;'>
-            <%= render partial: 'english_offers/timer', locals: { auction: @offer.auction } %>
+        <div class="monospace" style='margin-top: 30px;'>
+            <span id="timer_message" data-expired-message="<%= t('english_offers.must_be_active') %>">
+                <%= t('english_offers.timer') %>
+            </span>
+            <span id="auction_timer">
+                <%= render partial: 'english_offers/timer', locals: { auction: @offer.auction } %>
+            </span>
         </div>
     </div>
 <% end %>
@@ -24,16 +29,20 @@
             </div>
         <% end %>
 
-        
         <div class="ui two column grid centered" style="margin-bottom: 20px;">
             <div class="">
-                <%= tag.h5 id: 'mini' do %>
-                    <%= t('english_offers.show.min_bid') %> <%= @offer.auction.min_bids_step.to_f %>
+                <%= tag.h5 do %>
+                    <%= t('english_offers.show.min_bid') %>
+                    <span id="mini"><%= Money.from_amount(@auction.min_bids_step.to_f, Setting.find_by(code: 'auction_currency').retrieve) %></span>
                 <% end %>
             </div>
-
-            <div class="" id="current_<%=@offer.auction.id%>_price">
-                <%= render partial: 'current_price_new', locals: { offer: @offer } %>
+            <div class="">
+                <%= tag.h5 class: 'initial-color' do %>
+                    <%= t('english_offers.show.current_price') %>
+                    <span id="current_<%= @auction.id %>_price">
+                        <%= render partial: 'current_price_new', locals: { offer: @offer } %>
+                    </span>
+                <% end %>
             </div>
         </div>
 

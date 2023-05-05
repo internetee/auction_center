@@ -1,9 +1,9 @@
 <%= turbo_stream.update "mini",
-                         html: "<h5>Minimum bid is #{auction.min_bids_step}</h5>".html_safe %>
+                         html: Money.from_amount(auction.min_bids_step.to_f, Setting.find_by(code: 'auction_currency').retrieve) %>
 
 <%= turbo_stream.update "current_#{auction.id}_price",
                          partial: 'english_offers/current_price',
-                         locals: { auction: auction } %>
+                         locals: { auction: auction, user: nil } %>
 
 <%= turbo_stream.update "auction_timer",
                          partial: 'english_offers/timer',

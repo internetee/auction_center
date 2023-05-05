@@ -3,10 +3,13 @@ et:
     domain_name: 'Domeeninimi'
     starts_at: 'Algus'
     ends_at: 'Lõpp'
+    finished_at: "Oksjoni lõppkuupäev"
     finished: "Oksjon on lõppenud"
     winning_bid: "Võidupakkumus"
     highest_price: "Kõrgeim hind"
     auction_type: "Oksjoni tüüp"
+    english: "Inglise"
+    blind: "Pime"
     offers: "Pakkumused"
     offer_actions: "Pakkumistegevused"
     your_current_price: "Sinu pakkumus"
@@ -14,19 +17,21 @@ et:
     starting_price: "Alghind eurodes"
     min_bids_step: "Minimaalne panuse samm eurod"
     slipping_end: "Pikenev lõpp minutites"
-    offer_owner: "Offer owner"
+    offer_owner: "Pakkuja"
     enable_deposit: "Võimaldage tagatisraha"
     disable_deposit: "Deaktiveeri tagatisraha"
     deposit: Tagatisraha
-    bid: Pakkumine!
+    bid: Paku hind!
     participate: Osale!
     all_list: Kuva kõik
     pagination_list: Kuva 15 leheküljel
     finished_auctions: Lõppenud oksjonid
+    you: Sinu pakkumus
+    finished_auctions: Lõppenud oksjonid
 
     still_in_progress: "Töötlemisel"
 
-    submit_offer: "Esita pakkumus"
+    submit_offer: "Paku hind!"
     edit_your_offer: "Muuda pakkumust"
     delete_your_offer: "Kustuta pakkumine"
 
@@ -44,6 +49,10 @@ et:
       enable_deposit: "Võimaldage tagatisraha"
       disable_deposit: "Deaktiveeri tagatisraha"
       deposit: Tagatisraha
+      select_type: "Vali oksjoni tüüp"
+      select_offer_type: "Vali oksjonipakkumiste tüüp"
+      with_offers: "Pakkumistega"
+      without_offers: "Ilma pakkumisteta"
 
     search:
       title: "Otsing"

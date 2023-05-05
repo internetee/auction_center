@@ -17,7 +17,7 @@ class EnglishOffersController < ApplicationController
     @auction = Auction.find_by!(uuid: params[:auction_uuid])
 
     offer = @auction.offer_from_user(current_user.id)
-    redirect_to edit_english_offer_path(offer.uuid), notice: t('offers.already_exists') if offer
+    redirect_to edit_english_offer_path(offer.uuid) if offer
 
     @autobider = Autobider.find_by(domain_name: @auction.domain_name, user: current_user)
     @autobider = current_user.autobiders.build(domain_name: @auction.domain_name) if @autobider.nil?
@@ -40,7 +40,7 @@ class EnglishOffersController < ApplicationController
     authorize! :manage, @offer
 
     if create_predicate(auction)
-      broadcast_replace_auction_offer(auction)
+      broadcast_update_auction_offer(auction)
       send_outbided_notification(auction: auction, offer: @offer, flash: flash)
       update_auction_values(auction, t('english_offers.create.created'))
     else
@@ -58,7 +58,7 @@ class EnglishOffersController < ApplicationController
   def edit
     @auction = @offer.auction
 
-    @autobider = Autobider.find_by(domain_name: @auction.domain_name, user: current_user)
+    @autobider = current_user.autobiders.find_by(domain_name: @auction.domain_name)
     @autobider = current_user.autobiders.build(domain_name: @auction.domain_name) if @autobider.nil?
   end
 
@@ -67,7 +67,7 @@ class EnglishOffersController < ApplicationController
     auction = Auction.with_user_offers(current_user.id).find_by(uuid: @offer.auction.uuid)
 
     if update_predicate(auction)
-      broadcast_replace_auction_offer(auction)
+      broadcast_update_auction_offer(auction)
       send_outbided_notification(auction: auction, offer: @offer, flash: flash)
       update_auction_values(auction, t('english_offers.edit.bid_updated'))
     else
@@ -90,7 +90,7 @@ class EnglishOffersController < ApplicationController
     end
   end
 
-  def broadcast_replace_auction_offer(auction)
+  def broadcast_update_auction_offer(auction)
     Offers::UpdateBroadcastService.call({ auction: auction })
   end
 

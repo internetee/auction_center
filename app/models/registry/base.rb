@@ -4,9 +4,7 @@ module Registry
     BASE_URL = URI(AuctionCenter::Application.config.customization.dig(:registry_integration,
                                                                        :url))
 
-    attr_reader :body_as_string
-    attr_reader :code_as_string
-    attr_reader :response
+    attr_reader :body_as_string, :code_as_string, :response
 
     def perform_request(request)
       @response = Net::HTTP.start(BASE_URL.host, BASE_URL.port,

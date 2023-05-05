@@ -5,6 +5,9 @@ et:
   edit: "Muuda"
   submit: "Esita"
   delete: "Kustuta"
+  cancel: "Katkesta"
+  all: "Kõik"
+  clear: "Tühista"
 
   in_local_language: "Eesti keeles"
 
@@ -85,6 +88,12 @@ et:
   search_by_domain_name: "Otsi domeeni nime järgi"
   search_by_email: "Otsi e-posti aadressi järgil"
   search_limit: "Otsingu tulemusena kuvatakse %{limit} esimest tulemust."
+
+  number:
+    currency:
+      format:
+        delimiter: ""
+        separator: ","
 
   time:
     formats:

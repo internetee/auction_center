@@ -10,7 +10,7 @@
         }
 </style>
 
-<%= turbo_stream_from "auctions" %>
+<%= turbo_stream_from 'auctions' %>
 
 <% content_for :hero do %>
     <div class="hero green">
@@ -48,12 +48,12 @@
             <%# two fields %>
                 <div class="" id='auction_type_filter_wrapper' data-controller='auction_type_handler'>
                     <div class="field">
-                            <%= f.label :type, 'Select type of auction' %>
-                            <%= f.select :type, options_for_select(Auction.platforms, selected: params[:type]), {include_blank: 'All'}, {class: '', data: { action: 'change->auction_type_handler#add_dropdown'} } %>
+                            <%= f.label :type, t('auctions.index.select_type') %>
+                            <%= f.select :type, options_for_select(Auction.platforms.map {|k, v| [t("auctions.#{k}"), v]}, selected: params[:type]), { include_blank: t(:all) }, { class: '', data: { action: 'change->auction_type_handler#add_dropdown'} } %>
                     </div>
                     <div class="field" style="display: none;" id="auction_with_offers">
-                            <%= f.label :auction_offer_type, 'Select type of auction offers' %>
-                            <%= f.select :auction_offer_type, [['With Offers', 'with_offers'], ['Without Offers', 'without_offers']], {include_blank: 'All'}, {class: '' } %>
+                            <%= f.label :auction_offer_type, t('auctions.index.select_offer_type') %>
+                            <%= f.select :auction_offer_type, [[t('auctions.index.with_offers'), 'with_offers'], [t('auctions.index.without_offers'), 'without_offers']], { include_blank: t(:all) }, { class: '' } %>
                     </div>
                 </div>
 
@@ -62,11 +62,17 @@
         
     </div>
     <div class="field">
-        <%= link_to 'Clear', request.path, class: 'ui primary button' %>
+        <%= link_to t(:clear), request.path, class: 'ui primary button' %>
     </div>
 </div>
 
-<div class="u-container">
+<div class="u-container" data-controller="english-offers" 
+                         data-action="turbo:before-stream-render@document->english-offers#beforeStreamRender"
+                         data-english-offers-user-id-value="<%= current_user&.id %>"
+                         data-english-offers-bid-text-value="<%= t('auctions.bid') %>"
+                         data-english-offers-participate-text-value="<%= t('auctions.participate') %>"
+                         data-english-offers-english-text-value="<%= t('auctions.english') %>"
+                         data-english-offers-blind-text-value="<%= t('auctions.blind') %>">
     <div class="margin-block">
 
     <div class="ui grid">
@@ -108,17 +114,17 @@
                                 <%= t('auctions.your_current_price') %>
                                 <%= sort_link_to "", "users_offer_cents" %>
                             </th>
-                            <th>
+                            <th class="four wide">
                                 <%= t('auctions.offer_owner') %>
                                 <%= sort_link_to "", "platform" %>
                             </th>
-                            <th class="auctions-table-cell-name-no-mobile center aligned five wide"><%= t('auctions.offer_actions') %></th>
+                            <th class="auctions-table-cell-name-no-mobile center aligned"><%= t('auctions.offer_actions') %></th>
                         </tr>
                     </thead>
 
                     <%= tag.tbody id: "bids", class: 'contents' do %>
                         <% @auctions.uniq.each do |auction| %>
-                            <%= render partial: 'auction', locals: { auction: auction, q_user: current_user } %>
+                            <%= render partial: 'auction', locals: { auction: auction, user: current_user } %>
                         <% end %>
                     <% end %>
                 </table>

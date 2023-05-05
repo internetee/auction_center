@@ -1,0 +1,22 @@
+et:
+  pagy:
+
+    per_page: "Tulemusi lehel"
+
+    item_name:
+      one: "kirje"
+      other: "kirjet"
+
+    nav:
+      prev: 'Eelmised'
+      next: 'Järgmised'
+      gap: "&hellip;"
+
+    info:
+      no_items: "%{item_name} ei leitud"
+      single_page: "Kuvan <b>%{count}</b> %{item_name}"
+      multiple_pages: "Kuvan %{item_name} <b>%{from}-%{to}</b> / <b>%{count}</b>-st"
+
+    combo_nav_js: "<label>Lk %{page_input}/%{pages}</label>"
+
+    items_selector_js: "<label>Kuva %{items_input} %{item_name} lehekülje kohta</label>"

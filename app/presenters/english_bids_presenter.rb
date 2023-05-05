@@ -1,5 +1,6 @@
 class EnglishBidsPresenter
   include ActionView::Helpers::TagHelper
+  include ActionView::Context
 
   attr_reader :auction
 
@@ -24,5 +25,28 @@ class EnglishBidsPresenter
     return auction.ends_at if auction.offers.empty?
 
     auction.offers.order(created_at: :desc).first.created_at + auction.slipping_end.minutes + 1.minute
+  end
+
+  def bidder_name(offer, current_user, in_progress: true)
+    return unless offer
+
+    is_user_offer = offer.billing_profile.user_id == current_user&.id
+    you = is_user_offer ? " (#{I18n.t('auctions.you')})" : ''
+    content_tag(:span) do
+      in_progress ? "#{offer.username}#{you}" : offer.billing_profile.name
+    end
+  end
+
+  def current_price(offer, current_user)
+    return unless offer
+
+    is_user_offer = offer.billing_profile.user_id == current_user&.id
+    username = is_user_offer ? I18n.t('auctions.you').to_s : offer.username
+    content_tag(:span, class: 'current_price',
+                       data: { 'user-id': offer.user_id, you: I18n.t('auctions.you') }) do
+      content = "#{offer.price} "
+      content << content_tag(:span, (username.nil? ? '' : "(#{username})"), class: 'bidder')
+      content.html_safe
+    end
   end
 end

@@ -11,7 +11,7 @@ class AssignPlatformTest < ActiveSupport::TestCase
     run_task
 
     a.reload
-    assert_equal a.platform, "blind"
+    assert_equal a.platform, 'blind'
   end
 
   private

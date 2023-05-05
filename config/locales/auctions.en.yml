@@ -8,6 +8,8 @@ en:
     winning_bid: Winning bid
     highest_price: "Highest price"
     auction_type: "Auction type"
+    english: "English"
+    blind: "Blind"
     offers: "Offers"
     turns_count: "Turns count"
     offer_actions: "Offer actions"
@@ -25,11 +27,13 @@ en:
     all_list: List all auctions
     pagination_list: List 15 auctions per page
     finished_auctions: Finished auctions
+    you: Your offer
+    finished_auctions: Finished auctions
 
     still_in_progress: "Still in progress"
 
-    submit_offer: "Submit offer"
-    edit_your_offer: "Edit"
+    submit_offer: "Bid!"
+    edit_your_offer: "Edit offer"
     delete_your_offer: "Delete"
 
     index:
@@ -40,6 +44,10 @@ en:
       enable_deposit: "Enable deposit"
       disable_deposit: "Disable deposit"
       deposit: Deposit
+      select_type: Select type of auction
+      select_offer_type: Select type of auction offers
+      with_offers: With Offers
+      without_offers: Without Offers
 
     search:
       title: "Auction search"

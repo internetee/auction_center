@@ -1,15 +1,22 @@
-<%= turbo_stream_from "auctions_offer_#{@offer.auction.id}" %>
+<%= turbo_stream_from "auctions_offer_#{@auction.id}" %>
 
 <% content_for :hero do %>
     <div class="hero green">
-        <h1><%= @offer.auction.domain_name %></h1>
-        <div id="auction_timer">
-            <%= render partial: 'english_offers/timer', locals: { auction: @offer.auction } %>
+        <h1><%= @auction.domain_name %></h1>
+        <div class="monospace" style='margin-top: 30px;'>
+            <span id="timer_message" data-expired-message="<%= t('english_offers.must_be_active') %>">
+                <%= t('english_offers.timer') %>
+            </span>
+            <span id="auction_timer">
+                <%= render partial: 'english_offers/timer', locals: { auction: @auction } %>
+            </span>
         </div>
     </div>
 <% end %>
 
-<div class="u-container centered">
+<div class="u-container centered" data-controller="english-offers" 
+                                  data-action="turbo:before-stream-render@document->english-offers#beforeStreamRender"
+                                  data-english-offers-user-id-value="<%= current_user.id %>">
     <div class="u-container margin-block">
         <% if @offer.errors.any? %>
             <div class="ui message">
@@ -26,27 +33,32 @@
 
         <div class="ui two column grid centered" style="margin-bottom: 20px;">
             <div class="">
-                <%= tag.h5 id: 'mini' do %>
-                    <%= t('english_offers.show.min_bid') %> <%= @offer.auction.min_bids_step.to_f %>
+                <%= tag.h5 do %>
+                    <%= t('english_offers.show.min_bid') %>
+                    <span id="mini"><%= Money.from_amount(@auction.min_bids_step.to_f, Setting.find_by(code: 'auction_currency').retrieve) %></span>
                 <% end %>
             </div>
 
-            <div class="" id="current_<%=@offer.auction.id%>_price">
-                <%= render partial: 'current_price', locals: { auction: @offer.auction } %>
+             <div class="">
+                <%= tag.h5 id: 'current_price_wrapper', class: "initial-color current_#{@auction.currently_winning_offer&.user_id}_user" do %>
+                    <%= t('english_offers.show.current_price') %>
+                    <span id="current_<%= @auction.id %>_price">
+                        <%= render partial: 'current_price', locals: { auction: @auction, user: current_user } %>
+                    </span>
+                <% end %>
             </div>
         </div>
 
 
         <hr>
-
         <div data-turbo="true">
             <%= turbo_frame_tag 'autobider_scope' do %>
                 <%= render partial: 'autobider_value', locals: { autobider: @autobider } %>
             <% end %>
         </div>
 
-            <div>
-                <%= render partial: 'form', locals: { offer: @offer, url: english_offer_path(@offer.uuid) } %>
-            </div>
+        <div>
+            <%= render partial: 'form', locals: { offer: @offer, url: english_offer_path(@offer.uuid) } %>
+        </div>
     </div>
 </div>

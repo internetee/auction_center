@@ -45,7 +45,7 @@ class BansTest < ApplicationSystemTestCase
     sign_in(@participant)
 
     visit auction_path(@valid_auction_with_no_offers.uuid)
-    click_link('Submit offer')
+    click_link('Bid!')
     fill_in('offer[price]', with: '5.12')
 
     click_link_or_button('Submit')
@@ -58,7 +58,7 @@ class BansTest < ApplicationSystemTestCase
 
     sign_in(@participant)
     visit auction_path(@valid_auction_with_offers.uuid)
-    click_link('Submit offer')
+    click_link('Bid!')
     fill_in('offer[price]', with: '5.12')
     click_link_or_button('Submit')
 
