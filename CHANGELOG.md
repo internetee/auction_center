@@ -1,3 +1,7 @@
+05.05.2023
+* Improved indication of my bids https://github.com/internetee/auction_center/issues/1014
+* Translation fixes https://github.com/internetee/auction_center/issues/1020
+
 04.05.2023
 * Web push notifications https://github.com/internetee/auction_center/pull/1023
 * Handling 0 invoices for auctions with deposit requirement https://github.com/internetee/auction_center/issues/1042
