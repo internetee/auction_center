@@ -13,7 +13,7 @@ class UserTest < ActiveSupport::TestCase
     assert_not(user.valid?)
     assert_equal(["Password can't be blank"], user.errors[:password])
     assert_equal(["Email can't be blank"], user.errors[:email])
-    assert_equal(["can't be blank", 'is invalid'], user.errors[:mobile_phone])
+    assert_equal(["can't be blank", 'Phone number is invalid'], user.errors[:mobile_phone])
     assert_equal(['Terms and conditions must be accepted'], user.errors[:terms_and_conditions])
     assert_equal(["can't be blank"], user.errors[:given_names])
     assert_equal(["can't be blank"], user.errors[:surname])
@@ -175,7 +175,7 @@ class UserTest < ActiveSupport::TestCase
                         country_code: @administrator.country_code)
 
     assert_not(new_user.valid?)
-    assert_equal(['has already been taken'], new_user.errors[:identity_code])
+    assert_equal(['Identity code is already in use'], new_user.errors[:identity_code])
   end
 
   def test_country_code_is_an_alias
