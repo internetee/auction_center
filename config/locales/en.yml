@@ -161,10 +161,19 @@ en:
       models:
         user:
           attributes:
+            password:
+              blank: "Password can't be blank"
+              too_short: "Password is too short (minimum is %{count} characters)"
+              confirmation: "Password doesn't match confirmation"
+              too_long: "Password is too long (maximum is %{count} characters)"
+            identity_code:
+              invalid: "Identity code is invalid"
+              taken: "Identity code is already in use"
+            mobile_phone:
+              invalid: "Phone number is invalid"
+              taken: "Phone number is already in use"
             email:
               blank: Email can't be blank
-            password:
-              blank: Password can't be blank
         wishlist:
           attributes:
             domain_name:
