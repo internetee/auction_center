@@ -9,8 +9,11 @@
 
 // Default Rails javascript and turbolinks
 import Rails from 'rails-ujs';
+
 require("chartkick").use(require("highcharts"))
+
 import Turbolinks from 'turbolinks';
+
 Rails.start();
 Turbolinks.start();
 
@@ -21,7 +24,7 @@ import "@hotwired/turbo-rails"
 // import "controllers"
 import "./controllers"
 import './stylesheets/application.scss'
-
+import './stylesheets/transition.css'
 // UI modules
 import '../src/semantic/definitions/modules/transition.js';
 import '../src/semantic/definitions/modules/checkbox.js';

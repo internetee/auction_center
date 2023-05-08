@@ -92,7 +92,7 @@ module ApplicationHelper
 
     items = locales.map do |item|
       { name: I18n.t(:in_local_language, locale: item), path: locale_path(locale: item),
-        method: :put }
+        method: :put, data: { "turbo-method": 'put' } }
     end
 
     items
