@@ -81,7 +81,8 @@ module ApplicationHelper
     links_list.each do |item|
       concat(
         content_tag(:li) do
-          link_to(item[:name], item[:path], method: item[:method], class: 'item', data: item[:data])
+          link_to(item[:name], item[:path], method: item[:method], class: 'item', data: item[:data],
+          style: "#{'background-color: #4BB90B;' if current_page?(item[:path])}")
         end
       )
     end

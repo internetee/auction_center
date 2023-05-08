@@ -10,7 +10,7 @@ et:
     roles: "Rollid"
     country_code: "Riigikood"
     identity_code: "Isikukood"
-    terms_and_conditions: "Kasutaja tingimused"
+    terms_and_conditions: "Kasutajatingimused"
     must_accept_terms_and_conditions: "Kasutajatingimustega peab nõustuma"
     terms_and_conditions_accepted_at: "Tingimustega nõustunud"
     password: "Salasõna"
@@ -64,7 +64,7 @@ et:
       delete: "Kustuta konto"
       review_terms_and_conditions: "Tutvu tingimustega"
       daily_summary: "Igapäevane oksjoninimekiri meilile"
-      webpush_available: Webpush saadaval
+      webpush_available: Veebiteavitused sisse
 
     destroy:
       deleted: "Oled välja logitud ja sinu konto on kustutatud."
@@ -95,7 +95,7 @@ et:
         country: "Riik"
         email: "E-post"
         mobile_phone: "Mobiil"
-        terms_and_conditions: "Kasutaja tingimused"
+        terms_and_conditions: "Kasutajatingimused"
         password: "Salasõna"
         password_confirmation: "Salasõna kinnitus"
         identity_code: "Isikukood"
