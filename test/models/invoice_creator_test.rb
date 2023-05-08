@@ -8,6 +8,8 @@ class InvoiceCreatorTest < ActiveSupport::TestCase
     @result_without_offer = results(:without_offers_nobody)
     @offer = offers(:expired_offer)
 
+    @billing_company = billing_profiles(:company)
+
     invoice_n = Invoice.order(number: :desc).last.number
     @invoice_number = {
       invoice_number: invoice_n + 3,
@@ -116,10 +118,10 @@ class InvoiceCreatorTest < ActiveSupport::TestCase
 
     result = Result.last
     assert_equal result.auction.domain_name, auction.domain_name
-    assert_equal result.invoice.cents, offer_bid_value - deposit_value
+    assert_equal result.invoice.cents, offer_bid_value
   end
 
-  def test_if_invoice_cents_is_zero_it_should_be_marked_as_paid
+  def test_private_user_should_be_able_to_pay_only_vat_if_he_made_bit_the_same_as_deposit
     deposit_value = 50_000
     offer_bid_value = 50_000
 
@@ -135,11 +137,15 @@ class InvoiceCreatorTest < ActiveSupport::TestCase
     auction.reload
     user.reload
 
+    
+    private_billing_profile = user.billing_profiles.last
+    private_billing_profile.update(country_code: 'EE' ) && private_billing_profile.reload
+
     Offer.create!(
       auction: auction,
       user: user,
       cents: offer_bid_value,
-      billing_profile: user.billing_profiles.first
+      billing_profile: private_billing_profile
     )
 
     assert auction.offers.present?
@@ -150,7 +156,43 @@ class InvoiceCreatorTest < ActiveSupport::TestCase
 
     result = Result.last
     assert_equal result.auction.domain_name, auction.domain_name
-    assert result.invoice.cents.zero?
+    assert_equal result.invoice.cents, result.auction.offers.last.cents
+    assert_equal result.invoice.status, 'issued'
+  end
+
+  def test_org_user_must_have_automaticly_paid_invoice_if_he_made_bid_as_deposit
+    deposit_value = 50_000
+    offer_bid_value = 50_000
+
+    user = users(:participant)
+    auction = auctions(:english)
+
+    auction.update(enable_deposit: true, requirement_deposit_in_cents: deposit_value, ends_at: Time.zone.now + 10.minutes)
+    auction.reload
+    assert auction.offers.empty?
+    assert auction.enable_deposit?
+
+    user.billing_profiles << @billing_company
+
+    DomainParticipateAuction.create(user_id: user.id, auction_id: auction.id)
+    auction.reload && user.reload
+
+    Offer.create!(
+      auction: auction,
+      user: user,
+      cents: offer_bid_value,
+      billing_profile: @billing_company
+    )
+
+    assert auction.offers.present?
+    auction.update(ends_at: Time.zone.now - 1.minute) && auction.reload
+
+    ResultCreationJob.perform_now
+    auction.reload
+
+    result = Result.last
+    assert_equal result.auction.domain_name, auction.domain_name
+    assert result.invoice.total.zero?
     assert_equal result.invoice.status, 'paid'
   end
 end

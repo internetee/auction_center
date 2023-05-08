@@ -90,9 +90,10 @@ class InvoiceCreator
   end
 
   def assign_price_with_deposit
-    total = result_offer.cents - result_auction.requirement_deposit_in_cents
+    # total = result_offer.cents - result_auction.requirement_deposit_in_cents
 
-    invoice.cents = total
+    # invoice.cents = total
+    invoice.cents = result_offer.cents
     invoice.invoice_items = [
       InvoiceItem.new(invoice: invoice,
                       cents: result_offer.cents,
@@ -104,7 +105,7 @@ class InvoiceCreator
   end
 
   def mark_as_paid_if_sum_is_zero
-    return unless invoice.cents.zero?
+    return unless invoice.total.zero?
 
     invoice.mark_as_paid_at(Time.zone.now)
   end

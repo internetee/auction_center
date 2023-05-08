@@ -136,7 +136,11 @@ class Invoice < ApplicationRecord
   end
 
   def total
-    (price * (1 + vat_rate)).round(2)
+    if result.auction.enable_deposit?
+      (price * (1 + vat_rate) - deposit).round(2)
+    else
+      (price * (1 + vat_rate)).round(2)
+    end
   end
 
   def vat
