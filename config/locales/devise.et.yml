@@ -18,13 +18,13 @@ et:
       not_found_in_database: "Vale %{authentication_keys} või salasõna."
       timeout: "Sessioon on aegunud. Jätkamiseks logi uuesti sisse."
       unauthenticated: "Enne jätkamist logi sisse või registreeru."
-      unconfirmed: "Enne jätkamist kinnita oma e-posti aadress."
+      unconfirmed: "Konto aktiveerimiseks saatsime teie eposti aadressile kirja aktiveerimise lingiga. Palun klõpsake sellel!"
     mailer:
       confirmation_instructions:
         subject: "E-posti aadressi kinnitamine"
         salutation: "Tere tulemast Eesti Interneti SA .ee domeenide oksjonikeskkonda, %{display_name}!"
         first_para: "Oled loonud uue kasutaja e-posti aadressiga  %{email}"
-        second_para: "Domeeni oksjonil osalemiseks pead esmalt kinnitama oma e-posti aadressi. Seda saad teha klõpsates järgnevale lingile:"
+        second_para: "Domeenioksjonil osalemiseks pead esmalt kinnitama oma e-posti aadressi. Seda saad teha klõpsates järgnevale lingile:"
         link: "Kinnita minu konto"
         reconfirmation_salutation: "Lugupeetud, %{display_name}"
         reconfirmation_first_para: "Sinu e-posti aadress on muudetud. Uus e-posti aadress on %{email}."

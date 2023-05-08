@@ -20,7 +20,7 @@ et:
       title: "Domeeni registreerimise eelisõiguse pakkumus"
       deposit_enable: Nõutav tagatisraha
       make_deposit: Tasuge deposiit
-      deposit_description_html: "Oksjonil osalemiseks tuleb tasuda <span style='font-weight: bold; color: red;'>%{deposit} eurot deposiiti (sisaldab käibemaksu)</span>. Võites oksjoni jääb see teile ettemaksuks. Teistele oksjonil osalejatele kantakse raha nädala jooksul pärast oksjoni lõppu tagasi."
+      deposit_description_html: "Oksjonil osalemiseks tuleb tasuda <span style='font-weight: bold; color: red;'>%{deposit} eurot deposiiti (sisaldab käibemaksu)</span>.<br/>Võites oksjoni jääb see teile ettemaksuks. Teistele oksjonil osalejatele kantakse raha nädala jooksul pärast oksjoni lõppu tagasi."
 
     create:
       created: "Pakkumus edukalt esitatud"
