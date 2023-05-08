@@ -28,7 +28,7 @@ class EmailConfirmationsTest < ApplicationSystemTestCase
     fill_in('user[surname]', with: 'Last Name')
     click_link_or_button('Sign up')
 
-    assert(page.has_css?('div.alert', text: 'You need to confirm your email address to activate the account. We sent you an email with the activation link!'))
+    assert(page.has_css?('div.alert', text: 'You have to confirm your email address before continuing'))
     last_email = ActionMailer::Base.deliveries.last
     assert_equal('Confirmation instructions', last_email.subject)
     assert_equal(['new-user@auction.test'], last_email.to)
@@ -55,7 +55,7 @@ class EmailConfirmationsTest < ApplicationSystemTestCase
     fill_in('user[surname]', with: 'Last Name')
     click_link_or_button('Sign up')
 
-    assert(page.has_css?('div.alert', text: 'You need to confirm your email address to activate the account. We sent you an email with the activation link!'))
+    assert(page.has_css?('div.alert', text: 'You have to confirm your email address before continuing'))
     last_email = ActionMailer::Base.deliveries.last
     assert_equal('Confirmation instructions', last_email.subject)
     assert_equal(['new-user@auction.test'], last_email.to)
