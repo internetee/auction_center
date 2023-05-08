@@ -59,7 +59,7 @@ class AdminUsersListTest < ApplicationSystemTestCase
 
     expected_errors = ["Email can't be blank", "Password can't be blank",
                        "can't be blank", 'Terms and conditions must be accepted',
-                       'is invalid', "Given names: can't be blank",
+                       'Phone number is invalid', "Given names: can't be blank",
                        "Surname: can't be blank"]
 
     assert_equal(errors_array.to_set, expected_errors.to_set)

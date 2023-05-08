@@ -129,10 +129,19 @@ et:
       models:
         user:
           attributes:
+            password:
+              confirmation: "Paroolid ei kattu"
+              blank: "Parool ei saa olla tühi"
+              too_short: "Parool on liiga lühike (vähemalt %{count} tähemärki)"
+              too_long: "Parool on liiga pikk (kuni %{count} tähemärki)"
+            identity_code:
+              invalid: "Isikukood on vigane"
+              taken: "Isikukood on juba kasutuses. Palun sisestage teine isikukood"
+            mobile_phone:
+              invalid: "Mobiiltelefoninumber on vigane"
+              taken: "Mobiiltelefoninumber on juba kasutuses. Palun sisestage teine number"
             email:
               blank: E-post ei saa olla tühi
-            password:
-              blank: Parool ei saa olla tühi
         wishlist:
           attributes:
             domain_name:
