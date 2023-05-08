@@ -90,9 +90,10 @@ class InvoiceCreator
   end
 
   def assign_price_with_deposit
-    total = result_offer.cents - result_auction.requirement_deposit_in_cents
+    # total = result_offer.cents - result_auction.requirement_deposit_in_cents
 
-    invoice.cents = total
+    # invoice.cents = total
+    invoice.cents = result_offer.cents
     invoice.invoice_items = [
       InvoiceItem.new(invoice: invoice,
                       cents: result_offer.cents,
