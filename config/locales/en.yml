@@ -59,6 +59,7 @@ en:
   participant_win_auction: Domain auction for %{name} is finished. Congratulations your bid was the highes!
   participant_lost_auction: Domain auction for %{name} is finished. Unfortunately your bid was not enough to win!
   no_any_notifications: No new notifications
+  winner_webpush_notification_title: Congratulations!
 
   user: "User"
   deleted_user: "User was deleted"

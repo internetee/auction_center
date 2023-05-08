@@ -66,6 +66,7 @@ et:
   finished: "Lõppenud"
   actions: "Toimingud"
   job_enqueued: "Tegevus on järjekorras. Kontrolli tulemusi mõne minuti pärast."
+  winner_webpush_notification_title: Palju õnne!
 
   versions:
     action: 'Tegevus'
