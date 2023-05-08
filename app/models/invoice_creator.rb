@@ -105,7 +105,7 @@ class InvoiceCreator
   end
 
   def mark_as_paid_if_sum_is_zero
-    return unless invoice.cents.zero?
+    return unless invoice.total.zero?
 
     invoice.mark_as_paid_at(Time.zone.now)
   end

@@ -11,6 +11,7 @@ class InvoiceTest < ActiveSupport::TestCase
     @company_billing_profile = billing_profiles(:company)
     @payable_invoice = invoices(:payable)
     @orphaned_invoice = invoices(:orphaned)
+    @english = auctions(:english)
 
     invoice_n = Invoice.order(number: :desc).last.number
     stub_request(:post, "http://eis_billing_system:3000/api/v1/invoice_generator/invoice_number_generator")
@@ -213,6 +214,18 @@ class InvoiceTest < ActiveSupport::TestCase
     @payable_invoice.mark_as_paid_at(time)
 
     assert_nil @payable_invoice.linkpay_url
+  end
+
+  def test_if_auction_has_deposit_it_should_be_destracted_from_total
+    assert_equal @payable_invoice.total.to_f, 10.0
+    result = @payable_invoice.result
+    result.update(auction: @english) && @payable_invoice.reload
+
+    @english.update!(requirement_deposit_in_cents: 500, enable_deposit: true)
+    @english.reload && @payable_invoice.reload
+
+    assert @english.enable_deposit?
+    assert_equal @payable_invoice.total.to_f, 5.0
   end
 
   def invoices_total(invoices)
