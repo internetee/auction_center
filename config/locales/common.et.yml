@@ -31,8 +31,8 @@ et:
       documents: "Dokumendid"
 
     webpush_modal:
-      webpush_title: Veebi teavitused
-      webpush_descr: .ee oksjonite portaal kasutab veebi teavitusi, et hoida teid kursis, kui teie pakkumine on üle pakkutud, ilma et peaksite kogu aeg veebilehte avatuna hoidma.
+      webpush_title: Veebiteavitused
+      webpush_descr: .ee oksjonite portaal kasutab veebi teavitusi, et hoida teid kursis, kui teie pakkumine on üle pakutud, ilma et peaksite kogu aeg veebilehte avatuna hoidma.
       webpush_agree: Nõustun
       webpush_decline: "Ei soovi"
 

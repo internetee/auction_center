@@ -1,138 +1,131 @@
 <%= form_with(model: user, url: url, local: true, id: 'user_form', class: 'ui form big') do |f| %>
-    <div class="ui two column doubling stackable grid">
-        <div class="column">
-            <h3 class="p3"><%= t('.contact_data') %></h3>
-
-            <div class="field">
-                <%= f.hidden_field :locale, value: user.persisted? ? user.locale : I18n.locale %>
-                <%= f.label :email, t('users.email') %>
-                <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-                <% if user.pending_reconfirmation? %>
-                    <div><%= t('.currently_pending_confirmation',
+  <div class="ui two column doubling stackable grid">
+    <div class="column">
+      <h3 class="p3"><%= t('.contact_data') %></h3>
+      <div class="field">
+        <%= f.hidden_field :locale, value: user.persisted? ? user.locale : I18n.locale %>
+        <%= f.label :email, t('users.email') %>
+        <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+        <% if user.pending_reconfirmation? %>
+          <div><%= t('.currently_pending_confirmation',
                                email: user.unconfirmed_email) %></div>
-                <% end %>
-            </div>
-            <% unless user.signed_in_with_identity_document? %>
-              <div class="field">
-                  <%= f.label :mobile_phone, t('users.mobile_phone') %>
-                  <%= f.telephone_field :mobile_phone, autofocus: true, autocomplete: "off",
+        <% end %>
+      </div>
+      <% unless user.signed_in_with_identity_document? %>
+        <div class="field">
+          <%= f.label :mobile_phone, t('users.mobile_phone') %>
+          <%= f.telephone_field :mobile_phone, autofocus: true, autocomplete: "off",
                       placeholder: "+372xxxxxxxx" %>
-              </div>
-            <% end %>
-            <div class="field">
-              <%= f.label :given_names, t('users.given_names') %>
-              <% if user.signed_in_with_identity_document? %>
-                <div class="ui disbled input">
-                  <%= f.text_field :given_names, readonly: true, value: user.given_names %>
-                </div>
-              <% else %>
-                <%= f.text_field :given_names, readonly: false, autofocus: true, autocomplete: "off" %>
-              <% end %>
-            </div>
-            <div class="field">
-              <%= f.label :surname, t('users.surname') %>
-
-              <% if user.signed_in_with_identity_document? %>
-                <div class="ui disbled input">
-                  <%= f.text_field :surname, readonly: true, value: user.surname %>
-                </div>
-              <% else %>
-                <%= f.text_field :surname, readonly: false, autofocus: true, autocomplete: "off" %>
-              <% end %>
-            </div>
         </div>
-
-        <div class="column">
-          <h3 class="p3"><%= t('auth.tara.form.data_from_identity_document') %></h3>
-          <div class="field">
-            <%= f.label :identity_code, t('users.identity_code') %>
-            <% if user.identity_code.present? %>
-              <div class="ui disbled input">
-                <%= f.text_field :identity_code, readonly: user.new_record? ? false : true, value: user.identity_code %>
-              </div>
-            <% else %>
-              <%= f.text_field :identity_code, readonly: false %>
-            <% end %>
+      <% end %>
+      <div class="field">
+        <%= f.label :given_names, t('users.given_names') %>
+        <% if user.signed_in_with_identity_document? %>
+          <div class="ui disbled input">
+            <%= f.text_field :given_names, readonly: true, value: user.given_names %>
           </div>
-
-            <div class="field">
-              <%= f.label :country, t('users.country_code') %>
-                <% if user.signed_in_with_identity_document? %>
-                  <div class="ui disbled input">
-                    <%= f.text_field :country_code,
+        <% else %>
+          <%= f.text_field :given_names, readonly: false, autofocus: true, autocomplete: "off" %>
+        <% end %>
+      </div>
+      <div class="field">
+        <%= f.label :surname, t('users.surname') %>
+        <% if user.signed_in_with_identity_document? %>
+          <div class="ui disbled input">
+            <%= f.text_field :surname, readonly: true, value: user.surname %>
+          </div>
+        <% else %>
+          <%= f.text_field :surname, readonly: false, autofocus: true, autocomplete: "off" %>
+        <% end %>
+      </div>
+    </div>
+    <div class="column">
+      <h3 class="p3"><%= t('auth.tara.form.data_from_identity_document') %></h3>
+      <div class="field">
+        <%= f.label :identity_code, t('users.identity_code') %>
+        <% if user.identity_code.present? %>
+          <div class="ui disbled input">
+            <%= f.text_field :identity_code, readonly: user.new_record? ? false : true, value: user.identity_code %>
+          </div>
+        <% else %>
+          <%= f.text_field :identity_code, readonly: false %>
+        <% end %>
+      </div>
+      <div class="field">
+        <%= f.label :country, t('users.country_code') %>
+        <% if user.signed_in_with_identity_document? %>
+          <div class="ui disbled input">
+            <%= f.text_field :country_code,
                         value: user.country_code || Setting.find_by(code: 'default_country').retrieve,
                         readonly: true %>
-                  </div>
-                <% else %>
-                  <%= f.select :country_code,
+          </div>
+        <% else %>
+          <%= f.select :country_code,
                     options_for_select(
                         Countries.for_selection,
                         user.country_code || Setting.find_by(code: 'default_country').retrieve
                     ),
                     { readonly: false },
                   class: "ui dropdown" %>
-                <% end %>
-            </div>
-
-            <div class="field">
-                <div class="ui checkbox">
-                    <%= f.check_box :accepts_terms_and_conditions, { value: user.accepts_terms_and_conditions }, "true", "false" %>
-                    <%= f.label :accepts_terms_and_conditions do %>
-                        <%= t('users.i_accept_terms_and_conditions_html',
-                              link: link_to(t('users.terms_and_conditions_link'), Setting.find_by(code: 'terms_and_conditions_link').retrieve)) %>
-                    <% end %>
-                </div>
-            </div>
-
-            <h3 class="p3"><%= t('.daily_summary') %></h3>
-            <div class="field">
-                <div class="ui checkbox">
-                    <%= f.check_box :daily_summary %>
-                    <%= f.label :daily_summary %>
-                </div>
-            </div>
-        </div>
-
-        <div class="column">
-            <% if user.persisted? || (user.signed_in_with_identity_document? && user.encrypted_password.blank?) %>
-                <h3 class="p3"><%= t('.new_password') %></h3>
-            <% else %>
-                <h3 class="p3"><%= t('users.password') %></h3>
-            <% end %>
-            <div class="field">
-                <%= f.label :password, t('users.password'), class: 'label-password' %>
-                <%= f.password_field :password, autocomplete: "new-password" %>
-                <% if user.persisted? || (user.signed_in_with_identity_document? && user.encrypted_password.blank?) %>
-                    <br><em><%= t('.you_can_leave_blank') %></em><br>
-                <% end %>
-                <% if @minimum_password_length %>
-                    <em><%= t('.password_requirements', minimum: @minimum_password_length) %></em>
-                <% end %>
-                <br />
-            </div>
-            <div class="field">
-                <%= f.label :password_confirmation, t('users.password_confirmation') %>
-                <%= f.password_field :password_confirmation, autocomplete: "off" %>
-            </div>
-        </div>
-
-        <% if user.persisted? && !user.signed_in_with_identity_document? %>
-            <div class="column sixteen wide">
-                <hr>
-                <div class="field">
-                    <%= f.label :current_password, t('users.current_password') %>
-                    <i><%= t('.we_need_your_password') %></i><br />
-                    <%= f.password_field :current_password, autocomplete: "off" %>
-                </div>
-            </div>
         <% end %>
-        <div class="column sixteen wide">
-            <% if user.persisted? %>
-                <%= f.submit t(:update), class: "ui button big primary", id: "user_form_commit", data: { turbo: false } %>
-                <%= link_to t(:back), :back, class: "ui button big secondary" %>
-            <% else %>
-                <%= f.submit t('.sign_up'), class: "ui button big primary", id: "user_form_commit", data: { turbo: false } %>
-            <% end %>
+      </div>
+      <div class="field">
+        <div class="ui checkbox">
+          <%= f.check_box :accepts_terms_and_conditions, { value: user.accepts_terms_and_conditions }, "true", "false" %>
+          <%= f.label :accepts_terms_and_conditions do %>
+            <%= t('users.i_accept_terms_and_conditions_html',
+                          link: link_to(t('users.terms_and_conditions_link'), Setting.find_by(code: 'terms_and_conditions_link').retrieve, target: "_blank")) %>
+          <% end %>
         </div>
+      </div>
+      <h3 class="p3"><%= t('.daily_summary') %></h3>
+      <div class="field">
+        <div class="ui checkbox">
+          <%= f.check_box :daily_summary %>
+          <%= f.label :daily_summary %>
+        </div>
+      </div>
     </div>
+    <div class="column">
+      <% if user.persisted? || (user.signed_in_with_identity_document? && user.encrypted_password.blank?) %>
+        <h3 class="p3"><%= t('.new_password') %></h3>
+      <% else %>
+        <h3 class="p3"><%= t('users.password') %></h3>
+      <% end %>
+      <div class="field">
+        <%= f.label :password, t('users.password'), class: 'label-password' %>
+        <%= f.password_field :password, autocomplete: "new-password" %>
+        <% if user.persisted? || (user.signed_in_with_identity_document? && user.encrypted_password.blank?) %>
+          <br>
+          <em><%= t('.you_can_leave_blank') %></em><br>
+        <% end %>
+        <% if @minimum_password_length %>
+          <em><%= t('.password_requirements', minimum: @minimum_password_length) %></em>
+        <% end %>
+        <br />
+      </div>
+      <div class="field">
+        <%= f.label :password_confirmation, t('users.password_confirmation') %>
+        <%= f.password_field :password_confirmation, autocomplete: "off" %>
+      </div>
+    </div>
+    <% if user.persisted? && !user.signed_in_with_identity_document? %>
+      <div class="column sixteen wide">
+        <hr>
+        <div class="field">
+          <%= f.label :current_password, t('users.current_password') %>
+          <i><%= t('.we_need_your_password') %></i><br />
+          <%= f.password_field :current_password, autocomplete: "off" %>
+        </div>
+      </div>
+    <% end %>
+    <div class="column sixteen wide">
+      <% if user.persisted? %>
+        <%= f.submit t(:update), class: "ui button big primary", id: "user_form_commit", data: { turbo: false } %>
+        <%= link_to t(:back), :back, class: "ui button big secondary" %>
+      <% else %>
+        <%= f.submit t('.sign_up'), class: "ui button big primary", id: "user_form_commit", data: { turbo: false } %>
+      <% end %>
+    </div>
+  </div>
 <% end %>

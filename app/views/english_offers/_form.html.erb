@@ -20,7 +20,7 @@
             <div class="field">
                 <%= f.label :price, t('english_offers.form.offer_title') %>
                 <span id="offer_<%=offer.auction.id%>_form">
-                    <%= render partial: 'number_form_field', locals: { offer_value: offer.auction.min_bids_step.to_f, offer_disabled: offer.auction.finished? ? true : false } %>
+                    <%= render partial: 'number_form_field', locals: { offer_value: number_with_precision(offer.auction.min_bids_step.to_f,precision: 2), offer_disabled: offer.auction.finished? ? true : false } %>
                 </span>
                 <em>
                     <small>

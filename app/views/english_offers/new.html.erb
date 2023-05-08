@@ -33,7 +33,7 @@
             <div class="">
                 <%= tag.h5 do %>
                     <%= t('english_offers.show.min_bid') %>
-                    <span id="mini"><%= Money.from_amount(@auction.min_bids_step.to_f, Setting.find_by(code: 'auction_currency').retrieve) %></span>
+                    <span id="mini"><%= number_with_precision(Money.from_amount(@auction.min_bids_step.to_f, Setting.find_by(code: 'auction_currency').retrieve,  precision: 2)) %></span>
                 <% end %>
             </div>
             <div class="">
@@ -67,7 +67,7 @@
                         </strong>
                     </p>
                     <p>
-                        <%= t('offers.new.deposit_description_html', deposit: @auction.deposit) %>
+                        <%= t('offers.new.deposit_description_html', deposit: number_with_precision(@auction.deposit, precision: 2)) %>
                     </p>
                     <div style='text-align: center; margin-bottom: 4rem;'>
                         <%= button_to t('offers.new.make_deposit'), 
