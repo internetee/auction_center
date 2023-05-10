@@ -60,7 +60,7 @@ en:
   participant_lost_auction: Domain auction for %{name} is finished. Unfortunately your bid was not enough to win!
   no_any_notifications: No new notifications
   winner_webpush_notification_title: Congratulations!
-  webpush_title_lost: "You lost the auction for %{name}"
+  webpush_title_lost: "You lost"
 
   user: "User"
   deleted_user: "User was deleted"
@@ -73,9 +73,9 @@ en:
     Number of current <a href="%{violations_count_regulations_link}">violations</a>:
     %{violations_count} of %{ban_number_of_strikes}
 
-  my_offers: "My offers"
-  my_invoices: "My invoices"
-  my_wishlist: "My wishlist"
+  my_offers: "Offers"
+  my_invoices: "Invoices"
+  my_wishlist: "Wishlist"
   finished: "Finished"
   actions: "Actions"
   job_enqueued: "Job enqueued. Check in a few minutes for results."

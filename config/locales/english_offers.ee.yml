@@ -7,7 +7,7 @@ et:
     price_is_without_vat: "Pakkumus ei sisalda käibemaksu."
     already_exists: "Oled sellele oksjonile pakkumuse juba esitanud."
     errors: "seda pakkumust ei saa salvestada"
-    total: "Käibemaksuga kokku"
+    total: "Hind käibemaksuga"
     must_be_active: "Oksjon on lõppenud"
     must_be_active_err: "on lõppenud"
     must_be_higher_than: "peab olema suurem kui %{minimum}"
@@ -37,7 +37,7 @@ et:
       bid_updated: "Pakkumine uuendatud"
 
     index:
-      your_last_offer: "Sinu viimane pakkumus"
+      your_last_offer: "Minu pakkumus"
       claim_your_domain: "Võta domeen"
       you_won: "Oled võitnud"
       you_lost: "Teine pakkuja võitis"

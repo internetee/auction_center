@@ -38,7 +38,7 @@ et:
   users_name: "Kasutajad"
   results_name: "Tulemused"
   finished_auctions: "Finished auctions"
-  result_name: "Tulemus"
+  result_name: "Olek"
   versions_name: "Versioonid"
   offers_name: "Pakkumused"
   invoices_name: "Arved"
@@ -60,9 +60,9 @@ et:
     Oksjoni reeglite <a href="%{violations_count_regulations_link}">rikkumisi</a>:
     %{violations_count} '%{ban_number_of_strikes}'st
 
-  my_offers: "Minu pakkumised"
-  my_invoices: "Minu arved"
-  my_wishlist: "Minu soovide nimekiri"
+  my_offers: "Pakkumised"
+  my_invoices: "Arved"
+  my_wishlist: "Soovide nimekiri"
   finished: "Lõppenud"
   actions: "Toimingud"
   job_enqueued: "Tegevus on järjekorras. Kontrolli tulemusi mõne minuti pärast."
@@ -164,4 +164,4 @@ et:
   participant_lost_auction: Domeeni oksjon domeeninimele %{name} on lõppenud. Kahjuks ei olnud teie pakkumine võiduks piisav!
   no_any_notifications: Uued teated puuduvad
   webpush_title_outbidded: Üle pakutud
-  webpush_title_lost: 
+  webpush_title_lost: Kaotasid
