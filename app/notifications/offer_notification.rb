@@ -13,7 +13,7 @@ class OfferNotification < Noticed::Base
     offer = params[:offer]
 
     {
-      title: 'Outbided',
+      title: I18n.t('.webpush_title_outbidded'),
       body: I18n.t('.participant_outbid_broadcast', name: params[:offer].auction.domain_name),
       icon: 'https://example.com/icon.png'
     }

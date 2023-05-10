@@ -163,4 +163,5 @@ et:
   participant_win_auction: Domeeni oksjon domeeninimele %{name} on lõppenud. Palju õnne teie pakkumine oli parim!
   participant_lost_auction: Domeeni oksjon domeeninimele %{name} on lõppenud. Kahjuks ei olnud teie pakkumine võiduks piisav!
   no_any_notifications: Uued teated puuduvad
-  
+  webpush_title_outbidded: Üle pakutud
+  webpush_title_lost: 

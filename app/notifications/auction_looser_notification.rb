@@ -13,7 +13,7 @@ class AuctionLooserNotification < Noticed::Base
     auction = params[:auction]
 
     {
-      title: 'Outbided',
+      title: I18n.t('.webpush_title_lost'),
       body: I18n.t('.participant_lost_auction', name: params[:auction].domain_name),
       icon: 'https://example.com/icon.png'
     }
