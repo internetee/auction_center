@@ -24,7 +24,11 @@
                 </span>
                 <em>
                     <small>
-                        <%= t('offers.price_is_without_vat') %>
+                        <% if offer.billing_profile.present? %>
+                            <%= t('offers.price_with_wat', price: (offer.price.to_f * offer.billing_profile.vat_rate.to_f).to_f + offer.price.to_f, tax: offer.billing_profile.vat_rate * 100)  %>
+                        <% else %>
+                            <%= t('offers.price_is_without_vat') %>
+                        <% end %>
                     </small>
                 </em>
             </div>

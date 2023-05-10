@@ -95,6 +95,8 @@ class EnglishOffersController < ApplicationController
   end
 
   def captcha_check
+    return if Rails.env.development?
+
     captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
     return if captcha_predicate
 
