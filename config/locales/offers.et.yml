@@ -27,7 +27,7 @@ et:
       ban: You are banned from participating in this auction!
 
     show:
-      title: "Sinu pakkumus"
+      title: "Minu pakkumus"
       we_will_contact_winner: |
         Kui oksjon on lõppenud, saadameoksjoni võitjale e-kirja aadressile
       participants: Pakkuja

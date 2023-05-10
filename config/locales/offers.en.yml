@@ -23,7 +23,7 @@ en:
       deposit_description_html: "To participate in the auction, you need to make a deposit of <span style='font-weight: bold; color: red;'>%{deposit} (VAT included) euros</span>.<br/>If you win the deposit will be your prepayment. Deposit is returned to other participants within a week after the end of the auction."
 
     show:
-      title: "Your offer"
+      title: "My offer"
       we_will_contact_winner: |
         Once the auction time has ended, we will send an email to
         the auction winner.
