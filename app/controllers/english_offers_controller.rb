@@ -1,7 +1,7 @@
 class EnglishOffersController < ApplicationController  
   before_action :authenticate_user!
-  before_action :set_captcha_required
   before_action :set_offer, only: %i[show edit update]
+  before_action :set_captcha_required
   before_action :check_for_ban, only: [:create]
   before_action :authorize_phone_confirmation
   before_action :authorize_offer_for_user, except: %i[new create]

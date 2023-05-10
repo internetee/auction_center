@@ -62,4 +62,8 @@
     </div>
 </div>
 
+<% if @auction.english? %>
+<%= render 'auctions/english_bottom_grid' %>
+<% else %>
 <%= render 'auctions/bottom_grid' %>
+<% end %>
