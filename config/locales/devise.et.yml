@@ -16,7 +16,7 @@ et:
       locked: "Sinu konto on blokeeritud."
       last_attempt: "Veel üks katse enne konto blokeerimist"
       not_found_in_database: "Vale %{authentication_keys} või salasõna."
-      timeout: "Sessioon on aegunud. Jätkamiseks logi uuesti sisse."
+      timeout: "Teie seanss on aegunud. Jätkamiseks autentige end palun uuesti!"
       unauthenticated: "Enne jätkamist logi sisse või registreeru."
       unconfirmed: "Konto aktiveerimiseks saatsime teie eposti aadressile kirja aktiveerimise lingiga. Palun klõpsake sellel!"
     mailer:

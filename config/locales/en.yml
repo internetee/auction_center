@@ -1,4 +1,6 @@
 en:
+  unauthorized:
+    message: You are not authorized to access this page.
   new: "New"
   back: "Back"
   update: "Update"

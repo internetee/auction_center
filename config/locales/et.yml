@@ -1,4 +1,6 @@
 et:
+  unauthorized:
+    message: Teil ei ole õigust selle lehe kasutamiseks!
   new: "Uus"
   back: "Tagasi"
   update: "Uuenda"
