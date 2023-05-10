@@ -15,7 +15,6 @@ en:
       Make an offer according to the value the domain name holds to you.
     out_of_range: Your bid is denied - maximum bid size exceeded!
 
-
     new:
       title: "Offer for the reservation of the domain name"
       errors: "prohibited this offer from being saved"
@@ -48,6 +47,8 @@ en:
       claim_your_domain: "Claim your domain"
       you_won: "You won"
       you_lost: "Someone else won"
+      you_are_winning: "You are winning"
+      you_are_loosing: "You are loosing"
 
     form:
       bidder: "Bidder"
