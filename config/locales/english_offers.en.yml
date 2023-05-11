@@ -2,7 +2,7 @@ en:
   english_offers:
     auction: "Auction"
     price: "Price"
-    total: "Total with VAT"
+    total: "Hind käibemaksuga"
     i_accept_terms_and_conditions: "I accept terms and conditions"
     price_in_currency: "%{price} €"
     price_is_without_vat: "The offer does not include VAT."
@@ -40,7 +40,7 @@ en:
       bid_updated: "Bid updated"
 
     index:
-      your_last_offer: "Your last offer"
+      your_last_offer: "Minu pakkumus"
       claim_your_domain: "Claim your domain"
       you_won: "You won"
       you_lost: "Someone else won"

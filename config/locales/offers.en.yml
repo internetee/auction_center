@@ -15,7 +15,6 @@ en:
       Make an offer according to the value the domain name holds to you.
     out_of_range: Your bid is denied - maximum bid size exceeded!
 
-
     new:
       title: "Offer for the reservation of the domain name"
       errors: "prohibited this offer from being saved"
@@ -24,7 +23,7 @@ en:
       deposit_description_html: "To participate in the auction, you need to make a deposit of <span style='font-weight: bold; color: red;'>%{deposit} (VAT included) euros</span>.<br/>If you win the deposit will be your prepayment. Deposit is returned to other participants within a week after the end of the auction."
 
     show:
-      title: "Your offer"
+      title: "My offer"
       we_will_contact_winner: |
         Once the auction time has ended, we will send an email to
         the auction winner.
@@ -44,10 +43,12 @@ en:
       errors: "prohibited this offer from being saved"
 
     index:
-      your_last_offer: "Your last offer"
+      your_last_offer: "My offers"
       claim_your_domain: "Claim your domain"
       you_won: "You won"
       you_lost: "Someone else won"
+      you_are_winning: "You are winning"
+      you_are_loosing: "You are loosing"
 
     form:
       bidder: "Bidder"

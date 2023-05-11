@@ -51,7 +51,7 @@ en:
       title: "Edit your invoice"
 
     index:
-      title: "Your invoices"
+      title: "My invoices"
       pay: "Pay all issued invoices"
       payment_success: 'Your payment will be processed as soon as possible. Thank you!'
 

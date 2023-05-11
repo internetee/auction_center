@@ -24,7 +24,7 @@ class OffersTest < ApplicationSystemTestCase
     sign_in(@user)
     visit root_path
 
-    assert(page.has_link?('My offers', href: offers_path))
+    assert(page.has_link?('Offers', href: offers_path))
   end
 
   def test_user_cannot_create_offers_in_the_name_of_other_user

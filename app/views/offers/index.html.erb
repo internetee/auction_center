@@ -40,7 +40,15 @@
                                         <%= t('.you_lost') %>
                                     <% end %>
                                 <% else %>
-                                    <%= t('auctions.still_in_progress') %>
+                                    <%- if offer.auction.english? %>
+                                        <% if offer.auction.currently_winning_offer == offer %>
+                                            <%= t('.you_are_winning') %>
+                                        <% else %>
+                                            <%= t('.you_are_loosing') %>
+                                        <% end %>
+                                    <% else %>
+                                        <%= t('auctions.still_in_progress') %>
+                                    <% end %>
                                 <% end %>
                             </td>
                             <td>
