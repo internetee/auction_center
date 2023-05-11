@@ -86,6 +86,26 @@ et:
       terms_and_conditions_link: "oksjonikeskkonna kasutajatingimustega"
       faq_link: "detailsemalt oksjoniprotsessist"
 
+    english_bottom_grid:
+      title: "Oksjoni eeskirjad"
+      1_step_header: "Inglise oksjon"
+      1_step_explanation: |
+        Enampakkumine toimub domeeninime reserveerimise õigusele. Oksjoni võitjal tuleb lisaks tasuda ka domeeni registreerimise tasu registripidajale vastavale valitud registripidaja teenuste hinnakirjale. Pakkumised on avalikud, kuid pakkuja isik on varjatud. Tehtud pakkumist ei saa vähendada ega tagasi võtta
+
+      2_step_header: "Oksjoni võitmine"
+      2_step_explanation: |
+        Kui oled võitnud oksjoni, tuleb arve tasuda 7 kalendripäeva jooksul.
+        Peale seda on sul aega 30 päeva, et domeen registreerida .ee akrediteeritud registripidaja juures
+
+      3_step_header: "Pakkumuse muutmine"
+      3_step_explanation: |
+        Saad pakkumust oksjoni jooksul igal ajal muuta.
+
+      4_step_header: "Pakkumuse tagasivõtmine"
+      4_step_explanation: |
+        Kui sa ei soovi enam oksjonil osaleda, võid oma pakkumuse
+        igal ajal tagasi võtta nii kaua kuni oksjon kestab
+
     bottom_grid:
       title: "Oksjoni eeskirjad"
       1_step_header: "Pimeoksjon"
@@ -98,7 +118,7 @@ et:
       2_step_header: "Oksjoni võitmine"
       2_step_explanation: |
         Kui oled võitnud oksjoni, tuleb arve tasuda 7 kalendripäeva jooksul.
-        Peale seda on sul aega 14 päeva, et domeen registreerida .ee akrediteeritud registripidaja juures
+        Peale seda on sul aega 30 päeva, et domeen registreerida .ee akrediteeritud registripidaja juures
 
       3_step_header: "Pakkumuse muutmine"
       3_step_explanation: |

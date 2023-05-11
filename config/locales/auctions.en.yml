@@ -88,6 +88,27 @@ en:
       terms_and_conditions_link: "terms and conditions"
       faq_link: "auctioning process"
 
+    english_bottom_grid:
+      title: "Auction rules"
+      1_step_header: "English auction"
+      1_step_explanation: |
+        The bids are for domain name reservation. The winner will have to pay additional registration fee to the registrar according to their pricelist. Offers are public, but the identity of the bidder is hidden. The offer made cannot be reduced or withdrawn.
+
+      2_step_header: "Winning an auction"
+      2_step_explanation: |
+        Once you have won an auction, you should pay the invoice within 7 calendar days.
+        After that, you have 30 days to register the domains with a registrar of your choice.
+
+      3_step_header: "Changing an offer"
+      3_step_explanation: |
+        During the auction, you can adjust your offer at any point.
+
+      4_step_header: "Withdrawing an offer"
+      4_step_explanation: |
+        If you no longer want to participate in an auction, you can withdraw your offer
+        at any point, as long as the auction is still in progress. Once the action has ended,
+        you cannot withdraw your offer
+
     bottom_grid:
       title: "Auction rules"
       1_step_header: "Blind auction"
@@ -100,7 +121,7 @@ en:
       2_step_header: "Winning an auction"
       2_step_explanation: |
         Once you have won an auction, you should pay the invoice within 7 calendar days.
-        After that, you have 14 days to register the domains with a registrar of your choice.
+        After that, you have 30 days to register the domains with a registrar of your choice.
 
       3_step_header: "Changing an offer"
       3_step_explanation: |
