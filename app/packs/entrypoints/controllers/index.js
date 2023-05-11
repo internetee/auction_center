@@ -37,3 +37,5 @@ import ProfileWebpushController from "./profile_webpush_controller"
 application.register("profile-webpush", ProfileWebpushController)
 import EnglishOffersController from "./english_offers_controller"
 application.register("english-offers", EnglishOffersController)
+import AutotaxCounterController from "./autotax_counter_controller"
+application.register("autotax-counter", AutotaxCounterController)
