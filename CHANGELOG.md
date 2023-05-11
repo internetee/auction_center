@@ -1,3 +1,21 @@
+11.05.2023
+* Auction rules section in auction details and your offer views has now english auctin info https://github.com/internetee/auction_center/issues/1063
+* Webpush title et translation for outbidding https://github.com/internetee/auction_center/issues/1064
+* Still in progress status replaced with winning/loosing statuses for eng auctions https://github.com/internetee/auction_center/issues/1065
+* My offers view improvements for Estonian translation https://github.com/internetee/auction_center/issues/1066
+* Title fix for my invoices view https://github.com/internetee/auction_center/issues/1067
+* Added option to make new bid in my offer view https://github.com/internetee/auction_center/issues/1068
+* Session timeout et translation https://github.com/internetee/auction_center/issues/1074
+
+08.05.2023
+* Fixed webpush title for the winner https://github.com/internetee/auction_center/issues/1044
+* Improved error messages for user creation process https://github.com/internetee/auction_center/issues/1050
+* UX improvements for user creation view https://github.com/internetee/auction_center/issues/1054
+* Fixed javascript errors https://github.com/internetee/auction_center/pull/1051
+* UI improvements to profile view https://github.com/internetee/auction_center/issues/1055
+* reCaptcha check is restored https://github.com/internetee/auction_center/pull/1061
+* VAT calculation fix for invoices with deposits https://github.com/internetee/auction_center/issues/1060
+
 05.05.2023
 * Improved indication of my bids https://github.com/internetee/auction_center/issues/1014
 * Translation fixes https://github.com/internetee/auction_center/issues/1020
