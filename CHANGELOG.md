@@ -1,3 +1,6 @@
+12.05.2023
+* Offer+tax information added to the bid view https://github.com/internetee/auction_center/issues/1072
+
 11.05.2023
 * Auction rules section in auction details and your offer views has now english auctin info https://github.com/internetee/auction_center/issues/1063
 * Webpush title et translation for outbidding https://github.com/internetee/auction_center/issues/1064
