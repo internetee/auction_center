@@ -25,6 +25,7 @@ et:
     create:
       created: "Pakkumus edukalt esitatud"
       ban: Teil ei ole lubatud antud oksjonil osaleda!
+      bid_must_be: "Pakkumus peab olema vähemalt %{minimum} €."
 
     show:
       title: "Sinu pakkumus"

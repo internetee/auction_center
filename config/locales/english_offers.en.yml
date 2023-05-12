@@ -35,6 +35,7 @@ en:
     create:
       created: "Offer submitted successfully."
       ban: You are banned from participating in this auction!
+      bid_must_be: "Bid must be at least %{minimum} €."
 
     edit:
       title: "Offer for the reservation of the domain name"
