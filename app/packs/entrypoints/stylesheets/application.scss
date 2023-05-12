@@ -61,8 +61,8 @@
   position: relative; 
   padding-top: 1.5rem;
   padding-bottom: 1.5rem; 
-  padding-left: 2rem;
-  padding-right: 2rem; 
+  padding-left: 1rem;
+  padding-right: 1rem; 
   background-color: #ffffff; 
   color: #6B7280; 
   font-size: 0.875rem;
@@ -109,4 +109,10 @@
   align-items: center; 
   border-width: 1px; 
   border-color: #3B82F6;
+}
+
+@media only screen and (max-width: 767px) {
+  .hide-table-header {
+      display: none;
+  }
 }

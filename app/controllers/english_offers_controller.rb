@@ -116,7 +116,7 @@ class EnglishOffersController < ApplicationController
     auction = Auction.with_user_offers(current_user.id).find_by(uuid: @offer.auction.uuid)
     return unless bid_is_bad?(auction: auction, update_params: update_params)
 
-    flash[:alert] = "#{t('english_offers.show.bid_failed')} #{auction.highest_price.to_f}"
+    flash[:alert] = "#{t('english_offers.show.bid_failed', price: sprintf('%.2f', auction.highest_price.to_f).gsub('.', ','))}"
     redirect_to edit_english_offer_path(auction.users_offer_uuid) and return
   end
 

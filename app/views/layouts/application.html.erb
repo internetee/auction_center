@@ -22,7 +22,23 @@
           color: red;
       }
 
-    </style>  
+      @media only screen and (max-width: 767px) {
+                .hide-table-header {
+                    display: none !important;
+                }
+              }
+
+    .span-mobile-only {
+      display: none;
+    }
+
+    @media screen and (max-width: 767px) {
+      .span-mobile-only {
+        display: inline;
+      }
+    }
+
+    </style>
   </head>
   <body data-controller="push-notification"
         data-push-notification-vapid-public-value="<%= Rails.configuration.customization[:vapid_public] %>"

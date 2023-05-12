@@ -41,6 +41,9 @@ en:
       auction_name: Domain
       status: Status
       refund_time: Refunded
+      paid: "Paid"
+      prepayment: "Prepayment"
+      returned: "Returned"
 
     show:
       change_billing_profile: "Change billing profile"

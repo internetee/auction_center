@@ -86,7 +86,7 @@ class InvoicesController < ApplicationController
     if response.result?
       redirect_to response.instance['oneoff_redirect_link'], allow_other_host: true
     else
-      flash.alert = response.errors
+      flash.alert = response.errors['message']
       redirect_to invoices_path
     end
   end

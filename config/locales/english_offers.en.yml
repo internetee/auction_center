@@ -30,7 +30,7 @@ en:
         the auction winner.
       min_bid: Minimum bid is
       current_price: Current price is
-      bid_failed: Bid failed, current price is
+      bid_failed: Bid failed, current price is %{price}
 
     create:
       created: "Offer submitted successfully."

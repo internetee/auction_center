@@ -85,24 +85,34 @@
             <thead>
               <tr>
                 <th>
-                  <%= t('auctions.domain_name') %>
-                  <%= sort_link_to "", "domain_name" %>
+                  <span class='hide-table-header'>
+                    <%= t('auctions.domain_name') %>
+                    <%= sort_link_to "", "domain_name" %>
+                  </span>
                 </th>
                 <th>
-                  <%= t('auctions.ends_at') %>
-                  <%= sort_link_to "", "ends_at" %>
+                  <span class='hide-table-header'>
+                    <%= t('auctions.ends_at') %>
+                    <%= sort_link_to "", "ends_at" %>
+                  </span>
                 </th>
                 <th>
-                  <%= t('auctions.auction_type') %>
-                  <%= sort_link_to "", "platform" %>
+                  <span class='hide-table-header'>
+                    <%= t('auctions.auction_type') %>
+                    <%= sort_link_to "", "platform" %>
+                  </span>
                 </th>
                 <th class="auctions-table-cell-name-no-mobile">
-                  <%= t('auctions.your_current_price') %>
-                  <%= sort_link_to "", "users_offer_cents" %>
+                  <span class='hide-table-header'>
+                    <%= t('auctions.your_current_price') %>
+                    <%= sort_link_to "", "users_offer_cents" %>
+                  </span>
                 </th>
                 <th class="four wide">
-                  <%= t('auctions.offer_owner') %>
-                  <%= sort_link_to "", "platform" %>
+                  <span class='hide-table-header'>  
+                    <%= t('auctions.offer_owner') %>
+                    <%= sort_link_to "", "platform" %>
+                  </span>
                 </th>
                 <th class="auctions-table-cell-name-no-mobile center aligned"><%= t('auctions.offer_actions') %></th>
               </tr>
