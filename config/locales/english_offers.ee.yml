@@ -5,6 +5,8 @@ et:
     i_accept_terms_and_conditions: "Nõustun tingimustega"
     price_in_currency: "%{price} €"
     price_is_without_vat: "Pakkumus ei sisalda käibemaksu."
+    price_with_wat: Kokku %{price} (+ %{tax}% käibemaks)
+    price_with_wat_template: Kokku {price} (+ {tax}% käibemaks)
     already_exists: "Oled sellele oksjonile pakkumuse juba esitanud."
     errors: "seda pakkumust ei saa salvestada"
     total: "Hind käibemaksuga"

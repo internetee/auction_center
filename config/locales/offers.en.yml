@@ -6,6 +6,7 @@ en:
     i_accept_terms_and_conditions: "I accept terms and conditions"
     price_in_currency: "%{price} €"
     price_is_without_vat: "The offer does not include VAT."
+    price_with_wat: Total %{price} (+ %{tax}% VAT)
     already_exists: "You already have an offer for this auction."
     must_be_active: "must be active"
     must_be_higher_than: "must be higher than %{minimum}"

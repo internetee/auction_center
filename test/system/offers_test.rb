@@ -51,9 +51,6 @@ class OffersTest < ApplicationSystemTestCase
     assert(page.has_link?('Bid!'))
     click_link('Bid!')
 
-    expected_minimum_offer_text = 'Minimum offer is 5,00. The offer does not include VAT'
-    assert(page.has_text?(expected_minimum_offer_text))
-
     expected_text =
       'NB: This is a blind auction where bids are not public. ' \
       'There might be other bids. ' \

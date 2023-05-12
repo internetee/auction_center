@@ -1,54 +1,61 @@
-<%= form_with(model: offer, local: true, url: url, class: "ui form big centrilize-form") do |f| %>
-    <h4><%= t('offers.reminder') %></h4>
+<%= form_with model: offer, local: true, url: url, class: "ui form big centrilize-form",
+              data: { controller: 'autotax-counter', autotax_counter_template_value: t('english_offers.price_with_wat_template'),
+                      autotax_counter_tax_value: "#{offer.billing_profile.present? ? offer.billing_profile.vat_rate : 0.0 }",
+                      autotax_counter_defaulttemplate_value: t('offers.price_is_without_vat')} do |f| %>
 
-    <div class="ui one column grid centered">
-        <div class="column">
-            <%= f.hidden_field :user_id, value: offer.user_id %>
-            <%= f.hidden_field :auction_id, value: offer.auction_id %>
-
-            <div class="field">
-                <%= f.label :price, t('.offer') %>
-                <%= f.number_field :price, class: "form-control", min: 0, step: "0.01" %>
-                <br>
-                <em>
-                    <small>
-                        <%= t('.minimum_offer',
+  <h4><%= t('offers.reminder') %></h4>
+  <div class="ui one column grid centered">
+    <div class="column">
+      <%= f.hidden_field :user_id, value: offer.user_id %>
+      <%= f.hidden_field :auction_id, value: offer.auction_id %>
+      <div class="field">
+        <%= f.label :price, t('.offer') %>
+        <%= f.number_field :price, class: "form-control", min: 5.0, step: "0.01", value: 5.0, data: { action: 'autotax-counter#count' } %>
+        <br>
+        <em>
+          <small>
+            <%= t('.minimum_offer',
                               minimum: Money.new(Setting.find_by(code: 'auction_minimum_offer').retrieve,
                                                 Setting.find_by(code: 'auction_currency').retrieve)) %>
-                        <%= t('offers.price_is_without_vat') %>
-                    </small>
-                </em>
-                <br>
-            </div>
-
-            <div class="field">
-                <%= f.label :billing_profile, t('.bidder') %>
-                <%= f.select :billing_profile_id,
-                billing_profiles = BillingProfile.where(user_id: offer.user_id).collect { |b| [b.name, b.id] },
-                {},
-                class: billing_profiles.size == 1 ? "ui dropdown disabled" : "ui dropdown" %><br>
-            </div>
-            <br>
-            <%= link_to t(:new_billing_profile),  new_billing_profile_path %>
-        </div>
-
-        <div class="column">
-            <% if @captcha_required %>
-                <div class="field">
-                    <br>
-                    <%= recaptcha_tags %>
-                </div>
+          </small>
+          <small data-autotax-counter-target='result'>
+            <% if offer.billing_profile.present? %>
+              <%= t('offers.price_with_wat', price: (offer.price.to_f * offer.billing_profile.vat_rate.to_f).to_f + offer.price.to_f, tax: offer.billing_profile.vat_rate * 100)  %>
+            <% else %>
+              <%= t('offers.price_is_without_vat') %>
             <% end %>
+          </small>
+        </em>
+        <br>
+      </div>
+      <div class="field">
+        <%= f.label :billing_profile, t('.bidder') %>
+        <%= f.select :billing_profile_id,
+              billing_profiles = BillingProfile.where(user_id: offer.user_id).collect { |b| [b.name, b.id, {'data-vat-rate' => b.vat_rate}] },
+              {},
+              class: billing_profiles.size == 1 ? "ui dropdown disabled" : "ui dropdown",
+              data: { action: 'change->autotax-counter#updateTax' } %>
+          <br>
+      </div>
+      <br>
+      <%= link_to t(:new_billing_profile),  new_billing_profile_path %>
+    </div>
+    <div class="column">
+      <% if @captcha_required %>
+        <div class="field">
+          <br>
+          <%= recaptcha_tags %>
         </div>
-
-        <div class="column wide sixteen">
-            <%= f.submit t(:submit), class: "ui button primary", data: { turbo: false } %>
-            <%= link_to t(:back), :back, class: "ui button secondary" %>
-            <%- if offer.uuid.present? %>
-                <%= link_to t('auctions.delete_your_offer'), 
+      <% end %>
+    </div>
+    <div class="column wide sixteen">
+      <%= f.submit t(:submit), class: "ui button primary", data: { turbo: false } %>
+      <%= link_to t(:back), :back, class: "ui button secondary" %>
+      <%- if offer.uuid.present? %>
+        <%= link_to t('auctions.delete_your_offer'), 
                 offer_path(offer.uuid),
                 method: :delete, data: { confirm: t(:are_you_sure) }, class: "ui button red"%>
-            <% end %>
-        </div>
+      <% end %>
     </div>
+  </div>
 <% end %>
