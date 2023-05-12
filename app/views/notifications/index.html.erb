@@ -5,7 +5,7 @@
                                 data-update_notifications-url-value="<%= mark_as_read_notifications_path(format: :turbo_stream) %>">
 
     <div id='bell-broadcast' class='bell-broadcast'>
-      <%= render partial: 'bell', locals: { any_unread: current_user.notifications.any?(&:unread?) } %>
+      <%= render partial: 'bell', locals: { any_unread: current_user&.notifications&.any?(&:unread?) } %>
     </div>
 
 
