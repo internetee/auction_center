@@ -1,3 +1,7 @@
+15.05.2023
+* Small screen view fixes https://github.com/internetee/auction_center/issues/1077
+* Et translation for low first bid https://github.com/internetee/auction_center/issues/1078
+
 12.05.2023
 * Offer+tax information added to the bid view https://github.com/internetee/auction_center/issues/1072
 
