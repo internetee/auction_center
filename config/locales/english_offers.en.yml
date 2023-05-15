@@ -30,11 +30,12 @@ en:
         the auction winner.
       min_bid: Minimum bid is
       current_price: Current price is
-      bid_failed: Bid failed, current price is
+      bid_failed: Bid failed, current price is %{price}
 
     create:
       created: "Offer submitted successfully."
       ban: You are banned from participating in this auction!
+      bid_must_be: "Bid must be at least %{minimum} €."
 
     edit:
       title: "Offer for the reservation of the domain name"

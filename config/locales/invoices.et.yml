@@ -41,6 +41,9 @@ et:
       auction_name: Domeen
       status: Olek
       refund_time: Tagastatud
+      paid: "Makstud"
+      prepayment: "Ettemaks"
+      returned: "Tagastatud"
 
     show:
       change_billing_profile: "Muuda arve aadressi"

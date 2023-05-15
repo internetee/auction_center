@@ -3,15 +3,16 @@
     <h1><%= t('.title') %></h1>
   </div>
 <% end %>
+
 <div class="u-container">
   <div class="margin-block">
     <h2><%= t('invoices.outstanding') %></h2>
-    <table class="ui selectable stackable table" id="my-outstanding-invoices-table">
+    <table class="ui selectable stackable table" id="my-outstanding-invoices-table" data-controller='responsive-table'>
       <thead>
         <tr>
-          <th scope="col"><%= t('invoices.item') %></th>
-          <th scope="col"><%= t('invoices.due_date') %></th>
-          <th scope="col"><%= t('invoices.total') %></th>
+          <th scope="col"><span class='hide-table-header'><%= t('invoices.item') %></span></th>
+          <th scope="col"><span class='hide-table-header'><%= t('invoices.due_date') %></span></th>
+          <th scope="col"><span class='hide-table-header'><%= t('invoices.total') %></span></th>
         </tr>
       </thead>
       <tbody class="invoices-table-body issued">
@@ -24,6 +25,7 @@
         <% end %>
       </tbody>
     </table>
+
     <% if @issued_invoices.any? %>
       <div class="column sixteen wide">
         <h3><%= t('.pay') %></h3>
@@ -33,6 +35,7 @@
                               class: 'ui button primary' %>
       </div>
     <% end %>
+  
     <% if @paid_invoices.any? %>
       <h2>
         <%= t('invoices.paid') %>
@@ -40,9 +43,9 @@
       <table class="ui selectable stackable table" id="my-paid-invoices-table mt-4">
         <thead>
           <tr>
-            <th scope="col"><%= t('invoices.item') %></th>
-            <th scope="col"><%= t('invoices.due_date') %></th>
-            <th scope="col"><%= t('invoices.total') %></th>
+            <th scope="col"><span class='hide-table-header'><%= t('invoices.item') %></span></th>
+            <th scope="col"><span class='hide-table-header'><%= t('invoices.due_date') %></span></th>
+            <th scope="col"><span class='hide-table-header'><%= t('invoices.total') %></span></th>
           </tr>
         </thead>
         <tbody class="invoices-table-body paid">
@@ -56,6 +59,7 @@
         </tbody>
       </table>
     <% end %>
+  
     <% if @cancelled_payable_invoices.any? %>
       <h2>
         <%= t('invoices.cancelled') %>
@@ -63,9 +67,9 @@
       <table class="ui selectable stackable table" id="my-cancelled-invoices-table mt-4">
         <thead>
           <tr>
-            <th scope="col"><%= t('invoices.item') %></th>
-            <th scope="col"><%= t('invoices.due_date') %></th>
-            <th scope="col"><%= t('invoices.total') %></th>
+            <th scope="col"><span class='hide-table-header'><%= t('invoices.item') %></span></th>
+            <th scope="col"><span class='hide-table-header'><%= t('invoices.due_date') %></span></th>
+            <th scope="col"><span class='hide-table-header'><%= t('invoices.total') %></span></th>
           </tr>
         </thead>
         <tbody class="invoices-table-body cancelled">
@@ -79,6 +83,7 @@
         </tbody>
       </table>
     <% end %>
+
     <% if @cancelled_expired_invoices.any? %>
       <h2>
         <%= t('invoices.cancelled_expired') %>
@@ -86,9 +91,9 @@
       <table class="ui selectable stackable table" id="my-cancelled-expired-invoices-table mt-4">
         <thead>
           <tr>
-            <th scope="col"><%= t('invoices.item') %></th>
-            <th scope="col"><%= t('invoices.due_date') %></th>
-            <th scope="col"><%= t('invoices.total') %></th>
+            <th scope="col"><span class='hide-table-header'><%= t('invoices.item') %></span></th>
+            <th scope="col"><span class='hide-table-header'><%= t('invoices.due_date') %></span></th>
+            <th scope="col"><span class='hide-table-header'><%= t('invoices.total') %></span></th>
           </tr>
         </thead>
         <tbody class="invoices-table-body expired cancelled">
@@ -102,6 +107,7 @@
         </tbody>
       </table>
     <% end %>
+
     <% if @deposit_paid.any? %>
       <h2>
         <%= t('invoices.paid_deposit_title') %>
@@ -109,20 +115,21 @@
       <table class="ui selectable stackable table" id="my-paid-deposits-invoices-table mt-4">
         <thead>
           <tr>
-            <th scope="col"><%= t('invoices.paid_deposit.date') %></th>
-            <th scope="col"><%= t('invoices.paid_deposit.sum') %></th>
-            <th scope="col"><%= t('invoices.paid_deposit.auction_name') %></th>
-            <th scope="col"><%= t('invoices.paid_deposit.status') %></th>
-            <th scope="col"><%= t('invoices.paid_deposit.refund_time') %></th>
+            <th scope="col"><span class='hide-table-header'><%= t('invoices.paid_deposit.date') %></span></th>
+            <th scope="col"><span class='hide-table-header'><%= t('invoices.paid_deposit.sum') %></span></th>
+            <th scope="col"><span class='hide-table-header'><%= t('invoices.paid_deposit.auction_name') %></span></th>
+            <th scope="col"><span class='hide-table-header'><%= t('invoices.paid_deposit.status') %></span></th>
+            <th scope="col"><span class='hide-table-header'><%= t('invoices.paid_deposit.refund_time') %></span></th>
           </tr>
         </thead>
+
         <tbody class="invoices-table-body deposits">
           <% @deposit_paid.each do |deposit| %>
             <tr class="invoices-table-row">
               <td><%= deposit.created_at.strftime("%Y-%m-%d") %></td>
               <td><%= deposit.auction.deposit %></td>
               <td><%= link_to deposit.auction.domain_name, auction_path(uuid: deposit.auction.uuid) %></td>
-              <td><%= deposit.status %></td>
+              <td><%= t("invoices.paid_deposit.#{deposit.status}") %></td>
               <td><%= deposit.refund_time %></td>
             </tr>
           <% end %>

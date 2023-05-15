@@ -1,7 +1,7 @@
 et:
   english_offers:
     auction: "Oksjon"
-    price: "Hind"
+    price: "Pakkumus"
     i_accept_terms_and_conditions: "Nõustun tingimustega"
     price_in_currency: "%{price} €"
     price_is_without_vat: "Pakkumus ei sisalda käibemaksu."
@@ -25,6 +25,7 @@ et:
     create:
       created: "Pakkumus edukalt esitatud"
       ban: Teil ei ole lubatud antud oksjonil osaleda!
+      bid_must_be: "Pakkumus peab olema vähemalt %{minimum} €."
 
     show:
       title: "Sinu pakkumus"
@@ -32,7 +33,7 @@ et:
         Kui oksjon on lõppenud, saadameoksjoni võitjale e-kirja aadressile
       min_bid: Vähim võimalik pakkumus
       current_price: Hetke parim pakkumus
-      bid_failed: Pakkumine ebaõnnestus, hetke parim pakkumus
+      bid_failed: Pakkumine ebaõnnestus, hetke parim pakkumus %{price}
 
     edit:
       title: "Domeeni registreerimise eelisõiguse pakkumus"

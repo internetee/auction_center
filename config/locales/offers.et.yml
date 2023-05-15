@@ -1,7 +1,7 @@
 et:
   offers:
     auction: "Oksjon"
-    price: "Hind"
+    price: "Pakkumus"
     i_accept_terms_and_conditions: "Nõustun tingimustega"
     price_in_currency: "%{price} €"
     price_is_without_vat: "Pakkumus ei sisalda käibemaksu."
