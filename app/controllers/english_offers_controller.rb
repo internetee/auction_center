@@ -31,7 +31,8 @@ class EnglishOffersController < ApplicationController
     auction = Auction.find_by!(uuid: params[:auction_uuid])
 
     unless check_first_bid_for_english_auction(create_params, auction)
-      flash[:alert] = t('english_offers.create.bid_must_be', minimum: auction.starting_price)
+      formatted_starting_price = format('%.2f', auction.starting_price)
+      flash[:alert] = t('english_offers.create.bid_must_be', minimum: formatted_starting_price)
       redirect_to new_auction_english_offer_path(auction_uuid: auction.uuid) and return
     end
 
