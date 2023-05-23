@@ -297,10 +297,6 @@ GEM
     rails-i18n (7.0.7)
       i18n (>= 0.7, < 2)
       railties (>= 6.0.0, < 8)
-    rails_semantic_logger (4.12.0)
-      rack
-      railties (>= 5.1)
-      semantic_logger (~> 4.13)
     railties (7.0.4.3)
       actionpack (= 7.0.4.3)
       activesupport (= 7.0.4.3)
@@ -346,8 +342,6 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
-    semantic_logger (4.13.0)
-      concurrent-ruby (~> 1.0)
     semantic_range (3.0.0)
     simplecov (0.17.1)
       docile (~> 1.1)
@@ -462,7 +456,6 @@ DEPENDENCIES
   puma (~> 5.6.4)
   rails (>= 6.0.3.5)
   rails-i18n
-  rails_semantic_logger
   recaptcha
   redis (~> 4.0)
   rubocop-performance
