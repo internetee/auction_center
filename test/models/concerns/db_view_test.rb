@@ -1,11 +1,11 @@
 require 'test_helper'
 
-class DBViewTest < ActiveSupport::TestCase
+class DbViewTest < ActiveSupport::TestCase
 
   def setup
     super
     @klass = StatisticsReport::Auction
-    @klass.extend(Concerns::DBView)
+    @klass.extend(DbView)
     @klass.refresh
     @object = StatisticsReport::Auction.first
   end
@@ -27,6 +27,6 @@ class DBViewTest < ActiveSupport::TestCase
   end
 
   def test_concern_included
-    assert(@klass.included_modules.include?(Concerns::DBView))
+    assert(@klass.included_modules.include?(DbView))
   end
 end
