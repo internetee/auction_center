@@ -228,7 +228,8 @@ class EditUserTest < ApplicationSystemTestCase
     OmniAuth.config.mock_auth[:tara] = OmniAuth::AuthHash.new(omniauth_hash)
 
     visit root_path
-    click_link('Sign in')
+    # click_link('Sign in')
+    find('a[href="/sessions/sign_in"]').click
 
     within('#tara-sign-in') do
       click_link('Sign in')

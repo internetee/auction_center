@@ -23,7 +23,7 @@ class WishlistItemsController < ApplicationController
         format.json do
           render json: @wishlist_item.errors.full_messages, status: :unprocessable_entity
         end
-        format.html { redirect_to wishlist_items_path, notice: t(:something_went_wrong) }
+        format.html { redirect_to wishlist_items_path, notice: @wishlist_item.errors.full_messages.join(', ') }
       end
     end
   end
