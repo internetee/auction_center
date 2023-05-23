@@ -10,8 +10,6 @@ class OfferNotification < Noticed::Base
   param :offer
 
   def webpush_format
-    offer = params[:offer]
-
     {
       title: I18n.t('.webpush_title_outbidded'),
       body: I18n.t('.participant_outbid_broadcast', name: params[:offer].auction.domain_name),

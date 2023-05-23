@@ -1,5 +1,3 @@
-require 'result_not_paid'
-
 module Registry
   class RegistrationChecker < Base
     attr_reader :result

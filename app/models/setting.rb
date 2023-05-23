@@ -1,5 +1,6 @@
 class Setting < ApplicationRecord
-  include Concerns::FormatValidator
+  include ::FormatValidator
+
   validates :code, presence: true, uniqueness: true
   validates :description, presence: true
   validates :value, presence: true

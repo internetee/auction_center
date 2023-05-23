@@ -1,6 +1,3 @@
-require 'tampering_detected'
-require 'countries'
-
 module Auth
   class TaraController < ApplicationController
     rescue_from Errors::TamperingDetected do |e|

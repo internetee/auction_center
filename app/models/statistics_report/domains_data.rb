@@ -1,6 +1,6 @@
 class StatisticsReport
   class DomainsData
-    include Concerns::ReportData
+    include ReportData
 
     attr_reader :start_date
     attr_reader :end_date

@@ -1,6 +1,6 @@
 module ApplicationHealthCheck
   class Tara < OkComputer::Check
-    include Concerns::HealthChecker
+    include HealthChecker
 
     def check
       simple_check_endpoint(url: Setting.find_by(code: 'check_tara_url').retrieve,

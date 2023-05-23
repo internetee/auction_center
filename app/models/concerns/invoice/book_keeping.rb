@@ -1,51 +1,47 @@
 # frozen_string_literal: true
 
-module Concerns
-  module Invoice
-    module BookKeeping
-      extend ActiveSupport::Concern
+module Invoice::BookKeeping
+  extend ActiveSupport::Concern
 
-      def as_directo_json
-        invoice = ActiveSupport::JSON.decode(ActiveSupport::JSON.encode(self))
-        invoice = compose_invoice_meta(invoice)
-        invoice['invoice_lines'] = compose_directo_product
-        invoice['customer'] = compose_directo_customer
+  def as_directo_json
+    invoice = ActiveSupport::JSON.decode(ActiveSupport::JSON.encode(self))
+    invoice = compose_invoice_meta(invoice)
+    invoice['invoice_lines'] = compose_directo_product
+    invoice['customer'] = compose_directo_customer
 
-        invoice
-      end
+    invoice
+  end
 
-      def compose_invoice_meta(invoice)
-        invoice['issue_date'] = issue_date.strftime('%Y-%m-%d')
-        invoice['transaction_date'] = paid_at.strftime('%Y-%m-%d')
-        invoice['language'] = user && user&.locale == 'en' ? 'ENG' : ''
-        invoice['currency'] = Setting.find_by(code: 'auction_currency').retrieve
-        invoice['total_wo_vat'] = price.amount
-        invoice['vat_amount'] = vat.amount
+  def compose_invoice_meta(invoice)
+    invoice['issue_date'] = issue_date.strftime('%Y-%m-%d')
+    invoice['transaction_date'] = paid_at.strftime('%Y-%m-%d')
+    invoice['language'] = user && user&.locale == 'en' ? 'ENG' : ''
+    invoice['currency'] = Setting.find_by(code: 'auction_currency').retrieve
+    invoice['total_wo_vat'] = price.amount
+    invoice['vat_amount'] = vat.amount
 
-        invoice
-      end
+    invoice
+  end
 
-      def compose_directo_customer
-        { 'name': recipient, 'destination': alpha_two_country_code,
-          'vat_reg_no': vat_code,
-          'code': if vat_code
-                    DirectoCustomer.find_or_create_by(
-                      vat_number: vat_code
-                    ).customer_code
-                  else
-                    'ERA'
-                  end }.as_json
-      end
+  def compose_directo_customer
+    { 'name': recipient, 'destination': alpha_two_country_code,
+      'vat_reg_no': vat_code,
+      'code': if vat_code
+                DirectoCustomer.find_or_create_by(
+                  vat_number: vat_code
+                ).customer_code
+              else
+                'ERA'
+              end }.as_json
+  end
 
-      def compose_directo_product
-        [{ 'product_id': 'OKSJON',
-           'description': result.auction.domain_name,
-           'quantity': 1,
-           'unit': 1,
-           'price': ActionController::Base.helpers.number_with_precision(
-             price.amount, precision: 2, separator: '.'
-           ) }].as_json
-      end
-    end
+  def compose_directo_product
+    [{ 'product_id': 'OKSJON',
+        'description': result.auction.domain_name,
+        'quantity': 1,
+        'unit': 1,
+        'price': ActionController::Base.helpers.number_with_precision(
+          price.amount, precision: 2, separator: '.'
+        ) }].as_json
   end
 end

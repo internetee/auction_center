@@ -1,12 +1,12 @@
 # rubocop:disable Metrics/ClassLength
-require 'result_not_found'
-require 'result_not_sold'
-require 'countries'
+# require 'result_not_found'
+# require 'result_not_sold'
+# require 'countries'
 
 class Invoice < ApplicationRecord
-  include Concerns::Invoice::BookKeeping
-  include Concerns::Invoice::Payable
-  include Concerns::Invoice::Linkpayable
+  include BookKeeping
+  include Payable
+  include Linkpayable
 
   alias_attribute :country_code, :alpha_two_country_code
   enum status: { issued: 'issued', paid: 'paid', cancelled: 'cancelled' }

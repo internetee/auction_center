@@ -1,5 +1,3 @@
-require 'expected_payment_order'
-
 class PaymentOrder < ApplicationRecord
   ENABLED_METHODS = AuctionCenter::Application.config
                                               .customization
