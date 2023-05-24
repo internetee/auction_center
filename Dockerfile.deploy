@@ -1,4 +1,4 @@
-FROM internetee/ruby:2.7
+FROM internetee/ruby_base:3.0
 ARG RAILS_ENV
 ARG SECRET_KEY_BASE
 ARG APP_DBHOST
@@ -12,6 +12,11 @@ ENV APP_DBHOST "$APP_DBHOST"
 ENV APP_DBUSER "$APP_DBUSER"
 ENV APP_DBPASS "$APP_DBPASS"
 ENV TRUSTED_PROXY_IP "$TRUSTED_PROXY_IP"
+
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4EB27DB2A3B88B8B
+RUN apt-get update
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
+RUN apt-get install -y nodejs
 
 RUN npm install -g yarn@latest
 WORKDIR /opt/webapps/app

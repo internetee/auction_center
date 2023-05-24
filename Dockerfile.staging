@@ -6,6 +6,12 @@ ARG APP_DBHOST
 ENV RAILS_ENV "$RAILS_ENV"
 ENV SECRET_KEY_BASE "$SECRET_KEY_BASE"
 ENV APP_DBHOST "$APP_DBHOST"
+
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4EB27DB2A3B88B8B
+RUN apt-get update
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
+RUN apt-get install -y nodejs
+
 RUN npm install -g yarn@latest
 WORKDIR /opt/webapps/app
 COPY Gemfile Gemfile.lock ./
