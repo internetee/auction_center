@@ -1,4 +1,4 @@
-FROM internetee/ruby:2.7
+FROM internetee/ruby:3.0-buster
 ARG RAILS_ENV
 ARG SECRET_KEY_BASE
 ARG APP_DBHOST
@@ -13,6 +13,6 @@ RUN gem install bundler && bundle config set without 'development test' && bundl
 COPY package.json yarn.lock ./
 RUN yarn install --check-files
 COPY . .
-RUN bundle exec rails assets:clobber assets:precompile
+RUN bundle exec rails assets:precompile
 
 EXPOSE 3000

@@ -14,5 +14,4 @@ RUN yarn install --check-files
 
 COPY . .
 
-RUN bundle exec rails assets:clobber
 RUN bundle exec rails assets:precompile
