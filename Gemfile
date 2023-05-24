@@ -35,6 +35,7 @@ gem 'turbolinks', '~> 5'
 gem 'webpacker', '~> 6.0.0.rc.5'
 gem 'webpush'
 gem 'i18n-debug', group: :development
+gem "lograge"
 
 # token
 gem 'jwt'

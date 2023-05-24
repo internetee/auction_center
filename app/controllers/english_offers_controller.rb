@@ -42,7 +42,7 @@ class EnglishOffersController < ApplicationController
 
     if create_predicate(auction)
       broadcast_update_auction_offer(auction)
-      send_outbided_notification(auction:, offer: @offer, flash:)
+      send_outbided_notification(auction: auction, offer: @offer, flash: flash)
       update_auction_values(auction, t('english_offers.create.created'))
     else
       flash[:alert] = if @offer.errors.full_messages_for(:cents).present?
@@ -69,7 +69,7 @@ class EnglishOffersController < ApplicationController
 
     if update_predicate(auction)
       broadcast_update_auction_offer(auction)
-      send_outbided_notification(auction:, offer: @offer, flash:)
+      send_outbided_notification(auction: auction, offer: @offer, flash: flash)
       update_auction_values(auction, t('english_offers.edit.bid_updated'))
     else
       flash[:alert] = if @offer.errors.full_messages_for(:cents).present?
@@ -92,7 +92,7 @@ class EnglishOffersController < ApplicationController
   end
 
   def broadcast_update_auction_offer(auction)
-    Offers::UpdateBroadcastService.call({ auction: })
+    Offers::UpdateBroadcastService.call({ auction: auction })
   end
 
   def captcha_check
@@ -115,7 +115,7 @@ class EnglishOffersController < ApplicationController
 
   def prevent_check_for_invalid_bid
     auction = Auction.with_user_offers(current_user.id).find_by(uuid: @offer.auction.uuid)
-    return unless bid_is_bad?(auction:, update_params:)
+    return unless bid_is_bad?(auction: auction, update_params: update_params)
 
     flash[:alert] =
       "#{t('english_offers.show.bid_failed', price: format('%.2f', auction.highest_price.to_f).tr('.', ','))}"
