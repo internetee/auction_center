@@ -43,27 +43,27 @@ class AuctionPresenter < SimpleDelegator
   def delete_auction_button
     content_tag(:a, href: offer_path(users_offer_uuid),
                     data: { method: :delete, confirm: I18n.t(:are_you_sure) },
-                    class: 'ui button red') do
+                    class: 'ui button red', target: '_top') do
       I18n.t('auctions.delete_your_offer')
     end
   end
 
   def define_blind_auction_button(url:, text:, color:)
-    content_tag(:a, href: url, class: "ui button #{color}") do
+    content_tag(:a, href: url, class: "ui button #{color}", target: '_top') do
       text
     end
   end
 
   def default_english_auction_button
     content_tag(:a, href: new_auction_english_offer_path(auction_uuid: uuid),
-                    class: 'bid_button ui button blue') do
+                    class: 'bid_button ui button blue', target: '_top') do
       I18n.t('auctions.bid')
     end
   end
 
   def define_english_auction_button(url:, current_user:)
     content_tag(:a, href: url,
-                    class: "ui button #{allow_to_set_bid?(current_user) ? 'blue' : 'orange'}") do
+                    class: "ui button #{allow_to_set_bid?(current_user) ? 'blue' : 'orange'}", target: '_top') do
       participate_bid_text(current_user)
     end
   end
