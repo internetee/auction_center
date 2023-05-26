@@ -105,7 +105,7 @@
                             <td>
                                 <%= link_to t(:delete), wishlist_item_path(wishlist_item.uuid),
                                  method: :delete, data: { confirm: t(:are_you_sure) },
-                                 remote: true, class: "ui button red" %>
+                                class: "ui button red", target: '_top' %>
                             </td>
                             <td data-turbo="true">
                                 <%= turbo_frame_tag dom_id(wishlist_item) do %>

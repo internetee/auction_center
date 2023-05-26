@@ -69,7 +69,7 @@
                     <%= link_to t(:billing), billing_profiles_path, class: "ui button primary" %>
                     <%= link_to t('.delete'), user_path(@user.uuid),
                     method: :delete, data: { confirm: t(:are_you_sure) },
-                    remote: true, class: "ui button red" %>
+                    remote: true, class: "ui button red", target: '_top'%>
                 </div>
             </div>
         </div>

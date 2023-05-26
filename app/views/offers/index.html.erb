@@ -56,7 +56,7 @@
                 <%- else %>
                   <% unless offer.auction.english? %>
                     <%= link_to t('auctions.delete_your_offer'), 
-                                            offer_path(offer.uuid),
+                                            offer_path(offer.uuid), target: '_top',
                                             method: :delete, data: { confirm: t(:are_you_sure) }, class: "ui button red"%>
                   <% end %>
                 <% end %>
