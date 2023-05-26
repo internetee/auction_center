@@ -11,8 +11,9 @@ class EnglishOffersIntegrationTest < ActionDispatch::IntegrationTest
     @auction = auctions(:english)
     @user.autobiders.destroy_all
     @user.reload
+    
     sign_in @user
-
+    
     travel_to Time.parse('2010-07-05 10:30 +0000').in_time_zone
   end
 
@@ -32,7 +33,7 @@ class EnglishOffersIntegrationTest < ActionDispatch::IntegrationTest
 
     post auction_english_offers_path(auction_uuid: @auction.uuid),
          params: params,
-         headers: {}
+         headers: { "HTTP_REFERER" => root_path }
 
     assert @auction.offers.present?
     assert_equal @auction.offers.first.cents, 500
@@ -57,7 +58,7 @@ class EnglishOffersIntegrationTest < ActionDispatch::IntegrationTest
 
     post auction_english_offers_path(auction_uuid: @auction.uuid),
          params: params,
-         headers: {}
+         headers: { "HTTP_REFERER" => root_path }
 
     assert @auction.offers.empty?
   end
@@ -87,7 +88,7 @@ class EnglishOffersIntegrationTest < ActionDispatch::IntegrationTest
 
     patch english_offer_path(uuid: @auction.offers.first.uuid),
           params: params,
-          headers: {}
+          headers: { "HTTP_REFERER" => root_path }
 
     @auction.reload
 
@@ -120,7 +121,7 @@ class EnglishOffersIntegrationTest < ActionDispatch::IntegrationTest
 
     patch english_offer_path(uuid: @auction.offers.first.uuid),
           params: params,
-          headers: {}
+          headers: { "HTTP_REFERER" => root_path }
 
     @auction.reload
 
@@ -152,7 +153,7 @@ class EnglishOffersIntegrationTest < ActionDispatch::IntegrationTest
 
     post auction_english_offers_path(auction_uuid: @auction.uuid),
                                      params: params,
-                                     headers: {}
+                                     headers: { "HTTP_REFERER" => root_path }
     
     assert_equal flash[:alert], I18n.t('.english_offers.create.ban')
     assert @auction.offers.empty?
@@ -174,7 +175,7 @@ class EnglishOffersIntegrationTest < ActionDispatch::IntegrationTest
 
     post auction_english_offers_path(auction_uuid: @auction.uuid),
                                      params: params,
-                                     headers: {}
+                                     headers: { "HTTP_REFERER" => root_path }
     assert @auction.offers.last.username.present?
   end
 
@@ -195,7 +196,8 @@ class EnglishOffersIntegrationTest < ActionDispatch::IntegrationTest
     }
 
     post auction_english_offers_path(auction_uuid: @auction.uuid),
-         params: params
+         params: params,
+         headers: { "HTTP_REFERER" => root_path }
 
     assert_equal response.status, 302
     assert @auction.offers.empty?
@@ -267,7 +269,7 @@ class EnglishOffersIntegrationTest < ActionDispatch::IntegrationTest
 
     post auction_english_offers_path(auction_uuid: @auction.uuid),
          params: params,
-         headers: {}
+         headers: { "HTTP_REFERER" => root_path }
 
     assert @auction.offers.present?
     assert_equal @auction.offers.first.cents, 500
@@ -313,7 +315,7 @@ class EnglishOffersIntegrationTest < ActionDispatch::IntegrationTest
 
     patch english_offer_path(uuid: @auction.offers.first.uuid),
           params: params,
-          headers: {}
+          headers: { "Referer" => "http://example.com" }
 
     @auction.reload
 
@@ -359,7 +361,7 @@ class EnglishOffersIntegrationTest < ActionDispatch::IntegrationTest
 
     post auction_english_offers_path(auction_uuid: @auction.uuid),
          params: params,
-         headers: {}
+         headers: { "Referer" => "http://example.com" }
 
     @user.reload && @user_two.reload
 
@@ -414,7 +416,7 @@ class EnglishOffersIntegrationTest < ActionDispatch::IntegrationTest
 
     post auction_english_offers_path(auction_uuid: @auction.uuid),
          params: params,
-         headers: {}
+         headers: { "Referer" => "http://example.com" }
 
     assert @auction.offers.present?
     assert_equal @auction.offers.first.cents, 500
@@ -438,7 +440,7 @@ class EnglishOffersIntegrationTest < ActionDispatch::IntegrationTest
 
       post auction_english_offers_path(auction_uuid: @auction.uuid),
            params: params,
-           headers: {}
+           headers: { "Referer" => "http://example.com" }
 
       @auction.reload
       sign_out user
@@ -462,7 +464,7 @@ class EnglishOffersIntegrationTest < ActionDispatch::IntegrationTest
 
     post auction_english_offers_path(auction_uuid: @auction.uuid),
     params: params,
-    headers: {}
+    headers: { "Referer" => "http://example.com" }
 
     assert_equal response.status, 302
 
@@ -496,7 +498,7 @@ class EnglishOffersIntegrationTest < ActionDispatch::IntegrationTest
 
     post auction_english_offers_path(auction_uuid: @auction.uuid),
          params: params,
-         headers: {}
+         headers: { "Referer" => "http://example.com" }
 
     @user.reload && @user_two.reload
 
@@ -543,7 +545,7 @@ class EnglishOffersIntegrationTest < ActionDispatch::IntegrationTest
 
     patch english_offer_path(uuid: @auction.offers.first.uuid),
           params: params,
-          headers: {}
+          headers: { "Referer" => "http://example.com" }
 
     @user.reload && @user_two.reload
 
@@ -589,7 +591,7 @@ class EnglishOffersIntegrationTest < ActionDispatch::IntegrationTest
   
       post auction_english_offers_path(auction_uuid: @auction.uuid),
            params: params,
-           headers: {}
+           headers: { "Referer" => "http://example.com" }
 
       u.reload && @auction.reload
 
@@ -618,7 +620,7 @@ class EnglishOffersIntegrationTest < ActionDispatch::IntegrationTest
 
     post auction_english_offers_path(auction_uuid: @auction.uuid),
          params: params,
-         headers: {}
+         headers: { "Referer" => "http://example.com" }
 
     @auction.reload && five_last_users.last.reload
 

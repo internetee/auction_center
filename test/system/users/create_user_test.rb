@@ -15,7 +15,9 @@ class CreateUserTest < ApplicationSystemTestCase
     fill_in('user[password_confirmation]', with: 'password')
     fill_in('user[given_names]', with: 'User with Multiple Names')
     fill_in('user[mobile_phone]', with: '+48600100200')
-    select_from_dropdown('Poland', from: 'user[country_code]')
+    # select_from_dropdown('Poland', from: 'user[country_code]')
+    select 'Poland', from: 'user[country_code]'
+
     check_checkbox('user[accepts_terms_and_conditions]')
 
     fill_in('user[surname]', with: 'Last Name')
@@ -35,7 +37,9 @@ class CreateUserTest < ApplicationSystemTestCase
     fill_in('user[password_confirmation]', with: 'password')
     fill_in('user[given_names]', with: 'User with Multiple Names')
     fill_in('user[mobile_phone]', with: '+48600100200')
-    select_from_dropdown('Poland', from: 'user[country_code]')
+    # select_from_dropdown('Poland', from: 'user[country_code]')
+    select 'Poland', from: 'user[country_code]'
+
     fill_in('user[surname]', with: 'Last Name')
     click_link_or_button('Sign up')
 

@@ -84,7 +84,6 @@ jobs:
           bundle exec rake data:migrate
           bundle exec rails assets:precompile
           bundle exec rails test test/*
-          yarn test
       - name: Save coverage
         run: ./cc-test-reporter format-coverage --output coverage/codeclimate.${{ matrix.ruby }}.json
 

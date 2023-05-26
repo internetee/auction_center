@@ -103,7 +103,8 @@ class BillingProfilesTest < ApplicationSystemTestCase
 
     fill_in('billing_profile[street]', with: 'New Street 12')
     fill_in('billing_profile[name]', with: 'Joe John Participant-New')
-    select_from_dropdown('Poland', from: 'billing_profile[country_code]')
+    # select_from_dropdown('Poland', from: 'billing_profile[country_code]')
+    select 'Poland', from: 'billing_profile[country_code]'
 
     assert_no_changes('BillingProfile.count') do
       click_link_or_button('Submit')
@@ -148,6 +149,7 @@ class BillingProfilesTest < ApplicationSystemTestCase
     fill_in('billing_profile[street]', with: 'Baker Street 221B')
     fill_in('billing_profile[city]', with: 'London')
     fill_in('billing_profile[postal_code]', with: 'NW1 6XE')
-    select_from_dropdown('United Kingdom', from: 'billing_profile[country_code]')
+    # select_from_dropdown('United Kingdom', from: 'billing_profile[country_code]')
+    select 'United Kingdom', from: 'billing_profile[country_code]'
   end
 end
