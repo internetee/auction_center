@@ -34,6 +34,8 @@ class Auction < ApplicationRecord
     where(ends_at: start_date.beginning_of_day..end_date.end_of_day)
   }
 
+  scope :random_order, -> { order(Arel.sql('RANDOM()')) }
+
   scope :without_offers, -> { includes(:offers).where(offers: { auction_id: nil }) }
   scope :with_offers, -> { includes(:offers).where.not(offers: { auction_id: nil }) }
   scope :with_domain_name, (lambda do |domain_name|

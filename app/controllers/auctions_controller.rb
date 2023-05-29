@@ -5,7 +5,7 @@ class AuctionsController < ApplicationController
   # GET /auctions
   def index
     set_cors_header
-    @auctions_list = Auction.active.search(params).with_user_offers(current_user&.id)
+    @auctions_list = Auction.active.random_order.search(params).with_user_offers(current_user&.id)
 
     count = params[:show_all] == 'true' ? @auctions_list.count : 15
     count = nil if @auctions_list.empty?
