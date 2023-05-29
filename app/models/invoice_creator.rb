@@ -74,6 +74,7 @@ class InvoiceCreator
   def set_issue_and_due_date
     invoice.issue_date = Time.zone.today
     invoice.due_date = Time.zone.today + Setting.find_by(code: 'payment_term').retrieve
+    invoice.due_date += result_auction.english? ? 1.day : 0.day
   end
 
   def create_invoice
