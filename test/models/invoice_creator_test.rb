@@ -195,4 +195,37 @@ class InvoiceCreatorTest < ActiveSupport::TestCase
     assert result.invoice.total.zero?
     assert_equal result.invoice.status, 'paid'
   end
+
+  def test_should_be_added_one_more_day_for_invoice_due_date_if_auction_is_english
+    offer_bid_value = 10_000
+
+    user = users(:participant)
+    auction = auctions(:english)
+
+    mid_day = Time.new(Time.now.year, Time.now.month, Time.now.day, 12, 0, 0)
+    auction.update(starts_at: mid_day - 1.day, ends_at: Time.zone.now  + 10.minutes)
+    auction.reload
+    assert auction.offers.empty?
+
+    user.billing_profiles << @billing_company
+
+    Offer.create!(
+      auction: auction,
+      user: user,
+      cents: offer_bid_value,
+      billing_profile: @billing_company
+    )
+
+    assert auction.offers.present?
+    auction.update(ends_at: Time.zone.now - 1.minute) && auction.reload
+
+    ResultCreationJob.perform_now
+    auction.reload
+
+    result = Result.last
+    assert_equal result.auction.domain_name, auction.domain_name
+    assert_equal result.invoice.status, 'issued'
+
+    assert_equal result.invoice.due_date, Time.zone.today + Setting.find_by(code: 'payment_term').retrieve + 1.day
+  end
 end
