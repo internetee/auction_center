@@ -30,8 +30,6 @@ class BillingProfile < ApplicationRecord
     end
   }
 
-  scope :issues_invoices, -> { join }
-
   def self.search(params = {})
     self.with_search_scope(params[:search_string])
   end
