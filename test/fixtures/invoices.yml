@@ -16,6 +16,10 @@ payable:
   uuid: "92f2d552-4270-4d08-8687-b332432c872f"
   in_directo: false
   number: '12345678'
+  billing_name: "ACME Inc."
+  billing_address: "Baker Street 221B, NW1 6XE London, United Kingdom"
+  billing_vat_code: "12234567890"
+  billing_alpha_two_country_code: "GB"
 
 orphaned:
   result: orphaned

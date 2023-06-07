@@ -228,4 +228,40 @@ class InvoiceCreatorTest < ActiveSupport::TestCase
 
     assert_equal result.invoice.due_date, Time.zone.today + Setting.find_by(code: 'payment_term').retrieve + 1.day
   end
+
+  def test_should_be_assigned_billing_profile_information
+    offer_bid_value = 10_000
+
+    user = users(:participant)
+    auction = auctions(:english)
+
+    mid_day = Time.new(Time.now.year, Time.now.month, Time.now.day, 12, 0, 0)
+    auction.update(starts_at: mid_day - 1.day, ends_at: Time.zone.now  + 10.minutes)
+    auction.reload
+    assert auction.offers.empty?
+
+    user.billing_profiles << @billing_company
+
+    Offer.create!(
+      auction: auction,
+      user: user,
+      cents: offer_bid_value,
+      billing_profile: @billing_company
+    )
+
+    assert auction.offers.present?
+    auction.update(ends_at: Time.zone.now - 1.minute) && auction.reload
+
+    ResultCreationJob.perform_now
+    auction.reload
+
+    result = Result.last
+    assert_equal result.auction.domain_name, auction.domain_name
+    assert_equal result.invoice.status, 'issued'
+
+    assert_equal result.invoice.billing_name, @billing_company.name
+    assert_equal result.invoice.billing_address, @billing_company.address
+    assert_equal result.invoice.billing_vat_code, @billing_company.vat_code
+    assert_equal result.invoice.billing_alpha_two_country_code, @billing_company.country_code
+  end
 end

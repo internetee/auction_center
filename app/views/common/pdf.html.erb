@@ -218,16 +218,33 @@
                             <%= t('billing_profiles.name') %>
                         </dt>
                         <dd>
-                            <%= @invoice.billing_profile.name %>
+                            <% if @invoice.billing_profile.present? %>
+                                <%= @invoice.billing_profile.name %>
+                            <% else %>
+                                <%= @invoice.billing_name %>
+                            <% end %>
                         </dd>
 
-                        <% if @invoice.billing_profile.vat_code %>
-                            <dt><%= t('billing_profiles.vat_code') %></dt>
-                            <dd><%= @invoice.billing_profile.vat_code %></dd>
+                        <dt><%= t('billing_profiles.vat_code') %></dt>
+                        <% if @invoice.billing_profile.present? %>
+                            <% tag.dd do %>
+                                <%= @invoice.billing_profile.vat_code %>
+                            <% end if @invoice.billing_profile.vat_code %>
+                        <% else %>
+                            <% tag.dd do %>
+                                <%= @invoice.billing_vat_code %>
+                            <% end if @invoice.billing_vat_code %>
                         <% end %>
 
+
                         <dt><%= t('billing_profiles.address') %></dt>
-                        <dd><%= @invoice.billing_profile.address %></dd>
+                        <dd>
+                            <% if @invoice.billing_profile.present? %>
+                                <%= @invoice.billing_profile.address %>
+                            <% else %>
+                                <%= @invoice.billing_address %>
+                            <% end %>
+                        </dd>
                     </dl>
                 </div>
             </div>
@@ -258,7 +275,13 @@
                                 <tr>
                                     <td scope="col"></td>
                                     <td scope="col"><%= t('invoices.vat_amount') %></td>
-                                    <td><%= number_to_percentage(@invoice.billing_profile.vat_rate * 100, precision: 0) %></td>
+                                    <td>
+                                        <% if @invoice.billing_profile.present? %>
+                                            <%= number_to_percentage(@invoice.billing_profile.vat_rate * 100, precision: 0) %>
+                                        <% else %>
+                                            <%= number_to_percentage(@invoice.billing_vat_rate * 100, precision: 0) %>
+                                        <% end %>
+                                    </td>
                                     <td scope="col"><%= t('offers.price_in_currency', price: @invoice.vat) %></td>
                                 </tr>
                                 <tr>

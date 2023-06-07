@@ -170,6 +170,13 @@ class Invoice < ApplicationRecord
     "#{title.parameterize}.pdf"
   end
 
+  def billing_vat_rate
+    return Countries.vat_rate_from_alpha2_code(billing_alpha_two_country_code) if billing_alpha_two_country_code == 'EE'
+    return BigDecimal('0') if vat_code.present?
+
+    Countries.vat_rate_from_alpha2_code(billing_alpha_two_country_code)
+  end
+
   # mark_as_paid_at_with_payment_order(time, payment_order) is the preferred version to use
   # in the application, but this is also used with administrator manually setting invoice as
   # paid in the user interface.

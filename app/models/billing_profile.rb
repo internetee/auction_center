@@ -11,8 +11,10 @@ class BillingProfile < ApplicationRecord
 
   belongs_to :user, optional: true
   after_update :mirror_address_to_attached_invoices
+  before_update :update_billing_information_for_invoices
 
   has_many :domain_offer_histories
+  has_many :invoices
 
   scope :with_search_scope, ->(origin) {
     if origin.present?
@@ -28,8 +30,14 @@ class BillingProfile < ApplicationRecord
     end
   }
 
+  scope :issues_invoices, -> { join }
+
   def self.search(params = {})
     self.with_search_scope(params[:search_string])
+  end
+
+  def issued_invoices
+    invoices.where(status: 'issued')
   end
 
   def user_name
@@ -84,5 +92,16 @@ class BillingProfile < ApplicationRecord
       invoice.update_billing_address
       invoice.save!
     end
+  end
+
+  private
+
+  def update_billing_information_for_invoices
+    issued_invoices.update_all(
+      billing_name: name,
+      billing_address: address,
+      billing_vat_code: vat_code,
+      billing_alpha_two_country_code: alpha_two_country_code
+    ) if name_changed? || street_changed? || city_changed? || postal_code_changed? || country_code_changed?
   end
 end
