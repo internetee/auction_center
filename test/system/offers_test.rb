@@ -155,10 +155,12 @@ class OffersTest < ApplicationSystemTestCase
 
     visit new_auction_offer_path(@expired_auction.uuid)
 
-    fill_in('offer[price]', with: '5.00')
-    click_link_or_button('Submit')
+    assert_current_path(auction_path(@expired_auction.uuid))
 
-    assert(page.has_text?('This auction has ended'))
+    # fill_in('offer[price]', with: '5.00')
+    # click_link_or_button('Submit')
+
+    # assert(page.has_text?('This auction has ended'))
   end
 
   def test_participant_cannot_update_an_offer_for_an_inactive_auction
@@ -167,9 +169,11 @@ class OffersTest < ApplicationSystemTestCase
 
     visit edit_offer_path(@offer.uuid)
 
-    fill_in('offer[price]', with: '5.00')
-    click_link_or_button('Submit')
+    assert_current_path(auction_path(@valid_auction.uuid))
 
-    assert(page.has_text?('This auction has ended'))
+    # fill_in('offer[price]', with: '5.00')
+    # click_link_or_button('Submit')
+
+    # assert(page.has_text?('This auction has ended'))
   end
 end
