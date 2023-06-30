@@ -90,7 +90,7 @@ class OffersController < ApplicationController
   private
 
   def find_auction
-    @auction = Auction.not_english.find_by!(uuid: params[:auction_uuid])
+    @auction = Auction.find_by!(uuid: params[:auction_uuid])
   end
 
   def update_not_allowed(auction)
