@@ -13,6 +13,7 @@ et:
     offers: "Pakkumused"
     offer_actions: "Pakkumistegevused"
     your_current_price: "Sinu pakkumus"
+    current_price: "Pakkumus"
     cancel_bid: "Pakkumise tühistamine"
     starting_price: "Alghind eurodes"
     min_bids_step: "Minimaalne panuse samm eurod"

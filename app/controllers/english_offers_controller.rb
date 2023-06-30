@@ -1,21 +1,20 @@
 class EnglishOffersController < ApplicationController  
   before_action :authenticate_user!
+  before_action :find_auction, only: %i[new create]
+  before_action :check_for_ban, only: :create
   before_action :set_offer, only: %i[show edit update]
   before_action :set_captcha_required
-  before_action :check_for_ban, only: [:create]
   before_action :authorize_phone_confirmation
   before_action :authorize_offer_for_user, except: %i[new create]
   before_action :prevent_check_for_invalid_bid, only: [:update]
-  before_action :captcha_check, only: [:update, :create]
-  
+  before_action :captcha_check, only: %i[update create]
+
   protect_from_forgery with: :null_session
-  
+
   include OfferNotifable
-  
+
   # GET /auctions/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/offers/new
   def new
-    @auction = Auction.find_by!(uuid: params[:auction_uuid])
-
     offer = @auction.offer_from_user(current_user.id)
     redirect_to edit_english_offer_path(offer.uuid) if offer
 
@@ -28,22 +27,20 @@ class EnglishOffersController < ApplicationController
 
   # POST /auctions/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/offers
   def create
-    auction = Auction.find_by!(uuid: params[:auction_uuid])
-
-    unless check_first_bid_for_english_auction(create_params, auction)
-      formatted_starting_price = format('%.2f', auction.starting_price)
+    unless check_first_bid_for_english_auction(create_params, @auction)
+      formatted_starting_price = format('%.2f', @auction.starting_price)
       flash[:alert] = t('english_offers.create.bid_must_be', minimum: formatted_starting_price)
-      redirect_to new_auction_english_offer_path(auction_uuid: auction.uuid) and return
+      redirect_to new_auction_english_offer_path(auction_uuid: @auction.uuid) and return
     end
 
     @offer = Offer.new(create_params)
     @offer.username = Username::GenerateUsernameService.new.call
     authorize! :manage, @offer
 
-    if create_predicate(auction)
-      broadcast_update_auction_offer(auction)
-      send_outbided_notification(auction: auction, offer: @offer, flash: flash)
-      update_auction_values(auction, t('english_offers.create.created'))
+    if create_predicate(@auction)
+      broadcast_update_auction_offer(@auction)
+      send_outbided_notification(auction: @auction, offer: @offer, flash: flash)
+      update_auction_values(@auction, t('english_offers.create.created'))
     else
       if @offer.errors.full_messages_for(:cents).present?
         flash[:alert] = @offer.errors.full_messages_for(:cents).join
@@ -55,17 +52,25 @@ class EnglishOffersController < ApplicationController
     end
   end
 
-  # GET /offers/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/edit
+  # GET /english_offers/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
+  def show
+    @auction = @offer.auction
+    redirect_to offer_path(@offer.uuid) and return unless @auction.english?
+  end
+
+  # GET /english_offers/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/edit
   def edit
     @auction = @offer.auction
+    redirect_to auction_path(@auction.uuid) and return if update_not_allowed(@auction)
 
     @autobider = current_user.autobiders.find_by(domain_name: @auction.domain_name)
     @autobider = current_user.autobiders.build(domain_name: @auction.domain_name) if @autobider.nil?
   end
 
-  # PUT /offers/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
+  # PUT /english_offers/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
   def update
-    auction = Auction.with_user_offers(current_user.id).find_by(uuid: @offer.auction.uuid)
+    auction = Auction.english.with_user_offers(current_user.id).find_by(uuid: @offer.auction.uuid)
+    redirect_to auction_path(auction.uuid) and return if update_not_allowed(auction)
 
     if update_predicate(auction)
       broadcast_update_auction_offer(auction)
@@ -84,9 +89,16 @@ class EnglishOffersController < ApplicationController
 
   private
 
+  def find_auction
+    @auction = Auction.english.find_by!(uuid: params[:auction_uuid])
+  end
+
+  def update_not_allowed(auction)
+    !auction.english? || !auction.in_progress?
+  end
+
   def check_for_ban
-    auction = Auction.find_by!(uuid: params[:auction_uuid])
-    if Ban.valid.where(user_id: current_user).where(domain_name: auction.domain_name).any? || current_user.completely_banned?
+    if Ban.valid.where(user_id: current_user).where(domain_name: @auction.domain_name).any? || current_user.completely_banned?
       redirect_to root_path, flash: { alert: I18n.t('.english_offers.create.ban') } and return
     end
   end
@@ -174,8 +186,7 @@ class EnglishOffersController < ApplicationController
   end
 
   def set_offer
-    @offer = Offer.where(user_id: current_user.id)
-                  .find_by!(uuid: params[:uuid])
+    @offer = current_user.offers.find_by!(uuid: params[:uuid])
   end
 
   def authorize_phone_confirmation

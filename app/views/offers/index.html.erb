@@ -19,28 +19,29 @@
         </thead>
         <tbody id="offers-table-body">
           <% @offers.each do |offer| %>
+            <% auction = offer.auction %>
             <tr class="offers-table-row">
               <td class="monospace"><%= link_to offer.auction.domain_name, offer_path(offer.uuid) %></td>
               <td><span class='span-mobile-only'><b><%= t('.your_last_offer') %>:</b></span> <%= t('offers.price_in_currency', price: offer.price) %></td>
               <td><span class='span-mobile-only'><b><%= t('offers.total') %>:</b></span> <%= t('offers.price_in_currency', price: offer.total) %></td>
 
               <td><span class='span-mobile-only'><b><%= t('auctions.ends_at') %>:</b></span>
-                <%- if offer.auction.finished? %>
+                <%- if auction.finished? %>
                   <%= t('auctions.finished') %>
                 <% else %>
-                  <%= I18n.l(offer.auction.ends_at) %>
+                  <%= I18n.l(auction.ends_at) %>
                 <% end %>
               </td>
               <td>
-                <%- if offer.auction.finished? %>
+                <%- if auction.finished? %>
                   <%- if offer.result %>
                     <%= t('.you_won') %>
-                  <%- elsif offer.auction&.result && !offer.result %>
+                  <%- elsif auction&.result && !offer.result %>
                     <%= t('.you_lost') %>
                   <% end %>
                 <% else %>
-                  <%- if offer.auction.english? %>
-                    <% if offer.auction.currently_winning_offer == offer %>
+                  <%- if auction.english? %>
+                    <% if auction.currently_winning_offer == offer %>
                       <%= t('.you_are_winning') %>
                     <% else %>
                       <%= t('.you_are_loosing') %>
@@ -54,7 +55,7 @@
                 <%- if offer.result %>
                   <%= link_to t('.claim_your_domain'), result_path(offer.result.uuid) %>
                 <%- else %>
-                  <% unless offer.auction.english? %>
+                  <% unless auction.english? || auction.finished? %>
                     <%= link_to t('auctions.delete_your_offer'), 
                                             offer_path(offer.uuid),
                                             method: :delete, data: { confirm: t(:are_you_sure) }, class: "ui button red"%>
