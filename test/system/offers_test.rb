@@ -169,7 +169,7 @@ class OffersTest < ApplicationSystemTestCase
 
     visit edit_offer_path(@offer.uuid)
 
-    assert_current_path(auction_path(@expired_auction.uuid))
+    assert_current_path(auction_path(@valid_auction.uuid))
 
     # fill_in('offer[price]', with: '5.00')
     # click_link_or_button('Submit')
