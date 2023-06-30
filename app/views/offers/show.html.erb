@@ -49,14 +49,14 @@
         <% if current_user&.participated_in_english_auction?(@auction) %>
 
             <div>
-                <%= render 'participants_table', auction: @auction %>
+                <%= render 'offers/participants_table', auction: @auction %>
             </div>
         <% end %>
 
         <% if current_user&.participated_in_english_auction?(@auction) && @auction.finished? %>
 
             <div style='margin-top: 20px;'>
-                <%= render 'deposit_participants_table.html', auction: @auction %>
+                <%= render 'offers/deposit_participants_table', auction: @auction %>
             </div>
         <% end %>
         

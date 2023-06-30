@@ -51,7 +51,6 @@ class OffersController < ApplicationController
   # GET /offers/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
   def show
     @auction = @offer.auction
-    redirect_to english_offer_path(@offer.uuid) and return if @auction.english?
   end
 
   # GET /offers/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/edit
