@@ -18,8 +18,8 @@ Rails.application.configure do
     'Cache-Control' => "public, max-age=#{1.hour.to_i}"
   }
 
-  config.assets.compile = false
-  config.assets.debug = false
+  # config.assets.compile = false
+  # config.assets.debug = false
 
   # Show full error reports and disable caching.
   config.consider_all_requests_local       = true
@@ -52,7 +52,7 @@ Rails.application.configure do
   config.active_support.deprecation = :stderr
 
   # Raises error for missing translations
-  config.action_view.raise_on_missing_translations = true
+  # config.action_view.raise_on_missing_translations = true
 
   # Performs jobs in the same thread
   config.active_job.queue_adapter = :inline

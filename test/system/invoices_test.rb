@@ -26,7 +26,9 @@ class InvoicesTest < ApplicationSystemTestCase
     assert(page.has_link?('Change billing profile', href: edit_invoice_path(@invoice.uuid)))
 
     click_link_or_button('Change billing profile')
-    select_from_dropdown('Joe John Participant', from: 'invoice[billing_profile_id]')
+    # select_from_dropdown('Joe John Participant', from: 'invoice[billing_profile_id]')
+    select 'Joe John Participant', from: 'invoice[billing_profile_id]'
+
     click_link_or_button('Submit')
 
     @invoice.reload
@@ -43,7 +45,9 @@ class InvoicesTest < ApplicationSystemTestCase
     @invoice.reload
 
     visit edit_invoice_path(@invoice.uuid)
-    select_from_dropdown('Joe John Participant', from: 'invoice[billing_profile_id]')
+    # select_from_dropdown('Joe John Participant', from: 'invoice[billing_profile_id]')
+    select 'Joe John Participant', from: 'invoice[billing_profile_id]'
+    
     click_link_or_button('Submit')
 
     assert_text('Something went wrong.')

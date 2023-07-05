@@ -1,5 +1,5 @@
 class SharedFooterFetcherJob < ApplicationJob
-  include Concerns::HttpRequester
+  include HttpRequester
 
   def perform
     return unless SharedFooterFetcherJob.needs_to_run?

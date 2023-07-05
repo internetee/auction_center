@@ -54,10 +54,10 @@
                     <% if billing_profile.deletable? %>
                     <%= link_to t(:delete), billing_profile_path(billing_profile.uuid),
                         method: :delete, data: { confirm: t(:are_you_sure) },
-                        remote: true, class: "ui button red" %>
+                        class: "ui button red", target: '_top' %>
                     <% else %>
                     <%= content_tag :div, link_to(t(:delete), '#', class: "ui button secondary disabled"),
-                        data: {tooltip: t('billing_profiles.in_use_by_offer_short'), inverted: ''} %>
+                        data: {tooltip: t('billing_profiles.in_use_by_offer_short'), inverted: ''}, target: '_top' %>
                     <% end %>
                 </div>
             </div>

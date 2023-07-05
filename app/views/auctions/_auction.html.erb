@@ -1,7 +1,7 @@
 <tr class="auctions-table-row contents" id="<%= dom_id(auction) %>" data-platform="<%= auction.platform %>">
     <% english_auction_presenter = EnglishBidsPresenter.new(auction) %>
     <td class="auction-domain-name monospace">
-        <%= link_to auction_path(auction.uuid) do %>
+        <%= link_to auction_path(auction.uuid), target: '_top' do %>
             <%= domain_name_with_embedded_colors(auction.domain_name) %>
         <% end %>
     </td>

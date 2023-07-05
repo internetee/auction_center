@@ -1,5 +1,5 @@
 # rubocop:disable Metrics/ClassLength
-require 'invoice_already_paid'
+# require 'invoice_already_paid'
 
 module Admin
   class InvoicesController < BaseController

@@ -1,6 +1,3 @@
-require 'auction_not_finished'
-require 'auction_not_found'
-
 class Result < ApplicationRecord
   include PgSearch::Model
 

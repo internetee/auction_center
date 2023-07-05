@@ -24,7 +24,7 @@ class SessionsTest < ApplicationSystemTestCase
     fill_in('user_email', with: 'user@auction.test')
     fill_in('user_password', with: 'password123')
 
-    within('form') do
+    within('form#new_user') do
       click_link_or_button('Sign in')
     end
 
@@ -65,7 +65,7 @@ class SessionsTest < ApplicationSystemTestCase
     fill_in('user_email', with: 'user@auction.test')
     fill_in('user_password', with: 'password123')
 
-    within('form') do
+    within('form#new_user') do
       click_link_or_button('Sign in')
     end
 

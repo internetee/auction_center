@@ -10,13 +10,17 @@ Bundler.require(*Rails.groups)
 module AuctionCenter
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 6.0
-    config.autoloader = :classic
+    config.load_defaults 7.0
+    # config.autoloader = :classic
+    # config.autoloader = :zeitwerk
 
     config.active_model.i18n_customize_full_message = true
+    config.autoload_paths += %W(#{config.root}/app/models/concerns)
 
-    config.autoload_paths += Dir[Rails.root.join('app', 'presenters', '**/')]
-    config.autoload_paths += Dir[Rails.root.join('app', 'broadcasts', '**/')]
+
+    # config.autoload_paths += Dir[Rails.root.join('app', 'presenters', '**/')]
+    # config.autoload_paths += Dir[Rails.root.join('app', 'broadcasts', '**/')]
+    # config.autoload_paths += Dir[Rails.root.join('app', 'errors', '**/')]
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers

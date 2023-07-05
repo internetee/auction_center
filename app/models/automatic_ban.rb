@@ -1,5 +1,3 @@
-require 'no_cancelled_invoices'
-
 class AutomaticBan
   # Minimum registration period is three months. Having short ban period
   # that uses the same time should abusers from participating in the most

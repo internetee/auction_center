@@ -34,10 +34,9 @@
                 <% if @offer.can_be_modified? %>
                     <% if !@offer.auction.english? %>
                         <%= link_to t(:edit), edit_offer_path(@offer.uuid), class: "ui button primary" %>
-
+              
                         <%= link_to t(:delete), offer_path(@offer.uuid),
-                            method: :delete, data: { confirm: t(:are_you_sure) },
-                            remote: true, class: "ui button red" %>
+                            method: :delete, data: { confirm: t(:are_you_sure) }, class: "ui button red" %>
                     <% else %>
                         <%#= @offer.auction.decorate.auction_offer_button(current_user) %>
                         <%= link_to t('auctions.bid'), edit_english_offer_path(@offer.uuid), class: "ui button primary", style: 'margin-bottom: 20px;' %>

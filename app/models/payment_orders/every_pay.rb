@@ -1,6 +1,6 @@
 module PaymentOrders
   class EveryPay < PaymentOrder
-    include Concerns::HttpRequester
+    include HttpRequester
     CONFIG_NAMESPACE = 'every_pay'.freeze
 
     USER = AuctionCenter::Application.config

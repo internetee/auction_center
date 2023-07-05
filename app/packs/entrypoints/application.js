@@ -12,17 +12,17 @@ import Rails from 'rails-ujs';
 
 require("chartkick").use(require("highcharts"))
 
-import Turbolinks from 'turbolinks';
+// import Turbolinks from 'turbolinks';
 
 Rails.start();
-Turbolinks.start();
+// Turbolinks.start();
 
-import { Turbo } from "@hotwired/turbo-rails"
-Turbo.session.drive = false
+// import { Turbo } from "@hotwired/turbo-rails"
+// Turbo.session.drive = true
 
 import "@hotwired/turbo-rails"
-// import "controllers"
 import "./controllers"
+// import "controllers"
 import './stylesheets/application.scss'
 import './stylesheets/transition.css'
 // UI modules

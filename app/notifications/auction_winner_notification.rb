@@ -10,8 +10,6 @@ class AuctionWinnerNotification < Noticed::Base
   param :auction
 
   def webpush_format
-    auction = params[:auction]
-
     {
       title: I18n.t('.winner_webpush_notification_title'),
       body: I18n.t('.participant_win_auction', name: params[:auction].domain_name),

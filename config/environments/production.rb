@@ -1,4 +1,4 @@
-DOCKER_STDOUT = '/proc/1/fd/1'.freeze
+# DOCKER_STDOUT = '/proc/1/fd/1'.freeze
 
 Rails.application.configure do
   # Verifies that versions and hashed value of the package contents in the project's package.json
@@ -27,7 +27,7 @@ Rails.application.configure do
   config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
-  config.assets.compile = false
+  # config.assets.compile = false
 
   # `config.assets.precompile` and `config.assets.version` have moved to config/initializers/assets.rb
 
@@ -86,24 +86,25 @@ Rails.application.configure do
   # Use a different logger for distributed setups.
   # require 'syslog/logger'
   # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new 'auction')
+  config.logger = ActiveSupport::Logger.new(STDOUT)
   #
-  if ENV['RAILS_LOG_TO_DOCKER_STDOUT'].present?
-    $stdout.sync = true
-    config.rails_semantic_logger.add_file_appender = false
-    config.semantic_logger.add_appender(io: $stdout, formatter: config.rails_semantic_logger.format)
-    # logger           = ActiveSupport::Logger.new(DOCKER_STDOUT)
-    # logger.formatter = config.log_formatter
-    # config.logger    = ActiveSupport::TaggedLogging.new(logger)
-  end
+  # if ENV['RAILS_LOG_TO_DOCKER_STDOUT'].present?
+  #   $stdout.sync = true
+  #   config.rails_semantic_logger.add_file_appender = false
+  #   config.semantic_logger.add_appender(io: $stdout, formatter: config.rails_semantic_logger.format)
+  #   # logger           = ActiveSupport::Logger.new(DOCKER_STDOUT)
+  #   # logger.formatter = config.log_formatter
+  #   # config.logger    = ActiveSupport::TaggedLogging.new(logger)
+  # end
 
-  if ENV["RAILS_LOG_TO_STDOUT"].present?
-    $stdout.sync = true
-    config.rails_semantic_logger.add_file_appender = false
-    config.semantic_logger.add_appender(io: $stdout, formatter: config.rails_semantic_logger.format)
-    # logger           = ActiveSupport::Logger.new(STDOUT)
-    # logger.formatter = config.log_formatter
-    # config.logger    = ActiveSupport::TaggedLogging.new(logger)
-  end
+  # if ENV["RAILS_LOG_TO_STDOUT"].present?
+  #   $stdout.sync = true
+  #   config.rails_semantic_logger.add_file_appender = false
+  #   config.semantic_logger.add_appender(io: $stdout, formatter: config.rails_semantic_logger.format)
+  #   # logger           = ActiveSupport::Logger.new(STDOUT)
+  #   # logger.formatter = config.log_formatter
+  #   # config.logger    = ActiveSupport::TaggedLogging.new(logger)
+  # end
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false

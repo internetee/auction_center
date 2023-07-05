@@ -1,9 +1,6 @@
 {
    "name": "auction_center",
    "private": true,
-   "scripts": {
-      "test": "NODE_ENV=test karma start"
-   },
    "dependencies": {
       "@hotwired/stimulus": "^3.0.1",
       "@hotwired/turbo-rails": "^7.1.1",

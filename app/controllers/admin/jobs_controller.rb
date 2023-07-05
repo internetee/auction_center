@@ -1,5 +1,3 @@
-require 'tampering_detected'
-
 module Admin
   class JobsController < BaseController
     before_action :authorize_user

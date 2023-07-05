@@ -6,6 +6,10 @@ ARG SECRET_KEY_BASE
 ENV RAILS_ENV "$RAILS_ENV"
 ENV SECRET_KEY_BASE "$SECRET_KEY_BASE"
 
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4EB27DB2A3B88B8B
+RUN apt-get update
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
+RUN apt-get install -y nodejs
 
 COPY Gemfile Gemfile.lock ./    
 RUN gem install bundler && bundle config set without 'development test' && bundle install --jobs 20 --retry 5
@@ -14,5 +18,4 @@ RUN yarn install --check-files
 
 COPY . .
 
-RUN bundle exec rails assets:clobber
 RUN bundle exec rails assets:precompile

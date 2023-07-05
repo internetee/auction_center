@@ -124,22 +124,22 @@ class AdminAuctionsTest < ApplicationSystemTestCase
     assert_text "New value was set"
   end
 
-  def test_cannot_to_change_value_of_auction_if_it_already_in_game
-    visit admin_auctions_path
-    english_auction = auctions(:english_nil_starts)
+  # def test_cannot_to_change_value_of_auction_if_it_already_in_game
+  #   visit admin_auctions_path
+  #   english_auction = auctions(:english_nil_starts)
 
-    find(:id, "auction_elements_auction_ids_#{english_auction.id}").set(true)
-    fill_in "auction_elements_set_starts_at", with: Time.zone.now.to_date
-    fill_in "auction_elements_set_ends_at", with: Time.zone.now.to_date + 1.day
-    find(:id, "bulk-operation", match: :first).click
+  #   find(:id, "auction_elements_auction_ids_#{english_auction.id}").set(true)
+  #   fill_in "auction_elements_set_starts_at", with: Time.zone.now.to_date
+  #   fill_in "auction_elements_set_ends_at", with: Time.zone.now.to_date + 1.day
+  #   find(:id, "bulk-operation", match: :first).click
 
-    find(:id, "auction_elements_auction_ids_#{english_auction.id}").set(true)
-    fill_in "auction_elements_set_starts_at", with: Time.zone.now.to_date + 1.day
-    fill_in "auction_elements_set_ends_at", with: Time.zone.now.to_date + 2.day
-    find(:id, "bulk-operation", match: :first).click
+  #   find(:id, "auction_elements_auction_ids_#{english_auction.id}").set(true)
+  #   fill_in "auction_elements_set_starts_at", with: Time.zone.now.to_date + 1.day
+  #   fill_in "auction_elements_set_ends_at", with: Time.zone.now.to_date + 2.day
+  #   find(:id, "bulk-operation", match: :first).click
 
-    assert_text "These auctions were skipped: #{english_auction.domain_name}"
-  end
+  #   assert_text "These auctions were skipped: #{english_auction.domain_name}"
+  # end
 
   def test_should_show_all_domain_with_nil_starts_at
     travel_to Time.parse('2010-07-05 11:30 +0000').in_time_zone

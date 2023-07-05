@@ -32,11 +32,11 @@
     </nav>
     <nav class="menu-user aligned">
       <% if current_user %>
-        <%= link_to(destroy_user_session_path, method: :delete, data: { 'turbo-method': 'delete' }) do %>
+        <%= link_to destroy_user_session_path, target: '_top', method: :delete, data: { 'turbo-method': 'delete' }, id: 'sign-in' do %>
           <i aria-hidden="true" class="user icon"></i><%= t(:sign_out) %>
         <% end %>
       <% else %>
-        <%= link_to(new_user_session_path) do %>
+        <%= link_to new_user_session_path, id: 'sign-in' do %>
           <i aria-hidden="true" class="user icon"></i><%= t(:sign_in) %>
         <% end %>
       <% end %>

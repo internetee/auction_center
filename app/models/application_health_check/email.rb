@@ -1,6 +1,6 @@
 module ApplicationHealthCheck
   class Email < OkComputer::Check
-    include Concerns::HealthChecker
+    include HealthChecker
 
     def check
       if host.present? && port.present?

@@ -1,5 +1,4 @@
 require 'test_helper'
-require 'expected_payment_order'
 
 class PaymentOrderTest < ActiveSupport::TestCase
   def setup

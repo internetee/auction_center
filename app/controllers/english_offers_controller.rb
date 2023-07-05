@@ -1,4 +1,4 @@
-class EnglishOffersController < ApplicationController  
+class EnglishOffersController < ApplicationController
   before_action :authenticate_user!
   before_action :find_auction, only: %i[new create]
   before_action :check_for_ban, only: :create
@@ -42,11 +42,11 @@ class EnglishOffersController < ApplicationController
       send_outbided_notification(auction: @auction, offer: @offer, flash: flash)
       update_auction_values(@auction, t('english_offers.create.created'))
     else
-      if @offer.errors.full_messages_for(:cents).present?
-        flash[:alert] = @offer.errors.full_messages_for(:cents).join
-      else
-        flash[:alert] = @offer.errors.full_messages.join('; ')
-      end
+      flash[:alert] = if @offer.errors.full_messages_for(:cents).present?
+                        @offer.errors.full_messages_for(:cents).join
+                      else
+                        @offer.errors.full_messages.join('; ')
+                      end
 
       redirect_to root_path
     end
@@ -77,11 +77,11 @@ class EnglishOffersController < ApplicationController
       send_outbided_notification(auction: auction, offer: @offer, flash: flash)
       update_auction_values(auction, t('english_offers.edit.bid_updated'))
     else
-      if @offer.errors.full_messages_for(:cents).present?
-        flash[:alert] = @offer.errors.full_messages_for(:cents).join
-      else
-        flash[:alert] = @offer.errors.full_messages.join('; ')
-      end
+      flash[:alert] = if @offer.errors.full_messages_for(:cents).present?
+                        @offer.errors.full_messages_for(:cents).join
+                      else
+                        @offer.errors.full_messages.join('; ')
+                      end
 
       redirect_to root_path
     end
@@ -129,7 +129,8 @@ class EnglishOffersController < ApplicationController
     auction = Auction.with_user_offers(current_user.id).find_by(uuid: @offer.auction.uuid)
     return unless bid_is_bad?(auction: auction, update_params: update_params)
 
-    flash[:alert] = "#{t('english_offers.show.bid_failed', price: sprintf('%.2f', auction.highest_price.to_f).gsub('.', ','))}"
+    flash[:alert] =
+      "#{t('english_offers.show.bid_failed', price: format('%.2f', auction.highest_price.to_f).tr('.', ','))}"
     redirect_to edit_english_offer_path(auction.users_offer_uuid) and return
   end
 

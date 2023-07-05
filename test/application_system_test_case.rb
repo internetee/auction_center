@@ -1,5 +1,6 @@
 require 'test_helper'
 require 'support/semantic_ui_helper'
+require 'selenium/webdriver'
 
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   include Devise::Test::IntegrationHelpers

@@ -25,16 +25,18 @@ gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 5.6.4'
 gem 'rails', '>= 6.0.3.5'
 gem 'rails-i18n'
-gem 'rails_semantic_logger'
+# gem 'rails_semantic_logger'
 gem 'recaptcha'
 gem 'scenic'
 gem 'simpleidn'
 gem 'skylight'
 gem 'sprockets', '~> 4.0'
-gem 'turbolinks', '~> 5'
+# gem 'turbolinks', '~> 5'
+gem 'turbo-rails'
 gem 'webpacker', '~> 6.0.0.rc.5'
 gem 'webpush'
 gem 'i18n-debug', group: :development
+gem "lograge"
 
 # token
 gem 'jwt'
