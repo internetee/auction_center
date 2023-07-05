@@ -1,3 +1,10 @@
+30.06.2023
+* Removed bid and delete offer buttons from finished auctions https://github.com/internetee/auction_center/issues/1094
+
+30.05.2023
+* Default order of auctions in the index view is now randomised https://github.com/internetee/auction_center/issues/1080
+* fixed invoice payment due date for english auctions https://github.com/internetee/auction_center/issues/1082
+
 15.05.2023
 * Small screen view fixes https://github.com/internetee/auction_center/issues/1077
 * Et translation for low first bid https://github.com/internetee/auction_center/issues/1078

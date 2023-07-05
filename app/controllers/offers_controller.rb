@@ -1,26 +1,24 @@
 class OffersController < ApplicationController
   before_action :authenticate_user!
+  before_action :find_auction, only: %i[new create]
   before_action :set_offer, only: %i[show edit update destroy]
-  before_action :check_for_ban, only: %i[create]
+  before_action :check_for_ban, only: :create
   before_action :authorize_phone_confirmation
   before_action :authorize_offer_for_user, except: %i[new index create]
   before_action :set_captcha_required
 
   # GET /auctions/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/offers/new
   def new
-    auction = Auction.find_by!(uuid: params[:auction_uuid])
-
-    offer = auction.offer_from_user(current_user.id)
+    offer = @auction.offer_from_user(current_user.id)
     redirect_to edit_offer_path(offer.uuid), notice: t('offers.already_exists') if offer
 
     BillingProfile.create_default_for_user(current_user.id)
-    @offer = Offer.new(auction_id: auction.id, user_id: current_user.id)
+    @offer = Offer.new(auction_id: @auction.id, user_id: current_user.id)
   end
 
   # POST /auctions/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/offers
   def create
-    auction = Auction.find_by!(uuid: params[:auction_uuid])
-    existing_offer = auction.offer_from_user(current_user.id)
+    existing_offer = @auction.offer_from_user(current_user.id)
 
     @offer = Offer.new(create_params)
     authorize! :manage, @offer
@@ -56,11 +54,15 @@ class OffersController < ApplicationController
   end
 
   # GET /offers/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/edit
-  def edit; end
+  def edit
+    auction = @offer.auction
+    redirect_to auction_path(auction.uuid) and return if update_not_allowed(auction)
+  end
 
   # PUT /offers/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
   def update
-    redirect_to auction_path(@offer.auction.uuid) and return if @offer.auction.english?
+    auction = @offer.auction
+    redirect_to auction_path(auction.uuid) and return if update_not_allowed(auction)
 
     respond_to do |format|
       if update_predicate
@@ -86,13 +88,19 @@ class OffersController < ApplicationController
 
   private
 
+  def find_auction
+    @auction = Auction.find_by!(uuid: params[:auction_uuid])
+  end
+
+  def update_not_allowed(auction)
+    auction.english? || !auction.in_progress?
+  end
+
   def check_for_ban
-    auction = Auction.find_by!(uuid: params[:auction_uuid])
-    if Ban.valid.where(user_id: current_user).where(domain_name: auction.domain_name).any? || current_user.completely_banned?
+    if Ban.valid.where(user_id: current_user).where(domain_name: @auction.domain_name).any? || current_user.completely_banned?
       redirect_to root_path, flash: { alert: I18n.t('.offers.create.ban') } and return
     end
   end
-
 
   def set_captcha_required
     return if Rails.env.development?
@@ -122,8 +130,7 @@ class OffersController < ApplicationController
   end
 
   def set_offer
-    @offer = Offer.where(user_id: current_user.id)
-                  .find_by!(uuid: params[:uuid])
+    @offer = current_user.offers.find_by!(uuid: params[:uuid])
   end
 
   def authorize_phone_confirmation

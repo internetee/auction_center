@@ -10,8 +10,9 @@ class OffersIntegrationTest < ActionDispatch::IntegrationTest
     @user.reload
     sign_in @user
 
+
     Recaptcha.configuration.skip_verify_env.push('test')
-    travel_to Time.parse('2010-07-05 10:30 +0000').in_time_zone
+    travel_to Time.parse('2010-07-05 11:30 +0000').in_time_zone
   end
 
   def test_user_can_create_a_bid

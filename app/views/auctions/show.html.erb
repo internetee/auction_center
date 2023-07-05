@@ -42,15 +42,17 @@
         </table>
         <div class="buttons">
           <% unless @auction.english? %>
-            <%- if @auction.offer_from_user(current_user).present? %>
-              <%= link_to t('auctions.edit_your_offer'),
-                        edit_offer_path(@auction.offer_from_user(current_user).uuid), class: "ui button primary" %>
-              <%= link_to t('auctions.delete_your_offer'),
-                        offer_path(@auction.offer_from_user(current_user).uuid), target: '_top',
-                        method: :delete, data: { confirm: t(:are_you_sure) }, class: "ui button red"%>
-            <% elsif @auction.in_progress? %>
-              <%= link_to t('auctions.submit_offer'),
-                        new_auction_offer_path(auction_uuid: @auction.uuid), class: "ui button primary" %>
+            <% if @auction.in_progress? %>
+              <%- if @auction.offer_from_user(current_user).present? %>
+                <%= link_to t('auctions.edit_your_offer'),
+                          edit_offer_path(@auction.offer_from_user(current_user).uuid), class: "ui button primary" %>
+                <%= link_to t('auctions.delete_your_offer'),
+                          offer_path(@auction.offer_from_user(current_user).uuid),
+                          method: :delete, data: { confirm: t(:are_you_sure) }, class: "ui button red"%>
+              <% else %>
+                <%= link_to t('auctions.submit_offer'),
+                          new_auction_offer_path(auction_uuid: @auction.uuid), class: "ui button primary" %>
+              <% end %>
             <% end %>
           <% else %>
             <%- unless @auction.finished? %>
