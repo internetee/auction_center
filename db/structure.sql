@@ -888,6 +888,7 @@ CREATE TABLE public.auctions (
     initial_ends_at timestamp without time zone,
     enable_deposit boolean DEFAULT false NOT NULL,
     requirement_deposit_in_cents integer,
+    test_attr character varying,
     CONSTRAINT starts_at_earlier_than_ends_at CHECK ((starts_at < ends_at))
 );
 
@@ -1224,6 +1225,10 @@ CREATE TABLE public.invoices (
     in_directo boolean DEFAULT false NOT NULL,
     payment_link character varying,
     number integer,
+    billing_name character varying DEFAULT ''::character varying NOT NULL,
+    billing_address character varying DEFAULT ''::character varying NOT NULL,
+    billing_vat_code character varying,
+    billing_alpha_two_country_code character varying DEFAULT ''::character varying NOT NULL,
     CONSTRAINT invoices_cents_are_non_negative CHECK ((cents >= 0)),
     CONSTRAINT invoices_due_date_is_not_before_issue_date CHECK ((issue_date <= due_date)),
     CONSTRAINT paid_at_is_filled_when_status_is_paid CHECK ((NOT ((status = 'paid'::public.invoice_status) AND (paid_at IS NULL)))),
@@ -3032,6 +3037,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230124110241'),
 ('20230227085236'),
 ('20230309094132'),
-('20230419114412');
+('20230419114412'),
+('20230607092953'),
+('20230706104026');
 
 
