@@ -888,8 +888,10 @@ CREATE TABLE public.auctions (
     initial_ends_at timestamp without time zone,
     enable_deposit boolean DEFAULT false NOT NULL,
     requirement_deposit_in_cents integer,
+    ai_score integer DEFAULT 0,
     CONSTRAINT starts_at_earlier_than_ends_at CHECK ((starts_at < ends_at))
 );
+
 
 --
 -- Name: auctions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
@@ -3031,6 +3033,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230124110241'),
 ('20230227085236'),
 ('20230309094132'),
-('20230419114412');
-
+('20230419114412'),
+('20230705192353');
 
