@@ -365,13 +365,7 @@ directo_default_payment_terms_setting.save
 openai_evaluation_prompt_description = <<~TEXT.squish
 Default OpenAI prompt for evaluating domain list
 TEXT
-openai_domains_evaluation_prompt_value = 'Evaluate and sort the following list of .ee domains based on their attractiveness ' \
-  'and value, with the most valuable on top, while taking into account Estonian words ' \
-  'and their meanings. Please provide a ranking or score (integer 1 to 10) for each domain, ' \
-  'indicating its relative attractiveness and estimated value. Consider factors such as ' \
-  "the domain's relevance to Estonian culture, language, and business landscape. " \
-  'Additionally, analyze the domain names for any meaningful Estonian words or ' \
-  'associations that could contribute to their appeal.'
+openai_domains_evaluation_prompt_value = ''
 openai_domains_evaluation_prompt_setting = Setting.new(code: :openai_domains_evaluation_prompt,
                                                        value: openai_domains_evaluation_prompt_value,
                                                        description: openai_evaluation_prompt_description,
