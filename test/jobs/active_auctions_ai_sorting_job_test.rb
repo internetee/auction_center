@@ -7,12 +7,6 @@ class ActiveAuctionsAiSortingJobTest < ActiveJob::TestCase
     @auction2 = auctions(:valid_without_offers)
     @auction3 = auctions(:english)
     travel_to Time.parse('2010-07-05 11:30 +0000').in_time_zone
-    WebMock.disable_net_connect!
-  end
-
-  def teardown
-    super
-    WebMock.allow_net_connect!
   end
 
   def test_perform_with_enabled_openai_integration
