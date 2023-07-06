@@ -50,13 +50,13 @@ class ActiveAuctionsAiSortingJobTest < ActiveJob::TestCase
 
   def ai_response
     {
-      'choices' => [
-        {
-          'message' => {
-            'content' => "[\n  {\n    \"id\": #{@auction1.id},\n    \"ai_score\": 9\n  },\n  {\n    \"id\": #{@auction2.id},\n    \"ai_score\": 7\n  },\n  {\n    \"id\": #{@auction3.id},\n    \"ai_score\": 4\n  }\n]"
-          }
+      'choices' => [{
+        'message' => {
+          'content' => "[\n  {\n    \"id\": #{@auction1.id},\n    \"ai_score\": 9\n  }," \
+                        "\n  {\n    \"id\": #{@auction2.id},\n    \"ai_score\": 7\n  }," \
+                        "\n  {\n    \"id\": #{@auction3.id},\n    \"ai_score\": 4\n  }\n]"
         }
-      ]
+      }]
     }
   end
 end
