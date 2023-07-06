@@ -20,13 +20,7 @@ class ActiveAuctionsAiSortingJobTest < ActiveJob::TestCase
       .to_return(status: 200, body: ai_response.to_json, headers: {})
 
     Feature.stub(:open_ai_integration_enabled?, true) do
-      assert_changes -> { @auction1.reload.ai_score }, from: 0, to: 9 do
-        assert_changes -> { @auction2.reload.ai_score }, from: 0, to: 7 do
-          assert_changes -> { @auction3.reload.ai_score }, from: 0, to: 4 do
-            ActiveAuctionsAiSortingJob.perform_now
-          end
-        end
-      end
+      assert_ai_score_changes
     end
   end
 
@@ -43,6 +37,16 @@ class ActiveAuctionsAiSortingJobTest < ActiveJob::TestCase
   end
 
   private
+
+  def assert_ai_score_changes
+    assert_changes -> { @auction1.reload.ai_score }, from: 0, to: 9 do
+      assert_changes -> { @auction2.reload.ai_score }, from: 0, to: 7 do
+        assert_changes -> { @auction3.reload.ai_score }, from: 0, to: 4 do
+          ActiveAuctionsAiSortingJob.perform_now
+        end
+      end
+    end
+  end
 
   def ai_response
     {
