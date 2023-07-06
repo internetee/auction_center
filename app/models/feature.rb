@@ -9,6 +9,10 @@ class Feature
     !!AuctionCenter::Application.config
                                 .customization[:billing_system_integration]
                                 &.compact&.fetch(:enabled, false)
+  end
 
+  def self.open_ai_integration_enabled?
+    !!AuctionCenter::Application.config.customization[:openai]
+                                &.compact&.fetch(:enabled, false)
   end
 end

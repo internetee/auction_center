@@ -35,6 +35,9 @@ class Auction < ApplicationRecord
   }
 
   scope :random_order, -> { order(Arel.sql('RANDOM()')) }
+  scope :ai_score_order, lambda {
+    order(Arel.sql('CASE WHEN ai_score > 0 THEN ai_score ELSE RANDOM() END DESC'))
+  }
 
   scope :without_offers, -> { includes(:offers).where(offers: { auction_id: nil }) }
   scope :with_offers, -> { includes(:offers).where.not(offers: { auction_id: nil }) }

@@ -65,9 +65,13 @@ default: &default
     # environment: ''
 
   recaptcha:
-    site_key: ''
-    secret_key: ''
+    site_key: '123'
+    secret_key: '123'
 
+  openai:
+    enabled: true
+    access_token: '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'
+    organization_id: ''
 
   google_analytics:
     # Disabled when not configured
@@ -117,7 +121,7 @@ default: &default
     # proxy: "http://user:password@address.com:8080"
 
   registry_integration:
-    enabled: false
+    enabled: true
     url: 'http://registry:3000/api/v1/auctions/'
 
 development:

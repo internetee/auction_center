@@ -169,7 +169,7 @@ violations_count_regulations_setting = Setting.new(code: :violations_count_regul
                                             description: violations_count_regulations_description,
                                             value_format: 'hash')
 
-violations_count_regulations_setting.save!
+violations_count_regulations_setting.save
 
 
 # Default domain registration reminder time
@@ -247,7 +247,7 @@ check_api_url = Setting.new(code: :check_api_url,
                             description: check_api_url_description,
                             value_format: 'string')
 
-check_api_url.save!
+check_api_url.save
 
 check_sms_url_description = <<~TEXT.squish,
           URL of SMS service provider for health checking.
@@ -261,7 +261,7 @@ check_sms_url = Setting.new(code: :check_sms_url,
                             description: check_sms_url_description,
                             value_format: 'string')
 
-check_sms_url.save!
+check_sms_url.save
 
 check_tara_url_description = <<~TEXT.squish,
           URL of OAUTH Tara provider for health checking.
@@ -275,7 +275,7 @@ check_tara_url = Setting.new(code: :check_tara_url,
                             description: check_tara_url_description,
                             value_format: 'string')
 
-check_tara_url.save!
+check_tara_url.save
 
 # Voog site default URL
 voog_site_url_description = <<~TEXT.squish
@@ -319,7 +319,7 @@ remind_on_domain_registration_everyday = Setting.new(code: :domain_registration_
                                                      description: daily_reminder_description,
                                                      value_format: 'integer')
 
-remind_on_domain_registration_everyday.save!
+remind_on_domain_registration_everyday.save
 
 # Directo integration state boolean
 directo_integration_enabled_description = <<~TEXT.squish
@@ -360,3 +360,20 @@ directo_default_payment_terms_setting = Setting.new(code: :directo_default_payme
                                                  description: directo_default_payment_terms_description,
                                                 value_format: 'string')
 directo_default_payment_terms_setting.save
+
+# OpenAI domain list evaluation prompt
+openai_evaluation_prompt_description = <<~TEXT.squish
+Default OpenAI prompt for evaluating domain list
+TEXT
+openai_domains_evaluation_prompt_value = 'Evaluate and sort the following list of .ee domains based on their attractiveness ' \
+  'and value, with the most valuable on top, while taking into account Estonian words ' \
+  'and their meanings. Please provide a ranking or score (integer 1 to 10) for each domain, ' \
+  'indicating its relative attractiveness and estimated value. Consider factors such as ' \
+  "the domain's relevance to Estonian culture, language, and business landscape. " \
+  'Additionally, analyze the domain names for any meaningful Estonian words or ' \
+  'associations that could contribute to their appeal.'
+openai_domains_evaluation_prompt_setting = Setting.new(code: :openai_domains_evaluation_prompt,
+                                                       value: openai_domains_evaluation_prompt_value,
+                                                       description: openai_evaluation_prompt_description,
+                                                       value_format: 'string')
+openai_domains_evaluation_prompt_setting.save

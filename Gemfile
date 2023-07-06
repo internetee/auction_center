@@ -15,6 +15,7 @@ gem 'devise'
 gem 'directo', github: 'internetee/directo', branch: 'master'
 gem 'faraday'
 gem 'jbuilder', '~> 2.11'
+gem 'lograge'
 gem 'mimemagic', '~> 0.4.3'
 gem 'money'
 gem 'okcomputer', '~> 1.18.4'
@@ -27,6 +28,7 @@ gem 'rails', '>= 6.0.3.5'
 gem 'rails-i18n'
 # gem 'rails_semantic_logger'
 gem 'recaptcha'
+gem 'ruby-openai'
 gem 'scenic'
 gem 'simpleidn'
 gem 'skylight'
@@ -35,8 +37,6 @@ gem 'sprockets', '~> 4.0'
 gem 'turbo-rails'
 gem 'webpacker', '~> 6.0.0.rc.5'
 gem 'webpush'
-gem 'i18n-debug', group: :development
-gem "lograge"
 
 # token
 gem 'jwt'
@@ -51,6 +51,7 @@ group :development, :test do
 end
 
 group :development do
+  gem 'i18n-debug'
   gem 'listen', '>= 3.0.5', '< 3.9'
   gem 'web-console', '>= 3.3.0'
 end
@@ -79,4 +80,4 @@ gem 'pagy', '~> 6.0'
 # For mock username
 gem 'faker'
 
-gem "noticed", "~> 1.6"
+gem 'noticed', '~> 1.6'

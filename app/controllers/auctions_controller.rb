@@ -6,7 +6,7 @@ class AuctionsController < ApplicationController
   def index
     set_cors_header
     if params[:sort].blank? && params[:direction].blank?
-      @auctions_list = Auction.active.random_order.search(params).with_user_offers(current_user&.id)
+      @auctions_list = Auction.active.ai_score_order.search(params).with_user_offers(current_user&.id)
     else
       @auctions_list = Auction.active.search(params).with_user_offers(current_user&.id)
     end

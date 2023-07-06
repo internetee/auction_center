@@ -64,6 +64,10 @@ default: &default
     site_key: ''
     secret_key: ''
 
+  openai:
+    enabled: false
+    access_token: ''
+    organization_id: ''
 
   google_analytics:
     # Disabled when not configured
