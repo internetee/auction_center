@@ -365,7 +365,7 @@ directo_default_payment_terms_setting.save
 openai_evaluation_prompt_description = <<~TEXT.squish
 Default OpenAI prompt for evaluating domain list
 TEXT
-openai_domains_evaluation_prompt_value = ''
+openai_domains_evaluation_prompt_value = 'prompt'
 openai_domains_evaluation_prompt_setting = Setting.new(code: :openai_domains_evaluation_prompt,
                                                        value: openai_domains_evaluation_prompt_value,
                                                        description: openai_evaluation_prompt_description,
