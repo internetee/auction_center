@@ -1,3 +1,6 @@
+12.07.2023
+* impelemented OpenAI ChatGPT to sort auction list https://github.com/internetee/auction_center/pull/1098
+
 30.06.2023
 * Removed bid and delete offer buttons from finished auctions https://github.com/internetee/auction_center/issues/1094
 
