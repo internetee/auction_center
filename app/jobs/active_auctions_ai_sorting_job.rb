@@ -1,8 +1,6 @@
 class ActiveAuctionsAiSortingJob < ApplicationJob
   retry_on StandardError, wait: 5.seconds, attempts: 3
 
-  MODEL = 'gpt-3.5-turbo'.freeze
-
   def perform
     return unless self.class.needs_to_run?
 
@@ -21,6 +19,10 @@ class ActiveAuctionsAiSortingJob < ApplicationJob
 
   def system_message
     Setting.find_by(code: 'openai_domains_evaluation_prompt').retrieve
+  end
+
+  def model
+    Setting.find_by(code: 'openai_model').retrieve
   end
 
   def handle_openai_error(error)
@@ -46,7 +48,7 @@ class ActiveAuctionsAiSortingJob < ApplicationJob
 
   def chat_parameters(auctions_list)
     {
-      model: MODEL,
+      model: model,
       messages: [
         { role: 'system', content: system_message },
         { role: 'user', content: auctions_list.pluck(:id, :domain_name).to_s },

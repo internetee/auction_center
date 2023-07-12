@@ -222,6 +222,13 @@ domain_registration_daily_reminder:
   value: '0'
   value_format: integer
 
+openai_model:
+  code: 'openai_model'
+  description: |
+    OpenAI API model
+  value: 'gpt-3.5-turbo'
+  value_format: string
+
 openai_domains_evaluation_prompt:
   code: 'openai_domains_evaluation_prompt'
   description: |
