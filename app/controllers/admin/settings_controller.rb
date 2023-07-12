@@ -19,7 +19,7 @@ module Admin
     # PUT /admin/settings/1
     def update
       respond_to do |format|
-        if @setting.update!(update_params)
+        if @setting.update(update_params)
           format.html { redirect_to admin_setting_path(@setting), notice: t(:updated) }
           format.json { render :show, status: :ok, location: admin_setting_path(@setting) }
         else

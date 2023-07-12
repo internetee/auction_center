@@ -2,18 +2,14 @@ class AuctionsController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [:cors_preflight_check]
   before_action :authorize_user
 
+  DEFAULT_PAGE_LIMIT = 15
+
   # GET /auctions
   def index
     set_cors_header
-    if params[:sort].blank? && params[:direction].blank?
-      @auctions_list = Auction.active.random_order.search(params).with_user_offers(current_user&.id)
-    else
-      @auctions_list = Auction.active.search(params).with_user_offers(current_user&.id)
-    end
-
-    count = params[:show_all] == 'true' ? @auctions_list.count : 15
-    count = nil if @auctions_list.empty?
-    @pagy, @auctions = pagy(@auctions_list, items: params[:per_page] ||= count, link_extra: 'data-turbo-action="advance"')
+    @auctions_list = fetch_auctions_list
+    per_page = params[:per_page] || per_page_count
+    @pagy, @auctions = pagy(@auctions_list, items: per_page, link_extra: 'data-turbo-action="advance"')
   end
 
   # OPTIONS /auctions
@@ -31,6 +27,24 @@ class AuctionsController < ApplicationController
   end
 
   private
+
+  def fetch_auctions_list
+    if should_sort_auctions?
+      Auction.active.ai_score_order.search(params).with_user_offers(current_user&.id)
+    else
+      Auction.active.search(params).with_user_offers(current_user&.id)
+    end
+  end
+
+  def should_sort_auctions?
+    params[:sort].blank? && params[:direction].blank?
+  end
+
+  def per_page_count
+    count = params[:show_all] == 'true' ? @auctions_list.count : DEFAULT_PAGE_LIMIT
+    count = nil if count.zero?
+    count
+  end
 
   def set_cors_header
     response.headers['Access-Control-Allow-Origin'] = request.headers['Origin']

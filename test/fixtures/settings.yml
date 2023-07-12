@@ -221,3 +221,17 @@ domain_registration_daily_reminder:
     to domain_registration_reminder setting that send reminder just once. Default: 0
   value: '0'
   value_format: integer
+
+openai_model:
+  code: 'openai_model'
+  description: |
+    OpenAI API model
+  value: 'gpt-3.5-turbo'
+  value_format: string
+
+openai_domains_evaluation_prompt:
+  code: 'openai_domains_evaluation_prompt'
+  description: |
+    Default OpenAI prompt for evaluating domain list
+  value: 'Evaluate the following list of .ee domains'
+  value_format: string

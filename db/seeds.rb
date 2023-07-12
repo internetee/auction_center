@@ -169,7 +169,7 @@ violations_count_regulations_setting = Setting.new(code: :violations_count_regul
                                             description: violations_count_regulations_description,
                                             value_format: 'hash')
 
-violations_count_regulations_setting.save!
+violations_count_regulations_setting.save
 
 
 # Default domain registration reminder time
@@ -185,14 +185,14 @@ domain_registration_setting.save
 
 # Default invoice issuer
 invoice_issuer_description = <<~TEXT.squish
-      Text that should appear in invoice as issuer. Usually contains company name, VAT number and
-      local court registration number.
-    TEXT
+  Text that should appear in invoice as issuer. Usually contains company name, VAT number and
+  local court registration number.
+TEXT
 
 invoice_issuer_value = <<~TEXT.squish
-      Eesti Interneti SA Paldiski mnt 80, Tallinn, Harjumaa, 10617 Estonia,
-      Reg. no 90010019, VAT number EE101286464
-    TEXT
+  Eesti Interneti SA Paldiski mnt 80, Tallinn, Harjumaa, 10617 Estonia,
+  Reg. no 90010019, VAT number EE101286464
+TEXT
 
 invoice_issuer_setting = Setting.new(code: :invoice_issuer, value: invoice_issuer_value,
                                      description: invoice_issuer_description,
@@ -211,7 +211,6 @@ invoice_reminder_setting = Setting.new(code: :invoice_reminder_in_days, value: '
                                        value_format: 'integer')
 
 invoice_reminder_setting.save
-
 
 # Default wishlist size
 wishlist_size_description = <<~TEXT.squish
@@ -235,9 +234,9 @@ domain_extensions = Setting.new(code: :wishlist_supported_domain_extensions, val
                                     value_format: 'array')
 domain_extensions.save
 
-check_api_url_description = <<~TEXT.squish,
-          URL to our own auction API endpoint for health checking.
-          Must be absolute, default is http://localhost/auctions.json.
+check_api_url_description = <<~TEXT.squish
+  URL to our own auction API endpoint for health checking.
+  Must be absolute, default is http://localhost/auctions.json.
 TEXT
 
 check_api_url_value = 'http://localhost/auctions.json'
@@ -247,11 +246,11 @@ check_api_url = Setting.new(code: :check_api_url,
                             description: check_api_url_description,
                             value_format: 'string')
 
-check_api_url.save!
+check_api_url.save
 
-check_sms_url_description = <<~TEXT.squish,
-          URL of SMS service provider for health checking.
-          Must be absolute.
+check_sms_url_description = <<~TEXT.squish
+  URL of SMS service provider for health checking.
+  Must be absolute.
 TEXT
 
 check_sms_url_value = 'https://status.messente.com/api/v1/components/1'
@@ -261,11 +260,11 @@ check_sms_url = Setting.new(code: :check_sms_url,
                             description: check_sms_url_description,
                             value_format: 'string')
 
-check_sms_url.save!
+check_sms_url.save
 
-check_tara_url_description = <<~TEXT.squish,
-          URL of OAUTH Tara provider for health checking.
-          Must be absolute.
+check_tara_url_description = <<~TEXT.squish
+  URL of OAUTH Tara provider for health checking.
+  Must be absolute.
 TEXT
 
 check_tara_url_value = 'https://tara-test.ria.ee/oidc/jwks'
@@ -275,11 +274,11 @@ check_tara_url = Setting.new(code: :check_tara_url,
                             description: check_tara_url_description,
                             value_format: 'string')
 
-check_tara_url.save!
+check_tara_url.save
 
 # Voog site default URL
 voog_site_url_description = <<~TEXT.squish
-VOOG site from which to fetch localized footer elements. Defaults to https://www.internet.ee.
+  VOOG site from which to fetch localized footer elements. Defaults to https://www.internet.ee.
 TEXT
 
 voog_site_url_setting = Setting.new(code: :voog_site_url, value: 'https://www.internet.ee',
@@ -289,7 +288,7 @@ voog_site_url_setting.save
 
 # Voog site API token
 voog_api_key_description = <<~TEXT.squish
-VOOG site API key. Required to fetch footer content.
+  VOOG site API key. Required to fetch footer content.
 TEXT
 
 voog_api_key_setting = Setting.new(code: :voog_api_key, value: 'changeme',
@@ -299,12 +298,12 @@ voog_api_key_setting.save
 
 # Voog site API fetching enabled boolean
 voog_site_fetching_enabled_description = <<~TEXT.squish
-Boolean whether to enable fetching & showing footer element from VOOG site. Defaults to false.
+  Boolean whether to enable fetching & showing footer element from VOOG site. Defaults to false.
 TEXT
 
 voog_site_fetching_enabled_setting = Setting.new(code: :voog_site_fetching_enabled, value: 'false',
                                                  description: voog_site_fetching_enabled_description,
-                                                value_format: 'boolean')
+                                                 value_format: 'boolean')
 voog_site_fetching_enabled_setting.save
 
 # Daily reminder on paid but not registered domains flag
@@ -319,44 +318,66 @@ remind_on_domain_registration_everyday = Setting.new(code: :domain_registration_
                                                      description: daily_reminder_description,
                                                      value_format: 'integer')
 
-remind_on_domain_registration_everyday.save!
+remind_on_domain_registration_everyday.save
 
 # Directo integration state boolean
 directo_integration_enabled_description = <<~TEXT.squish
-Enables or disables Directo Integration. Allowed values true / false. Defaults to false.
+  Enables or disables Directo Integration. Allowed values true / false. Defaults to false.
 TEXT
 
 directo_integration_enabled_setting = Setting.new(code: :directo_integration_enabled, value: 'false',
-                                                 description: directo_integration_enabled_description,
-                                                value_format: 'boolean')
+                                                  description: directo_integration_enabled_description,
+                                                  value_format: 'boolean')
 directo_integration_enabled_setting.save
 
 # Directo API URL
 directo_api_url_description = <<~TEXT.squish
-API URL for Directo backend
+  API URL for Directo backend
 TEXT
 
 directo_api_url_setting = Setting.new(code: :directo_api_url, value: 'http://directo.test',
-                                                 description: directo_api_url_description,
-                                                value_format: 'string')
+                                      description: directo_api_url_description,
+                                      value_format: 'string')
 directo_api_url_setting.save
 
 # Directo Sales Agent
 directo_sales_agent_description = <<~TEXT.squish
-Directo SalesAgent value. Retrieve it from Directo.
+  Directo SalesAgent value. Retrieve it from Directo.
 TEXT
 
 directo_sales_agent_setting = Setting.new(code: :directo_sales_agent, value: 'AUCTION',
-                                                 description: directo_sales_agent_description,
-                                                value_format: 'string')
+                                          description: directo_sales_agent_description,
+                                          value_format: 'string')
 directo_sales_agent_setting.save
 
 # Directo default payment terms
 directo_default_payment_terms_description = <<~TEXT.squish
-Default payment term for creating invoices for Directo. Defaults to net10
+  Default payment term for creating invoices for Directo. Defaults to net10
 TEXT
 
 directo_default_payment_terms_setting = Setting.new(code: :directo_default_payment_terms, value: 'R',
-                                                 description: directo_default_payment_terms_description,
-                                                value_format: 'string')
+                                                    description: directo_default_payment_terms_description,
+                                                    value_format: 'string')
 directo_default_payment_terms_setting.save
+
+# OpenAI model
+openai_model_description = <<~TEXT.squish
+  OpenAI API model
+TEXT
+openai_model_value = 'gpt-3.5-turbo'
+openai_model_setting = Setting.new(code: :openai_model,
+                                   value: openai_model_value,
+                                   description: openai_model_description,
+                                   value_format: 'string')
+openai_model_setting.save
+
+# OpenAI domain list evaluation prompt
+openai_evaluation_prompt_description = <<~TEXT.squish
+  Default OpenAI prompt for evaluating domain list
+TEXT
+openai_domains_evaluation_prompt_value = 'prompt'
+openai_domains_evaluation_prompt_setting = Setting.new(code: :openai_domains_evaluation_prompt,
+                                                       value: openai_domains_evaluation_prompt_value,
+                                                       description: openai_evaluation_prompt_description,
+                                                       value_format: 'string')
+openai_domains_evaluation_prompt_setting.save
