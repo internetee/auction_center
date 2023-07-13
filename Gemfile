@@ -4,6 +4,8 @@ source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 gem 'jsbundling-rails'
+gem "propshaft"
+gem 'cssbundling-rails'
 
 gem 'airbrake'
 gem 'amazing_print'
@@ -36,7 +38,6 @@ gem 'ruby-openai'
 gem 'scenic'
 gem 'simpleidn'
 gem 'skylight'
-gem 'sprockets', '~> 4.0'
 gem 'turbo-rails'
 gem 'webpush'
 gem 'valvat'
