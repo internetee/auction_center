@@ -1,3 +1,6 @@
+13.07.2023
+* Fix for TARA login CORS error https://github.com/internetee/auction_center/pull/1100
+
 12.07.2023
 * Impelemented OpenAI ChatGPT to sort auction list by relative value https://github.com/internetee/auction_center/pull/1098
 
