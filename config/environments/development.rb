@@ -66,5 +66,5 @@ Rails.application.configure do
   # config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
   # https://github.com/rails/webpacker/issues/1568
-  config.webpacker.check_yarn_integrity = false
+#   config.webpacker.check_yarn_integrity = false
 end
