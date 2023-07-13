@@ -3,6 +3,8 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
+gem 'jsbundling-rails'
+
 gem 'airbrake'
 gem 'amazing_print'
 gem 'bootsnap', '>= 1.1.0', require: false
@@ -14,7 +16,10 @@ gem 'delayed_job_active_record'
 gem 'devise'
 gem 'directo', github: 'internetee/directo', branch: 'master'
 gem 'faraday'
+
 gem 'jbuilder', '~> 2.11'
+
+
 gem 'lograge'
 gem 'mimemagic', '~> 0.4.3'
 gem 'money'
@@ -33,9 +38,10 @@ gem 'simpleidn'
 gem 'skylight'
 gem 'sprockets', '~> 4.0'
 gem 'turbo-rails'
-gem 'webpacker', '~> 6.0.0.rc.5'
 gem 'webpush'
 gem 'valvat'
+
+# gem 'webpacker', '~> 6.0.0.rc.5'
 
 # token
 gem 'jwt'

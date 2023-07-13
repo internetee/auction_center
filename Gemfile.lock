@@ -180,6 +180,8 @@ GEM
     jbuilder (2.11.5)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
+    jsbundling-rails (1.1.2)
+      railties (>= 6.0.0)
     json (2.6.3)
     json-jwt (1.16.6)
       activesupport (>= 4.2)
@@ -285,8 +287,6 @@ GEM
       rack (>= 2.1.0)
     rack-protection (3.0.6)
       rack
-    rack-proxy (0.7.6)
-      rack
     rack-test (2.1.0)
       rack (>= 1.3)
     rails (7.0.8.1)
@@ -385,7 +385,6 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
-    semantic_range (3.0.0)
     simplecov (0.17.1)
       docile (~> 1.1)
       json (>= 1.8, < 3)
@@ -441,11 +440,6 @@ GEM
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
-    webpacker (6.0.0.rc.6)
-      activesupport (>= 5.2)
-      rack-proxy (>= 0.6.1)
-      railties (>= 5.2)
-      semantic_range (>= 2.3.0)
     webpush (1.1.0)
       hkdf (~> 0.2)
       jwt (~> 2.0)
@@ -480,6 +474,7 @@ DEPENDENCIES
   hotwire-rails (~> 0.1.3)
   i18n-debug
   jbuilder (~> 2.11)
+  jsbundling-rails
   jwt
   listen (>= 3.0.5, < 3.9)
   lograge
@@ -518,7 +513,6 @@ DEPENDENCIES
   valvat
   web-console (>= 3.3.0)
   webmock
-  webpacker (~> 6.0.0.rc.5)
   webpush
 
 BUNDLED WITH
