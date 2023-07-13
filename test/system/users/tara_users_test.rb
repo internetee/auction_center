@@ -45,7 +45,7 @@ class TaraUsersTest < ApplicationSystemTestCase
     link.click
 
     within('div#tara-sign-in') do
-      click_link('Sign in')
+      click_link_or_button('Sign in')
     end
 
     fill_in('user[email]', with: 'new-user@auction.test')
@@ -68,7 +68,7 @@ class TaraUsersTest < ApplicationSystemTestCase
     link.click
 
     within('div#tara-sign-in') do
-      click_link('Sign in')
+      click_link_or_button('Sign in')
     end
 
     click_link_or_button('Sign up')
@@ -85,7 +85,7 @@ class TaraUsersTest < ApplicationSystemTestCase
     link.click
 
     within('div#tara-sign-in') do
-      click_link('Sign in')
+      click_link_or_button('Sign in')
     end
 
     assert_text('Signed in successfully')
