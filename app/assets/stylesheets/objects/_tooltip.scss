@@ -1,0 +1,21 @@
+.tippy-tooltip.eis-theme, .tippy-box[data-theme="eis"] .tippy-content {
+  background-color: $black-color !important;
+  color: $white-color !important;
+  text-align: center;
+  font-size: rem(12px);
+  line-height: rem(20px);
+  border-radius: rem(8px) !important;
+
+  @include mq(laptop) {
+    font-size: rem(14px);
+    line-height: rem(24px);
+  }
+}
+
+.tippy-box[data-theme="eis"] {
+  border-radius: rem(8px) !important;
+
+  @include mq(laptop) {
+    max-width: rem(385px) !important;
+  }
+}

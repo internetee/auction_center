@@ -1,5 +1,4 @@
-
-<tr class="auctions-table-row contents" id="<%= dom_id(auction) %>" data-platform="<%= auction.platform %>" data-controller="auction-timezone" data-auction-timezone-end-time-value="<%= auction.ends_at.iso8601 %>">
+<tr class="auctions-table-row contents" id="<%= dom_id(auction) %>" data-platform="<%= auction.platform %>">
     <% english_auction_presenter = EnglishBidsPresenter.new(auction) %>
     <td class="auction-domain-name monospace">
         <%= link_to auction_path(auction.uuid), target: '_top' do %>
@@ -8,7 +7,7 @@
     </td>
     <td>
         <span class="auctions-table-mobile-infotainment"><%= t('auctions.ends_at') %> </span>
-        <span data-auction-timezone-target="display"><%= auction.ends_at %></span>
+        <%= I18n.l(auction.ends_at) %>
     </td>
     <td>
         <span class="auctions-table-mobile-infotainment"><%= t('auctions.auction_type') %> </span>
@@ -16,10 +15,10 @@
     </td>
     <td>
         <% if auction.platform == 'blind' || auction.platform.nil? %>
-            <span class="auctions-table-mobile-infotainment"><%= t('auctions.current_price') %>: </span><%= number_with_precision(auction.users_price, precision: 2, separator: ",") %>
+            <span class="auctions-table-mobile-infotainment"><%= t('auctions.your_current_price') %>: </span><%= auction.users_price %>
         <% else %>
-            <span class="auctions-table-mobile-infotainment"><%= t('auctions.current_price') %>:</span>
-            <span class="initial-color current_<%= auction.currently_winning_offer&.user_id %>_user"><%= number_with_precision(english_auction_presenter.maximum_bids, precision: 2, separator: ",") %></span>
+            <span class="auctions-table-mobile-infotainment"><%= t('auctions.your_current_price') %>:</span>
+            <span class="initial-color current_<%= auction.currently_winning_offer&.user_id %>_user"><%= english_auction_presenter.maximum_bids %></span>
         <% end %>
     </td>
     <td class="initial-color current_<%= auction.currently_winning_offer&.user_id %>_user">

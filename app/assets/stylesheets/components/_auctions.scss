@@ -1,0 +1,138 @@
+.c-auctions {
+
+}
+
+.c-auctions__title {
+  font-weight: 900;
+  font-size: rem(22px);
+  line-height: rem(22px);
+  margin: 0 0 rem(20px);
+
+  @include mq(tablet) {
+    font-size: rem(30px);
+    line-height: rem(30px);
+  }
+}
+.c-auctions__desc {
+  font-weight: 500;
+  font-size: rem(14px);
+  line-height: rem(24px);
+  margin: 0 0 rem(32px);
+}
+
+.c-auctions__list {
+  list-style: none;
+  border-top: 1px solid $grey-200-color;
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
+  padding: 0;
+  margin: 0;
+
+  &::after {
+    content: '';
+    width: 100%;
+    height: 1px;
+    background-color: $grey-200-color;
+    position: absolute;
+    bottom: 0;
+    display: block;
+    left: 0;
+  }
+
+  li {
+    flex: 100%;
+    max-width: 100%;
+    border-bottom: 1px solid $grey-200-color;
+
+    @media (min-width: 567px) {
+      border-right: 1px solid $grey-200-color;
+      flex: 50%;
+      max-width: 50%;
+
+      &:nth-child(2n) {
+        border-right: 0;
+      }
+    }
+
+    @include mq(laptop) {
+      border-right: 1px solid $grey-200-color;
+      flex: 33.33%;
+      max-width: 33.33%;
+
+      &:nth-child(2n) {
+        border-right: 1px solid $grey-200-color;
+      }
+
+      &:nth-child(3n) {
+        border-right: 0;
+      }
+    }
+
+    span {
+      margin-right: rem(8px);
+    }
+  }
+
+  strong {
+    font-weight: 800;
+    font-size: rem(14px);
+    line-height: rem(20px);
+  }
+
+  li {
+    padding: rem(13px 17px);
+  }
+}
+
+.c-auctions__footer {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-top: rem(32px);
+
+  @include mq(tablet) {
+    flex-wrap: nowrap;
+  }
+}
+
+.c-auctions__legend {
+  font-weight: 500;
+  font-size: rem(14px);
+  line-height: rem(20px);
+  display: flex;
+  gap: rem(16px);
+  align-items: center;
+}
+
+.c-auctions__info {
+  gap: rem(16px);
+  display: flex;
+  align-items: center;
+}
+
+.c-auctions__all-count {
+  font-weight: 500;
+  font-size: rem(14px);
+  line-height: rem(20px);
+}
+
+.c-auctions-wrap {
+  position: relative;
+  padding-bottom: rem(48px);
+
+  @include mq(tablet) {
+    padding-bottom: rem(64px);
+  }
+
+  &::after {
+    content: '';
+    width: 100%;
+    height: rem(134px);
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    background: linear-gradient(0deg, #EEEEF0 0%, #FFFFFF 100%);
+    z-index: -1;
+  }
+}

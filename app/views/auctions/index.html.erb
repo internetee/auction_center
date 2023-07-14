@@ -99,29 +99,52 @@
 <!-- Table -- Sortable -->
 <div class="o-container">
     <div class="c-table c-table--sortable">
-        <div class="c-table__filters">
-            <div class="c-table__filters__btns">
-                <button data-filter-table="" class="c-table__filters__btn is-active js-table-filter-btn">kõik</button>
-                <button data-filter-table="IO" class="c-table__filters__btn js-table-filter-btn"><span
-                        class="o-io-icon"></span><span class="u-hidden-m"> inglise oksjon</span>
-                </button>
-                <button data-filter-table="PO"
-                        class="c-table__filters__btn js-table-filter-btn"><span
-                        class="o-po-icon"></span><span class="u-hidden-m"> pime oksjon</span>
-                </button>
+
+        <%= form_with url: auctions_path, 
+                    method: :get, data: { controller: 'form--debounce form--filter',
+                        form__debounce_target: 'form',
+                        form__filter_target: 'form',
+                        turbo_action: "advance",
+                        turbo_frame: "auction_list",
+                        action: 'input->form--debounce#search' 
+                        } do |f| %>
+
+            <div class="c-table__filters">
+              <div class="c-table__filters__btns" data-controller="">
+                <%= f.radio_button :type, 'all', class: "js-table-filter-btn", checked: true, style: 'visibility: hidden; position: absolute;', id: 'filter_all_button', data: { form__filter_target: 'button' } %>
+                <%= f.label :type_all, "kõik", class: "c-table__filters__btn is-active js-table-filter-btn", style: 'cursor: pointer;', for: 'filter_all_button', data: { form__filter_target: 'label', action: "click->form--filter#click" } %>
+
+                <%= f.radio_button :type, 'english', class: "js-table-filter-btn", style: 'visibility: hidden; position: absolute;', id: 'filter_IO_button', data: { form__filter_target: 'button' } %>
+                <%= f.label :type_english, class: "c-table__filters__btn js-table-filter-btn", style: 'cursor: pointer;', for: 'filter_IO_button', data: { form__filter_target: 'label', action: "click->form--filter#click" } do %>
+                    <span class="o-io-icon"></span>
+                    <span class="u-hidden-m"> inglise oksjon</span>
+                <% end %>
+
+                <%= f.radio_button :type, 'blind', class: "js-table-filter-btn", style: 'visibility: hidden; position: absolute;', id: 'filter_PO_button', data: { form__filter_target: 'button' } %>
+                <%= f.label :type_blind, class: "c-table__filters__btn js-table-filter-btn", style: 'cursor: pointer;', for: 'filter_PO_button', data: { form__filter_target: 'label', action: "click->form--filter#click" } do %>
+                    <span class="o-po-icon"></span>
+                    <span class="u-hidden-m"> pime oksjon</span>
+                <% end %>
+              </div>
+
+
+                <div class="c-table__filters__search">
+                    <%= f.search_field :domain_name, value: params[:domain_name], placeholder: t('search_by_domain_name'), class: 'c-table__search__input js-table-search-dt' %>
+                </div>
+
+                <div class="c-table__filters__more">
+                    <a href="#" class="c-btn c-btn--ghost">Telli teavitused</a>
+                </div>
+                <div class="c-auctions__legend"><div><span class="o-io-icon o-icon--sm"></span>
+                    inglise oksjon
+                </div> <div><span class="o-po-icon o-icon--sm"></span>
+                    pime oksjon
+                </div></div>
+
             </div>
-            <div class="c-table__filters__search">
-                <input type="search" class="c-table__search__input js-table-search-dt" placeholder="Otsi"/>
-            </div>
-            <div class="c-table__filters__more">
-                <a href="#" class="c-btn c-btn--ghost">Telli teavitused</a>
-            </div>
-            <div class="c-auctions__legend"><div><span class="o-io-icon o-icon--sm"></span>
-                inglise oksjon
-            </div> <div><span class="o-po-icon o-icon--sm"></span>
-                pime oksjon
-            </div></div>
-        </div>
+        <% end %>
+
+      <%= turbo_frame_tag "auction_list" do %>
         <table class="js-table-dt">
             <thead>
             <tr>
@@ -133,286 +156,13 @@
                 <th class="u-text-left u-text-center-l">Pakkumustegevused</th>
             </tr>
             </thead>
+
             <tbody>
-            <tr>
-                <td>lumememm.ee</td>
-                <td><span class="o-io-icon"></span><span class="u-hidden">IO</span></td>
-                <td>25-01-2023 | 17:08:34</td>
-                <td>12 000 €</td>
-                <td>RavynTheMan <span data-tooltip="Võtsid oksjoni! Kuid arve on jäänud tasumata." class="o-info-icon--green js-tippy"></span></td>
-                <td class="u-text-left u-text-center-l">
-                    <button class="c-btn c-btn--green js-modal-toggle">Esita pakkumus</button>
-                </td>
-            </tr>
-            <tr>
-                <td>meekarud.ee</td>
-                <td><span class="o-po-icon"></span><span class="u-hidden">PO</span></td>
-                <td>25-01-2023 | 23:59:59</td>
-                <td></td>
-                <td></td>
-                <td class="u-text-left u-text-center-l">
-                    <button class="c-btn c-btn--green js-modal-toggle-po">Esita pakkumus</button>
-                </td>
-            </tr>
-            <tr>
-                <td>auto25.ee</td>
-                <td><span class="o-po-icon"></span><span class="u-hidden">PO</span></td>
-                <td>25-01-2023 | 23:59:59</td>
-                <td>150 €</td>
-                <td><strong>Sinu pakkumus</strong> <span data-tooltip="Võtsid oksjoni! Nüüd on tarvis domeen endale võtta." class="o-info-icon--yellow js-tippy"></span></td>
-                <td class="u-text-left u-text-center-l">
-                    <div class="c-btn-group c-btn-group--ghost">
-                        <button class="c-btn c-btn--ghost c-btn--icon js-edit-modal-toggle" title="Edit"><span
-                                class="o-edit-icon"></span></button>
-                        <button class="c-btn c-btn--ghost c-btn--icon js-modal-delete-toggle" title="Delete"><span
-                                class="o-delete-icon"></span></button>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>värskevesi.ee</td>
-                <td><span class="o-io-icon"></span><span class="u-hidden">IO</span></td>
-                <td>25-01-2023 | 23:59:59</td>
-                <td>2 000 €</td>
-                <td>RavynTheMan</td>
-                <td class="u-text-left u-text-center-l"><a href="#" class="c-btn c-btn--green">Esita pakkumus</a></td>
-            </tr>
-            <tr>
-                <td>lumememm.ee</td>
-                <td><span class="o-io-icon"></span><span class="u-hidden">IO</span></td>
-                <td>25-01-2023 | 17:08:34</td>
-                <td>12 000 €</td>
-                <td>RavynTheMan</td>
-                <td class="u-text-left u-text-center-l"><a href="#" class="c-btn c-btn--green">Esita pakkumus</a></td>
-            </tr>
-            <tr>
-                <td>meekarud.ee</td>
-                <td><span class="o-po-icon"></span><span class="u-hidden">PO</span></td>
-                <td>25-01-2023 | 23:59:59</td>
-                <td></td>
-                <td></td>
-                <td class="u-text-left u-text-center-l"><a href="#" class="c-btn c-btn--green">Esita pakkumus</a></td>
-            </tr>
-            <tr>
-                <td>auto25.ee</td>
-                <td><span class="o-po-icon"></span><span class="u-hidden">PO</span></td>
-                <td>25-01-2023 | 23:59:59</td>
-                <td>150 €</td>
-                <td><strong>Sinu pakkumus</strong></td>
-                <td class="u-text-left u-text-center-l">
-                    <div class="c-btn-group c-btn-group--ghost">
-                        <a href="#" class="c-btn c-btn--ghost c-btn--icon" title="Edit"><span
-                                class="o-edit-icon"></span></a>
-                        <a href="#" class="c-btn c-btn--ghost c-btn--icon" title="Delete"><span
-                                class="o-delete-icon"></span></a>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>värskevesi.ee</td>
-                <td><span class="o-io-icon"></span><span class="u-hidden">IO</span></td>
-                <td>25-01-2023 | 23:59:59</td>
-                <td>2 000 €</td>
-                <td>RavynTheMan</td>
-                <td class="u-text-left u-text-center-l"><a href="#" class="c-btn c-btn--green">Esita pakkumus</a></td>
-            </tr>
-            <tr>
-                <td>lumememm.ee</td>
-                <td><span class="o-io-icon"></span><span class="u-hidden">IO</span></td>
-                <td>25-01-2023 | 17:08:34</td>
-                <td>12 000 €</td>
-                <td>RavynTheMan</td>
-                <td class="u-text-left u-text-center-l"><a href="#" class="c-btn c-btn--green">Esita pakkumus</a></td>
-            </tr>
-            <tr>
-                <td>meekarud.ee</td>
-                <td><span class="o-po-icon"></span><span class="u-hidden">PO</span></td>
-                <td>25-01-2023 | 23:59:59</td>
-                <td></td>
-                <td></td>
-                <td class="u-text-left u-text-center-l"><a href="#" class="c-btn c-btn--green">Esita pakkumus</a></td>
-            </tr>
-            <tr>
-                <td>auto25.ee</td>
-                <td><span class="o-po-icon"></span><span class="u-hidden">PO</span></td>
-                <td>25-01-2023 | 23:59:59</td>
-                <td>150 €</td>
-                <td><strong>Sinu pakkumus</strong></td>
-                <td class="u-text-left u-text-center-l">
-                    <div class="c-btn-group c-btn-group--ghost">
-                        <a href="#" class="c-btn c-btn--ghost c-btn--icon" title="Edit"><span
-                                class="o-edit-icon"></span></a>
-                        <a href="#" class="c-btn c-btn--ghost c-btn--icon" title="Delete"><span
-                                class="o-delete-icon"></span></a>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>värskevesi.ee</td>
-                <td><span class="o-io-icon"></span><span class="u-hidden">IO</span></td>
-                <td>25-01-2023 | 23:59:59</td>
-                <td>2 000 €</td>
-                <td>RavynTheMan</td>
-                <td class="u-text-left u-text-center-l"><a href="#" class="c-btn c-btn--green">Esita pakkumus</a></td>
-            </tr>
-            <tr>
-                <td>lumememm.ee</td>
-                <td><span class="o-io-icon"></span><span class="u-hidden">IO</span></td>
-                <td>25-01-2023 | 17:08:34</td>
-                <td>12 000 €</td>
-                <td>RavynTheMan</td>
-                <td class="u-text-left u-text-center-l"><a href="#" class="c-btn c-btn--green">Esita pakkumus</a></td>
-            </tr>
-            <tr>
-                <td>meekarud.ee</td>
-                <td><span class="o-po-icon"></span><span class="u-hidden">PO</span></td>
-                <td>25-01-2023 | 23:59:59</td>
-                <td></td>
-                <td></td>
-                <td class="u-text-left u-text-center-l"><a href="#" class="c-btn c-btn--green">Esita pakkumus</a></td>
-            </tr>
-            <tr>
-                <td>auto25.ee</td>
-                <td><span class="o-po-icon"></span><span class="u-hidden">PO</span></td>
-                <td>25-01-2023 | 23:59:59</td>
-                <td>150 €</td>
-                <td><strong>Sinu pakkumus</strong></td>
-                <td class="u-text-left u-text-center-l">
-                    <div class="c-btn-group c-btn-group--ghost">
-                        <a href="#" class="c-btn c-btn--ghost c-btn--icon" title="Edit"><span
-                                class="o-edit-icon"></span></a>
-                        <a href="#" class="c-btn c-btn--ghost c-btn--icon" title="Delete"><span
-                                class="o-delete-icon"></span></a>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>värskevesi.ee</td>
-                <td><span class="o-io-icon"></span><span class="u-hidden">IO</span></td>
-                <td>25-01-2023 | 23:59:59</td>
-                <td>2 000 €</td>
-                <td>RavynTheMan</td>
-                <td class="u-text-left u-text-center-l"><a href="#" class="c-btn c-btn--green">Esita pakkumus</a></td>
-            </tr>
-            <tr>
-                <td>lumememm.ee</td>
-                <td><span class="o-io-icon"></span><span class="u-hidden">IO</span></td>
-                <td>25-01-2023 | 17:08:34</td>
-                <td>12 000 €</td>
-                <td>RavynTheMan</td>
-                <td class="u-text-left u-text-center-l"><a href="#" class="c-btn c-btn--green">Esita pakkumus</a></td>
-            </tr>
-            <tr>
-                <td>meekarud.ee</td>
-                <td><span class="o-po-icon"></span><span class="u-hidden">PO</span></td>
-                <td>25-01-2023 | 23:59:59</td>
-                <td></td>
-                <td></td>
-                <td class="u-text-left u-text-center-l"><a href="#" class="c-btn c-btn--green">Esita pakkumus</a></td>
-            </tr>
-            <tr>
-                <td>auto25.ee</td>
-                <td><span class="o-po-icon"></span><span class="u-hidden">PO</span></td>
-                <td>25-01-2023 | 23:59:59</td>
-                <td>150 €</td>
-                <td><strong>Sinu pakkumus</strong></td>
-                <td class="u-text-left u-text-center-l">
-                    <div class="c-btn-group c-btn-group--ghost">
-                        <a href="#" class="c-btn c-btn--ghost c-btn--icon" title="Edit"><span
-                                class="o-edit-icon"></span></a>
-                        <a href="#" class="c-btn c-btn--ghost c-btn--icon" title="Delete"><span
-                                class="o-delete-icon"></span></a>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>värskevesi.ee</td>
-                <td><span class="o-io-icon"></span><span class="u-hidden">IO</span></td>
-                <td>25-01-2023 | 23:59:59</td>
-                <td>2 000 €</td>
-                <td>RavynTheMan</td>
-                <td class="u-text-left u-text-center-l"><a href="#" class="c-btn c-btn--green">Esita pakkumus</a></td>
-            </tr>
-            <tr>
-                <td>lumememm.ee</td>
-                <td><span class="o-io-icon"></span><span class="u-hidden">IO</span></td>
-                <td>25-01-2023 | 17:08:34</td>
-                <td>12 000 €</td>
-                <td>RavynTheMan</td>
-                <td class="u-text-left u-text-center-l"><a href="#" class="c-btn c-btn--green">Esita pakkumus</a></td>
-            </tr>
-            <tr>
-                <td>meekarud.ee</td>
-                <td><span class="o-po-icon"></span><span class="u-hidden">PO</span></td>
-                <td>25-01-2023 | 23:59:59</td>
-                <td></td>
-                <td></td>
-                <td class="u-text-left u-text-center-l"><a href="#" class="c-btn c-btn--green">Esita pakkumus</a></td>
-            </tr>
-            <tr>
-                <td>auto25.ee</td>
-                <td><span class="o-po-icon"></span><span class="u-hidden">PO</span></td>
-                <td>25-01-2023 | 23:59:59</td>
-                <td>150 €</td>
-                <td><strong>Sinu pakkumus</strong></td>
-                <td class="u-text-left u-text-center-l">
-                    <div class="c-btn-group c-btn-group--ghost">
-                        <a href="#" class="c-btn c-btn--ghost c-btn--icon" title="Edit"><span
-                                class="o-edit-icon"></span></a>
-                        <a href="#" class="c-btn c-btn--ghost c-btn--icon" title="Delete"><span
-                                class="o-delete-icon"></span></a>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>värskevesi.ee</td>
-                <td><span class="o-io-icon"></span><span class="u-hidden">IO</span></td>
-                <td>25-01-2023 | 23:59:59</td>
-                <td>2 000 €</td>
-                <td>RavynTheMan</td>
-                <td class="u-text-left u-text-center-l"><a href="#" class="c-btn c-btn--green">Esita pakkumus</a></td>
-            </tr>
-            <tr>
-                <td>lumememm.ee</td>
-                <td><span class="o-io-icon"></span><span class="u-hidden">IO</span></td>
-                <td>25-01-2023 | 17:08:34</td>
-                <td>12 000 €</td>
-                <td>RavynTheMan</td>
-                <td class="u-text-left u-text-center-l"><a href="#" class="c-btn c-btn--green">Esita pakkumus</a></td>
-            </tr>
-            <tr>
-                <td>meekarud.ee</td>
-                <td><span class="o-po-icon"></span><span class="u-hidden">PO</span></td>
-                <td>25-01-2023 | 23:59:59</td>
-                <td></td>
-                <td></td>
-                <td class="u-text-left u-text-center-l"><a href="#" class="c-btn c-btn--green">Esita pakkumus</a></td>
-            </tr>
-            <tr>
-                <td>auto25.ee</td>
-                <td><span class="o-po-icon"></span><span class="u-hidden">PO</span></td>
-                <td>25-01-2023 | 23:59:59</td>
-                <td>150 €</td>
-                <td><strong>Sinu pakkumus</strong></td>
-                <td class="u-text-left u-text-center-l">
-                    <div class="c-btn-group c-btn-group--ghost">
-                        <a href="#" class="c-btn c-btn--ghost c-btn--icon" title="Edit"><span
-                                class="o-edit-icon"></span></a>
-                        <a href="#" class="c-btn c-btn--ghost c-btn--icon" title="Delete"><span
-                                class="o-delete-icon"></span></a>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>värskevesi.ee</td>
-                <td><span class="o-io-icon"></span><span class="u-hidden">IO</span></td>
-                <td>25-01-2023 | 23:59:59</td>
-                <td>2 000 €</td>
-                <td>RavynTheMan</td>
-                <td class="u-text-left u-text-center-l"><a href="#" class="c-btn c-btn--green">Esita pakkumus</a></td>
-            </tr>
+                <%= render @auctions %>
             </tbody>
         </table>
+      <% end %>
+
     </div>
     <div class="u-text-center u-mt-40">
         <a href="#" class="c-btn c-btn--ghost">Näita kõiki</a>

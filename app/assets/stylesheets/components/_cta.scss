@@ -1,0 +1,267 @@
+.c-cta {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: rem(20px);
+  position: relative;
+  border-radius: rem(8px);
+
+  &:before {
+    content: ' ';
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.25;
+    background: url("../assets/spider-bg.svg") right center/contain no-repeat;
+    z-index: 0;
+  }
+}
+
+.c-cta--primary {
+  background-color: $secondary-blue-color;
+  min-height: rem(290px);
+
+  @include mq(desktop) {
+    min-height: rem(390px);
+  }
+
+  .c-cta__btn {
+    a {
+      @include btn-orange;
+    }
+  }
+}
+
+.c-cta--secondary {
+  background-color: $primary-blue-color;
+  min-height: rem(275px);
+
+  &::before {
+    filter: brightness(0.25);
+    background-size: 45%;
+  }
+
+  .c-cta__btn {
+    a {
+      @include btn-black;
+      min-width: rem(153px);
+    }
+  }
+}
+
+.c-cta__title {
+  font-weight: 900;
+  font-size: rem(22px);
+  line-height: rem(22px);
+  margin: 0;
+  color: $white-color;
+  position: relative;
+  z-index: 1;
+
+  @include mq(tablet) {
+    font-size: rem(30px);
+    line-height: rem(30px);
+  }
+}
+
+.c-cta__desc {
+  font-weight: 800;
+  font-size: rem(14px);
+  line-height: rem(18px);
+  margin: rem(15px 0);
+  color: $white-color;
+  position: relative;
+  z-index: 1;
+
+  @include mq(tablet) {
+    font-size: rem(16px);
+    line-height: rem(20px);
+  }
+}
+
+.c-cta__btn {
+  position: relative;
+  z-index: 1;
+}
+
+.c-cta--two-col {
+  padding: rem(48px 0 0);
+
+  @include mq(tablet) {
+    padding: rem(64px 0 0);
+  }
+}
+
+.c-cta--horizontal {
+  display: flex;
+  flex-direction: column;
+  background: center center/cover no-repeat;
+  justify-content: space-between;
+  align-items: center;
+  padding: rem(48px 42px);
+  border-radius: rem(8px);
+  overflow: hidden;
+
+  &::before {
+    content: ' ';
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.5;
+    background: $black-color;
+    z-index: 0;
+  }
+
+  @include mq(tablet) {
+    padding: rem(62px 56px);
+    flex-direction: row;
+  }
+
+  .c-cta__title {
+    margin: 0 0 rem(20px);
+  }
+
+  .c-cta__desc {
+    margin: 0;
+    font-weight: 500;
+    font-size: rem(14px);
+    line-height: rem(24px);
+  }
+
+  .c-cta__btn {
+    a {
+      @include btn-blue;
+    }
+  }
+}
+
+.c-cta--three-col {
+  padding: rem(48px 0);
+
+  @include mq(tablet) {
+    padding: rem(64px 0);
+  }
+}
+
+.c-cta--card {
+  padding: rem(24px 16px 30px);
+  color: $black-color;
+  @include box-shadow-light;
+  border-radius: rem(4px 4px 8px 8px);
+  position: relative;
+
+  &::before {
+    content: '';
+    width: 100%;
+    height: rem(4px);
+    border-radius: rem(2px);
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  @include mq(laptop) {
+    padding: rem(32px 18px 38px);
+  }
+
+  @include mq(desktop) {
+    padding: rem(34px 20px 42px);
+  }
+
+
+  @include mq(ultra) {
+    padding: rem(37px 24px 44px);
+  }
+
+  .c-cta__title {
+    color: $black-color;
+    margin: 0 0 rem(20px);
+  }
+
+  .c-cta__desc {
+    color: $black-color;
+    margin: 0;
+    font-weight: 500;
+    font-size: rem(14px);
+    line-height: rem(24px);
+  }
+
+  .c-cta__grid {
+    display: flex;
+    gap: rem(16px);
+    justify-content: space-between;
+  }
+}
+
+.c-cta--orange {
+
+  &::before {
+    background-color: $primary-orange-color;
+  }
+
+  .c-cta__btn {
+    a {
+      @include btn-orange;
+    }
+  }
+}
+
+.c-cta--sec-blue {
+
+  &::before {
+    background-color: $secondary-blue-color;
+  }
+
+  .c-cta__btn {
+    a {
+      @include btn-blue-secondary;
+    }
+  }
+}
+
+.c-cta--black {
+
+  &::before {
+    background-color: $black-color;
+  }
+
+  .c-cta__btn {
+    a {
+      @include btn-black;
+    }
+  }
+}
+
+.c-cta--green {
+  &::before {
+    background-color: $primary-green-color;
+  }
+
+  .c-cta__btn {
+    a {
+      @include btn-green;
+    }
+  }
+}
+
+.c-cta--card-icon {
+
+  .c-cta__title {
+    display: flex;
+    gap: rem(12px);
+
+    svg {
+      min-width: rem(32px);
+    }
+  }
+}
+
+.c-cta--inline {
+  padding: 0;
+}

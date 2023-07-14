@@ -1,0 +1,81 @@
+.u-h1 {
+  font-weight: 900;
+  font-size: rem(32px);
+  line-height: rem(40px);
+
+  @include mq(tablet) {
+    font-size: rem(32px);
+    line-height: rem(40px);
+  }
+
+  @include mq(laptop) {
+    font-size: rem(40px);
+    line-height: rem(48px);
+  }
+}
+
+.u-h2 {
+  font-weight: 900;
+  font-size: rem(24px);
+  line-height: rem(32px);
+
+  @include mq(tablet) {
+    font-size: rem(28px);
+    line-height: rem(36px);
+  }
+
+  @include mq(laptop) {
+    font-size: rem(30px);
+    line-height: rem(40px);
+  }
+}
+
+.u-h3 {
+  font-weight: 900;
+  font-size: rem(20px);
+  line-height: rem(22px);
+
+  @include mq(tablet) {
+    font-size: rem(22px);
+    line-height: rem(24px);
+  }
+
+  @include mq(laptop) {
+    font-size: rem(24px);
+    line-height: rem(26px);
+  }
+}
+
+.u-t-sm {
+  font-weight: 500;
+  font-size: rem(14px);
+  line-height: rem(24px);
+}
+
+.u-t-md {
+  font-weight: 800;
+  font-size: rem(16px);
+  line-height: rem(20px);
+}
+
+.u-text-center {
+  text-align: center;
+}
+
+.u-text-right {
+  text-align: right;
+}
+
+.u-text-left-m {
+  text-align: left;
+}
+
+.u-text-center-l {
+  @include mq(laptop) {
+    text-align: center;
+  }
+}
+
+.u-word-nowrap {
+  white-space: nowrap;
+}

@@ -1,0 +1,22 @@
+.o-arrow {
+  width: 1.2rem;
+  height: 1.2rem;
+  background: url("../assets/arrow-dwn.svg") center center/11px 7px no-repeat;
+  cursor: pointer;
+  display: inline-block;
+  transition: $transition;
+
+  @include mq(desktop) {
+    display: none;
+  }
+
+  &.is-active {
+    transform: rotate(180deg);
+  }
+}
+
+.o-arrow--visible-on-desktop {
+  @include mq(desktop) {
+    display: inline-block;
+  }
+}

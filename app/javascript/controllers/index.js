@@ -4,5 +4,8 @@
 
 import { application } from "./application"
 
-import HelloController from "./hello_controller"
-application.register("hello", HelloController)
+import Form__DebounceController from "./form/debounce_controller"
+application.register("form--debounce", Form__DebounceController)
+
+import Form__FilterController from "./form/filter_controller"
+application.register("form--filter", Form__FilterController)

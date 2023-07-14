@@ -1,0 +1,16 @@
+.u-hidden {
+  display: none;
+}
+
+.u-hidden-m {
+  display: none;
+
+  @include mq(tablet) {
+    display: inline-block;
+  }
+}
+
+.u-disabled {
+  pointer-events: none;
+  color: $grey-400-color;
+}

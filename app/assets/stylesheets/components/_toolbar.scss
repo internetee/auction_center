@@ -1,0 +1,359 @@
+.c-toolbar {
+  color: $white-color;
+  display: none;
+  min-width: rem(280px);
+  width: auto;
+  border-radius: rem(0 0 8px 8px);
+  overflow: hidden;
+  @include box-shadow-light;
+  background-color: $black-color;
+  position: absolute;
+  top: rem(50.4px);
+  left: 0;
+  flex-grow: 1;
+  z-index: 99;
+
+  @include mq(desktop) {
+    position: initial;
+    border-radius: 0;
+    max-width: 100%;
+    min-width: unset;
+    display: block;
+    padding-right: 0;
+  }
+}
+
+.c-toolbar__grid {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  @include mq(desktop) {
+    flex-direction: row;
+  }
+}
+
+.c-toolbar__nav {
+  width: 100%;
+  max-width: rem(280px);
+
+  @include mq(tablet) {
+    max-width: rem(320px);
+  }
+
+  @include mq(desktop) {
+    max-width: unset;
+  }
+}
+
+.s-toolbar-nav {
+  margin: 0;
+  padding: 0 0 0 0;
+  display: flex;
+  list-style: none;
+  flex-direction: column;
+  background: $primary-blue-color;
+
+  @include mq(desktop) {
+    background: transparent;
+    padding: 0;
+    flex-direction: row;
+  }
+
+  & > li a {
+    font-weight: 800;
+
+    @include mq(desktop) {
+      font-weight: 500;
+    }
+  }
+
+  li {
+    display: flex;
+    gap: rem(6px);
+    flex-wrap: wrap;
+    align-items: center;
+
+    &:nth-child(1) a:hover {
+      background-color: $primary-blue-color;
+      color: $white-color;
+    }
+    &:nth-child(2) a:hover {
+      background-color: $primary-green-color;
+      color: $white-color;
+    }
+    &:nth-child(3) a:hover {
+      background-color: $primary-orange-color;
+      color: $white-color;
+    }
+    &:nth-child(4) a:hover {
+      background-color: $secondary-blue-color;
+      color: $white-color;
+    }
+    &:nth-child(n+5) a:hover {
+      background-color: #000000;
+      color: $white-color;
+    }
+
+    @include mq(desktop) {
+      flex-wrap: nowrap;
+    }
+  }
+
+  a {
+    display: block;
+    padding: rem(4px 0px 4px 24px);
+    text-decoration: none;
+    color: $white-color;
+    font-weight: 500;
+    font-size: rem(14px);
+    line-height: rem(20px);
+    transition: $transition;
+    text-transform: uppercase;
+    white-space: nowrap;
+
+    &:hover {
+
+      @include mq(desktop) {
+      color: $primary-blue-color;
+    }
+    }
+
+    @include mq(desktop) {
+      padding: rem(20px 32px);
+      text-transform: initial;
+    }
+  }
+
+  li.is-active {
+
+    & > a {
+      box-shadow: 0px 0px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    a {
+      font-weight: 800;
+
+      @include mq(desktop) {
+        background: $gradient-blue;
+      }
+
+      &:hover {
+        color: $white-color;
+      }
+    }
+
+    &:nth-child(2) {
+      a {
+        background: $gradient-green;
+      }
+
+      .submenu {
+        background: $primary-green-color;
+      }
+    }
+
+    .submenu {
+
+      @include mq(desktop) {
+        background-color: $primary-blue-color;
+        display: flex;
+        position: absolute;
+        top: rem(60px);
+        left: 0;
+        padding: 0 0 0 rem(32px);
+        gap: rem(32px);
+      }
+
+      @include mq(wide) {
+        gap: rem(48px);
+      }
+
+      li {
+        position: relative;
+      }
+    }
+
+    .submenu a, .submenu button {
+      text-transform: uppercase;
+      font-weight: 500;
+      background: transparent;
+      border: none;
+
+      @include mq(desktop) {
+        padding: rem(20px) 0;
+      }
+    }
+  }
+
+  li.hidden {
+    display: none;
+  }
+
+  .submenu {
+    width: 100%;
+    list-style: none;
+    padding: rem(0 0 8px 24px);
+    margin: 0;
+    display: none;
+
+    a {
+      font-weight: 500;
+      padding: rem(8px 0);
+    }
+  }
+
+  & > li {
+    padding: rem(16px 0);
+
+    @include mq(desktop) {
+      padding: 0;
+    }
+
+    &:nth-child(2) {
+      background: $primary-green-color;
+
+      @include mq(desktop) {
+        background: transparent;
+      }
+    }
+    &:nth-child(3) {
+      background: $primary-orange-color;
+
+      @include mq(desktop) {
+        background: transparent;
+      }
+    }
+    &:nth-child(4) {
+      background: $secondary-blue-color;
+
+      @include mq(desktop) {
+        background: transparent;
+      }
+    }
+    &:nth-child(5) {
+      background: $black-color;
+
+      @include mq(desktop) {
+        background: transparent;
+      }
+    }
+  }
+
+  .submenu .submenu {
+    display: none;
+    padding: rem(0 0 4px 12px) !important;
+
+    @include mq(desktop) {
+      display: flex;
+      width: auto;
+      padding: rem(4px 0) !important;
+      gap: rem(4px) !important;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      flex-direction: column;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: $transition;
+
+      a {
+        padding: rem(8px 14px) !important;
+        max-width: rem(320px);
+      }
+    }
+
+    a {
+      word-break: break-word;
+      white-space: initial;
+      max-width: rem(230px);
+
+      @include mq(tablet) {
+        max-width: rem(250px);
+      }
+
+      @include mq(tablet) {
+        word-break: normal;
+        white-space: initial;
+        max-width: rem(350px);
+        min-width: rem(200px);
+      }
+
+      &:hover {
+        color: $secondary-blue-color;
+      }
+    }
+  }
+
+  .submenu li:hover {
+    .o-arrow {
+      transform: rotate(180deg);
+    }
+
+    .submenu {
+      opacity: 1;
+      visibility: visible;
+      transform: unset;
+    }
+  }
+}
+
+.c-toolbar__socials {
+  margin-left: auto;
+  margin-right: rem(24px);
+  width: 100%;
+  background: $white-color;
+  padding: rem(16px 25px);
+
+  @include mq(desktop) {
+    margin-right: 0;
+    width: auto;
+    background: transparent;
+  }
+}
+
+.c-toolbar__search {
+  margin-left: auto;
+  position: relative;
+
+  .c-search {
+    position: initial;
+    top: unset;
+    right: unset;
+  }
+}
+
+.c-toolbar__notice {
+  display: flex !important;
+  gap: rem(9px);
+  color: $white-color;
+  align-items: center;
+  white-space: nowrap;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: rem(14px);
+  line-height: rem(20px);
+  padding: rem(0 24px 0 0) !important;
+
+  span {
+    display: flex;
+    gap: rem(4px);
+  }
+
+  sup {
+    top: 0.65em;
+  }
+
+  @include mq(desktop) {
+    padding: rem(0 32px 0 0) !important;
+  }
+
+  &:hover {
+    color: $black-color !important;
+
+    svg {
+      fill: $black-color !important;
+    }
+  }
+}
