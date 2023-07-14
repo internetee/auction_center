@@ -122,4 +122,72 @@ class BillingProfileTest < ActiveSupport::TestCase
 
     assert_equal(billing_profile_recipient, invoice.recipient)
   end
+
+  def test_scope_of_issues_invoices
+    invoice_orph = invoices(:orphaned)
+    invoice_orph.update(billing_profile_id: @billing_profile.id)
+    invoice_orph.reload && @billing_profile.reload
+
+    assert_equal @billing_profile.invoices.count, 2
+    assert_equal @billing_profile.invoices.pluck(:status), ['issued', 'issued']
+    
+    assert_equal @billing_profile.issued_invoices.count, 2
+
+    invoice_orph.mark_as_paid_at(Time.zone.now)
+    invoice_orph.reload && @billing_profile.reload
+
+    assert_equal @billing_profile.issued_invoices.count, 1
+    assert_equal @billing_profile.issued_invoices.pluck(:status), ['issued']
+  end
+
+  def test_if_billing_profile_updated_all_related_issued_invoices_also_updated
+    assert_equal @billing_profile.invoices.count, 1
+    assert_equal @billing_profile.invoices.pluck(:status), ['issued']
+
+    invoice = @billing_profile.invoices.first
+    assert_equal invoice.billing_name, @billing_profile.name
+    assert_equal invoice.billing_address, @billing_profile.address
+    assert_equal invoice.billing_vat_code, @billing_profile.vat_code
+    assert_equal invoice.billing_alpha_two_country_code, @billing_profile.alpha_two_country_code
+
+    @billing_profile.update(name: 'New Company Ltd', vat_code: '12345')
+    @billing_profile.reload && invoice.reload
+
+    invoice = @billing_profile.invoices.first
+    assert_equal invoice.status, 'issued'
+    assert_equal invoice.billing_name, 'New Company Ltd'
+    assert_equal invoice.billing_address, @billing_profile.address
+    assert_equal invoice.billing_vat_code, '12345'
+    assert_equal invoice.billing_alpha_two_country_code, @billing_profile.alpha_two_country_code
+  end
+
+  def test_if_billing_profile_updated_it_not_effect_to_paid_or_canceled_invoices
+    assert_equal @billing_profile.invoices.count, 1
+    assert_equal @billing_profile.invoices.pluck(:status), ['issued']
+
+    invoice = @billing_profile.invoices.first
+    assert_equal invoice.billing_name, @billing_profile.name
+    assert_equal invoice.billing_address, @billing_profile.address
+    assert_equal invoice.billing_vat_code, @billing_profile.vat_code
+    assert_equal invoice.billing_alpha_two_country_code, @billing_profile.alpha_two_country_code
+
+    invoice.mark_as_paid_at(Time.zone.now)
+    invoice.reload && @billing_profile.reload
+    assert_equal invoice.status, 'paid'
+
+    old_billing_profile_name = invoice.billing_name
+    old_billing_vat_code = invoice.vat_code
+
+    @billing_profile.update(name: 'New Company Ltd', vat_code: '12345')
+    @billing_profile.reload && invoice.reload
+
+    invoice = @billing_profile.invoices.first
+    assert_equal invoice.status, 'paid'
+    assert_not_equal invoice.billing_name, 'New Company Ltd'
+    assert_equal invoice.billing_name, old_billing_profile_name
+    assert_equal invoice.billing_address, @billing_profile.address
+    assert_not_equal invoice.billing_vat_code, '12345'
+    assert_equal invoice.billing_vat_code, old_billing_vat_code
+    assert_equal invoice.billing_alpha_two_country_code, @billing_profile.alpha_two_country_code
+  end
 end

@@ -1225,6 +1225,10 @@ CREATE TABLE public.invoices (
     in_directo boolean DEFAULT false NOT NULL,
     payment_link character varying,
     number integer,
+    billing_name character varying DEFAULT ''::character varying NOT NULL,
+    billing_address character varying DEFAULT ''::character varying NOT NULL,
+    billing_vat_code character varying,
+    billing_alpha_two_country_code character varying DEFAULT ''::character varying NOT NULL,
     CONSTRAINT invoices_cents_are_non_negative CHECK ((cents >= 0)),
     CONSTRAINT invoices_due_date_is_not_before_issue_date CHECK ((issue_date <= due_date)),
     CONSTRAINT paid_at_is_filled_when_status_is_paid CHECK ((NOT ((status = 'paid'::public.invoice_status) AND (paid_at IS NULL)))),
@@ -3034,5 +3038,5 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230227085236'),
 ('20230309094132'),
 ('20230419114412'),
-('20230705192353');
-
+('20230705192353'),
+('20230607092953');

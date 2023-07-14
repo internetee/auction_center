@@ -38,6 +38,10 @@ class InvoiceCreator
     invoice.result = result
     invoice.user = result.user
     invoice.billing_profile = result_offer.billing_profile
+    invoice.billing_name = result_offer.billing_profile.name
+    invoice.billing_address = result_offer.billing_profile.address
+    invoice.billing_vat_code = result_offer.billing_profile.vat_code
+    invoice.billing_alpha_two_country_code = result_offer.billing_profile.alpha_two_country_code
   end
 
   def send_invoice_to_billing_system(invoice)
