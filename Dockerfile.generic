@@ -1,4 +1,4 @@
-FROM internetee/ruby_base:3.0
+FROM internetee/ruby:3.2.2
 LABEL org.opencontainers.image.source=https://github.com/internetee/auction_center
 ARG RAILS_ENV
 ARG SECRET_KEY_BASE
