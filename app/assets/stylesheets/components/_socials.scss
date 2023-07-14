@@ -1,0 +1,26 @@
+.c-socials {
+  display: flex;
+  gap: rem(24px);
+  align-items: center;
+}
+
+.c-socials__link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    transition: 0.25s;
+    fill: $black-color;
+
+    @include mq(desktop) {
+      fill: $white-color;
+    }
+  }
+
+  &:hover {
+    svg {
+      fill: $primary-blue-color;
+    }
+  }
+}

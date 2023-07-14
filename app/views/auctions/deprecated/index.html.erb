@@ -27,6 +27,7 @@
                             turbo_frame: "auction_list",
                             action: 'input->debounce#search' 
                             }, class: 'ui form field' do |f| %>
+       
         <div class="two fields">
           <div class="ui icon input">
             <%= f.search_field :domain_name, value: params[:domain_name], placeholder: t('search_by_domain_name'), class: 'prompt' %>
@@ -38,6 +39,7 @@
             <%= daily_summary_link %>
           </div>
         </div>
+        
         <div class="" id='auction_type_filter_wrapper' data-controller='auction_type_handler'>
           <div class="field">
             <%= f.label :type, t('auctions.index.select_type') %>
@@ -48,6 +50,7 @@
             <%= f.select :auction_offer_type, [[t('auctions.index.with_offers'), 'with_offers'], [t('auctions.index.without_offers'), 'without_offers']], { include_blank: t(:all) }, { class: '' } %>
           </div>
         </div>
+
       <% end %>
     </div>
   </div>
@@ -64,6 +67,7 @@
   data-english-offers-english-text-value="<%= t('auctions.english') %>"
   data-english-offers-blind-text-value="<%= t('auctions.blind') %>">
   <div class="margin-block">
+    
     <div class="ui grid">
       <div class="four wide column">
         <% if params[:show_all] == 'true' %>
@@ -78,6 +82,7 @@
         <%= link_to t('auctions.finished_auctions'), histories_path, style: 'margin-bottom: 20px; display: block; font-size: 18px; color: #03456f;' %>
       </div>
     </div>
+
     <div class="grid one column">
       <%= turbo_frame_tag "auction_list" do %>
         <div class="column">
