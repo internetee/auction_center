@@ -1,3 +1,6 @@
+14.07.2023
+* Update Ruby to 3.2.2 https://github.com/internetee/auction_center/pull/1101
+
 13.07.2023
 * Fix for TARA login CORS error https://github.com/internetee/auction_center/pull/1100
 
