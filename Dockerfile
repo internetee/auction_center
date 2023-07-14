@@ -10,7 +10,7 @@
 # RUN yarn install --check-files
 
 
-FROM ruby:3.2.0-slim-buster
+FROM internetee/ruby:3.2.2
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN apt-get update > /dev/null && apt-get install -y --no-install-recommends > /dev/null \

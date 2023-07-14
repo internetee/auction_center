@@ -23,7 +23,7 @@ module InvalidUserDataHelper
 
   def user_data_invalid?
     current_user.invalid? &&
-      current_user.errors.keys.any? { |key| %i[given_names surname mobile_phone].include?(key) } ||
+      current_user.errors.messages.keys.any? { |key| %i[given_names surname mobile_phone].include?(key) } ||
       (current_user.billing_profiles.present? && current_user.billing_profiles.any?(&:invalid?))
   end
 end

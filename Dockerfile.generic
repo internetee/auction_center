@@ -1,4 +1,4 @@
-FROM internetee/ruby_base:3.0
+FROM internetee/ruby:3.2.2
 LABEL org.opencontainers.image.source=https://github.com/internetee/auction_center
 ARG RAILS_ENV
 ARG SECRET_KEY_BASE
@@ -10,6 +10,7 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4EB27DB2A3B88B8B
 RUN apt-get update
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
 RUN apt-get install -y nodejs
+RUN npm install -g yarn@latest
 
 COPY Gemfile Gemfile.lock ./    
 RUN gem install bundler && bundle config set without 'development test' && bundle install --jobs 20 --retry 5
