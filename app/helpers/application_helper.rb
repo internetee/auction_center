@@ -11,6 +11,11 @@ module ApplicationHelper
     GoogleAnalytics.new(tracking_id: tracking_id)
   end
 
+  def component(name, *args, **kwargs, &block)
+    component = name.to_s.camelize.constantize::Component
+    render(component.new(*args, **kwargs), &block)
+  end
+
   def navigation_links(current_user)
     content_tag(:ul) do
       links(user_link_list) if current_user&.role?(User::PARTICIPANT_ROLE)
