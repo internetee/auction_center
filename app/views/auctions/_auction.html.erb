@@ -5,29 +5,43 @@
         <%= link_to auction_path(auction.uuid), target: '_top' do %>
             <%= domain_name_with_embedded_colors(auction.domain_name) %>
         <% end %>
-    </td>
-    <td>
-        <span class="auctions-table-mobile-infotainment"><%= t('auctions.ends_at') %> </span>
-        <span data-auction-timezone-target="display"><%= auction.ends_at %></span>
-    </td>
-    <td>
-        <span class="auctions-table-mobile-infotainment"><%= t('auctions.auction_type') %> </span>
-        <span class="auction_platform"><%= t("auctions.#{auction.platform&.downcase.presence || 'blind'}") %></span>
-    </td>
-    <td>
-        <% if auction.platform == 'blind' || auction.platform.nil? %>
-            <span class="auctions-table-mobile-infotainment"><%= t('auctions.current_price') %>: </span><%= number_with_precision(auction.users_price, precision: 2, separator: ",") %>
-        <% else %>
-            <span class="auctions-table-mobile-infotainment"><%= t('auctions.current_price') %>:</span>
-            <span class="initial-color current_<%= auction.currently_winning_offer&.user_id %>_user"><%= number_with_precision(english_auction_presenter.maximum_bids, precision: 2, separator: ",") %></span>
-        <% end %>
-    </td>
-    <td class="initial-color current_<%= auction.currently_winning_offer&.user_id %>_user">
-        <% if auction.platform != 'blind' && !auction.platform.nil? %>
-            <%= english_auction_presenter.bidder_name(auction.currently_winning_offer, user) %>
-        <% end %>
-    </td>
-    <td class="center aligned">
-        <%= auction.decorate.auction_offer_button(user) %>
-    </td>
+      </td>
+
+  <td class="u-text-left u-text-center-l">
+    <% if auction.english? %>
+
+      <% if auction.users_offer_uuid %>
+        <div class="c-btn-group c-btn-group--ghost">
+          <%= link_to edit_english_offer_path(auction.users_offer_uuid), class: "c-btn c-btn--ghost c-btn--icon", title: "Edit", ddata: { turbo_frame: 'modal' } do %>
+             <span class="o-edit-icon"></span>
+          <% end %>
+        </div>
+      <% else %>
+        <%= link_to 'Esita pakkumus', new_auction_english_offer_path(auction_uuid: auction.uuid), class: "c-btn c-btn--green js-modal-toggle", data: { turbo_frame: 'modal' } %>
+        <%# <button class="c-btn c-btn--green js-modal-toggle">Esita pakkumus</button> %>
+      <% end %>
+
+    <% else %>
+
+      <% if auction.users_offer_uuid %>
+        <div class="c-btn-group c-btn-group--ghost">
+          <%= link_to edit_offer_path(auction.users_offer_uuid), class: "c-btn c-btn--ghost c-btn--icon", title: "Edit", data: { turbo_frame: 'modal' } do %>
+            <span class="o-edit-icon"></span>
+          <% end %>
+
+          <%= link_to '#', class: "c-btn c-btn--ghost c-btn--icon", title: "Delete", data: { turbo_frame: 'modal' } do %>
+            <span class="o-delete-icon"></span>
+          <% end %>
+            <%# <button class="c-btn c-btn--ghost c-btn--icon js-edit-modal-toggle" title="Edit"><span %>
+                    <%# class="o-edit-icon"></span></button> %>
+            <%# <button class="c-btn c-btn--ghost c-btn--icon js-modal-delete-toggle" title="Delete"><span %>
+                    <%# class="o-delete-icon"></span></button> %>
+        </div>
+      <% else %>
+        <%= link_to 'Esita pakkumus', new_auction_offer_path(auction_uuid: auction.uuid), class: "c-btn c-btn--green js-modal-toggle-po", data: { turbo_frame: 'modal' } %>
+        <%# <td class="u-text-left u-text-center-l"><a href="#" class="c-btn c-btn--green">Esita pakkumus</a></td> %>
+      <% end %>
+
+    <% end %>
+  </td>
 </tr>

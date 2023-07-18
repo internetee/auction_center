@@ -1,76 +1,18 @@
-<%= turbo_stream_from "auctions_offer_#{@offer.auction.id}" %>
-<% content_for :hero do %>
-  <div class="hero green">
-    <h1><%= @offer.auction.domain_name %></h1>
-    <div class="monospace" style='margin-top: 30px;'>
-      <span id="timer_message" data-expired-message="<%= t('english_offers.must_be_active') %>">
-        <%= t('english_offers.timer') %>
-      </span>
-      <span id="auction_timer">
-        <%= render partial: 'english_offers/timer', locals: { auction: @offer.auction } %>
-      </span>
-    </div>
-  </div>
-<% end %>
-<div class="u-container centered">
-  <div class="u-container margin-block">
-    <% if @offer.errors.any? %>
-      <div class="ui message">
-        <div class="header">
-          <%= t(:errors_name) %>
-        </div>
-        <ul id="errors">
-          <% @offer.errors.full_messages.each do |message| %>
-            <li><%= message %></li>
-          <% end %>
-        </ul>
-      </div>
-    <% end %>
-    <div class="ui two column grid centered" style="margin-bottom: 20px;">
-      <div class="">
-        <%= tag.h5 do %>
-          <%= t('english_offers.show.min_bid') %>
-          <span id="mini"><%= number_with_precision(Money.from_amount(@auction.min_bids_step.to_f, Setting.find_by(code: 'auction_currency').retrieve,  precision: 2)) %></span>
-        <% end %>
-      </div>
-      <div class="">
-        <%= tag.h5 class: 'initial-color' do %>
-          <%= t('english_offers.show.current_price') %>
-          <span id="current_<%= @auction.id %>_price">
-            <%= render partial: 'current_price_new', locals: { offer: @offer } %>
-          </span>
-        <% end %>
-      </div>
-    </div>
-    <hr>
-    <% if @offer.auction.allow_to_set_bid?(current_user) %>
-      <div data-turbo="true">
-        <%= turbo_frame_tag 'autobider_scope' do %>
-          <%= render partial: 'autobider_value', locals: { autobider: @autobider, auction: @auction } %>
-        <% end %>
-      </div>
-      <%= tag.div id: 'offer_form' do %>
-        <%= render 'form', offer: @offer, url: auction_english_offers_path(auction_uuid: params[:auction_uuid]), data: { turbo: false } %>
-      <% end %>
-    <% else %>
-      <div class="ui one column grid centered aligned", style='margin-top: 10em; margin-bottom: 10em; align-items: center;'>
-        <div>
-          <p style='text-align: center; margin-bottom: 1rem; text-size: 20px; color: red;'>
-            <strong>
-              <%= t('offers.new.deposit_enable') %>
-            </strong>
-          </p>
-          <p>
-            <%= t('offers.new.deposit_description_html', deposit: number_with_precision(@auction.deposit, precision: 2)) %>
-          </p>
-          <div style='text-align: center; margin-bottom: 4rem;'>
-            <%= button_to t('offers.new.make_deposit'), 
-                                        english_offer_deposit_auction_path(uuid: @offer.auction.uuid, current_user: current_user),
-                                        method: :post,
-                                        class: 'ui button primary' %>
-          </div>
-        </div>
-      </div>
-    <% end %>
-  </div>
+<%= turbo_frame_tag "modal" do %>
+<div data-controller='modals--offer-modal' data-modals--offer-modal-class-name-attr-value='js-modal'>
+  <!-- Modal - Change Offer -->
+  <%= component 'modals/change_offer' %>
+  <!-- Modal - Change Offer -->
+
+  <!-- Modal - Change Offer - PO -->
+  <%#= component 'modals/change_offer_po' %>
+  <!-- Modal - Change Offer -->
+
+  <!-- Modal - Edit offer -->
+  <%#= component 'modals/edit_offer' %>
+  <!-- Modal - Edit offer -->
+
+  <!-- Modal - Delete offer -->
+  <%#= component 'modals/delete_offer' %>
 </div>
+<% end %>
