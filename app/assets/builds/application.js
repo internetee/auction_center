@@ -2883,13 +2883,7 @@
   // app/javascript/controllers/modals/offer_modal_controller.js
   var offer_modal_controller_default = class extends Controller {
     connect() {
-      console.log("-------");
-      console.log(this.classNameAttrValue);
-      console.log("-------");
       const modal = document.querySelector(`.${this.classNameAttrValue}`);
-      console.log("-------");
-      console.log(modal);
-      console.log("-------");
       modal.classList.toggle("is-open");
       document.querySelector(".js-close-modal").addEventListener("click", function() {
         modal.classList.toggle("is-open");
@@ -2927,10 +2921,42 @@
   };
   __publicField(filter_controller_default, "targets", ["button", "label"]);
 
+  // app/javascript/controllers/autotax_counter_controller.js
+  var autotax_counter_controller_default = class extends Controller {
+    connect() {
+      this.updateTax();
+    }
+    count(event) {
+      const value = parseFloat(event.target.value);
+      const result = this.resultTarget;
+      if (!isNaN(value) && value > 0) {
+        const tax = parseFloat(this.taxValue) || 0;
+        const taxAmount = value * tax;
+        const totalAmount = value + taxAmount;
+        result.innerHTML = this.templateValue.replace("{price}", totalAmount.toFixed(2)).replace("{tax}", (tax * 100).toFixed(2));
+      } else {
+        result.innerHTML = this.defaulttemplateValue;
+      }
+    }
+    updateTax(event) {
+      let selectElement = this.element.querySelector("select");
+      this.taxValue = selectElement.options[selectElement.selectedIndex].dataset.vatRate || 0;
+      const priceElement = this.element.querySelector('[name="offer[price]"]');
+      this.count({ target: priceElement });
+    }
+  };
+  __publicField(autotax_counter_controller_default, "targets", ["result"]);
+  __publicField(autotax_counter_controller_default, "values", {
+    tax: String,
+    template: String,
+    defaulttemplate: String
+  });
+
   // app/javascript/controllers/index.js
   application.register("modals--offer-modal", offer_modal_controller_default);
   application.register("form--debounce", debounce_controller_default);
   application.register("form--filter", filter_controller_default);
+  application.register("autotax-counter", autotax_counter_controller_default);
 
   // node_modules/@hotwired/turbo/dist/turbo.es2017-esm.js
   (function() {

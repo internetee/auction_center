@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# rubocop:disable Metrics/ClassLength
 class OffersController < ApplicationController
   before_action :authenticate_user!
   before_action :find_auction, only: %i[new create]
@@ -93,7 +96,7 @@ class OffersController < ApplicationController
   private
 
   def find_auction
-    @auction = Auction.find_by!(uuid: params[:auction_uuid])
+    @auction = Auction.find_by!(uuid: params[:auction_uuid], platform: 'blind')
   end
 
   def update_not_allowed(auction)
