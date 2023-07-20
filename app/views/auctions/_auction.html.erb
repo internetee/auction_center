@@ -12,7 +12,7 @@
 
       <% if auction.users_offer_uuid %>
         <div class="c-btn-group c-btn-group--ghost">
-          <%= link_to edit_english_offer_path(auction.users_offer_uuid), class: "c-btn c-btn--ghost c-btn--icon", title: "Edit", ddata: { turbo_frame: 'modal' } do %>
+          <%= link_to edit_english_offer_path(auction.users_offer_uuid), class: "c-btn c-btn--ghost c-btn--icon", title: "Edit", data: { turbo_frame: 'modal' } do %>
              <span class="o-edit-icon"></span>
           <% end %>
         </div>

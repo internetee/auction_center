@@ -1,3 +1,6 @@
+# rubocop:disable Metrics/ClassLength
+# rubocop:disable Metrics/AbcSize
+# rubocop:disable Metrics/MethodLength
 class EnglishOffersController < ApplicationController
   include BeforeRender
   protect_from_forgery with: :null_session
@@ -8,7 +11,7 @@ class EnglishOffersController < ApplicationController
   before_action :set_offer, only: %i[show edit update]
   before_render :find_or_initialize_autobidder, only: %i[new create edit update]
   before_action :authorize_phone_confirmation
-  before_action :authorize_offer_for_user, except: %i[new create]
+  # before_action :authorize_offer_for_user, except: %i[new create]
   before_action :prevent_check_for_invalid_bid, only: [:update]
   before_render :find_or_initialize_autobidder, only: %i[new create edit update]
 
@@ -99,7 +102,7 @@ class EnglishOffersController < ApplicationController
   private
 
   def find_auction
-    @auction = Auction.english.find_by!(uuid: params[:auction_uuid])
+    @auction = Auction.english.find_by!(uuid: params[:auction_uuid], platform: 'english')
   end
 
   def find_or_initialize_autobidder
@@ -125,11 +128,13 @@ class EnglishOffersController < ApplicationController
     auction.update_ends_at(@offer)
 
     flash[:notice] = message_text
-    redirect_to edit_english_offer_path(@offer.uuid)
+    # redirect_to edit_english_offer_path(@offer.uuid)
+    redirect_to root_path
   end
 
   def prevent_check_for_invalid_bid
     auction = Auction.with_user_offers(current_user.id).find_by(uuid: @offer.auction.uuid)
+
     return unless bid_is_bad?(auction: auction, update_params: update_params)
 
     flash[:alert] =
@@ -149,7 +154,7 @@ class EnglishOffersController < ApplicationController
   end
 
   def create_predicate(auction)
-    @offer.save && auction.update_minimum_bid_step(create_params[:price].to_f) && @offer.reload
+    @offer.save! && auction.update_minimum_bid_step(create_params[:price].to_f) && @offer.reload
   end
 
   def create_params

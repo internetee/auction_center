@@ -7,8 +7,11 @@ import { application } from "./application"
 import Modals__OfferModalController from "./modals/offer_modal_controller";
 application.register("modals--offer-modal", Modals__OfferModalController);
 
-import Form__DebounceController from "./form/debounce_controller"
-application.register("form--debounce", Form__DebounceController)
+import Form__DebounceController from "./form/debounce_controller";
+application.register("form--debounce", Form__DebounceController);
 
-import Form__FilterController from "./form/filter_controller"
-application.register("form--filter", Form__FilterController)
+import Form__FilterController from "./form/filter_controller";
+application.register("form--filter", Form__FilterController);
+
+import AutotaxCounter from "./autotax_counter_controller";
+application.register("autotax-counter", AutotaxCounter);
