@@ -3,7 +3,7 @@
                          locals: { auction: Auction.with_user_offers(nil).find_by(uuid: auction.uuid),
                                    user: nil } %>
 
-<%= turbo_stream.replace 'auction_count',
+<%#= turbo_stream.replace 'auction_count',
                          html: "<strong>#{Auction.with_user_offers(nil).active.size}</strong>".html_safe %>
 
 

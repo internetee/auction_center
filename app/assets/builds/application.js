@@ -2921,6 +2921,27 @@
   };
   __publicField(filter_controller_default, "targets", ["button", "label"]);
 
+  // app/javascript/controllers/form/autobider_submit_controller.js
+  var autobider_submit_controller_default = class extends Controller {
+    connect() {
+      console.log("autobider submit connectes");
+    }
+    submitAutobider() {
+      clearTimeout(this.timeout);
+      this.timeout = setTimeout(() => {
+        this.formTarget.requestSubmit();
+      }, 300);
+    }
+    validatePrice(event) {
+      const char = event.key;
+      const value = this.priceTarget.value;
+      if (![".", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "Backspace", "Delete", "Tab", "Enter", "ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(char) || char == "." && value.includes(".")) {
+        event.preventDefault();
+      }
+    }
+  };
+  __publicField(autobider_submit_controller_default, "targets", ["form", "price"]);
+
   // app/javascript/controllers/autotax_counter_controller.js
   var autotax_counter_controller_default = class extends Controller {
     connect() {
@@ -2952,11 +2973,51 @@
     defaulttemplate: String
   });
 
+  // app/javascript/controllers/english_offers_controller.js
+  var english_offers_controller_default = class extends Controller {
+    beforeStreamRender(e) {
+      var content = e.target.templateElement.content;
+      var currentPrice = content.querySelector(".current_price");
+      var auctionRow = content.querySelector(".auctions-table-row");
+      if (currentPrice) {
+        let offerUserId = currentPrice.dataset.userId;
+        let you = currentPrice.dataset.you;
+        if (this.values.userId === offerUserId) {
+          currentPrice.style.color = "green";
+          var currentPriceWrapper = document.getElementById("current_price_wrapper");
+          currentPriceWrapper.style.color = "green";
+          currentPriceWrapper.className = "";
+          currentPrice.querySelector(".bidder").textContent = "(" + you + ")";
+        } else {
+          currentPrice.style.color = "red";
+          var currentPriceWrapper = document.getElementById("current_price_wrapper");
+          currentPriceWrapper.style.color = "red";
+          currentPriceWrapper.className = "";
+        }
+      }
+      if (auctionRow) {
+        let platform = auctionRow.dataset.platform;
+        auctionRow.querySelector(".bid_button").textContent = this.values.bidText;
+        auctionRow.querySelector(".auction_platform").textContent = this.values[platform + "Text"];
+      }
+    }
+  };
+  __publicField(english_offers_controller_default, "values", {
+    userId: String,
+    decimalMark: String,
+    bidText: String,
+    participateText: String,
+    englishText: String,
+    blindText: String
+  });
+
   // app/javascript/controllers/index.js
   application.register("modals--offer-modal", offer_modal_controller_default);
   application.register("form--debounce", debounce_controller_default);
   application.register("form--filter", filter_controller_default);
+  application.register("form--autobider-submit", autobider_submit_controller_default);
   application.register("autotax-counter", autotax_counter_controller_default);
+  application.register("english-offer", english_offers_controller_default);
 
   // node_modules/@hotwired/turbo/dist/turbo.es2017-esm.js
   (function() {

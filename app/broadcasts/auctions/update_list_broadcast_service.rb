@@ -17,6 +17,9 @@ module Auctions
     private
 
     def post_call
+      puts '@?@@@@@'
+      puts auction.domain_name
+      puts '@@@@@@@'
       broadcast_later 'auctions',
                       'auctions/streams/updated_list',
                       locals: { auction: auction }

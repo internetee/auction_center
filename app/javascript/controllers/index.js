@@ -13,5 +13,11 @@ application.register("form--debounce", Form__DebounceController);
 import Form__FilterController from "./form/filter_controller";
 application.register("form--filter", Form__FilterController);
 
+import Form__AutobiderSubmitController from "./form/autobider_submit_controller";
+application.register("form--autobider-submit", Form__AutobiderSubmitController);
+
 import AutotaxCounter from "./autotax_counter_controller";
 application.register("autotax-counter", AutotaxCounter);
+
+import EnglishOffer from "./english_offers_controller";
+application.register("english-offer", EnglishOffer);

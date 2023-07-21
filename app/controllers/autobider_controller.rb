@@ -19,7 +19,8 @@ class AutobiderController < ApplicationController
     else
       flash[:alert] = t('english_offers.form.captcha_verification')
     end
-    redirect_to request.referer
+
+    redirect_to root_path
   end
 
   def edit
@@ -40,12 +41,12 @@ class AutobiderController < ApplicationController
         auction = Auction.where(domain_name: @autobider.domain_name).order(:created_at).last
         AutobiderService.autobid(auction)
 
-        redirect_to request.referer, notice: I18n.t('english_offers.form.autobidder_created')
+        redirect_to root_path, notice: I18n.t('english_offers.form.autobidder_created')
       else
-        redirect_to request.referer, notice: t(:something_went_wrong)
+        redirect_to root_path, notice: t(:something_went_wrong)
       end
     else
-      redirect_to request.referer, alert: t('english_offers.form.captcha_verification')
+      redirect_to root_path, alert: t('english_offers.form.captcha_verification')
     end
   end
 
@@ -81,7 +82,7 @@ class AutobiderController < ApplicationController
   end
 
   def strong_params
-    params.require(:autobider).permit(:user_id, :domain_name, :price)
+    params.require(:autobider).permit(:user_id, :domain_name, :price, :enable)
   end
 
   def create_predicate
