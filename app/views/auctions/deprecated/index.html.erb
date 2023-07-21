@@ -10,12 +10,15 @@
           }
 </style>
 <%= turbo_stream_from 'auctions' %>
+
 <% content_for :hero do %>
   <div class="hero green">
     <h1><%= t('.title') %></h1>
   </div>
 <% end %>
+
 <%= render 'top_grid' %>
+
 <div class="features-grid top narrow grey">
   <div class="ui search">
     <div>

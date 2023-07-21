@@ -13,6 +13,7 @@
         <span class="auctions-table-mobile-infotainment"><%= t('auctions.auction_type') %> </span>
         <span class="auction_platform"><%= t("auctions.#{auction.platform&.downcase.presence || 'blind'}") %></span>
     </td>
+    
     <td>
         <% if auction.platform == 'blind' || auction.platform.nil? %>
             <span class="auctions-table-mobile-infotainment"><%= t('auctions.your_current_price') %>: </span><%= auction.users_price %>
@@ -21,6 +22,7 @@
             <span class="initial-color current_<%= auction.currently_winning_offer&.user_id %>_user"><%= english_auction_presenter.maximum_bids %></span>
         <% end %>
     </td>
+
     <td class="initial-color current_<%= auction.currently_winning_offer&.user_id %>_user">
         <% if auction.platform != 'blind' && !auction.platform.nil? %>
             <%= english_auction_presenter.bidder_name(auction.currently_winning_offer, user) %>
