@@ -56,7 +56,7 @@ class InvoicesController < ApplicationController
                                                     customer_url: linkpay_callback_url)
 
     if response.result?
-      redirect_to response.instance['oneoff_redirect_link']
+      redirect_to response.instance['oneoff_redirect_link'], allow_other_host: true
     else
       flash.alert = response.errors
       redirect_to invoices_path and return
