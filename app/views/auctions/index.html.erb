@@ -52,14 +52,14 @@
       </div>
     <% end %>
     <%= turbo_frame_tag "auction_list" do %>
-      <table class="js-table-dt">
+      <table class="js-table-dt dataTable no-footer" data-controller='table--sort'>
         <thead>
           <tr>
-            <th>Domeeninimi</th>
-            <th>Tüüp</th>
-            <th>Lõpp</th>
-            <th>Pakkumus</th>
-            <th>Pakkumuse omanik</th>
+            <th class='sorting'>Domeeninimi</th>
+            <th class='sorting'>Tüüp</th>
+            <th class='sorting'>Lõpp</th>
+            <th class='sorting'>Pakkumus</th>
+            <th class='sorting'>Pakkumuse omanik</th>
             <th class="u-text-left u-text-center-l">Pakkumustegevused</th>
           </tr>
         </thead>
@@ -71,8 +71,17 @@
       </table>
     <% end %>
   </div>
+
   <div class="u-text-center u-mt-40">
-    <a href="#" class="c-btn c-btn--ghost">Näita kõiki</a>
+    <% if @pagy.pages > 1 %>
+      <div class="dataTables_filter">
+        <%== pagy_nav(@pagy) %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="u-text-center u-mt-40">
+    <%= link_to t('auctions.all_list'), auctions_path(show_all: 'true'), class: 'c-btn c-btn--ghost' %>
   </div>
 </div>
 <!-- Table -- Sortable  -->

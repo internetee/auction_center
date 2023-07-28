@@ -1,8 +1,14 @@
 <%= turbo_stream_from "auctions_offer_#{@offer.auction.id}" %>
 <%= turbo_frame_tag "modal" do %>
 <div data-controller='modals--offer-modal' data-modals--offer-modal-class-name-attr-value='js-modal'>
+
+  <% if @auction.allow_to_set_bid?(current_user) %>
+    <%= component 'modals/change_offer', offer: @offer, auction: @auction, autobider: @autobider, update: false, current_user: current_user, captcha_required: @captcha_required %>
+  <% else %>
+    <%= component 'modals/deposit', auction: @auction, current_user: current_user %>
+  <% end %>
+
   <!-- Modal - Change Offer -->
-  <%= component 'modals/change_offer', offer: @offer, auction: @auction, autobider: @autobider, update: false, current_user: current_user %>
   <!-- Modal - Change Offer -->
 
   <!-- Modal - Change Offer - PO -->

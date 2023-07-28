@@ -1,0 +1,77 @@
+.pagy-nav .page.prev,
+.pagy-nav .page.prev a,
+.pagy-nav .page.next,
+.pagy-nav .page.next a  {
+    width: rem(32px);
+    height: rem(32px);
+    border-radius: rem(16px) !important;
+    border: 1px solid $grey-200-color !important;
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    padding: 0 !important;
+    font-weight: 500;
+    font-size: rem(14px);
+    line-height: rem(24px);
+
+    border: none !important;
+    padding: rem(4px 4px) !important;
+    width: rem(80px);
+}
+
+.pagy-nav .page.active {
+  width: rem(32px);
+  height: rem(32px);
+  border-radius: rem(16px) !important;
+  border: 1px solid $grey-200-color !important;
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  padding: 0 !important;
+  font-weight: 500;
+  font-size: rem(14px);
+  line-height: rem(24px);
+
+  background-color: $primary-green-color !important;
+  border-color: $primary-green-color !important;
+  color: $white-color !important;
+}
+
+.pagy-nav .page.gap {
+  margin-left: 0.25rem;
+  margin-right: 0.25rem; 
+}
+
+.pagy-nav .page a {
+  text-decoration: none;
+  color: black !important;
+  width: rem(32px);
+  height: rem(32px);
+  border-radius: rem(16px) !important;
+  border: 1px solid $grey-200-color !important;
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  padding: 0 !important;
+  font-weight: 500;
+  font-size: rem(14px);
+  line-height: rem(24px);
+}
+
+.pagy-nav .page a:hover {
+  color: $black-color !important;
+  background: $grey-200-color !important;
+}
+
+.pagy-nav {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: rem(48px);
+  gap: rem(24px);
+
+  span {
+    display: flex;
+    gap: rem(8px);
+  }
+}

@@ -88,7 +88,7 @@ class OffersController < ApplicationController
     return unless @offer.can_be_modified? && @offer.destroy
 
     respond_to do |format|
-      format.html { redirect_to auction_path(@offer.auction.uuid), notice: t(:deleted) }
+      format.html { redirect_to root_path, notice: t(:deleted) }
       format.json { head :no_content }
     end
   end
@@ -96,7 +96,7 @@ class OffersController < ApplicationController
   private
 
   def find_auction
-    @auction = Auction.find_by!(uuid: params[:auction_uuid], platform: 'blind')
+    @auction = Auction.find_by!(uuid: params[:auction_uuid], platform: ['blind', nil])
   end
 
   def update_not_allowed(auction)

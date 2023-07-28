@@ -16,8 +16,12 @@
           <% end %>
         </div>
       <% else %>
-        <%= link_to 'Esita pakkumus', new_auction_english_offer_path(auction_uuid: auction.uuid), class: "c-btn c-btn--green js-modal-toggle", data: { turbo_frame: 'modal' } %>
-        <%# <button class="c-btn c-btn--green js-modal-toggle">Esita pakkumus</button> %>
+
+        <% if auction.allow_to_set_bid?(current_user) %>
+          <%= link_to 'Esita pakkumus', new_auction_english_offer_path(auction_uuid: auction.uuid), class: "c-btn c-btn--green js-modal-toggle", data: { turbo_frame: 'modal' } %>
+        <% else %>
+          <%= link_to 'Deposit', new_auction_english_offer_path(auction_uuid: auction.uuid), class: "c-btn c-btn--orange js-modal-toggle", data: { turbo_frame: 'modal' } %>
+        <% end %>
       <% end %>
 
     <% else %>
@@ -28,9 +32,10 @@
             <span class="o-edit-icon"></span>
           <% end %>
 
-          <%= link_to '#', class: "c-btn c-btn--ghost c-btn--icon", title: "Delete", data: { turbo_frame: 'modal' } do %>
+          <%= button_to offer_path(auction.offer_from_user(current_user).uuid), method: :delete, form: { data: { turbo_confirm: t(".confirm_delete") } }, class: "c-btn c-btn--ghost c-btn--icon" do %>
             <span class="o-delete-icon"></span>
           <% end %>
+
             <%# <button class="c-btn c-btn--ghost c-btn--icon js-edit-modal-toggle" title="Edit"><span %>
                     <%# class="o-edit-icon"></span></button> %>
             <%# <button class="c-btn c-btn--ghost c-btn--icon js-modal-delete-toggle" title="Delete"><span %>

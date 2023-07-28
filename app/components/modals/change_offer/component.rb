@@ -1,9 +1,9 @@
 module Modals
   module ChangeOffer
     class Component < ApplicationViewComponent
-      attr_reader :offer, :auction, :autobider, :update, :current_user
+      attr_reader :offer, :auction, :autobider, :update, :current_user, :captcha_required
 
-      def initialize(offer:, auction:, autobider:, update:, current_user:)
+      def initialize(offer:, auction:, autobider:, update:, current_user:, captcha_required:)
         super
 
         @offer = offer
@@ -11,6 +11,7 @@ module Modals
         @autobider = autobider
         @update = update
         @current_user = current_user
+        @captcha_required = captcha_required
       end
 
       def url
