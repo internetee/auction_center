@@ -1,0 +1,64 @@
+<div class="c-modal-overlay js-modal">
+  <div class="c-modal">
+    <div class="c-modal__scroll">
+      <div class="c-modal__scroll__content">
+        <button class="c-modal__close-btn js-close-modal">
+          <span class="o-close-icon"></span>
+        </button>
+        <div class="c-modal__header">
+          <div class="c-modal__header__title">
+            <span class="o-edit-icon--green"></span>
+            <span>Muuda pakkumist</span>
+          </div>
+          <div class="c-modal__header__subject">
+            <span class="c-modal__header__subject__title"><%= @auction.domain_name %></span>
+            <span class="o-io-icon o-io-icon--bg-blue"></span>
+          </div>
+          <div class="c-modal__header__desc">
+            <span>Oksjoni lõpuni jäänud <strong>24d 1h 9m 8s</strong></span>
+          </div>
+        </div>
+        <div class="c-modal__main">
+          <div class="c-modal__grid">
+            <div class="c-modal__main__info">
+              <span>Vähim võimalik pakkumus</span>
+              <h3 class="u-h2 u-m-none"><span id="mini"><%= number_with_precision(Money.from_amount(@auction.min_bids_step.to_f, Setting.find_by(code: 'auction_currency').retrieve,  precision: 2)) %> €</span></h3>
+            </div>
+            <div class="c-modal__main__info c-modal__main__info--black">
+              <strong>Hetke parim pakkumus</strong>
+              <h3 class="u-h2 u-m-none">
+                <span id="current_<%= @auction.id %>_price">
+                  0.00 €
+                </span>
+              </h3>
+              <span>Keegi pole veel pakkunud</span>
+            </div>
+          </div>
+
+          <div class='c-modal__header__desc' style='margin-top: 1.4rem'>
+            <span><strong>lorem ipsum dolor sit amet consectetur adipisicing elit.</strong> Quisquam, voluptatum. lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.</span>
+          </div>
+
+        </div>
+        <div class="c-modal__footer">
+          <div class="c-modal__footer__col">
+            <button class="c-btn c-btn--ghost">Tagasi</button>
+          </div>
+          <div class="c-modal__footer__col">
+            <%= button_to "Tasuge deposiit #{number_with_precision(@auction.deposit, precision: 2)} €",
+                          english_offer_deposit_auction_path(uuid: @auction.uuid, current_user: @current_user),
+                          class: "c-btn c-btn--orange", method: :post, data: { turbo: false } %>
+          </div>
+        </div>
+
+        <% if @captcha_required %>
+          <div class="field">
+            <br>
+            <%= recaptcha_tags id: "english_offer" %>
+          </div>
+        <% end %>
+
+      </div>
+    </div>
+  </div>
+</div>

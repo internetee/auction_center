@@ -13,7 +13,8 @@
     "esbuild": "^0.15.17",
     "local-time": "^2.1.0",
     "postcss": "^8.4.31",
-    "sass": "^1.63.6"
+    "sass": "^1.63.6",
+    "toastify-js": "^1.12.0"
   },
   "scripts": {
     "build": "esbuild app/javascript/*.* --bundle --sourcemap --outdir=app/assets/builds --public-path=assets",

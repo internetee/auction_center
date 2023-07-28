@@ -71,10 +71,17 @@ class InvoicesController < ApplicationController
     response = EisBilling::PayDepositService.call(amount: auction.deposit,
                                                   customer_url: deposit_callback_url,
                                                   description: description)
+
+      puts '------'
+      puts response.inspect
+      puts response.instance['oneoff_redirect_link']
+      puts response.result?
+      puts '------'
+
     if response.result?
-      redirect_to response.instance['oneoff_redirect_link'], allow_other_host: true
+      redirect_to response.instance['oneoff_redirect_link'], allow_other_host: true, format: :html
     else
-      flash.alert = response.errors
+      flash.alert = response.errors['message']
       redirect_to invoices_path
     end
   end
@@ -84,7 +91,7 @@ class InvoicesController < ApplicationController
     response = EisBilling::OneoffService.call(invoice_number: invoice.number.to_s,
                                               customer_url: linkpay_callback_url)
     if response.result?
-      redirect_to response.instance['oneoff_redirect_link'], allow_other_host: true
+      redirect_to response.instance['oneoff_redirect_link'], allow_other_host: true, format: :html
     else
       flash.alert = response.errors['message']
       redirect_to invoices_path

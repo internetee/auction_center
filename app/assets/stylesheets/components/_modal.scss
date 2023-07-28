@@ -291,7 +291,8 @@
 
 .c-modal__footer__col {
   display: flex;
-  gap: rem(24px);
+  gap: rem(28px);
+  align-items: center;
 }
 
 .c-modal--error {

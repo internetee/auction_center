@@ -15,11 +15,10 @@
             <span class="o-io-icon o-io-icon--bg-blue"></span>
           </div>
           <div class="c-modal__header__desc">
-            <span>Domeeni eelisõiguse registreerimise pakkumine</span>
-            <span data-tooltip="Domeeni eelisõiguse registreerimise pakkumine."
-                              class="o-info-icon js-tippy"></span>
+            <span>Oksjoni lõpuni jäänud <strong><%= component 'common/timer', auction: @auction %></strong></span>
           </div>
         </div>
+        
         <div class="c-modal__main">
           <div class="c-modal__grid">
             <div class="c-modal__main__info">
@@ -92,7 +91,6 @@
                                             {},
                                             class: billing_profiles.size == 1 ? "disabled" : "",
                                             data: { action: 'change->autotax-counter#updateTax' } %>
-              <%# data: { action: 'change->autotax-counter#updateTax' }  %>
             </div>
             <a class="c-modal__link c-modal__link--first-col" href="#">Uus arve aadress</a>
           <% end %>
@@ -102,18 +100,17 @@
             <button class="c-btn c-btn--ghost">Tagasi</button>
           </div>
           <div class="c-modal__footer__col">
-            <button class="c-btn c-btn--ghost c-btn--icon">
-              <span class="o-delete-icon"></span>
-            </button>
             <%= submit_tag t(:submit), class: "c-btn c-btn--green", id: 'bid_action', form: 'english_offer_form', data: { turbo: false } %>
           </div>
         </div>
+
         <% if @captcha_required %>
           <div class="field">
             <br>
             <%= recaptcha_tags id: "english_offer" %>
           </div>
         <% end %>
+
       </div>
     </div>
   </div>

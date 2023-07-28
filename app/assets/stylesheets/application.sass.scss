@@ -1,4 +1,6 @@
 // Entry point for your Sass build
+@use "toastify-js/src/toastify.css";
+@import "datatables/datatables";
 @import url(styles.scss);
 
 @import "generics/normalize";

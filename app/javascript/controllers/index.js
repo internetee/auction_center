@@ -21,3 +21,6 @@ application.register("autotax-counter", AutotaxCounter);
 
 import EnglishOffer from "./english_offers_controller";
 application.register("english-offer", EnglishOffer);
+
+import CountDownController from "./countdown_controller";
+application.register("countdown", CountDownController);
