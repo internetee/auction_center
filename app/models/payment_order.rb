@@ -1,14 +1,14 @@
 class PaymentOrder < ApplicationRecord
-  ENABLED_METHODS = AuctionCenter::Application.config
-                                              .customization
-                                              .dig(:payment_methods, :enabled_methods)
+  # ENABLED_METHODS = AuctionCenter::Application.config
+  #                                             .customization
+  #                                             .dig(:payment_methods, :enabled_methods)
 
   enum status: { issued: 'issued',
                  paid: 'paid',
                  cancelled: 'cancelled' }
 
   validates :user_id, presence: true, on: :create
-  validates :type, inclusion: { in: ENABLED_METHODS }
+  # validates :type, inclusion: { in: ENABLED_METHODS }
 
   validate :invoice_cannot_be_already_paid, on: :create
 
@@ -34,15 +34,15 @@ class PaymentOrder < ApplicationRecord
     errors.add(:invoice, 'is already paid')
   end
 
-  def self.supported_method?(some_class)
-    raise(Errors::ExpectedPaymentOrder, some_class) unless some_class < PaymentOrder
+  # def self.supported_method?(some_class)
+  #   raise(Errors::ExpectedPaymentOrder, some_class) unless some_class < PaymentOrder
 
-    if ENABLED_METHODS.include?(some_class.name)
-      true
-    else
-      false
-    end
-  end
+  #   if ENABLED_METHODS.include?(some_class.name)
+  #     true
+  #   else
+  #     false
+  #   end
+  # end
 
   def self.with_cache
     Rails.cache.fetch("#{new.cache_key}/#{config_namespace_name}_icon",

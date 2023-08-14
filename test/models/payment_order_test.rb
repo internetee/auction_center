@@ -24,26 +24,26 @@ class PaymentOrderTest < ActiveSupport::TestCase
     assert_equal(PaymentOrder.statuses[:issued], payment_order.status)
   end
 
-  def test_allowed_types_are_taken_from_config
-    assert(PaymentOrder::ENABLED_METHODS.include? 'PaymentOrders::EveryPay')
-  end
+  # def test_allowed_types_are_taken_from_config
+  #   assert(PaymentOrder::ENABLED_METHODS.include? 'PaymentOrders::EveryPay')
+  # end
 
-  def test_supported_method_returns_true_or_false
-    assert(PaymentOrder.supported_method?(PaymentOrders::EveryPay))
-  end
+  # def test_supported_method_returns_true_or_false
+  #   assert(PaymentOrder.supported_method?(PaymentOrders::EveryPay))
+  # end
 
-  def test_payment_method_must_be_supported_for_the_object_to_be_valid
-    payment_order = PaymentOrder.new
+  # def test_payment_method_must_be_supported_for_the_object_to_be_valid
+  #   payment_order = PaymentOrder.new
 
-    payment_order.invoices << @payable_invoice
-    payment_order.user = @user
-    payment_order.type = 'PaymentOrders::EveryPay'
+  #   payment_order.invoices << @payable_invoice
+  #   payment_order.user = @user
+  #   payment_order.type = 'PaymentOrders::EveryPay'
 
-    assert(payment_order.valid?)
+  #   assert(payment_order.valid?)
 
-    payment_order.type = 'PaymentOrders::Manual'
-    assert_not(payment_order.valid?)
-  end
+  #   payment_order.type = 'PaymentOrders::Manual'
+  #   assert_not(payment_order.valid?)
+  # end
 
   def test_invoice_cannot_be_already_paid
     payment_order = PaymentOrder.new

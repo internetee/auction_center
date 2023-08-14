@@ -69,13 +69,13 @@ RUN apt-get install -y --no-install-recommends > /dev/null \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
-RUN curl https://chromedriver.storage.googleapis.com/2.46/chromedriver_linux64.zip -o /chromedriver_linux64.zip
-RUN apt-get update > /dev/null \
-    && apt-get install -yf --no-install-recommends > /dev/null unzip=* \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
-RUN unzip chromedriver_linux64.zip -d /usr/local/bin
-RUN rm /chromedriver_linux64.zip
+# RUN curl https://chromedriver.storage.googleapis.com/2.46/chromedriver_linux64.zip -o /chromedriver_linux64.zip
+# RUN apt-get update > /dev/null \
+#     && apt-get install -yf --no-install-recommends > /dev/null unzip=* \
+#     && apt-get clean \
+#     && rm -rf /var/lib/apt/lists/*
+# RUN unzip chromedriver_linux64.zip -d /usr/local/bin
+# RUN rm /chromedriver_linux64.zip
 
 # RUN npm install --global yarn
 RUN npm install -g yarn@latest
