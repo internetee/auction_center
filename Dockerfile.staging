@@ -1,4 +1,4 @@
-FROM internetee/ruby:3.2.2
+FROM internetee/ruby:3.2.2-refactor as base
 ARG RAILS_ENV
 ARG SECRET_KEY_BASE
 ARG APP_DBHOST
@@ -7,18 +7,25 @@ ENV RAILS_ENV "$RAILS_ENV"
 ENV SECRET_KEY_BASE "$SECRET_KEY_BASE"
 ENV APP_DBHOST "$APP_DBHOST"
 
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4EB27DB2A3B88B8B
-RUN apt-get update
-RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
-RUN apt-get install -y nodejs
-
 RUN npm install -g yarn@latest
 WORKDIR /opt/webapps/app
 COPY Gemfile Gemfile.lock ./
 RUN gem install bundler && bundle config set without 'development test' && bundle install --jobs 20 --retry 5
 COPY package.json yarn.lock ./
 RUN yarn install --check-files
-COPY . .
 RUN bundle exec rails assets:precompile
 
+FROM base
+
+RUN useradd rails
+RUN mkdir -p /home/rails && chown rails:rails /home/rails
+
+USER rails:rails
+
+RUN mkdir -p /opt/webapps/app/tmp/pids 
+
+COPY --from=base --chown=rails:rails /usr/local/bundle /usr/local/bundle
+COPY --from=base --chown=rails:rails /opt/webapps/app /opt/webapps/app
+
 EXPOSE 3000
+
