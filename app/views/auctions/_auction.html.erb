@@ -16,8 +16,7 @@
           <% end %>
         </div>
       <% else %>
-
-        <% if auction.allow_to_set_bid?(current_user) %>
+        <% if auction.allow_to_set_bid?(user) %>
           <%= link_to 'Esita pakkumus', new_auction_english_offer_path(auction_uuid: auction.uuid), class: "c-btn c-btn--green js-modal-toggle", data: { turbo_frame: 'modal' } %>
         <% else %>
           <%= link_to 'Deposit', new_auction_english_offer_path(auction_uuid: auction.uuid), class: "c-btn c-btn--orange js-modal-toggle", data: { turbo_frame: 'modal' } %>
@@ -32,7 +31,7 @@
             <span class="o-edit-icon"></span>
           <% end %>
 
-          <%= button_to offer_path(auction.offer_from_user(current_user).uuid), method: :delete, form: { data: { turbo_confirm: t(".confirm_delete") } }, class: "c-btn c-btn--ghost c-btn--icon" do %>
+          <%= button_to offer_path(auction.offer_from_user(user).uuid), method: :delete, form: { data: { turbo_confirm: t(".confirm_delete") } }, class: "c-btn c-btn--ghost c-btn--icon" do %>
             <span class="o-delete-icon"></span>
           <% end %>
 

@@ -19,6 +19,6 @@ class ApplicationViewComponent < ViewComponent::Base
   end
 
   def company_name
-    @company_name ||= 'Readify Lang'
+    @company_name ||= 'Domain Auction Center'
   end
 end
