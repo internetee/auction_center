@@ -19,13 +19,17 @@ module Common
 
       def sortable_column(column, caption, option)
         tag.th caption, **option,
-                        data: { controller: 'table--sort-link',
-                                action: 'click->table--sort-link#resortTable',
-                                'table--sort-link-direction-value': next_direction(column),
-                                'table--sort-link-column-value': column,
-                                'table--sort-link-asc-class': sorting_asc_class,
-                                'table--sort-link-desc-class': sorting_desc_class,
-                                'table--sort-link-target': target_element_name }
+                        data: { controller: stimulus_controller_name_dirty,
+                                action: "click->#{stimulus_controller_name_dirty}#resortTable",
+                                "#{stimulus_controller_name_dirty}-direction-value": next_direction(column),
+                                "#{stimulus_controller_name_dirty}-column-value": column,
+                                "#{stimulus_controller_name_dirty}-asc-class": sorting_asc_class,
+                                "#{stimulus_controller_name_dirty}-desc-class": sorting_desc_class,
+                                "#{stimulus_controller_name_dirty}-target": target_element_name }
+      end
+
+      def stimulus_controller_name_dirty
+        'table--ordeable'
       end
 
       def sorting_asc_class
