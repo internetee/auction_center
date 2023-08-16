@@ -3264,8 +3264,8 @@
   };
   __publicField(autobider_submit_controller_default, "targets", ["form", "price"]);
 
-  // app/javascript/controllers/table/sort_link_controller.js
-  var sort_link_controller_default = class extends Controller {
+  // app/javascript/controllers/table/ordeable_controller.js
+  var ordeable_controller_default = class extends Controller {
     initialize() {
       this.classHandle = this.classHandle.bind(this);
     }
@@ -3291,9 +3291,9 @@
       }
     }
   };
-  __publicField(sort_link_controller_default, "values", { direction: String, column: String });
-  __publicField(sort_link_controller_default, "targets", ["th"]);
-  __publicField(sort_link_controller_default, "classes", ["asc", "desc"]);
+  __publicField(ordeable_controller_default, "values", { direction: String, column: String });
+  __publicField(ordeable_controller_default, "targets", ["th"]);
+  __publicField(ordeable_controller_default, "classes", ["asc", "desc"]);
 
   // app/javascript/controllers/autotax_counter_controller.js
   var autotax_counter_controller_default = class extends Controller {
@@ -3414,7 +3414,7 @@
   application.register("form--debounce", debounce_controller_default);
   application.register("form--filter", filter_controller_default);
   application.register("form--autobider-submit", autobider_submit_controller_default);
-  application.register("table--sort-link", sort_link_controller_default);
+  application.register("table--ordeable", ordeable_controller_default);
   application.register("autotax-counter", autotax_counter_controller_default);
   application.register("english-offer", english_offers_controller_default);
   application.register("countdown", countdown_controller_default);
