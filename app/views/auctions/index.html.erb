@@ -51,27 +51,31 @@
         </div>
       </div>
     <% end %>
+
+    <!-- 
+    These parameters are passed to the Common::Table::Component. These parameters are used to generate headers in the table component. The name "column_name" indicates the name of the column. This is necessary for sorting, so the name of this column should correspond to the name of the column in the database table. If you want to make it so that the data is not sorted by the column, then you should add a nil value. "Caption" is the table header, and "options" are additional parameters that are passed into the tags. 
+    -->
+    <% header_collection = [{ column: 'domain_name', caption: 'Domeeninimi', options: { class: "sorting" } },
+                            { column: 'platform', caption: 'Tüüp', options: { class: "sorting" } },
+                            { column: 'ends_at', caption: 'Lõpp', options: { class: "sorting" } },
+                            { column: 'users_offer_cents', caption: 'Pakkumus', options: { class: "sorting" } },
+                            { column: nil, caption: 'Pakkumuse omanik', options: {} },
+                            { column: nil, caption: 'Pakkumustegevused omanik', options: { class: 'u-text-left u-text-center-l' } }] %>
+
     <%= turbo_frame_tag "auction_list" do %>
-      <table class="js-table-dt dataTable no-footer" data-controller='table--sort'>
-        <thead>
-          <tr>
-            <th class='sorting'>Domeeninimi</th>
-            <th class='sorting'>Tüüp</th>
-            <th class='sorting'>Lõpp</th>
-            <th class='sorting'>Pakkumus</th>
-            <th class='sorting'>Pakkumuse omanik</th>
-            <th class="u-text-left u-text-center-l">Pakkumustegevused</th>
-          </tr>
-        </thead>
+      <%= component 'common/table', header_collection: do %>
+
+        <!-- "The body of the table also needs to be in the component block, so the component wraps it with the necessary tags." -->
+
         <%= tag.tbody id: "bids", class: 'contents' do %>
           <% @auctions.uniq.each do |auction| %>
             <%= render partial: 'auction', locals: { auction: auction, user: current_user } %>
           <% end %>
         <% end %>
-      </table>
+      <% end %>
     <% end %>
-  </div>
 
+  </div>
   <div class="u-text-center u-mt-40">
     <% if @pagy.pages > 1 %>
       <div class="dataTables_filter">
@@ -79,7 +83,6 @@
       </div>
     <% end %>
   </div>
-
   <div class="u-text-center u-mt-40">
     <%= link_to t('auctions.all_list'), auctions_path(show_all: 'true'), class: 'c-btn c-btn--ghost' %>
   </div>

@@ -16,6 +16,9 @@ application.register("form--filter", Form__FilterController);
 import Form__AutobiderSubmitController from "./form/autobider_submit_controller";
 application.register("form--autobider-submit", Form__AutobiderSubmitController);
 
+import Table__SortLinkController from "./table/sort_link_controller";
+application.register("table--sort-link", Table__SortLinkController);
+
 import AutotaxCounter from "./autotax_counter_controller";
 application.register("autotax-counter", AutotaxCounter);
 

@@ -149,12 +149,12 @@ class Auction < ApplicationRecord # rubocop:disable Metrics
   end
 
   def current_price_from_user(user_id)
-    offers_query = offers.where(user_id: user_id)
+    offers_query = offers.where(user_id:)
     offers_query.order(cents: :desc).first&.price
   end
 
   def offer_from_user(user_id)
-    offers.where(user_id: user_id).order(cents: :desc).first
+    offers.where(user_id:).order(cents: :desc).first
   end
 
   def ends_at_later_than_starts_at
@@ -169,7 +169,7 @@ class Auction < ApplicationRecord # rubocop:disable Metrics
     dates_order = [starts_at, ends_at].sort
     sql = "domain_name = ? AND tsrange(starts_at, ends_at, '[]') && tsrange(?, ?, '[]')"
     auctions = Auction.unscoped.where(sql, domain_name, dates_order.first, dates_order.second)
-    auctions = auctions.where.not(id: id) if persisted?
+    auctions = auctions.where.not(id:) if persisted?
     auctions
   end
 
@@ -206,7 +206,7 @@ class Auction < ApplicationRecord # rubocop:disable Metrics
   end
 
   def calculate_turns_count
-    auctions = Auction.unscoped.where(domain_name: domain_name).where('starts_at <= ?', starts_at)
+    auctions = Auction.unscoped.where(domain_name:).where('starts_at <= ?', starts_at)
     result_statuses = auctions.order(:ends_at).map { |auction| auction.result&.status }
     return 1 unless result_statuses.present? && result_statuses.first.present?
 

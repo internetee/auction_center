@@ -3264,6 +3264,37 @@
   };
   __publicField(autobider_submit_controller_default, "targets", ["form", "price"]);
 
+  // app/javascript/controllers/table/sort_link_controller.js
+  var sort_link_controller_default = class extends Controller {
+    initialize() {
+      this.classHandle = this.classHandle.bind(this);
+    }
+    resortTable(_event) {
+      Turbo.visit("?sort=" + this.columnValue + "&direction=" + this.directionValue, {});
+    }
+    directionValueChanged() {
+      this.classHandle();
+    }
+    columnValueChanged() {
+      this.classHandle();
+    }
+    classHandle() {
+      if (this.directionValue == "asc") {
+        this.thTarget.classList.remove(this.ascClass);
+        this.thTarget.classList.add(this.descClass);
+      } else if (this.directionValue == "desc") {
+        this.thTarget.classList.add(this.ascClass);
+        this.thTarget.classList.remove(this.descClass);
+      } else {
+        this.thTarget.classList.remove(this.ascClass);
+        this.thTarget.classList.remove(this.descClass);
+      }
+    }
+  };
+  __publicField(sort_link_controller_default, "values", { direction: String, column: String });
+  __publicField(sort_link_controller_default, "targets", ["th"]);
+  __publicField(sort_link_controller_default, "classes", ["asc", "desc"]);
+
   // app/javascript/controllers/autotax_counter_controller.js
   var autotax_counter_controller_default = class extends Controller {
     connect() {
@@ -3383,6 +3414,7 @@
   application.register("form--debounce", debounce_controller_default);
   application.register("form--filter", filter_controller_default);
   application.register("form--autobider-submit", autobider_submit_controller_default);
+  application.register("table--sort-link", sort_link_controller_default);
   application.register("autotax-counter", autotax_counter_controller_default);
   application.register("english-offer", english_offers_controller_default);
   application.register("countdown", countdown_controller_default);
@@ -6546,7 +6578,7 @@
   function setFormMode(mode) {
     session.setFormMode(mode);
   }
-  var Turbo = /* @__PURE__ */ Object.freeze({
+  var Turbo2 = /* @__PURE__ */ Object.freeze({
     __proto__: null,
     navigator: navigator$1,
     session,
@@ -7181,7 +7213,7 @@
       element = element.parentElement;
     }
   })();
-  window.Turbo = Turbo;
+  window.Turbo = Turbo2;
   start();
 
   // app/javascript/turbo_streams/toast.js
