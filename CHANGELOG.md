@@ -1,3 +1,6 @@
+17.08.2023
+* Payment order configuration refactoring https://github.com/internetee/auction_center/pull/1107
+
 14.07.2023
 * Update Ruby to 3.2.2 https://github.com/internetee/auction_center/pull/1101
 * Invoice data of closed invoices is now immutable https://github.com/internetee/auction_center/pull/1088
