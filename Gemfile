@@ -61,6 +61,7 @@ group :development do
   gem 'listen', '>= 3.0.5', '< 3.9'
   gem 'web-console', '>= 3.3.0'
   gem 'htmlbeautifier'
+  gem "ruby-lsp-rails"
 end
 
 group :test do
@@ -88,3 +89,4 @@ gem 'pagy', '~> 6.0'
 gem 'faker'
 
 gem 'noticed', '~> 1.6'
+gem "freezolite", require: false

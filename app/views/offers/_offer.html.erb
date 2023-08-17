@@ -1,0 +1,34 @@
+<tr>
+  <td><%= link_to offer.auction.domain_name, offer_path(offer.uuid), style: 'color: black;' %></td>
+  <td><%= component 'common/auction_type_icon', auction: offer.auction %></td>
+  <td><b><%= t('.your_last_offer') %>:</b> <%= t('offers.price_in_currency', price: offer.price) %></td>
+  <td><%= t('offers.price_in_currency', price: offer.total) %></td>
+  <td><%= offer.auction.finished? ? t('auctions.finished') : I18n.l(offer.auction.ends_at) %>
+  </td>
+  <td>
+    <%- if offer.auction.finished? %>
+      <%- if offer.result %>
+        <%= t('.you_won') %>
+      <%- elsif offer.auction&.result && !offer.result %>
+        <%= t('.you_lost') %>
+      <% end %>
+    <% else %>
+      <%- if offer.auction.english? %>
+        <%= offer.auction.currently_winning_offer == offer ? raw("<span style='color: green;'>#{t('.you_are_winning')}</span>") : raw("<span style='color: red;'>#{t('.you_are_loosing')}</span>") %>
+      <% else %>
+        <%= t('auctions.still_in_progress') %>
+      <% end %>
+    <% end %>
+  </td>
+  <td>
+    <%- if offer.result %>
+      <%= link_to t('.claim_your_domain'), result_path(offer.result.uuid), class: "c-btn c-btn--green" %>
+    <%- else %>
+      <% unless offer.auction.english? || offer.auction.finished? %>
+        <%= link_to offer_path(offer.uuid), target: '_top', method: :delete, data: { confirm: t(:are_you_sure) }, class: "c-btn c-btn--ghost c-btn--icon" do %>
+          <span class="o-delete-icon"></span>
+        <% end %>
+      <% end %>
+    <% end %>
+  </td>
+</tr>

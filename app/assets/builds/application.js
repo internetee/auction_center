@@ -3295,6 +3295,31 @@
   __publicField(ordeable_controller_default, "targets", ["th"]);
   __publicField(ordeable_controller_default, "classes", ["asc", "desc"]);
 
+  // app/javascript/controllers/table/tab_controller.js
+  var tab_controller_default = class extends Controller {
+    initialize() {
+      this.showTab = this.showTab.bind(this);
+    }
+    connect() {
+      console.log("Tab controller connected");
+    }
+    showTab(event) {
+      console.log(event.params);
+      console.log(event.params.index);
+      const index = event.params.index;
+      this.tabTargets.forEach((tab) => {
+        tab.classList.remove(this.activeClass);
+      });
+      this.contentTargets.forEach((content) => {
+        content.classList.remove(this.activeClass);
+      });
+      this.tabTargets[index].classList.add(this.activeClass);
+      this.contentTargets[index].classList.add(this.activeClass);
+    }
+  };
+  __publicField(tab_controller_default, "targets", ["tab", "content"]);
+  __publicField(tab_controller_default, "classes", ["active"]);
+
   // app/javascript/controllers/autotax_counter_controller.js
   var autotax_counter_controller_default = class extends Controller {
     connect() {
@@ -3415,6 +3440,7 @@
   application.register("form--filter", filter_controller_default);
   application.register("form--autobider-submit", autobider_submit_controller_default);
   application.register("table--ordeable", ordeable_controller_default);
+  application.register("table--tab", tab_controller_default);
   application.register("autotax-counter", autotax_counter_controller_default);
   application.register("english-offer", english_offers_controller_default);
   application.register("countdown", countdown_controller_default);

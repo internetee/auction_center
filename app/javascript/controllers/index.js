@@ -19,6 +19,9 @@ application.register("form--autobider-submit", Form__AutobiderSubmitController);
 import Table__OrdeableController from "./table/ordeable_controller";
 application.register("table--ordeable", Table__OrdeableController);
 
+import Table__TabController from "./table/tab_controller";
+application.register("table--tab", Table__TabController);
+
 import AutotaxCounter from "./autotax_counter_controller";
 application.register("autotax-counter", AutotaxCounter);
 

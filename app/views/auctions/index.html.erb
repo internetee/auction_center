@@ -6,7 +6,7 @@
 <!-- Table -- Sortable -->
 <div class="o-container">
   <div class="c-table c-table--sortable" data-controller="english-offers" 
-        data-action="turbo:before-stream-render@document->english-offers#beforeStreamRender"
+    data-action="turbo:before-stream-render@document->english-offers#beforeStreamRender"
     data-english-offers-user-id-value="<%= current_user&.id %>"
     data-english-offers-bid-text-value="<%= t('auctions.bid') %>"
     data-english-offers-participate-text-value="<%= t('auctions.participate') %>"
@@ -63,7 +63,9 @@
                             { column: nil, caption: 'Pakkumustegevused omanik', options: { class: 'u-text-left u-text-center-l' } }] %>
 
     <%= turbo_frame_tag "auction_list" do %>
-      <%= component 'common/table', header_collection: do %>
+
+      <!-- Options attributes are used as table attributes -->
+      <%= component 'common/table', header_collection:, options: { class: 'js-table-dt dataTable no-footer' } do %>
 
         <!-- "The body of the table also needs to be in the component block, so the component wraps it with the necessary tags." -->
 
@@ -76,13 +78,8 @@
     <% end %>
 
   </div>
-  <div class="u-text-center u-mt-40">
-    <% if @pagy.pages > 1 %>
-      <div class="dataTables_filter">
-        <%== pagy_nav(@pagy) %>
-      </div>
-    <% end %>
-  </div>
+  <%= component 'common/pagy', pagy: @pagy %>
+
   <div class="u-text-center u-mt-40">
     <%= link_to t('auctions.all_list'), auctions_path(show_all: 'true'), class: 'c-btn c-btn--ghost' %>
   </div>

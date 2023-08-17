@@ -5,7 +5,7 @@
   <% if @auction.allow_to_set_bid?(current_user) %>
     <%= component 'modals/change_offer', offer: @offer, auction: @auction, autobider: @autobider, update: false, current_user: current_user, captcha_required: @captcha_required %>
   <% else %>
-    <%= component 'modals/deposit', auction: @auction, current_user: current_user %>
+    <%= component 'modals/deposit', auction: @auction, current_user: current_user, captcha_required: @captcha_required %>
   <% end %>
 
   <!-- Modal - Change Offer -->

@@ -1,10 +1,12 @@
 module Common
   module Table
     class Component < ApplicationViewComponent
-      attr_reader :header_collection
+      attr_reader :header_collection, :options
 
-      def initialize(header_collection:, **options)
+      def initialize(header_collection:, options: {})
         @header_collection = header_collection
+        @options = options
+
         super
       end
 
