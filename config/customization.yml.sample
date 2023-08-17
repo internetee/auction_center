@@ -74,9 +74,6 @@ default: &default
     tracking_id:
 
   payment_methods:
-    enabled_methods:
-      - "PaymentOrders::EveryPay"
-
     every_pay:
       url: ''
       user: ''
@@ -86,13 +83,6 @@ default: &default
       linkpay_prefix: 'https://igw-demo.every-pay.com/lp'
       linkpay_check_prefix: 'https://igw-demo.every-pay.com/api/v3/payments/'
       linkpay_token: 'rucd4v'
-
-    seb:
-      url: ''
-      seller_account: ''
-      seller_private_key: ''
-      bank_certificate: ''
-      icon: '/images/payment_methods/seb.png'
 
   messente:
     username: 'messente_user'
@@ -137,10 +127,6 @@ test:
   <<: *default
 
   payment_methods:
-    enabled_methods:
-      - "PaymentOrders::EveryPay"
-      - "PaymentOrders::SEB"
-
     every_pay:
       url: 'https://igw-demo.every-pay.com/transactions/'
       user: 'api_user'
@@ -150,13 +136,6 @@ test:
       linkpay_prefix: 'https://igw-demo.every-pay.com/lp'
       linkpay_check_prefix: 'https://igw-demo.every-pay.com/api/v3/payments/'
       linkpay_token: 'rucd4v'
-
-    seb:
-      url: 'https://www.seb.ee/cgi-bin/dv.sh/ipank.r'
-      seller_account: 'testvpos'
-      seller_private_key: 'test/fixtures/files/seb_seller_key.pem'
-      bank_certificate: 'test/fixtures/files/seb_bank_cert.pem'
-      icon: '/images/payment_methods/seb.png'
 
   messente:
     username: 'messente_user'
