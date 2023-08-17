@@ -1,10 +1,36 @@
-<tr class="auctions-table-row contents" id="<%= dom_id(auction) %>" data-platform="<%= auction.platform %>" data-controller="auction-timezone" data-auction-timezone-end-time-value="<%= auction.ends_at.iso8601 %>">
-    <% english_auction_presenter = EnglishBidsPresenter.new(auction) %>
-    <td class="auction-domain-name monospace">
-        <%= link_to auction_path(auction.uuid), target: '_top' do %>
-            <%= domain_name_with_embedded_colors(auction.domain_name) %>
-        <% end %>
-      </td>
+<tr id="<%= dom_id(auction) %>" data-platform="<%= auction.platform %>" class="contents">
+  
+  <% english_auction_presenter = EnglishBidsPresenter.new(auction) %>
+
+  <td>
+    <%= link_to auction_path(auction.uuid), target: '_top', style: 'color: black; font-weight: bold; text-decoration: none;' do %>
+      <%= domain_name_with_embedded_colors(auction.domain_name) %>
+    <% end %>
+  </td>
+  
+  <td><%= component 'common/auction_type_icon', auction: auction %></td>
+
+  <td>25-01-2023 | 23:59:59</td>
+
+  <td>
+    <% if auction.english? %>
+      <span class="initial-color current_<%= auction.currently_winning_offer&.user_id %>_user"><%= english_auction_presenter.maximum_bids %> €</span>
+    <% else %>
+      <%= auction.users_price %> €
+    <% end %>
+  </td>
+
+  <% if auction.english? %>
+    <td class="initial-color current_<%= auction.currently_winning_offer&.user_id %>_user">
+      <%= english_auction_presenter.bidder_name(auction.currently_winning_offer, user) %>
+    </td>
+  <% else %>
+    <td>
+      <% if auction.users_offer_uuid %>
+        <strong>Sinu pakkumus</strong>
+      <% end %>
+    </td>
+  <% end %>
 
   <td class="u-text-left u-text-center-l">
     <% if auction.english? %>

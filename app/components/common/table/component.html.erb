@@ -1,4 +1,4 @@
-<table class="js-table-dt dataTable no-footer">
+<%= tag.table **@options do %>
   <thead>
     <tr>
       <%= table_header_generator %>
@@ -6,4 +6,4 @@
   </thead>
 
   <%= content %>
-</table>
+<% end %>
