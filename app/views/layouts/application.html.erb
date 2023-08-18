@@ -5,10 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+
+    <% if google_analytics.enabled? %>
+      <!-- Google tag (gtag.js) -->
+      <script src="https://www.googletagmanager.com/gtag/js?id=<%= google_analytics.tracking_id %>" data-turbo-track="reload" async></script>
+    <% end %>
+
     <%= javascript_pack_tag 'application', 'data-turbo-track': 'reload' %>
     <%= stylesheet_pack_tag 'application', "data-turbo-track": 'reload' %>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.slim.js" integrity="sha256-HwWONEZrpuoh951cQD1ov2HUK5zA5DwJ1DNUXaM6FsY=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.slim.js" integrity="sha256-HwWONEZrpuoh951cQD1ov2HUK5zA5DwJ1DNUXaM6FsY=" data-turbo-track="reload" crossorigin="anonymous"></script>
     <style>
       table thead {
           background-color: black !important;
@@ -40,7 +46,8 @@
 
     </style>
   </head>
-  <body data-controller="push-notification"
+  <body data-google-tracking-id="<%= google_analytics.tracking_id %>"
+        data-controller="push-notification"
         data-push-notification-vapid-public-value="<%= Rails.configuration.customization[:vapid_public] %>"
         data-push-notification-user-login-value="<%= user_signed_in? %>">
 
@@ -76,7 +83,6 @@
 
       </main>
       <%= render 'common/footer' %>
-      <%= render 'google_analytics', tracking_id: google_analytics.tracking_id if google_analytics.enabled? %>
 
 
     </div>

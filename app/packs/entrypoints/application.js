@@ -25,6 +25,7 @@ import "./controllers"
 // import "controllers"
 import './stylesheets/application.scss'
 import './stylesheets/transition.css'
+
 // UI modules
 import '../src/semantic/definitions/modules/transition.js';
 import '../src/semantic/definitions/modules/checkbox.js';
@@ -37,7 +38,9 @@ import '../src/semantic/semantic.less';
 // Fonts
 import 'typeface-raleway';
 
-$(document).on('turbolinks:load', function() {
+import '../src/google_analytics.js';
+
+document.addEventListener("turbo:load", function() {
     $('.ui.dropdown').dropdown();
     $('.ui.accordion').accordion();
 
@@ -57,4 +60,5 @@ $(document).on('turbolinks:load', function() {
 });
 
 $(document).ready(function(){
-    $('.ui.accordion').accordion()});
+    $('.ui.accordion').accordion()
+});
