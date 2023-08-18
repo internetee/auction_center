@@ -1,4 +1,4 @@
-document.addEventListener('turbolinks:load', (event) => {
+document.addEventListener('turbo:load', (event) => {
     const googleId = document
         .getElementById('google-tracking-id')
         .getAttribute('data-value');
@@ -12,7 +12,7 @@ document.addEventListener('turbolinks:load', (event) => {
         gtag('config', googleId);
 
         gtag('config', googleId, {
-            'page_location': event.data.url,
+            'page_location': event.detail.url,
             'cookie_prefix': 'AuctionTest',
             'cookie_domain': 'auction.ee',
         });
