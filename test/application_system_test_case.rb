@@ -20,8 +20,6 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
     Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
   end
 
-  Webdrivers::Chromedriver.required_version = '114.0.5735.90'
-
   driven_by :headless_chrome
   Capybara.server = :puma, { Silent: true }
 
