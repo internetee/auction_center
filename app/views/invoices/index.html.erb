@@ -22,6 +22,8 @@
             <!-- 
               These parameters are passed to the Common::Table::Component. These parameters are used to generate headers in the table component. The name "column_name" indicates the name of the column. This is necessary for sorting, so the name of this column should correspond to the name of the column in the database table. If you want to make it so that the data is not sorted by the column, then you should add a nil value. "Caption" is the table header, and "options" are additional parameters that are passed into the tags. 
             -->
+
+            <!-- NB! if you want make columns as sortable, don't forget to wrap the table content within the turbo_frame_tag with the name "results". The name "results" is assigned as a value for the orderable Stimulus controller in the table component. -->
             <% header_collection = [{ column: nil, caption: t('invoices.item'), options: { class: "" } },
                                               { column: nil, caption: t('invoices.due_date'), options: { class: "" } },
                                               { column: nil, caption: t('invoices.total'), options: { class: "" } },

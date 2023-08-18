@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static values = { direction: String, column: String, }
+  static values = { direction: String, column: String, frameName: String }
   static targets = ['th']
   static classes = ['asc', 'desc']
 
@@ -10,7 +10,7 @@ export default class extends Controller {
   }
 
   resortTable(_event) {
-    Turbo.visit('?sort=' + this.columnValue + '&direction=' + this.directionValue, {});
+    Turbo.visit('?sort=' + this.columnValue + '&direction=' + this.directionValue, { frame: this.frameNameValue });
   }
 
   directionValueChanged() {

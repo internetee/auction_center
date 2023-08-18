@@ -17,7 +17,7 @@
                         form__debounce_target: 'form',
                         form__filter_target: 'form',
                         turbo_action: "advance",
-                        turbo_frame: "auction_list",
+                        turbo_frame: "results",
                         action: 'input->form--debounce#search' 
                         } do |f| %>
       <div class="c-table__filters">
@@ -62,7 +62,8 @@
                             { column: nil, caption: 'Pakkumuse omanik', options: {} },
                             { column: nil, caption: 'Pakkumustegevused omanik', options: { class: 'u-text-left u-text-center-l' } }] %>
 
-    <%= turbo_frame_tag "auction_list" do %>
+    <!-- In the Stimulus controller, I use the Turbo class with frame parameters named 'results' for table sorting. This means that rendering the table with the new sort order should occur within the scope of the turbo_frame_tag with the name "results". For it to work correctly, it's necessary to wrap the table content within this turbo_frame_tag with "results" name. The name "results" is assigned as a value for the orderable Stimulus controller in the table component. -->
+    <%= turbo_frame_tag "results" do %>
 
       <!-- Options attributes are used as table attributes -->
       <%= component 'common/table', header_collection:, options: { class: 'js-table-dt dataTable no-footer' } do %>

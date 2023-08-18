@@ -3264,13 +3264,47 @@
   };
   __publicField(autobider_submit_controller_default, "targets", ["form", "price"]);
 
+  // app/javascript/controllers/form/bundle_checkbox_controller.js
+  var bundle_checkbox_controller_default = class extends Controller {
+    collect_ids() {
+      if (this.hasCheckboxesTarget == false)
+        return;
+      const regx = /\d+/;
+      this.hiddenFieldTarget.value = "";
+      this.checkboxesTargets.forEach((el) => {
+        if (el.checked == false)
+          return;
+        const element_id = el.id;
+        this.hiddenFieldTarget.value += ` ${element_id.match(regx)}`;
+      });
+    }
+  };
+  __publicField(bundle_checkbox_controller_default, "targets", ["hiddenField", "checkboxes"]);
+
+  // app/javascript/controllers/form/checkbox_toggle_controller.js
+  var checkbox_toggle_controller_default = class extends Controller {
+    connect() {
+      this.enableDepositTarget.addEventListener("click", (source) => {
+        this.disableDepositTarget.checked = false;
+      });
+      this.disableDepositTarget.addEventListener("click", (source) => {
+        this.enableDepositTarget.checked = false;
+      });
+    }
+  };
+  __publicField(checkbox_toggle_controller_default, "targets", ["enableDeposit", "disableDeposit"]);
+
   // app/javascript/controllers/table/ordeable_controller.js
   var ordeable_controller_default = class extends Controller {
+    connect() {
+      console.log("ordeable_controller connected");
+      console.log(this.frameNameValue);
+    }
     initialize() {
       this.classHandle = this.classHandle.bind(this);
     }
     resortTable(_event) {
-      Turbo.visit("?sort=" + this.columnValue + "&direction=" + this.directionValue, {});
+      Turbo.visit("?sort=" + this.columnValue + "&direction=" + this.directionValue, { frame: this.frameNameValue });
     }
     directionValueChanged() {
       this.classHandle();
@@ -3291,7 +3325,7 @@
       }
     }
   };
-  __publicField(ordeable_controller_default, "values", { direction: String, column: String });
+  __publicField(ordeable_controller_default, "values", { direction: String, column: String, frameName: String });
   __publicField(ordeable_controller_default, "targets", ["th"]);
   __publicField(ordeable_controller_default, "classes", ["asc", "desc"]);
 
@@ -3300,12 +3334,7 @@
     initialize() {
       this.showTab = this.showTab.bind(this);
     }
-    connect() {
-      console.log("Tab controller connected");
-    }
     showTab(event) {
-      console.log(event.params);
-      console.log(event.params.index);
       const index = event.params.index;
       this.tabTargets.forEach((tab) => {
         tab.classList.remove(this.activeClass);
@@ -3439,6 +3468,8 @@
   application.register("form--debounce", debounce_controller_default);
   application.register("form--filter", filter_controller_default);
   application.register("form--autobider-submit", autobider_submit_controller_default);
+  application.register("form--bundle-checkbox", bundle_checkbox_controller_default);
+  application.register("form--checkbox-toggle", checkbox_toggle_controller_default);
   application.register("table--ordeable", ordeable_controller_default);
   application.register("table--tab", tab_controller_default);
   application.register("autotax-counter", autotax_counter_controller_default);

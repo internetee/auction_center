@@ -56,6 +56,8 @@ module Admin
       end
     end
 
+    # rubocop:disable Metrics/AbcSize
+    # rubocop:disable Metrics/MethodLength
     def bulk_starts_at
       results = AdminBulkActionService.apply_for_english_auction(auction_elements: params[:auction_elements])
       skipped_auctions = results[0]
@@ -89,12 +91,10 @@ module Admin
     def validate_enable_and_disable_option_in_same_action
       auction_elements = params[:auction_elements]
 
-      if auction_elements[:enable_deposit] == 'true' &&
-         auction_elements[:disable_deposit] == 'true'
+      return unless auction_elements[:enable_deposit] == 'true' && auction_elements[:disable_deposit] == 'true'
 
-        flash[:alert] = 'it cannot be enable and disable deposit in same action'
-        redirect_to admin_auctions_path and return
-      end
+      flash[:alert] = 'it cannot be enable and disable deposit in same action'
+      redirect_to admin_auctions_path and return
     end
 
     def create_params

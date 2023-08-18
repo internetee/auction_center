@@ -31,21 +31,7 @@
                 <span class="o-arrow js-submenu-toggle"></span>
                 
                 <ul class="submenu">
-                  <li>
-                    <%= link_to 'OKSJONID', root_path %>
-                  </li>
-                  <li>
-                    <a href="#">KASUTAJA KONTO</a>
-                  </li>
-                  <li>
-                    <%= link_to 'MINU ARVED', invoices_path %>
-                  </li>
-                  <li>
-                    <%= link_to 'MINU PAKKUMISED', offers_path %>
-                  </li>
-                  <li>
-                    <a href="#">Minu SOOVIDE NIMEKIRI</a>
-                  </li>
+                  <%= regular_menu_list %>
                   <li class="c-toolbar__search js-search-toolbar">
                     <%= link_to notifications_path, class: 'c-toolbar__notice' do %>
                       <svg width="12" height="16" viewBox="0 0 12 16" fill="white"
