@@ -25,6 +25,7 @@ module Common
                                 action: "click->#{stimulus_controller_name_dirty}#resortTable",
                                 "#{stimulus_controller_name_dirty}-direction-value": next_direction(column),
                                 "#{stimulus_controller_name_dirty}-column-value": column,
+                                "#{stimulus_controller_name_dirty}-frame-name-value": frame_name,
                                 "#{stimulus_controller_name_dirty}-asc-class": sorting_asc_class,
                                 "#{stimulus_controller_name_dirty}-desc-class": sorting_desc_class,
                                 "#{stimulus_controller_name_dirty}-target": target_element_name }
@@ -44,6 +45,10 @@ module Common
 
       def target_element_name
         'th'
+      end
+
+      def frame_name
+        'results'
       end
 
       def currently_sorted?(column)

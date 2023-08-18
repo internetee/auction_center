@@ -7,6 +7,11 @@ class AdminBulkActionService
 
   def self.apply_for_english_auction(auction_elements:)
     admin_handler = new(auction_elements: auction_elements)
+
+    puts '---- DD --- CC --- SS'
+    puts auction_elements
+    puts '--- DD -- ZZ -- ERE -'
+
     admin_handler.apply_english_auction
   end
 

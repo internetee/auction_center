@@ -16,6 +16,12 @@ application.register("form--filter", Form__FilterController);
 import Form__AutobiderSubmitController from "./form/autobider_submit_controller";
 application.register("form--autobider-submit", Form__AutobiderSubmitController);
 
+import Form__BundleCheckboxController from "./form/bundle_checkbox_controller";
+application.register("form--bundle-checkbox", Form__BundleCheckboxController);
+
+import Form__CheckboxToggleController from "./form/checkbox_toggle_controller";
+application.register("form--checkbox-toggle", Form__CheckboxToggleController);
+
 import Table__OrdeableController from "./table/ordeable_controller";
 application.register("table--ordeable", Table__OrdeableController);
 
