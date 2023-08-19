@@ -37,7 +37,7 @@ import '../src/semantic/semantic.less';
 // Fonts
 import 'typeface-raleway';
 
-$(document).on('turbo:load', function() {
+$(document).on('turbolinks:load', function() {
     $('.ui.dropdown').dropdown();
     $('.ui.accordion').accordion();
 
