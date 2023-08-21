@@ -1,3 +1,6 @@
+21.08.2023
+* Fix for GA4 (Google Analytics) https://github.com/internetee/auction_center/pull/1114
+
 17.08.2023
 * Payment order configuration refactoring https://github.com/internetee/auction_center/pull/1107
 
