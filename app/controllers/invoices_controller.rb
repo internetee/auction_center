@@ -28,6 +28,8 @@ class InvoicesController < ApplicationController
     @cancelled_payable_invoices = invoices_list_by_status(Invoice.statuses[:cancelled]).with_ban
     @cancelled_expired_invoices = invoices_list_by_status(Invoice.statuses[:cancelled]).without_ban
 
+    @unpaid_invoices_count = @issued_invoices.count + @cancelled_payable_invoices.count + @cancelled_expired_invoices.count
+
     @paid_invoices = invoices_list_by_status(Invoice.statuses[:paid])
     @deposit_paid = current_user.domain_participate_auctions.order(created_at: :desc)
 

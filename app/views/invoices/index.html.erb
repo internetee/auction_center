@@ -1,6 +1,7 @@
 <%= component 'common/hero', title: 'Minu arved' %>
 <!-- Table -->
 <div class="o-container">
+  
   <div class="c-block" data-controller='table--tab' data-table--tab-active-class='is-active'>
     <h2 class="c-block__title u-flex u-content-sp u-flex-gap-12 u-h3">Tasumata arved</h2>
     <div class="c-tabs">
@@ -14,7 +15,13 @@
         <button class="c-tabs__nav__btn js-tab-btn" data-table--tab-target='tab' data-action="click->table--tab#showTab" data-table--tab-index-param='2'>
           Cancelled expired invoices <sup>(<%= @cancelled_expired_invoices.count %>)</sup>
         </button>
-        <a href="#" class="c-tabs__nav__btn--ind">Tasu kõik <span class="u-hidden-m">maksmata arved</span> <sup>(5)</sup></a>
+
+        <%= tag.div class: 'c-tabs__nav__btn--ind' do %>
+          <%= button_to pay_all_bills_invoices_path, method: :post, style: 'background-color: inherit; color: inherit; text-decoration: none; border: none; box-shadow: none;' do %>
+            Tasu kõik <span class="u-hidden-m">maksmata arved</span> <sup>(<%= @unpaid_invoices_count %>)</sup>
+          <% end %>
+        <% end if @unpaid_invoices_count.positive?%>
+
       </div>
       <div class="c-tabs__content">
         <div class="c-tabs__content__tab is-active" data-table--tab-target='content'>
@@ -95,8 +102,15 @@
         <button class="c-tabs__nav__btn js-tab-btn" data-table--tab-target='tab' data-action="click->table--tab#showTab" data-table--tab-index-param='1'>
           Deposit paid <sup>(<%= @deposit_paid.count %>)</sup>
         </button>
-        <a href="#" class="c-tabs__nav__btn--ind">Tasu kõik <span class="u-hidden-m">maksmata arved</span> <sup>(5)</sup></a>
+
+        <%= tag.div class: 'c-tabs__nav__btn--ind' do %>
+          <%= button_to pay_all_bills_invoices_path, method: :post, style: 'background-color: inherit; color: inherit; text-decoration: none; border: none; box-shadow: none;' do %>
+            Tasu kõik <span class="u-hidden-m">maksmata arved</span> <sup>(<%= @unpaid_invoices_count %>)</sup>
+          <% end %>
+        <% end if @unpaid_invoices_count.positive?%>
+
       </div>
+
       <div class="c-tabs__content">
         <div class="c-tabs__content__tab is-active" data-table--tab-target='content'>
           <div class="c-table--responsive">
@@ -117,7 +131,8 @@
             <% end %>
           </div>
         </div>
-        <div class="c-tabs__content__tab is-active" data-table--tab-target='content'>
+
+        <div class="c-tabs__content__tab" data-table--tab-target='content'>
           <div class="c-table--responsive">
             <% header_collection = [{ column: nil, caption: t('invoices.paid_deposit.date'), options: { class: "" } },
                                               { column: nil, caption: t('invoices.paid_deposit.sum'), options: { class: "" } },
@@ -140,10 +155,12 @@
             <% end %>
           </div>
         </div>
+
       </div>
     </div>
   </div>
 </div>
+
 <!-- Table -->
 <div class="u-text-center">
   <a href="#" class="c-btn c-btn--ghost">Näita kõiki</a>
