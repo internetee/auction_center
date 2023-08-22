@@ -21,23 +21,29 @@
                         action: 'input->form--debounce#search' 
                         } do |f| %>
       <div class="c-table__filters">
-        <div class="c-table__filters__btns" data-controller="">
+        <div class="c-table__filters__btns" style='position: relative'>
           <%= f.radio_button :type, 'all', class: "js-table-filter-btn", checked: true, style: 'visibility: hidden; position: absolute;', id: 'filter_all_button', data: { form__filter_target: 'button' } %>
+          
           <%= f.label :type_all, "kõik", class: "c-table__filters__btn is-active js-table-filter-btn", style: 'cursor: pointer;', for: 'filter_all_button', data: { form__filter_target: 'label', action: "click->form--filter#click" } %>
+          
           <%= f.radio_button :type, 'english', class: "js-table-filter-btn", style: 'visibility: hidden; position: absolute;', id: 'filter_IO_button', data: { form__filter_target: 'button' } %>
+          
           <%= f.label :type_english, class: "c-table__filters__btn js-table-filter-btn", style: 'cursor: pointer;', for: 'filter_IO_button', data: { form__filter_target: 'label', action: "click->form--filter#click" } do %>
-            <span class="o-io-icon"></span>
-            <span class="u-hidden-m"> inglise oksjon</span>
+            <span class="o-io-icon"></span><span class="u-hidden-m"> inglise oksjon</span>
           <% end %>
+          
           <%= f.radio_button :type, 'blind', class: "js-table-filter-btn", style: 'visibility: hidden; position: absolute;', id: 'filter_PO_button', data: { form__filter_target: 'button' } %>
+
           <%= f.label :type_blind, class: "c-table__filters__btn js-table-filter-btn", style: 'cursor: pointer;', for: 'filter_PO_button', data: { form__filter_target: 'label', action: "click->form--filter#click" } do %>
             <span class="o-po-icon"></span>
             <span class="u-hidden-m"> pime oksjon</span>
           <% end %>
         </div>
+
         <div class="c-table__filters__search">
           <%= f.search_field :domain_name, value: params[:domain_name], placeholder: t('search_by_domain_name'), class: 'c-table__search__input js-table-search-dt' %>
         </div>
+        
         <div class="c-table__filters__more">
           <a href="#" class="c-btn c-btn--ghost">Telli teavitused</a>
         </div>
@@ -49,6 +55,7 @@
             pime oksjon
           </div>
         </div>
+
       </div>
     <% end %>
 

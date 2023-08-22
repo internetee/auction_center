@@ -33,44 +33,48 @@
   <% end %>
 
   <td class="u-text-left u-text-center-l">
-    <% if auction.english? %>
+    <% if user_signed_in? %>      
+      <% if auction.english? %>
 
-      <% if auction.users_offer_uuid %>
-        <div class="c-btn-group c-btn-group--ghost">
-          <%= link_to edit_english_offer_path(auction.users_offer_uuid), class: "c-btn c-btn--ghost c-btn--icon", title: "Edit", data: { turbo_frame: 'modal' } do %>
-             <span class="o-edit-icon"></span>
-          <% end %>
-        </div>
-      <% else %>
-        <% if auction.allow_to_set_bid?(user) %>
-          <%= link_to 'Esita pakkumus', new_auction_english_offer_path(auction_uuid: auction.uuid), class: "c-btn c-btn--green js-modal-toggle", data: { turbo_frame: 'modal' } %>
+        <% if auction.users_offer_uuid %>
+          <div class="c-btn-group c-btn-group--ghost">
+            <%= link_to edit_english_offer_path(auction.users_offer_uuid), class: "c-btn c-btn--ghost c-btn--icon", title: "Edit", data: { turbo_frame: 'modal' } do %>
+              <span class="o-edit-icon"></span>
+            <% end %>
+          </div>
         <% else %>
-          <%= link_to 'Deposit', new_auction_english_offer_path(auction_uuid: auction.uuid), class: "c-btn c-btn--orange js-modal-toggle", data: { turbo_frame: 'modal' } %>
+          <% if auction.allow_to_set_bid?(user) %>
+            <%= link_to 'Esita pakkumus', new_auction_english_offer_path(auction_uuid: auction.uuid), class: "c-btn c-btn--green js-modal-toggle", data: { turbo_frame: 'modal' } %>
+          <% else %>
+            <%= link_to 'Deposit', new_auction_english_offer_path(auction_uuid: auction.uuid), class: "c-btn c-btn--orange js-modal-toggle", data: { turbo_frame: 'modal' } %>
+          <% end %>
         <% end %>
-      <% end %>
 
-    <% else %>
-
-      <% if auction.users_offer_uuid %>
-        <div class="c-btn-group c-btn-group--ghost">
-          <%= link_to edit_offer_path(auction.users_offer_uuid), class: "c-btn c-btn--ghost c-btn--icon", title: "Edit", data: { turbo_frame: 'modal' } do %>
-            <span class="o-edit-icon"></span>
-          <% end %>
-
-          <%= button_to offer_path(auction.offer_from_user(user).uuid), method: :delete, form: { data: { turbo_confirm: t(".confirm_delete") } }, class: "c-btn c-btn--ghost c-btn--icon" do %>
-            <span class="o-delete-icon"></span>
-          <% end %>
-
-            <%# <button class="c-btn c-btn--ghost c-btn--icon js-edit-modal-toggle" title="Edit"><span %>
-                    <%# class="o-edit-icon"></span></button> %>
-            <%# <button class="c-btn c-btn--ghost c-btn--icon js-modal-delete-toggle" title="Delete"><span %>
-                    <%# class="o-delete-icon"></span></button> %>
-        </div>
       <% else %>
-        <%= link_to 'Esita pakkumus', new_auction_offer_path(auction_uuid: auction.uuid), class: "c-btn c-btn--green js-modal-toggle-po", data: { turbo_frame: 'modal' } %>
-        <%# <td class="u-text-left u-text-center-l"><a href="#" class="c-btn c-btn--green">Esita pakkumus</a></td> %>
-      <% end %>
 
+        <% if auction.users_offer_uuid %>
+          <div class="c-btn-group c-btn-group--ghost">
+            <%= link_to edit_offer_path(auction.users_offer_uuid), class: "c-btn c-btn--ghost c-btn--icon", title: "Edit", data: { turbo_frame: 'modal' } do %>
+              <span class="o-edit-icon"></span>
+            <% end %>
+
+            <%= button_to offer_path(auction.offer_from_user(user).uuid), method: :delete, form: { data: { turbo_confirm: t(".confirm_delete") } }, class: "c-btn c-btn--ghost c-btn--icon" do %>
+              <span class="o-delete-icon"></span>
+            <% end %>
+
+              <%# <button class="c-btn c-btn--ghost c-btn--icon js-edit-modal-toggle" title="Edit"><span %>
+                      <%# class="o-edit-icon"></span></button> %>
+              <%# <button class="c-btn c-btn--ghost c-btn--icon js-modal-delete-toggle" title="Delete"><span %>
+                      <%# class="o-delete-icon"></span></button> %>
+          </div>
+        <% else %>
+          <%= link_to 'Esita pakkumus', new_auction_offer_path(auction_uuid: auction.uuid), class: "c-btn c-btn--green js-modal-toggle-po", data: { turbo_frame: 'modal' } %>
+          <%# <td class="u-text-left u-text-center-l"><a href="#" class="c-btn c-btn--green">Esita pakkumus</a></td> %>
+        <% end %>
+
+      <% end %>
+    <% else %>
+      <%= link_to 'Esita pakkumus', new_user_session_path, class: "c-btn c-btn--green js-modal-toggle-po", target: '_top' %>
     <% end %>
   </td>
 </tr>
