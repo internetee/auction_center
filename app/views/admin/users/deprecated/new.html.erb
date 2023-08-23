@@ -1,0 +1,27 @@
+<% content_for :hero do %>
+    <div class="hero orange">
+        <h1><%= t('.title') %></h1>
+    </div>
+<% end %>
+
+<div class="u-container">
+    <div class="margin-block">
+        <div class="col-12">
+            <h1 class="mb-3 mt-4"><%= t('.title')%></h1>
+            <% if @user.errors.any? %>
+                <h3 id="error-explanation">
+                    <%= t(:errors_name) %>
+                </h3>
+                <ul id="errors">
+                    <% @user.errors.full_messages.each do |message| %>
+                        <li><%= message %></li>
+                    <% end %>
+                </ul>
+            <% end %>
+        </div>
+
+        <%= render 'form', user: @user, url: admin_users_path %>
+    </div>
+</div>
+
+<%= javascript_include_tag 'users', 'data-turbolinks-track': 'reload' %>

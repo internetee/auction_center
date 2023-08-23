@@ -3296,15 +3296,11 @@
 
   // app/javascript/controllers/table/ordeable_controller.js
   var ordeable_controller_default = class extends Controller {
-    connect() {
-      console.log("ordeable_controller connected");
-      console.log(this.frameNameValue);
-    }
     initialize() {
       this.classHandle = this.classHandle.bind(this);
     }
     resortTable(_event) {
-      Turbo.visit("?sort=" + this.columnValue + "&direction=" + this.directionValue, { frame: this.frameNameValue });
+      Turbo.visit("?sort_by=" + this.columnValue + "&sort_direction=" + this.directionValue, { frame: this.frameNameValue });
     }
     directionValueChanged() {
       this.classHandle();

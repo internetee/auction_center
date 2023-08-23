@@ -22,7 +22,7 @@ class InvoicesController < ApplicationController
   # GET /invoices/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
   def show; end
 
-  # GET /invoices
+  # rubocop:disable Metrics/AbcSize
   def index
     @issued_invoices = invoices_list_by_status(Invoice.statuses[:issued])
     @cancelled_payable_invoices = invoices_list_by_status(Invoice.statuses[:cancelled]).with_ban

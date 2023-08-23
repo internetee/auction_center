@@ -52,13 +52,13 @@ module Common
       end
 
       def currently_sorted?(column)
-        params[:sort] == column.to_s
+        params[:sort_by] == column.to_s
       end
 
       def next_direction(column)
         return unless currently_sorted?(column)
 
-        params[:direction] == 'asc' ? 'desc' : 'asc'
+        params[:sort_direction] == 'asc' ? 'desc' : 'asc'
       end
     end
   end

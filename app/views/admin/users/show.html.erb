@@ -1,117 +1,92 @@
-<% content_for :hero do %>
-    <div class="hero orange">
-        <h1><%= @user.display_name %></h1>
-        <%= t('.title') %>
-    </div>
-<% end %>
+<%= component 'common/hero', title: "#{t('.title')}: #{@user.display_name}" %>
+<div class="o-container">
+  <div class="c-table c-table--sortable">
 
-<div class="u-container">
-    <div class="margin-block">
-        <div class="content">
-            <h2><%= @user.display_name %></h2>
-            <div class="body">
-                <table class="ui table very basic padded">
-                    <tbody>
-                        <tr>
-                            <td><strong><%= t('users.email') %></strong></td>
-                            <td><%= (@user.email) %></td>
-                        </tr>
+    <h2><%= t('.information') %></h2>
+    <%= component 'common/table', header_collection: [], options: { class: 'js-table-dt dataTable no-footer' } do %>
+      <%= tag.tbody class: 'contents' do %>
+        <tr>
+          <td><strong><%= t('users.email') %></strong></td>
+          <td><%= (@user.email) %></td>
+        </tr>
+        <tr>
+          <td><strong><%= t('users.mobile_phone') %></strong></td>
+          <td>
+            <% if @user.phone_number_confirmed? && @phone_confirmation_toggle %>
+              <i class="ui icon check circle outline"></i>
+            <% end %>
+            <%= (@user.mobile_phone) %>
+          </td>
+        </tr>
+        <tr>
+          <td><strong><%= t('users.roles') %></strong></td>
+          <td><%= @user.roles.join(', ') %></td>
+        </tr>
+        <tr>
+          <td><strong><%= t('users.country_code') %></strong></td>
+          <td>
+            <i class="flag <%= @user.country_code.downcase %>"></i>
+            <%= (@user.country_code) %>
+          </td>
+        </tr>
+        <tr>
+          <td><strong><%= t('users.identity_code') %></strong></td>
+          <td><%= (@user.identity_code) %></td>
+        </tr>
+        <tr>
+          <td><strong><%= t('users.terms_and_conditions_accepted_at') %></strong></td>
+          <td>
+            <%- if @user.terms_and_conditions_accepted_at %>
+              <%= I18n.l(@user.terms_and_conditions_accepted_at) %>
+            <% else %>
+              <%= t(:not_accepted) %>
+            <% end %>
+          </td>
+        </tr>
+        <tr>
+          <td><strong><%= t('created_at') %></strong></td>
+          <td><%= I18n.l(@user.created_at) %></td>
+        </tr>
+        <tr>
+          <td><strong><%= t('.daily_summary') %></strong></td>
+          <td><%= @user.daily_summary? ? t('yes') : t('no')%></td>
+        </tr>
+      <% end %>
+    <% end %>
 
-                        <tr>
-                            <td><strong><%= t('users.mobile_phone') %></strong></td>
-                            <td>
-                                <% if @user.phone_number_confirmed? && @phone_confirmation_toggle %>
-                                    <i class="ui icon check circle outline"></i>
-                                <% end %>
-                                <%= (@user.mobile_phone) %>
-                            </td>
-                        </tr>
+      <% header_collection = [{column: nil, caption: t('billing_profiles.name'), options: {}},
+                              { column: 'domain_name', caption: t('billing_profiles.vat_code'), options: { class: "sorting" } },
+                              { column: 'ends_at', caption: t('billing_profiles.address'), options: { class: "sorting" } }] %>
 
-                        <tr>
-                            <td><strong><%= t('users.roles') %></strong></td>
-                            <td><%= @user.roles.join(', ') %></td>
-                        </tr>
+      <h2><%= t(:billing_profiles_name) %></h2>
 
-                        <tr>
-                            <td><strong><%= t('users.country_code') %></strong></td>
-                            <td>
-                                <i class="flag <%= @user.country_code.downcase %>"></i>
-                                <%= (@user.country_code) %>
-                            </td>
-                        </tr>
+      <%= component 'common/table', header_collection: header_collection, options: { class: 'js-table-dt dataTable no-footer' } do %>
+        <%= tag.tbody class: 'contents' do %>
+          <% @user.billing_profiles.each do |billing_profile| %>
+              <tr class="billing-profiles-table-row">
+                  <td class="billing-profile-name"><%= link_to billing_profile.name, admin_billing_profile_path(billing_profile) %></td>
+                  <td><%= billing_profile.vat_code %></td>
+                  <td><%= billing_profile.address %></td>
+              </tr>
+          <% end %>
+        <% end %>
+      <% end %>
 
-                        <tr>
-                            <td><strong><%= t('users.identity_code') %></strong></td>
-                            <td><%= (@user.identity_code) %></td>
-                        </tr>
-
-                        <tr>
-                            <td><strong><%= t('users.terms_and_conditions_accepted_at') %></strong></td>
-                            <td>
-                                <%- if @user.terms_and_conditions_accepted_at %>
-                                    <%= I18n.l(@user.terms_and_conditions_accepted_at) %>
-                                <% else %>
-                                    <%= t(:not_accepted) %>
-                                <% end %>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td><strong><%= t('created_at') %></strong></td>
-                            <td><%= I18n.l(@user.created_at) %></td>
-                        </tr>
-                        <tr>
-                            <td><strong><%= t('.daily_summary') %></strong></td>
-                            <td><%= @user.daily_summary? ? t('yes') : t('no')%></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="margin-block">
-                <h2><%= t(:billing_profiles_name) %></h2>
-                <table class="ui table fixed" id="billing-profiles-table">
-                    <thead>
-                        <tr>
-                            <th scope="col"><%= t('billing_profiles.name') %></th>
-                            <th scope="col"><%= t('billing_profiles.vat_code') %></th>
-                            <th scope="col"><%= t('billing_profiles.address') %></th>
-                        </tr>
-                    </thead>
-
-                    <tbody id="billing-profiles-table-body">
-                        <% @user.billing_profiles.each do |billing_profile| %>
-                            <tr class="billing-profiles-table-row">
-                                <td class="billing-profile-name">
-                                    <%= link_to billing_profile.name, admin_billing_profile_path(billing_profile) %>
-                                </td>
-                                <td><%= billing_profile.vat_code %></td>
-                                <td><%= billing_profile.address %></td>
-                            </tr>
-                        <% end %>
-                    </tbody>
-                </table>
-            </div>
-
-            <h3><%= t('.ban_this_user') %>
-                <%= form_with(model: @ban, local: true, url: admin_bans_path, class: "ui form big") do |f| %>
-                    <div class="field">
-                        <%= f.hidden_field :user_id, value: @ban.user_id %>
-                        <%= f.label :valid_until, t('bans.valid_until') %>
-                        <%= f.date_field :valid_until %>
-                    </div>
-
-                    <%= f.submit t(:submit), class: "ui button primary", data: { turbo: false } %>
-                <% end %>
-
-                <div class="buttons">
-                    <%= link_to t(:edit), edit_admin_user_path(@user), class: "ui button primary" %>
-                    <%= link_to t(:delete), admin_user_path(@user),
-                    method: :delete, data: { confirm: t(:are_you_sure) } ,
-                    class: "ui button secondary", target: '_top' %>
-
-                    <%= link_to t(:versions_name), admin_user_versions_path(@user), class: "ui button primary" %>
-                </div>
+      <h2><%= t('.ban_this_user') %></h2>
+      <%= form_with(model: @ban, local: true, url: admin_bans_path, class: "ui form big") do |f| %>
+        <div class="c-table__filters">
+            <%= f.hidden_field :user_id, value: @ban.user_id %>
+            <%= f.label :valid_until, t('bans.valid_until') %>
+            <%= f.date_field :valid_until %>
         </div>
+
+        <%= f.submit t(:submit), class: "c-btn c-btn--blue", data: { turbo: false } %>
+    <% end %>
+
+    <div class="buttons">
+      <%= link_to t(:edit), edit_admin_user_path(@user), class: "ui button primary" %>
+      <%= link_to t(:delete), admin_user_path(@user), method: :delete, data: { confirm: t(:are_you_sure) }, class: "ui button secondary", target: '_top' %>
+      <%= link_to t(:versions_name), admin_user_versions_path(@user), class: "ui button primary" %>
     </div>
+  </div>
 </div>
