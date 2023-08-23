@@ -1,22 +1,18 @@
 <%= component 'common/hero', title: 'Teavitused' %>
 <!-- Unreaded Notifications -->
 <div class="o-container">
+  <div style='display: flex; justify-content: end;'>
+    <%= button_to 'Read all', mark_as_read_notifications_path, class: 'c-btn c-btn--orange'  %>
+  </div>
+
   <h2>Lugemata teavitused <sup>(<%= @unread_notifications.count %>)</sup></h2>
   <div class="c-notifications">
     <% @unread_notifications.each do |notification| %>
+
       <article class="c-notification">
         <header class="c-notification__header">
           <div class="c-notification__heading">
-            <%- if notification.type == 'AuctionWinnerNotification' %>
-              <span class="o-trophy-icon"></span>
-              <h5 class="c-notification__header__title">Oled võitnud! <span class="o-new"></span></h5>
-            <%- elsif notification.type == 'OfferNotification'  %>
-              <span class="o-hammer-icon"></span>
-              <h5 class="c-notification__header__title">OfferNotification <span class="o-new"></span></h5>
-            <%- elsif notification.type == 'AuctionLooserNotification' %>
-              <span class="o-hammer-icon"></span>
-              <h5 class="c-notification__header__title">You losed! <span class="o-new"></span></h5>
-          <%- end %>
+            <%= component 'common/notifications/icon', notification: notification, readed: false %>
           </div>
           <div class="c-notification__header__date"><%= I18n.t('.notification_received', datetime: I18n.l(notification.created_at)) %></div>
         </header>
@@ -24,7 +20,7 @@
           <%= notification.to_notification.message %>
         </main>
       </article>
-    <% end %>
+    <% end if @unread_notifications.present? %>
   </div>
 <!-- Notifications -->
 
@@ -35,16 +31,7 @@
       <article class="c-notification c-notification--read">
         <header class="c-notification__header">
 
-          <%- if notification.type == 'AuctionWinnerNotification' %>
-            <span class="c-notification__header__icon o-trophy-icon"></span>
-            <h5 class="c-notification__header__title">Oled võitnud! <span class="o-new"></span></h5>
-          <%- elsif notification.type == 'OfferNotification'  %>
-            <span class="c-notification__header__icon o-hammer-icon"></span>
-            <h5 class="c-notification__header__title">OfferNotification <span class="o-new"></span></h5>
-          <%- elsif notification.type == 'AuctionLooserNotification' %>
-            <span class="c-notification__header__icon o-hammer-icon"></span>
-            <h5 class="c-notification__header__title">You losed! <span class="o-new"></span></h5>
-          <%- end %>
+            <%= component 'common/notifications/icon', notification: notification, readed: true %>
 
           <div class="c-notification__header__date"><%= I18n.t('.notification_received', datetime: I18n.l(notification.created_at)) %></div>
         </header>

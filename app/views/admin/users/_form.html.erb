@@ -1,99 +1,76 @@
-<%= form_with(model: user, url: url, local: true, id: 'user_form', class: 'ui form big') do |f| %>
-    <div class="ui two column doubling stackable grid">
-        <div class="column">
-            <h3 class="p3"><%= t('.contact_data') %></h3>
-
-            <div class="field">
-                <%= f.label :email, t('users.email') %>
-                <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-                <% if user.pending_reconfirmation? %>
-                    <div><%= t('users.form.currently_pending_confirmation',
+<%= form_with model: user, url: url, id: 'user_form' do |f| %>
+  <div class="c-block">
+    <div class="o-grid o-grid--two-col">
+      <div>
+        <h3 class="p3"><%= t('.contact_data') %></h3>
+        <%= f.label :email, t('users.email') %>
+        <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+        <% if user.pending_reconfirmation? %>
+          <div><%= t('users.form.currently_pending_confirmation',
                                email: user.unconfirmed_email) %></div>
-                <% end %>
-            </div>
-            <div class="field">
-                <%= f.label :mobile_phone, t('users.mobile_phone') %>
-                <%= f.telephone_field :mobile_phone, autofocus: true, autocomplete: "off",
+        <% end %>
+        <%= f.label :mobile_phone, t('users.mobile_phone') %>
+        <%= f.telephone_field :mobile_phone, autofocus: true, autocomplete: "off",
                                       placeholder: "+372xxxxxxxx" %>
-            </div>
-            <div class="field">
-                <%= f.label :given_names, t('users.given_names') %>
-                <%= f.text_field :given_names, autofocus: true, autocomplete: "off" %>
-            </div>
-            <div class="field">
-                <%= f.label :surname, t('users.surname') %>
-                <%= f.text_field :surname, autofocus: true, autocomplete: "off" %>
-            </div>
-        </div>
-
-        <div class="column">
-            <h3 class="p3"><%= t('.personal_data') %></h3>
-            <div class="field">
-                <%= f.label :country, t('users.country') %>
-                <%= f.select :country_code,
+        <%= f.label :given_names, t('users.given_names') %>
+        <%= f.text_field :given_names, autofocus: true, autocomplete: "off" %>
+        <%= f.label :surname, t('users.surname') %>
+        <%= f.text_field :surname, autofocus: true, autocomplete: "off" %>
+      </div>
+      <div>
+        <h3 class="p3"><%= t('.personal_data') %></h3>
+        <%= f.label :country, t('users.country') %>
+        <%= f.select :country_code,
                 options_for_select(
                     Countries.for_selection,
                     user.country_code || Setting.find_by(code: 'default_country').retrieve
                 ),
-                {},
-                disabled: user.signed_in_with_identity_document? %>
-            </div>
-
-            <div class="field">
-                <div class="ui checkbox">
-                    <%= f.check_box :accepts_terms_and_conditions, { value: user.accepts_terms_and_conditions }, "true", "false" %>
-                    <%= f.label :accepts_terms_and_conditions do %>
-                        <%= t('users.i_accept_terms_and_conditions_html',
+                { readonly: user.signed_in_with_identity_document? },
+                class: "ui dropdown" %>
+        <%= f.check_box :accepts_terms_and_conditions, { value: user.accepts_terms_and_conditions }, "true", "false" %>
+        <%= f.label :accepts_terms_and_conditions do %>
+          <%= t('users.i_accept_terms_and_conditions_html',
                               link: link_to(t('users.terms_and_conditions_link'), Setting.find_by(code: 'terms_and_conditions_link').retrieve)) %>
-                    <% end %>
-                </div>
-            </div>
-            <h3 class="p3"><%= t('.daily_summary') %></h3>
-            <div class="field">
-                <div class="ui checkbox">
-                    <%= f.check_box :daily_summary %>
-                    <%= f.label :daily_summary %>
-                </div>
-            </div>
-            <h3 class="p3"><%= t('.roles') %></h3>
-            <%- User::ROLES.each do |role| %>
-                <div class="field">
-                    <div class="ui checkbox">
-                        <%= f.check_box :roles, { multiple: true }, role, nil %>
-                        <%= f.label role %>
-                    </div>
-                </div>
-            <% end %>
-        </div>
-
-        <%- unless user.persisted? %>
-            <div class="column">
-                <h3 class="p3"><%= t('.new_password') %></h3>
-                <div class="field">
-                    <%= f.label :password, t('users.password') %>
-                    <%= f.password_field :password, autocomplete: "new-password" %>
-                    <% if user.persisted? %>
-                        <br><em><%= t('.you_can_leave_blank') %></em><br>
-                    <% end %>
-                    <% if @minimum_password_length %>
-                        <em><%= t('.password_requirements', minimum: @minimum_password_length) %></em>
-                    <% end %><br />
-                    <br />
-                </div>
-                <div class="field">
-                    <%= f.label :password_confirmation, t('users.password_confirmation') %>
-                    <%= f.password_field :password_confirmation, autocomplete: "off", class: "form-control" %>
-                </div>
-            </div>
         <% end %>
-
-        <div class="column sixteen wide">
-            <% if user.persisted? %>
-                <%= f.submit t(:update), class: "ui button big primary", id: "user_form_commit", data: { turbo: false } %>
-                <%= link_to t(:back), :back, class: "ui button big secondary" %>
-            <% else %>
-                <%= f.submit t(:submit), class: "ui button big primary", id: "user_form_commit", data: { turbo: false } %>
-            <% end %>
-        </div>
+        <%= f.check_box :daily_summary %>
+        <%= f.label :daily_summary %>
+        <h3 class="p3"><%= t('.roles') %></h3>
+        <%- User::ROLES.each do |role| %>
+          <div class="field">
+            <div class="ui checkbox">
+              <%= f.check_box :roles, { multiple: true }, role, nil %>
+              <%= f.label role %>
+            </div>
+          </div>
+        <% end %>
+        <%- unless user.persisted? %>
+          <div class="column">
+            <h3 class="p3"><%= t('.new_password') %></h3>
+            <div class="field">
+              <%= f.label :password, t('users.password') %>
+              <%= f.password_field :password, autocomplete: "new-password" %>
+              <% if user.persisted? %>
+                <br>
+                <em><%= t('.you_can_leave_blank') %></em><br>
+              <% end %>
+              <% if @minimum_password_length %>
+                <em><%= t('.password_requirements', minimum: @minimum_password_length) %></em>
+              <% end %><br />
+              <br />
+            </div>
+            <div class="field">
+              <%= f.label :password_confirmation, t('users.password_confirmation') %>
+              <%= f.password_field :password_confirmation, autocomplete: "off", class: "form-control" %>
+            </div>
+          </div>
+        <% end %>
+      </div>
     </div>
+  </div>
+  <% if user.persisted? %>
+    <%= f.submit t(:update), class: "ui button big primary", id: "user_form_commit", data: { turbo: false } %>
+    <%= link_to t(:back), :back, class: "ui button big secondary" %>
+  <% else %>
+    <%= f.submit t(:submit), class: "ui button big primary", id: "user_form_commit", data: { turbo: false } %>
+  <% end %>
 <% end %>

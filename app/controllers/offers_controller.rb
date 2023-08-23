@@ -46,11 +46,7 @@ class OffersController < ApplicationController
 
   # GET /offers
   def index
-    offers = Offer.includes(:auction)
-                  .includes(:result)
-                  .where(user_id: current_user)
-                  .order('auctions.ends_at DESC')
-
+    offers = current_user.offers.search(params)
     @pagy, @offers = pagy(offers, items: params[:per_page] ||= 15)
   end
 
