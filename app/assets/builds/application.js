@@ -3294,6 +3294,24 @@
   };
   __publicField(checkbox_toggle_controller_default, "targets", ["enableDeposit", "disableDeposit"]);
 
+  // app/javascript/controllers/form/autosave_controller.js
+  var autosave_controller_default = class extends Controller {
+    connect() {
+      this.selectValue = this.selectTarget.value;
+    }
+    save() {
+      if (confirm("Are you sure?") == true) {
+        this.formTarget.requestSubmit();
+      } else {
+        this.selectTarget.value = this.selectValue;
+      }
+    }
+  };
+  __publicField(autosave_controller_default, "targets", ["form", "select"]);
+  __publicField(autosave_controller_default, "values", {
+    select: String
+  });
+
   // app/javascript/controllers/table/ordeable_controller.js
   var ordeable_controller_default = class extends Controller {
     initialize() {
@@ -3466,6 +3484,7 @@
   application.register("form--autobider-submit", autobider_submit_controller_default);
   application.register("form--bundle-checkbox", bundle_checkbox_controller_default);
   application.register("form--checkbox-toggle", checkbox_toggle_controller_default);
+  application.register("form--autosave", autosave_controller_default);
   application.register("table--ordeable", ordeable_controller_default);
   application.register("table--tab", tab_controller_default);
   application.register("autotax-counter", autotax_counter_controller_default);

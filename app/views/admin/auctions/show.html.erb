@@ -1,0 +1,63 @@
+<%= component 'common/hero', title: "#{t('.title')}: #{@auction.domain_name}"  %>
+<div class="o-container">
+  <div class="c-table c-table--sortable" data-controller='form--bundle-checkbox'>
+    <%= component 'common/table', header_collection: [], options: { class: 'js-table-dt dataTable no-footer' } do %>
+      <%= tag.tbody id: "auctions-table-body", class: 'contents' do %>
+        <tr>
+          <td><strong><%= t('auctions.domain_name') %></strong></td>
+          <td class="monospace">
+            <%= domain_name_with_embedded_colors(@auction.domain_name) %>
+          </td>
+        </tr>
+        <tr>
+          <td><strong><%= t('auctions.starts_at') %></strong></td>
+          <td><%= I18n.l(@auction.starts_at) if @auction.starts_at.present? %>
+          </tr>
+          <tr>
+            <td><strong><%= t('auctions.ends_at') %></strong></td>
+            <td><%= I18n.l(@auction.ends_at) if @auction.ends_at.present? %></td>
+          </tr>
+          <%- if @auction.offer_from_user(current_user).present? %>
+            <tr>
+              <td><strong><%= t('auctions.your_current_price') %></strong></td>
+              <td><%= @auction.current_price_from_user(current_user) %></td>
+            </tr>
+          <% end %>
+        <% end %>
+      <% end %>
+
+      <div class="c-table__filters__btns" style='padding: 1rem 0; display: flex; justify-content: end;'>
+        <%= button_to t(:delete), admin_auction_path(@auction), method: :delete, class: "c-btn c-btn--red", form: { data: { turbo_confirm: t(".confirm_delete") } } %>
+        <%= link_to t(:result_name), admin_result_path(@auction.result), class: "c-btn c-btn--green" if @auction.result %>
+        <%= link_to t(:versions_name), admin_auction_versions_path(@auction), class: "c-btn c-btn--blue" %>
+      </div>
+
+      <% header_collection = [ {column: nil, caption: t('offers.price'), options: {}},
+                        { column: nil, caption: t('users.display_name'), options: { class: "" } },
+                        { column: nil, caption: t(:created_at), options: { class: "" } },
+                        { column: nil, caption: t(:updated_at), options: { class: "" } },
+                        { column: nil, caption: t(:versions_name), options: { class: "" } }] %>
+      <%= component 'common/table', header_collection:, options: { class: 'js-table-dt' } do %>
+        <%= tag.tbody id: "auctions-table-body", class: 'contents' do %>
+          <%- if @offers.present? %>
+            <tr class="offers-table-row">
+              <td><%= t('offers.price_in_currency', price: offer.price) %></td>
+              <td><%= offer.user&.display_name || t(:deleted_user) %></td>
+              <td><%= I18n.l(offer.created_at) %></td>
+              <td><%= I18n.l(offer.updated_at) %></td>
+              <td><%= link_to t(:versions_name), admin_offer_versions_path(offer), class: "ui button primary" %></td>
+            </tr>
+          <%- else %>
+            <tr>
+              <td colspan="5" style="text-align: center; font-weight: bold; font-size: 1.2rem; padding: 3rem 0 !important;"><%= t(:no_offers) %></td>
+            </tr>
+          <%- end %>
+        <% end %>
+      <% end %>
+
+      <% if @auction.enable_deposit? %>
+        <%= render partial: 'deposit_participants', locals: { auction: @auction } %>
+      <% end %>
+    </div>
+  </div>
+</div>

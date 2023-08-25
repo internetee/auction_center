@@ -1,0 +1,30 @@
+<% content_for :hero do %>
+    <div class="hero orange">
+        <h1><%= t('.title') %></h1>
+        <%= @setting.code %>
+    </div>
+<% end %>
+
+<div class="u-container">
+    <div class="margin-block">
+        <div class="ui list">
+            <div class="item">
+                <div class="header"><%= t('settings.description') %></div>
+                <%= @setting.description %>
+            </div>
+
+            <div class="item">
+                <div class="header"><%= t('settings.value') %></div>
+                <%= formatted_setting_value(@setting.value) %>
+            </div>
+
+            <div class="item">
+                <div class="header"><%= t(:updated_at) %></div>
+                <%= @setting.updated_at %>
+            </div>
+        </div>
+
+        <%= link_to t(:edit), edit_admin_setting_path(@setting), class: "ui button primary" %>
+        <%= link_to t(:versions_name), admin_setting_versions_path(@setting), class: "ui button primary" %>
+    </div>
+</div>

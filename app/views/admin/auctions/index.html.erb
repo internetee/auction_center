@@ -7,9 +7,9 @@
                 data: { controller: 'form--debounce', form__debounce_target: 'form', turbo_action: "advance",
                         turbo_frame: "results", action: 'input->form--debounce#search' } do |form| %>
       <div class="c-table__filters">
-        <%= form.search_field :domain_name, value: params[:domain_name], placeholder: t('search_by_domain_name') %>
+        <%= form.search_field :domain_name, value: params[:domain_name], placeholder: t('search_by_domain_name'), class: 'c-table__search__input js-table-search-dt' %>
       </div>
-      <div class="c-table__filters" >
+      <div class="c-table__filters">
         <div class="c-table__filters__btns" style='display: flex !important; align-items: center !important; justify-content: space-between !important; width: 100%;'>
           <div>
             <%= form.label :type, 'Select type of auction' %>
@@ -116,6 +116,8 @@
           <%= render @auctions, form: @form_auction_table %>
         <% end %>
       <% end %>
+
+      <%= component 'common/pagy', pagy: @pagy %>
     <% end %>
   </div>
 </div>

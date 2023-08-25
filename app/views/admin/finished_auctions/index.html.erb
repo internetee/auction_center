@@ -2,24 +2,37 @@
 <div class="o-container">
   <div class="c-table c-table--sortable">
     <%= form_with url: admin_finished_auctions_index_path, 
-        method: :get, data: { controller: 'debounce', debounce_target: 'form',
+        method: :get, data: { controller: 'form--debounce form--filter', form__debounce_target: 'form',
                               turbo_action: "advance", turbo_frame: "results",
-                              action: 'input->debounce#search' }, class: 'ui big form' do |form| %>
-      <div class="c-table__filters">
-        <%= form.search_field :domain_name, value: params[:domain_name], placeholder: t('search_by_domain_name'), class: 'prompt' %>
-        <%= form.label :type, 'Select type of auction' %>
-        <%= form.select :type, options_for_select(Auction.platforms, selected: params[:type]), {include_blank: 'All'}, {class: '' } %>
-        <%= link_to 'Clear', request.path, class: 'ui primary button' %>
+                              action: 'input->form--debounce#search' } do |form| %>
+      <div class="c-table__filters" style='display: flex; align-items: center;'>
+        <div style='display: flex; align-items: center; gap: 0 1.8rem;'>
+          <%= form.search_field :domain_name, value: params[:domain_name], placeholder: t('search_by_domain_name'), class: 'c-table__search__input js-table-search-dt' %>
+          <div style='display: flex; align-items: center; gap: 0 1rem;'>
+            <%= form.radio_button :type, 'all', class: "js-table-filter-btn", checked: true, style: 'visibility: hidden; position: absolute;', id: 'filter_all_button', data: { form__filter_target: 'button' } %>
+            <%= form.label :type_all, "kõik", class: "c-table__filters__btn is-active js-table-filter-btn", style: 'cursor: pointer;', for: 'filter_all_button', data: { form__filter_target: 'label', action: "click->form--filter#click" } %>
+            <%= form.radio_button :type, 'english', class: "js-table-filter-btn", style: 'visibility: hidden; position: absolute;', id: 'filter_IO_button', data: { form__filter_target: 'button' } %>
+            <%= form.label :type_english, class: "c-table__filters__btn js-table-filter-btn", style: 'cursor: pointer;', for: 'filter_IO_button', data: { form__filter_target: 'label', action: "click->form--filter#click" } do %>
+              <span class="o-io-icon"></span><span class="u-hidden-m"> inglise oksjon</span>
+            <% end %>
+            <%= form.radio_button :type, 'blind', class: "js-table-filter-btn", style: 'visibility: hidden; position: absolute;', id: 'filter_PO_button', data: { form__filter_target: 'button' } %>
+            <%= form.label :type_blind, class: "c-table__filters__btn js-table-filter-btn", style: 'cursor: pointer;', for: 'filter_PO_button', data: { form__filter_target: 'label', action: "click->form--filter#click" } do %>
+              <span class="o-po-icon"></span>
+              <span class="u-hidden-m"> pime oksjon</span>
+            <% end %>
+          </div>
+        </div>
+        <div class="c-table__filters__btns" style='height: 50%'>
+          <%= link_to 'Clear', request.path, class: 'c-btn c-btn--orange' %>
+        </div>
       </div>
     <% end %>
-
     <% header_collection = [
                     { column: 'domain_name', caption: t('auctions.domain_name'), options: { class: "sorting" } },
                     { column: 'ends_at', caption: t('auctions.finished_at'), options: { class: "sorting" } },
                     { column: 'platform', caption: t('auctions.platform'), options: { class: "sorting" } },
                     { column: nil, caption: t('auctions.last_offer'), options: { class: "" } },
                     { column: nil, caption: t('auctions.last_participant'), options: { class: '' } }] %>
-
     <%= turbo_frame_tag "results" do %>
       <!-- Options attributes are used as table attributes -->
       <%= component 'common/table', header_collection:, options: { class: 'js-table-dt dataTable no-footer' } do %>
@@ -47,6 +60,5 @@
         <% end %>
       <% end %>
     <% end %>
-
   </div>
 </div>

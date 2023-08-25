@@ -1,30 +1,20 @@
-<% content_for :hero do %>
-    <div class="hero orange">
-        <h1><%= t('.title') %></h1>
-        <%= @setting.code %>
-    </div>
-<% end %>
+<%= component 'common/hero', title: t('.title')  %>
+<div class="o-container">
+  <div class="item">
+    <h2><%= t('settings.description') %></h2>
+    <%= @setting.description %>
+  </div>
+  <div class="item">
+    <h2><%= t('settings.value') %></h2>
+    <%= formatted_setting_value(@setting.value) %>
+  </div>
+  <div class="item">
+    <h2><%= t(:updated_at) %></h2>
+    <%= @setting.updated_at %>
+  </div>
 
-<div class="u-container">
-    <div class="margin-block">
-        <div class="ui list">
-            <div class="item">
-                <div class="header"><%= t('settings.description') %></div>
-                <%= @setting.description %>
-            </div>
-
-            <div class="item">
-                <div class="header"><%= t('settings.value') %></div>
-                <%= formatted_setting_value(@setting.value) %>
-            </div>
-
-            <div class="item">
-                <div class="header"><%= t(:updated_at) %></div>
-                <%= @setting.updated_at %>
-            </div>
-        </div>
-
-        <%= link_to t(:edit), edit_admin_setting_path(@setting), class: "ui button primary" %>
-        <%= link_to t(:versions_name), admin_setting_versions_path(@setting), class: "ui button primary" %>
-    </div>
+  <div class="c-table__filters__btns" style='padding: 1rem 0; display: flex; justify-content: end;'>
+    <%= link_to t(:edit), edit_admin_setting_path(@setting), class: "c-btn c-btn--orange" %>
+    <%= link_to t(:versions_name), admin_setting_versions_path(@setting), class: "c-btn c-btn--blue" %>
+  </div>
 </div>

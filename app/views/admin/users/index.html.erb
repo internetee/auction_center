@@ -2,10 +2,14 @@
 <div class="o-container">
   <div class="c-table c-table--sortable">
     <%= form_with(url: admin_users_path, local: true, method: :get) do |f| %>
-      <div class="c-table__filters__btns"">
-        <%= f.search_field :search_string, value: params[:search_string], placeholder: t('search_by_domain_name'), class: 'c-table__search__input js-table-search-dt' %>
-        <%= f.button 'Search', class: "c-btn c-btn--blue" %>
-        <%= link_to 'Clear', request.path, class: 'c-btn c-btn--red' %>
+      <div class="c-table__filters" >
+        <div class="c-table__filters__btns" style='display: flex !important; align-items: center !important; justify-content: space-between !important; width: 100%;'>
+          <%= f.search_field :search_string, value: params[:search_string], placeholder: t('search_by_domain_name'), class: 'c-table__search__input js-table-search-dt' %>
+          <div>
+            <%= f.button 'Search', class: "c-btn c-btn--blue" %>
+            <%= link_to 'Clear', request.path, class: 'c-btn c-btn--red' %>
+          </div>
+        </div>
       </div>
     <% end %>
     <% header_collection = [{column: 'surname', caption: t('users.display_name'), options: {}},
@@ -25,14 +29,15 @@
             </td>
             <td><%= user.email %></td>
             <td><%= user.roles.join(', ') %></td>
-            <td></td>
           </tr>
         <% end %>
       <% end %>
     <% end %>
-
-    <%= link_to t('.new_user'), new_admin_user_path, class: "c-btn c-btn--green" %>
-
+    
     <%= component 'common/pagy', pagy: @pagy %>
+
+    <div class="c-table__filters__btns" style='padding: 1rem 0; display: flex; justify-content: end;'>
+      <%= link_to t('.new_user'), new_admin_user_path, class: "c-btn c-btn--green" %>
+    </div>
   </div>
 </div>

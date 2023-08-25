@@ -62,31 +62,42 @@
 
       <%= component 'common/table', header_collection: header_collection, options: { class: 'js-table-dt dataTable no-footer' } do %>
         <%= tag.tbody class: 'contents' do %>
-          <% @user.billing_profiles.each do |billing_profile| %>
-              <tr class="billing-profiles-table-row">
-                  <td class="billing-profile-name"><%= link_to billing_profile.name, admin_billing_profile_path(billing_profile) %></td>
-                  <td><%= billing_profile.vat_code %></td>
-                  <td><%= billing_profile.address %></td>
-              </tr>
-          <% end %>
+          <%- if @user.present? %>
+            <% @user.billing_profiles.each do |billing_profile| %>
+                <tr class="billing-profiles-table-row">
+                    <td class="billing-profile-name"><%= link_to billing_profile.name, admin_billing_profile_path(billing_profile) %></td>
+                    <td><%= billing_profile.vat_code %></td>
+                    <td><%= billing_profile.address %></td>
+                </tr>
+            <% end %>
+          <%- else %>
+            <tr>
+              <td colspan="3" style="text-align: center; font-weight: bold; font-size: 1.2rem; padding: 3rem 0 !important;"><%= t(:no_billing_profiles) %></td>
+            </tr>
+          <%- end %>
         <% end %>
       <% end %>
 
       <h2><%= t('.ban_this_user') %></h2>
       <%= form_with(model: @ban, local: true, url: admin_bans_path, class: "ui form big") do |f| %>
         <div class="c-table__filters">
+          <div style='width: 70%; display: flex; align-items: center; gap: 0 20px;'>
             <%= f.hidden_field :user_id, value: @ban.user_id %>
-            <%= f.label :valid_until, t('bans.valid_until') %>
+            
+            <%= f.label :valid_until, t('bans.valid_until'), style: 'width: 100px;' %>
             <%= f.date_field :valid_until %>
+          </div>
+          <div style='width: 30%'>
+          <%= f.submit t(:submit), class: "c-btn c-btn--blue", data: { turbo: false } %>
+          </div>
         </div>
 
-        <%= f.submit t(:submit), class: "c-btn c-btn--blue", data: { turbo: false } %>
     <% end %>
 
-    <div class="buttons">
-      <%= link_to t(:edit), edit_admin_user_path(@user), class: "ui button primary" %>
-      <%= link_to t(:delete), admin_user_path(@user), method: :delete, data: { confirm: t(:are_you_sure) }, class: "ui button secondary", target: '_top' %>
-      <%= link_to t(:versions_name), admin_user_versions_path(@user), class: "ui button primary" %>
+    <div class="c-table__filters__btns" style='padding: 1rem 0; display: flex; justify-content: end;'>
+      <%= link_to t(:edit), edit_admin_user_path(@user), class: "c-btn c-btn--orange" %>
+      <%= button_to t(:delete), admin_user_path(@user), method: :delete, class: "c-btn c-btn--red", form: { data: { turbo_confirm: t(".confirm_delete") } } %>
+      <%= link_to t(:versions_name), admin_user_versions_path(@user), class: "c-btn c-btn--blue" %>
     </div>
   </div>
 </div>

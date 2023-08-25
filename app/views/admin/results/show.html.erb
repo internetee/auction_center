@@ -41,7 +41,9 @@
         <% end %>
       <% end %>
 
-      <div><%= link_to t(:versions_name), admin_result_versions_path(@result), class: "c-btn c-btn--blue" %></div>
+      <div class="c-table__filters__btns" style='padding: 1rem 0; display: flex; justify-content: end;'>
+        <%= link_to t(:versions_name), admin_result_versions_path(@result), class: "c-btn c-btn--blue" %>
+      </div>
       
       <% table_headers = [
         { column: '', caption: t('offers.price'), options: { class: "" } },

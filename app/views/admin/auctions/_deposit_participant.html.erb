@@ -1,0 +1,10 @@
+<tr>
+  <td><%= user.display_name %></td>
+  <td><%= user.email %></td>
+  <td style="text-align: center">
+    <label class="o-checkbox" for="with_deposit_participants">  
+      <%= form.check_box :user_ids, { multiple: true, checked: auction.allow_to_set_bid?(user) }, user.id, nil %>
+      <div class="o-checkbox__slider round"></div>
+    </label>
+  </td>
+</tr>

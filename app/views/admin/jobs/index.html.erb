@@ -1,32 +1,22 @@
-<% content_for :hero do %>
-    <div class="hero orange">
-        <h1><%= t('.title') %></h1>
-    </div>
-<% end %>
-
-<div class="u-container">
-    <div class="margin-block">
-        <table class="ui table unstackable" class="jobs-table">
-            <thead>
-                <th scope="col"><%= t('jobs.name') %></th>
-                <th scope="col"><%= t('actions') %></th>
-            </thead>
-            <tbody class="jobs-table-body">
-                <% @jobs.each do |job| %>
-                    <tr class="jobs-table-row <%= job.job_name %>">
-                        <td><%= job.job_name %></td>
-                        <td>
-                            <%= form_with(model: job, local: true, url: admin_jobs_path) do |f| %>
-                                <%= f.hidden_field :job_class %>
-                                <%= f.submit t('jobs.run'),
-                                             class: "ui button secondary",
-                                             disabled: !job.needs_to_run?,
-                                             data: { turbo: false } %>
-                            <% end %>
-                        </td>
-                    </tr>
-                <% end %>
-            </tbody>
-        </table>
-    </div>
+<%= component 'common/hero', title: t('.title')  %>
+<div class="o-container">
+  <div class="c-table c-table--sortable">
+    <% header_collection = [{column: nil, caption: t('jobs.name'), options: {}},
+                            { column: nil, caption: t('actions'), options: { class: "" } }] %>
+    <%= component 'common/table', header_collection:, options: { class: 'js-table-dt dataTable no-footer' } do %>
+      <%= tag.tbody class: 'contents' do %>
+        <% @jobs.each do |job| %>
+          <tr class="jobs-table-row <%= job.job_name %>">
+            <td><%= job.job_name %></td>
+            <td style='text-align: right;'>
+              <%= form_with(model: job, local: true, url: admin_jobs_path) do |f| %>
+                <%= f.hidden_field :job_class %>
+                <%= f.submit t('jobs.run'), class: 'c-btn c-btn--blue', style: 'width: 50px; padding: 5px 25px; cursor: pointer;', disabled: !job.needs_to_run?, data: { turbo: false } %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
 </div>
