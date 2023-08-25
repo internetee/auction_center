@@ -83,10 +83,11 @@
           <% end %>
         <% end %>
       <% end %>
+
+      <%= component 'common/pagy', pagy: @pagy %>
     <% end %>
 
   </div>
-  <%= component 'common/pagy', pagy: @pagy %>
 
   <div class="u-text-center u-mt-40">
     <%= link_to t('auctions.all_list'), auctions_path(show_all: 'true'), class: 'c-btn c-btn--ghost' %>

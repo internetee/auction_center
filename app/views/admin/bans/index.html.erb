@@ -3,9 +3,9 @@
   <div class="c-table c-table--sortable">
     <%= form_with(url: admin_bans_path, local: true, method: :get) do |f| %>
       <div class="c-table__filters" >
-        <div class="c-table__filters__btns">
+        <div class="c-table__filters__btns" style='display: flex !important; align-items: center !important; justify-content: space-between !important; width: 100%;'>
           <%= f.search_field :search_string, value: params[:search_string], placeholder: t('search_by_domain_name'), class: 'c-table__search__input js-table-search-dt' %>
-          <%= f.button 'Search', class: "ui icon primary button" %>
+          <%= f.button 'Search', class: "c-btn c-btn--blue" %>
         </div>
       </div>
     <% end %>
@@ -29,12 +29,9 @@
                 <%= link_to t('results.invoice'), admin_invoice_path(ban.invoice_id) %>
               <% end %>
             </td>
-            <td>
-              <%= link_to t(:delete), admin_ban_path(ban), method: :delete,
-                            data: { confirm: t(:are_you_sure) }, target: '_top',
-                            class: "ui button secondary" %>
-              <%= link_to t(:versions_name),
-                                admin_ban_versions_path(ban), class: "ui button primary" %>
+            <td class="c-table__filters__btns" style='padding: 1rem 0; display: flex; justify-content: end;'>
+              <%= button_to t(:delete), admin_ban_path(ban), method: :delete, class: "c-btn c-btn--red", form: { data: { turbo_confirm: t(".confirm_delete") } } %>
+              <%= link_to t(:versions_name), admin_ban_versions_path(ban), class: "c-btn c-btn--blue", style: 'height: 40%;'%>
             </td>
           </tr>
         <% end %>

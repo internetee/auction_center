@@ -1,0 +1,128 @@
+<%= component 'common/hero', title: t('.title')  %>
+<div class="o-container">
+  <div class="c-table__filters" >
+    <%= link_to t(:versions_name), admin_invoice_versions_path(@invoice), class: "ui button primary" %>
+    <%= link_to t('invoices.download'), download_admin_invoice_path(@invoice),
+                { class: 'ui button secondary', download: true } %>
+    <% unless @invoice.overdue? || @invoice.paid? %>
+      <%= link_to t('invoices.mark_as_paid'), edit_admin_invoice_path(@invoice), class: 'ui button secondary' %>
+    <% end %>
+  </div>
+  <div class="c-block">
+    <div class="o-grid o-grid--two-col">
+      <div>
+        <div class="header"><%= t('invoices.status') %></div>
+        <%= I18n.t("activerecord.enums.invoice.statuses.#{@invoice.status}") %>
+        <div class="header"><%= t('invoices.issued_for') %></div>
+        <%= @invoice.recipient %><br>
+        <%= @invoice.address %>
+        <div class="header"><%= t(:updated_by) %></div>
+        <%= @invoice.updated_by %>
+        <% if @invoice.notes %>
+          <div class="item">
+            <div class="header"><%= t('invoices.notes') %></div>
+            <%= @invoice.notes %>
+          </div>
+        <% end %>
+      </div>
+      <div>
+        <div class="header"><%= t('invoices.issuer') %></div>
+        <%= Setting.find_by(code: 'invoice_issuer').retrieve %>
+        <div class="header"><%= t('invoices.issue_date') %></div>
+        <%= @invoice.issue_date %>
+        <div class="header"><%= t('invoices.due_date') %></div>
+        <%= @invoice.due_date %>
+        <% if @invoice.paid_with_payment_order %>
+          <div class="item">
+            <div class="header"><%= t('invoices.paid_through') %></div>
+            <%= @invoice.paid_with_payment_order&.channel %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="c-table c-table--sortable">
+    <h2><%= t('invoices.items') %></h2>
+    <% header_collection = [{column: nil, caption: '#', options: {}},
+                        { column: nil, caption: t('invoices.item'), options: { class: "" } },
+                        { column: nil, caption: '', options: { class: "" } },
+                        { column: nil, caption: t('invoices.price'), options: { class: "" } },] %>
+    <%= component 'common/table', header_collection:, options: { class: 'js-table-dt dataTable no-footer' } do %>
+      <%= tag.tbody class: 'contents' do %>
+        <% @invoice.items.each_with_index do |item, index| %>
+          <tr>
+            <td><%= index + 1 %></td>
+            <td>
+              <%= I18n.t('invoice_items.name',
+                        domain_name: item.invoice.result.auction.domain_name,
+                        auction_end: item.invoice.result.auction.ends_at.to_date) %>
+            </td>
+            <td></td>
+            <td><%= item.price %></td>
+          </tr>
+        <% end %>
+      <% end %>
+      <tfoot>
+        <tr>
+          <td scope="col"></td>
+          <td scope="col"><%= t('invoices.vat_amount') %></td>
+          <td> <%= number_to_percentage(@invoice.vat_rate * 100, precision: 0) %></td>
+          <td scope="col"><%= t('offers.price_in_currency', price: @invoice.vat) %></td>
+        </tr>
+        <tr>
+          <th scope="col"></th>
+          <th scope="col"><%= t('invoices.total') %></th>
+          <td></td>
+          <th scope="col"><%= t('offers.price_in_currency', price: @invoice.total + (@invoice.enable_deposit? ? @invoice.deposit : 0.0)) %></th>
+        </tr>
+        <% if @invoice.paid? %>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col"><%= t('invoices.vat_rate_on_payment') %></th>
+            <th></th>
+            <th scope="col"><%= number_to_percentage(@invoice.vat_rate * 100, precision: 0) %></th>
+          </tr>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col"><%= t('invoices.total_paid') %></th>
+            <th></th>
+            <th scope="col"><%= t('offers.price_in_currency', price: @invoice.paid_amount) %></th>
+          </tr>
+        <% end %>
+        <% if @invoice.enable_deposit? %>
+          <tr style=''>
+            <td scope="col" style='font-weight: bold; background-color: #f0e68c; border-top-color: "#ccc";'></td>
+            <td scope="col" style='font-weight: bold; background-color: #f0e68c; border-top-color: "#ccc";'><%= t('invoices.deposit') %></td>
+            <td style='background-color: #f0e68c;'></td>
+            <td scope="col" style='font-weight: bold; background-color: #f0e68c; border-top-color: "#ccc";'><%= t('offers.price_in_currency', price: @invoice.deposit) %></td>
+          </tr>
+          <tr>
+            <td scope="col" style='font-weight: bold; background-color: #f0e68c;'></td>
+            <td scope="col" style='font-weight: bold; background-color: #f0e68c;'><%= t('invoices.amount_due') %></td>
+            <td style='background-color: #f0e68c;'></td>
+            <td scope="col" style='font-weight: bold; color: red; background-color: #f0e68c;'><%= t('offers.price_in_currency', price: @invoice.total) %></td>
+          </tr>
+        <% end %>
+      </tfoot>
+    <% end %>
+    <h2><%= t('payment_orders.title') %></h2>
+    <% header_collection = [{column: nil, caption: '#', options: {}},
+                        { column: nil, caption: t('payment_orders.channel'), options: { class: "" } },
+                        { column: nil, caption: t('payment_orders.status'), options: { class: "" } },
+                        { column: nil, caption: t('payment_orders.initiated'), options: { class: "" } },
+                        { column: nil, caption: t('payment_orders.response'), options: { class: "" } },] %>
+    <%= component 'common/table', header_collection:, options: { class: 'js-table-dt dataTable no-footer' } do %>
+      <%= tag.tbody class: 'contents' do %>
+        <% @payment_orders.each do |payment_order| %>
+          <tr>
+            <td><%= payment_order.id %></td>
+            <td><%= payment_order.channel %></td>
+            <td><%= payment_order.status %></td>
+            <td><%= payment_order.created_at %></td>
+            <td><%= fetch_errors_from_response(channel: payment_order.channel, response: payment_order.response) %></td>
+          </tr>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+</div>

@@ -12,7 +12,7 @@
           <%= select_tag :statuses_contains, options_for_select(Result.statuses, params[:statuses_contains]), 
                           { class: 'u-bg-silver-gradient', prompt: t('admin.results.index.status'), style: 'width: 300px;' }%>
           <div>
-          <%= f.button 'Search', class: 'c-btn c-btn--ghost' do %><% end %>
+          <%= f.button 'Search', class: 'c-btn c-btn--ghost' %>
           <%= link_to 'Clear', request.path, class: 'c-btn c-btn--red' %>
           </div>
         </div>

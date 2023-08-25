@@ -10,11 +10,11 @@
       </div>
     <% end %>
     <% header_collection = [{column: nil, caption: t('billing_profiles.user'), options: {}},
-                            { column: 'domain_name', caption: t('billing_profiles.name'), options: { class: "sorting" } },
-                            { column: 'starts_at', caption: t('billing_profiles.vat_code'), options: { class: "sorting" } },
-                            { column: 'ends_at', caption: t('billing_profiles.address'), options: { class: "sorting" } }] %>
+                            { column: nil, caption: t('billing_profiles.billing_profile_name'), options: { class: "" } },
+                            { column: nil, caption: t('billing_profiles.vat_code'), options: { class: "" } },
+                            { column: nil, caption: t('billing_profiles.address'), options: { class: "" } }] %>
     <%= turbo_frame_tag "results" do %>
-      <%= component 'common/table', header_collection:, options: { class: 'js-table-dt dataTable no-footer' } do %>
+      <%= component 'common/table', header_collection:, options: { class: 'js-table-dt' } do %>
         <%= tag.tbody class: 'contents' do %>
           <% @billing_profiles.each do |billing_profile| %>
             <tr class="billing-profiles-table-row">

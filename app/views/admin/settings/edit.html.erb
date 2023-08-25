@@ -1,25 +1,17 @@
-<% content_for :hero do %>
-    <div class="hero orange">
-        <h1><%= t('.title') %></h1>
-        <%= @setting.code %>
-    </div>
-<% end %>
-
-<div class="u-container">
-    <div class="margin-block">
-        <% if @setting.errors.any? %>
-            <div class="ui message">
-                <div class="header">
-                    <%= t(:errors_name) %>
-                </div>
-                <ul id="errors">
-                    <% @setting.errors.full_messages.each do |message| %>
-                        <li><%= message %></li>
-                    <% end %>
-                </ul>
-            </div>
+<%= component 'common/hero', title: t('.title')  %>
+<div class="o-container">
+  <% if @setting.errors.any? %>
+    <div class="ui message">
+      <div class="header">
+        <%= t(:errors_name) %>
+      </div>
+      <ul id="errors">
+        <% @setting.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
         <% end %>
-
-        <%= render 'form', setting: @setting, url: admin_setting_path(@setting) %>
+      </ul>
     </div>
+  <% end %>
+
+  <%= render 'form', setting: @setting, url: admin_setting_path(@setting) %>
 </div>

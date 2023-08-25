@@ -33,5 +33,11 @@
           </tr>
         <% end %>
       <% end %>
+
+      <div class="c-table__filters__btns" style='padding: 1rem 0; display: flex; justify-content: end;'>
+        <%- if @billing_profile.user %>
+          <%= link_to t(:user), admin_user_path(@billing_profile.user), class: "c-btn c-btn--blue" %>
+        <% end %>
+      </div>
   </div>
 </div>

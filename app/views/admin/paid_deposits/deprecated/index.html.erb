@@ -1,0 +1,93 @@
+<% content_for :hero do %>
+    <div class="hero orange">
+        <h1><%= t('.title') %></h1>
+    </div>
+<% end %>
+
+<div class="features-grid top narrow grey">
+    <div class="ui input">
+        <%= form_with url: admin_paid_deposits_path, method: :get, class: 'ui big form',
+                                                     data: { controller: 'debounce',
+                                                             debounce_target: 'form',
+                                                             turbo_action: "advance",
+                                                             turbo_frame: "results",
+                                                             action: 'input->debounce#search' 
+                                                            } do |f| %>
+            <div class="inline fields">
+                <div class="field">
+                    <%= f.search_field :search_string, placeholder: t('.search'), style: 'width: 400px;' %>
+                </div>
+                <div class="field">
+                    <%= f.button(class: "ui icon primary button") do %>
+                        <i aria-hidden="true" class="arrow right icon"></i>
+                    <% end %>
+                </div>
+                <div class="field">
+                    <%= link_to 'Clear', request.path, class: 'ui primary button' %>
+                </div>
+            </div>
+        <% end %>
+    </div>
+</div>
+
+<div class="ui container">
+  <%= turbo_frame_tag "results" do %>
+    <div class="margin-block">
+        <table class="ui table unstackable fixed" id="my-outstanding-invoices-table">
+            <thead>
+                <tr>
+                    <th scope="col">
+                        <%= t('.user_email') %>
+                        <%= sort_link_to "", "users.email" %>
+                    </th>
+                    <th scope="col">
+                        <%= t('.date') %>
+                        <%= sort_link_to "", "created_at" %>
+                    </th>
+                    <th scope="col">
+                        <%= t('.sum') %>
+                        <%= sort_link_to "", "auctions.requirement_deposit_in_cents" %>
+                    </th>
+                    <th scope="col">
+                        <%= t('.auction') %>
+                        <%= sort_link_to "", "auctions.domain_name" %>
+                    </th>
+                    <th scope="col">
+                        <%= t('.status') %>
+                        <%= sort_link_to "", "status" %>
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="invoices-table-body">
+                <% if @deposits.any? %>
+                    <% @deposits.each do |deposit| %>
+                        <tr>
+                        <td><%= link_to deposit.user.email, admin_user_path(id: deposit.user.id) %></td>
+                        <td><%= deposit.created_at %></td>
+                        <td><%= deposit.auction&.deposit %></td>
+                        <td><%= link_to deposit&.auction&.domain_name, admin_auction_path(deposit.auction) %></td>
+                        <td>
+                            <%= form_with url: admin_paid_deposit_deposit_status_path(deposit.id), method: :patch, 
+                                                                            data: { controller: 'autosave', target: 'autosave.form'} do |f| %>
+                                <%= f.select :status, options_for_select(DomainParticipateAuction.statuses.invert.values, deposit&.status), {},
+                                                selected: deposit&.status, data: { action: 'autosave#save', target: 'autosave.select' } %>
+                            <% end %> 
+                        </td>
+                        </tr>
+                    <% end %>
+                <% end %>
+
+            </tbody>
+        </table>
+
+        <div style="margin-top:10px; text-align: center;">
+          <% if @pagy.pages > 1 %>
+              <div class="footer">
+                  <%== pagy_nav(@pagy) %>
+              </div>
+          <% end %>
+        </div>
+    </div>
+  <% end %>
+</div>
+

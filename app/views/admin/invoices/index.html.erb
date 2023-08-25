@@ -1,32 +1,45 @@
 <%= component 'common/hero', title: t('.title')  %>
 <div class="o-container">
   <div class="c-table c-table--sortable">
+
     <%= form_with url: admin_invoices_path, method: :get do |f| %>
       <div class="c-table__filters" >
         <div class="c-table__filters__btns" style='display: flex !important; align-items: center !important; justify-content: space-between !important; width: 100%;'>
-          <%= f.search_field :search_string, value: params[:search_string], placeholder: t('search_by_domain_name'), class: 'c-table__search__input js-table-search-dt' %>
-          <div>
-            <%= label_tag :full_list, t('admin.invoices.index.full_list') =%>
-            <%= check_box_tag :full_list %>
+          <div style='display: flex !important; align-items: center !important; gap: 0 30px;'>
+            <div style='display: flex !important; align-items: center; gap: 0 10px;'>
+              <label>Search by billing profile, user email, user surname</label>
+              <%= f.search_field :search_string, value: params[:search_string], placeholder: 'Search..', class: 'c-table__search__input js-table-search-dt' %>
+            </div>
+
+            <div style='display: flex !important; align-items: center; gap: 0 10px;'>
+              <label><%= t('admin.invoices.index.full_list') %></label>
+              <label class="o-checkbox">
+                <%= f.check_box :full_list %>
+                <div class="o-checkbox__slider round"></div>
+              </label>
+            </div>
+
+            <div>
+              <%= select_tag :statuses_contains, options_for_select(Invoice.statuses, params[:statuses_contains]), 
+                              { class: '', style: 'width: 300px;', prompt: t('admin.invoices.index.status') } %>
+            </div>
           </div>
-          <div>
-            <%= select_tag :statuses_contains, options_for_select(Invoice.statuses, params[:statuses_contains]), 
-                            { multiple: true, class: 'ui selection dropdown', prompt: t('admin.invoices.index.status') } %>
-          </div>
+
           <%= f.button t('.search'), class: "c-btn c-btn--blue" %>
         </div>
       </div>
     <% end %>
+
     <% header_collection = [{column: nil, caption: t('invoices.billing_profile'), options: {}},
-                            { column: 'domain_name', caption: t('invoices.due_date'), options: { class: "sorting" } },
-                            { column: 'starts_at', caption: t('invoices.number'), options: { class: "sorting" } },
-                            { column: 'ends_at', caption: t('invoices.status'), options: { class: "sorting" } },
-                            { column: 'ends_at', caption: t('invoices.notes'), options: { class: "sorting" } },
-                            { column: 'ends_at', caption: t('invoices.total'), options: { class: "sorting" } },
-                            { column: 'ends_at', caption: t('invoices.vat_rate_on_payment'), options: { class: "sorting" } },
-                            { column: 'ends_at', caption: t('invoices.total_paid'), options: { class: "sorting" } },
-                            { column: 'ends_at', caption: t('invoices.paid_through'), options: { class: "sorting" } }] %>
-    <%= component 'common/table', header_collection:, options: { class: 'js-table-dt dataTable no-footer' } do %>
+                            { column: nil, caption: t('invoices.due_date'), options: { class: "" } },
+                            { column: nil, caption: t('invoices.number'), options: { class: "" } },
+                            { column: nil, caption: t('invoices.status'), options: { class: "" } },
+                            { column: nil, caption: t('invoices.notes'), options: { class: "" } },
+                            { column: nil, caption: t('invoices.total'), options: { class: "" } },
+                            { column: nil, caption: t('invoices.vat_rate_on_payment'), options: { class: "" } },
+                            { column: nil, caption: t('invoices.total_paid'), options: { class: "" } },
+                            { column: nil, caption: t('invoices.paid_through'), options: { class: "" } }] %>
+    <%= component 'common/table', header_collection:, options: { class: 'js-table-dt' } do %>
       <%= tag.tbody class: 'contents' do %>
         <% @invoices.each do |invoice| %>
           <tr class="invoices-table-row">
@@ -36,21 +49,14 @@
             <td><%= invoice.status %></td>
             <td><%= invoice.notes %></td>
             <td><%= t('offers.price_in_currency', price: invoice.total) %></td>
-            <% if invoice.paid? %>
-              <td><%= number_to_percentage(invoice.vat_rate * 100, precision: 0) %></td>
-              <td><%= t('offers.price_in_currency', price: invoice.paid_amount) %></td>
-              <td><%= invoice.paid_with_payment_order&.channel %></td>
-            <% else %>
-              <td></td>
-              <td></td>
-              <td></td>
-            <% end %>
-            <td></td>
+            <td><%= number_to_percentage(invoice.vat_rate * 100, precision: 0) if invoice.paid? %></td>
+            <td><%= t('offers.price_in_currency', price: invoice.paid_amount) if invoice.paid? %></td>
+            <td><%= invoice.paid_with_payment_order&.channel if invoice.paid? %></td>
           </tr>
         <% end %>
       <% end %>
     <% end %>
 
-      <%= component 'common/pagy', pagy: @pagy %>
+    <%= component 'common/pagy', pagy: @pagy %>
   </div>
 </div>
