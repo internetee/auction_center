@@ -2,21 +2,23 @@ class AutobiderController < ApplicationController
   before_action :authenticate_user!
   before_action :set_auction, only: %i[new edit update create]
   before_action :allow_any_action_with_autobider
-  before_action :set_captcha_required
-  # before_action :captcha_check, only: [:update, :create]
+  include RecaptchaValidatable
 
   def update
     @autobider = Autobider.find_by(uuid: params[:uuid])
 
-    if @autobider.update(strong_params)
-      auction = Auction.where(domain_name: @autobider.domain_name).order(:created_at).last
-      AutobiderService.autobid(auction) unless skip_autobid(auction)
+    if recaptcha_valid
+      if @autobider.update(strong_params)
+        auction = Auction.where(domain_name: @autobider.domain_name).order(:created_at).last
+        AutobiderService.autobid(auction) unless skip_autobid(auction)
 
-      flash[:notice] = I18n.t('english_offers.form.autobidder_updated')
+        flash[:notice] = I18n.t('english_offers.form.autobidder_updated')
+      else
+        flash[:alert] = I18n.t('something_went_wrong')
+      end
     else
-      flash[:alert] = I18n.t('something_went_wrong')
+      flash[:alert] = t('english_offers.form.captcha_verification')
     end
-
     redirect_to request.referer
   end
 
@@ -33,29 +35,21 @@ class AutobiderController < ApplicationController
   def create
     @autobider = Autobider.new(strong_params)
 
-    if create_predicate
-      auction = Auction.where(domain_name: @autobider.domain_name).order(:created_at).last
-      AutobiderService.autobid(auction)
+    if recaptcha_valid
+      if create_predicate
+        auction = Auction.where(domain_name: @autobider.domain_name).order(:created_at).last
+        AutobiderService.autobid(auction)
 
-      redirect_to request.referer, notice: I18n.t('english_offers.form.autobidder_created')
+        redirect_to request.referer, notice: I18n.t('english_offers.form.autobidder_created')
+      else
+        redirect_to request.referer, notice: t(:something_went_wrong)
+      end
     else
-      redirect_to request.referer, notice: t(:something_went_wrong)
+      redirect_to request.referer, alert: t('english_offers.form.captcha_verification')
     end
   end
 
   private
-
-  def set_captcha_required
-    @captcha_autobidder_required = current_user.requires_captcha?
-  end
-
-  def captcha_check
-    captcha_predicate = !@captcha_autobidder_required || verify_recaptcha(model: @offer)
-    return if captcha_predicate
-
-    flash[:alert] = t('english_offers.form.captcha_verification')
-    redirect_to request.referer and return
-  end
 
   def skip_autobid(auction)
     return false if auction.offers.empty?
