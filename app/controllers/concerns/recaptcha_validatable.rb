@@ -17,7 +17,7 @@ module RecaptchaValidatable
   end
 
   def set_captcha_required
-    # return if Rails.env.development?
+    return if Rails.env.development?
 
     @captcha_required = current_user.requires_captcha?
     @recaptcha2_site_key = AuctionCenter::Application.config.customization.dig(:recaptcha, :recaptcha2_site_key)
