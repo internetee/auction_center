@@ -9,6 +9,8 @@ input {
   transition: $transition;
   width: 100%;
   max-width: 100%;
+  color: $black-color;
+  font-family: $font-family;
 
   &:focus {
     border-color: $black-color;

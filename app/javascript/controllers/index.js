@@ -22,6 +22,9 @@ application.register("form--bundle-checkbox", Form__BundleCheckboxController);
 import Form__CheckboxToggleController from "./form/checkbox_toggle_controller";
 application.register("form--checkbox-toggle", Form__CheckboxToggleController);
 
+import Form__CheckboxAutosubmitController from "./form/checkbox_autosubmit_controller";
+application.register("form--checkbox-autosubmit", Form__CheckboxAutosubmitController);
+
 import Form__AutosaveController from "./form/autosave_controller";
 application.register("form--autosave", Form__AutosaveController);
 
@@ -39,3 +42,9 @@ application.register("english-offer", EnglishOffer);
 
 import CountDownController from "./countdown_controller";
 application.register("countdown", CountDownController);
+
+import ProfileWebpushController from "./profile_webpush_controller";
+application.register("profile-webpush", ProfileWebpushController);
+
+import PushNotificationController from "./push_notification_controller";
+application.register("push-notification", PushNotificationController);

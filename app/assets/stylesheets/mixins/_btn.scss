@@ -40,9 +40,11 @@
 @mixin btn-blue-secondary {
   @include btn;
   background: $secondary-blue-color;
-
+  border: 1px solid $secondary-blue-color;
   &:hover {
-    background: $primary-blue-color;
+    background: $white-color;
+    color: $secondary-blue-color;
+    
   }
 }
 
@@ -59,6 +61,7 @@
 @mixin btn-green {
   @include btn;
   background: $primary-green-color;
+  border: 1px solid $primary-green-color;
 
   &:hover {
     background: $white-color;

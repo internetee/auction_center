@@ -291,8 +291,7 @@
 
 .c-modal__footer__col {
   display: flex;
-  gap: rem(28px);
-  align-items: center;
+  gap: rem(24px);
 }
 
 .c-modal--error {
@@ -316,3 +315,121 @@
     padding: rem(8px 0);
   }
 }
+.c-modal.c-modal--bill{
+  .c-modal__grid{
+    gap: rem(30px);
+
+    @include mq(tablet) {
+      gap: rem(0 20px);
+    }
+  
+    @include mq(laptop) {
+      gap: rem(0 30px);
+    }
+  
+    @include mq(desktop) {
+      gap: rem(0 40px);
+    }
+  }
+  .c-modal__main {
+    padding: rem(30px 0 50px 0);
+    @include mq(tablet){
+      padding: rem(40px 0);
+    }
+  }
+  .c-modal__scroll__content{
+    padding: rem(40px 20px 30px 20px);
+
+    @include mq(tablet){
+      padding: rem(40px);
+    }
+  }
+  .c-modal__header__title {
+    color: $grey-400-color
+  }
+  .c-modal__text-title{
+    margin-bottom: 20px;
+    padding-left: 0;
+  }
+  .c-modal__text{
+    color: $black-color;
+    font-size: rem(14px);
+    font-weight: 500;
+    line-height: rem(24px); 
+  }
+  .c-modal__extrainfo{
+    gap: 70px;
+  }
+  td{
+    word-break: break-all;
+     strong{
+      word-break: break-all;
+     }
+  }
+  thead{
+    th{
+      background-color: $grey-400-color;
+      &:first-child{
+          padding: 0;
+          font-size: 0;
+        @include mq(tablet){
+          padding: rem(8px 16px);
+          font-size: 14px;
+        }
+      }
+    }
+  }
+  tbody{
+    tr{
+      transition: background .3s;
+      td{
+        transition: font-weight .3s;
+        &:first-child{
+          padding: 0;
+          font-size: 0;
+          @include mq(tablet){
+            padding: rem(8px 16px);
+            font-size: 14px;
+          }
+        }
+      }
+      &:hover{
+       background-color: $grey-100-color; 
+       td{
+        font-weight: 800;
+       }
+      }
+    }
+  }
+  tfoot{
+    td{
+      background-color: $black-color;
+      color: $white-color;
+      font-weight: 800;
+      border: 0;
+    }
+  }
+  .c-modal__footer{
+    margin-bottom: 20px;
+    .c-btn{
+      font-size: rem(14px);
+    }
+  }
+  .c-modal__col {
+    width: 100%;
+
+    @include mq(tablet) {
+      width: calc(50% - 0.75rem);
+    }
+  
+    @include mq(laptop) {
+      width: calc(50% - 0.9375rem);
+    }
+  
+    @include mq(desktop) {
+      width: calc(50% - 1.25rem);
+    }
+  }
+}
+
+

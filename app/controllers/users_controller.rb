@@ -1,5 +1,6 @@
 require 'countries'
 
+# rubocop:disable Metrics/ClassLength
 class UsersController < ApplicationController
   include UserNotices
   before_action :authenticate_user!, only: %i[show edit update destroy edit_authwall]
@@ -31,6 +32,8 @@ class UsersController < ApplicationController
   end
 
   # POST /users/new
+  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/MethodLength
   def create
     @user = User.new(create_params)
 
@@ -62,11 +65,15 @@ class UsersController < ApplicationController
 
   # PUT /users/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
   def update
-    if valid_password?
-      @user.attributes = params_for_update
-      email_changed = @user.email_changed?
+    puts '====='
+    puts params
+    puts '====='
 
-      respond_to do |format|
+    respond_to do |format|
+      if valid_password?
+        @user.attributes = params_for_update
+        email_changed = @user.email_changed?
+
         if @user.valid?
           @user.save!
 
@@ -75,12 +82,16 @@ class UsersController < ApplicationController
           end
           format.json { render :show, status: :ok, location: @user }
         else
-          format.html { render :edit }
+
+          flash.now[:alert] = @user.errors.full_messages.join(', ')
+
           format.json { render json: @user.errors, status: :unprocessable_entity }
+          format.turbo_stream
         end
+      else
+        flash.now[:alert] = t('.incorrect_password')
+        format.turbo_stream
       end
-    else
-      redirect_to edit_user_path(@user.uuid), notice: t('.incorrect_password')
     end
   end
 

@@ -1,0 +1,77 @@
+
+.c-account__title{
+    margin: 0;
+}
+.c-account_editicons {
+    gap: 8px;
+}
+
+.c-account__input-wrapper {
+    flex-wrap: wrap;
+    gap: 15px;
+    max-width: 450px;
+    .c-account__input {
+        max-width: 131px;
+        flex-shrink: 0;
+        &:last-child{
+            margin-bottom: 0;
+            span{
+                padding: rem(12px 0);
+            }
+            label{
+                padding-left: 0;
+            }
+        }
+    }
+    span{
+        font-weight: 500;
+        font-size: rem(14px);
+        height: rem(48px);
+        line-height: rem(24px);
+        padding: rem(12px 16px);
+        width: 100%;
+    }
+    
+    .c-account__input--readonly{
+        label{
+            margin-bottom: 20px;
+        }
+        input{
+            border: 0;
+            padding: 0;
+        }
+    }
+}
+.c-account__checkbox {
+    gap: 16px;
+
+    label {
+        margin: 0;
+    }
+}
+.c-account__chekboxtitle {
+    color: $black-color;
+    font-size: rem(14px);
+    font-weight: 500;
+    line-height: rem(24px);
+}
+a.c-acount__link {
+    color: $primary-blue-color;
+    font-size: rem(14px);
+    font-weight: 500;
+    line-height: rem(24px);
+    text-decoration-line: underline;
+    margin-bottom: rem(30px);
+    display: block;
+}
+.c-acount__buttons{
+    gap: 24px;
+}
+.c-acount__button{
+    font-size: rem(14px);
+}
+.c-acount__button--icon{
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}

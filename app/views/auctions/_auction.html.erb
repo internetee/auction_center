@@ -2,11 +2,7 @@
   
   <% english_auction_presenter = EnglishBidsPresenter.new(auction) %>
 
-  <td>
-    <%= link_to auction_path(auction.uuid), target: '_top', style: 'color: black; font-weight: bold; text-decoration: none;' do %>
-      <%= domain_name_with_embedded_colors(auction.domain_name) %>
-    <% end %>
-  </td>
+  <td><%= auction.domain_name %></td>
   
   <td><%= component 'common/auction_type_icon', auction: auction %></td>
 
@@ -33,7 +29,7 @@
   <% end %>
 
   <td class="u-text-left u-text-center-l">
-    <% if user_signed_in? %>      
+    <% if user %>      
       <% if auction.english? %>
 
         <% if auction.users_offer_uuid %>

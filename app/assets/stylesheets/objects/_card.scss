@@ -1,0 +1,18 @@
+.o-card {
+    border-radius: rem(8px);
+    background-color: $white-color;
+    box-shadow: 0px 0px 48px 0px rgba(0, 0, 0, 0.06);
+    padding: rem(24px 24px 48px 24px);
+    align-self: self-start;
+    position: relative;
+
+    @include mq(tablet){
+        padding: rem(30px 48px 48px 48px);
+    }
+}
+
+.o-card__title{
+    color: $black-color;
+    font-size: 24px;
+    font-weight: 900;
+}

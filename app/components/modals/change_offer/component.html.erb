@@ -37,7 +37,7 @@
           </div>
 
           <%= form_with model: @autobider, url: autobider_url, remote: true, 
-                                data: { turbo_frame: "_top", controller: 'form--autobider-submit', form__autobider_submit_target: 'form' }, 
+                                data: { turbo_frame: "_top", controller: 'form--autobider-submit form--autobider-validation', form__autobider_submit_target: 'form', form__autobider_validation_bid_min_value: @auction.min_bids_step.to_f }, 
                                 html: {id: ' autobid_form '} do |f| %>
             <div class="c-modal__grid u-align-center u-flex-wrap u-mt-24 u-mt-48-l">
               <%= f.hidden_field :domain_name, value: offer.auction.domain_name %>
@@ -45,12 +45,12 @@
               <label>Automaatpakkuja lagi</label>
               <div class="c-modal__col">
                 <%= f.number_field :price, min: 0.0, step: 0.01, value: number_with_precision(@autobider.price.to_f,precision: 2), 
-                    disabled: @auction.finished? ? true : false, "data-action": "keydown->form--autobider-submit#validatePrice", "data-form--autobider-submit-target": "price" %>
+                    disabled: @auction.finished? ? true : false, "data-action": "keydown->form--autobider-submit#validatePrice input->form--autobider-submit#validatingInputPrice", "data-form--autobider-submit-target": "price", "data-form--autobider-validation-target": "bidInput" %>
               </div>
               <div class="c-modal__col">
                 <div class="u-flex u-flex-wrap u-flex-gap-12">
                   <label class="o-checkbox" for="checkbox">
-                    <%= f.check_box :enable, id: 'checkbox', data: { action: 'change->form--autobider-submit#submitAutobider' } %>
+                    <%= f.check_box :enable, id: 'checkbox', data: { form__autobider_submit_target: 'checkbox', action: 'change->form--autobider-submit#submitAutobider' } %>
                     <div class="o-checkbox__slider round"></div>
                   </label>
                   <span class="u-word-nowrap">Automaatpakkuja: <strong>Jah</strong></span>

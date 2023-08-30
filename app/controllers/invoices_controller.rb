@@ -75,12 +75,6 @@ class InvoicesController < ApplicationController
                                                   customer_url: deposit_callback_url,
                                                   description: description)
 
-      puts '------'
-      puts response.inspect
-      puts response.instance['oneoff_redirect_link']
-      puts response.result?
-      puts '------'
-
     if response.result?
       redirect_to response.instance['oneoff_redirect_link'], allow_other_host: true, format: :html
     else
@@ -93,6 +87,7 @@ class InvoicesController < ApplicationController
     invoice = Invoice.accessible_by(current_ability).find_by!(uuid: params[:uuid])
     response = EisBilling::OneoffService.call(invoice_number: invoice.number.to_s,
                                               customer_url: linkpay_callback_url)
+
     if response.result?
       redirect_to response.instance['oneoff_redirect_link'], allow_other_host: true, format: :html
     else
