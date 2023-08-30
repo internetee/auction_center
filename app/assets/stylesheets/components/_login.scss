@@ -1,0 +1,60 @@
+.c-login__title{
+    line-height: rem(30px);
+    margin-bottom: rem(16px);
+    
+    @include mq(tablet){
+        margin-bottom: rem(30px);
+    }
+}
+.c-login__explanation {
+    font-weight: 500;
+    font-size: rem(14px);
+    line-height: rem(24px);
+    margin-bottom: rem(30px);
+  }
+.c-login__button {
+    padding: rem(6px 16px);
+    font-size: rem(14px);
+    line-height: rem(20px);
+}
+.c-login__icons {
+    gap: rem(16px);
+}
+
+.c-login__input{
+    margin-bottom: rem(30px);
+}
+.c-login__btns-wrapper {
+    margin-bottom: rem(30px);
+    gap: 1rem;
+}
+.c-login__btns{
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+.c-login__btn{
+    font-size: rem(14px);
+    flex-shrink: 0;
+
+    &:first-child{
+        @include mq(tablet){
+            margin: 0 rem(10px) 0 0;
+        }
+    }
+}
+.c-login__checkbox-container{
+    margin-top: rem(7px);
+}
+.c-login__links {
+    flex-wrap: wrap;
+    gap: 8px;
+}
+.c-login__remind-link{
+    color: $primary-blue-color;
+    font-size: rem(14px);
+    font-weight: 500;
+    line-height: rem(24px);
+    text-decoration-line: underline; 
+    flex-shrink: 0
+}

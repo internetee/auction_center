@@ -1,56 +1,56 @@
-<% content_for :hero do %>
-    <div class="hero green">
-        <h1><%= t(:sign_in) %></h1>
-    </div>
-<% end %>
-
-<div class="u-container">
-    <div class="u-container margin-block">
-    </div>
-</div>
-
-<div class="login-blocks">
-    <div class="u-container">
-        <div class="list">
-            <div class="item">
-                <div id="tara-sign-in" class="login-block ui segment">
-                    <h3><%= t('.sign_in_with_identity_document') %></h3>
-                    <p><%= t('.identity_document_text')%></p>
-                    <%= button_to t(:sign_in), "/auth/tara", data: { turbo: false }, class: "ui button big primary", target: '_top' %>
-                </div>
-            </div>
-
-            <div class="item">
-                <div id="password-sign-in" class="login-block ui segment">
-                    <h3><%= t('.sign_in_with_password') %></h3>
-                    <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: 'ui form big' }) do |f| %>
-                        <div class="field">
-                            <%= f.label :email, t('users.email') %>
-                            <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-                        </div>
-
-                        <div class="field">
-                            <%= f.label :password, t('users.password') %>
-                            <%= f.password_field :password, autocomplete: "current-password" %>
-                        </div>
-
-                        <div class="field">
-                            <% if devise_mapping.rememberable? -%>
-                                <div class="ui checkbox">
-                                    <%= f.check_box :remember_me %>
-                                    <%= f.label :remember_me, t('users.remember_me') %>
-                                </div>
-                            <% end -%>
-                        </div>
-
-                        <%= f.submit t(:sign_in), class: "ui button big primary",  data: { turbo: false } %>
-                        <%= link_to t('users.index.create_an_account'), new_user_path, class: "ui button big green" %>
-                    <% end %>
-
-                    <br>
-                    <%= render "devise/shared/links" %>
-                </div>
-            </div>
+<%= component 'common/hero', title: 'Sisene' %>
+<!-- Login -->
+<div class="o-container">
+  <div class="c-block c-login">
+    <div class="o-grid o-grid--two-col o-grid--sep">
+      <div class="c-login--wrapper">
+        <h2 class="c-login__title u-h3">Logi sisse isikut tõendava dokumendiga</h2>
+        <p class="c-login__explanation">
+          Sisene kasutades Eesti (sh e-residendi) ID kaarti, Mobiil-IDd, pangalinki või EU liikmeriikide elektroonset isikutunnistust (EIDAS)
+        </p>
+        <div class="c-login__buttons-wrapper u-flex u-content-sp u-content-center">
+          <a class="c-login__button c-btn c-btn--blue-secondary" href="#" title="Sisene">Sisene</a>
+          <div class="c-login__icons u-flex u-content-sp u-content-center">
+            <%= render partial: 'svg/id_auth' %>
+          </div>
         </div>
+      </div>
+      <div class="c-login--wrapper">
+        <h2 class="c-login__title u-h3">Logi sisse salasõnaga</h2>
+        <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: 'c-login__form' }) do |f| %>
+          <div class="c-login__input">
+            <%= f.label :email, t('users.email') %>
+            <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+          </div>
+          <div class="c-login__input">
+            <%= f.label :password, t('users.password') %>
+            <%= f.password_field :password, autocomplete: "current-password" %>
+          </div>
+          <div class="c-login__btns-wrapper u-flex u-align-start u-content-sp">
+            <div class="c-login__btns">
+              <%= f.button t(:sign_in), class: "c-btn c-btn--green c-login__btn",  data: { turbo: false } %>
+              <%= link_to t('users.index.create_an_account'), new_user_path, class: "c-btn c-btn--ghost c-login__btn" %>
+            </div>
+            <% if devise_mapping.rememberable? -%>
+              <label class="o-checkbox-container c-login__checkbox-container">
+                <span class="o-checkbox-text">Mäleta mind</span>
+                <%= f.check_box :remember_me, class: 'o-checkbox-sample' %>
+                <span class="o-checkmark-sample"></span>
+              </label>
+            <% end -%>
+          </div>
+          <div class="c-login__links u-flex u-align-center u-content-sp">
+            <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
+                <%= link_to t('.forgot_your_password'), new_password_path(resource_name), class: 'c-login__remind-link' %><br />
+            <% end -%>
+
+            <%- if devise_mapping.confirmable? && controller_name != 'confirmations' %>
+                <%= link_to t('.didnt_receive_confirmation_instructions'), new_confirmation_path(resource_name), class: 'c-login__remind-link' %><br />
+            <% end -%>
+          </div>
+        <% end %>
+      </div>
     </div>
+  </div>
 </div>
+<!-- Login -->

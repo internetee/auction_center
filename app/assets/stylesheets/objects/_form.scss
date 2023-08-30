@@ -7,6 +7,63 @@
   color: $grey-400-color;
   display: inline-block;
 }
+.o-checkbox-container {
+  display: block;
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+  margin-bottom: 0;
+}
+.o-checkbox-text{
+  color: $black-color;
+  font-size: rem(14px);
+  font-weight: 500;
+  line-height: rem(24px);
+  margin-left: 1rem;
+  white-space: nowrap;
+}
+.o-checkbox-sample {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.o-checkmark-sample {
+  position: absolute;
+  top: rem(3px);
+  left: 0;
+  height: rem(16px);
+  width: rem(16px);
+  border-radius: rem(4px);
+  border: 1px solid $grey-200-color;
+  background: $white-color;
+}
+.o-checkbox-container:hover input ~ .o-checkmark-sample {
+  background-color: $grey-100-color;
+}
+.o-checkbox-sample:checked ~ .o-checkmark-sample {
+  background-color: $white-color;
+}
+
+.o-checkmark-sample:after {
+  content: "";
+  position: absolute;
+  display: none;
+  left: rem(5px);
+  top: rem(1px);
+  width: rem(5.5px);
+  height: rem(10px);
+  border: solid $grey-400-color;
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+}
+
+.o-checkbox-sample:checked ~ .o-checkmark-sample:after {
+  display: block;
+}
+
 
 // Custom Checkbox
 .o-checkbox {

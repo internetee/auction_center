@@ -3199,7 +3199,7 @@
 
   // app/javascript/controllers/application.js
   var application = Application.start();
-  application.debug = false;
+  application.debug = document.documentElement.classList.contains("debug");
   window.Stimulus = application;
 
   // app/javascript/controllers/modals/offer_modal_controller.js
@@ -3246,10 +3246,18 @@
   // app/javascript/controllers/form/autobider_submit_controller.js
   var autobider_submit_controller_default = class extends Controller {
     connect() {
-      console.log("autobider submit connectes");
+      this.validatingInputPrice();
+    }
+    disconnect() {
+      if (this.timeout) {
+        clearTimeout(this.timeout);
+      }
     }
     submitAutobider() {
       clearTimeout(this.timeout);
+      if (parseFloat(this.priceTarget.value) <= 5) {
+        return;
+      }
       this.timeout = setTimeout(() => {
         this.formTarget.requestSubmit();
       }, 300);
@@ -3261,8 +3269,15 @@
         event.preventDefault();
       }
     }
+    validatingInputPrice() {
+      if (parseFloat(this.priceTarget.value) <= 5) {
+        this.checkboxTarget.disabled = true;
+      } else {
+        this.checkboxTarget.disabled = false;
+      }
+    }
   };
-  __publicField(autobider_submit_controller_default, "targets", ["form", "price"]);
+  __publicField(autobider_submit_controller_default, "targets", ["form", "price", "checkbox"]);
 
   // app/javascript/controllers/form/bundle_checkbox_controller.js
   var bundle_checkbox_controller_default = class extends Controller {
@@ -3293,6 +3308,284 @@
     }
   };
   __publicField(checkbox_toggle_controller_default, "targets", ["enableDeposit", "disableDeposit"]);
+
+  // node_modules/@rails/request.js/src/fetch_response.js
+  var FetchResponse = class {
+    constructor(response) {
+      this.response = response;
+    }
+    get statusCode() {
+      return this.response.status;
+    }
+    get redirected() {
+      return this.response.redirected;
+    }
+    get ok() {
+      return this.response.ok;
+    }
+    get unauthenticated() {
+      return this.statusCode === 401;
+    }
+    get unprocessableEntity() {
+      return this.statusCode === 422;
+    }
+    get authenticationURL() {
+      return this.response.headers.get("WWW-Authenticate");
+    }
+    get contentType() {
+      const contentType = this.response.headers.get("Content-Type") || "";
+      return contentType.replace(/;.*$/, "");
+    }
+    get headers() {
+      return this.response.headers;
+    }
+    get html() {
+      if (this.contentType.match(/^(application|text)\/(html|xhtml\+xml)$/)) {
+        return this.text;
+      }
+      return Promise.reject(new Error(`Expected an HTML response but got "${this.contentType}" instead`));
+    }
+    get json() {
+      if (this.contentType.match(/^application\/.*json$/)) {
+        return this.responseJson || (this.responseJson = this.response.json());
+      }
+      return Promise.reject(new Error(`Expected a JSON response but got "${this.contentType}" instead`));
+    }
+    get text() {
+      return this.responseText || (this.responseText = this.response.text());
+    }
+    get isTurboStream() {
+      return this.contentType.match(/^text\/vnd\.turbo-stream\.html/);
+    }
+    async renderTurboStream() {
+      if (this.isTurboStream) {
+        if (window.Turbo) {
+          await window.Turbo.renderStreamMessage(await this.text);
+        } else {
+          console.warn("You must set `window.Turbo = Turbo` to automatically process Turbo Stream events with request.js");
+        }
+      } else {
+        return Promise.reject(new Error(`Expected a Turbo Stream response but got "${this.contentType}" instead`));
+      }
+    }
+  };
+
+  // node_modules/@rails/request.js/src/request_interceptor.js
+  var RequestInterceptor = class {
+    static register(interceptor) {
+      this.interceptor = interceptor;
+    }
+    static get() {
+      return this.interceptor;
+    }
+    static reset() {
+      this.interceptor = void 0;
+    }
+  };
+
+  // node_modules/@rails/request.js/src/lib/utils.js
+  function getCookie(name) {
+    const cookies = document.cookie ? document.cookie.split("; ") : [];
+    const prefix = `${encodeURIComponent(name)}=`;
+    const cookie = cookies.find((cookie2) => cookie2.startsWith(prefix));
+    if (cookie) {
+      const value = cookie.split("=").slice(1).join("=");
+      if (value) {
+        return decodeURIComponent(value);
+      }
+    }
+  }
+  function compact(object) {
+    const result = {};
+    for (const key in object) {
+      const value = object[key];
+      if (value !== void 0) {
+        result[key] = value;
+      }
+    }
+    return result;
+  }
+  function metaContent(name) {
+    const element = document.head.querySelector(`meta[name="${name}"]`);
+    return element && element.content;
+  }
+  function stringEntriesFromFormData(formData) {
+    return [...formData].reduce((entries, [name, value]) => {
+      return entries.concat(typeof value === "string" ? [[name, value]] : []);
+    }, []);
+  }
+  function mergeEntries(searchParams, entries) {
+    for (const [name, value] of entries) {
+      if (value instanceof window.File)
+        continue;
+      if (searchParams.has(name) && !name.includes("[]")) {
+        searchParams.delete(name);
+        searchParams.set(name, value);
+      } else {
+        searchParams.append(name, value);
+      }
+    }
+  }
+
+  // node_modules/@rails/request.js/src/fetch_request.js
+  var FetchRequest = class {
+    constructor(method, url, options = {}) {
+      this.method = method;
+      this.options = options;
+      this.originalUrl = url.toString();
+    }
+    async perform() {
+      try {
+        const requestInterceptor = RequestInterceptor.get();
+        if (requestInterceptor) {
+          await requestInterceptor(this);
+        }
+      } catch (error2) {
+        console.error(error2);
+      }
+      const response = new FetchResponse(await window.fetch(this.url, this.fetchOptions));
+      if (response.unauthenticated && response.authenticationURL) {
+        return Promise.reject(window.location.href = response.authenticationURL);
+      }
+      if (response.ok && response.isTurboStream) {
+        await response.renderTurboStream();
+      }
+      return response;
+    }
+    addHeader(key, value) {
+      const headers = this.additionalHeaders;
+      headers[key] = value;
+      this.options.headers = headers;
+    }
+    sameHostname() {
+      if (!this.originalUrl.startsWith("http:")) {
+        return true;
+      }
+      try {
+        return new URL(this.originalUrl).hostname === window.location.hostname;
+      } catch (_) {
+        return true;
+      }
+    }
+    get fetchOptions() {
+      return {
+        method: this.method.toUpperCase(),
+        headers: this.headers,
+        body: this.formattedBody,
+        signal: this.signal,
+        credentials: "same-origin",
+        redirect: this.redirect
+      };
+    }
+    get headers() {
+      const baseHeaders = {
+        "X-Requested-With": "XMLHttpRequest",
+        "Content-Type": this.contentType,
+        Accept: this.accept
+      };
+      if (this.sameHostname()) {
+        baseHeaders["X-CSRF-Token"] = this.csrfToken;
+      }
+      return compact(
+        Object.assign(baseHeaders, this.additionalHeaders)
+      );
+    }
+    get csrfToken() {
+      return getCookie(metaContent("csrf-param")) || metaContent("csrf-token");
+    }
+    get contentType() {
+      if (this.options.contentType) {
+        return this.options.contentType;
+      } else if (this.body == null || this.body instanceof window.FormData) {
+        return void 0;
+      } else if (this.body instanceof window.File) {
+        return this.body.type;
+      }
+      return "application/json";
+    }
+    get accept() {
+      switch (this.responseKind) {
+        case "html":
+          return "text/html, application/xhtml+xml";
+        case "turbo-stream":
+          return "text/vnd.turbo-stream.html, text/html, application/xhtml+xml";
+        case "json":
+          return "application/json, application/vnd.api+json";
+        default:
+          return "*/*";
+      }
+    }
+    get body() {
+      return this.options.body;
+    }
+    get query() {
+      const originalQuery = (this.originalUrl.split("?")[1] || "").split("#")[0];
+      const params = new URLSearchParams(originalQuery);
+      let requestQuery = this.options.query;
+      if (requestQuery instanceof window.FormData) {
+        requestQuery = stringEntriesFromFormData(requestQuery);
+      } else if (requestQuery instanceof window.URLSearchParams) {
+        requestQuery = requestQuery.entries();
+      } else {
+        requestQuery = Object.entries(requestQuery || {});
+      }
+      mergeEntries(params, requestQuery);
+      const query = params.toString();
+      return query.length > 0 ? `?${query}` : "";
+    }
+    get url() {
+      return this.originalUrl.split("?")[0].split("#")[0] + this.query;
+    }
+    get responseKind() {
+      return this.options.responseKind || "html";
+    }
+    get signal() {
+      return this.options.signal;
+    }
+    get redirect() {
+      return this.options.redirect || "follow";
+    }
+    get additionalHeaders() {
+      return this.options.headers || {};
+    }
+    get formattedBody() {
+      const bodyIsAString = Object.prototype.toString.call(this.body) === "[object String]";
+      const contentTypeIsJson = this.headers["Content-Type"] === "application/json";
+      if (contentTypeIsJson && !bodyIsAString) {
+        return JSON.stringify(this.body);
+      }
+      return this.body;
+    }
+  };
+
+  // app/javascript/controllers/form/checkbox_autosubmit_controller.js
+  var checkbox_autosubmit_controller_default = class extends Controller {
+    submit() {
+      clearTimeout(this.timeout);
+      this.timeout = setTimeout(() => {
+        this.performRequest();
+      }, 300);
+    }
+    disconnect() {
+      if (this.timeout) {
+        clearTimeout(this.timeout);
+      }
+    }
+    performRequest() {
+      const originalState = this.checkboxTarget.checked;
+      const request = new FetchRequest("PATCH", this.urlValue, {
+        headers: { responseKind: "turbo-stream", accept: "text/vnd.turbo-stream.html" },
+        body: new FormData(this.checkboxTarget.form)
+      });
+      const response = request.perform();
+      if (!response.ok) {
+        this.checkboxTarget.checked = !originalState;
+        console.error("Failed to update user profile", response);
+      }
+    }
+  };
+  __publicField(checkbox_autosubmit_controller_default, "targets", ["checkbox"]);
+  __publicField(checkbox_autosubmit_controller_default, "values", { url: String });
 
   // app/javascript/controllers/form/autosave_controller.js
   var autosave_controller_default = class extends Controller {
@@ -3477,6 +3770,156 @@
     messageTimer: { type: String, default: "<b>${days}d ${hours}h ${minutes}m ${seconds}s</b>" }
   });
 
+  // app/javascript/controllers/profile_webpush_controller.js
+  var profile_webpush_controller_default = class extends Controller {
+    connect() {
+      console.log("webpush connected!");
+      if ("serviceWorker" in navigator && "PushManager" in window) {
+        navigator.serviceWorker.ready.then(
+          (registration) => {
+            registration.pushManager.getSubscription().then(
+              (subscription) => {
+                if (subscription) {
+                  this.checkboxTarget.style.disabled = true;
+                  this.checkboxTarget.classList.add("disabled");
+                }
+              }
+            );
+          }
+        );
+      }
+    }
+    setupPushNotifications() {
+      console.log("webpush action!");
+      const applicationServerKey2 = this.urlBase64ToUint8Array(this.vapidPublicValue);
+      navigator.serviceWorker.register("/service-worker.js", { scope: "./" }).then((registration) => {
+        registration.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: applicationServerKey2
+        }).then((subscription) => {
+          const endpoint = subscription.endpoint;
+          const p256dh = btoa(String.fromCharCode.apply(null, new Uint8Array(subscription.getKey("p256dh"))));
+          const auth = btoa(String.fromCharCode.apply(null, new Uint8Array(subscription.getKey("auth"))));
+          fetch("/push_subscriptions", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
+            },
+            body: JSON.stringify({
+              subscription: {
+                endpoint,
+                p256dh,
+                auth
+              }
+            })
+          });
+          localStorage.setItem("block-webpush-modal", "true");
+          document.querySelector(".webpush-modal").style.display = "none";
+          this.checkboxTarget.style.disabled = true;
+          this.checkboxTarget.classList.add("disabled");
+        });
+      });
+    }
+  };
+  __publicField(profile_webpush_controller_default, "values", {
+    vapidPublic: String
+  });
+  __publicField(profile_webpush_controller_default, "targets", ["checkbox"]);
+
+  // app/javascript/controllers/push_notification_controller.js
+  var push_notification_controller_default = class extends Controller {
+    connect() {
+      if (!this.userLoginValue)
+        return;
+      let subscribed = localStorage.getItem("block-webpush-modal");
+      if (subscribed === "true") {
+        document.querySelector(".webpush-modal").style.display = "none";
+      }
+      if ("serviceWorker" in navigator && "PushManager" in window) {
+        navigator.serviceWorker.ready.then(
+          (registration) => {
+            registration.pushManager.getSubscription().then(
+              (subscription) => {
+                if (!subscription) {
+                  if (Notification.permission === "granted") {
+                    this.setupPushNotifications();
+                  } else {
+                    this.requestPermission();
+                  }
+                }
+              }
+            );
+          }
+        );
+      }
+    }
+    requestPermission() {
+      window.addEventListener("load", () => {
+        Notification.requestPermission().then((permission) => {
+          if (permission === "granted") {
+            this.setupPushNotifications(applicationServerKey);
+          }
+        });
+      });
+    }
+    setupPushNotifications() {
+      const applicationServerKey2 = this.urlBase64ToUint8Array(this.vapidPublicValue);
+      console.log(this.vapidPublicValue);
+      navigator.serviceWorker.register("/service-worker.js", { scope: "./" }).then((registration) => {
+        console.log("Service Worker registered successfully:", registration);
+        registration.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: applicationServerKey2
+        }).then((subscription) => {
+          const endpoint = subscription.endpoint;
+          const p256dh = btoa(String.fromCharCode.apply(null, new Uint8Array(subscription.getKey("p256dh"))));
+          const auth = btoa(String.fromCharCode.apply(null, new Uint8Array(subscription.getKey("auth"))));
+          fetch("/push_subscriptions", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
+            },
+            body: JSON.stringify({
+              subscription: {
+                endpoint,
+                p256dh,
+                auth
+              }
+            })
+          });
+          localStorage.setItem("block-webpush-modal", "true");
+          document.querySelector(".webpush-modal").style.display = "none";
+        });
+      }).catch((err) => {
+        console.log("Service Worker registration failed:", err);
+      });
+      ;
+    }
+    close() {
+      document.querySelector(".webpush-modal").style.display = "none";
+    }
+    decline() {
+      localStorage.setItem("block-webpush-modal", "true");
+      document.querySelector(".webpush-modal").style.display = "none";
+    }
+    urlBase64ToUint8Array(base64String) {
+      var padding = "=".repeat((4 - base64String.length % 4) % 4);
+      var base64 = (base64String + padding).replace(/\-/g, "+").replace(/_/g, "/");
+      var rawData = window.atob(base64);
+      var outputArray = new Uint8Array(rawData.length);
+      for (var i = 0; i < rawData.length; ++i) {
+        outputArray[i] = rawData.charCodeAt(i);
+      }
+      return outputArray;
+    }
+  };
+  __publicField(push_notification_controller_default, "values", {
+    vapidPublic: String,
+    userLogin: Boolean
+  });
+
   // app/javascript/controllers/index.js
   application.register("modals--offer-modal", offer_modal_controller_default);
   application.register("form--debounce", debounce_controller_default);
@@ -3484,12 +3927,15 @@
   application.register("form--autobider-submit", autobider_submit_controller_default);
   application.register("form--bundle-checkbox", bundle_checkbox_controller_default);
   application.register("form--checkbox-toggle", checkbox_toggle_controller_default);
+  application.register("form--checkbox-autosubmit", checkbox_autosubmit_controller_default);
   application.register("form--autosave", autosave_controller_default);
   application.register("table--ordeable", ordeable_controller_default);
   application.register("table--tab", tab_controller_default);
   application.register("autotax-counter", autotax_counter_controller_default);
   application.register("english-offer", english_offers_controller_default);
   application.register("countdown", countdown_controller_default);
+  application.register("profile-webpush", profile_webpush_controller_default);
+  application.register("push-notification", push_notification_controller_default);
 
   // node_modules/@hotwired/turbo/dist/turbo.es2017-esm.js
   (function() {
@@ -3705,7 +4151,7 @@
   function addTrailingSlash(value) {
     return value.endsWith("/") ? value : value + "/";
   }
-  var FetchResponse = class {
+  var FetchResponse2 = class {
     constructor(response) {
       this.response = response;
     }
@@ -3925,7 +4371,7 @@
         return FetchMethod.delete;
     }
   }
-  var FetchRequest = class {
+  var FetchRequest2 = class {
     constructor(delegate, method, location2, body = new URLSearchParams(), target = null) {
       this.abortController = new AbortController();
       this.resolveRequestPromise = (_value) => {
@@ -3969,7 +4415,7 @@
       }
     }
     async receive(response) {
-      const fetchResponse = new FetchResponse(response);
+      const fetchResponse = new FetchResponse2(response);
       const event = dispatch("turbo:before-fetch-response", {
         cancelable: true,
         detail: { fetchResponse },
@@ -4121,7 +4567,7 @@
       if (this.method == FetchMethod.get) {
         mergeFormDataEntries(this.location, [...this.body.entries()]);
       }
-      this.fetchRequest = new FetchRequest(this, this.method, this.location, this.body, this.formElement);
+      this.fetchRequest = new FetchRequest2(this, this.method, this.location, this.body, this.formElement);
       this.mustRedirect = mustRedirect;
     }
     get method() {
@@ -5186,7 +5632,7 @@
       if (this.hasPreloadedResponse()) {
         this.simulateRequest();
       } else if (this.shouldIssueRequest() && !this.request) {
-        this.request = new FetchRequest(this, FetchMethod.get, this.location);
+        this.request = new FetchRequest2(this, FetchMethod.get, this.location);
         this.request.perform();
       }
     }
@@ -5961,7 +6407,7 @@
   function fetchResponseFromEvent(event) {
     var _a;
     const fetchResponse = (_a = event.detail) === null || _a === void 0 ? void 0 : _a.fetchResponse;
-    if (fetchResponse instanceof FetchResponse) {
+    if (fetchResponse instanceof FetchResponse2) {
       return fetchResponse;
     }
   }
@@ -6905,7 +7351,7 @@
     }
     async visit(url) {
       var _a;
-      const request = new FetchRequest(this, FetchMethod.get, url, new URLSearchParams(), this.element);
+      const request = new FetchRequest2(this, FetchMethod.get, url, new URLSearchParams(), this.element);
       (_a = this.currentFetchRequest) === null || _a === void 0 ? void 0 : _a.cancel();
       this.currentFetchRequest = request;
       return new Promise((resolve) => {
@@ -6986,7 +7432,7 @@
       throw new TurboFrameMissingError(message);
     }
     async visitResponse(response) {
-      const wrapped = new FetchResponse(response);
+      const wrapped = new FetchResponse2(response);
       const responseHTML = await wrapped.responseHTML;
       const { location: location2, redirected, statusCode } = wrapped;
       return session.visit(location2, { response: { redirected, statusCode, responseHTML } });

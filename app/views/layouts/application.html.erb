@@ -55,6 +55,14 @@
           </div>
         <% end %>
 
+    <%= render 'common/webpush_modal' if user_signed_in? %>
+
+    <%= turbo_frame_tag :flash do %>
+      <%= turbo_stream_from current_user, :flash %>
+      <div id='flash-notice' data-outbid-message="<%= I18n.t('.participant_outbid') %>">
+        <%= render partial: 'common/flash', locals: { flash: flash } %>
+      </div>
+    <% end %>
 
     <%= component 'common/header' %>
 
