@@ -5484,33 +5484,91 @@ table .c-btn--icon {
 
 .c-account_editicons {
   gap: 8px;
+  position: absolute;
+  top: 0;
+  right: -14px;
+  transform: translateY(-50%);
+  height: 32px;
+}
+@media all and (min-width: 768px) {
+  .c-account_editicons {
+    position: static;
+    transform: none;
+  }
+}
+.c-account_editicons > svg {
+  cursor: pointer;
+  opacity: 1;
+  transition: opacity 0.3s;
+}
+.c-account_editicons > svg:not(:first-child) {
+  display: none;
+}
+.c-account_editicons > svg:hover {
+  opacity: 0.7;
+}
+.c-account_editicons.is-editable .c-account_editicons--reset {
+  display: inline-flex;
+}
+.c-account_editicons.is-editable .c-account_editicons--reset svg {
+  display: block;
+}
+.c-account_editicons.is-editable > svg:not(:first-child) {
+  display: inline-flex;
+}
+.c-account_editicons.is-editable > svg:first-child {
+  display: none;
+}
+
+.c-account_editicons--reset {
+  display: none;
+  padding: 0;
+  border: 0;
+  background-color: transparent;
+  opacity: 1;
+  transition: opacity 0.3s;
+}
+.c-account_editicons--reset:hover {
+  opacity: 0.7;
 }
 
 .c-account__input-wrapper {
   flex-wrap: wrap;
-  gap: 15px;
+  gap: 0;
   max-width: 450px;
+  justify-content: space-between;
+}
+@media all and (min-width: 768px) {
+  .c-account__input-wrapper {
+    column-gap: 15px;
+    justify-content: flex-start;
+  }
 }
 .c-account__input-wrapper .c-account__input {
-  max-width: 131px;
+  width: 50%;
   flex-shrink: 0;
+}
+@media all and (min-width: 768px) {
+  .c-account__input-wrapper .c-account__input {
+    width: 131px;
+  }
 }
 .c-account__input-wrapper .c-account__input:last-child {
   margin-bottom: 0;
 }
-.c-account__input-wrapper .c-account__input:last-child span {
-  padding: 0.75rem 0;
-}
-.c-account__input-wrapper .c-account__input:last-child label {
-  padding-left: 0;
+@media all and (min-width: 768px) {
+  .c-account__input-wrapper .c-account__input:last-child {
+    width: 165px;
+  }
 }
 .c-account__input-wrapper span {
   font-weight: 500;
   font-size: 0.875rem;
-  height: 3rem;
   line-height: 1.5rem;
   padding: 0.75rem 1rem;
-  width: 100%;
+}
+.c-account__input-wrapper span:last-child {
+  padding-right: 0;
 }
 .c-account__input-wrapper .c-account__input--readonly label {
   margin-bottom: 20px;
@@ -5518,6 +5576,14 @@ table .c-btn--icon {
 .c-account__input-wrapper .c-account__input--readonly input {
   border: 0;
   padding: 0;
+}
+
+.c-account__input--editable input {
+  border-color: transparent;
+  transition: border 0.5s;
+}
+.c-account__input--editable.is-editable input {
+  border: 1px solid #e2e2e2;
 }
 
 .c-account__checkbox {
@@ -5545,11 +5611,26 @@ a.c-acount__link {
 }
 
 .c-acount__buttons {
-  gap: 24px;
+  gap: 5px;
+}
+@media all and (min-width: 320px) {
+  .c-acount__buttons {
+    gap: 10px;
+  }
+}
+@media all and (min-width: 768px) {
+  .c-acount__buttons {
+    gap: 24px;
+  }
 }
 
 .c-acount__button {
-  font-size: 0.875rem;
+  font-size: 0.6875rem;
+}
+@media all and (min-width: 320px) {
+  .c-acount__button {
+    font-size: 0.875rem;
+  }
 }
 
 .c-acount__button--icon {

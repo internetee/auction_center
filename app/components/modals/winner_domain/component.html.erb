@@ -11,27 +11,27 @@
                         <span>Oled võitnud!</span>
                     </div>
                     <div class="c-modal__header__subject">
-                        <span class="c-modal__header__subject__title">meekarud.ee</span>
+                        <span class="c-modal__header__subject__title"><%= @result.auction.domain_name %></span>
                         <span class="o-po-icon o-io-icon--bg-orange"></span>
                     </div>
                     <div class="c-modal__header__desc">
-                        <span>Staatus</span> <span class="c-badge c-badge--yellow">ootab arve tasumist</span>
+                        <span><%= t('results.status') %></span> <span class="c-badge c-badge--yellow"><%= @result.status.humanize %></span>
                     </div>
                 </div>
                 <div class="c-modal__main">
                     <div class="">
-                        <label>Registreerimiskood</label>
-                        <input class="u-bg-silver-gradient" name=""/>
+                        <label><%= t('results.registration_code') %></label>
+                        <input class="u-bg-silver-gradient" name="" value="<%= registration_code_or_information %>" disabled>
                         <span class="c-modal__input-desc u-text-right u-mt-8">Kui arve on tasutud, ilmub siia registreerimiskood</span>
                     </div>
                     <div class="u-flex u-flex-wrap u-flex-gap-50-l u-flex-gap-24 u-mt-8">
                         <div>
-                            <p class="u-mb-8">Arve tasuda hiljemalt</p>
-                            <strong>20-04-2023</strong>
+                            <p class="u-mb-8"><%= t('results.pay_invoice_before') %></p>
+                            <strong><%= pay_invoice_before %></strong>
                         </div>
                         <div>
-                            <p class="u-mb-8">Registreeri hiljemalt</p>
-                            <strong>20-04-2023</strong>
+                            <p class="u-mb-8"><%= t('results.register_before') %></p>
+                            <strong><%= @result.registration_due_date %></strong>
                         </div>
                     </div>
                 </div>
