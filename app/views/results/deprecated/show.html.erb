@@ -1,0 +1,55 @@
+<% content_for :hero do %>
+    <div class="hero green">
+        <h1><%= t('.title') %></h1>
+        <div class="monospace"><%= @result.auction.domain_name %></div>
+    </div>
+<% end %>
+
+<div class="u-container">
+    <div class="margin-block">
+            <div class="body">
+                <table class="ui table very basic padded">
+                    <tbody>
+                        <tr>
+                            <td><strong><%= t('results.status') %></strong></td>
+                            <td>
+                                <%= @result.status.humanize %>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><strong><%= t('results.registration_code') %></strong></td>
+                            <td>
+                                <%= registration_code_or_information(@result) %>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><strong><%= t('results.pay_invoice_before') %></strong></td>
+                            <td>
+                                <%= pay_invoice_before(@result) %>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><strong><%= t('results.register_before') %></strong></td>
+                            <td>
+                                <%= @result.registration_due_date %>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+
+                    <div class="buttons">
+                        <% if @result.invoice %>
+                            <%= link_to t('results.invoice'), invoice_path(@result.invoice.uuid),
+                            class: "ui button big primary" %>
+                        <% else %>
+                            <%= t('invoices.is_being_generated') %>
+                        <% end %>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
