@@ -8,12 +8,16 @@ class ApplicationController < ActionController::Base
     policy.style_src :self, 'www.gstatic.com', :unsafe_inline
   end
 
-  rescue_from CanCan::AccessDenied do |exception|
+  rescue_from CanCan::AccessDenied do |_exception|
     flash[:alert] = I18n.t('unauthorized.message')
     redirect_to root_url
   end
 
   def set_locale
+    if params[:localize].present? && I18n.available_locales.include?(params[:localize].to_sym)
+      cookies[:locale] = params[:localize]
+    end
+
     I18n.locale = current_user&.locale || cookies[:locale] || I18n.default_locale
     @pagy_locale = I18n.locale.to_s
   end
