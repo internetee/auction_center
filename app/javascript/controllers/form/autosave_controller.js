@@ -6,7 +6,6 @@ export default class extends Controller {
       select: String,
     }
 
-
     connect() {
       this.selectValue = this.selectTarget.value;
     }
