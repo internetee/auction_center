@@ -1,3 +1,6 @@
+07.09.2023
+* Improved reCaptcha handling https://github.com/internetee/auction_center/pull/1117
+
 06.09.2023
 * Set localization in url https://github.com/internetee/auction_center/pull/1119
 
