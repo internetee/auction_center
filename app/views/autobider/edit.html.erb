@@ -15,14 +15,13 @@
       <%= button_tag t(:cancel), class: "ui button secondary" %>
 
         <div class="column">
-          <% if @captcha_autobidder_required %>
+          <% if @captcha_required %>
             <div class="field">
               <br>
-              <%= recaptcha_tags noscript: false %>
+              <%= recaptcha_tags noscript: false, site_key: @recaptcha2_site_key %>
             </div>
           <% end %>
         </div>
-
       </div>
     </div>
   <% end %>

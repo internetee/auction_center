@@ -1,25 +1,25 @@
 class EnglishOffersController < ApplicationController
+  include BeforeRender
+  protect_from_forgery with: :null_session
+
   before_action :authenticate_user!
   before_action :find_auction, only: %i[new create]
   before_action :check_for_ban, only: :create
   before_action :set_offer, only: %i[show edit update]
-  before_action :set_captcha_required
+  before_render :find_or_initialize_autobidder, only: %i[new create edit update]
   before_action :authorize_phone_confirmation
   before_action :authorize_offer_for_user, except: %i[new create]
   before_action :prevent_check_for_invalid_bid, only: [:update]
-  before_action :captcha_check, only: %i[update create]
+  before_render :find_or_initialize_autobidder, only: %i[new create edit update]
 
-  protect_from_forgery with: :null_session
-
+  include RecaptchaValidatable
+  recaptcha_action 'english_offer'
   include OfferNotifable
 
   # GET /auctions/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/offers/new
   def new
     offer = @auction.offer_from_user(current_user.id)
     redirect_to edit_english_offer_path(offer.uuid) if offer
-
-    @autobider = Autobider.find_by(domain_name: @auction.domain_name, user: current_user)
-    @autobider = current_user.autobiders.build(domain_name: @auction.domain_name) if @autobider.nil?
 
     BillingProfile.create_default_for_user(current_user.id)
     @offer = Offer.new(auction_id: @auction.id, user_id: current_user.id)
@@ -37,18 +37,24 @@ class EnglishOffersController < ApplicationController
     @offer.username = Username::GenerateUsernameService.new.call
     authorize! :manage, @offer
 
-    if create_predicate(@auction)
-      broadcast_update_auction_offer(@auction)
-      send_outbided_notification(auction: @auction, offer: @offer, flash: flash)
-      update_auction_values(@auction, t('english_offers.create.created'))
-    else
-      flash[:alert] = if @offer.errors.full_messages_for(:cents).present?
-                        @offer.errors.full_messages_for(:cents).join
-                      else
-                        @offer.errors.full_messages.join('; ')
-                      end
+    if recaptcha_valid
+      if create_predicate(@auction)
+        broadcast_update_auction_offer(@auction)
+        send_outbided_notification(auction: @auction, offer: @offer, flash: flash)
+        update_auction_values(@auction, t('english_offers.create.created'))
+      else
+        flash[:alert] = if @offer.errors.full_messages_for(:cents).present?
+                          @offer.errors.full_messages_for(:cents).join
+                        else
+                          @offer.errors.full_messages.join('; ')
+                        end
 
-      redirect_to root_path
+        redirect_to root_path
+      end
+    else
+      @show_checkbox_recaptcha = true unless @success
+      flash.now[:alert] = t('english_offers.form.captcha_verification')
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -62,28 +68,31 @@ class EnglishOffersController < ApplicationController
   def edit
     @auction = @offer.auction
     redirect_to auction_path(@auction.uuid) and return if update_not_allowed(@auction)
-
-    @autobider = current_user.autobiders.find_by(domain_name: @auction.domain_name)
-    @autobider = current_user.autobiders.build(domain_name: @auction.domain_name) if @autobider.nil?
   end
 
   # PUT /english_offers/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
   def update
-    auction = Auction.english.with_user_offers(current_user.id).find_by(uuid: @offer.auction.uuid)
-    redirect_to auction_path(auction.uuid) and return if update_not_allowed(auction)
+    @auction = Auction.english.with_user_offers(current_user.id).find_by(uuid: @offer.auction.uuid)
+    redirect_to auction_path(@auction.uuid) and return if update_not_allowed(@auction)
 
-    if update_predicate(auction)
-      broadcast_update_auction_offer(auction)
-      send_outbided_notification(auction: auction, offer: @offer, flash: flash)
-      update_auction_values(auction, t('english_offers.edit.bid_updated'))
+    if recaptcha_valid
+      if update_predicate(@auction)
+        broadcast_update_auction_offer(@auction)
+        send_outbided_notification(auction: @auction, offer: @offer, flash: flash)
+        update_auction_values(@auction, t('english_offers.edit.bid_updated'))
+      else
+        flash[:alert] = if @offer.errors.full_messages_for(:cents).present?
+                          @offer.errors.full_messages_for(:cents).join
+                        else
+                          @offer.errors.full_messages.join('; ')
+                        end
+
+        redirect_to root_path
+      end
     else
-      flash[:alert] = if @offer.errors.full_messages_for(:cents).present?
-                        @offer.errors.full_messages_for(:cents).join
-                      else
-                        @offer.errors.full_messages.join('; ')
-                      end
-
-      redirect_to root_path
+      @show_checkbox_recaptcha = true unless @success
+      flash.now[:alert] = t('english_offers.form.captcha_verification')
+      render :edit, status: :unprocessable_entity
     end
   end
 
@@ -91,6 +100,10 @@ class EnglishOffersController < ApplicationController
 
   def find_auction
     @auction = Auction.english.find_by!(uuid: params[:auction_uuid])
+  end
+
+  def find_or_initialize_autobidder
+    @autobider = current_user.autobiders.find_or_initialize_by(domain_name: @auction.domain_name)
   end
 
   def update_not_allowed(auction)
@@ -105,16 +118,6 @@ class EnglishOffersController < ApplicationController
 
   def broadcast_update_auction_offer(auction)
     Offers::UpdateBroadcastService.call({ auction: auction })
-  end
-
-  def captcha_check
-    return if Rails.env.development?
-
-    captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
-    return if captcha_predicate
-
-    flash[:alert] = t('english_offers.form.captcha_verification')
-    redirect_to request.referer and return
   end
 
   def update_auction_values(auction, message_text)
@@ -143,10 +146,6 @@ class EnglishOffersController < ApplicationController
     order = auction.offers.order(updated_at: :desc).first
 
     Money.new(order.cents).to_f < current_bid.to_f
-  end
-
-  def set_captcha_required
-    @captcha_required = current_user.requires_captcha?
   end
 
   def create_predicate(auction)

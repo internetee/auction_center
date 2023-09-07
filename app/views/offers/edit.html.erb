@@ -13,9 +13,7 @@
                     <%= t(:errors_name) %>
                 </div>
                 <ul id="errors">
-                    <% @offer.errors.full_messages.each do |message| %>
-                        <li><%= message %></li>
-                    <% end %>
+                    <%= @offer.errors.full_messages.first %>
                 </ul>
             </div>
         <% end %>

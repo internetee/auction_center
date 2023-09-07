@@ -5,7 +5,9 @@ class OffersController < ApplicationController
   before_action :check_for_ban, only: :create
   before_action :authorize_phone_confirmation
   before_action :authorize_offer_for_user, except: %i[new index create]
-  before_action :set_captcha_required
+
+  include RecaptchaValidatable
+  recaptcha_action 'offer'
 
   # GET /auctions/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/offers/new
   def new
@@ -32,6 +34,7 @@ class OffersController < ApplicationController
         format.html { redirect_to offer_path(@offer.uuid), notice: t('.created') }
         format.json { render :show, status: :created, location: @offer }
       else
+        @show_checkbox_recaptcha = true unless @success
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @offer.errors, status: :unprocessable_entity }
       end
@@ -69,6 +72,7 @@ class OffersController < ApplicationController
         format.html { redirect_to offer_path(@offer.uuid), notice: t(:updated) }
         format.json { render :show, status: :ok, location: @offer }
       else
+        @show_checkbox_recaptcha = true unless @success
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @offer.errors, status: :unprocessable_entity }
       end
@@ -102,16 +106,8 @@ class OffersController < ApplicationController
     end
   end
 
-  def set_captcha_required
-    return if Rails.env.development?
-
-    @captcha_required = current_user.requires_captcha?
-  end
-
   def create_predicate
-    # captcha_predicate = true
-    captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
-    captcha_predicate && @offer.save && @offer.reload
+    recaptcha_valid && @offer.save && @offer.reload
   end
 
   def create_params
@@ -119,9 +115,7 @@ class OffersController < ApplicationController
   end
 
   def update_predicate
-    # captcha_predicate = true
-    captcha_predicate = !@captcha_required || verify_recaptcha(model: @offer)
-    captcha_predicate && @offer.update(update_params)
+    recaptcha_valid && @offer.update(update_params)
   end
 
   def update_params

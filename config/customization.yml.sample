@@ -61,8 +61,13 @@ default: &default
     # environment: ''
 
   recaptcha:
-    site_key: ''
-    secret_key: ''
+    recaptcha2_site_key: ''
+    recaptcha2_secret_key: ''
+    recaptcha3_site_key: ''
+    recaptcha3_secret_key: ''
+    # Choose the minimum score required for you to consider the verification a success
+    # (consider the user a human and not a robot):
+    min_score: 0.5
 
   openai:
     enabled: false
