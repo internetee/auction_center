@@ -1,0 +1,40 @@
+<%= turbo_frame_tag dom_id(billing_profile) do %>
+  <div class="o-card">
+    <form class="c-account__form">
+      <div class="c-account__input c-account__input--editable c-account__input-title u-flex u-align-center u-content-sp u-mb-20 ">
+        <input type="text" class="o-card__title c-account__title" placeholder="" value="<%= billing_profile.name %>" readonly>
+        <div class="c-account_editicons u-flex u-align-center u-content-sp">
+          <%= button_to billing_profile_path(billing_profile.uuid), method: :delete, form: { data: { turbo_confirm: t(".confirm_delete") } }, target: '_top' do %>
+            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="12" fill="none"><path fill="#212224" d="M0 2.544a.558.558 0 0 0 .558.557h.297v6.593a1.838 1.838 0 0 0 1.836 1.836H7.31a1.838 1.838 0 0 0 1.836-1.836V3.1h.297a.558.558 0 1 0 0-1.115H7.49V1.41C7.49.633 6.857 0 6.08 0H3.92c-.777 0-1.41.632-1.41 1.41v.575H.558A.558.558 0 0 0 0 2.544ZM3.626 1.41c0-.162.132-.294.294-.294h2.16c.162 0 .294.132.294.294v.576H3.626V1.41ZM1.971 3.101H8.03v6.593a.721.721 0 0 1-.72.72H2.69a.721.721 0 0 1-.72-.72V3.1Z"/><path fill="#212224" d="M3.613 9.387a.558.558 0 0 0 .557-.558V4.688a.558.558 0 0 0-1.115 0v4.141a.558.558 0 0 0 .558.558Zm2.773 0a.558.558 0 0 0 .557-.558V4.688a.558.558 0 0 0-1.115 0v4.141a.558.558 0 0 0 .558.558Z"/></svg>
+          <% end %>
+
+          <%= link_to edit_billing_profile_path(billing_profile.uuid), data: { turbo_frame: dom_id(billing_profile) } do %>
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none"><circle cx="16" cy="16" r="15.5" stroke="#E2E2E2"/><path fill="#000" d="m20.933 12.893-1.826-1.826a1.333 1.333 0 0 0-1.773-.047l-6 6c-.216.217-.35.502-.38.807l-.287 2.78a.666.666 0 0 0 .667.726h.06l2.78-.253c.304-.03.589-.165.806-.38l6-6a1.28 1.28 0 0 0-.047-1.807Zm-6.88 6.854-2 .186.18-2L16 14.213l1.8 1.8-3.747 3.734Zm4.614-4.627-1.787-1.787L18.18 12 20 13.82l-1.333 1.3Z"/></svg>
+          <% end %>
+        </div>
+      </div>
+      <div class="c-account__input c-account__input--editable u-mb-20">
+        <label for="input1"><%= t('billing_profiles.vat_code') %></label>
+        <input id="input1" type="text" placeholder="" value="<%= billing_profile.vat_code %>" readonly/>
+      </div>
+      <div class="c-account__input-wrapper u-flex u-align-start u-content-start">
+        <div class="c-account__input c-account__input--editable u-mb-20">
+          <label for="input2"><%= t('billing_profiles.street') %></label>
+          <input id="input2" type="text" placeholder="" value="<%= billing_profile.street %>" readonly/>
+        </div>
+        <div class="c-account__input c-account__input--editable u-mb-20">
+          <label for="input3"><%= t('billing_profiles.city') %></label>
+          <input id="input3" type="text" placeholder="" value="<%= billing_profile.city %>" readonly/>
+        </div>
+        <div class="c-account__input c-account__input--editable u-mb-20">
+          <label for="input4"><%= t('billing_profiles.postal_code') %></label>
+          <input id="input4" type="text" placeholder="" value="<%= billing_profile.postal_code %>" readonly/>
+        </div>
+        <div class="c-account__input c-account__input--editable u-mb-20">
+          <label for="input5"><%= t('billing_profiles.country') %></label>
+          <input id="input4" type="text" placeholder="" value="<%= billing_profile.country_code %>" readonly/>
+        </div>
+      </div>
+    </form>
+  </div>
+<% end %>

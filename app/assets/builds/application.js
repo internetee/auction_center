@@ -3216,6 +3216,29 @@
     classNameAttr: String
   });
 
+  // app/javascript/controllers/modals/modal_controller.js
+  var modal_controller_default = class extends Controller {
+    connect() {
+      console.log("Modal connected");
+    }
+    open(event) {
+      event.preventDefault();
+      this.modalTarget.showModal();
+      this.modalTarget.addEventListener("click", (e) => this.backdropClick(e));
+      console.log("Modal opened");
+    }
+    close(event) {
+      event.preventDefault();
+      this.modalTarget.close();
+      console.log("Modal close");
+    }
+    backdropClick(event) {
+      event.target === this.modalTarget && this.close(event);
+      console.log("Modal close");
+    }
+  };
+  __publicField(modal_controller_default, "targets", ["modal"]);
+
   // app/javascript/controllers/form/debounce_controller.js
   var debounce_controller_default = class extends Controller {
     connect() {
@@ -3922,6 +3945,7 @@
 
   // app/javascript/controllers/index.js
   application.register("modals--offer-modal", offer_modal_controller_default);
+  application.register("modals--modal", modal_controller_default);
   application.register("form--debounce", debounce_controller_default);
   application.register("form--filter", filter_controller_default);
   application.register("form--autobider-submit", autobider_submit_controller_default);
