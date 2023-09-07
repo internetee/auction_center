@@ -1,3 +1,6 @@
+06.09.2023
+* Set localization in url https://github.com/internetee/auction_center/pull/1119
+
 21.08.2023
 * Fix for GA4 (Google Analytics) https://github.com/internetee/auction_center/pull/1114
 
