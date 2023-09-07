@@ -36,13 +36,17 @@ class BillingProfilesController < ApplicationController
   def show; end
 
   # GET /billing_profiles/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/edit
-  def edit; end
+  def edit
+    return unless turbo_frame_request?
+
+    render partial: 'form', locals: { billing_profile: @billing_profile }
+  end
 
   # PUT /billing_profiles/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
   def update
     respond_to do |format|
       if update_predicate
-        format.html { redirect_to billing_profile_path(@billing_profile.uuid), notice: t('.updated') }
+        format.html { redirect_to billing_profiles_path, notice: t(:updated) }
         format.json { render :show, status: :ok, location: @billing_profile }
       else
         format.html { render :edit }

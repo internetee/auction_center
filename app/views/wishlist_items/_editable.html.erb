@@ -1,0 +1,68 @@
+<%= turbo_frame_tag 'wishlist_table' do %>
+  <table class="c-wishlist__table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Domeeninimi</th>
+        <th class="u-text-left u-text-center-l">Minu pakkumus</th>
+        <th class="u-text-left u-text-center-l">Toimingud</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% wishlist_items.each_with_index do |item, index| %>
+        <% if wishlist_item == item %>
+          <tr>
+            <td><%= index + 1 %></td>
+            <td><%= item.domain_name %></td>
+            <td data-turbo="true">
+              <%= form_for wishlist_item, url: wishlist_item_path(uuid: wishlist_item.uuid), method: :patch, id: 'wishlist_update' do |f| %>
+                <div style='display: flex; gap: 0 10px; align-items: center; margin-right: 5px;'>
+                  <%= f.number_field :price, min: 5, step: "0.01", placeholder: item.price %>
+
+                  <button type='submit' form='wishlist_update' class="c-btn c-btn--ghost c-btn--icon js-edit-modal-toggle" data-turbo-frame='wishlist_table'>
+                      <svg class="c-account_editicons--edit" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none"><circle cx="16" cy="16" r="15.5" fill="#E3FEE0" stroke="#48A23F"/><path fill="#E3FEE0" d="M8 8h16v16H8z"/><path stroke="#48A23F" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 15.818 14.125 19 21 12"/></svg>
+                  </button>
+                </div>
+              <% end %>
+            </td>
+            <td class="u-text-left u-text-center-l">
+              <div class="c-btn-group c-btn-group--ghost">
+                <%= link_to '#', class: "c-btn c-btn--ghost c-btn--icon js-edit-modal-toggle", data: { turbo_frame: 'wishlist_table' } do %>
+                  <span class="o-close-icon"></span>
+                <% end %>
+              </div>
+            </td>
+          </tr>
+        <% else %>
+          <tr>
+            <td><%= index + 1 %></td>
+            <td><%= item.domain_name %></td>
+            <td data-turbo="true">
+              <%= item.price %> €
+            </td>
+            <td class="u-text-left u-text-center-l">
+              <div class="c-btn-group c-btn-group--ghost">
+                <%= link_to edit_wishlist_item_path(item.uuid), class: "c-btn c-btn--ghost c-btn--icon js-edit-modal-toggle", data: { turbo_frame: 'wishlist_table' } do %>
+                  <span class="o-edit-icon"></span>
+                <% end %>
+                <%= button_to wishlist_item_path(item.uuid), method: :delete, form: { data: { turbo_confirm: t(".confirm_delete") } },
+                          class: "c-btn c-btn--ghost c-btn--icon js-modal-delete-toggle", target: '_top' do %>
+                  <span class="o-delete-icon"></span>
+                <% end %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      <% end %>
+
+      <% (wishlist_items.count...10).each do |index| %>
+        <tr>
+          <td><%= index + 1 %></td>
+          <td></td>
+          <td></td>
+          <td class="u-text-left u-text-center-l"></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

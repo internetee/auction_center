@@ -61,7 +61,11 @@ class UsersController < ApplicationController
   end
 
   # GET /users/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/edit
-  def edit; end
+  def edit
+    return unless turbo_frame_request?
+
+    render partial: 'form', locals: { user: @user }
+  end
 
   # PUT /users/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
   def update

@@ -1,6 +1,8 @@
 class ApplicationController < ActionController::Base
   include Pagy::Backend
 
+  helper_method :turbo_frame_request?
+
   protect_from_forgery with: :exception
   before_action :set_locale
 

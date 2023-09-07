@@ -1,0 +1,80 @@
+<%= turbo_frame_tag 'user_info' do %>
+  <%= form_with model: user, url: user_path(user.uuid) do |f| %>
+    <div class="o-grid o-grid--two-col o-grid--sep">
+      <div class="o-card">
+        <div class="u-flex u-align-center u-content-sp u-mb-30">
+          <h2 class="o-card__title c-account__title"><%= user.display_name %></h2>
+          <div class="c-account_editicons u-flex u-align-center u-content-sp">
+            
+            <%= f.button do %>
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none"><circle cx="16" cy="16" r="15.5" fill="#E3FEE0" stroke="#48A23F"/><path fill="#E3FEE0" d="M8 8h16v16H8z"/><path stroke="#48A23F" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 15.818 14.125 19 21 12"/></svg>
+            <% end %>
+
+              <%= link_to '#',  data: { turbo_frame: 'user_info' } do %>
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none"><circle cx="16" cy="16" r="15.5" fill="#FFEEE1" stroke="#FF6E00"/><path stroke="#FF6E00" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m12 12 8 8M12 20l8-8"/></svg>
+              <% end %>
+          </div>
+        </div>
+
+        <form class="c-account__form">
+          <div class="c-account__input c-account__input--editabl u-mb-20">
+            <%= f.label :email, t('users.email') %>
+            <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+          </div>
+          <div class="c-account__input-wrapper u-flex u-align-start">
+            <div class="c-account__input c-account__input--editable u-mb-20">
+              <%= f.label :mobile_phone, t('users.mobile_phone') %>
+              <%= f.telephone_field :mobile_phone, autofocus: true, autocomplete: "off", placeholder: "+372xxxxxxxx" %>
+            </div>
+            <div class="c-account__input c-account__input--readonly u-mb-20">
+              <%= f.label :identity_code, t('users.identity_code') %>
+              <%= tag.span user.identity_code if user.identity_code.present? %>
+            </div>
+            <div class="c-account__input c-account__input--readonly u-mb-20">
+              <%= f.label :country, t('users.country_code') %>
+              <span><%= user.country_code || Setting.find_by(code: 'default_country').retrieve %></span>
+            </div>
+            <div class="c-account__input c-account__input--readonly u-mb-20">
+              <label for="input2"><%= t('created_at') %></label>
+              <span><%= I18n.l(user.created_at) %></span>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="o-card">
+        <h2 class="o-card__title c-account__title u-mb-36">Seaded</h2>
+        <div class="c-account__checkbox u-flex u-align-center u-mb-30">
+          <label class="o-checkbox" for="webpush">
+            <input type="checkbox" id="webpush" data-controller='profile-webpush'
+                            data-profile-webpush-target='checkbox'
+                            data-profile-webpush-vapid-public-value="<%= Rails.configuration.customization[:vapid_public] %>"
+                            data-action='change->push-notification#setupPushNotifications' />
+            <div class="o-checkbox__slider round"></div>
+          </label>
+          <span class="c-account__chekboxtitle">Veebiteavitused: Jah</span>
+        </div>
+
+        <div class="c-account__checkbox u-flex u-align-center u-mb-30">
+          <%= f.label :daily_summary, class: 'o-checkbox' do %>
+            <%= f.check_box :daily_summary, data: { 
+                  controller: 'form--checkbox-autosubmit', form__checkbox_autosubmit_target: 'checkbox',
+                  form__checkbox_autosubmit_url_value: user_path(user.uuid), action: 'change->form--checkbox-autosubmit#submit' } %>
+            <div class="o-checkbox__slider round"></div>
+          <% end %>
+          <span class="c-account__chekboxtitle">Igapäevane oksoninimekiri e-postile: <strong>Ei</strong></span>
+        </div>
+
+        <a href="" title="" class="c-acount__link">Tutvu kasutajatingimustega</a>
+
+        <div class="c-acount__buttons u-flex u-align-center">
+          <a href="#" title="" class="c-btn c-btn--ghost c-acount__button">Arveldamine</a>
+          <a href="#" title="" class="c-btn c-btn--ghost c-acount__button c-acount__button--icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="12" fill="none"><path fill="#212224" d="M0 2.544a.558.558 0 0 0 .558.557h.297v6.593a1.838 1.838 0 0 0 1.836 1.836H7.31a1.838 1.838 0 0 0 1.836-1.836V3.1h.297a.558.558 0 1 0 0-1.115H7.49V1.41C7.49.633 6.857 0 6.08 0H3.92c-.777 0-1.41.632-1.41 1.41v.575H.558A.558.558 0 0 0 0 2.544ZM3.626 1.41c0-.162.132-.294.294-.294h2.16c.162 0 .294.132.294.294v.576H3.626V1.41ZM1.971 3.101H8.03v6.593a.721.721 0 0 1-.72.72H2.69a.721.721 0 0 1-.72-.72V3.1Z"/><path fill="#212224" d="M3.613 9.387a.558.558 0 0 0 .557-.558V4.688a.558.558 0 0 0-1.115 0v4.141a.558.558 0 0 0 .558.558Zm2.773 0a.558.558 0 0 0 .557-.558V4.688a.558.558 0 0 0-1.115 0v4.141a.558.558 0 0 0 .558.558Z"/></svg>
+            <span>Kustuta konto</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  <% end %>
+<% end %>
