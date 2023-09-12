@@ -1,3 +1,6 @@
+12.09.2023
+* Updated informative auction process description on the index page https://github.com/internetee/auction_center/issues/1122
+
 07.09.2023
 * Improved reCaptcha handling https://github.com/internetee/auction_center/pull/1117
 
