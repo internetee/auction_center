@@ -1,4 +1,36 @@
-<%= tag.div class: 'webpush-modal' do %>
+<style>
+  .webpush-modal {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 350px;
+  height: 250px;
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+  padding: 0 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  z-index: 100;
+}
+
+.webpush--buttons_area {
+  /* height: 100px; */
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.close-webpush-modal {
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  color: red;
+  font-weight: bold;
+  font-size: 24px;
+  cursor: pointer;
+}
+</style>
+
+<%= tag.div class: 'webpush-modal', data: { turbo_temporary: '' } do %>
   <div class='close-webpush-modal' data-action='click->push-notification#close'>X</div>
   <h2><%= t('.webpush_title') %></h2>
   <p><%= t('.webpush_descr') %></p>

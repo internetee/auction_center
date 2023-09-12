@@ -1,5 +1,11 @@
 <%= component 'common/hero', title: 'Oksjonikeskkond' %>
-<%= turbo_stream_from 'auctions' %>
+
+<% if user_signed_in? %>
+  <%= turbo_stream_from "auctions_#{current_user&.id}" %>
+<% else %>
+  <%= turbo_stream_from "auctions" %>
+<% end %>
+
 <!-- Cards -->
 <%= component 'pages/auction/cards' %>
 <!-- Cards -->
@@ -79,7 +85,7 @@
 
         <%= tag.tbody id: "bids", class: 'contents' do %>
           <% @auctions.uniq.each do |auction| %>
-            <%= render partial: 'auction', locals: { auction: auction, user: current_user } %>
+            <%= render partial: 'auction', locals: { auction: auction, user: current_user, updated: false } %>
           <% end %>
         <% end %>
       <% end %>

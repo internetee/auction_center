@@ -1,6 +1,8 @@
-<%= turbo_frame_tag dom_id(billing_profile) do %>
-  <div class="o-card">
-    <%= form_with model: billing_profile, url: billing_profile_path(billing_profile.uuid), class: "c-account__form" do |f| %>
+<%= turbo_frame_tag 'new_billing_profile' do %>
+  <div class="o-card" id='new_form'>
+    <%= form_with model: billing_profile, url: billing_profiles_path, class: "c-account__form" do |f| %>
+      <%= f.hidden_field :user_id, value: billing_profile.user_id %>
+
       <div class="c-account__input c-account__input--editable c-account__input-title u-flex u-align-center u-content-sp u-mb-20 ">
         <input type="text" class="o-card__title c-account__title" placeholder="" value="<%= billing_profile.name %>" readonly>
         <div class="c-account_editicons u-flex u-align-center u-content-sp">
@@ -14,6 +16,11 @@
 
         </div>
       </div>
+      <div class="c-account__input c-account__input--editable u-mb-20 is-editable">
+        <%= f.label :name, t('billing_profiles.name') %>
+        <%= f.text_field :name %>
+      </div>
+
       <div class="c-account__input c-account__input--editable u-mb-20 is-editable">
         <%= f.label :vat_code, t('billing_profiles.vat_code') %>
         <%= f.text_field :vat_code %>
@@ -31,10 +38,16 @@
           <%= f.label :postal_code, t('billing_profiles.postal_code') %>
           <%= f.text_field :postal_code %>
         </div>
+
         <div class="c-account__input c-account__input--editable u-mb-20 is-editable">
           <%= f.label :country_code, t('billing_profiles.country') %>
-          <%= f.select :country_code, options_for_select(Countries.for_selection,
-                billing_profile.country_code || Setting.find_by(code: 'default_country').retrieve), {} %>
+                <%= f.select :country_code,
+                options_for_select(
+                    Countries.for_selection,
+                    billing_profile.country_code || Setting.find_by(code: 'default_country').retrieve
+                ),
+                {},
+                class: "ui selectable searchable dropdown" %>
         </div>
       </div>
     <% end %>

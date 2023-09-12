@@ -1,4 +1,4 @@
-<div class="c-modal-overlay js-modal-delete">
+<div class="c-modal-overlay js-modal-delete" data-modals--offer-modal-target='modal'>
     <div class="c-modal c-modal--error c-modal--sm">
         <div class="c-modal__header">
             <div class="c-modal__header__title">
@@ -6,7 +6,7 @@
                 <span>Oled Eemalda pakkumine</span>
             </div>
             <div class="c-modal__header__subject">
-                <span class="c-modal__header__subject__title">meekarud.ee</span>
+                <span class="c-modal__header__subject__title"><%= @offer.auction.domain_name %></span>
                 <span class="o-po-icon o-io-icon--bg-orange"></span>
             </div>
         </div>
@@ -15,10 +15,10 @@
         </div>
         <div class="c-modal__footer">
             <div class="c-modal__footer__col">
-                <button class="c-btn c-btn--ghost js-close-modal">Tühista</button>
+                <button class="c-btn c-btn--ghost js-close-modal" data-action='modals--offer-modal#close'>Tühista</button>
             </div>
             <div class="c-modal__footer__col">
-                <button class="c-btn c-btn--red js-close-modal">Eemalda</button>
+                <%= button_to t(:delete), offer_path(@offer.uuid), method: :delete, data: { turbo: false }, target: '_top', class: "c-btn c-btn--red js-close-modal" %>
             </div>
         </div>
     </div>

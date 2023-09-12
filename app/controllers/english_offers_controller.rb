@@ -1,6 +1,4 @@
-# rubocop:disable Metrics/ClassLength
-# rubocop:disable Metrics/AbcSize
-# rubocop:disable Metrics/MethodLength
+# rubocop:disable Metrics
 class EnglishOffersController < ApplicationController
   include BeforeRender
   protect_from_forgery with: :null_session

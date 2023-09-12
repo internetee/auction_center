@@ -1,8 +1,8 @@
-<div class="c-modal-overlay js-modal">
+<div class="c-modal-overlay js-modal" data-modals--offer-modal-target='modal'>
   <div class="c-modal">
     <div class="c-modal__scroll">
       <div class="c-modal__scroll__content">
-        <button class="c-modal__close-btn js-close-modal">
+        <button class="c-modal__close-btn js-close-modal" data-action='modals--offer-modal#close'>
           <span class="o-close-icon"></span>
         </button>
         <div class="c-modal__header">
@@ -42,7 +42,7 @@
         </div>
         <div class="c-modal__footer">
           <div class="c-modal__footer__col">
-            <button class="c-btn c-btn--ghost">Tagasi</button>
+            <button class="c-btn c-btn--ghost" data-action='modals--offer-modal#close'>Tagasi</button>
           </div>
           <div class="c-modal__footer__col">
             <%= button_to "Tasuge deposiit #{number_with_precision(@auction.deposit, precision: 2)} €",

@@ -25,7 +25,11 @@
     grid-template-columns: repeat(2, 1fr);
   }
 }
-
+.o-grid--two-col-laptop {
+  @include mq(laptop) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
 .o-grid--two-col-desktop {
   @include mq(desktop) {
     grid-template-columns: repeat(2, 1fr);
@@ -38,6 +42,16 @@
   }
 }
 
+
 .o-grid--sep {
   row-gap: rem(48px);
+}
+.o-grid--wishlist{
+  row-gap: rem(24px);
+  @include mq(tablet){
+      row-gap: rem(40px);
+  }
+  @include mq(laptop){
+      row-gap: 0;
+  }
 }

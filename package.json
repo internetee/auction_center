@@ -9,13 +9,13 @@
     "@rails/request.js": "^0.0.9",
     "@rails/ujs": "^7.0.4",
     "autoprefixer": "^10.4.13",
+    "chokidar": "3.5.3",
     "el-transition": "^0.0.7",
     "esbuild": "^0.15.17",
     "local-time": "^2.1.0",
     "postcss": "^8.4.31",
     "sass": "^1.63.6",
-    "toastify-js": "^1.12.0",
-    "chokidar": "3.5.3"
+    "toastify-js": "^1.12.0"
   },
   "scripts": {
     "build": "esbuild app/javascript/*.* --bundle --sourcemap --outdir=app/assets/builds --public-path=assets",

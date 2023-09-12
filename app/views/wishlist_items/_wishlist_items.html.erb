@@ -1,0 +1,42 @@
+<%= turbo_frame_tag 'wishlist_table' do %>
+  <table class="c-wishlist__table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Domeeninimi</th>
+        <th class="u-text-left u-text-center-l" >Minu pakkumus</th>
+        <th class="u-text-left u-text-center-l">Toimingud</th>
+      </tr>
+    </thead>
+    <tbody id="rooms">
+      <% wishlist_items.each_with_index do |wishlist_item, index| %>
+        <tr>
+          <td><%= index + 1 %></td>
+          <td><%= wishlist_item.domain_name %></td>
+          <td data-turbo="true">
+            <%= wishlist_item.price %> €
+          </td>
+          <td class="u-text-left u-text-center-l">
+            <div class="c-btn-group c-btn-group--ghost">
+              <%= link_to edit_wishlist_item_path(wishlist_item.uuid), class: "c-btn c-btn--ghost c-btn--icon js-edit-modal-toggle", data: { turbo_frame: 'wishlist_table' } do %>
+                <span class="o-edit-icon"></span>
+              <% end %>
+              <%= button_to wishlist_item_path(wishlist_item.uuid), method: :delete, form: { data: { turbo_confirm: t(".confirm_delete") } },
+                        class: "c-btn c-btn--ghost c-btn--icon js-modal-delete-toggle", target: '_top' do %>
+                <span class="o-delete-icon"></span>
+              <% end %>
+            </div>
+          </td>
+        <% end %>
+      </tr>
+      <% (wishlist_items.count...Setting.find_by(code: 'wishlist_size').retrieve).each do |index| %>
+        <tr>
+          <td><%= index + 1 %></td>
+          <td></td>
+          <td></td>
+          <td class="u-text-left u-text-center-l"></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

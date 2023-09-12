@@ -4,9 +4,11 @@ module Common
       include Devise::Controllers::Helpers
 
       def languages
-        l = %w[Est Eng].map do |lang|
+        languages = { et: 'Est', en: 'Eng' }
+
+        l = languages.map do |lang, desc|
           content_tag('li') do
-            content_tag('a', lang, href: '#')
+            content_tag('a', desc, href: locale_path(locale: lang), method: :put, data: { "turbo-method": 'put' })
           end
         end
 
@@ -23,6 +25,10 @@ module Common
         end
 
         safe_join(m)
+      end
+
+      def current_language
+        I18n.locale == :et ? 'Est' : 'Eng'
       end
 
       private

@@ -3,7 +3,7 @@
 <!-- Adressess -->
 <div class="o-container">
     <div class="c-block c-account c-account--adresses">
-        <div class="o-grid o-grid--two-col-desktop o-grid--address o-grid--sep">
+        <div class="o-grid o-grid--two-col-desktop o-grid--address o-grid--sep" id='billing_profile_containers'>
             
 
           <% @billing_profiles.each do |billing_profile|  %>
@@ -12,10 +12,12 @@
             <% end %>
           <% end %>
 
+          <%= turbo_frame_tag 'new_billing_profile' %>
+
 
         </div>
         <div class="u-text-center u-mt-48">
-            <a href="#" class="c-btn c-btn--green">Lisa uus aadress</a>
+          <%= link_to 'Lisa uus aadress', new_billing_profile_path, class: "c-btn c-btn--green", data: { turbo_frame: 'new_billing_profile' } %>
         </div>
     </div>
 </div>
