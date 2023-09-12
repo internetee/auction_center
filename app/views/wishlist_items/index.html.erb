@@ -43,57 +43,15 @@
       <div class="c-table__filters__search ">
         <%= form_with model: @wishlist_item, url: wishlist_items_path do |f| %>
           <%= f.hidden_field :user_id, value: @wishlist_item.user_id %>
-          <%= f.search_field :domain_name, class: 'c-table__search__input js-table-search-dt', placeholder: "Domeeninimi", data: { action: 'input->wishlist#domainCheck'} %>
+          <%= f.text_field :domain_name, placeholder: "Domeeninimi", data: { action: 'input->wishlist#domainCheck'} %>
           <%= f.button t(:submit), class: "c-btn c-btn--green c-wishlist__btn", id: "wishlist_item_form_commit", data: { turbo: false } %>
         <% end %>
       </div>
     </div>
 
-    <%= turbo_frame_tag 'wishlist_table' do %>
-      <table class="c-wishlist__table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Domeeninimi</th>
-            <th class="u-text-left u-text-center-l">Minu pakkumus</th>
-            <th class="u-text-left u-text-center-l">Toimingud</th>
-          </tr>
-        </thead>
-          <tbody id="rooms">
-          <% @wishlist_items.each_with_index do |wishlist_item, index| %>
-            <tr>
-                <td><%= index + 1 %></td>
-                <td><%= wishlist_item.domain_name %></td>
-                <td data-turbo="true">
-                  <%= wishlist_item.price %> €
-                </td>
-                <td class="u-text-left u-text-center-l">
-                  <div class="c-btn-group c-btn-group--ghost">
-
-                    <%= link_to edit_wishlist_item_path(wishlist_item.uuid), class: "c-btn c-btn--ghost c-btn--icon js-edit-modal-toggle", data: { turbo_frame: 'wishlist_table' } do %>
-                      <span class="o-edit-icon"></span>
-                    <% end %>
-
-                    <%= button_to wishlist_item_path(wishlist_item.uuid), method: :delete, form: { data: { turbo_confirm: t(".confirm_delete") } },
-                        class: "c-btn c-btn--ghost c-btn--icon js-modal-delete-toggle", target: '_top' do %>
-                          <span class="o-delete-icon"></span>
-                    <% end %>
-                  </div>
-                </td>
-              <% end %>
-            </tr>
-          <% (@wishlist_items.count...Setting.find_by(code: 'wishlist_size').retrieve).each do |index| %>
-            <tr>
-              <td><%= index + 1 %></td>
-              <td></td>
-              <td></td>
-              <td class="u-text-left u-text-center-l"></td>
-            </tr>
-          <% end %>
-
-        </tbody>
-      </table>
-    <% end %>
+    <div id='wishlist-container'>
+      <%= render partial: 'wishlist_items', locals: { wishlist_items: @wishlist_items} %>
+    </div>
 
   </div>
   <div class="u-text-center">

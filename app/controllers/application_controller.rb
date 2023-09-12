@@ -12,7 +12,8 @@ class ApplicationController < ActionController::Base
 
   rescue_from CanCan::AccessDenied do |_exception|
     flash[:alert] = I18n.t('unauthorized.message')
-    redirect_to root_url
+    # redirect_to root_url
+    render turbo_stream: turbo_stream.replace('flash', partial: 'common/flash', locals: { flash: flash })
   end
 
   def set_locale

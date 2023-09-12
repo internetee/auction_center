@@ -4,7 +4,7 @@
       <tr>
         <th>#</th>
         <th>Domeeninimi</th>
-        <th class="u-text-left u-text-center-l">Minu pakkumus</th>
+        <th class="u-text-left u-text-center-l" style='width: 200px !important;'>Minu pakkumus</th>
         <th class="u-text-left u-text-center-l">Toimingud</th>
       </tr>
     </thead>
@@ -15,13 +15,13 @@
             <td><%= index + 1 %></td>
             <td><%= item.domain_name %></td>
             <td data-turbo="true">
-              <%= form_for wishlist_item, url: wishlist_item_path(uuid: wishlist_item.uuid), method: :patch, id: 'wishlist_update' do |f| %>
-                <div style='display: flex; gap: 0 10px; align-items: center; margin-right: 5px;'>
+              <%= form_for wishlist_item, url: wishlist_item_path(uuid: wishlist_item.uuid), method: :patch do |f| %>
+                <div style='display: flex; gap: 0 10px; align-items: center; margin-right: 5px; width: 200px;'>
                   <%= f.number_field :price, min: 5, step: "0.01", placeholder: item.price %>
 
-                  <button type='submit' form='wishlist_update' class="c-btn c-btn--ghost c-btn--icon js-edit-modal-toggle" data-turbo-frame='wishlist_table'>
-                      <svg class="c-account_editicons--edit" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none"><circle cx="16" cy="16" r="15.5" fill="#E3FEE0" stroke="#48A23F"/><path fill="#E3FEE0" d="M8 8h16v16H8z"/><path stroke="#48A23F" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 15.818 14.125 19 21 12"/></svg>
-                  </button>
+                  <%= f.button class: "c-btn c-btn--ghost c-btn--icon", data: { turbo_frame: 'wishlist_table' } do %>
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none"><circle cx="16" cy="16" r="15.5" fill="#E3FEE0" stroke="#48A23F"/><path fill="#E3FEE0" d="M8 8h16v16H8z"/><path stroke="#48A23F" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 15.818 14.125 19 21 12"/></svg>
+                  <% end %>
                 </div>
               <% end %>
             </td>
@@ -55,7 +55,7 @@
         <% end %>
       <% end %>
 
-      <% (wishlist_items.count...10).each do |index| %>
+      <% (wishlist_items.count...Setting.find_by(code: 'wishlist_size').retrieve).each do |index| %>
         <tr>
           <td><%= index + 1 %></td>
           <td></td>

@@ -51,3 +51,6 @@ application.register("profile-webpush", ProfileWebpushController);
 
 import PushNotificationController from "./push_notification_controller";
 application.register("push-notification", PushNotificationController);
+
+import HamburgerController from "./hamburger_controller";
+application.register("hamburger", HamburgerController);

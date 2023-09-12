@@ -84,7 +84,9 @@ Rails.application.routes.draw do
                      controllers: { confirmations: 'email_confirmations', sessions: 'auth/sessions' }
 
   resources :auctions, only: %i[index show], param: :uuid do
-    resources :offers, only: %i[new show create edit update destroy], shallow: true, param: :uuid
+    resources :offers, only: %i[new show create edit update destroy], shallow: true, param: :uuid do
+      get 'delete'
+    end
     resources :english_offers, only: %i[new show create edit update], shallow: true, param: :uuid
     member do
       post 'pay_deposit', to: 'invoices#pay_deposit', as: 'english_offer_deposit'

@@ -265,3 +265,17 @@
 .c-cta--inline {
   padding: 0;
 }
+.c-cta--wishlist{
+  background: #fff;
+  margin-bottom: rem(24px);
+  padding-bottom: 60px;
+  box-shadow: 0 0 48px rgba(0,0,0,.12);
+  @include mq(tablet){
+      margin-bottom: rem(40px);
+      padding-bottom: 0px;
+      box-shadow:unset;
+  }
+  @include mq(laptop){
+      margin-bottom: rem(60px);
+  }
+}

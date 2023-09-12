@@ -1,6 +1,12 @@
-
 .c-account__title{
     margin: 0;
+}
+.c-account--mainpage{
+    .c-account_editicons {
+        &> svg:first-child{
+            display: none;
+        }
+    }
 }
 .c-account_editicons {
     gap: 8px;
@@ -17,7 +23,7 @@
         cursor: pointer;
         opacity: 1;
         transition: opacity .3s;
-        &:not(:first-child){
+        &:nth-last-child(-n + 2){
             display: none;
         }
         &:hover{
@@ -26,33 +32,17 @@
     }
 
     &.is-editable{
-        .c-account_editicons--reset{
-            display: inline-flex;
-            svg{
-                display: block;
-            }
-        }
         >svg{
-            &:not(:first-child){
+            &:nth-last-child(-n + 2){
                 display: inline-flex;
             }
-            &:first-child{
+            &:nth-child(-n + 2){
                 display: none;
             }
         }
     }
 }
-.c-account_editicons--reset{
-    display: none;  
-    padding: 0;
-    border: 0;
-    background-color: transparent;
-    opacity: 1;
-    transition: opacity .3s;
-    &:hover{
-        opacity: .7;
-    }
-}
+
 .c-account__input-wrapper {
     flex-wrap: wrap;
     gap: 0;
@@ -63,13 +53,15 @@
         justify-content: flex-start;
     }
     .c-account__input {
-        width: 50%;
+        width: 100%;
         flex-shrink: 0;
+        @include mq(mobile){
+            width: 50%;
+        }
         @include mq(tablet){
             width: 131px;
         }
         &:last-child{
-            margin-bottom: 0;
             @include mq(tablet){
                 width: 165px;
             }
@@ -96,12 +88,12 @@
     }
 }
 .c-account__input--editable{
-    input{
+    input,select{
         border-color: transparent;
         transition: border .5s;
     }
     &.is-editable{
-        input{
+        input,select{
             border: 1px solid #e2e2e2;
         }
     }
@@ -119,7 +111,7 @@
     font-weight: 500;
     line-height: rem(24px);
 }
-a.c-acount__link {
+.c-acount__link {
     color: $primary-blue-color;
     font-size: rem(14px);
     font-weight: 500;

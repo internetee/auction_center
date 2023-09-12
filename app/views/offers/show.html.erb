@@ -13,8 +13,8 @@
         <tr>
           <td><strong><%= @offer.auction.domain_name  %></strong></td>
           <td>2<%= I18n.l(@offer.auction.ends_at) %></td>
-          <td><%= t('offers.price_in_currency', price: @offer.price) %> €</td>
-          <td><%= t('offers.price_in_currency', price: @offer.total) %> €</td>
+          <td><%= t('offers.price_in_currency', price: @offer.price) %></td>
+          <td><%= t('offers.price_in_currency', price: @offer.total) %></td>
         </tr>
       <% end %>
     <% end %>

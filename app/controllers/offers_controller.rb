@@ -1,13 +1,14 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/ClassLength
+# rubocop:disable Metrics
 class OffersController < ApplicationController
   before_action :authenticate_user!
   before_action :find_auction, only: %i[new create]
   before_action :set_offer, only: %i[show edit update destroy]
   before_action :check_for_ban, only: :create
   before_action :authorize_phone_confirmation
-  before_action :authorize_offer_for_user, except: %i[new index create]
+
+  before_action :authorize_offer_for_user, except: %i[new index create delete]
 
   include RecaptchaValidatable
   recaptcha_action 'offer'
@@ -68,7 +69,7 @@ class OffersController < ApplicationController
 
     respond_to do |format|
       if update_predicate
-        format.html { redirect_to offer_path(@offer.uuid), notice: t(:updated) }
+        format.html { redirect_to offer_path(@offer.uuid), notice: t(:updated), status: :see_other }
         format.json { render :show, status: :ok, location: @offer }
       else
         @show_checkbox_recaptcha = true unless @success
@@ -81,12 +82,23 @@ class OffersController < ApplicationController
   # DELETE /offers/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
   def destroy
     return if @offer.auction.english?
-    return unless @offer.can_be_modified? && @offer.destroy
 
-    respond_to do |format|
-      format.html { redirect_to root_path, notice: t(:deleted) }
-      format.json { head :no_content }
+    if @offer.can_be_modified? && @offer.destroy
+      respond_to do |format|
+        format.html { redirect_to offers_path, notice: t(:deleted), status: :see_other }
+        format.json { head :no_content }
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to offer_path(@offer.uuid), notice: t(:not_deleted), status: :see_other }
+        format.json { head :no_content }
+      end
     end
+  end
+
+  def delete
+    @offer = current_user.offers.find_by!(uuid: params[:offer_uuid])
+    authorize! :manage, @offer
   end
 
   private

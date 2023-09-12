@@ -160,7 +160,7 @@ et:
   notification_received: "Notification reveived at %{datetime}"
   notification_unread: Notifcation unread
   notification_read: Notifcation read
-  participant_outbid: Domeeni nimele {domain_name} on uus pakkumine
+  participant_outbid: Domeeni nimele %{domain_name} on uus pakkumine
   participant_outbid_broadcast: Domeeni nimele %{name} on uus pakkumine
   participant_win_auction: Domeeni oksjon domeeninimele %{name} on lõppenud. Palju õnne teie pakkumine oli parim!
   participant_lost_auction: Domeeni oksjon domeeninimele %{name} on lõppenud. Kahjuks ei olnud teie pakkumine võiduks piisav!

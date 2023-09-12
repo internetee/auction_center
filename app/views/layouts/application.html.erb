@@ -41,7 +41,7 @@
     </style>
   </head>
 
-  <body data-controller="push-notification"
+  <body data-controller="push-notification websocket--user"
         data-push-notification-vapid-public-value="<%= Rails.configuration.customization[:vapid_public] %>"
         data-push-notification-user-login-value="<%= user_signed_in? %>">
   

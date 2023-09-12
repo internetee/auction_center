@@ -1,5 +1,5 @@
 <%= turbo_frame_tag "modal" do %>
-  <div data-controller='modals--offer-modal' data-modals--offer-modal-class-name-attr-value='js-modal-edit'>
+  <div data-controller='modals--offer-modal' data-modals--offer-modal-open-class='is-open'>
     <%= component 'modals/winner_domain', result: @result %>
   </div>
 <% end %>

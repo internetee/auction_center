@@ -1,6 +1,8 @@
 <% unless flash.empty? %>
-  <div class="ui message flash" style='display: block; margin-bottom: 20px;' id="flash" data-controller='notificable_handler' data-notificable_handler-target='notification'>
+  <div class="ui message flash" style='display: block; margin-bottom: 20px;' id="flash" data-turbo-cache="false" data-turbo-temporary>
     <% flash.each do |key, value| -%>
+        <% next if value.blank? %>
+
         <% if key == 'alert' %>
           <turbo-stream action="toast" message="<%= h value %>" position="right" background='linear-gradient(to right, #93291E, #ED213A)'></turbo-stream>
         <% else %>

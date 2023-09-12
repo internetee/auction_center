@@ -17,12 +17,17 @@ module Auctions
     private
 
     def post_call
-      puts '@?@@@@@'
-      puts auction.domain_name
-      puts '@@@@@@@'
+      participants = auction.offers.map(&:user)
+
+      User.all.each do |user|
+        broadcast_later "auctions_#{user.id}",
+                        'auctions/streams/updated_list',
+                        locals: { auction:, user:, updated: participants.include?(user) }
+      end
+
       broadcast_later 'auctions',
                       'auctions/streams/updated_list',
-                      locals: { auction: auction }
+                      locals: { auction:, user: nil, updated: false }
     end
   end
 end

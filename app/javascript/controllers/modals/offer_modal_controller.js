@@ -1,16 +1,14 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static values = {
-    classNameAttr: String
-  }
+  static classes = ['open']
+  static targets = ['modal']
 
   connect() {
-    const modal = document.querySelector(`.${this.classNameAttrValue}`);
+    this.modalTarget.classList.toggle(this.openClass);    
+  }
 
-    modal.classList.toggle('is-open');
-    document.querySelector('.js-close-modal').addEventListener('click', function() {
-      modal.classList.toggle('is-open');
-    });         
+  close() {
+    this.modalTarget.classList.toggle(this.openClass);
   }
 }

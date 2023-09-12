@@ -1,6 +1,6 @@
 <%= turbo_stream_from "auctions_offer_#{@auction.id}" %>
 <%= turbo_frame_tag "modal" do %>
-  <div data-controller='modals--offer-modal' data-modals--offer-modal-class-name-attr-value='js-modal'>
+  <div data-controller='modals--offer-modal' data-modals--offer-modal-open-class='is-open'>
     <!-- Modal - Change Offer -->
     <%= component 'modals/change_offer', offer: @offer, auction: @auction, autobider: @autobider, update: true, current_user: current_user, captcha_required: @captcha_required %>
     <!-- Modal - Change Offer -->
