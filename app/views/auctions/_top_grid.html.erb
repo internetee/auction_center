@@ -43,7 +43,8 @@
             <p><%= t(".footer_html",
                      terms_and_conditions_link: link_to(t(".terms_and_conditions_link"),
                                                         Setting.find_by(code: 'terms_and_conditions_link').retrieve),
-                     faq_link: link_to(t(".faq_link"), faq_link)) %></p>
+                     faq_link: link_to(t(".faq_link"), faq_link),
+                     reserved_domain_names_link: link_to(t(".reserved_domain_names_link"), reserved_domain_names_link)) %></p>
         </div>
     </div>
 </div>

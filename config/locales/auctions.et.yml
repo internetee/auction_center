@@ -62,30 +62,32 @@ et:
 
     top_grid:
       title: "Oksjonil olevad domeenid:"
-      1_step_header: "Esita pakkumus,"
+      1_step_header: "Esita pakkumus"
       1_step_explanation: |
-        mida saad muuta ja tühistada oksjoni lõppemiseni.
-        Domeenioksjonid toimuvad pimeoksjoni stiilis, mis tähendab,
-        et keegi teine esitatud pakkumise suurust ei näe.
+        enda poolt valitud meelepärasele domeenile.
+        Oksjonid toimuvad vastavalt domeeni tüübile kas pimeoksjoni
+        või avatud pakkumistega oksjoni stiilis.
 
       2_step_header: "Oota oksjoni lõppemiseni"
       2_step_explanation: |
-        Anname oksjonitulemustest teada ka e-posti teel. Loodetavasti on sinu
-        pakkumine kõrgeim ja saad õiguse soovitud domeeninime registreerimiseks.
+        Anname oksjoni tulemustest teada ka e-posti teel.
+        Domeeninime registreerimise õiguse saab isik, kelle pakkumine on kõige kõrgem.
 
       3_step_header: "Maksa oksjonitasu"
       3_step_explanation: |
         Kui tasu on makstud, saadetakse sulle registreerimiskood,
-        mida saad kasutada .ee akrediteeritud registripidaja juures
+        mida saad kasutada .ee akrediteeritud registripidaja juures.
 
       please_note: |
-        NB Juhime tähelepanu, et oksjonilt soetad domeeni registreerimise eelisõiguse!
+        NB! Juhime tähelepanu, et oksjonilt soetad domeeni registreerimise eelisõiguse!
         Domeeni registreerimisel lisandub teie valitud registripidaja hinnakirja alusel
         ka domeeni registreerimise tasu.
 
-      footer_html: "Tutvu ka %{terms_and_conditions_link} ja loe %{faq_link}."
+      footer_html: "Tutvu ka %{terms_and_conditions_link} ja loe %{faq_link}. Avatud pakkumistega inglise oksjonile tulevate domeenide ajakava leiad %{reserved_domain_names_link}!"
       terms_and_conditions_link: "oksjonikeskkonna kasutajatingimustega"
       faq_link: "detailsemalt oksjoniprotsessist"
+      reserved_domain_names_link: "siit"
+
 
     english_bottom_grid:
       title: "Oksjoni eeskirjad"
