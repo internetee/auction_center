@@ -55,6 +55,10 @@ class Auction < ApplicationRecord
     end
   end)
 
+  def self.with_max_offer_cents
+    joins("LEFT JOIN (SELECT auction_id, MAX(cents) AS max_offer_cents FROM offers GROUP BY auction_id) AS offers_subquery ON auctions.id = offers_subquery.auction_id")
+  end  
+
   scope :with_starts_at, (lambda do |starts_at|
     where('starts_at >= ?', starts_at.to_date.beginning_of_day) if starts_at.present?
   end)
@@ -117,15 +121,21 @@ class Auction < ApplicationRecord
     sort_direction = params[:direction].presence_in(%w[asc desc]) || 'desc'
     is_from_admin = params[:admin] == 'true'
 
-    with_highest_offers
+    query = self
+      .with_highest_offers
       .with_domain_name(params[:domain_name])
       .with_type(params[:type])
       .with_starts_at(params[:starts_at])
       .with_ends_at(params[:ends_at])
       .with_starts_at_nil(params[:starts_at_nil])
       .with_offers(params[:auction_offer_type], params[:type])
-      .order("#{is_from_admin ? sort_admin_column : sort_column} #{sort_direction} NULLS LAST")
-  end
+
+    if params[:sort] == "users_price"
+      query.with_max_offer_cents.order("offers_subquery.max_offer_cents #{sort_direction} NULLS LAST")
+    else
+      query.order("#{is_from_admin ? sort_admin_column : sort_column} #{sort_direction} NULLS LAST")
+    end
+end
 
   def deposit_and_enable_deposit_should_be_togeter
     return unless english?
