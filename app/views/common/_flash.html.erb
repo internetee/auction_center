@@ -1,9 +1,9 @@
 <% unless flash.empty? %>
   <div class="ui message flash" style='display: block; margin-bottom: 20px;' id="flash" data-turbo-cache="false" data-turbo-temporary>
     <% flash.each do |key, value| -%>
-        <% next if value.blank? %>
+        <% next if value.blank? || value == 'true' %>
 
-        <% if key == 'alert' %>
+        <% if key == 'alert' || key == 'recaptcha_error' %>
           <turbo-stream action="toast" message="<%= h value %>" position="right" background='linear-gradient(to right, #93291E, #ED213A)'></turbo-stream>
         <% else %>
           <turbo-stream action="toast" message="<%= h value %>" position="right" background='linear-gradient(to right, #11998e, #38ef7d)'></turbo-stream>

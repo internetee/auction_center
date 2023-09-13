@@ -55,7 +55,7 @@ class EnglishOffersController < ApplicationController
     else
       @show_checkbox_recaptcha = true unless @success
       flash.now[:alert] = t('english_offers.form.captcha_verification')
-      render :new, status: :unprocessable_entity
+      redirect_to root_path, status: :see_other
     end
   end
 
@@ -92,7 +92,7 @@ class EnglishOffersController < ApplicationController
     else
       @show_checkbox_recaptcha = true unless @success
       flash.now[:alert] = t('english_offers.form.captcha_verification')
-      render :edit, status: :unprocessable_entity
+      redirect_to root_path, status: :see_other
     end
   end
 

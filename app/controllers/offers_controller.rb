@@ -39,7 +39,9 @@ class OffersController < ApplicationController
         format.json { render :show, status: :created, location: @offer }
       else
         @show_checkbox_recaptcha = true unless @success
-        format.html { render :new, status: :unprocessable_entity }
+        flash[:alert] = recaptcha_valid ? @offer.errors.full_messages.join('; ') : t('offers.form.captcha_verification')
+
+        format.html { redirect_to root_path, status: see_other }
         format.json { render json: @offer.errors, status: :unprocessable_entity }
       end
     end
@@ -73,7 +75,9 @@ class OffersController < ApplicationController
         format.json { render :show, status: :ok, location: @offer }
       else
         @show_checkbox_recaptcha = true unless @success
-        format.html { render :edit, status: :unprocessable_entity }
+        flash[:alert] = recaptcha_valid ? @offer.errors.full_messages.join('; ') : t('offers.form.captcha_verification')
+
+        format.html { redirect_to root_path, status: see_other }
         format.json { render json: @offer.errors, status: :unprocessable_entity }
       end
     end

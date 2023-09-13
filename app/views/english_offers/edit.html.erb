@@ -2,7 +2,7 @@
 <%= turbo_frame_tag "modal" do %>
   <div data-controller='modals--offer-modal' data-modals--offer-modal-open-class='is-open'>
     <!-- Modal - Change Offer -->
-    <%= component 'modals/change_offer', offer: @offer, auction: @auction, autobider: @autobider, update: true, current_user: current_user, captcha_required: @captcha_required %>
+    <%= component 'modals/change_offer', offer: @offer, auction: @auction, autobider: @autobider, update: true, current_user: current_user, captcha_required: true, show_checkbox_recaptcha: @show_checkbox_recaptcha %>
     <!-- Modal - Change Offer -->
     
     <!-- Modal - Change Offer - PO -->

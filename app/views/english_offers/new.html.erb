@@ -3,9 +3,9 @@
   <div data-controller='modals--offer-modal' data-modals--offer-modal-open-class='is-open'>
 
     <% if @auction.allow_to_set_bid?(current_user) %>
-      <%= component 'modals/change_offer', offer: @offer, auction: @auction, autobider: @autobider, update: false, current_user: current_user, captcha_required: @captcha_required %>
+      <%= component 'modals/change_offer', offer: @offer, auction: @auction, autobider: @autobider, update: false, current_user: current_user, captcha_required: true, show_checkbox_recaptcha: @show_checkbox_recaptcha %>
     <% else %>
-      <%= component 'modals/deposit', auction: @auction, current_user: current_user, captcha_required: @captcha_required %>
+      <%= component 'modals/deposit', auction: @auction, current_user: current_user, captcha_required: true, show_checkbox_recaptcha: @show_checkbox_recaptcha %>
     <% end %>
 
     <!-- Modal - Change Offer -->
