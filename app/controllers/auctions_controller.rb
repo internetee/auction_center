@@ -30,9 +30,9 @@ class AuctionsController < ApplicationController
 
   def fetch_auctions_list
     if should_sort_auctions?
-      Auction.active.ai_score_order.search(params).with_user_offers(current_user&.id)
+      Auction.active.ai_score_order.search(params, current_user).with_user_offers(current_user&.id)
     else
-      Auction.active.search(params).with_user_offers(current_user&.id)
+      Auction.active.search(params, current_user).with_user_offers(current_user&.id)
     end
   end
 

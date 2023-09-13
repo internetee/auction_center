@@ -15,21 +15,9 @@ module Admin
 
     # GET /admin/invoices
     def index
-      sort_column = params[:sort].presence_in(%w[paid_through
-                                                 paid_amount
-                                                 vat_rate
-                                                 cents
-                                                 notes
-                                                 status
-                                                 number
-                                                 due_date
-                                                 billing_profile_id]) || 'id'
-      sort_direction = params[:direction].presence_in(%w[asc desc]) || 'desc'
-
       invoices = Invoice.accessible_by(current_ability)
                         .includes(:paid_with_payment_order)
                         .search(params)
-                        .order("#{sort_column} #{sort_direction}")
 
       @pagy, @invoices = pagy(invoices, items: params[:per_page] ||= 15)
     end

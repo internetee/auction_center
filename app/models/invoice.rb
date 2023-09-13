@@ -1,7 +1,4 @@
-# rubocop:disable Metrics/ClassLength
-# require 'result_not_found'
-# require 'result_not_sold'
-# require 'countries'
+# rubocop:disable Metrics
 
 class Invoice < ApplicationRecord
   include BookKeeping
@@ -44,10 +41,10 @@ class Invoice < ApplicationRecord
         .where('billing_profiles.name ILIKE ? OR ' \
                 'users.email ILIKE ? OR users.surname ILIKE ? OR ' \
                 'invoice_items.name ILIKE ?',
-                "%#{origin}%",
-                "%#{origin}%",
-                "%#{origin}%",
-                "%#{origin}%")
+               "%#{origin}%",
+               "%#{origin}%",
+               "%#{origin}%",
+               "%#{origin}%")
       end
     end
   end)
@@ -65,7 +62,26 @@ class Invoice < ApplicationRecord
         }
 
   def self.search(params = {})
-    with_search_scope(params[:search_string]).with_statuses(params[:statuses_contains])
+    sort_column = params[:sort].presence_in(%w[paid_through
+                                               paid_amount
+                                               vat_rate
+                                               cents
+                                               notes
+                                               status
+                                               number
+                                               due_date
+                                               billing_profile_id]) || 'id'
+    sort_direction = params[:direction].presence_in(%w[asc desc]) || 'desc'
+
+    query = with_search_scope(params[:search_string]).with_statuses(params[:statuses_contains])
+
+    if params[:sort] == 'channel'
+      query.left_outer_joins(:payment_orders)
+           .select("invoices.*, REPLACE(payment_orders.type, 'PaymentOrders::', '') AS payment_order_channel")
+           .order(Arel.sql("payment_order_channel #{sort_direction}"))
+    else
+      query.order("#{sort_column} #{sort_direction}")
+    end
   end
 
   def self.create_from_result(result_id)
@@ -148,7 +164,7 @@ class Invoice < ApplicationRecord
   end
 
   def title
-    persisted? ? I18n.t('invoices.title', number: number) : nil
+    persisted? ? I18n.t('invoices.title', number:) : nil
   end
 
   def address
@@ -219,7 +235,7 @@ class Invoice < ApplicationRecord
   end
 
   def self.with_billing_profile(billing_profile_id:)
-    Invoice.where(billing_profile_id: billing_profile_id)
+    Invoice.where(billing_profile_id:)
   end
 
   def self.numeric?(string)
