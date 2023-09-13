@@ -10,6 +10,14 @@ class ApplicationViewComponent < ViewComponent::Base
     end
   end
 
+  def recaptcha2_site_key
+    AuctionCenter::Application.config.customization.dig(:recaptcha, :recaptcha2_site_key)
+  end
+
+  def recaptcha3_site_key
+    AuctionCenter::Application.config.customization.dig(:recaptcha, :recaptcha3_site_key)
+  end
+
   def component(name, ...)
     return super unless name.starts_with?('.')
 

@@ -51,7 +51,11 @@
         </div>
         
         <div class="c-table__filters__more">
-          <a href="#" class="c-btn c-btn--ghost">Telli teavitused</a>
+          <% if current_user&.daily_summary %>
+            <%= link_to 'Teavitustest loobumine', user_toggle_sub_path, class: "c-btn c-btn--ghost" %>
+          <% elsif current_user %>
+            <%= link_to 'Telli teavitused', user_toggle_sub_path(current_user), class: "c-btn c-btn--ghost" %>
+          <% end %>
         </div>
         <div class="c-auctions__legend">
           <div><span class="o-io-icon o-icon--sm"></span>
