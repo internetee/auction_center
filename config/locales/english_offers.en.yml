@@ -60,6 +60,8 @@ en:
       autobidder_updated: Autobidder updated
       autobidder_created: Autobidder created
       banned: 'You are banned from this auction'
+      yep: 'Yes'
+      nope: 'No'
 
     number_form_field:
       offer: "Offer"

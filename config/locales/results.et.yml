@@ -14,3 +14,4 @@ et:
       only_available_after_paying_invoice: "Koodi saamiseks tuleb tasuda arve."
       domain_already_registered: "Koodi on juba kasutatud."
       paid: "Makstud"
+      description: "Kui arve on tasutud, ilmub siia registreerimiskood"

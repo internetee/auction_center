@@ -35,6 +35,8 @@ en:
   'yes': "Yes"
   'no': "No"
 
+  close: Close
+
   auctions_name: "Auctions"
   billing_profiles_name: "Billing Profiles"
   settings_name: "Settings"

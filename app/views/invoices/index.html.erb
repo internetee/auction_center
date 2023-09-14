@@ -1,24 +1,24 @@
-<%= component 'common/hero', title: 'Minu arved' %>
+<%= component 'common/hero', title: t('.title') %>
 <!-- Table -->
 <div class="o-container">
   
   <div class="c-block" data-controller='table--tab' data-table--tab-active-class='is-active'>
-    <h2 class="c-block__title u-flex u-content-sp u-flex-gap-12 u-h3">Tasumata arved</h2>
+    <h2 class="c-block__title u-flex u-content-sp u-flex-gap-12 u-h3"><%= t('invoices.outstanding') %></h2>
     <div class="c-tabs">
       <div class="c-tabs__nav">
         <button class="c-tabs__nav__btn js-tab-btn is-active" data-table--tab-target='tab' data-action="click->table--tab#showTab" data-table--tab-index-param='0'>
-          Issued invoices <sup>(<%= @issued_invoices.count %>)</sup>
+          <%= t('invoices.issued_invoices') %> <sup>(<%= @issued_invoices.count %>)</sup>
         </button>
         <button class="c-tabs__nav__btn js-tab-btn" data-table--tab-target='tab' data-action="click->table--tab#showTab" data-table--tab-index-param='1'>
-          Cancelled payable invoices <sup>(<%= @cancelled_payable_invoices.count %>)</sup>
+          <%= t('invoices.cancelled') %> <sup>(<%= @cancelled_payable_invoices.count %>)</sup>
         </button>
         <button class="c-tabs__nav__btn js-tab-btn" data-table--tab-target='tab' data-action="click->table--tab#showTab" data-table--tab-index-param='2'>
-          Cancelled expired invoices <sup>(<%= @cancelled_expired_invoices.count %>)</sup>
+          <%= t('invoices.cancelled_expired') %> <sup>(<%= @cancelled_expired_invoices.count %>)</sup>
         </button>
 
         <%= tag.div class: 'c-tabs__nav__btn--ind' do %>
           <%= button_to pay_all_bills_invoices_path, method: :post, style: 'background-color: inherit; color: inherit; text-decoration: none; border: none; box-shadow: none;' do %>
-            Tasu kõik <span class="u-hidden-m">maksmata arved</span> <sup>(<%= @unpaid_invoices_count %>)</sup>
+            <%= t('.pay') %> <sup>(<%= @unpaid_invoices_count %>)</sup>
           <% end %>
         <% end if @unpaid_invoices_count.positive?%>
 
@@ -44,7 +44,7 @@
                   <td><strong><%= invoice&.items&.first&.name %></strong></td>
                   <td><%= I18n.l(invoice.due_date) %></td>
                   <td><%= t('offers.price_in_currency', price: invoice.total) %></td>
-                  <td class="u-text-center-l"><%= link_to 'Tasu arve', invoice_path(invoice.uuid), class: "c-btn c-btn--green", title: "Invoice", data: { turbo_frame: 'modal' } %></td>
+                  <td class="u-text-center-l"><%= link_to t('invoices.show.pay'), invoice_path(invoice.uuid), class: "c-btn c-btn--green", title: "Invoice", data: { turbo_frame: 'modal' } %></td>
                 </tr>
               <% end %>
             <% end %>
@@ -63,7 +63,7 @@
                   <td><strong><%= invoice&.items&.first&.name %></strong></td>
                   <td><%= I18n.l(invoice.due_date) %></td>
                   <td><%= t('offers.price_in_currency', price: invoice.total) %></td>
-                  <td class="u-text-center-l"><%= link_to 'Tasu arve', invoice_path(invoice.uuid), class: "c-btn c-btn--green", title: "Invoice", data: { turbo_frame: 'modal' } %></td>
+                  <td class="u-text-center-l"><%= link_to t('invoices.show.pay'), invoice_path(invoice.uuid), class: "c-btn c-btn--green", title: "Invoice", data: { turbo_frame: 'modal' } %></td>
                 </tr>
               <% end %>
             <% end %>
@@ -82,7 +82,7 @@
                   <td><strong><%= invoice&.items&.first&.name %></strong></td>
                   <td><%= I18n.l(invoice.due_date) %></td>
                   <td><%= t('offers.price_in_currency', price: invoice.total) %></td>
-                  <td class="u-text-center-l"><%= link_to 'Vaata arvet', invoice_path(invoice.uuid), class: "c-btn c-btn--ghost js-modal-toggle", title: "Invoice", data: { turbo_frame: 'modal' } %></td>
+                  <td class="u-text-center-l"><%= link_to t('invoices.show_invoice'), invoice_path(invoice.uuid), class: "c-btn c-btn--ghost js-modal-toggle", title: "Invoice", data: { turbo_frame: 'modal' } %></td>
                 </tr>
               <% end %>
             <% end %>
@@ -93,19 +93,19 @@
   </div>
 
   <div class="c-block" data-controller='table--tab' data-table--tab-active-class='is-active'>
-    <h2 class="c-block__title u-flex u-content-sp u-flex-gap-12 u-h3">Tasutud arved</h2>
+    <h2 class="c-block__title u-flex u-content-sp u-flex-gap-12 u-h3"><%= t('invoices.paid') %> </h2>
     <div class="c-tabs">
       <div class="c-tabs__nav">
         <button class="c-tabs__nav__btn js-tab-btn is-active" data-table--tab-target='tab' data-action="click->table--tab#showTab" data-table--tab-index-param='0'>
-          Paid invoices <sup>(<%= @paid_invoices.count %>)</sup>
+          <%= t('invoices.paid') %> <sup>(<%= @paid_invoices.count %>)</sup>
         </button>
         <button class="c-tabs__nav__btn js-tab-btn" data-table--tab-target='tab' data-action="click->table--tab#showTab" data-table--tab-index-param='1'>
-          Deposit paid <sup>(<%= @deposit_paid.count %>)</sup>
+          <%= t('invoices.paid_deposit_title') %> <sup>(<%= @deposit_paid.count %>)</sup>
         </button>
 
         <%= tag.div class: 'c-tabs__nav__btn--ind' do %>
           <%= button_to pay_all_bills_invoices_path, method: :post, style: 'background-color: inherit; color: inherit; text-decoration: none; border: none; box-shadow: none;' do %>
-            Tasu kõik <span class="u-hidden-m">maksmata arved</span> <sup>(<%= @unpaid_invoices_count %>)</sup>
+            <%= t('.pay') %> <sup>(<%= @unpaid_invoices_count %>)</sup>
           <% end %>
         <% end if @unpaid_invoices_count.positive?%>
 
@@ -125,7 +125,7 @@
                   <td><strong><%= invoice&.items&.first&.name %></strong></td>
                   <td><%= I18n.l(invoice.due_date) %></td>
                   <td><%= invoice.total %></td>
-                  <td><%= link_to 'Vaata arvet', invoice_path(invoice.uuid), class: "c-btn c-btn--ghost js-modal-toggle", title: "Invoice", data: { turbo_frame: 'modal' } %></td>
+                  <td class="u-text-center-l"><%= link_to t('invoices.show_invoice'), invoice_path(invoice.uuid), class: "c-btn c-btn--ghost js-modal-toggle", title: "Invoice", data: { turbo_frame: 'modal' } %></td>
                 </tr>
               <% end %>
             <% end %>

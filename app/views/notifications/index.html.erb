@@ -3,10 +3,10 @@
 <!-- Unreaded Notifications -->
 <div class="o-container">
   <div style='display: flex; justify-content: end;'>
-    <%= button_to 'Read all', mark_as_read_notifications_path, method: :patch, class: 'c-btn c-btn--orange'  %>
+    <%= button_to t('notifications.read_all'), mark_as_read_notifications_path, method: :patch, class: 'c-btn c-btn--orange'  %>
   </div>
 
-  <h2>Lugemata teavitused <sup>(<%= @unread_notifications&.count %>)</sup></h2>
+  <h2><%= t('notifications.unreaded_notifications') %> <sup>(<%= @unread_notifications&.count %>)</sup></h2>
   <%= turbo_frame_tag :unread_notifications do %>
     <div clas`s="c-notifications">
       <% @unread_notifications.each do |notification| %>
@@ -30,7 +30,7 @@
 <!-- Notifications -->
 
 <!-- Readed Notifications -->
-  <h2>Loetud teavitused <sup>(<%= @read_notifications&.count %>)</sup></h2>
+  <h2><%= t('notifications.readed_notifications') %> <sup>(<%= @read_notifications&.count %>)</sup></h2>
   <%= turbo_frame_tag :read_notifications do %>
     <div class="c-notifications c-notifications--ajax">
       <% @read_notifications&.each do |notification| %>
@@ -52,132 +52,3 @@
   <% end %>
 <!-- Notifications -->
 </div>
-
-
-<%- if false %>
-<!-- Notifications -->
-<div class="o-container">
-  <h2>Lugemata teavitused <sup>(2)</sup></h2>
-  <div class="c-notifications">
-    <article class="c-notification">
-      <header class="c-notification__header">
-        <div class="c-notification__heading">
-          <span class="o-trophy-icon"></span>
-          <h5 class="c-notification__header__title">Oled võitnud! <span class="o-new"></span></h5>
-        </div>
-        <div class="c-notification__header__date">25-01-2023   |   17:08:34</div>
-      </header>
-      <main class="c-notification__main">
-        Oled võitnud domeenioksjoni domeenile lumememm.ee. Võidetud domeeni leiad “Minu pakkumised” all ning üsna pea ka leheküljelt “Minu arved”. Arvete väljastamiseks palume varuda kannatust 1-3 tundi.
-      </main>
-    </article>
-    <article class="c-notification">
-      <header class="c-notification__header">
-        <span class="o-hammer-icon"></span>
-        <h5 class="c-notification__header__title">Oled võitnud! <span class="o-new"></span></h5>
-        <div class="c-notification__header__date">25-01-2023   |   17:08:34</div>
-      </header>
-      <main class="c-notification__main">
-        Oled võitnud domeenioksjoni domeenile lumememm.ee. Võidetud domeeni leiad “Minu pakkumised” all ning üsna pea ka leheküljelt “Minu arved”. Arvete väljastamiseks palume varuda kannatust 1-3 tundi.
-      </main>
-    </article>
-  </div>
-  
-  <h2>Loetud teavitused <sup>(34)</sup></h2>
-  
-  <div class="c-notifications c-notifications--ajax">
-    <article class="c-notification c-notification--read">
-      <header class="c-notification__header">
-        <span class="c-notification__header__icon o-trophy-icon"></span>
-        <h5 class="c-notification__header__title">Oled võitnud! <span class="o-new"></span></h5>
-        <div class="c-notification__header__date">25-01-2023   |   17:08:34</div>
-      </header>
-      <main class="c-notification__main">
-        Oled võitnud domeenioksjoni domeenile lumememm.ee. Võidetud domeeni leiad “Minu pakkumised” all ning üsna pea ka leheküljelt “Minu arved”. Arvete väljastamiseks palume varuda kannatust 1-3 tundi.
-      </main>
-    </article>
-
-    <article class="c-notification c-notification--read">
-      <header class="c-notification__header">
-        <span class="c-notification__header__icon o-hammer-icon"></span>
-        <h5 class="c-notification__header__title">Oled võitnud!</h5>
-        <span class="o-new"></span>
-        <div class="c-notification__header__date">25-01-2023   |   17:08:34</div>
-      </header>
-      <main class="c-notification__main">
-        Oled võitnud domeenioksjoni domeenile lumememm.ee. Võidetud domeeni leiad “Minu pakkumised” all ning üsna pea ka leheküljelt “Minu arved”. Arvete väljastamiseks palume varuda kannatust 1-3 tundi.
-      </main>
-    </article>
-    <article class="c-notification c-notification--read">
-      <header class="c-notification__header">
-        <span class="c-notification__header__icon o-trophy-icon"></span>
-        <h5 class="c-notification__header__title">Oled võitnud!</h5>
-        <span class="o-new"></span>
-        <div class="c-notification__header__date">25-01-2023   |   17:08:34</div>
-      </header>
-      <main class="c-notification__main">
-        Oled võitnud domeenioksjoni domeenile lumememm.ee. Võidetud domeeni leiad “Minu pakkumised” all ning üsna pea ka leheküljelt “Minu arved”. Arvete väljastamiseks palume varuda kannatust 1-3 tundi.
-      </main>
-    </article>
-    <article class="c-notification c-notification--read">
-      <header class="c-notification__header">
-        <span class="c-notification__header__icon o-hammer-icon"></span>
-        <h5 class="c-notification__header__title">Oled võitnud!</h5>
-        <span class="o-new"></span>
-        <div class="c-notification__header__date">25-01-2023   |   17:08:34</div>
-      </header>
-      <main class="c-notification__main">
-        Oled võitnud domeenioksjoni domeenile lumememm.ee. Võidetud domeeni leiad “Minu pakkumised” all ning üsna pea ka leheküljelt “Minu arved”. Arvete väljastamiseks palume varuda kannatust 1-3 tundi.
-      </main>
-    </article>
-    <article class="c-notification c-notification--read">
-      <header class="c-notification__header">
-        <span class="c-notification__header__icon o-trophy-icon"></span>
-        <h5 class="c-notification__header__title">Oled võitnud!</h5>
-        <span class="o-new"></span>
-        <div class="c-notification__header__date">25-01-2023   |   17:08:34</div>
-      </header>
-      <main class="c-notification__main">
-        Oled võitnud domeenioksjoni domeenile lumememm.ee. Võidetud domeeni leiad “Minu pakkumised” all ning üsna pea ka leheküljelt “Minu arved”. Arvete väljastamiseks palume varuda kannatust 1-3 tundi.
-      </main>
-    </article>
-    <article class="c-notification c-notification--read">
-      <header class="c-notification__header">
-        <span class="c-notification__header__icon o-hammer-icon"></span>
-        <h5 class="c-notification__header__title">Oled võitnud!</h5>
-        <span class="o-new"></span>
-        <div class="c-notification__header__date">25-01-2023   |   17:08:34</div>
-      </header>
-      <main class="c-notification__main">
-        Oled võitnud domeenioksjoni domeenile lumememm.ee. Võidetud domeeni leiad “Minu pakkumised” all ning üsna pea ka leheküljelt “Minu arved”. Arvete väljastamiseks palume varuda kannatust 1-3 tundi.
-      </main>
-    </article>
-    <article class="c-notification c-notification--read">
-      <header class="c-notification__header">
-        <span class="c-notification__header__icon o-trophy-icon"></span>
-        <h5 class="c-notification__header__title">Oled võitnud!</h5>
-        <span class="o-new"></span>
-        <div class="c-notification__header__date">25-01-2023   |   17:08:34</div>
-      </header>
-      <main class="c-notification__main">
-        Oled võitnud domeenioksjoni domeenile lumememm.ee. Võidetud domeeni leiad “Minu pakkumised” all ning üsna pea ka leheküljelt “Minu arved”. Arvete väljastamiseks palume varuda kannatust 1-3 tundi.
-      </main>
-    </article>
-    <article class="c-notification c-notification--read">
-      <header class="c-notification__header">
-        <span class="c-notification__header__icon o-hammer-icon"></span>
-        <h5 class="c-notification__header__title">Oled võitnud!</h5>
-        <span class="o-new"></span>
-        <div class="c-notification__header__date">25-01-2023   |   17:08:34</div>
-      </header>
-      <main class="c-notification__main">
-        Oled võitnud domeenioksjoni domeenile lumememm.ee. Võidetud domeeni leiad “Minu pakkumised” all ning üsna pea ka leheküljelt “Minu arved”. Arvete väljastamiseks palume varuda kannatust 1-3 tundi.
-      </main>
-    </article>
-  </div>
-  <div class="u-text-center">
-    <a href="#" class="c-btn c-btn--ghost">Näita kõiki</a>
-  </div>
-</div>
-<!-- Notifications -->
-<% end %>

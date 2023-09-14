@@ -1,4 +1,4 @@
-<%= component 'common/hero', title: 'Minu pakkumised' %>
+<%= component 'common/hero', title: t(:my_offers) %>
 
 
 <!-- 
@@ -11,7 +11,7 @@
                             { column: nil, caption: t('offers.total'), options: { class: "" } },
                             { column: 'auctions.ends_at', caption: t('auctions.ends_at'), options: { class: "sorting" } },
                             { column: nil, caption: t('result_name'), options: {} },
-                            { column: nil, caption: 'Pakkumustegevused', options: {} },
+                            { column: nil, caption: t('auctions.offer_actions'), options: {} },
                             ] %>
 <div class="o-container">
 

@@ -8,31 +8,30 @@
         <div class="c-modal__header">
           <div class="c-modal__header__title">
             <span class="o-edit-icon--green"></span>
-            <span>Muuda pakkumist</span>
+            <span><%= t('offer.change_bid') %></span>
           </div>
           <div class="c-modal__header__subject">
             <span class="c-modal__header__subject__title"><%= @auction.domain_name %></span>
             <span class="o-io-icon o-io-icon--bg-blue"></span>
           </div>
           <div class="c-modal__header__desc">
-            <span>Oksjoni lõpuni jäänud <strong><%= component 'common/timer', auction: @auction %></strong></span>
+            <span><%= t('english_offers.timer') %> <strong><%= component 'common/timer', auction: @auction %></strong></span>
           </div>
         </div>
         
         <div class="c-modal__main">
           <div class="c-modal__grid">
             <div class="c-modal__main__info">
-              <span>Vähim võimalik pakkumus</span>
-              <h3 class="u-h2 u-m-none"><span id="mini"><%= number_with_precision(Money.from_amount(@auction.min_bids_step.to_f, Setting.find_by(code: 'auction_currency').retrieve,  precision: 2)) %></span></h3>
+              <span><%= t('english_offers.show.min_bid') %></span>
+              <h3 class="u-h2 u-m-none"><span id="mini"><%= Money.from_amount(@auction.min_bids_step.to_f, Setting.find_by(code: 'auction_currency').retrieve,  precision: 2) %></span></h3>
             </div>
             <div class="c-modal__main__info c-modal__main__info--black">
-              <strong>Hetke parim pakkumus</strong>
+              <strong><%= t('english_offers.show.current_price') %></strong>
               <h3 class="u-h2 u-m-none">
                 <span id="current_<%= @auction.id %>_price">
                   <%= current_price(@offer, @current_user) %>
                 </span>
               </h3>
-              <span>Keegi pole veel pakkunud</span>
             </div>
           </div>
 
@@ -42,7 +41,7 @@
             <div class="c-modal__grid u-align-center u-flex-wrap u-mt-24 u-mt-48-l">
               <%= f.hidden_field :domain_name, value: offer.auction.domain_name %>
               <%= f.hidden_field :user_id, value: offer.user_id %>
-              <label>Automaatpakkuja lagi</label>
+              <label><%= t('english_offers.form.autobidder_value') %></label>
               <div class="c-modal__col">
                 <%= f.number_field :price, min: 0.0, step: 0.01, value: number_with_precision(@autobider.price.to_f,precision: 2), 
                     disabled: @auction.finished? ? true : false, "data-action": "keydown->form--autobider-submit#validatePrice input->form--autobider-submit#validatingInputPrice", "data-form--autobider-submit-target": "price", "data-form--autobider-validation-target": "bidInput" %>
@@ -53,7 +52,7 @@
                     <%= f.check_box :enable, id: 'checkbox', data: { form__autobider_submit_target: 'checkbox', action: 'change->form--autobider-submit#submitAutobider' } %>
                     <div class="o-checkbox__slider round"></div>
                   </label>
-                  <span class="u-word-nowrap">Automaatpakkuja: <strong>Jah</strong></span>
+                  <span class="u-word-nowrap"><%= t('english_offers.form.autobidder') %>: <strong><%= t('english_offers.form.yep') %></strong></span>
                 </div>
               </div>
             </div>
@@ -67,14 +66,13 @@
             <%= f.hidden_field :auction_id, value: offer.auction_id %>
             <div class="c-modal__grid u-flex-wrap u-mt-24 u-mt-48-l">
               <div class="c-modal__col">
-                <label>Pakkumus</label>
+                <label for='min_bids_step'><%= t('english_offers.price') %></label>
                 <span id="offer_<%=offer.auction.id%>_form">
                   <%= component 'modals/change_offer/number_form_field', offer_value: @auction.min_bids_step.to_f, offer_disabled: @auction.finished? %>
                 </span>
-                <span class="c-modal__input-desc">Pakkumus peab olema vähemalt 5.00</span>
               </div>
               <div class="c-modal__col">
-                <label>Kokku</label>
+                <label><%= t('english_offers.total') %></label>
                 <span class="c-modal__calculation" data-autotax-counter-target='result'>
                   <% if offer.billing_profile.present? %>
                     <%= t('offers.price_with_wat', price: (@auction.min_bids_step.to_f * offer.billing_profile.vat_rate.to_f).to_f + @auction.min_bids_step.to_f, tax: offer.billing_profile.vat_rate * 100)  %>
@@ -92,12 +90,12 @@
                                             class: billing_profiles.size == 1 ? "disabled" : "",
                                             data: { action: 'change->autotax-counter#updateTax' } %>
             </div>
-            <a class="c-modal__link c-modal__link--first-col" href="#">Uus arve aadress</a>
+            <a class="c-modal__link c-modal__link--first-col" href="#"><%= t('new_billing_profile') %></a>
           <% end %>
         </div>
         <div class="c-modal__footer">
           <div class="c-modal__footer__col">
-            <button class="c-btn c-btn--ghost" data-action='modals--offer-modal#close'>Tagasi</button>
+            <button class="c-btn c-btn--ghost" data-action='modals--offer-modal#close'><%= t('close') %></button>
           </div>
           <div class="c-modal__footer__col">
             <%= submit_tag t(:submit), class: "c-btn c-btn--green", id: 'bid_action', form: 'english_offer_form', data: { turbo: false } %>

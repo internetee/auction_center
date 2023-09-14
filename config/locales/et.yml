@@ -34,6 +34,8 @@ et:
   'yes': "Jah"
   'no': "Ei"
 
+  close: "Sulge"
+
   auctions_name: "Oksjonid"
   billing_profiles_name: "Arve aadressid"
   settings_name: "Seadistus"

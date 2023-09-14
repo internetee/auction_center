@@ -28,6 +28,11 @@ et:
     deposit: "Ettemaks"
     amount_due: "Tasuda"
     sent_to_omniva: "E-arve saadeti edukalt"
+    issued_invoices: "Väljastatud arved"
+    show_invoice: "Vaata arvet"
+    bill: "Arve"
+    billing_profile_description: "Viimane arve aadress, mille kaudu on tehtud panus, on määratud"
+    address: "Aadress"
 
     outstanding: "Tasumata arved"
     paid: "Tasutud arved"

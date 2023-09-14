@@ -3,9 +3,9 @@
     <thead>
       <tr>
         <th>#</th>
-        <th>Domeeninimi</th>
-        <th class="u-text-left u-text-center-l" >Minu pakkumus</th>
-        <th class="u-text-left u-text-center-l">Toimingud</th>
+        <th><%= t('auctions.domain_name') %></th>
+        <th class="u-text-left u-text-center-l"><div style='width: 100px !important;'><%= t('wishlist_items.index.my_bid') %></div></th>
+        <th class="u-text-left u-text-center-l"><%= t('actions') %></th>
       </tr>
     </thead>
     <tbody id="rooms">
@@ -13,15 +13,13 @@
         <tr>
           <td><%= index + 1 %></td>
           <td><%= wishlist_item.domain_name %></td>
-          <td data-turbo="true">
-            <%= wishlist_item.price %> €
-          </td>
+          <td data-turbo="true"><%= wishlist_item.price %> €</td>
           <td class="u-text-left u-text-center-l">
             <div class="c-btn-group c-btn-group--ghost">
               <%= link_to edit_wishlist_item_path(wishlist_item.uuid), class: "c-btn c-btn--ghost c-btn--icon js-edit-modal-toggle", data: { turbo_frame: 'wishlist_table' } do %>
                 <span class="o-edit-icon"></span>
               <% end %>
-              <%= button_to wishlist_item_path(wishlist_item.uuid), method: :delete, form: { data: { turbo_confirm: t(".confirm_delete") } },
+              <%= button_to wishlist_item_path(wishlist_item.uuid), method: :delete, form: { data: { turbo_confirm: t(:are_you_sure) } },
                         class: "c-btn c-btn--ghost c-btn--icon js-modal-delete-toggle", target: '_top' do %>
                 <span class="o-delete-icon"></span>
               <% end %>

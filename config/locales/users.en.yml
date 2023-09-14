@@ -18,7 +18,7 @@ en:
     current_password: "Current password"
     remember_me: "Remember me"
     i_accept_terms_and_conditions_html: "I have read and agree with %{link}."
-    terms_and_conditions_link: "auction portal user agreement"
+    terms_and_conditions_link: "Auction portal user agreement"
     email_changed: >-
       Confirmation link was sent to new email address. Please confirm the address for the change to
       take an effect!
@@ -73,6 +73,7 @@ en:
       review_terms_and_conditions: "Review terms and conditions"
       daily_summary: "Daily summary to email"
       webpush_available: Webpush Available
+      settings: Settings
 
     destroy:
       deleted: "You have been logged out and your account has been deleted."
