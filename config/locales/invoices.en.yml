@@ -28,7 +28,11 @@ en:
     deposit: "Deposit"
     amount_due: "Amount due"
     sent_to_omniva: "E-Invoice was successfully sent"
-
+    issued_invoices: "Issued invoices"
+    show_invoice: "Show invoice"
+    bill: "Bill"
+    billing_profile_description: "The last billing profile through which the bet was made is specified"
+    address: "Address"
     outstanding: "Outstanding invoices"
     paid: "Paid invoices"
     cancelled: "Overdue invoices (banned auctions)"

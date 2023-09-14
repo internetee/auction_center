@@ -15,21 +15,21 @@
   <td>
     <%- if offer.auction.finished? %>
       <%- if offer.result %>
-        <%= t('.you_won') %>
+        <%= t('offers.index.you_won') %>
       <%- elsif offer.auction&.result && !offer.result %>
-        <%= t('.you_lost') %>
+        <%= t('offers.index.you_lost') %>
       <% end %>
     <% else %>
       <%- if offer.auction.english? %>
-        <%= offer.auction.currently_winning_offer == offer ? raw("<span style='color: green;'>#{t('.you_are_winning')}</span>") : raw("<span style='color: red;'>#{t('.you_are_loosing')}</span>") %>
+        <%= offer.auction.currently_winning_offer == offer ? raw("<span style='color: green;'>#{t('offers.index.you_are_winning')}</span>") : raw("<span style='color: red;'>#{t('offers.index.you_are_loosing')}</span>") %>
       <% else %>
         <%= t('auctions.still_in_progress') %>
       <% end %>
     <% end %>
   </td>
-  <td>
+  <td class="u-text-center-l">
     <%- if offer.result %>
-      <%= link_to t('.claim_your_domain'), result_path(offer.result.uuid), class: "c-btn c-btn--green", data: { turbo_frame: 'modal' } %>
+      <%= link_to t('offers.index.claim_your_domain'), result_path(offer.result.uuid), class: "c-btn c-btn--green", data: { turbo_frame: 'modal' } %>
     <%- else %>
       <% unless offer.auction.english? || offer.auction.finished? %>
         <%= link_to offer_delete_path(offer_uuid: offer.uuid), class: "c-btn c-btn--ghost c-btn--icon", data: { turbo_frame: 'modal' } do %>

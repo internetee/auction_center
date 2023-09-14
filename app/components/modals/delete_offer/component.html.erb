@@ -3,7 +3,7 @@
         <div class="c-modal__header">
             <div class="c-modal__header__title">
                 <span class="o-delete-icon--red"></span>
-                <span>Oled Eemalda pakkumine</span>
+                <span><%= t('offers.delete_title') %></span>
             </div>
             <div class="c-modal__header__subject">
                 <span class="c-modal__header__subject__title"><%= @offer.auction.domain_name %></span>
@@ -11,11 +11,11 @@
             </div>
         </div>
         <div class="c-modal__main">
-            <p>Kas olete kindel, et eemaldate selle pakkumise</p>
+            <p><%= t(:are_you_sure) %></p>
         </div>
         <div class="c-modal__footer">
             <div class="c-modal__footer__col">
-                <button class="c-btn c-btn--ghost js-close-modal" data-action='modals--offer-modal#close'>Tühista</button>
+                <button class="c-btn c-btn--ghost js-close-modal" data-action='modals--offer-modal#close'><%= t('close') %></button>
             </div>
             <div class="c-modal__footer__col">
                 <%= button_to t(:delete), offer_path(@offer.uuid), method: :delete, data: { turbo: false }, target: '_top', class: "c-btn c-btn--red js-close-modal" %>

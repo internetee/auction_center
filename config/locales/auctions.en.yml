@@ -29,12 +29,17 @@ en:
     pagination_list: List 15 auctions per page
     finished_auctions: Finished auctions
     you: Your offer
+    blind_auction: Blind auction
+    english_auction: English auction
+    all: All
 
     still_in_progress: "Still in progress"
 
     submit_offer: "Bid!"
     edit_your_offer: "Edit offer"
     delete_your_offer: "Delete"
+    subscribe_for_notifications: "Subscribe for notifications"
+    unsubscribe_for_notifications: "Unsubscribe from notifications"
 
     index:
       title: "Current auctions"

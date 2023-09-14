@@ -18,7 +18,7 @@ et:
     current_password: "Praegune salasõna"
     remember_me: "Mäleta mind"
     i_accept_terms_and_conditions_html: "Olen tutvunud ja nõustun %{link}."
-    terms_and_conditions_link: "domeenide oksjonikeskkonna kasutajatingimustega"
+    terms_and_conditions_link: "Domeenide oksjonikeskkonna kasutajatingimustega"
     email_changed: >-
       Palun kinnita eposti aadressi muutus klõpsates uuele aadressile saadetud ekirjas olevale
       kinnituse lingile.
@@ -65,6 +65,7 @@ et:
       review_terms_and_conditions: "Tutvu tingimustega"
       daily_summary: "Igapäevane oksjoninimekiri meilile"
       webpush_available: Veebiteavitused sisse
+      settings: Seaded
 
     destroy:
       deleted: "Oled välja logitud ja sinu konto on kustutatud."

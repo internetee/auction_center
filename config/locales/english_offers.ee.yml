@@ -57,6 +57,8 @@ et:
       autobidder_updated: Automaatpakkuja uuendatud
       autobidder_created: Automaatpakkuja edukalt loodud
       banned: "Teil on sellel oksjonil osalemine keelatud"
+      yep: Jah
+      nope: Ei
 
   activerecord:
     attributes:

@@ -5,13 +5,13 @@ en:
       auction_portal: "Auction portal"
       registrar_portal_url_html: '<a href= "https://www.internet.ee/registrar-portal"><span>Registrar portal</span></a>'
       registrant_portal: "Registrant portal"
+      notifications: "Notifications"
 
     footer:
       copyright: "© 2019 Estonian Internet Foundation"
       address: "Paldiski mnt 80, 10617 Tallinn, Estonia"
       registration_code: "Registration code: 90010019"
 
-    english_links:
       help_and_info: "Help and info"
       domain_regulation: ".ee Domain Regulation"
       faq: "Frequently asked questions"
@@ -29,6 +29,8 @@ en:
       management: "Management"
       documents: "Documents"
       registrars_working_group: "Registrar's Working group"
+
+      social_media: "Social media"
 
     webpush_modal:
       webpush_title: Web Push

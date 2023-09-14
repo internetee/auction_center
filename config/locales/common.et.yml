@@ -6,13 +6,13 @@ et:
       registrar_portal_url_html: '<a href= "https://www.internet.ee/registripidaja"><span>Registripidaja portaal</span></a>'
 
       registrant_portal: "Registreerija portaal"
+      notifications: "Teavitused"
 
     footer:
       copyright: "Eesti Interneti Sihtasutus"
       address: "Paldiski mnt 80, 10617 Tallinn"
       registration_code: "Registrikood: 90010019"
 
-    estonian_links:
       help_and_info: "Abi & info"
       domain_regulation: ".ee Domeenireeglid"
       faq: "Korduma kippuvad küsimused"
@@ -29,6 +29,8 @@ et:
       contact_us: "Võta meiega ühendust!"
       management: "Juhtimine"
       documents: "Dokumendid"
+
+      social_media: "Sotsiaalmeedia"
 
     webpush_modal:
       webpush_title: Veebiteavitused

@@ -15,6 +15,9 @@ en:
       There might be other bids.
       Make an offer according to the value the domain name holds to you.
     out_of_range: Your bid is denied - maximum bid size exceeded!
+    change_bid: Change bid
+    delete_title: "You are removing your offer"
+    overview: "Overview"
 
     new:
       title: "Offer for the reservation of the domain name"

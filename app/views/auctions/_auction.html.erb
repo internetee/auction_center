@@ -23,7 +23,7 @@
   <% else %>
     <td>
       <% if auction.users_offer_uuid %>
-        <strong>Sinu pakkumus</strong>
+        <strong><%= t('auctions.you') %></strong>
       <% end %>
     </td>
   <% end %>
@@ -40,9 +40,9 @@
           </div>
         <% else %>
           <% if auction.allow_to_set_bid?(user) %>
-            <%= link_to 'Esita pakkumus', new_auction_english_offer_path(auction_uuid: auction.uuid), class: "c-btn c-btn--green js-modal-toggle", data: { turbo_frame: 'modal' } %>
+            <%= link_to t('auctions.bid'), new_auction_english_offer_path(auction_uuid: auction.uuid), class: "c-btn c-btn--green js-modal-toggle", data: { turbo_frame: 'modal' } %>
           <% else %>
-            <%= link_to 'Deposit', new_auction_english_offer_path(auction_uuid: auction.uuid), class: "c-btn c-btn--orange js-modal-toggle", data: { turbo_frame: 'modal' } %>
+            <%= link_to t('auctions.deposit'), new_auction_english_offer_path(auction_uuid: auction.uuid), class: "c-btn c-btn--orange js-modal-toggle", data: { turbo_frame: 'modal' } %>
           <% end %>
         <% end %>
 
@@ -64,13 +64,13 @@
                       <%# class="o-delete-icon"></span></button> %>
           </div>
         <% else %>
-          <%= link_to 'Esita pakkumus', new_auction_offer_path(auction_uuid: auction.uuid), class: "c-btn c-btn--green js-modal-toggle-po", data: { turbo_frame: 'modal' } %>
+          <%= link_to t('auctions.bid'), new_auction_offer_path(auction_uuid: auction.uuid), class: "c-btn c-btn--green js-modal-toggle-po", data: { turbo_frame: 'modal' } %>
           <%# <td class="u-text-left u-text-center-l"><a href="#" class="c-btn c-btn--green">Esita pakkumus</a></td> %>
         <% end %>
 
       <% end %>
     <% else %>
-      <%= link_to 'Esita pakkumus', new_user_session_path, class: "c-btn c-btn--green js-modal-toggle-po", target: '_top' %>
+      <%= link_to t('auctions.bid'), new_user_session_path, class: "c-btn c-btn--green js-modal-toggle-po", target: '_top' %>
     <% end %>
   </td>
 </tr>

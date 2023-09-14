@@ -1,4 +1,4 @@
-<%= component 'common/hero', title: 'Minu soovide nimekiri' %>
+<%= component 'common/hero', title: t(:my_wishlist) %>
 
 <section class="c-cta--two-col c-cta--inline c-cta--wishlist">
   <div class="o-container">
@@ -7,13 +7,11 @@
         <div class="c-cta--card c-cta--card-icon c-cta--green js-cta-card-1">
           <h3 class="c-cta__title u-h2">
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none"><path fill="#48A23F" fill-rule="evenodd" d="M7 5.636C7 4.733 7.733 4 8.636 4H23.91c.904 0 1.637.733 1.637 1.636v20.728c0 .903-.733 1.636-1.637 1.636h-2.058l-5.578-5.071L10.694 28H8.636A1.636 1.636 0 0 1 7 26.364V5.636Zm2.182.546v19.636h.669l6.422-5.838 6.422 5.838h.669V6.182H9.182Z" clip-rule="evenodd"/><path fill="#48A23F" fill-rule="evenodd" d="M11 8h10v2H11V8Z" clip-rule="evenodd"/></svg>
-            Minu soovide nimekiri
+            <%= t('.list_title') %>
           </h3>
           <div class="c-cta__grid">
             <div class="c-cta__content">
-              <div class="c-cta__desc u-t-sm">
-                <strong>Nimekirja on võimalik lisada kuni 10 domeeni. </strong>Samuti tasub meelespidada, et täpitähed on olulised - päev.ee ei ole sama mis paev.ee
-              </div>
+              <div class="c-cta__desc u-t-sm"><%= t('.list_description') %></div>
             </div>
           </div>
         </div>
@@ -22,13 +20,11 @@
         <div class="c-cta--card c-cta--card-icon c-cta--green js-cta-card-2">
           <h3 class="c-cta__title u-h2">
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none"><path fill="#48A23F" d="M19.6 14.8h-2.4V10a1.2 1.2 0 1 0-2.4 0v6a1.2 1.2 0 0 0 1.2 1.2h3.6a1.2 1.2 0 1 0 0-2.4ZM16 4a12 12 0 1 0 12 12A12.013 12.013 0 0 0 16 4Zm0 21.6a9.6 9.6 0 1 1 9.6-9.6 9.611 9.611 0 0 1-9.6 9.6Z"/></svg>
-            Oota teadet
+            <%= t('.notification_title') %>
           </h3>
           <div class="c-cta__grid">
             <div class="c-cta__content">
-              <div class="c-cta__desc u-t-sm">
-                Saadame e-postiga teate, kui soovitud domeeninimi läheb oksjonile. Võib minna väga kaua aega enne kui domeeninimi jõuab oksjonile. Sellepärast kirjed nimekirjas ei aegu.
-              </div>
+              <div class="c-cta__desc u-t-sm"><%= t('.notification_description') %></div>
             </div>
           </div>
         </div>
@@ -43,7 +39,7 @@
       <div class="c-table__filters__search ">
         <%= form_with model: @wishlist_item, url: wishlist_items_path do |f| %>
           <%= f.hidden_field :user_id, value: @wishlist_item.user_id %>
-          <%= f.text_field :domain_name, placeholder: "Domeeninimi", data: { action: 'input->wishlist#domainCheck'} %>
+          <%= f.text_field :domain_name, placeholder: t('auctions.domain_name'), data: { action: 'input->wishlist#domainCheck'} %>
           <%= f.button t(:submit), class: "c-btn c-btn--green c-wishlist__btn", id: "wishlist_item_form_commit", data: { turbo: false } %>
         <% end %>
       </div>
@@ -55,7 +51,7 @@
 
   </div>
   <div class="u-text-center">
-    <span class="c-whishlist__notice">Nimekirja on võimalik lisada kuni 25 domeeni.</span>
+    <span class="c-whishlist__notice"><%= t('.limit_html', limit: Setting.find_by(code: 'wishlist_size').retrieve) %></span>
   </div>
 
 </div>

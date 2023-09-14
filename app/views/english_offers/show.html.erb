@@ -2,7 +2,7 @@
 <!-- Table -->
 <div class="o-container">
   <div class="c-block">
-    <h2 class="c-block__title u-h3">Ülevaade</h2>
+    <h2 class="c-block__title u-h3"><%= t('offers.overview') %></h2>
     <% header_collection = [{ column: nil, caption: t('auctions.domain_name'), options: { class: "" } },
                             { column: nil, caption: t('auctions.ends_at'), options: { class: "" } },
                             { column: nil, caption: t('offers.price'), options: { class: "" } },
@@ -25,7 +25,7 @@
   <div class="c-block">
     <div class="o-grid o-grid--two-col">
       <div>
-        <h2 class="c-block__title u-h3">Pakkujad</h2>
+        <h2 class="c-block__title u-h3"><%= t('offers.show.participants_title') %></h2>
         <% header_collection = [{ column: nil, caption: t('offers.show.participants'), options: { class: "" } },
                             { column: nil, caption: t('offers.show.your_last_offer'), options: { class: "" } },
                             { column: nil, caption: t('offers.show.offers_time'), options: { class: "" } }] %>
@@ -44,7 +44,7 @@
         <% end %>
       </div>
       <div>
-        <h2 class="c-block__title u-h3">Deposiidimaksed</h2>
+        <h2 class="c-block__title u-h3"><%= t('offers.show.deposit_title') %></h2>
         <% header_collection = [{ column: nil, caption: t('offers.show.deposit_participants'), options: { class: "" } },
                                 { column: nil, caption: t('offers.show.offers_time'), options: { class: "" } }] %>
         <%= component 'common/table', header_collection:, options: { class: '' } do %>

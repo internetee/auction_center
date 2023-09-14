@@ -14,9 +14,9 @@ module Modals
         when Result.statuses[:payment_received]
           result.registration_code
         when Result.statuses[:domain_registered]
-          I18n.t('.domain_already_registered')
+          I18n.t('results.show.domain_already_registered')
         else
-          I18n.t('.only_available_after_paying_invoice')
+          I18n.t('results.show.only_available_after_paying_invoice')
         end
       end
 

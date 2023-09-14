@@ -1,0 +1,5 @@
+et:
+  notifications:
+    read_all: 'Loe kõik teated'
+    unreaded_notifications: 'Lugemata teated'
+    readed_notifications: 'Loetud teated'

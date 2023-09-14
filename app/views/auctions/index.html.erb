@@ -1,4 +1,4 @@
-<%= component 'common/hero', title: 'Oksjonikeskkond' %>
+<%= component 'common/hero', title: t('.title') %>
 
 <% if user_signed_in? %>
   <%= turbo_stream_from "auctions_#{current_user&.id}" %>
@@ -30,19 +30,19 @@
         <div class="c-table__filters__btns" style='position: relative'>
           <%= f.radio_button :type, 'all', class: "js-table-filter-btn", checked: true, style: 'visibility: hidden; position: absolute;', id: 'filter_all_button', data: { form__filter_target: 'button' } %>
           
-          <%= f.label :type_all, "kõik", class: "c-table__filters__btn is-active js-table-filter-btn", style: 'cursor: pointer;', for: 'filter_all_button', data: { form__filter_target: 'label', action: "click->form--filter#click" } %>
+          <%= f.label :type_all, t('auction.all'), class: "c-table__filters__btn is-active js-table-filter-btn", style: 'cursor: pointer;', for: 'filter_all_button', data: { form__filter_target: 'label', action: "click->form--filter#click" } %>
           
           <%= f.radio_button :type, 'english', class: "js-table-filter-btn", style: 'visibility: hidden; position: absolute;', id: 'filter_IO_button', data: { form__filter_target: 'button' } %>
           
           <%= f.label :type_english, class: "c-table__filters__btn js-table-filter-btn", style: 'cursor: pointer;', for: 'filter_IO_button', data: { form__filter_target: 'label', action: "click->form--filter#click" } do %>
-            <span class="o-io-icon"></span><span class="u-hidden-m"> inglise oksjon</span>
+            <span class="o-io-icon"></span><span class="u-hidden-m"> <%= t('auction.english_auction') %></span>
           <% end %>
           
           <%= f.radio_button :type, 'blind', class: "js-table-filter-btn", style: 'visibility: hidden; position: absolute;', id: 'filter_PO_button', data: { form__filter_target: 'button' } %>
 
           <%= f.label :type_blind, class: "c-table__filters__btn js-table-filter-btn", style: 'cursor: pointer;', for: 'filter_PO_button', data: { form__filter_target: 'label', action: "click->form--filter#click" } do %>
             <span class="o-po-icon"></span>
-            <span class="u-hidden-m"> pime oksjon</span>
+            <span class="u-hidden-m"> <%= t('auction.blind_auction') %></span>
           <% end %>
         </div>
 
@@ -52,17 +52,17 @@
         
         <div class="c-table__filters__more">
           <% if current_user&.daily_summary %>
-            <%= link_to 'Teavitustest loobumine', user_toggle_sub_path, class: "c-btn c-btn--ghost" %>
+            <%= link_to t('auction.unsubscribe_for_notifications'), user_toggle_sub_path, class: "c-btn c-btn--ghost" %>
           <% elsif current_user %>
-            <%= link_to 'Telli teavitused', user_toggle_sub_path(current_user), class: "c-btn c-btn--ghost" %>
+            <%= link_to t('auction.subscribe_for_notifications'), user_toggle_sub_path(current_user), class: "c-btn c-btn--ghost" %>
           <% end %>
         </div>
         <div class="c-auctions__legend">
           <div><span class="o-io-icon o-icon--sm"></span>
-            inglise oksjon
+            <%= t('auction.english_auction') %>
           </div>
           <div><span class="o-po-icon o-icon--sm"></span>
-            pime oksjon
+            <%= t('auction.blind_auction') %>
           </div>
         </div>
 
@@ -72,12 +72,12 @@
     <!-- 
     These parameters are passed to the Common::Table::Component. These parameters are used to generate headers in the table component. The name "column_name" indicates the name of the column. This is necessary for sorting, so the name of this column should correspond to the name of the column in the database table. If you want to make it so that the data is not sorted by the column, then you should add a nil value. "Caption" is the table header, and "options" are additional parameters that are passed into the tags. 
     -->
-    <% header_collection = [{ column: 'domain_name', caption: 'Domeeninimi', options: { class: "sorting" } },
-                            { column: 'platform', caption: 'Tüüp', options: { class: "sorting" } },
-                            { column: 'ends_at', caption: 'Lõpp', options: { class: "sorting" } },
-                            { column: 'users_offer_cents', caption: 'Pakkumus', options: { class: "sorting" } },
-                            { column: nil, caption: 'Pakkumuse omanik', options: {} },
-                            { column: nil, caption: 'Pakkumustegevused omanik', options: { class: 'u-text-left u-text-center-l' } }] %>
+    <% header_collection = [{ column: 'domain_name', caption: t('auctions.domain_name'), options: { class: "sorting" } },
+                            { column: 'platform', caption: t('auctions.auction_type'), options: { class: "sorting" } },
+                            { column: 'ends_at', caption: t('auctions.ends_at'), options: { class: "sorting" } },
+                            { column: nil, caption: t('auctions.current_price'), options: { class: "sorting" } },
+                            { column: nil, caption: t('auctions.offer_owner'), options: { class: "sorting" } },
+                            { column: nil, caption: t('auctions.offer_actions'), options: { class: 'u-text-left u-text-center-l' } }] %>
 
     <!-- In the Stimulus controller, I use the Turbo class with frame parameters named 'results' for table sorting. This means that rendering the table with the new sort order should occur within the scope of the turbo_frame_tag with the name "results". For it to work correctly, it's necessary to wrap the table content within this turbo_frame_tag with "results" name. The name "results" is assigned as a value for the orderable Stimulus controller in the table component. -->
     <%= turbo_frame_tag "results" do %>

@@ -43,7 +43,7 @@
       </div>
 
       <div class="o-card">
-        <h2 class="o-card__title c-account__title u-mb-36">Seaded</h2>
+        <h2 class="o-card__title c-account__title u-mb-36"><%= t('users.show.settings') %></h2>
         <div class="c-account__checkbox u-flex u-align-center u-mb-30">
           <label class="o-checkbox" for="webpush">
             <input type="checkbox" id="webpush" data-controller='profile-webpush'
@@ -52,7 +52,7 @@
                             data-action='change->push-notification#setupPushNotifications' />
             <div class="o-checkbox__slider round"></div>
           </label>
-          <span class="c-account__chekboxtitle">Veebiteavitused: Jah</span>
+          <span class="c-account__chekboxtitle"><%= t('common.webpush_modal.webpush_title') %>: <%= t('yes') %></span>
         </div>
 
         <div class="c-account__checkbox u-flex u-align-center u-mb-30">
@@ -62,17 +62,19 @@
                   form__checkbox_autosubmit_url_value: user_path(user.uuid), action: 'change->form--checkbox-autosubmit#submit' } %>
             <div class="o-checkbox__slider round"></div>
           <% end %>
-          <span class="c-account__chekboxtitle">Igapäevane oksoninimekiri e-postile: <strong>Ei</strong></span>
+          <span class="c-account__chekboxtitle"><%= t('users.show.daily_summary') %>: <strong><%= @user.daily_summary ? t('yes') : t('no') %></strong></span>
         </div>
 
-        <a href="" title="" class="c-acount__link">Tutvu kasutajatingimustega</a>
+        <a href="" title="" class="c-acount__link"><%= t('users.terms_and_conditions_link') %></a>
 
         <div class="c-acount__buttons u-flex u-align-center">
-          <a href="#" title="" class="c-btn c-btn--ghost c-acount__button">Arveldamine</a>
-          <a href="#" title="" class="c-btn c-btn--ghost c-acount__button c-acount__button--icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="12" fill="none"><path fill="#212224" d="M0 2.544a.558.558 0 0 0 .558.557h.297v6.593a1.838 1.838 0 0 0 1.836 1.836H7.31a1.838 1.838 0 0 0 1.836-1.836V3.1h.297a.558.558 0 1 0 0-1.115H7.49V1.41C7.49.633 6.857 0 6.08 0H3.92c-.777 0-1.41.632-1.41 1.41v.575H.558A.558.558 0 0 0 0 2.544ZM3.626 1.41c0-.162.132-.294.294-.294h2.16c.162 0 .294.132.294.294v.576H3.626V1.41ZM1.971 3.101H8.03v6.593a.721.721 0 0 1-.72.72H2.69a.721.721 0 0 1-.72-.72V3.1Z"/><path fill="#212224" d="M3.613 9.387a.558.558 0 0 0 .557-.558V4.688a.558.558 0 0 0-1.115 0v4.141a.558.558 0 0 0 .558.558Zm2.773 0a.558.558 0 0 0 .557-.558V4.688a.558.558 0 0 0-1.115 0v4.141a.558.558 0 0 0 .558.558Z"/></svg>
-            <span>Kustuta konto</span>
-          </a>
+        <%= link_to t(:billing), billing_profiles_path, class: "c-btn c-btn--ghost c-acount__button", target: '_top' %>
+
+        <%= button_to user_path(@user.uuid), method: :delete, form: { data: { turbo_confirm: t("are_you_sure") } },
+                          class: "c-btn c-btn--ghost c-acount__button c-acount__button--icon", target: '_top' do %>
+          <svg xmlns="http://www.w3.org/2000/svg" width="10" height="12" fill="none"><path fill="#212224" d="M0 2.544a.558.558 0 0 0 .558.557h.297v6.593a1.838 1.838 0 0 0 1.836 1.836H7.31a1.838 1.838 0 0 0 1.836-1.836V3.1h.297a.558.558 0 1 0 0-1.115H7.49V1.41C7.49.633 6.857 0 6.08 0H3.92c-.777 0-1.41.632-1.41 1.41v.575H.558A.558.558 0 0 0 0 2.544ZM3.626 1.41c0-.162.132-.294.294-.294h2.16c.162 0 .294.132.294.294v.576H3.626V1.41ZM1.971 3.101H8.03v6.593a.721.721 0 0 1-.72.72H2.69a.721.721 0 0 1-.72-.72V3.1Z"/><path fill="#212224" d="M3.613 9.387a.558.558 0 0 0 .557-.558V4.688a.558.558 0 0 0-1.115 0v4.141a.558.558 0 0 0 .558.558Zm2.773 0a.558.558 0 0 0 .557-.558V4.688a.558.558 0 0 0-1.115 0v4.141a.558.558 0 0 0 .558.558Z"/></svg>
+          <span><%= t('users.show.delete') %></span>
+        <% end %>
         </div>
       </div>
     </div>

@@ -8,7 +8,7 @@
                 <div class="c-modal__header">
                     <div class="c-modal__header__title">
                         <span class="o-edit-icon--green"></span>
-                        <span>Oled võitnud!</span>
+                        <span><%= t('results.show.title') %></span>
                     </div>
                     <div class="c-modal__header__subject">
                         <span class="c-modal__header__subject__title"><%= @result.auction.domain_name %></span>
@@ -22,7 +22,7 @@
                     <div class="">
                         <label><%= t('results.registration_code') %></label>
                         <input class="u-bg-silver-gradient" name="" value="<%= registration_code_or_information %>" disabled>
-                        <span class="c-modal__input-desc u-text-right u-mt-8">Kui arve on tasutud, ilmub siia registreerimiskood</span>
+                        <span class="c-modal__input-desc u-text-right u-mt-8"><%= t('results.show.description') %></span>
                     </div>
                     <div class="u-flex u-flex-wrap u-flex-gap-50-l u-flex-gap-24 u-mt-8">
                         <div>
@@ -37,7 +37,7 @@
                 </div>
                 <div class="c-modal__footer">
                     <div class="c-modal__footer__col">
-                        <button class="c-btn c-btn--ghost" data-action='modals--offer-modal#close'>Tagasi</button>
+                        <button class="c-btn c-btn--ghost" data-action='modals--offer-modal#close'><%= t('close') %></button>
                     </div>
                 </div>
             </div>

@@ -1,5 +1,6 @@
 require 'pagy/extras/overflow'
 require "pagy/extras/array"
+require 'pagy/extras/i18n'
 
 Pagy::I18n.load({ locale: 'en',
                   filepath: "#{Rails.root}/config/locales/pagy.en.yml" },
