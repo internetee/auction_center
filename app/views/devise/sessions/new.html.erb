@@ -1,22 +1,22 @@
-<%= component 'common/hero', title: 'Sisene' %>
+<%= component 'common/hero', title: t(:sign_in) %>
 <!-- Login -->
 <div class="o-container">
   <div class="c-block c-login">
     <div class="o-grid o-grid--two-col o-grid--sep">
       <div class="c-login--wrapper">
-        <h2 class="c-login__title u-h3">Logi sisse isikut tõendava dokumendiga</h2>
+        <h2 class="c-login__title u-h3"><%= t('.sign_in_with_identity_document') %></h2>
         <p class="c-login__explanation">
-          Sisene kasutades Eesti (sh e-residendi) ID kaarti, Mobiil-IDd, pangalinki või EU liikmeriikide elektroonset isikutunnistust (EIDAS)
+          <%= t('.identity_document_text')%>
         </p>
         <div class="c-login__buttons-wrapper u-flex u-content-sp u-content-center">
-          <a class="c-login__button c-btn c-btn--blue-secondary" href="#" title="Sisene">Sisene</a>
+          <a class="c-login__button c-btn c-btn--blue-secondary" href="#" title="Sisene"><%= t(:sign_in) %></a>
           <div class="c-login__icons u-flex u-content-sp u-content-center">
             <%= render partial: 'svg/id_auth' %>
           </div>
         </div>
       </div>
       <div class="c-login--wrapper">
-        <h2 class="c-login__title u-h3">Logi sisse salasõnaga</h2>
+        <h2 class="c-login__title u-h3"><%= t('.sign_in_with_password') %></h2>
         <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: 'c-login__form' }) do |f| %>
           <div class="c-login__input">
             <%= f.label :email, t('users.email') %>
@@ -33,7 +33,7 @@
             </div>
             <% if devise_mapping.rememberable? -%>
               <label class="o-checkbox-container c-login__checkbox-container">
-                <span class="o-checkbox-text">Mäleta mind</span>
+                <span class="o-checkbox-text"><%= t('users.remember_me') %></span>
                 <%= f.check_box :remember_me, class: 'o-checkbox-sample' %>
                 <span class="o-checkmark-sample"></span>
               </label>
@@ -41,11 +41,11 @@
           </div>
           <div class="c-login__links u-flex u-align-center u-content-sp">
             <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
-                <%= link_to t('.forgot_your_password'), new_password_path(resource_name), class: 'c-login__remind-link' %><br />
+                <%= link_to t('devise.shared.links.forgot_your_password'), new_password_path(resource_name), class: 'c-login__remind-link' %><br />
             <% end -%>
 
             <%- if devise_mapping.confirmable? && controller_name != 'confirmations' %>
-                <%= link_to t('.didnt_receive_confirmation_instructions'), new_confirmation_path(resource_name), class: 'c-login__remind-link' %><br />
+                <%= link_to t('devise.shared.links.didnt_receive_confirmation_instructions'), new_confirmation_path(resource_name), class: 'c-login__remind-link' %><br />
             <% end -%>
           </div>
         <% end %>
