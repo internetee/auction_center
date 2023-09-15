@@ -75,7 +75,7 @@
       <div class="four wide column"></div>
       <div class="four wide column"></div>
       <div class="four wide column" style='text-align: right;'>
-        <%= link_to t('auctions.finished_auctions'), histories_path, style: 'margin-bottom: 20px; display: block; font-size: 18px; color: #03456f;' %>
+        <%= link_to t('auctions.finished_auctions'), "#{histories_path}?direction=desc&sort=domain_name", style: 'margin-bottom: 20px; display: block; font-size: 18px; color: #03456f;' %>
       </div>
     </div>
     <div class="grid one column">

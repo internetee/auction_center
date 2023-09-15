@@ -70,7 +70,7 @@ class Invoice < ApplicationRecord
                                                status
                                                number
                                                due_date
-                                               billing_profile_id]) || 'id'
+                                               billing_profile_name]) || 'id'
     sort_direction = params[:direction].presence_in(%w[asc desc]) || 'desc'
 
     query = with_search_scope(params[:search_string]).with_statuses(params[:statuses_contains])
@@ -78,9 +78,11 @@ class Invoice < ApplicationRecord
     if params[:sort] == 'channel'
       query.left_outer_joins(:payment_orders)
            .select("invoices.*, REPLACE(payment_orders.type, 'PaymentOrders::', '') AS payment_order_channel")
-           .order(Arel.sql("payment_order_channel #{sort_direction}"))
+           .order(Arel.sql("payment_order_channel #{sort_direction} NULLS LAST"))
+    elsif params[:sort] == 'billing_profile_name'
+      query.left_outer_joins(:billing_profile).order("billing_profiles.name #{sort_direction} NULLS LAST")
     else
-      query.order("#{sort_column} #{sort_direction}")
+      query.order("#{sort_column} #{sort_direction} NULLS LAST")
     end
   end
 
