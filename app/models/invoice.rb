@@ -61,6 +61,15 @@ class Invoice < ApplicationRecord
                 Time.zone.today + number_of_days, statuses[:issued])
         }
 
+  def self.with_totals
+    select("invoices.*,
+            (CASE WHEN auctions.enable_deposit
+              THEN ROUND((invoices.cents / 100.0 * (1 + COALESCE(invoices.vat_rate, 0.0)) - auctions.requirement_deposit_in_cents / 100.0), 2)
+              ELSE ROUND((invoices.cents / 100.0 * (1 + COALESCE(invoices.vat_rate, 0.0))), 2)
+            END) AS total_value")
+      .joins(result: :auction)
+  end
+
   def self.search(params = {})
     sort_column = params[:sort].presence_in(%w[paid_through
                                                paid_amount
@@ -75,12 +84,15 @@ class Invoice < ApplicationRecord
 
     query = with_search_scope(params[:search_string]).with_statuses(params[:statuses_contains])
 
-    if params[:sort] == 'channel'
+    case params[:sort]
+    when 'channel'
       query.left_outer_joins(:payment_orders)
            .select("invoices.*, REPLACE(payment_orders.type, 'PaymentOrders::', '') AS payment_order_channel")
            .order(Arel.sql("payment_order_channel #{sort_direction} NULLS LAST"))
-    elsif params[:sort] == 'billing_profile_name'
-      query.left_outer_joins(:billing_profile).order("billing_profiles.name #{sort_direction} NULLS LAST")
+    when 'billing_profile_name'
+      query.left_outer_joins(:billing_profile).order("billing_profiles.name #{sort_direction}")
+    when 'total'
+      query.with_totals.order("total_value #{sort_direction} NULLS LAST")
     else
       query.order("#{sort_column} #{sort_direction} NULLS LAST")
     end
