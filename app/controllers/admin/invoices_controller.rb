@@ -1,4 +1,4 @@
-# rubocop:disable Metrics/ClassLength
+# rubocop:disable Metrics
 # require 'invoice_already_paid'
 
 module Admin
@@ -19,7 +19,12 @@ module Admin
                         .includes(:paid_with_payment_order)
                         .search(params)
 
-      @pagy, @invoices = pagy(invoices, items: params[:per_page] ||= 15)
+      if invoices.is_a?(Array)
+        @pagy, @invoices = pagy_array(invoices, items: params[:per_page] ||= 15)
+      else
+        @pagy, @invoices = pagy(invoices, items: params[:per_page] ||= 15)
+      end
+
     end
 
     # GET /admin/invoices/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/download
