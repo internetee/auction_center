@@ -1,3 +1,6 @@
+18.09.2023
+* Fixes for sorting in user and admin views https://github.com/internetee/auction_center/issues/1125
+
 12.09.2023
 * Updated informative auction process description on the index page https://github.com/internetee/auction_center/issues/1122
 
