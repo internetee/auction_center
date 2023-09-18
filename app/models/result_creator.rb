@@ -101,9 +101,20 @@ class ResultCreator
 
     participants = DomainParticipateAuction.where(auction_id: auction.id)
     participants.each do |participant|
-      next if participant.user.id == winning_offer.user_id
+      if participant.user.id == winning_offer.user_id
+        CaptureJob.perform_later(participant.id, participant.invoice_number)
+      else
+        RefundJob.perform_later(participant.id, participant.invoice_number)
+      end
 
-      RefundJob.perform_later(participant.id, participant.invoice_number)
+      # void - card payment
+      # other - refund
+
+      # TODO:
+      # Need to indeticate which payment method was used
+      # if it was paid by credit card, then we need to void it
+      # VoidJob.perform_later(participant.id, participant.invoice_number)
+      # otherwise it could be linkpay, then we need to refund it
     end
   end
 end

@@ -1,17 +1,17 @@
-class RefundJob < ApplicationJob
+class CaptureJob < ApplicationJob
   BASE_URL = AuctionCenter::Application.config
                                        .customization[:billing_system_integration]
     &.compact&.fetch(:eis_billing_system_base_url, '')
-  PATH = '/api/v1/refund/auction'.freeze
+  PATH = '/api/v1/refund/capture'.freeze
   INITIATOR = 'auction'.freeze
-  RETURNED = 'returned'.freeze
+  PAID = 'paid'.freeze
 
   def perform(domain_participate_auction_id, invoice_number)
     response = post(PATH, params: { invoice_number: })
     d = DomainParticipateAuction.find(domain_participate_auction_id)
 
     if response.status == 200
-      d.update(status: RETURNED)
+      d.update(status: PAID)
     else
       inform(d, response.body)
     end
