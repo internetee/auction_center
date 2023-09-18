@@ -40,8 +40,7 @@
                 <tr>
                     <th scope="col">
                         <%= t('invoices.billing_profile') %>
-                        <%#= order_buttons('invoices.billing_profile_id') %>
-                        <%= sort_link_to "", "billing_profile_id" %>
+                        <%= sort_link_to "", "billing_profile_name" %>
                     </th>
                     <th scope="col">
                         <%= t('invoices.due_date') %>
@@ -61,7 +60,7 @@
                     </th>
                     <th scope="col">
                         <%= t('invoices.total') %>
-                        <%= sort_link_to "", "cents" %>
+                        <%= sort_link_to "", "total" %>
                     </th>
                     <th scope="col">
                         <%= t('invoices.vat_rate_on_payment') %>
@@ -73,7 +72,7 @@
                     </th>
                     <th scope="col">
                         <%= t('invoices.paid_through') %>
-                        <%= sort_link_to "", "paid_through" %>
+                        <%= sort_link_to "", "channel" %>
                     </th>
                     <th></th>
                 </tr>

@@ -42,7 +42,7 @@
                       <div class="four wide column"></div>
 
                       <div class="four wide column" style='text-align: right;'>
-                        <%= link_to t('histories.current_auctions'), auctions_path, style: 'margin-bottom: 20px; display: block; font-size: 18px; color: #03456f;' %>
+                        <%= link_to t('histories.current_auctions'), auctions_path, style: 'margin-bottom: 20px; display: block; font-size: 18px; color: #03456f;', target: '_top' %>
                       </div>
                     </div>
 
@@ -63,6 +63,7 @@
                                 </th>
                                 <th scope="col">
                                   <%= t('auctions.winning_bid') %>
+                                  <%= sort_link_to "", "users_price" %> 
                                 </th>
                                 <th scope="col">
                                   <%= t('auctions.auction_type') %>
@@ -79,7 +80,7 @@
                                     <td><%= auction.ends_at.to_formatted_s(:long) %></td>
                                     <td><%= auction.currently_winning_offer&.price if auction.platform == 'english' %></td>
                                     <td>
-                                        <%= t("auctions.#{auction.platform&.downcase.presence || 'blind'}") %>
+                                        <%= t("auctions.#{auction.platform&.downcase.presence || 'blind (lagacy)'}") %>
                                     </td>
                                 </tr>
                             <% end %>

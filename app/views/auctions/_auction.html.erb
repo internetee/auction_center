@@ -15,10 +15,10 @@
     </td>
     <td>
         <% if auction.platform == 'blind' || auction.platform.nil? %>
-            <span class="auctions-table-mobile-infotainment"><%= t('auctions.your_current_price') %>: </span><%= auction.users_price %>
+            <span class="auctions-table-mobile-infotainment"><%= t('auctions.your_current_price') %>: </span><%= number_with_precision(auction.users_price, precision: 2, separator: ",") %>
         <% else %>
             <span class="auctions-table-mobile-infotainment"><%= t('auctions.your_current_price') %>:</span>
-            <span class="initial-color current_<%= auction.currently_winning_offer&.user_id %>_user"><%= english_auction_presenter.maximum_bids %></span>
+            <span class="initial-color current_<%= auction.currently_winning_offer&.user_id %>_user"><%= number_with_precision(english_auction_presenter.maximum_bids, precision: 2, separator: ",") %></span>
         <% end %>
     </td>
     <td class="initial-color current_<%= auction.currently_winning_offer&.user_id %>_user">

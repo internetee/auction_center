@@ -75,7 +75,7 @@
       <div class="four wide column"></div>
       <div class="four wide column"></div>
       <div class="four wide column" style='text-align: right;'>
-        <%= link_to t('auctions.finished_auctions'), histories_path, style: 'margin-bottom: 20px; display: block; font-size: 18px; color: #03456f;' %>
+        <%= link_to t('auctions.finished_auctions'), "#{histories_path}?direction=desc&sort=domain_name", style: 'margin-bottom: 20px; display: block; font-size: 18px; color: #03456f;' %>
       </div>
     </div>
     <div class="grid one column">
@@ -105,13 +105,13 @@
                 <th class="auctions-table-cell-name-no-mobile">
                   <span class='hide-table-header'>
                     <%= t('auctions.current_price') %>
-                    <%= sort_link_to "", "users_offer_cents" %>
+                    <%= sort_link_to "", "users_price" %>
                   </span>
                 </th>
                 <th class="four wide">
                   <span class='hide-table-header'>  
                     <%= t('auctions.offer_owner') %>
-                    <%= sort_link_to "", "platform" %>
+                    <%= sort_link_to "", "username" %>
                   </span>
                 </th>
                 <th class="auctions-table-cell-name-no-mobile center aligned"><%= t('auctions.offer_actions') %></th>

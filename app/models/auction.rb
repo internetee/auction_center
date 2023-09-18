@@ -1,8 +1,11 @@
+# rubocop:disable Metrics
 class Auction < ApplicationRecord
   include Presentable
+  include Searchable
   include PgSearch::Model
 
   BLIND = '0'.freeze
+  ENGLISH = '1'.freeze
 
   after_create :find_auction_turns
   validates :domain_name, presence: true
@@ -25,61 +28,6 @@ class Auction < ApplicationRecord
   after_update_commit :update_list_broadcast, unless: :skip_broadcast
   after_update_commit :update_offer_broadcast, unless: :skip_broadcast
 
-  scope :active, -> { where('starts_at <= ? AND ends_at >= ?', Time.now.utc, Time.now.utc) }
-  scope :without_result, lambda {
-    where('ends_at < ? and id NOT IN (SELECT results.auction_id FROM results)', Time.now.utc)
-  }
-
-  scope :for_period, lambda { |start_date, end_date|
-    where(ends_at: start_date.beginning_of_day..end_date.end_of_day)
-  }
-
-  scope :random_order, -> { order(Arel.sql('RANDOM()')) }
-  scope :ai_score_order, lambda {
-    order(Arel.sql('CASE WHEN ai_score > 0 THEN ai_score ELSE RANDOM() END DESC'))
-  }
-
-  scope :without_offers, -> { includes(:offers).where(offers: { auction_id: nil }) }
-  scope :with_offers, -> { includes(:offers).where.not(offers: { auction_id: nil }) }
-  scope :with_domain_name, (lambda do |domain_name|
-    return unless domain_name.present?
-
-    where('domain_name like ?', "%#{domain_name}%")
-  end)
-
-  scope :with_type, (lambda do |type|
-    if type.present?
-      return where(platform: [type, nil]) if type == BLIND
-
-      where(platform: type)
-    end
-  end)
-
-  scope :with_starts_at, (lambda do |starts_at|
-    where('starts_at >= ?', starts_at.to_date.beginning_of_day) if starts_at.present?
-  end)
-
-  scope :with_ends_at, (lambda do |ends_at|
-    where('ends_at <= ?', ends_at.to_date.end_of_day) if ends_at.present?
-  end)
-  scope :with_starts_at_nil, ->(state) { where(starts_at: nil) if state.present? }
-
-  scope :english, -> { where(platform: :english) }
-  scope :not_english, -> { where.not(platform: :english) }
-
-  scope :with_offers, (lambda do |auction_offer_type, type|
-    return if auction_offer_type.blank? || type == BLIND || type.empty?
-
-    case auction_offer_type
-    when 'with_offers'
-      auction_id_list = self.select { |a| a.offers.present? }.pluck(:id)
-    when 'without_offers'
-      auction_id_list = self.select { |a| a.offers.empty? }.pluck(:id)
-    end
-
-    where(id: auction_id_list)
-  end)
-
   delegate :count, to: :offers, prefix: true
   delegate :size, to: :offers, prefix: true
 
@@ -99,32 +47,6 @@ class Auction < ApplicationRecord
     number = value.to_d
     deposit = Money.from_amount(number, Setting.find_by(code: 'auction_currency').retrieve)
     self.requirement_deposit_in_cents = deposit.cents
-  end
-
-  def self.search(params = {})
-    param_list = %w[domain_name starts_at ends_at platform users_price]
-    sort_column = params[:sort].presence_in(param_list) || 'domain_name'
-    sort_admin_column = params[:sort].presence_in(%w[domain name
-                                                     starts_at
-                                                     ends_at
-                                                     highest_offer_cents
-                                                     number_of_offers
-                                                     turns_count
-                                                     starting_price
-                                                     min_bids_step
-                                                     slipping_end
-                                                     platform]) || 'id'
-    sort_direction = params[:direction].presence_in(%w[asc desc]) || 'desc'
-    is_from_admin = params[:admin] == 'true'
-
-    with_highest_offers
-      .with_domain_name(params[:domain_name])
-      .with_type(params[:type])
-      .with_starts_at(params[:starts_at])
-      .with_ends_at(params[:ends_at])
-      .with_starts_at_nil(params[:starts_at_nil])
-      .with_offers(params[:auction_offer_type], params[:type])
-      .order("#{is_from_admin ? sort_admin_column : sort_column} #{sort_direction} NULLS LAST")
   end
 
   def deposit_and_enable_deposit_should_be_togeter

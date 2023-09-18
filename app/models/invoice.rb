@@ -1,7 +1,4 @@
-# rubocop:disable Metrics/ClassLength
-# require 'result_not_found'
-# require 'result_not_sold'
-# require 'countries'
+# rubocop:disable Metrics
 
 class Invoice < ApplicationRecord
   include BookKeeping
@@ -33,6 +30,8 @@ class Invoice < ApplicationRecord
   delegate :enable_deposit?, to: :enable_deposit?
   delegate :deposit, to: :deposit
 
+  attr_accessor :vat_rate
+
   scope :with_search_scope, (lambda do |origin|
     if origin.present?
       if numeric?(origin)
@@ -44,10 +43,10 @@ class Invoice < ApplicationRecord
         .where('billing_profiles.name ILIKE ? OR ' \
                 'users.email ILIKE ? OR users.surname ILIKE ? OR ' \
                 'invoice_items.name ILIKE ?',
-                "%#{origin}%",
-                "%#{origin}%",
-                "%#{origin}%",
-                "%#{origin}%")
+               "%#{origin}%",
+               "%#{origin}%",
+               "%#{origin}%",
+               "%#{origin}%")
       end
     end
   end)
@@ -65,7 +64,55 @@ class Invoice < ApplicationRecord
         }
 
   def self.search(params = {})
-    with_search_scope(params[:search_string]).with_statuses(params[:statuses_contains])
+    sort_column = params[:sort].presence_in(%w[paid_through
+                                               paid_amount
+                                               vat_rate
+                                               cents
+                                               notes
+                                               status
+                                               number
+                                               due_date
+                                               billing_profile_name]) || 'id'
+    sort_direction = params[:direction].presence_in(%w[asc desc]) || 'desc'
+
+    query = with_search_scope(params[:search_string]).with_statuses(params[:statuses_contains])
+
+    case params[:sort]
+    when 'channel'
+      # invoices_array = query.to_a
+
+      # if sort_direction == 'asc'
+      #   invoices_array.sort_by do |invoice|
+      #     invoice.paid_with_payment_order&.channel || ''
+      #   end
+      # else
+      #   invoices_array.sort_by do |invoice|
+      #     invoice.paid_with_payment_order&.channel || ''
+      #   end.reverse
+      # end
+
+      query.left_outer_joins(:paid_with_payment_order)
+           .select("invoices.*, REPLACE(payment_orders.type, 'PaymentOrders::', '') AS payment_order_channel")
+           .order(Arel.sql("payment_order_channel #{sort_direction} NULLS LAST"))
+
+      # query.left_outer_joins(:paid_with_payment_order)
+      # .select("invoices.*, COALESCE(REPLACE(paid_with_payment_orders.type, 'PaymentOrders::', ''), '') AS payment_order_channel")
+      # .order(Arel.sql("payment_order_channel #{sort_direction} NULLS LAST"))
+ 
+ 
+    when 'billing_profile_name'
+      query.left_outer_joins(:billing_profile).order("billing_profiles.name #{sort_direction}")
+    when 'total'
+      invoices_array = query.to_a
+
+      if sort_direction == 'asc'
+        invoices_array.sort_by(&:total)
+      else
+        invoices_array.sort_by(&:total).reverse
+      end
+    else
+      query.order("#{sort_column} #{sort_direction} NULLS LAST")
+    end
   end
 
   def self.create_from_result(result_id)
@@ -148,7 +195,7 @@ class Invoice < ApplicationRecord
   end
 
   def title
-    persisted? ? I18n.t('invoices.title', number: number) : nil
+    persisted? ? I18n.t('invoices.title', number:) : nil
   end
 
   def address
@@ -219,7 +266,7 @@ class Invoice < ApplicationRecord
   end
 
   def self.with_billing_profile(billing_profile_id:)
-    Invoice.where(billing_profile_id: billing_profile_id)
+    Invoice.where(billing_profile_id:)
   end
 
   def self.numeric?(string)

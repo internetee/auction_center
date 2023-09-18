@@ -1,4 +1,4 @@
-# rubocop:disable Metrics/ClassLength
+# rubocop:disable Metrics
 # require 'invoice_already_paid'
 
 module Admin
@@ -15,23 +15,16 @@ module Admin
 
     # GET /admin/invoices
     def index
-      sort_column = params[:sort].presence_in(%w[paid_through
-                                                 paid_amount
-                                                 vat_rate
-                                                 cents
-                                                 notes
-                                                 status
-                                                 number
-                                                 due_date
-                                                 billing_profile_id]) || 'id'
-      sort_direction = params[:direction].presence_in(%w[asc desc]) || 'desc'
-
       invoices = Invoice.accessible_by(current_ability)
                         .includes(:paid_with_payment_order)
                         .search(params)
-                        .order("#{sort_column} #{sort_direction}")
 
-      @pagy, @invoices = pagy(invoices, items: params[:per_page] ||= 15)
+      if invoices.is_a?(Array)
+        @pagy, @invoices = pagy_array(invoices, items: params[:per_page] ||= 15)
+      else
+        @pagy, @invoices = pagy(invoices, items: params[:per_page] ||= 15)
+      end
+
     end
 
     # GET /admin/invoices/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/download

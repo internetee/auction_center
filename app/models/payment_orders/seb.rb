@@ -1,5 +1,5 @@
 module PaymentOrders
-  class Seb < EstonianBankLink
+  class SEB < EstonianBankLink
     def self.config_namespace_name
       'seb'
     end
