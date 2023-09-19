@@ -22,6 +22,15 @@ class Offer < ApplicationRecord
 
   attr_accessor :skip_autobider, :skip_if_wishlist_case, :skip_validation
 
+  after_create :update_auction_ends_at
+  after_update :update_auction_ends_at
+
+  def update_auction_ends_at
+    return if auction.platform == 'blind' || auction.platform.nil?
+
+    auction.update_ends_at(self)
+  end
+
   def broadcast_replace_auction
     return if auction.platform == 'blind' || auction.platform.nil?
 
