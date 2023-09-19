@@ -2,6 +2,9 @@
 module Auction::Searchable
   extend ActiveSupport::Concern
 
+  BLIND = '0'.freeze
+  ENGLISH = '1'.freeze
+
   included do
     scope :active, -> { where('starts_at <= ? AND ends_at >= ?', Time.now.utc, Time.now.utc) }
     scope :without_result, lambda {
@@ -88,7 +91,8 @@ module Auction::Searchable
         .with_offers(params[:auction_offer_type], params[:type])
 
       if params[:sort] == 'users_price'
-        query.with_max_offer_cents_for_english_auction(current_user).order("offers_subquery.max_offer_cents #{sort_direction} NULLS LAST")
+        query.with_max_offer_cents_for_english_auction(current_user)
+             .order("offers_subquery.max_offer_cents #{sort_direction} NULLS LAST")
       elsif params[:sort] == 'username'
         query.sorted_by_winning_offer_username.order("offers_subquery.username #{sort_direction} NULLS LAST")
       else
