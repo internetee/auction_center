@@ -12,8 +12,7 @@ class AutobiderService
     autobiders = bider.auctual_autobiders
 
     filtered_autobiders = bider.filter_autobider_for_banned_users(autobiders: autobiders)
-    filtered_autobiders = bider.reject_autobiders_which_bid_equal_to_auction_current_price(filtered_autobiders: filtered_autobiders,
-                                                                                          auction: auction)
+    filtered_autobiders = bider.reject_autobiders_which_bid_equal_to_auction_current_price(filtered_autobiders: filtered_autobiders, auction: auction)
 
     return if filtered_autobiders.empty?
 
@@ -98,6 +97,10 @@ class AutobiderService
       else
         auction.update_minimum_bid_step(auction.min_bids_step)
       end
+
+      auction.reload
+      offer = auction.currently_winning_offer
+      auction.update_ends_at(offer)
 
       return
     end
