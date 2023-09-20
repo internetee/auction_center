@@ -300,4 +300,18 @@ class AutobiderServiceTest < ActionDispatch::IntegrationTest
     AutobiderService.autobid(@english_auction)
     assert_equal @english_auction.ends_at, Time.zone.now + 5.minute
   end
+
+  def test_slipping_time_should_be_change_when_autobider_is_created
+    Autobider.destroy_all
+
+    @english_auction.update(ends_at: Time.zone.now + 3.minute)
+    @english_auction.reload
+
+    assert_equal @english_auction.ends_at, Time.zone.now + 3.minute
+    assert_equal @english_auction.slipping_end, 5
+
+    Autobider.create(user: @user_two, domain_name: @english_auction.domain_name, cents: 99_999)
+    AutobiderService.autobid(@english_auction)
+    assert_equal @english_auction.ends_at, Time.zone.now + 5.minute
+  end
 end
