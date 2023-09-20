@@ -6,9 +6,14 @@ class OfferTest < ActiveSupport::TestCase
 
     @expired_auction = auctions(:expired)
     @valid_auction = auctions(:valid_with_offers)
+    @english_auction = auctions(:english)
     @billing_profile = billing_profiles(:company)
     @user = users(:participant)
+    @second_user = users(:second_place_participant)
     @offer = offers(:expired_offer)
+
+    BillingProfile.create_default_for_user(@second_user.id)
+    @second_user.reload
 
     travel_to Time.parse('2010-07-05 10:30 +0000').in_time_zone
   end
@@ -240,5 +245,135 @@ class OfferTest < ActiveSupport::TestCase
     auction.reload
 
     assert_equal([], offer.errors[:price])
+  end
+
+  def test_if_blind_auction_has_5_last_for_end_minute_slipping_end_don_not_added
+    assert @valid_auction.blind? || @valid_auction.platform.blank?
+
+    @valid_auction.update(ends_at: Time.zone.now + 3.minute)
+    @valid_auction.reload
+
+    ends_at = @valid_auction.ends_at
+
+    offer = Offer.new
+    offer.auction = @valid_auction
+    offer.user = @second_user
+    offer.cents = @valid_auction.currently_winning_offer.cents + 1_000
+    offer.billing_profile = @second_user.billing_profiles.first
+    offer.save
+
+    offer.reload && @valid_auction.reload
+
+    assert_equal ends_at, @valid_auction.ends_at
+  end
+
+  def test_if_blind_auction_has_more_than_5_last_minute_to_end_slipping_end_not_added
+    assert @valid_auction.blind? || @valid_auction.platform.blank?
+
+    @valid_auction.update(ends_at: Time.zone.now + 20.minute)
+    @valid_auction.reload
+
+    ends_at = @valid_auction.ends_at
+
+    offer = Offer.new
+    offer.auction = @valid_auction
+    offer.user = @second_user
+    offer.cents = @valid_auction.currently_winning_offer.cents + 1_000
+    offer.billing_profile = @second_user.billing_profiles.first
+    offer.save
+
+    offer.reload && @valid_auction.reload
+
+    assert_equal ends_at, @valid_auction.ends_at
+  end
+
+  def test_if_english_auction_has_5_last_for_end_minute_slipping_end_is_added
+    assert @english_auction.english?
+
+    @english_auction.update(slipping_end: 15, ends_at: Time.zone.now + 3.minute)
+    @english_auction.reload
+
+    offer = Offer.new
+    offer.auction = @english_auction
+    offer.user = @second_user
+    offer.cents = 10_000
+    offer.billing_profile = @second_user.billing_profiles.first
+    offer.save
+
+    offer.reload && @english_auction.reload
+
+    assert_equal Time.zone.now + 15.minute, @english_auction.ends_at
+  end
+
+  def test_if_english_auction_has_more_than_5_last_minute_to_end_slipping_end_is_added
+    assert @english_auction.english?
+
+    @english_auction.update(slipping_end: 15, ends_at: Time.zone.now + 20.minute)
+    @english_auction.reload
+
+    ends_at = @english_auction.ends_at
+
+    offer = Offer.new
+    offer.auction = @english_auction
+    offer.user = @second_user
+    offer.cents = 10_000
+    offer.billing_profile = @second_user.billing_profiles.first
+    offer.save
+
+    offer.reload && @english_auction.reload
+
+    assert_equal ends_at, @english_auction.ends_at
+  end
+
+  def test_slipping_time_added_to_english_auction_if_outbided
+    assert @english_auction.english?
+
+    offer = Offer.new
+    offer.auction = @english_auction
+    offer.user = @user
+    offer.cents = 10_000
+    offer.billing_profile = @user.billing_profiles.first
+    offer.save
+
+    @english_auction.update(slipping_end: 15, ends_at: Time.zone.now + 3.minute)
+    @english_auction.reload
+
+    offer = Offer.new
+    offer.auction = @english_auction
+    offer.user = @second_user
+    offer.cents = 20_000
+    offer.billing_profile = @second_user.billing_profiles.first
+    offer.save
+
+    offer.reload && @english_auction.reload
+
+    assert_equal Time.zone.now + 15.minute, @english_auction.ends_at
+  end
+
+  def test_slipping_time_no_added_to_blind_auction_if_outbided
+    assert @valid_auction.blind? || @valid_auction.platform.blank?
+
+    offer = Offer.new
+    offer.auction = @valid_auction
+    offer.user = @user
+    offer.cents = @valid_auction.currently_winning_offer.cents + 1_000
+    offer.billing_profile = @user.billing_profiles.first
+    offer.save
+
+    @valid_auction.update(ends_at: Time.zone.now + 3.minute)
+    @valid_auction.reload
+
+    ends_at = @valid_auction.ends_at
+
+    offer = Offer.new
+    offer.auction = @valid_auction
+    offer.user = @second_user
+    offer.cents = @valid_auction.currently_winning_offer.cents + 1_000
+    offer.billing_profile = @second_user.billing_profiles.first
+    offer.save
+
+    offer.reload && @valid_auction.reload
+
+    assert_equal ends_at, @valid_auction.ends_at
   end
 end
