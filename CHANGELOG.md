@@ -1,5 +1,6 @@
 19.09.2023
 * Fix for auction type filter https://github.com/internetee/auction_center/issues/1131
+* Fix for auction end extension in case autobidder is updated https://github.com/internetee/auction_center/pull/1132
 * Tests for auction end extension https://github.com/internetee/auction_center/pull/1135
 
 18.09.2023
