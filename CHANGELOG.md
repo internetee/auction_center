@@ -1,3 +1,7 @@
+19.09.2023
+* Fix for auction type filter https://github.com/internetee/auction_center/issues/1131
+* Tests for auction end extension https://github.com/internetee/auction_center/pull/1135
+
 18.09.2023
 * Fixes for sorting in user and admin views https://github.com/internetee/auction_center/issues/1125
 
