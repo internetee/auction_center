@@ -23,7 +23,7 @@ class ApplicationController < ActionController::Base
   end
 
   def store_location
-    session[:return_to] = request.referer.split('?').first
+    session[:return_to] = request.referer.split('?').first if request.referer
   end
 
   # If needed, add updated_by to the params hash. Updated by takes format of "123 - User Surname"
