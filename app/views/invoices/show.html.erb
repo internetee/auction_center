@@ -43,6 +43,12 @@
               <%= I18n.l(@invoice.paid_at) %>
             </div>
           <% end %>
+          <% if @invoice.billing_vat_code.present? %>
+            <div class="item">
+              <div class="header"><%= t('billing_profiles.vat_code') %></div>
+              <%= @invoice.billing_vat_code %>
+            </div>
+          <% end %>
         </div>
       </div>
       <div class="column sixteen wide">
