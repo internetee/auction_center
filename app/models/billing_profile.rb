@@ -87,7 +87,7 @@ class BillingProfile < ApplicationRecord
     Invoice.with_billing_profile(billing_profile_id: id).find_each do |invoice|
       next if invoice.paid?
 
-      invoice.update_billing_address
+      invoice.update_billing_info
       invoice.save!
     end
   end
