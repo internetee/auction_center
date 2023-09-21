@@ -2,6 +2,7 @@ class BillingProfilesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_billing_profile, only: %i[show edit update destroy]
   before_action :authorize_billing_profile_for_user, except: %i[new index create]
+  before_action :store_location, only: :new
 
   # GET /billing_profiles
   def index
@@ -21,7 +22,8 @@ class BillingProfilesController < ApplicationController
 
     respond_to do |format|
       if create_predicate
-        format.html { redirect_to billing_profile_path(@billing_profile.uuid), notice: t(:created) }
+        redirect_uri = "#{session[:return_to]}?billing_profile_id=#{@billing_profile.id}" || billing_profile_path(@billing_profile.uuid)
+        format.html { redirect_to redirect_uri, notice: t('.created') }
         format.json { render :show, status: :created, location: @billing_profile }
       else
         format.html { render :new }
@@ -40,7 +42,7 @@ class BillingProfilesController < ApplicationController
   def update
     respond_to do |format|
       if update_predicate
-        format.html { redirect_to billing_profile_path(@billing_profile.uuid), notice: t(:updated) }
+        format.html { redirect_to billing_profile_path(@billing_profile.uuid), notice: t('.updated') }
         format.json { render :show, status: :ok, location: @billing_profile }
       else
         format.html { render :edit }
@@ -53,7 +55,7 @@ class BillingProfilesController < ApplicationController
   def destroy
     if @billing_profile.deletable?
       @billing_profile.destroy!
-      redirect_to billing_profiles_path, notice: t(:deleted)
+      redirect_to billing_profiles_path, notice: t('.deleted')
     else
       redirect_to billing_profiles_path, notice: @billing_profile.errors[:base].to_sentence
     end

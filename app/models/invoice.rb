@@ -263,6 +263,11 @@ class Invoice < ApplicationRecord
     billing_profile.attributes.keys.each do |attribute|
       self[attribute] = billing_profile[attribute] if billing_fields.include? attribute
     end
+
+    self.billing_name = billing_profile.name
+    self.billing_address = address
+    self.billing_vat_code = vat_code
+    self.billing_alpha_two_country_code = billing_profile.alpha_two_country_code
   end
 
   def self.with_billing_profile(billing_profile_id:)
