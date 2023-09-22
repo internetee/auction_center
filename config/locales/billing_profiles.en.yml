@@ -17,6 +17,7 @@ en:
     created: "Billing profile successfully created!"
     updated: "Billing profile successfully updated!"
     deleted: "Billing profile successfully deleted!"
+    vat_validation_error: "VAT code is not registered or not valid according to VIES"
 
     edit:
       title: "Edit billing profile"

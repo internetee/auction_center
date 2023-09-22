@@ -6,6 +6,7 @@ class BillingProfile < ApplicationRecord
   validates :name, presence: true
   validates :country_code, presence: true
   validates :vat_code, uniqueness: { scope: :user_id }, allow_blank: true
+  validate :vat_code_must_be_registered_in_vies
 
   validates :name, :vat_code, :street, :city, :postal_code, safe_value: true
 
@@ -31,7 +32,13 @@ class BillingProfile < ApplicationRecord
   }
 
   def self.search(params = {})
-    self.with_search_scope(params[:search_string])
+    with_search_scope(params[:search_string])
+  end
+
+  def vat_code_must_be_registered_in_vies
+    return if vat_code.blank?
+
+    errors.add(:vat_code, I18n.t('billing_profiles.vat_validation_error')) unless Valvat.new(self.vat_code).exists?
   end
 
   def issued_invoices
