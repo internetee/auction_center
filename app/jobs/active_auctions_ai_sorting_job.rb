@@ -4,7 +4,7 @@ class ActiveAuctionsAiSortingJob < ApplicationJob
   def perform
     return unless self.class.needs_to_run?
 
-    auctions_list = Auction.active
+    auctions_list = Auction.active_with_offers_count
     ai_response = fetch_ai_response(auctions_list)
     process_ai_response(ai_response)
   rescue OpenAI::Error => e
@@ -51,10 +51,22 @@ class ActiveAuctionsAiSortingJob < ApplicationJob
       model: model,
       messages: [
         { role: 'system', content: system_message },
-        { role: 'user', content: auctions_list.pluck(:id, :domain_name).to_s },
+        { role: 'user', content: format(auctions_list) },
         { role: 'user', content: 'Response in JSON format: [{id:, domain_name:, ai_score:}]' }
       ]
     }
+  end
+
+  def format(auctions_list)
+    auctions_list.map do |a|
+      sliced = a.attributes.slice('id', 'domain_name')
+      if a.platform != 'english'
+        sliced.merge!({ last_offer: 0, offers_count: 0 })
+      else
+        sliced.merge!({ last_offer: a.cents, offers_count: a.offers_count })
+      end
+      sliced
+    end.to_json
   end
 
   def update_auctions_with_ai_scores(ai_scores)
