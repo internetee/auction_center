@@ -51,7 +51,7 @@ class BillingProfilesTest < ApplicationSystemTestCase
       click_link_or_button('Submit')
     end
 
-    assert(page.has_css?('div.notice', text: 'Created successfully.'))
+    assert(page.has_css?('div.notice', text: 'Billing profile successfully created!'))
   end
 
   # def test_billing_profile_vat_code_needs_to_be_unique_for_user
@@ -81,7 +81,7 @@ class BillingProfilesTest < ApplicationSystemTestCase
                 .where(name: 'ACME corporation')
                 .where('vat_code IS NULL'))
 
-    assert(page.has_css?('div.notice', text: 'Created successfully.'))
+    assert(page.has_css?('div.notice', text: 'Billing profile successfully created!'))
   end
 
   def test_a_user_can_create_private_billing_profile
@@ -93,7 +93,7 @@ class BillingProfilesTest < ApplicationSystemTestCase
       click_link_or_button('Submit')
     end
 
-    assert(page.has_css?('div.notice', text: 'Created successfully.'))
+    assert(page.has_css?('div.notice', text: 'Billing profile successfully created!'))
     assert(BillingProfile.find_by(name: @user.display_name))
   end
 
@@ -110,7 +110,7 @@ class BillingProfilesTest < ApplicationSystemTestCase
       click_link_or_button('Submit')
     end
 
-    assert(page.has_css?('div.notice', text: 'Updated successfully.'))
+    assert(page.has_css?('div.notice', text: 'Billing profile successfully updated!'))
     assert(BillingProfile.find_by(street: 'New Street 12', name: 'Joe John Participant-New',
                                   country_code: 'PL'))
   end
@@ -130,7 +130,7 @@ class BillingProfilesTest < ApplicationSystemTestCase
       click_link_or_button('Delete')
     end
 
-    assert_text('Deleted successfully.')
+    assert_text('Billing profile successfully deleted!')
   end
 
   def test_user_cannot_create_billing_profiles_in_the_name_of_other_user
