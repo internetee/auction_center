@@ -102,9 +102,7 @@ en:
 
       4_step_header: "Withdrawing an offer"
       4_step_explanation: |
-        If you no longer want to participate in an auction, you can withdraw your offer
-        at any point, as long as the auction is still in progress. Once the action has ended,
-        you cannot withdraw your offer
+        In case of blind auctions you have an option to withdraw your offer at any point, as long as the auction is still in progress. Withdrawing an offer is not possible in case of open English type auctions.
 
     bottom_grid:
       title: "Auction rules"
@@ -126,9 +124,7 @@ en:
 
       4_step_header: "Withdrawing an offer"
       4_step_explanation: |
-        If you no longer want to participate in an auction, you can withdraw your offer
-        at any point, as long as the auction is still in progress. Once the action has ended,
-        you cannot withdraw your offer.
+        In case of blind auctions you have an option to withdraw your offer at any point, as long as the auction is still in progress. Withdrawing an offer is not possible in case of open English type auctions.
 
     banned: |
       You are banned from participating in auctions for domain(s): %{domain_names}.

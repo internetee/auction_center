@@ -106,8 +106,7 @@ et:
 
       4_step_header: "Pakkumuse tagasivõtmine"
       4_step_explanation: |
-        Kui sa ei soovi enam oksjonil osaleda, võid oma pakkumuse
-        igal ajal tagasi võtta nii kaua kuni oksjon kestab
+        Pimeoksjonite puhul võid oma pakkumuse kuni oksjoni lõpuni igal ajal tagasi võtta. Avatud inglise oksjonite puhul selline võimalus puudub.
 
     bottom_grid:
       title: "Oksjoni eeskirjad"
@@ -129,8 +128,7 @@ et:
 
       4_step_header: "Pakkumuse tagasivõtmine"
       4_step_explanation: |
-        Kui sa ei soovi enam oksjonil osaleda, võid oma pakkumuse
-        igal ajal tagasi võtta nii kaua kuni oksjon kestab.
+        Pimeoksjonite puhul võid oma pakkumuse kuni oksjoni lõpuni igal ajal tagasi võtta. Avatud inglise oksjonite puhul selline võimalus puudub.
 
 
     banned: |
