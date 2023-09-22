@@ -1,4 +1,5 @@
 22.09.2023
+* Removed payment link from overdue invoice emails https://github.com/internetee/auction_center/issues/1129
 * Fixed withdrwal information in the portal https://github.com/internetee/auction_center/issues/1143
 
 19.09.2023
