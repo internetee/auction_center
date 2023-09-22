@@ -1,3 +1,6 @@
+22.09.2023
+* Fixed withdrwal information in the portal https://github.com/internetee/auction_center/issues/1143
+
 19.09.2023
 * Fix for auction type filter https://github.com/internetee/auction_center/issues/1131
 * Fix for auction end extension in case autobidder is updated https://github.com/internetee/auction_center/pull/1132
