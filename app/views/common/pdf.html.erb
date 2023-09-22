@@ -215,21 +215,22 @@
                     <hr/>
                     <dl class="dl-horizontal">
                         <dt>
-                            <%= t('billing_profiles.name') %>
+                          <%= t('billing_profiles.name') %>
                         </dt>
                         <dd>
-                            <%= @invoice.billing_name %>
+                          <%= @invoice.billing_name %>
                         </dd>
 
-                        <% if @invoice.billing_vat_code %>
-                            <dt><%= t('billing_profiles.vat_code') %></dt>
-                            <dd><%= @invoice.billing_vat_code %></dd>
+                        <% if @invoice.vat_code.present? %>                          
+                          <dt><%= t('billing_profiles.vat_code') %></dt>
+                          <dd>
+                                <%= @invoice.vat_code %>
+                          </dd>
                         <% end %>
-
 
                         <dt><%= t('billing_profiles.address') %></dt>
                         <dd>
-                            <%= @invoice.billing_address %>
+                          <%= @invoice.billing_address %>
                         </dd>
                     </dl>
                 </div>
