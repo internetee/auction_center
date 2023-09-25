@@ -21,6 +21,12 @@
             <div class="header"><%= @invoice.recipient %></div>
             <%= @invoice.address %>
           </div>
+          <% if @invoice.vat_code.present? %>
+            <div class="item">
+              <div class="header"><%= t('billing_profiles.vat_code') %></div>
+              <%= @invoice.vat_code %>
+            </div>
+          <% end %>
         </div>
       </div>
       <div class="column right aligned">
