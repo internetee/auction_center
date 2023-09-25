@@ -1,6 +1,7 @@
 25.09.2023
 * Fixed invoice addressee updating on an invoice https://github.com/internetee/auction_center/issues/1136
 * Improved process for adding new billing profile on an invoice https://github.com/internetee/auction_center/issues/1137
+* Added VAT code validation https://github.com/internetee/auction_center/issues/1142
 
 22.09.2023
 * Removed payment link from overdue invoice emails https://github.com/internetee/auction_center/issues/1129
