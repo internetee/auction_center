@@ -23,7 +23,7 @@ class Invoice < ApplicationRecord
   validates :billing_profile, presence: true, on: :create
 
   validate :user_id_must_be_the_same_as_on_billing_profile_or_nil
-  before_update :update_billing_address
+  before_update :update_billing_info
 
   before_create :set_invoice_number
 
@@ -254,7 +254,7 @@ class Invoice < ApplicationRecord
     due_date < Time.zone.today && issued?
   end
 
-  def update_billing_address
+  def update_billing_info
     return if billing_profile.blank?
 
     billing_fields = %w[vat_code street city postal_code alpha_two_country_code]
@@ -263,6 +263,11 @@ class Invoice < ApplicationRecord
     billing_profile.attributes.keys.each do |attribute|
       self[attribute] = billing_profile[attribute] if billing_fields.include? attribute
     end
+
+    self.billing_name = billing_profile.name
+    self.billing_address = address
+    self.billing_vat_code = vat_code
+    self.billing_alpha_two_country_code = billing_profile.alpha_two_country_code
   end
 
   def self.with_billing_profile(billing_profile_id:)

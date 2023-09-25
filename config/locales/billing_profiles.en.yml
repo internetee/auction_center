@@ -14,6 +14,9 @@ en:
     errors: "prohibited this billing profile from being saved"
     in_use_by_offer_short: "In use by an active offer"
     in_use_by_offer: "Billing profile is already being used with an active offer"
+    created: "Billing profile successfully created!"
+    updated: "Billing profile successfully updated!"
+    deleted: "Billing profile successfully deleted!"
 
     edit:
       title: "Edit billing profile"

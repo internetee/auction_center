@@ -36,3 +36,6 @@ orphaned:
   uuid: "cec1de76-164f-4c9a-922d-dacde5e99f99"
   in_directo: false
   number: '87654321'
+  billing_name: "Orphan Profile"
+  billing_address: "Baker Street 221B, NW1 6XE London, United Kingdom"
+  billing_alpha_two_country_code: "GB"

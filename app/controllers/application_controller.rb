@@ -22,6 +22,10 @@ class ApplicationController < ActionController::Base
     @pagy_locale = I18n.locale.to_s
   end
 
+  def store_location
+    session[:return_to] = request.referer.split('?').first if request.referer
+  end
+
   # If needed, add updated_by to the params hash. Updated by takes format of "123 - User Surname"
   # When no current user is set, return back the hash as is.
   def merge_updated_by(update_params)

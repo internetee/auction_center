@@ -9,7 +9,7 @@ class PopulateBillingFields < ActiveRecord::Migration[6.0]
       next if invoice.billing_profile.blank?
       next unless invoice.recipient.nil?
 
-      if invoice.update_billing_address && invoice.save
+      if invoice.update_billing_info && invoice.save
         migrated_invoice_count += 1
       else
         failed_invoices << invoice.id

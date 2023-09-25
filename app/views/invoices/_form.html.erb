@@ -2,9 +2,10 @@
     <div class="ui one column grid">
         <div class="column">
             <div class="field">
+                <% selected_profile = params[:billing_profile_id].presence || invoice.billing_profile_id %>
                 <%= f.label :billing_profile, t('invoices.billing_profile') %>
                 <%= f.select :billing_profile_id,
-                             BillingProfile.where(user_id: invoice.user_id).collect { |b| [b.name, b.id] },
+                             options_for_select(BillingProfile.where(user_id: invoice.user_id).pluck(:name, :id), selected_profile),
                              {},
                              class: "ui dropdown" %>
             </div>
@@ -14,7 +15,7 @@
 
         <div class="column">
             <%= f.submit t(:submit), class: "ui button primary", data: { turbo: false } %>
-            <%= link_to t(:back), :back, class: "ui button secondary" %>
+            <%= link_to t(:back), :back, class: "ui button secondary", data: { turbo: false } %>
         </div>
     </div>
 <% end %>

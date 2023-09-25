@@ -266,6 +266,9 @@
 }
 .ui.big.form {
     .ui {
+        &.dropdown {
+            height: 45px;
+        }
         &.search {
             &.selection {
                 &.dropdown {

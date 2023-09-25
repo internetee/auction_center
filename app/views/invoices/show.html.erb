@@ -13,7 +13,7 @@
                     edit_invoice_path(@invoice.uuid), class: 'ui button primary' %>
         <% end %>
         <%= link_to t('invoices.download'), download_invoice_path(@invoice.uuid),
-                            { class: 'ui button secondary', download: true } %>
+          class: 'ui button secondary', download: true, data: { turbo: false } %>
       </div>
       <div class="column">
         <div class="ui list">
@@ -27,16 +27,16 @@
         <div class="ui list">
           <div class="item">
             <div class="header"><%= t('invoices.issuer') %></div>
-            <%= Setting.find_by(code: 'invoice_issuer').retrieve %>
-          </div>
+              <%= Setting.find_by(code: 'invoice_issuer').retrieve %>
+            </div>
           <div class="item">
             <div class="header"><%= t('invoices.issue_date') %></div>
-            <%= @invoice.issue_date %>
-          </div>
+              <%= @invoice.issue_date %>
+            </div>
           <div class="item">
             <div class="header"><%= t('invoices.due_date') %></div>
-            <%= @invoice.due_date %>
-          </div>
+              <%= @invoice.due_date %>
+            </div>
           <% if @invoice.paid? %>
             <div class="item">
               <div class="header"><%= t('invoices.paid_at') %></div>
