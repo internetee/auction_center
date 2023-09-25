@@ -38,4 +38,8 @@ class DepositStatusesTest < ActionDispatch::IntegrationTest
     d.reload
     assert_equal d.status, 'returned'
   end
+
+  def test_should_render_error_from_billing_side
+    # TODO: implement
+  end
 end
