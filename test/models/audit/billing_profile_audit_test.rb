@@ -23,7 +23,7 @@ class BillingProfileAuditTest < ActiveSupport::TestCase
                                          city: 'London',
                                          postal_code: 'NW1 6XE',
                                          country_code: 'GB')
-    billing_profile.save
+    billing_profile.save(validate: false)
 
     assert(audit_record = Audit::BillingProfile.find_by(object_id: billing_profile.id, action: 'INSERT'))
     assert_equal(billing_profile.name, audit_record.new_value['name'])
