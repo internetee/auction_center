@@ -1,4 +1,5 @@
 25.09.2023
+* Added client VAT nr on the invoices https://github.com/internetee/auction_center/issues/1127
 * Fixed invoice addressee updating on an invoice https://github.com/internetee/auction_center/issues/1136
 * Improved process for adding new billing profile on an invoice https://github.com/internetee/auction_center/issues/1137
 * Added VAT code validation https://github.com/internetee/auction_center/issues/1142
