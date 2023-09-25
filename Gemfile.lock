@@ -401,6 +401,8 @@ GEM
     validate_url (1.0.15)
       activemodel (>= 3.0.0)
       public_suffix
+    valvat (1.4.0)
+      rexml (>= 3.2, < 4.0)
     warden (1.2.9)
       rack (>= 2.0.9)
     web-console (4.2.0)
@@ -482,6 +484,7 @@ DEPENDENCIES
   sprockets (~> 4.0)
   spy
   turbo-rails
+  valvat
   web-console (>= 3.3.0)
   webmock
   webpacker (~> 6.0.0.rc.5)

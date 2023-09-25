@@ -17,6 +17,7 @@ et:
     created: "Arveldusprofiil edukalt loodud!"
     updated: "Arveldusprofiil edukalt uuendatud!"
     deleted: "Arveldusprofiil edukalt kustutatud!"
+    vat_validation_error: "Käibemaksukood ei ole registreeritud või ei ole VIESi kohaselt kehtiv."
 
     edit:
       title: "Muuda arve aadressi"

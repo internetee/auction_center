@@ -39,7 +39,7 @@ class BillingProfileTest < ActiveSupport::TestCase
     duplicate = @billing_profile.dup
 
     assert_not(duplicate.valid?)
-    assert_equal(duplicate.errors[:vat_code], ['has already been taken'])
+    assert(duplicate.errors[:vat_code].include? 'has already been taken')
 
     private_person_profile = billing_profiles(:private_person)
 
@@ -150,7 +150,10 @@ class BillingProfileTest < ActiveSupport::TestCase
     assert_equal invoice.billing_vat_code, @billing_profile.vat_code
     assert_equal invoice.billing_alpha_two_country_code, @billing_profile.alpha_two_country_code
 
-    @billing_profile.update(name: 'New Company Ltd', vat_code: '12345')
+    @billing_profile.name = 'New Company Ltd'
+    @billing_profile.vat_code = '12345'
+    @billing_profile.save(validate: false)
+
     @billing_profile.reload && invoice.reload
 
     invoice = @billing_profile.invoices.first

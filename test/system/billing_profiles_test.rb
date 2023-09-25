@@ -45,7 +45,7 @@ class BillingProfilesTest < ApplicationSystemTestCase
     fill_in_address
 
     fill_in('billing_profile[name]', with: 'ACME corporation')
-    fill_in('billing_profile[vat_code]', with: '1234567890')
+    fill_in('billing_profile[vat_code]', with: 'IE6388047V')
 
     assert_changes('BillingProfile.count') do
       click_link_or_button('Submit')

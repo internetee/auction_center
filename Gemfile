@@ -37,6 +37,7 @@ gem 'sprockets', '~> 4.0'
 gem 'turbo-rails'
 gem 'webpacker', '~> 6.0.0.rc.5'
 gem 'webpush'
+gem 'valvat'
 
 # token
 gem 'jwt'
