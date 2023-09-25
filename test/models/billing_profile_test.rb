@@ -160,7 +160,7 @@ class BillingProfileTest < ActiveSupport::TestCase
     assert_equal invoice.status, 'issued'
     assert_equal invoice.billing_name, 'New Company Ltd'
     assert_equal invoice.billing_address, @billing_profile.address
-    assert_equal invoice.billing_vat_code, 'DE123456789'
+    assert_equal invoice.billing_vat_code, '12345'
     assert_equal invoice.billing_alpha_two_country_code, @billing_profile.alpha_two_country_code
   end
 
