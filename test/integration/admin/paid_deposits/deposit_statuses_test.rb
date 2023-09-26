@@ -8,6 +8,10 @@ class DepositStatusesTest < ActionDispatch::IntegrationTest
     @user = users(:participant)
     @admin = users(:administrator)
 
+    message = {"message": "Status updated"}
+    stub_request(:post, "http://eis_billing_system:3000/api/v1/invoice_generator/deposit_status")
+      .to_return(status: 200, body: message.to_json, headers: {})
+
     sign_in @admin
   end
 
