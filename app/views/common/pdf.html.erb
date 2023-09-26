@@ -192,7 +192,7 @@
                             <%= t('invoices.issuer') %>
                         </dt>
                         <dd>
-                            <%= Setting.find_by(code: 'invoice_issuer').retrieve %>
+                            <%= @invoice.issuer %>
                         </dd>
                         <dt>
                             <%= t('invoices.number') %>
@@ -301,7 +301,7 @@
                 <hr/>
                 <div class="row">
                     <div class="col-md-6 left">
-                        <%= Setting.find_by(code: 'invoice_issuer').retrieve %>
+                        <%= @invoice.issuer %>
                     </div>
                 </div>
             </div>

@@ -26,6 +26,7 @@ en:
     paid_through: "Paid through"
     deposit: "Deposit"
     amount_due: "Amount due"
+    sent_to_omniva: "E-Invoice was successfully sent"
 
     outstanding: "Outstanding invoices"
     paid: "Paid invoices"
@@ -49,6 +50,7 @@ en:
       change_billing_profile: "Change billing profile"
       pay: "Pay"
       redeem: Paying for cancelled invoice will redeem the violation but will not grant priority right to register that domain
+      send_e_invoice: "Send E-Invoice"
 
     edit:
       title: "Edit your invoice"

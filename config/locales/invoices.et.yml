@@ -26,6 +26,7 @@ et:
     paid_through: "Makseviis"
     deposit: "Ettemaks"
     amount_due: "Tasuda"
+    sent_to_omniva: "E-arve saadeti edukalt"
 
     outstanding: "Tasumata arved"
     paid: "Tasutud arved"
@@ -49,6 +50,7 @@ et:
       change_billing_profile: "Muuda arve aadressi"
       pay: "Maksa"
       redeem: Tühistatud arve tasumine eemaldab vastava arvega seotud rikkumise, kuid ei anna vastava domeeni registreerimiseks eelisõigust.
+      send_e_invoice: "Saada E-Arve"
 
     edit:
       title: "Muuda arvet"
