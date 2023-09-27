@@ -94,10 +94,10 @@ module Registry
         #   new_ends_at = Time.zone.now.beginning_of_day + legacy_difference_in_day.day + t
         # end
 
-        
-        ends_at_value = legacy_auction.initial_ends_at.present? ? legacy_auction.initial_ends_at : legacy_auction.ends_at
 
-        legacy_time_difference = (ends_at_value- legacy_auction.starts_at).to_i.abs
+        ends_at_value = legacy_auction.initial_ends_at.presence || legacy_auction.ends_at
+
+        legacy_time_difference = (ends_at_value - legacy_auction.starts_at).to_i.abs
         legacy_difference_in_day = legacy_time_difference / 86_400
         legacy_time = ends_at_value.strftime('%H:%M:%S')
         t = Time.parse(legacy_time).seconds_since_midnight.seconds

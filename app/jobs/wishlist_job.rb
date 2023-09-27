@@ -9,8 +9,11 @@ class WishlistJob < ApplicationJob
     return unless auction
 
     wishlist_items.each do |item|
-      WishlistMailer.auction_notification_mail(item, auction).deliver_later
+      next if item.processed?
+
+      WishlistMailer.auction_notification_mail(item, auction).deliver_later(wait_until: auction.starts_at)
       WishlistAutoOfferJob.set(wait_until: auction.starts_at).perform_later(auction.id)
+      item.update(processed: true)
     end
   end
 

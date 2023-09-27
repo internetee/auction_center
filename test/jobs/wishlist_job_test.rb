@@ -18,10 +18,11 @@ class WishlistJobTest < ActiveJob::TestCase
     clear_email_deliveries
   end
 
-  def test_it_sends_emails_when_there_is_a_wishlist_item
+  def test_it_sends_emails_and_only_once_when_there_is_a_wishlist_item
     WishlistItem.create!(user: @user, domain_name: @auction.domain_name)
 
     assert_enqueued_emails(1) do
+      WishlistJob.perform_now(@auction.domain_name, @auction.remote_id)
       WishlistJob.perform_now(@auction.domain_name, @auction.remote_id)
     end
   end
@@ -60,9 +61,13 @@ class WishlistJobTest < ActiveJob::TestCase
     end
   end
 
-  def test_schedulle_auto_offer_job_when_there_is_a_wishlist_item
+  def test_schedules_auto_offer_job_and_only_once_when_there_is_a_wishlist_item
     WishlistItem.create!(user: @user, domain_name: @auction.domain_name)
-    WishlistJob.perform_now(@auction.domain_name, @auction.remote_id)
+
+    assert_enqueued_jobs 1, only: WishlistAutoOfferJob do
+      WishlistJob.perform_now(@auction.domain_name, @auction.remote_id)
+      WishlistJob.perform_now(@auction.domain_name, @auction.remote_id)
+    end
 
     assert_enqueued_with(job: WishlistAutoOfferJob, args: [@auction.id], at: @auction.starts_at)
   end
