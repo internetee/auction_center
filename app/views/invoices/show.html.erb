@@ -108,11 +108,13 @@
           <%= button_to t('invoices.show.pay'), oneoff_invoice_path(uuid: @invoice.uuid), class: 'ui button primary' %>
         </div>
       <% end %>
-      <% unless @invoice.do_not_send_e_invoice? %>
-        <div class="column right aligned">
+      <div class="column right aligned">
+        <% if @invoice.do_not_send_e_invoice? %>
+          <a href="https://eservice.omniva.eu" target="_blank"><img src="/images/finbite.png" alt="EInvoice" style="height:40px;"/></a>
+        <% else %>
           <%= button_to t('invoices.show.send_e_invoice'), send_e_invoice_path(uuid: @invoice.uuid), class: 'ui button default', data: { turbo: false } %>
-        </div>
-      <% end %>
+        <% end %>
+      </div>
       </div>
     </div>
   </div>
