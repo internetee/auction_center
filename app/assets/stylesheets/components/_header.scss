@@ -55,20 +55,34 @@
 .c-header__user {
   display: flex;
   gap: rem(9px);
-  color: $white-color;
+  color: $black-color;
   align-items: center;
   white-space: nowrap;
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 800;
   font-size: rem(14px);
   line-height: rem(20px);
-
+  @include mq(desktop){
+    color: $white-color;
+    font-weight: 500;
+  }
+  svg {
+    fill: $black-color;
+    @include mq(desktop){
+      fill: $white-color;
+    }
+  }
   &:hover {
-    color: $grey-200-color;
+    color: $black-color;
     text-decoration: underline;
-
+    @include mq(desktop){
+      color: $grey-200-color;
+    }
     svg {
-      fill: $grey-200-color;
+      fill: $black-color;
+      @include mq(desktop){
+        fill: $grey-200-color;
+      }
     }
   }
 }

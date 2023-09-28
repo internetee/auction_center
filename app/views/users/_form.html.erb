@@ -1,5 +1,7 @@
 <%= turbo_frame_tag 'user_info' do %>
   <%= form_with model: user, url: user_path(user.uuid) do |f| %>
+    <%= render partial: 'common/flash', locals: { flash: flash } if turbo_frame_request? %>
+
     <div class="o-grid o-grid--two-col o-grid--sep">
       <div class="o-card">
         <div class="u-flex u-align-center u-content-sp u-mb-30">
@@ -16,7 +18,7 @@
           </div>
         </div>
 
-        <form class="c-account__form">
+        <div class="c-account__form">
           <div class="c-account__input c-account__input--editabl u-mb-20">
             <%= f.label :email, t('users.email') %>
             <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
@@ -39,7 +41,47 @@
               <span><%= I18n.l(user.created_at) %></span>
             </div>
           </div>
-        </form>
+
+          <% if user.persisted? || (user.signed_in_with_identity_document? && user.encrypted_password.blank?) %>
+            <h3 class="p3"><%= t('.new_password') %></h3>
+          <% else %>
+            <h3 class="p3"><%= t('users.password') %></h3>
+          <% end %>
+          <div>
+
+            <div class="c-account__input c-account__input--editabl u-mb-20">
+              <%= f.label :password, t('users.password') %>
+              <%= f.password_field :password, autocomplete: "new-password" %>
+              
+              <% if user.persisted? || (user.signed_in_with_identity_document? && user.encrypted_password.blank?) %>
+                <br>
+                <em><%= t('.you_can_leave_blank') %></em><br>
+              <% end %>
+              
+              <% if @minimum_password_length %>
+                <em><%= t('.password_requirements', minimum: @minimum_password_length) %></em>
+              <% end %>
+              <br />
+            </div>
+
+          <div class="c-account__input c-account__input--editabl u-mb-20">
+              <%= f.label :password_confirmation, t('users.password_confirmation') %>
+              <%= f.password_field :password_confirmation, autocomplete: "off" %>
+            </div>
+
+            <% if user.persisted? && !user.signed_in_with_identity_document? %>
+              <div class="column sixteen wide">
+                <hr>
+                <div class="c-account__input c-account__input--editabl u-mb-20">
+                  <%= f.label :current_password, t('users.current_password') %>
+                  <i><%= t('.we_need_your_password') %></i><br />
+                  <%= f.password_field :current_password, autocomplete: "off" %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+
+        </div>
       </div>
 
       <div class="o-card">

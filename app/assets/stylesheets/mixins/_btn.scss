@@ -30,10 +30,12 @@
 @mixin btn-blue {
   @include btn;
   background: $primary-blue-color;
+  border: 1px solid $white-color;
 
   &:hover {
     background: $white-color;
     color: $primary-blue-color;
+    border: 1px solid $primary-blue-color;
   }
 }
 
