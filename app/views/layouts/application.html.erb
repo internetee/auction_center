@@ -64,7 +64,7 @@
       </div>
     <% end %>
 
-    <%= component 'common/header' %>
+    <%= component 'common/header', notifications: @notifications_for_header %>
 
     <main>
       <%= turbo_frame_tag "modal" %>

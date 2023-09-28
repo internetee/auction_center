@@ -11,7 +11,10 @@ export default class extends Controller {
 
     let subscribed = localStorage.getItem('block-webpush-modal');
     if (subscribed === 'true') {
-      document.querySelector('.webpush-modal').style.display = 'none';
+      const element = document.querySelector('.webpush-modal');
+      if (element) {
+        element.style.display = 'none';
+      }
     }
 
     if ('serviceWorker' in navigator && 'PushManager' in window) {

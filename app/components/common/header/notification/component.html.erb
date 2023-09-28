@@ -1,0 +1,35 @@
+<% if user_signed_in?  %>
+  <li class="c-toolbar__search js-search-toolbar" data-controller='toggle' data-toggle-toggle-class='is-hidden'>
+    <button class="c-toolbar__notice js-notices-toggle" data-action="toggle#toggle">
+      <svg width="12" height="16" viewBox="0 0 12 16" fill="white"
+                                         xmlns="http://www.w3.org/2000/svg">
+        <path d="M5.99986 15.3333C6.35348 15.3333 6.69262 15.1928 6.94267 14.9428C7.19272 14.6927 7.33319 14.3536 7.33319 14H4.66652C4.66652 14.3536 4.807 14.6927 5.05705 14.9428C5.3071 15.1928 5.64624 15.3333 5.99986 15.3333ZM0.666525 12.6666H11.3332C11.465 12.6666 11.5939 12.6275 11.7035 12.5542C11.8131 12.481 11.8985 12.3769 11.949 12.2551C11.9994 12.1333 12.0126 11.9992 11.9869 11.8699C11.9612 11.7406 11.8977 11.6219 11.8045 11.5286L10.6665 10.3906V6.66663C10.6644 5.54563 10.2591 4.46279 9.52477 3.61582C8.7904 2.76885 7.77591 2.21426 6.66652 2.05329V1.33329C6.66652 1.15648 6.59629 0.986912 6.47126 0.861888C6.34624 0.736864 6.17667 0.666626 5.99986 0.666626C5.82305 0.666626 5.65348 0.736864 5.52845 0.861888C5.40343 0.986912 5.33319 1.15648 5.33319 1.33329V2.05329C4.2238 2.21426 3.20932 2.76885 2.47495 3.61582C1.74059 4.46279 1.33534 5.54563 1.33319 6.66663V10.3906L0.195191 11.5286C0.101985 11.6219 0.038514 11.7406 0.0128023 11.8699C-0.0129094 11.9992 0.000292634 12.1333 0.0507393 12.2551C0.101186 12.3769 0.186612 12.481 0.296219 12.5542C0.405825 12.6275 0.534691 12.6666 0.666525 12.6666ZM2.47119 11.138C2.59622 11.013 2.66649 10.8434 2.66652 10.6666V6.66663C2.66652 5.78257 3.01771 4.93472 3.64284 4.3096C4.26796 3.68448 5.1158 3.33329 5.99986 3.33329C6.88391 3.33329 7.73176 3.68448 8.35688 4.3096C8.982 4.93472 9.33319 5.78257 9.33319 6.66663V10.6666C9.33323 10.8434 9.40349 11.013 9.52852 11.138L9.72386 11.3333H2.27586L2.47119 11.138Z"/>
+      </svg>
+      <span>
+        <%= t('common.header.notifications') %><sup>(<%= current_user&.notifications&.unread&.count %>)</sup>
+      </span>
+    </button>
+    <!-- Notices -->
+    <div class="c-notices is-hidden js-notices" data-toggle-target='element'>
+      <div class="js-notices-list">
+
+        <% @notifications.each do |n| %>
+        <div class="c-notice">
+          <div class="c-notice__header">
+            <%= component 'common/notifications/icon', notification: n, readed: false %>
+          </div>
+          <div class="c-notice__main"><%= n.to_notification.message %></div>
+          <div class="c-notice__footer">
+            <div class="c-notification__header__date"><%= I18n.t('.notification_received', datetime: I18n.l(n.created_at)) %></div>
+          </div>
+        </div>
+        <% end %>
+
+      </div>
+      <div class="c-notices__footer u-text-center">
+        <%= link_to t('notifications.show_all'), notifications_path, class: 'o-link' %>
+      </div>
+    </div>
+    <!-- Notices -->
+  </li>
+<% end %>

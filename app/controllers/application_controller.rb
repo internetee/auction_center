@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery with: :exception
   before_action :set_locale
+  before_action :set_notifications
 
   content_security_policy do |policy|
     policy.style_src :self, 'www.gstatic.com', :unsafe_inline
@@ -42,5 +43,10 @@ class ApplicationController < ActionController::Base
 
   def after_sign_in_path_for(_resource)
     root_path
+  end
+
+  def set_notifications
+    # don't change the name, it's used in the header and can be conflict with notification variable in notifications page
+    @notifications_for_header = current_user&.notifications&.unread&.order(created_at: :desc)&.limit(5)
   end
 end
