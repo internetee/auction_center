@@ -1,6 +1,9 @@
 .u-flex{
   display: flex;
 }
+.u-flex-col{
+  flex-direction: column;
+}
 
 .u-flex-wrap {
   flex-wrap: wrap;
@@ -15,7 +18,9 @@
 .u-align-center {
   align-items: center;
 }
-
+.u-align-end{
+  align-items: flex-end;
+}
 .u-content-center {
   justify-content: center;
 }

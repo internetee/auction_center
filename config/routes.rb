@@ -81,7 +81,7 @@ Rails.application.routes.draw do
   end
 
   devise_for :users, path: 'sessions',
-                     controllers: { confirmations: 'email_confirmations', sessions: 'auth/sessions' }
+                     controllers: { confirmations: 'email_confirmations', sessions: 'auth/sessions', passwords: 'passwords' }
 
   resources :auctions, only: %i[index show], param: :uuid do
     resources :offers, only: %i[new show create edit update destroy], shallow: true, param: :uuid do

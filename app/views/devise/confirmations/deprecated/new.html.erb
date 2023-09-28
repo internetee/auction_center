@@ -1,0 +1,25 @@
+<% content_for :hero do %>
+    <div class="hero green">
+        <h1><%= t('.title') %></h1>
+    </div>
+<% end %>
+
+<div class="u-container">
+    <div class="u-container margin-block">
+        <%= form_for(resource, as: resource_name, url: confirmation_path(resource_name),
+                     html: { method: :post, class: "ui form big"}) do |f| %>
+            <%= render "devise/shared/error_messages", resource: resource %>
+
+            <div class="field">
+                <%= f.label :email, t("users.email") %>
+                <%= f.email_field :email, autofocus: true, autocomplete: "email", value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email) %>
+            </div>
+
+            <div class="buttons">
+                <%= f.submit t(:submit), class: "ui button primary", data: { turbo: false } %>
+            </div>
+        <% end %>
+
+        <%= render "devise/shared/links" %>
+    </div>
+</div>

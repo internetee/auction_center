@@ -29,4 +29,8 @@ class ApplicationViewComponent < ViewComponent::Base
   def company_name
     @company_name ||= 'Domain Auction Center'
   end
+
+  def main_app
+    Rails.application.class.routes.url_helpers
+  end
 end
