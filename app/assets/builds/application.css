@@ -1854,7 +1854,7 @@ input:not([type=checkbox]):not([type=radio]).is-invalid + span, select.is-invali
 .o-arrow {
   width: 1.2rem;
   height: 1.2rem;
-  background: url("../img/arrow-dwn.svg") center center/16px 16px no-repeat;
+  background: url("arrow-dwn.svg") center center/16px 16px no-repeat;
   cursor: pointer;
   display: inline-block;
   transition: 0.25s;

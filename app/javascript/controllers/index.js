@@ -52,5 +52,11 @@ application.register("profile-webpush", ProfileWebpushController);
 import PushNotificationController from "./push_notification_controller";
 application.register("push-notification", PushNotificationController);
 
-import HamburgerController from "./hamburger_controller";
+import ToggleController from "./toggle_controller";
+application.register("toggle", ToggleController);
+
+import HamburgerController from "./navbar/hamburger_controller";
 application.register("hamburger", HamburgerController);
+
+import ExpandableController from "./navbar/expandable_controller";
+application.register("navbar--expandable", ExpandableController);

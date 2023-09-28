@@ -1,5 +1,6 @@
 et:
   notifications:
     read_all: 'Loe kõik teated'
+    show_all: 'Näita kõiki teateid'
     unreaded_notifications: 'Lugemata teated'
     readed_notifications: 'Loetud teated'

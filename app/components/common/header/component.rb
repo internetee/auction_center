@@ -1,7 +1,13 @@
 module Common
   module Header
     class Component < ApplicationViewComponent
-      include Devise::Controllers::Helpers
+      attr_reader :notifications
+
+      def initialize(notifications:)
+        super
+
+        @notifications = notifications
+      end
 
       def languages
         languages = { et: 'Est', en: 'Eng' }

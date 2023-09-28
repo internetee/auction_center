@@ -7804,7 +7804,10 @@
         return;
       let subscribed = localStorage.getItem("block-webpush-modal");
       if (subscribed === "true") {
-        document.querySelector(".webpush-modal").style.display = "none";
+        const element = document.querySelector(".webpush-modal");
+        if (element) {
+          element.style.display = "none";
+        }
       }
       if ("serviceWorker" in navigator && "PushManager" in window) {
         navigator.serviceWorker.ready.then(
@@ -7890,7 +7893,16 @@
     userLogin: Boolean
   });
 
-  // app/javascript/controllers/hamburger_controller.js
+  // app/javascript/controllers/toggle_controller.js
+  var toggle_controller_default = class extends Controller {
+    toggle() {
+      this.elementTarget.classList.toggle(this.toggleClass);
+    }
+  };
+  __publicField(toggle_controller_default, "classes", ["toggle"]);
+  __publicField(toggle_controller_default, "targets", ["element"]);
+
+  // app/javascript/controllers/navbar/hamburger_controller.js
   var hamburger_controller_default = class extends Controller {
     connect() {
     }
@@ -7901,6 +7913,18 @@
   };
   __publicField(hamburger_controller_default, "targets", ["menu"]);
   __publicField(hamburger_controller_default, "classes", ["open"]);
+
+  // app/javascript/controllers/navbar/expandable_controller.js
+  var expandable_controller_default = class extends Controller {
+    expand() {
+      if (this.elementTarget.style.display === "block") {
+        this.elementTarget.style.display = "none";
+      } else {
+        this.elementTarget.style.display = "block";
+      }
+    }
+  };
+  __publicField(expandable_controller_default, "targets", ["element"]);
 
   // app/javascript/controllers/index.js
   application.register("modals--offer-modal", offer_modal_controller_default);
@@ -7919,7 +7943,9 @@
   application.register("countdown", countdown_controller_default);
   application.register("profile-webpush", profile_webpush_controller_default);
   application.register("push-notification", push_notification_controller_default);
+  application.register("toggle", toggle_controller_default);
   application.register("hamburger", hamburger_controller_default);
+  application.register("navbar--expandable", expandable_controller_default);
 })();
 /*!
  * Toastify js 1.12.0

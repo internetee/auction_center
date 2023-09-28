@@ -3,6 +3,7 @@ class ApplicationViewComponent < ViewComponent::Base
   # include HeroiconHelper
   include Turbo::FramesHelper
   include Pagy::Frontend
+  include Devise::Controllers::Helpers
 
   class << self
     def component_name
