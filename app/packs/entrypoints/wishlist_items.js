@@ -46,10 +46,15 @@ document.addEventListener('ajax:beforeSend', (event) => {
     clearErrors();
 });
 
-document.addEventListener('turbolinks:load', (event) => {
+document.addEventListener('turbo:load', (event) => {
     const form = document.getElementById('wishlist_item_form');
     const button = document.getElementById('wishlist_item_form_commit');
 
-    form.addEventListener('change', formHandler);
-    button.addEventListener('click', formHandler);
+    if (form) {
+        form.addEventListener('change', formHandler);
+    }
+
+    if (button) {
+        button.addEventListener('click', formHandler);
+    }
 });

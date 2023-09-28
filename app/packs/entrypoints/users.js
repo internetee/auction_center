@@ -44,10 +44,15 @@ function formHandler() {
     }
 }
 
-document.addEventListener('turbolinks:load', function() {
+document.addEventListener('turbo:load', function() {
     const form = document.getElementById('user_form');
     const button = document.getElementById('user_form_commit');
 
-    form.addEventListener('change', formHandler);
-    button.addEventListener('click', formHandler);
+    if (form) {
+        form.addEventListener('change', formHandler);
+    }
+
+    if (button) {
+        button.addEventListener('click', formHandler);
+    }
 });
