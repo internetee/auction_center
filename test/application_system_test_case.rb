@@ -20,10 +20,6 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   driven_by :headless_chrome
   Capybara.server = :puma, { Silent: true }
 
-  def select_option(css_selector, value)
-    find(:css, css_selector).find(:option, value).select_option
-  end
-
   private
 
   def extract_primary_link_from_last_mail

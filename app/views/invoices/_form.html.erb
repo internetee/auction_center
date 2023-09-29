@@ -6,7 +6,6 @@
                 <%= f.label :billing_profile, t('invoices.billing_profile') %>
                 <%= f.select :billing_profile_id,
                              options_for_select(BillingProfile.where(user_id: invoice.user_id).pluck(:name, :id), selected_profile),
-                             {},
                              class: "ui dropdown" %>
             </div>
 
