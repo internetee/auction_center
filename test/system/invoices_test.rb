@@ -27,7 +27,8 @@ class InvoicesTest < ApplicationSystemTestCase
 
     click_link_or_button('Change billing profile')
     # select_from_dropdown('Joe John Participant', from: 'invoice[billing_profile_id]')
-    select 'Joe John Participant', from: 'invoice_billing_profile_id'
+    # select 'Joe John Participant', from: 'invoice_billing_profile_id'
+    select_option('#invoice_billing_profile_id', 'Joe John Participant')
 
     click_link_or_button('Submit')
 
