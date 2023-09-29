@@ -24,8 +24,7 @@
                     Countries.for_selection,
                     billing_profile.country_code || Setting.find_by(code: 'default_country').retrieve
                 ),
-                {},
-                class: "ui selectable searchable dropdown" %>
+                {} %>
             </div>
 
             <div class="field">
