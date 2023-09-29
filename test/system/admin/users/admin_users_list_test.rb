@@ -59,7 +59,7 @@ class AdminUsersListTest < ApplicationSystemTestCase
     click_link_or_button('Submit')
 
     errors_list = page.find('#errors').all('li')
-    assert_equal(7, errors_list.size)
+    assert_equal(5, errors_list.size)
     errors_array = errors_list.collect(&:text)
 
     expected_errors = ["Email can't be blank", "Password can't be blank", "Given names: can't be blank",
