@@ -7,6 +7,7 @@ class InvoicesIntegrationTest < ActionDispatch::IntegrationTest
     @user = users(:participant)
     @user_two = users(:second_place_participant)
     @auction = auctions(:valid_without_offers)
+    @invoice = invoices(:payable)
     @user.reload
     sign_in @user
 
@@ -55,5 +56,31 @@ class InvoicesIntegrationTest < ActionDispatch::IntegrationTest
                                             current_user: @user), params: nil, headers: {}
     assert_redirected_to root_path
     assert_equal 'You are not authorized to access this page.', flash[:alert]
+  end
+
+  def test_should_send_e_invoice
+    body = {
+      message: 'Invoice data received',
+    }
+    stub_request(:post, 'http://eis_billing_system:3000/api/v1/e_invoice/e_invoice')
+      .to_return(status: :created, body: body.to_json, headers: {})
+
+    post send_e_invoice_path(uuid: @invoice.uuid), params: nil, headers: {}
+
+    assert_redirected_to invoice_path(@invoice.uuid)
+    assert_equal 'E-Invoice was successfully sent', flash[:notice]
+  end
+
+  def test_send_e_invoice_with_billing_system_error
+    body = {
+      error: 'Internal server error',
+    }
+    stub_request(:post, 'http://eis_billing_system:3000/api/v1/e_invoice/e_invoice')
+      .to_return(status: 500, body: body.to_json, headers: {})
+
+    post send_e_invoice_path(uuid: @invoice.uuid), params: nil, headers: {}
+
+    assert_redirected_to invoice_path(@invoice.uuid)
+    assert_equal body[:error], flash[:alert]
   end
 end

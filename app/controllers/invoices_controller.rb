@@ -91,6 +91,17 @@ class InvoicesController < ApplicationController
     end
   end
 
+  def send_e_invoice
+    invoice = Invoice.accessible_by(current_ability).find_by!(uuid: params[:uuid])
+    response = EisBilling::SendEInvoice.call(invoice: invoice, payable: false)
+
+    if response.result?
+      redirect_to invoice_path(invoice.uuid), notice: t('.sent_to_omniva')
+    else
+      redirect_to invoice_path(invoice.uuid), alert: response.errors
+    end
+  end
+
   def update_predicate
     @invoice.issued? && @invoice.update(update_params)
   end
