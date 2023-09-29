@@ -41,11 +41,11 @@
           </div>
           <div class="c-login__links u-flex u-align-center u-content-sp">
             <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
-                <%= link_to t('devise.shared.links.forgot_your_password'), new_password_path(resource_name), class: 'c-login__remind-link', data: { turbo_frame: 'modal' } %><br />
+                <%= link_to t('devise.shared.links.forgot_your_password'), new_password_path(resource_name), class: 'c-btn  c-login__remind-link js-modal-toggle-fp', data: { turbo_frame: 'modal' } %><br />
             <% end -%>
 
             <%- if devise_mapping.confirmable? && controller_name != 'confirmations' %>
-                <%= link_to t('devise.shared.links.didnt_receive_confirmation_instructions'), new_confirmation_path(resource_name), class: 'c-login__remind-link', data: { turbo_frame: 'modal' } %><br />
+                <%= link_to t('devise.shared.links.didnt_receive_confirmation_instructions'), new_confirmation_path(resource_name), class: 'c-login__remind-link js-modal-toggle', data: { turbo_frame: 'modal' } %><br />
             <% end -%>
           </div>
         <% end %>

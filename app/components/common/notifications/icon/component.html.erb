@@ -5,7 +5,7 @@
     <h5 class="c-notification__header__title"><%= t('english_offers.index.you_won') %>! <span class="o-new"></span></h5>
   <%- elsif @notification_type == 'OfferNotification'  %>
     <span class="c-notification__header__icon o-hammer-icon"></span>
-    <h5 class="c-notification__header__title">OfferNotification <span class="o-new"></span></h5>
+    <h5 class="c-notification__header__title"><%= t('english_offers.index.new_bid') %> <span class="o-new"></span></h5>
   <%- elsif @notification_type == 'AuctionLooserNotification' %>
     <span class="c-notification__header__icon o-hammer-icon"></span>
     <h5 class="c-notification__header__title"><%= t('english_offers.index.you_lose') %>! <span class="o-new"></span></h5>
@@ -16,7 +16,7 @@
     <h5 class="c-notification__header__title"><%= t('english_offers.index.you_won') %>! <span class="o-new"></span></h5>
   <%- elsif @notification_type == 'OfferNotification'  %>
     <span class="o-hammer-icon"></span>
-    <h5 class="c-notification__header__title">OfferNotification <span class="o-new"></span></h5>
+    <h5 class="c-notification__header__title"><%= t('english_offers.index.new_bid') %> <span class="o-new"></span></h5>
   <%- elsif @notification_type == 'AuctionLooserNotification' %>
     <span class="o-hammer-icon"></span>
     <h5 class="c-notification__header__title"><%= t('english_offers.index.you_lose') %>! <span class="o-new"></span></h5>

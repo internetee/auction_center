@@ -17,6 +17,7 @@ en:
       There might be other bids.
       Make an offer according to the value the domain name holds to you.
     timer: Auction will finish in
+    new_bid: "New bid"
 
     new:
       title: "Offer for the reservation of the domain name"

@@ -18,6 +18,7 @@ et:
       Domeeninimele võib olla ka teisi pakkujaid.
       Tee pakkumine vastavalt oma hinnangule domeeninime väärtuse kohta.
     timer: Oksjoni lõpuni on jäänud
+    new_bid: "Uus pakkumus"
 
     new:
       title: "Domeeni registreerimise eelisõiguse pakkumus"
