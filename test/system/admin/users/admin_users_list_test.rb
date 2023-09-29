@@ -54,16 +54,16 @@ class AdminUsersListTest < ApplicationSystemTestCase
 
   def test_certain_fields_are_required
     click_link('New user')
+    fill_in('user[mobile_phone]', with: '+48600100200')
+
     click_link_or_button('Submit')
 
     errors_list = page.find('#errors').all('li')
     assert_equal(7, errors_list.size)
     errors_array = errors_list.collect(&:text)
 
-    expected_errors = ["Email can't be blank", "Password can't be blank",
-                       "can't be blank", 'Terms and conditions must be accepted',
-                       'Phone number is invalid', "Given names: can't be blank",
-                       "Surname: can't be blank"]
+    expected_errors = ["Email can't be blank", "Password can't be blank", "Given names: can't be blank",
+                       "Surname: can't be blank", 'Terms and conditions must be accepted']
 
     assert_equal(errors_array.to_set, expected_errors.to_set)
   end

@@ -65,7 +65,7 @@
                         Countries.for_selection,
                         user.country_code || Setting.find_by(code: 'default_country').retrieve
                     ),
-                  class: "ui dropdown" %>
+                    {} %>
         <% end %>
       </div>
       <div class="field">
