@@ -1,3 +1,6 @@
+29.09.2023
+* Added e-invoicing option https://github.com/internetee/auction_center/issues/1138
+
 25.09.2023
 * Added client VAT nr on the invoices https://github.com/internetee/auction_center/issues/1127
 * Fixed invoice addressee updating on an invoice https://github.com/internetee/auction_center/issues/1136
