@@ -4,6 +4,7 @@ en:
       open_portal: "Public portal"
       auction_portal: "Auction portal"
       registrar_portal_url_html: '<a href= "https://www.internet.ee/registrar-portal"><span>Registrar portal</span></a>'
+      registrar_portal: "Registrar portal"
       registrant_portal: "Registrant portal"
       notifications: "Notifications"
 
