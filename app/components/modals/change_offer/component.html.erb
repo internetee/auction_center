@@ -90,7 +90,7 @@
                                             class: billing_profiles.size == 1 ? "disabled" : "",
                                             data: { action: 'change->autotax-counter#updateTax' } %>
             </div>
-            <a class="c-modal__link c-modal__link--first-col" href="#"><%= t('new_billing_profile') %></a>
+            <%= link_to t('new_billing_profile'), billing_profiles_path, class: 'c-modal__link c-modal__link--first-col', target: '_top' %>
           <% end %>
         </div>
         <div class="c-modal__footer">

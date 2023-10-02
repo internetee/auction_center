@@ -198,9 +198,24 @@ invoice_issuer_setting = Setting.new(code: :invoice_issuer, value: invoice_issue
 
 invoice_issuer_setting.save
 
-# Default invoice issuer registration no
+# Default issuer address
+invoice_issuer_address_description = <<~TEXT.squish
+  Default issuer address
+TEXT
+
+invoice_issuer_address_value = <<~TEXT.squish
+  Paldiski mnt 80, Tallinn, Harjumaa, 10617 Estonia,
+TEXT
+
+invoice_issuer_address_setting = Setting.new(code: :invoice_issuer_address, value: invoice_issuer_address_value,
+                                     description: invoice_issuer_address_description,
+                                     value_format: 'string')
+
+invoice_issuer_address_setting.save
+
+# Default issuer reg no
 invoice_issuer_reg_no_description = <<~TEXT.squish
-  Invoice issuer registration number
+  Default issuer reg no
 TEXT
 
 invoice_issuer_reg_no_value = <<~TEXT.squish
@@ -214,13 +229,17 @@ invoice_issuer_reg_no_setting = Setting.new(code: :invoice_issuer_reg_no, value:
 invoice_issuer_reg_no_setting.save
 
 # Default invoice issuer VAT no
+invoice_issuer_reg_no_setting.save
+
+# Default issuer vat number
 invoice_issuer_vat_no_description = <<~TEXT.squish
-  Invoice issuer VAT number.
+  Default issuer vat number
 TEXT
 
 invoice_issuer_vat_no_value = <<~TEXT.squish
   EE101286464
 TEXT
+
 
 invoice_issuer_vat_no_setting = Setting.new(code: :invoice_issuer_vat_no, value: invoice_issuer_vat_no_value,
                                             description: invoice_issuer_vat_no_description,
@@ -302,6 +321,12 @@ invoice_issuer_country_code_setting = Setting.new(code: :invoice_issuer_country_
                                                   value_format: 'string')
 
 invoice_issuer_country_code_setting.save
+
+invoice_issuer_vat_no_setting = Setting.new(code: :invoice_issuer_vat_number, value: invoice_issuer_vat_no_value,
+                                     description: invoice_issuer_vat_no_description,
+                                     value_format: 'string')
+
+invoice_issuer_vat_no_setting.save
 
 # Default invoice reminder
 invoice_reminder_description = <<~TEXT.squish
@@ -495,3 +520,15 @@ estonian_vat_rate_setting = Setting.new(code: :estonian_vat_rate,
                                                        description: estonian_vat_rate_description,
                                                        value_format: 'decimal')
 estonian_vat_rate_setting.save!
+
+# Default organization phone
+default_organization_phone_description = <<~TEXT.squish
+  Default organization phone
+TEXT
+default_organization_phone_value = '+372 727 1000'
+default_organization_phone_setting = Setting.new(code: :organization_phone,
+                                                       value: default_organization_phone_value,
+                                                       description: default_organization_phone_description,
+                                                       value_format: 'string')
+default_organization_phone_setting.save
+

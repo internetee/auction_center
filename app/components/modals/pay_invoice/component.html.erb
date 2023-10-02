@@ -43,15 +43,15 @@
             </div>
             <div class="c-modal__col">
               <label class="c-modal__text-title"><%= t('invoices.address') %></label>
-              <span class="c-modal__text">Paldiski mnt 80, Tallinn, Harjumaa, Estonia</span>
+              <span class="c-modal__text"><%= Setting.find_by(code: 'invoice_issuer_address').retrieve %></span>
               <div class="c-modal__extrainfo u-flex u-align-start u-mt-32">
                 <div class="c-modal__extrainfo-col">
-                  <label class="c-modal__text-title">Reg. nr</label>
-                  <span class="c-modal__text">90010019</span>
+                  <label class="c-modal__text-title"><%= t('reg_no') %></label>
+                  <span class="c-modal__text"><%= Setting.find_by(code: 'invoice_issuer_reg_no').retrieve %></span>
                 </div>
                 <div class="c-modal__extrainfo-col">
                   <label class="c-modal__text-title">VAT nr</label>
-                  <span class="c-modal__text">EE101286464</span>
+                  <span class="c-modal__text"><%= Setting.find_by(code: 'invoice_issuer_vat_number').retrieve %></span>
                 </div>
               </div>
             </div>

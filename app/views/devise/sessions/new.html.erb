@@ -9,7 +9,7 @@
           <%= t('.identity_document_text')%>
         </p>
         <div class="c-login__buttons-wrapper u-flex u-content-sp u-content-center">
-          <a class="c-login__button c-btn c-btn--blue-secondary" href="#" title="Sisene"><%= t(:sign_in) %></a>
+          <%= button_to t(:sign_in), "/auth/tara", data: { turbo: false }, class: "c-login__button c-btn c-btn--blue-secondary", target: '_top' %>
           <div class="c-login__icons u-flex u-content-sp u-content-center">
             <%= render partial: 'svg/id_auth' %>
           </div>
