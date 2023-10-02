@@ -35,6 +35,7 @@ et:
   'no': "Ei"
 
   close: "Sulge"
+  reg_no: "Registrikood"
 
   auctions_name: "Oksjonid"
   billing_profiles_name: "Arve aadressid"

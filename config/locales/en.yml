@@ -36,6 +36,7 @@ en:
   'no': "No"
 
   close: Close
+  reg_no: "Registration code"
 
   auctions_name: "Auctions"
   billing_profiles_name: "Billing Profiles"
