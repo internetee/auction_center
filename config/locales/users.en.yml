@@ -94,6 +94,8 @@ en:
               format: "%{attribute}: %{message}"
             surname:
               format: "%{attribute}: %{message}"
+            email:
+              format: "%{attribute}: %{message}"
 
     attributes:
       user:

@@ -21,6 +21,8 @@
   font-size: 8vw;
   line-height: 1.2;
   margin: rem(20px 0 16px);
+  text-align: center;
+  padding: rem(0 8px);
 
   @include mq(tablet) {
     font-size: rem(40px);

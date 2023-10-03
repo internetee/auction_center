@@ -14,7 +14,7 @@ class UsersController < ApplicationController
 
   # GET /users/new
   def new
-    redirect_to user_path(current_user.uuid), notice: t('.already_signed_in') if current_user
+    redirect_to edit_user_path(current_user.uuid), notice: t('.already_signed_in') if current_user
     @user = User.new
   end
 
@@ -39,7 +39,8 @@ class UsersController < ApplicationController
       if @user.save
         format.html do
           sign_in(User, @user)
-          redirect_to user_path(@user.uuid), notice: t(:created)
+          flash[:notice] = t(:created)
+          redirect_to edit_user_path(@user.uuid), status: :see_other
         end
 
         format.json do
@@ -47,7 +48,8 @@ class UsersController < ApplicationController
           render :show, status: :created, location: @user
         end
       else
-        format.html { render :new }
+        flash[:alert] = @user.errors.full_messages.join(', ')
+        format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
@@ -74,23 +76,21 @@ class UsersController < ApplicationController
 
         if @user.valid?
           @user.save!
-          
+
           flash[:notice] = notification_for_update(email_changed)
-          format.html do
-            redirect_to user_path(@user.uuid)
-          end
+          format.html { redirect_to edit_user_path(@user.uuid), status: :see_other }
           format.json { render :show, status: :ok, location: @user }
-          format.turbo_stream
         else
+          flash[:alert] = @user.errors.full_messages.join(', ')
 
-          flash.now[:alert] = @user.errors.full_messages.join(', ')
-
+          format.html { render :show, status: :unprocessable_entity }
           format.json { render json: @user.errors, status: :unprocessable_entity }
-          format.turbo_stream
         end
       else
-        flash.now[:alert] = t('.incorrect_password')
-        format.turbo_stream
+        flash[:alert] = t('.incorrect_password')
+
+        format.html { render :show, status: :unprocessable_entity }
+        format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -100,7 +100,7 @@ class UsersController < ApplicationController
       if @user.deletable? && @user.destroy!
         format.html { redirect_to root_path, notice: notification_for_delete(@user) }
       else
-        format.html { redirect_to user_path(@user.uuid), notice: notification_for_delete(@user) }
+        format.html { redirect_to edit_user_path(@user.uuid), notice: notification_for_delete(@user) }
       end
       format.json { head :no_content }
     end
