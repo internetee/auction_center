@@ -38,6 +38,7 @@ Rails.application.routes.draw do
   namespace :eis_billing, defaults: { format: 'json' } do
     put '/payment_status', to: 'payment_status#update', as: 'payment_status'
     put '/directo_response', to: 'directo_response#update', as: 'directo_response'
+    put '/e_invoice_response', to: 'e_invoice_response#update', as: 'e_invoice_response'
   end
 
   namespace :admin, constraints: Constraints::Administrator.new do
@@ -90,11 +91,11 @@ Rails.application.routes.draw do
   resources :billing_profiles, param: :uuid
   match '/status', via: :get, to: 'health_checks#index'
 
-
   resources :invoices, only: %i[show edit update index], param: :uuid do
     member do
       get 'download'
       post 'oneoff'
+      post 'send_e_invoice', as: :send_e
     end
 
     collection do

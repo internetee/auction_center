@@ -3126,5 +3126,3 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230705192353'),
 ('20230925130405'),
 ('20230927114150');
-
-

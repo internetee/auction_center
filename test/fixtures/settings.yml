@@ -121,9 +121,57 @@ remind_on_domain_registration_everyday:
 invoice_issuer:
   code: 'invoice_issuer'
   description: |
-    Text that should appear in invoice as issuer. Usually contains company name, VAT number and
-    local court registration number.e which the registration reminder email is sent on. Default: 5
-  value: 'Eesti Interneti SA, VAT number EE101286464'
+    Text that should appear in invoice as issuer. Usually contains a company name
+  value: 'Eesti Interneti SA'
+  value_format: string
+
+invoice_issuer_reg_no:
+  code: 'invoice_issuer_reg_no'
+  description: |
+    Invoice issuer registration number
+  value: '90010019'
+  value_format: string
+
+invoice_issuer_vat_no:
+  code: 'invoice_issuer_vat_no'
+  description: |
+    Invoice issuer VAT number
+  value: 'EE101286464'
+  value_format: string
+
+invoice_issuer_street:
+  code: 'invoice_issuer_street'
+  description: |
+    Invoice issuer street name
+  value: 'Paldiski mnt 80'
+  value_format: string
+
+invoice_issuer_state:
+  code: 'invoice_issuer_state'
+  description: |
+    Invoice issuer state name
+  value: 'Harjumaa'
+  value_format: string
+
+invoice_issuer_zip:
+  code: 'invoice_issuer_zip'
+  description: |
+    Invoice issuer zip code
+  value: '10617'
+  value_format: string
+
+invoice_issuer_city:
+  code: 'invoice_issuer_city'
+  description: |
+    Invoice issuer city name
+  value: 'Tallinn'
+  value_format: string
+
+invoice_issuer_country_code:
+  code: 'invoice_issuer_country_code'
+  description: |
+    Invoice issuer country code
+  value: 'EE'
   value_format: string
 
 invoice_reminder_in_days:

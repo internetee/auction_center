@@ -33,15 +33,15 @@
         <div class="ui list">
           <div class="item">
             <div class="header"><%= t('invoices.issuer') %></div>
-              <%= Setting.find_by(code: 'invoice_issuer').retrieve %>
-            </div>
+            <%= @invoice.issuer %>
+          </div>
           <div class="item">
             <div class="header"><%= t('invoices.issue_date') %></div>
-              <%= @invoice.issue_date %>
+            <%= @invoice.issue_date %>
             </div>
           <div class="item">
             <div class="header"><%= t('invoices.due_date') %></div>
-              <%= @invoice.due_date %>
+            <%= @invoice.due_date %>
             </div>
           <% if @invoice.paid? %>
             <div class="item">
@@ -68,8 +68,8 @@
                 <td><%= index + 1 %></td>
                 <td>
                   <%= I18n.t('invoice_items.name',
-                                   domain_name: item.invoice.result.auction.domain_name,
-                                   auction_end: item.invoice.result.auction.ends_at.to_date) %>
+                                   domain_name: @invoice.result.auction.domain_name,
+                                   auction_end: @invoice.result.auction.ends_at.to_date) %>
                 </td>
                 <td></td>
                 <td><%= item.price %></td>
@@ -110,10 +110,18 @@
         </table>
       </div>
       <% if @invoice.payable? %>
-        <div>
+        <div class="column">
           <%= button_to t('invoices.show.pay'), oneoff_invoice_path(uuid: @invoice.uuid), class: 'ui button primary' %>
         </div>
       <% end %>
+      <div class="column right aligned">
+        <% if @invoice.do_not_send_e_invoice? %>
+          <a href="https://eservice.omniva.eu" target="_blank"><img src="/images/finbite.png" alt="EInvoice" style="height:40px;"/></a>
+        <% else %>
+          <%= button_to t('invoices.show.send_e_invoice'), send_e_invoice_path(uuid: @invoice.uuid), class: 'ui button default', data: { turbo: false } %>
+        <% end %>
+      </div>
+      </div>
     </div>
   </div>
 </div>
