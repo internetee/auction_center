@@ -1,0 +1,9 @@
+<%= component 'common/hero', title: t('.title') %>
+
+<div class="o-container">
+    <div class="c-block c-account c-account--profile c-account--mainpage">
+          <%= form_with model: @user, url: user_path(@user.uuid), method: :patch, class: "o-grid o-grid--two-col o-grid--sep" do |f| %>
+            <%= render 'form', f: f %>
+          <% end %>
+    </div>
+</div>

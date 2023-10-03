@@ -129,6 +129,8 @@ et:
 
   errors:
     format: "%{message}"
+    messages:
+      taken: "%{attribute} on juba võetud"
   activerecord:
     errors:
       models:

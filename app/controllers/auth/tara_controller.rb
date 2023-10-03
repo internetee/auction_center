@@ -13,7 +13,7 @@ module Auth
       return unless @user.persisted?
 
       sign_in(User, @user)
-      redirect_to user_path(@user.uuid), notice: t('devise.sessions.signed_in')
+      redirect_to edit_user_path(@user.uuid), notice: t('devise.sessions.signed_in')
     end
 
     def create
@@ -25,7 +25,7 @@ module Auth
         if @user.save
           format.html do
             sign_in(User, @user)
-            redirect_to user_path(@user.uuid), notice: t(:created)
+            redirect_to edit_user_path(@user.uuid), notice: t(:created)
           end
         else
           format.html { render :callback }
