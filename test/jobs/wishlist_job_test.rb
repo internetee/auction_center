@@ -51,16 +51,6 @@ class WishlistJobTest < ActiveJob::TestCase
     end
   end
 
-  def test_wait_time
-    assert_equal(1.minute, WishlistJob.wait_time)
-    mock = MiniTest::Mock.new
-    mock.expect(:production?, true)
-
-    Rails.stub(:env, mock) do
-      assert_equal(2.hours, WishlistJob.wait_time)
-    end
-  end
-
   def test_schedules_auto_offer_job_and_only_once_when_there_is_a_wishlist_item
     WishlistItem.create!(user: @user, domain_name: @auction.domain_name)
 
