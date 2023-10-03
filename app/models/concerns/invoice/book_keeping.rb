@@ -29,8 +29,9 @@ module Invoice::BookKeeping
     invoice['buyer_zip'] = postal_code
     invoice['buyer_city'] = city
     invoice['buyer_country_code'] = billing_alpha_two_country_code
-    invoice['total'] = total.to_f + (enable_deposit? ? deposit : 0.0)
-    invoice['vat_rate'] = vat_rate * 100
+    invoice['total'] = price.to_f * (1 + vat_rate)
+    invoice['total_to_pay'] = total.to_f
+    invoice['vat_rate'] = vat_rate.to_f * 100
     invoice['currency'] = Setting.find_by(code: 'auction_currency').retrieve
 
     invoice
