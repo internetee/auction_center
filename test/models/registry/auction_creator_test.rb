@@ -97,7 +97,8 @@ class RegistryAuctionCreatorTest < ActiveSupport::TestCase
         assert_equal(Time.now.in_time_zone + 1.minute, example_auction.starts_at)
         assert_equal((Date.tomorrow.to_datetime - 1.second), example_auction.ends_at)
       end
-    end end
+    end
+  end
 
   def test_call_creates_auctions_that_start_in_1_minute
     setting = settings(:auctions_start_at)

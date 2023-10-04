@@ -1655,7 +1655,8 @@ CREATE TABLE public.wishlist_items (
     uuid uuid DEFAULT public.gen_random_uuid(),
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    cents integer
+    cents integer,
+    processed boolean DEFAULT false
 );
 
 
@@ -3123,6 +3124,5 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230419114412'),
 ('20230607092953'),
 ('20230705192353'),
-('20230925130405');
-
-
+('20230925130405'),
+('20230927114150');
