@@ -1,3 +1,6 @@
+04.10.2023
+* Fixed issue with too many wishlist notifications in case of open auctions https://github.com/internetee/auction_center/issues/1150
+
 29.09.2023
 * Added e-invoicing option https://github.com/internetee/auction_center/issues/1138
 
