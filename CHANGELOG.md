@@ -1,4 +1,5 @@
 04.10.2023
+* Improved AI prompt for sorting active auctions https://github.com/internetee/auction_center/issues/1141
 * Fixed issue with too many wishlist notifications in case of open auctions https://github.com/internetee/auction_center/issues/1150
 * Fixed JavaScript errors for mobile view https://github.com/internetee/auction_center/issues/1152
 
