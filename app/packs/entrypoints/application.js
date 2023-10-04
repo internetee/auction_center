@@ -9,17 +9,9 @@
 
 // Default Rails javascript and turbolinks
 import Rails from 'rails-ujs';
+Rails.start();
 
 require("chartkick").use(require("highcharts"))
-
-// import Turbolinks from 'turbolinks';
-
-Rails.start();
-// Turbolinks.start();
-
-// import { Turbo } from "@hotwired/turbo-rails"
-// Turbo.session.drive = true
-
 import "@hotwired/turbo-rails"
 import "./controllers"
 // import "controllers"
@@ -37,7 +29,11 @@ import '../src/semantic/semantic.less';
 // Fonts
 import 'typeface-raleway';
 
-$(document).on('turbolinks:load', function() {
+import '../entrypoints/users.js';
+import '../entrypoints/wishlist_items.js'
+import '../entrypoints/payment_orders.js'
+
+$(document).on('turbo:load', function() {
     $('.ui.dropdown').dropdown();
     $('.ui.accordion').accordion();
 

@@ -116,3 +116,16 @@
       display: none;
   }
 }
+
+.ui.right.sidebar.visible a.item:hover {
+  color: rgb(11, 79, 11);
+}
+
+.ui.right.sidebar.visible a.item.active {
+  background-color: #DCDCDC;
+  font-weight: bold;
+}
+
+.menu-main a.item.active {
+  background-color: green;
+}

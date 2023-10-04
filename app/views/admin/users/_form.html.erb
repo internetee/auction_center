@@ -35,8 +35,8 @@
                     Countries.for_selection,
                     user.country_code || Setting.find_by(code: 'default_country').retrieve
                 ),
-                { readonly: user.signed_in_with_identity_document? },
-                class: "ui dropdown" %>
+                {},
+                disabled: user.signed_in_with_identity_document? %>
             </div>
 
             <div class="field">

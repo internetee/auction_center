@@ -39,9 +39,8 @@
       <div class="field">
         <%= f.label :billing_profile, t('.bidder') %>
         <%= f.select :billing_profile_id,
-                    billing_profiles = BillingProfile.where(user_id: offer.user_id).collect { |b| [b.name, b.id, {'data-vat-rate' => b.vat_rate}] },
+                    BillingProfile.where(user_id: offer.user_id).collect { |b| [b.name, b.id, { 'data-vat-rate' => b.vat_rate }] },
                     {},
-                    class: billing_profiles.size == 1 ? "ui dropdown disabled" : "ui dropdown",
                     data: { action: 'change->autotax-counter#updateTax' } %>
       </div>
 
