@@ -1,9 +1,10 @@
-# rubocop:disable Metrics
+# frozen_string_literal: true
+
 module Auction::Searchable
   extend ActiveSupport::Concern
 
-  BLIND = '0'.freeze
-  ENGLISH = '1'.freeze
+  BLIND = '0'
+  ENGLISH = '1'
 
   included do
     scope :active, -> { where('starts_at <= ? AND ends_at >= ?', Time.now.utc, Time.now.utc) }
@@ -98,50 +99,6 @@ module Auction::Searchable
       else
         query.order("#{is_from_admin ? sort_admin_column : sort_column} #{sort_direction} NULLS LAST")
       end
-    end
-
-    def with_max_offer_cents_for_english_auction(user = nil)
-      if user
-        joins(<<-SQL
-          LEFT JOIN (
-            SELECT auction_id, MAX(cents) AS max_offer_cents
-            FROM offers
-            WHERE auction_id IN (
-              SELECT id FROM auctions WHERE platform = 1
-              UNION
-              SELECT auction_id FROM offers WHERE user_id = #{user.id} AND auction_id IN (SELECT id FROM auctions WHERE platform IS NULL OR platform = 0)
-            )
-            GROUP BY auction_id
-          ) AS offers_subquery ON auctions.id = offers_subquery.auction_id
-        SQL
-             )
-      else
-        joins(<<-SQL
-          LEFT JOIN (
-            SELECT auction_id, MAX(cents) AS max_offer_cents
-            FROM offers
-            WHERE auction_id IN (SELECT id FROM auctions WHERE platform = 1)
-            GROUP BY auction_id
-          ) AS offers_subquery ON auctions.id = offers_subquery.auction_id
-        SQL
-             )
-      end
-    end
-
-    def sorted_by_winning_offer_username
-      joins(<<-SQL
-        LEFT JOIN (
-          SELECT offers.auction_id, offers.username
-          FROM offers
-          WHERE offers.cents = (
-            SELECT MAX(offers_inner.cents)
-            FROM offers AS offers_inner
-            WHERE offers_inner.auction_id = offers.auction_id
-          )
-          GROUP BY offers.auction_id, offers.username
-        ) AS offers_subquery ON auctions.id = offers_subquery.auction_id
-      SQL
-           )
     end
   end
 end

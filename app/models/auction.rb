@@ -1,6 +1,6 @@
-# rubocop:disable Metrics
-class Auction < ApplicationRecord
+class Auction < ApplicationRecord # rubocop:disable Metrics
   include Presentable
+  include SqlQueriable
   include Searchable
   include PgSearch::Model
 
@@ -226,59 +226,5 @@ class Auction < ApplicationRecord
 
   def maximum_bids
     Money.new(offers.maximum(:cents), Setting.find_by(code: 'auction_currency').retrieve)
-  end
-
-  def self.with_user_offers(user_id)
-    Auction.from(with_user_offers_query(user_id))
-  end
-
-  def self.with_user_offers_query(user_id)
-    sql = <<~SQL
-      (WITH offers_subquery AS (
-          SELECT *
-          FROM offers
-          WHERE user_id = ?
-      )
-      SELECT DISTINCT
-          auctions.*,
-          offers_subquery.cents AS users_offer_cents,
-          offers_subquery.id AS users_offer_id,
-          offers_subquery.uuid AS users_offer_uuid
-      FROM auctions
-      LEFT JOIN offers_subquery on auctions.id = offers_subquery.auction_id) AS auctions
-    SQL
-
-    ActiveRecord::Base.sanitize_sql([sql, user_id])
-  end
-
-  def self.with_highest_offers
-    Auction.from(with_highest_offers_query)
-  end
-
-  def self.with_highest_offers_query
-    sql = <<~SQL
-      (WITH offers_subquery AS (
-          SELECT DISTINCT on (uuid) offers.*
-          FROM (SELECT auction_id,
-               max(cents) over (PARTITION BY auction_id)             as max_price,
-               min(created_at) over (PARTITION BY auction_id, cents) as min_time
-               FROM offers
-       ) AS highest_offers
-       INNER JOIN offers
-       ON
-          offers.cents = highest_offers.max_price AND
-          offers.created_at = highest_offers.min_time AND
-          offers.auction_id = highest_offers.auction_id)
-      SELECT DISTINCT
-          auctions.*,
-          offers_subquery.cents AS highest_offer_cents,
-          offers_subquery.id AS highest_offer_id,
-          offers_subquery.uuid AS highest_offer_uuid,
-          (SELECT COUNT(*) FROM offers where offers.auction_id = auctions.id) AS number_of_offers
-      FROM auctions
-      LEFT JOIN offers_subquery on auctions.id = offers_subquery.auction_id) AS auctions
-    SQL
-
-    sql
   end
 end
