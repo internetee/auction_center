@@ -34,8 +34,8 @@
   position: absolute;
   top: rem(3px);
   left: 0;
-  height: rem(16px);
-  width: rem(16px);
+  height: rem(18px);
+  width: rem(18px);
   border-radius: rem(4px);
   border: 1px solid $grey-200-color;
   background: $white-color;
@@ -51,8 +51,8 @@
   content: "";
   position: absolute;
   display: none;
-  left: rem(5px);
-  top: rem(1px);
+  left: rem(6px);
+  top: rem(2px);
   width: rem(5.5px);
   height: rem(10px);
   border: solid $grey-400-color;
@@ -63,7 +63,22 @@
 .o-checkbox-sample:checked ~ .o-checkmark-sample:after {
   display: block;
 }
+.o-checkbox-container--grey{
+  .o-checkbox-sample:checked ~ .o-checkmark-sample {
+    background-color: $grey-400-color;
+  }
+  .o-checkmark-sample:after {
+    border: solid $white-color;
+    border-width: 0 3px 3px 0;
+  }
+}
 
+.o-checkbox-container--green{
+  .o-checkmark-sample:after {
+    border: solid $primary-green-color;
+    border-width: 0 3px 3px 0;
+  }
+}
 
 // Custom Checkbox
 .o-checkbox {

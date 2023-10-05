@@ -1,6 +1,18 @@
-.c-account__title{
-    margin: 0;
+.c-account__title-wrapper{
+    flex-direction: column-reverse;
+    @include mq(tablet){
+        flex-direction: row;
+    }
 }
+
+.c-account__title{
+    margin-top: 0;
+    margin-bottom: rem(24px);
+    @include mq(tablet){
+        margin-bottom: rem(32px);
+    }
+}
+
 .c-account--mainpage{
     .c-account_editicons {
         &> svg:first-child{
@@ -10,15 +22,8 @@
 }
 .c-account_editicons {
     gap: 8px;
-    position: absolute;
-    top: 0;
-    right: -14px;
-    transform: translateY(-50%);
-    height: 32px;
-    @include mq(tablet){
-        position: static;
-        transform: none; 
-    }
+    height: rem(32px);
+    margin-bottom: rem(24px);
     &> svg{
         cursor: pointer;
         opacity: 1;
@@ -59,11 +64,11 @@
             width: 50%;
         }
         @include mq(tablet){
-            width: 131px;
+            width: rem(131px);
         }
         &:last-child{
             @include mq(tablet){
-                width: 165px;
+                width: rem(165px);
             }
         }
     }
@@ -79,7 +84,7 @@
     
     .c-account__input--readonly{
         label{
-            margin-bottom: 20px;
+            margin-bottom: rem(20px);
         }
         input{
             border: 0;
@@ -104,6 +109,10 @@
     label {
         margin: 0;
     }
+}
+.c-account .c-account__checkbox label {
+    margin: 0;
+    margin-top: rem(5px);
 }
 .c-account__chekboxtitle {
     color: $black-color;
@@ -140,3 +149,96 @@
     align-items: center;
     gap: 10px;
 }
+.c-account__label-explain {
+    display: flex;
+    justify-content: space-between;
+    span {
+        font-weight: 500;
+        &:first-child{
+            display: block;
+            @include mq(tablet){
+                display: inline-block;
+            }
+        }
+    }
+    & > span {
+        color: $grey-400-color;
+        margin-right: rem(16px);
+        display: none;
+        @include mq(tablet){
+            display: block;
+        }
+        @include mq(laptop){
+            display: none;
+        }
+        @include mq(menu){
+            display: block;
+        }
+    }
+  }
+
+.c-account__input-explain{
+color: $grey-400-color;
+text-align: right;
+font-size: rem(14px);
+font-weight: 500;
+line-height: rem(24px);
+display: block;
+@include mq(tablet){
+    display: none;
+}
+@include mq(laptop){
+    display: block;
+}
+@include mq(menu){
+    display: none;
+}
+}
+.c-account__title--password {
+    margin-bottom: rem(24px);
+    @include mq(tablet) {
+      margin-bottom: rem(32px);
+    }
+  }
+  .o-checkbox-text {
+    margin-left: rem(8px);
+    @include mq(tablet){
+        margin-left: rem(16px);
+    }
+    white-space: normal;
+    &:first-child {
+      margin-bottom: rem(24px);
+      @include mq(tablet){
+        margin-bottom: rem(32px);
+    }
+    }
+    a {
+      color: $primary-blue-color;
+      text-decoration: underline;
+    }
+  }
+
+  .c-btn{
+    font-size: rem(14px);
+  }
+  .c-account__title--confirm{
+    margin-bottom: rem(8px);
+  }
+  .c-account__subtitle{
+    font-size: rem(14px);
+    font-weight: 500;
+    line-height: rem(24px);
+    margin: rem(0 0 16px 0);
+    @include mq(tablet){
+        margin: rem(0 0 24px 0);
+    }
+    @include mq(laptop){
+        margin: rem(0 0 32px 0);
+    }
+  }
+  .c-account__btns{
+    justify-content: center;
+    @include mq(laptop){
+        justify-content: flex-start;
+    }
+  }

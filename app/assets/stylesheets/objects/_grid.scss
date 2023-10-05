@@ -55,3 +55,21 @@
       row-gap: 0;
   }
 }
+.c-account {
+  .o-grid--two-col {
+      grid-template-columns: repeat(1,1fr);
+      @include mq(laptop){
+          grid-template-columns: repeat(2,1fr);
+      }
+  }
+  .o-grid--sep {
+      row-gap: rem(20px);
+      @include mq(tablet){
+          row-gap: rem(40px);
+      }
+      @include mq(laptop){
+          row-gap: rem(50px);
+          column-gap: rem(50px);
+      }
+  }
+}

@@ -1,11 +1,11 @@
 <%= turbo_frame_tag 'user_info' do %>
   <div class="o-grid o-grid--two-col o-grid--sep">
     <div class="o-card">
-      <div class="u-flex u-align-center u-content-sp u-mb-30">
+      <div class="c-account__title-wrapper u-flex u-content-sp">
         <h2 class="o-card__title c-account__title"><%= @user.display_name %></h2>
         <div class="c-account_editicons u-flex u-align-center u-content-sp">
 
-          <%= tag.a href: user_path(uuid: @user.uuid), data: { turbo_frame: 'user_info' } do %>
+          <%= tag.a href: edit_user_path(uuid: @user.uuid), data: { turbo_frame: 'user_info' } do %>
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none"><circle cx="16" cy="16" r="15.5" stroke="#E2E2E2"/><path fill="#000" d="m20.933 12.893-1.826-1.826a1.333 1.333 0 0 0-1.773-.047l-6 6c-.216.217-.35.502-.38.807l-.287 2.78a.666.666 0 0 0 .667.726h.06l2.78-.253c.304-.03.589-.165.806-.38l6-6a1.28 1.28 0 0 0-.047-1.807Zm-6.88 6.854-2 .186.18-2L16 14.213l1.8 1.8-3.747 3.734Zm4.614-4.627-1.787-1.787L18.18 12 20 13.82l-1.333 1.3Z"/></svg>
           <% end %>
 

@@ -1,30 +1,29 @@
 <%= turbo_frame_tag 'user_info' do %>
   <%= form_with model: user, url: user_path(user.uuid) do |f| %>
     <%= render partial: 'common/flash', locals: { flash: flash } if turbo_frame_request? %>
-
     <div class="o-grid o-grid--two-col o-grid--sep">
       <div class="o-card">
         <div class="u-flex u-align-center u-content-sp u-mb-30">
           <h2 class="o-card__title c-account__title"><%= user.display_name %></h2>
           <div class="c-account_editicons u-flex u-align-center u-content-sp">
-            
-            <%= f.button do %>
-              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none"><circle cx="16" cy="16" r="15.5" fill="#E3FEE0" stroke="#48A23F"/><path fill="#E3FEE0" d="M8 8h16v16H8z"/><path stroke="#48A23F" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 15.818 14.125 19 21 12"/></svg>
-            <% end %>
 
-              <%= link_to '#',  data: { turbo_frame: 'user_info' } do %>
-                                      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none"><circle cx="16" cy="16" r="15.5" fill="#FFEEE1" stroke="#FF6E00"/><path stroke="#FF6E00" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m12 12 8 8M12 20l8-8"/></svg>
-              <% end %>
           </div>
         </div>
-
         <div class="c-account__form">
-          <div class="c-account__input c-account__input--editabl u-mb-20">
+          <div class="c-account__input c-account__input--editable u-mb-20 is-editable">
             <%= f.label :email, t('users.email') %>
             <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
           </div>
           <div class="c-account__input-wrapper u-flex u-align-start">
-            <div class="c-account__input c-account__input--editable u-mb-20">
+            <div class="c-account__input c-account__input--editable u-mb-20 is-editable">
+              <%= f.label :given_names, t('users.given_names') %>
+              <%= f.text_field :given_names, autofocus: true %>
+            </div>
+            <div class="c-account__input c-account__input--editable u-mb-20 is-editable">
+              <%= f.label :surname, t('users.surname') %>
+              <%= f.text_field :surname, autofocus: true %>
+            </div>
+            <div class="c-account__input c-account__input--editable u-mb-20 is-editable">
               <%= f.label :mobile_phone, t('users.mobile_phone') %>
               <%= f.telephone_field :mobile_phone, autofocus: true, autocomplete: "off", placeholder: "+372xxxxxxxx" %>
             </div>
@@ -41,49 +40,8 @@
               <span><%= I18n.l(user.created_at) %></span>
             </div>
           </div>
-
-          <% if user.persisted? || (user.signed_in_with_identity_document? && user.encrypted_password.blank?) %>
-            <h3 class="p3"><%= t('.new_password') %></h3>
-          <% else %>
-            <h3 class="p3"><%= t('users.password') %></h3>
-          <% end %>
-          <div>
-
-            <div class="c-account__input c-account__input--editabl u-mb-20">
-              <%= f.label :password, t('users.password') %>
-              <%= f.password_field :password, autocomplete: "new-password" %>
-              
-              <% if user.persisted? || (user.signed_in_with_identity_document? && user.encrypted_password.blank?) %>
-                <br>
-                <em><%= t('.you_can_leave_blank') %></em><br>
-              <% end %>
-              
-              <% if @minimum_password_length %>
-                <em><%= t('.password_requirements', minimum: @minimum_password_length) %></em>
-              <% end %>
-              <br />
-            </div>
-
-          <div class="c-account__input c-account__input--editabl u-mb-20">
-              <%= f.label :password_confirmation, t('users.password_confirmation') %>
-              <%= f.password_field :password_confirmation, autocomplete: "off" %>
-            </div>
-
-            <% if user.persisted? && !user.signed_in_with_identity_document? %>
-              <div class="column sixteen wide">
-                <hr>
-                <div class="c-account__input c-account__input--editabl u-mb-20">
-                  <%= f.label :current_password, t('users.current_password') %>
-                  <i><%= t('.we_need_your_password') %></i><br />
-                  <%= f.password_field :current_password, autocomplete: "off" %>
-                </div>
-              </div>
-            <% end %>
-          </div>
-
         </div>
       </div>
-
       <div class="o-card">
         <h2 class="o-card__title c-account__title u-mb-36"><%= t('users.show.settings') %></h2>
         <div class="c-account__checkbox u-flex u-align-center u-mb-30">
@@ -96,7 +54,6 @@
           </label>
           <span class="c-account__chekboxtitle"><%= t('common.webpush_modal.webpush_title') %>: <%= t('yes') %></span>
         </div>
-
         <div class="c-account__checkbox u-flex u-align-center u-mb-30">
           <%= f.label :daily_summary, class: 'o-checkbox' do %>
             <%= f.check_box :daily_summary, data: { 
@@ -106,18 +63,50 @@
           <% end %>
           <span class="c-account__chekboxtitle"><%= t('users.show.daily_summary') %>: <strong><%= @user.daily_summary ? t('yes') : t('no') %></strong></span>
         </div>
-
         <a href="" title="" class="c-acount__link"><%= t('users.terms_and_conditions_link') %></a>
-
         <div class="c-acount__buttons u-flex u-align-center">
-        <%= link_to t(:billing), billing_profiles_path, class: "c-btn c-btn--ghost c-acount__button", target: '_top' %>
-
-        <%= button_to user_path(@user.uuid), method: :delete, form: { data: { turbo_confirm: t("are_you_sure") } },
+          <%= link_to t(:billing), billing_profiles_path, class: "c-btn c-btn--ghost c-acount__button", target: '_top' %>
+          <%= button_to user_path(@user.uuid), method: :delete, form: { data: { turbo_confirm: t("are_you_sure") } },
                           class: "c-btn c-btn--ghost c-acount__button c-acount__button--icon", target: '_top' do %>
-          <svg xmlns="http://www.w3.org/2000/svg" width="10" height="12" fill="none"><path fill="#212224" d="M0 2.544a.558.558 0 0 0 .558.557h.297v6.593a1.838 1.838 0 0 0 1.836 1.836H7.31a1.838 1.838 0 0 0 1.836-1.836V3.1h.297a.558.558 0 1 0 0-1.115H7.49V1.41C7.49.633 6.857 0 6.08 0H3.92c-.777 0-1.41.632-1.41 1.41v.575H.558A.558.558 0 0 0 0 2.544ZM3.626 1.41c0-.162.132-.294.294-.294h2.16c.162 0 .294.132.294.294v.576H3.626V1.41ZM1.971 3.101H8.03v6.593a.721.721 0 0 1-.72.72H2.69a.721.721 0 0 1-.72-.72V3.1Z"/><path fill="#212224" d="M3.613 9.387a.558.558 0 0 0 .557-.558V4.688a.558.558 0 0 0-1.115 0v4.141a.558.558 0 0 0 .558.558Zm2.773 0a.558.558 0 0 0 .557-.558V4.688a.558.558 0 0 0-1.115 0v4.141a.558.558 0 0 0 .558.558Z"/></svg>
-          <span><%= t('users.show.delete') %></span>
-        <% end %>
+            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="12" fill="none"><path fill="#212224" d="M0 2.544a.558.558 0 0 0 .558.557h.297v6.593a1.838 1.838 0 0 0 1.836 1.836H7.31a1.838 1.838 0 0 0 1.836-1.836V3.1h.297a.558.558 0 1 0 0-1.115H7.49V1.41C7.49.633 6.857 0 6.08 0H3.92c-.777 0-1.41.632-1.41 1.41v.575H.558A.558.558 0 0 0 0 2.544ZM3.626 1.41c0-.162.132-.294.294-.294h2.16c.162 0 .294.132.294.294v.576H3.626V1.41ZM1.971 3.101H8.03v6.593a.721.721 0 0 1-.72.72H2.69a.721.721 0 0 1-.72-.72V3.1Z"/><path fill="#212224" d="M3.613 9.387a.558.558 0 0 0 .557-.558V4.688a.558.558 0 0 0-1.115 0v4.141a.558.558 0 0 0 .558.558Zm2.773 0a.558.558 0 0 0 .557-.558V4.688a.558.558 0 0 0-1.115 0v4.141a.558.558 0 0 0 .558.558Z"/></svg>
+            <span><%= t('users.show.delete') %></span>
+          <% end %>
         </div>
+      </div>
+      <div class="o-card">
+        <% if user.persisted? || (user.signed_in_with_identity_document? && user.encrypted_password.blank?) %>
+          <h2 class="o-card__title c-account__title c-account__title--password"><%= t('.new_password') %></h2>
+        <% else %>
+          <h2 class="o-card__title c-account__title c-account__title--password"><%= t('users.password') %></h2>
+        <% end %>
+        <div class="c-account__input u-mb-20">
+          <%= f.label :password, class: "c-account__label-explain" do %>
+            <div>
+              <%= t('users.password')  %>
+              <%= tag.span t('.you_can_leave_blank') if user.persisted? || (user.signed_in_with_identity_document? && user.encrypted_password.blank?) %>
+            </div>
+            <%= tag.span t('.password_requirements', minimum: @minimum_password_length) if @minimum_password_length  %>
+          <% end %>
+          <%= f.password_field :password, autocomplete: "new-password" %>
+          <%= tag.span t('.you_can_leave_blank'), class: "c-account__input-explain" if user.persisted? || (user.signed_in_with_identity_document? && user.encrypted_password.blank?) %>
+        </div>
+        <div class="c-account__input">
+          <%= f.label :password_confirmation, t('users.password_confirmation') %>
+          <%= f.password_field :password_confirmation, autocomplete: "off" %>
+        </div>
+      </div>
+      <div class="o-card o-card--no-shadow">
+        <% if user.persisted? && !user.signed_in_with_identity_document? %>
+            <h2 class="o-card__title c-account__title c-account__title--password c-account__title--confirm">Kinnita muudatused</h2>
+            <p class="c-account__subtitle"><%= t('.we_need_your_password') %></p>
+            <div class="c-account__input u-mb-48">
+              <%= f.label :current_password, t('users.current_password') %>
+              <%= f.password_field :current_password, autocomplete: "off" %>
+            </div>
+        <% end %>
+
+        <%= link_to t(:cancel), '#', class: "c-btn c-btn--ghost c-account__btn", data: { turbo_frame: 'user_info' } %>
+        <%= f.button class: "c-btn c-btn--green c-account__btn u-ml-16" do %><%= t(:submit) %><% end %>
       </div>
     </div>
   <% end %>
