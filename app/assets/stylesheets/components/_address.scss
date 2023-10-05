@@ -1,9 +1,14 @@
 .c-account--adresses{
+    .c-account_editicons {
+        width: 100%;
+        @include mq(laptop){
+            width: unset;
+        }
+    }
     input{
         max-width: 550px;
     }
     .c-account__input-title{
-        gap: 40px;
         input{
             border-radius: 0;
         }
@@ -17,9 +22,9 @@
     .c-account__input-wrapper{
         max-width: 100%;
         flex-wrap: wrap;
-        gap: 8px;
+        column-gap: 8px;
         @include mq(tablet){
-            gap: 16px;
+            column-gap: 16px;
         }
         .c-account__input{
             input{

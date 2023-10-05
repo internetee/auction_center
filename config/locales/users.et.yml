@@ -43,7 +43,7 @@ et:
       errors: "kasutajat ei saa salvestada"
 
     form:
-      password_requirements: "vähemalt %{minimum} tähemärki"
+      password_requirements: "Salasõna vähemalt %{minimum} tähemärki"
       sign_up: "Registreeru"
       contact_data: "Kontaktandmed"
       personal_data: "Isikuandmed"

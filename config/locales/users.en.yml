@@ -43,7 +43,7 @@ en:
       errors: "prohibited this user from being saved"
 
     form:
-      password_requirements: "at least %{minimum} characters"
+      password_requirements: "Password at least %{minimum} characters"
       sign_up: "Sign up"
       contact_data: "Contact data"
       personal_data: "Personal data"
@@ -54,7 +54,7 @@ en:
       daily_summary: "Daily summary"
 
     tara_form:
-      password_requirements: "at least %{minimum} characters"
+      password_requirements: "Password at least %{minimum} characters"
       sign_up: "Sign up"
       contact_data: "Contact data"
       personal_data: "Personal data"
