@@ -1,3 +1,6 @@
+05.10.2023
+* Deposit status syncronisation fix with billing https://github.com/internetee/auction_center/issues/1130
+
 04.10.2023
 * Improved AI prompt for sorting active auctions https://github.com/internetee/auction_center/issues/1141
 * Fixed issue with too many wishlist notifications in case of open auctions https://github.com/internetee/auction_center/issues/1150
