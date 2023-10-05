@@ -19,6 +19,6 @@ class EmailConfirmationsController < Devise::ConfirmationsController
   # The path used after confirmation.
   def after_confirmation_path_for(_resource_name, resource)
     sign_in(resource)
-    edit_user_path(resource.uuid)
+    user_path(resource.uuid)
   end
 end

@@ -8,7 +8,7 @@ class PhoneConfirmationsController < ApplicationController
 
   def new
     if @phone_confirmation.confirmed?
-      redirect_to edit_user_path(@phone_confirmation.user.uuid), notice: t('.already_confirmed')
+      redirect_to user_path(@phone_confirmation.user.uuid), notice: t('.already_confirmed')
     elsif @phone_confirmation.user.not_phone_number_confirmed_unique?
       redirect_to edit_user_path(@phone_confirmation.user.uuid)
     end
@@ -19,8 +19,8 @@ class PhoneConfirmationsController < ApplicationController
 
     respond_to do |format|
       if create_predicate
-        format.html { redirect_to edit_user_path(user_uuid), notice: t('.confirmed') }
-        format.json { redirect_to edit_user_path(user_uuid), status: :created, location: @user }
+        format.html { redirect_to user_path(user_uuid), notice: t('.confirmed') }
+        format.json { redirect_to user_path(user_uuid), status: :created, location: @user }
       else
         format.html do
           redirect_to new_user_phone_confirmation_path(user_uuid),
