@@ -1,3 +1,6 @@
+06.10.2023
+* Seed file update https://github.com/internetee/auction_center/pull/1158
+
 05.10.2023
 * Deposit status syncronisation fix with billing https://github.com/internetee/auction_center/issues/1130
 
