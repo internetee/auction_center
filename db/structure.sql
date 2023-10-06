@@ -2853,6 +2853,7 @@ CREATE TRIGGER process_user_audit AFTER INSERT OR DELETE OR UPDATE ON public.use
 
 CREATE TRIGGER process_wishlist_item_audit AFTER INSERT OR DELETE OR UPDATE ON public.wishlist_items FOR EACH ROW EXECUTE FUNCTION public.process_wishlist_item_audit();
 
+
 --
 -- Name: bans fk_rails_070022cd76; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
@@ -3125,4 +3126,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230607092953'),
 ('20230705192353'),
 ('20230925130405'),
-('20230927114150');
+('20230927114150'),
+('20231006095158');
+
+
