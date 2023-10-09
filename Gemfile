@@ -62,6 +62,7 @@ group :development do
   gem 'web-console', '>= 3.3.0'
   gem 'htmlbeautifier'
   gem "ruby-lsp-rails"
+  gem 'letter_opener', '~> 1.8'
 end
 
 group :test do

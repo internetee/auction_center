@@ -26,6 +26,16 @@
     color: $primary-orange-color;
   }
 }
+@mixin btn-orange-light {
+  @include btn;
+  background: $orange-light;
+  border: 1px solid $primary-orange-color;
+  color: $primary-orange-color;
+
+  &:hover {
+    background: $white-color;
+  }
+}
 
 @mixin btn-blue {
   @include btn;
@@ -71,6 +81,16 @@
   }
 }
 
+@mixin btn-green-light {
+  @include btn;
+  color: $primary-green-color;
+  background-color: $green-light;
+  border: 1px solid $primary-green-color;
+
+  &:hover {
+    background: $white-color;
+  }
+}
 
 @mixin btn-red {
   @include btn;

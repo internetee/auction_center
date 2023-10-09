@@ -42,7 +42,6 @@
   }
 }
 
-
 .o-grid--sep {
   row-gap: rem(48px);
 }
@@ -53,6 +52,18 @@
   }
   @include mq(laptop){
       row-gap: 0;
+  }
+}
+.o-grid--auction{
+  column-gap: rem(24px);
+  @include mq(tablet){
+      column-gap: rem(50px);
+  }
+}
+.o-grid--auction-cards{
+  column-gap: rem(16px);
+  @include mq(laptop){
+      column-gap: rem(48px);
   }
 }
 .c-account {

@@ -17,9 +17,11 @@ $grey-100-color: #EFEFF1;
 $grey-200-color: #E2E2E2;
 $grey-300-color: #B5BCCB;
 $grey-400-color: #A7A8AA;
+$grey-500-color: #555555;
 
 $gradient-blue: linear-gradient(90deg, #009DE1 1.35%, #0085CA 98.65%);
 $gradient-grey: linear-gradient(90deg, #EEEEF0 0%, #FFFFFF 100%);
+$gradient-grey-180: linear-gradient(180deg, #EEEEF0 0%, #FFFFFF 100%);
 $gradient-orange: linear-gradient(90deg, #FF6E00 1.35%, #E66300 98.65%);
 $gradient-blue-secondary: linear-gradient(90deg, #0085CA 1.35%, #009DE1 98.65%);
 $gradient-orange-secondary: linear-gradient(90deg, #E66300 1.35%, #FF6E00 98.65%);

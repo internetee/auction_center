@@ -1,0 +1,31 @@
+.c-accordion {
+   .c-accordion__item {
+    padding: rem(34px 0);
+    border-top: 1px solid $grey-200-color;
+    &:last-child{
+      border-bottom: 1px solid $grey-200-color;
+    }
+    &.active{
+      .o-arrowdown-icon{
+        transform: rotate(180deg);
+        transition: transform .3s;
+      }
+    }
+   }
+   .c-accordion__question {
+    color: $black-color;
+    font-size: rem(18px);
+    font-weight: 800;
+    line-height: rem(28px); 
+    margin: 0;
+    cursor: pointer;
+   }
+   .c-accordion__answer {
+    color: $black-color;
+    font-size: rem(14px);
+    font-weight: 500;
+    line-height: rem(24px);
+    margin: rem(8px 0 0 0);
+  }
+}
+

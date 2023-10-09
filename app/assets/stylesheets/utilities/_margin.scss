@@ -34,11 +34,8 @@
 .u-mb-48 {
   margin-bottom: rem(48px);
 }
-.u-mb-30-48 {
-  margin-bottom: rem(30px);
-  @include mq(tablet){
-    margin-bottom: rem(48px);
-  }
+.u-mb-40 {
+  margin-bottom: rem(40px);
 }
 .u-mb-36 {
   margin-bottom: rem(36px);

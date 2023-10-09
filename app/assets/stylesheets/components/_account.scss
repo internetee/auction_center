@@ -24,7 +24,7 @@
     gap: 8px;
     height: rem(32px);
     margin-bottom: rem(24px);
-    &> svg{
+    &> button{
         cursor: pointer;
         opacity: 1;
         transition: opacity .3s;
@@ -37,7 +37,7 @@
     }
 
     &.is-editable{
-        >svg{
+        >button{
             &:nth-last-child(-n + 2){
                 display: inline-flex;
             }
@@ -199,46 +199,51 @@ display: block;
     @include mq(tablet) {
       margin-bottom: rem(32px);
     }
-  }
-  .o-checkbox-text {
-    margin-left: rem(8px);
+}
+.o-checkbox-text {
+margin-left: rem(8px);
+@include mq(tablet){
+    margin-left: rem(16px);
+}
+white-space: normal;
+&:first-child {
+    margin-bottom: rem(24px);
     @include mq(tablet){
-        margin-left: rem(16px);
-    }
-    white-space: normal;
-    &:first-child {
-      margin-bottom: rem(24px);
-      @include mq(tablet){
-        margin-bottom: rem(32px);
-    }
-    }
-    a {
-      color: $primary-blue-color;
-      text-decoration: underline;
-    }
-  }
+    margin-bottom: rem(32px);
+}
+}
+a {
+    color: $primary-blue-color;
+    text-decoration: underline;
+}
+}
 
-  .c-btn{
-    font-size: rem(14px);
-  }
-  .c-account__title--confirm{
-    margin-bottom: rem(8px);
-  }
-  .c-account__subtitle{
-    font-size: rem(14px);
-    font-weight: 500;
-    line-height: rem(24px);
-    margin: rem(0 0 16px 0);
+
+.c-account__title--confirm{
+margin-bottom: rem(8px);
+}
+.c-account__subtitle{
+font-size: rem(14px);
+font-weight: 500;
+line-height: rem(24px);
+margin: rem(0 0 16px 0);
+@include mq(tablet){
+    margin: rem(0 0 24px 0);
+}
+@include mq(laptop){
+    margin: rem(0 0 32px 0);
+}
+}
+.c-account__btns{
+justify-content: center;
+@include mq(laptop){
+    justify-content: flex-start;
+}
+}
+
+.c-account__input--countrycode{
+    margin-bottom: rem(30px);
     @include mq(tablet){
-        margin: rem(0 0 24px 0);
+        margin-bottom: rem(48px);
     }
-    @include mq(laptop){
-        margin: rem(0 0 32px 0);
-    }
-  }
-  .c-account__btns{
-    justify-content: center;
-    @include mq(laptop){
-        justify-content: flex-start;
-    }
-  }
+}

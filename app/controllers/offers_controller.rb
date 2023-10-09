@@ -41,7 +41,7 @@ class OffersController < ApplicationController
         @show_checkbox_recaptcha = true unless @success
         flash[:alert] = recaptcha_valid ? @offer.errors.full_messages.join('; ') : t('offers.form.captcha_verification')
 
-        format.html { redirect_to root_path, status: see_other }
+        format.html { redirect_to root_path, status: :see_other }
         format.json { render json: @offer.errors, status: :unprocessable_entity }
       end
     end
@@ -77,7 +77,7 @@ class OffersController < ApplicationController
         @show_checkbox_recaptcha = true unless @success
         flash[:alert] = recaptcha_valid ? @offer.errors.full_messages.join('; ') : t('offers.form.captcha_verification')
 
-        format.html { redirect_to root_path, status: see_other }
+        format.html { redirect_to root_path, status: :see_other }
         format.json { render json: @offer.errors, status: :unprocessable_entity }
       end
     end
