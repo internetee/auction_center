@@ -4,6 +4,7 @@
   line-height: rem(14px);
   text-decoration: underline !important;
   color: $primary-blue-color !important;
+  cursor: pointer;
 
   &:hover {
     color: $secondary-blue-color !important;

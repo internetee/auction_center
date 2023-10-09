@@ -1,26 +1,17 @@
 .c-account--createnew {
-  .o-card {
-    height: auto;
-    &.o-card--personaldata{
-        margin-bottom: rem(50px);
-        @include mq(laptop){
-            margin-bottom: rem(80px);
-        }
-      }
-  }
   .o-checkbox-container--green {
-    .o-checkbox-text{
-        margin-bottom: 0;
+    .o-checkbox-text {
+      margin-bottom: 0;
     }
-    @include mq(laptop){
-        padding-bottom: rem(40px);
+    @include mq(laptop) {
+      padding-bottom: rem(40px);
     }
   }
-  .c-account__btn{
+  .c-btn {
     margin: 0 auto;
     display: block;
-    @include mq(laptop){
-        margin: 0;
+    @include mq(laptop) {
+      margin: 0;
     }
   }
 }

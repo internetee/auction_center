@@ -1,13 +1,17 @@
 .c-socials {
   display: flex;
-  gap: rem(24px);
+  gap: rem(25px);
   align-items: center;
+  @include mq(desktop) {
+    display: none;
+  }
 }
 
 .c-socials__link {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 25px;
 
   svg {
     transition: 0.25s;

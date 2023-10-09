@@ -1,25 +1,30 @@
 .c-btn--orange {
-  @include btn-orange
+  @include btn-orange;
 }
-
+.c-btn--orange-light {
+  @include btn-orange-light;
+}
 .c-btn--blue {
-  @include btn-blue
+  @include btn-blue;
 }
 
 .c-btn--black {
-  @include btn-black
+  @include btn-black;
 }
 
 .c-btn--green {
-  @include btn-green
+  @include btn-green;
 }
 
+.c-btn--green-light {
+  @include btn-green-light;
+}
 .c-btn--red {
-  @include btn-red
+  @include btn-red;
 }
 
 .c-btn--blue-secondary {
-  @include btn-blue-secondary
+  @include btn-blue-secondary;
 }
 
 .c-btn--ghost {
@@ -54,7 +59,8 @@ table {
   }
 }
 
-.c-btn--icon {
+.c-btn--icon,
+.c-btn--icon-size {
   width: rem(32px);
   height: rem(32px);
   padding: 0 !important;
@@ -70,5 +76,17 @@ table {
 
   @include mq(laptop) {
     justify-content: center;
+  }
+}
+
+.c-account .c-btn {
+  font-size: rem(14px);
+}
+.c-account--changepass {
+  .c-btn {
+    width: 100%;
+    padding: rem(7px 1rem);
+    font-size: rem(15px);
+    margin: 2.5rem 0 1.5rem 0;
   }
 }

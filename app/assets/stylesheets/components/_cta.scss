@@ -15,7 +15,7 @@
     width: 100%;
     height: 100%;
     opacity: 0.25;
-    background: url("../assets/spider-bg.svg") right center/contain no-repeat;
+    background: url("spider-bg.svg") right center/contain no-repeat;
     z-index: 0;
   }
 }
@@ -148,13 +148,16 @@
     padding: rem(64px 0);
   }
 }
-
+.o-grid--auction-cards > div{
+  height: 100%;
+}
 .c-cta--card {
   padding: rem(24px 16px 30px);
   color: $black-color;
   @include box-shadow-light;
   border-radius: rem(4px 4px 8px 8px);
   position: relative;
+  height: 100%;
 
   &::before {
     content: '';
@@ -167,11 +170,11 @@
   }
 
   @include mq(laptop) {
-    padding: rem(32px 18px 38px);
+    padding: rem(32px 18px 32px);
   }
 
   @include mq(desktop) {
-    padding: rem(34px 20px 42px);
+    padding: rem(34px 20px 30px);
   }
 
 
@@ -251,7 +254,6 @@
 }
 
 .c-cta--card-icon {
-
   .c-cta__title {
     display: flex;
     gap: rem(12px);
@@ -259,6 +261,9 @@
     svg {
       min-width: rem(32px);
     }
+  }
+  @include mq(wide){
+    align-items: center;
   }
 }
 
@@ -278,4 +283,8 @@
   @include mq(laptop){
       margin-bottom: rem(60px);
   }
+}
+.c-cta--auction{
+  padding: rem(60px 0 50px 0);
+  background-image: $gradient-grey-180;
 }

@@ -1,35 +1,52 @@
 .o-card {
-    border-radius: rem(8px);
-    background-color: $white-color;
-    box-shadow: 0px 0px 48px 0px rgba(0, 0, 0, 0.06);
-    padding: rem(24px 24px 48px 24px);
-    align-self: self-start;
-    position: relative;
-    @include mq(tablet){
-        padding: rem(30px 48px 48px 48px);
-    }
+  border-radius: rem(8px);
+  background-color: $white-color;
+  box-shadow: 0px 0px 48px 0px rgba(0, 0, 0, 0.06);
+  padding: rem(24px 24px 48px 24px);
+  align-self: self-start;
+  position: relative;
+  @include mq(tablet) {
+    padding: rem(30px 48px 48px 48px);
+  }
 }
 .o-card--no-shadow {
-    background-color: transparent;
-    box-shadow: unset;
-    @include mq(tablet){
-        padding: rem(0 48px 0 48px);
-    }
-    @include mq(laptop){
-        padding: rem(40px 48px 48px 48px);
-    }
+  background-color: transparent;
+  box-shadow: unset;
+  @include mq(tablet) {
+    padding: rem(0 48px 0 48px);
+  }
+  @include mq(laptop) {
+    padding: rem(40px 48px 48px 48px);
+  }
 }
-.o-card__title{
-    color: $black-color;
-    font-size: 24px;
-    font-weight: 900;
+.o-card__title {
+  color: $black-color;
+  font-size: 24px;
+  font-weight: 900;
 }
-.c-account{
-    .o-card{
-        height: 100%;
-        padding: rem(36px 24px 48px 24px);
-        @include mq(tablet){
-            padding: rem(40px 48px 48px 48px);
-        }
+.c-account {
+  .o-card {
+    height: 100%;
+    padding: rem(36px 24px 48px 24px);
+    @include mq(tablet) {
+      padding: rem(40px 48px 48px 48px);
     }
+  }
+}
+.c-account--createnew {
+  .o-card {
+    height: auto;
+    &.o-card--personaldata {
+      margin-bottom: rem(50px);
+      @include mq(laptop) {
+        margin-bottom: rem(80px);
+      }
+    }
+  }
+}
+.c-account--changepass {
+  .o-card {
+    width: 640px;
+    max-width: 100%;
+  }
 }

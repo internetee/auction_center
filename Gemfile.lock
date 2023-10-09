@@ -197,6 +197,10 @@ GEM
       faraday-follow_redirects
     jwt (2.7.1)
     language_server-protocol (3.17.0.3)
+    launchy (2.5.2)
+      addressable (~> 2.8)
+    letter_opener (1.8.1)
+      launchy (>= 2.2, < 3)
     listen (3.8.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -505,6 +509,7 @@ DEPENDENCIES
   jbuilder (~> 2.11)
   jsbundling-rails
   jwt
+  letter_opener (~> 1.8)
   listen (>= 3.0.5, < 3.9)
   lograge
   mimemagic (~> 0.4.3)
