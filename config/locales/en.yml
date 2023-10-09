@@ -101,7 +101,7 @@ en:
   created_at: "Created at"
   updated_at: "Updated at"
 
-  is_invalid: "is invalid"
+  is_invalid: "%{attribute} is invalid"
   invalid: "invalid"
   value_is_not_safe: |
     Please, note, what the only characters allowed is utf-characters of english/estonian alphabet,
