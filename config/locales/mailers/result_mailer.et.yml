@@ -13,7 +13,7 @@ et:
       auction_link: ".ee oksjonikeskkonnas"
       details_second_para_html: |
         Arve õigeaegsel tasumisel leiate oma kasutajakonto alt vastava reserveerimiskoodi,
-        millega saate 14. päeva jooksul enampakkumisel võidetud %{domain_name}
+        millega saate %{registration_limit}. päeva jooksul enampakkumisel võidetud %{domain_name}
         domeeninime registreerida. Domeeni %{domain_name} registreerimiseks pöörduge
         <a href="https://www.internet.ee/registripidajad/akrediteeritud-registripidajad">
         .ee akrediteeritud registripidaja</a> poole esimesel võimalusel! Viimasele hetkele
