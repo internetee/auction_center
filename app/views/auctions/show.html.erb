@@ -7,7 +7,6 @@
     <% end %>
   </div>
 <% end %>
-
 <div class="u-container">
   <div class="margin-block">
     <h2><%= t('.title') %></h2>
@@ -34,7 +33,7 @@
             </tr>
             <%- if @auction.offer_from_user(current_user).present? %>
               <tr>
-                <td><strong><%= t('auctions.your_current_price') %></strong></td>
+                <td><strong><%= t('auctions.current_price') %></strong></td>
                 <td><%= @auction.current_price_from_user(current_user) %></td>
               </tr>
             <% end %>
@@ -72,7 +71,6 @@
       <% end %>
     </div>
   </div>
-
   <% if @auction.english? %>
     <%= render 'auctions/english_bottom_grid' %>
   <% else %>
