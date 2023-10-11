@@ -1,3 +1,6 @@
+11.10.2023
+* Added missing attribute name to a validation error message https://github.com/internetee/auction_center/pull/1162
+
 06.10.2023
 * Seed file update https://github.com/internetee/auction_center/pull/1158
 
