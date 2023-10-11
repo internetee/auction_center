@@ -1,5 +1,6 @@
 11.10.2023
 * Added missing attribute name to a validation error message https://github.com/internetee/auction_center/pull/1162
+* Improved offer lables in mobile view https://github.com/internetee/auction_center/issues/1157
 
 06.10.2023
 * Seed file update https://github.com/internetee/auction_center/pull/1158
