@@ -1,5 +1,6 @@
 11.10.2023
 * Added missing attribute name to a validation error message https://github.com/internetee/auction_center/pull/1162
+* Fixed registration term info in the automatic email messages https://github.com/internetee/auction_center/issues/1163
 * Improved offer lables in mobile view https://github.com/internetee/auction_center/issues/1157
 
 06.10.2023
