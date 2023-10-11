@@ -41,6 +41,12 @@ class BillingProfilesTest < ApplicationSystemTestCase
   end
 
   def test_a_user_can_create_billing_profile_for_a_vat_liable_company
+    Valvat.define_singleton_method(:new) do |vat_code|
+      Class.new do
+        define_method(:exists?) { true }
+      end.new
+    end
+
     visit new_billing_profile_path
     fill_in_address
 
