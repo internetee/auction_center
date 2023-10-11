@@ -1,20 +1,17 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
-    </head>
-    <body>
-        <p><%= t('.salutation', display_name: @user.display_name) %></p>
-        <p><%= t('.introduction', domain_name: @auction.domain_name) %></p>
-        <p>
-            <%= t('.details_html',
-                  domain_name: @auction.domain_name,
-                  link: link_to(t('.auction_link'), result_url(@result.uuid))) %>
-        </p>
-        <p><%= t('.linkpay_html', linkpay_url: @linkpay_url) if @linkpay_url %></p>
-        <p><%= t('.details_second_para_html', domain_name: @auction.domain_name) %></p>
-        <p><%= t('.details_third_para', domain_name: @auction.domain_name) %></p>
-
-        <%= t('common_mailer.footer_html') %>
-    </body>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
+  </head>
+  <body>
+    <p><%= t('.salutation', display_name: @user.display_name) %></p>
+    <p><%= t('.introduction', domain_name: @auction.domain_name) %></p>
+    <p>
+      <%= t('.details_html', domain_name: @auction.domain_name, link: link_to(t('.auction_link'), result_url(@result.uuid))) %>
+    </p>
+    <p><%= t('.linkpay_html', linkpay_url: @linkpay_url) if @linkpay_url %></p>
+    <p><%= t('.details_second_para_html', domain_name: @auction.domain_name, registration_limit: Setting.find_by(code: 'registration_term').retrieve) %></p>
+    <p><%= t('.details_third_para', domain_name: @auction.domain_name) %></p>
+    <%= t('common_mailer.footer_html') %>
+  </body>
 </html>

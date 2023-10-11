@@ -12,7 +12,7 @@ en:
         You can pay for this invoice using following <a href=%{linkpay_url}>link</a>.
       auction_link: ".ee auction portal"
       details_second_para_html: |
-        You will find the registration code in your user account once you have paid the invoice on time. The code will allow you to register the %{domain_name} domain namewithin 14 days. To register the %{domain_name} domain, contact an a href="https://www.internet.ee/registrars/accredited-registrars">accredited .ee registrar</a> as soon as possible! If you leave it to the last minute, your service provider may not be able to register the domain.
+        You will find the registration code in your user account once you have paid the invoice on time. The code will allow you to register the %{domain_name} domain name within %{registration_limit} days. To register the %{domain_name} domain, contact an a href="https://www.internet.ee/registrars/accredited-registrars">accredited .ee registrar</a> as soon as possible! If you leave it to the last minute, your service provider may not be able to register the domain.
       details_third_para: |
         The prepayment invoice must be paid within 7 days. If you fail to pay, you will
         lose the right to the auctioned priority and priority for the %{domain_name} domain
