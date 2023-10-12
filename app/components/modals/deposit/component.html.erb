@@ -1,4 +1,5 @@
-<div class="c-modal-overlay js-modal" data-modals--offer-modal-target='modal'>
+  <!-- Modal - deposit4 -->
+<div id="deposit4-v2" class="c-modal-overlay js-modal" data-modals--offer-modal-target='modal'>
   <div class="c-modal">
     <div class="c-modal__scroll">
       <div class="c-modal__scroll__content">
@@ -7,58 +8,46 @@
         </button>
         <div class="c-modal__header">
           <div class="c-modal__header__title">
-            <span class="o-edit-icon--green"></span>
-            <span>Muuda pakkumist</span>
+            <span class="o-edit-icon--deposit"></span>
+            <span><%= t('offers.new.make_deposit') %></span>
           </div>
           <div class="c-modal__header__subject">
             <span class="c-modal__header__subject__title"><%= @auction.domain_name %></span>
-            <span class="o-io-icon o-io-icon--bg-blue"></span>
           </div>
           <div class="c-modal__header__desc">
-            <span>Oksjoni lõpuni jäänud <strong>24d 1h 9m 8s</strong></span>
+            <span><%= t('english_offers.timer') %> <strong><%= component 'common/timer', auction: @auction %></strong></span>
           </div>
         </div>
         <div class="c-modal__main">
-          <div class="c-modal__grid">
+          <div class="c-modal__grid c-modal__grid--gap u-flex-wrap">
             <div class="c-modal__main__info">
-              <span>Vähim võimalik pakkumus</span>
-              <h3 class="u-h2 u-m-none"><span id="mini"><%= number_with_precision(Money.from_amount(@auction.min_bids_step.to_f, Setting.find_by(code: 'auction_currency').retrieve,  precision: 2)) %> €</span></h3>
+              <span><%= t('english_offers.show.min_bid') %></span>
+              <h3 class="u-h2 u-mt-0 u-mb-40-l">
+                <%= number_with_precision(Money.from_amount(@auction.min_bids_step.to_f, Setting.find_by(code: 'auction_currency').retrieve,  precision: 2)) %> €
+              </h3>
             </div>
             <div class="c-modal__main__info c-modal__main__info--black">
-              <strong>Hetke parim pakkumus</strong>
-              <h3 class="u-h2 u-m-none">
-                <span id="current_<%= @auction.id %>_price">
-                  0.00 €
-                </span>
-              </h3>
-              <span>Keegi pole veel pakkunud</span>
+              <strong><%= t('english_offers.show.current_price') %></strong>
+              <h3 class="u-h2 u-mt-0 u-mb-40-l"><span id="current_<%= @auction.id %>_price"><%= @auction&.currently_winning_offer&.price  || '0.0' %> €</span></h3>
             </div>
+            <div class="c-modal__main__info c-modal__main__info--white c-modal__header__desc">
+              <div class="c-modal__main__info__wrapper u-flex u-align-start u-content-sp u-flex-col">
+                <span class="u-mb-60"><strong><%= t('offers.new.deposit_description_html', deposit: number_with_precision(@auction.deposit, precision: 2)) %></strong></span>
+                <button class="c-btn c-btn--ghost c-btn--fs" data-action='modals--offer-modal#close'>Tagasi</button>
+              </div>
+            </div>
+            <div class="c-modal__main__info c-modal__main__info--orange u-align-center u-content-center u-flex-col">
+              <div><span><%= t('offers.new.deposit_enable') %></span>
+                <h3 class="u-h2 u-mt-0 u-mb-30"><%= "#{number_with_precision(@auction.deposit, precision: 2)} €" %></h3>
+                  <%= button_to t('offers.new.make_deposit'), english_offer_deposit_auction_path(uuid: @auction.uuid, current_user: @current_user),
+                                    class: "c-btn c-btn-white c-btn--fs", method: :post, data: { turbo: false } %>
+                </div>
+              </div>
+            </div>
+            <%= component 'captcha', captcha_required: @captcha_required, show_checkbox_recaptcha: @show_checkbox_recaptcha, action: 'english_offer' %>
           </div>
-
-          <div class='c-modal__header__desc' style='margin-top: 1.4rem'>
-            <span><strong>lorem ipsum dolor sit amet consectetur adipisicing elit.</strong> Quisquam, voluptatum. lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.</span>
-          </div>
-
         </div>
-        <div class="c-modal__footer">
-          <div class="c-modal__footer__col">
-            <button class="c-btn c-btn--ghost" data-action='modals--offer-modal#close'>Tagasi</button>
-          </div>
-          <div class="c-modal__footer__col">
-            <%= button_to "Tasuge deposiit #{number_with_precision(@auction.deposit, precision: 2)} €",
-                          english_offer_deposit_auction_path(uuid: @auction.uuid, current_user: @current_user),
-                          class: "c-btn c-btn--orange", method: :post, data: { turbo: false } %>
-          </div>
-        </div>
-
-        <% if @captcha_required %>
-          <div class="field">
-            <br>
-            <%= recaptcha_tags id: "english_offer" %>
-          </div>
-        <% end %>
-
       </div>
     </div>
   </div>
-</div>
+  <!-- Modal - deposit -->

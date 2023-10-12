@@ -10,6 +10,8 @@
   white-space: nowrap;
   color: $white-color;
   border: none;
+  font-family: $font-family;
+
 
   &:disabled {
     pointer-events: none;
@@ -24,16 +26,6 @@
   &:hover {
     background: $white-color;
     color: $primary-orange-color;
-  }
-}
-@mixin btn-orange-light {
-  @include btn;
-  background: $orange-light;
-  border: 1px solid $primary-orange-color;
-  color: $primary-orange-color;
-
-  &:hover {
-    background: $white-color;
   }
 }
 
@@ -69,6 +61,18 @@
     color: $black-color;
   }
 }
+@mixin btn-white {
+  @include btn;
+  background: $white-color;
+  color: $black-color;
+  border: 1px solid $white-color;
+
+  &:hover {
+    background: transparent;
+    color: $white-color;
+    background: transparent;
+  }
+}
 
 @mixin btn-green {
   @include btn;
@@ -81,16 +85,6 @@
   }
 }
 
-@mixin btn-green-light {
-  @include btn;
-  color: $primary-green-color;
-  background-color: $green-light;
-  border: 1px solid $primary-green-color;
-
-  &:hover {
-    background: $white-color;
-  }
-}
 
 @mixin btn-red {
   @include btn;

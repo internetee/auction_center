@@ -89,17 +89,7 @@
 
         </div>
 
-        <% if @captcha_required %>
-          <% if @show_checkbox_recaptcha %>
-            <div class="field">
-              <br>
-              <%= recaptcha_tags %>
-              <%= recaptcha_tags site_key: recaptcha2_site_key %>
-            </div>
-          <% else %>
-            <%= recaptcha_v3(action: 'offer', site_key: recaptcha3_site_key, turbolinks: true) %>
-          <% end %>
-        <% end %>
+        <%= component 'captcha', captcha_required: @captcha_required, show_checkbox_recaptcha: @show_checkbox_recaptcha, action: 'offer' %>
       </div>
     </div>
   </div>
