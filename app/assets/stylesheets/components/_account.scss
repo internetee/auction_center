@@ -24,7 +24,7 @@
     gap: 8px;
     height: rem(32px);
     margin-bottom: rem(24px);
-    &> button{
+    &> svg{
         cursor: pointer;
         opacity: 1;
         transition: opacity .3s;
@@ -37,7 +37,7 @@
     }
 
     &.is-editable{
-        >button{
+        >svg{
             &:nth-last-child(-n + 2){
                 display: inline-flex;
             }
@@ -241,9 +241,4 @@ justify-content: center;
 }
 }
 
-.c-account__input--countrycode{
-    margin-bottom: rem(30px);
-    @include mq(tablet){
-        margin-bottom: rem(48px);
-    }
-}
+  

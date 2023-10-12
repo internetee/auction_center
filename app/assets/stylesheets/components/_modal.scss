@@ -159,7 +159,20 @@
     gap: rem(0 40px);
   }
 }
-
+.c-modal__grid--gap{
+  &:nth-child(-n + 2){
+    gap: rem(12px);
+    @include mq(tablet){
+      gap: rem(20px);
+    }
+    @include mq(laptop) {
+      gap: rem(30px);
+    }
+    @include mq(desktop) {
+      gap: rem(40px);
+    }
+  }
+}
 .c-modal__main {
   padding: rem(40px 0);
 }
@@ -192,12 +205,47 @@
     padding: rem(24px);
     width: calc(50% - 1.25rem);
   }
+  h3{
+    line-height: 30px;
+  }
 }
-
+.c-modal__main__info__wrapper{
+  height: 100%;
+  padding: rem(24px 0 0 0);
+  @include mq(desktop) {
+    padding: rem(24px 6px 0 0);
+  }
+}
 .c-modal__main__info--black {
   background-color: $black-color;
   color: $white-color;
 }
+.c-modal__main__info--orange {
+  background: $gradient-orange-secondary;
+  color: $white-color;
+}
+.c-modal__main__info--white{
+  background-color: $white-color;
+  padding: 0;
+  span{
+    text-align: left;
+  }
+}
+.c-modal__main__info--wide{
+  width: 100%;
+  @include mq(tablet){
+    width:calc(50% - .75rem);
+  }
+  @include mq(laptop) {
+    width: calc(50% - 0.9375rem);
+  }
+  @include mq(desktop){
+    width: calc(50% - 1.25rem);
+  }
+}
+
+
+
 
 .c-modal__col {
   width: calc(50% - 0.375rem);
