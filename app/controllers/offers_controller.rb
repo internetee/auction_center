@@ -6,6 +6,8 @@ class OffersController < ApplicationController
   before_action :set_offer, only: %i[show edit update destroy]
   before_action :authorize_offer_for_user, except: %i[new index create delete]
 
+  respond_to :html, :json
+
   include RecaptchaValidatable
   recaptcha_action 'offer'
 
@@ -46,6 +48,11 @@ class OffersController < ApplicationController
   def index
     offers = Offer.highest_per_auction_for_user(current_user.id).search(params)
     @pagy, @offers = pagy(offers, items: params[:per_page] ||= 15)
+
+    respond_to do |format|
+      format.html
+      format.json { render json: @offers.as_json(include: [:auction, :billing_profile]) }
+    end
   end
 
   # GET /offers/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b

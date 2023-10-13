@@ -95,3 +95,6 @@ group :test do
   gem 'spy'
   gem 'webmock'
 end
+
+gem 'devise-jwt'
+gem 'jsonapi-serializer'

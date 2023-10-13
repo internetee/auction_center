@@ -21,6 +21,7 @@ default: &default
   mobile_sms_sent_time_limit_in_minutes: 1
   auction_filter_available: false
   ended_auctions_link_available: false
+  jwt_secret: ''
 
   mailer:
     # Host to which links from emails should redirect to

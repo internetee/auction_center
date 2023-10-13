@@ -155,9 +155,21 @@ GEM
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
+    devise-jwt (0.11.0)
+      devise (~> 4.0)
+      warden-jwt_auth (~> 0.8)
     docile (1.4.1)
     domain_name (0.6.20240107)
     drb (2.2.3)
+    dry-auto_inject (1.0.1)
+      dry-core (~> 1.0)
+      zeitwerk (~> 2.6)
+    dry-configurable (1.1.0)
+      dry-core (~> 1.0, < 2)
+      zeitwerk (~> 2.6)
+    dry-core (1.0.1)
+      concurrent-ruby (~> 1.0)
+      zeitwerk (~> 2.6)
     email_validator (2.2.4)
       activemodel
     erb (5.0.2)
@@ -176,14 +188,6 @@ GEM
     faraday-net_http (3.4.1)
       net-http (>= 0.5.0)
     ffi (1.17.2)
-    ffi (1.17.2-aarch64-linux-gnu)
-    ffi (1.17.2-aarch64-linux-musl)
-    ffi (1.17.2-arm-linux-gnu)
-    ffi (1.17.2-arm-linux-musl)
-    ffi (1.17.2-arm64-darwin)
-    ffi (1.17.2-x86_64-darwin)
-    ffi (1.17.2-x86_64-linux-gnu)
-    ffi (1.17.2-x86_64-linux-musl)
     ffi-compiler (1.3.2)
       ffi (>= 1.15.5)
       rake
@@ -194,24 +198,6 @@ GEM
     globalid (1.2.1)
       activesupport (>= 6.1)
     google-protobuf (4.33.0)
-      bigdecimal
-      rake (>= 13)
-    google-protobuf (4.33.0-aarch64-linux-gnu)
-      bigdecimal
-      rake (>= 13)
-    google-protobuf (4.33.0-aarch64-linux-musl)
-      bigdecimal
-      rake (>= 13)
-    google-protobuf (4.33.0-arm64-darwin)
-      bigdecimal
-      rake (>= 13)
-    google-protobuf (4.33.0-x86_64-darwin)
-      bigdecimal
-      rake (>= 13)
-    google-protobuf (4.33.0-x86_64-linux-gnu)
-      bigdecimal
-      rake (>= 13)
-    google-protobuf (4.33.0-x86_64-linux-musl)
       bigdecimal
       rake (>= 13)
     hashdiff (1.2.1)
@@ -256,13 +242,15 @@ GEM
       bindata
       faraday (~> 2.0)
       faraday-follow_redirects
+    jsonapi-serializer (2.2.0)
+      activesupport (>= 4.2)
+      addressable (~> 2.8)
+      childprocess (~> 5.0)
+      logger (~> 1.6)
     jwt (2.10.2)
       base64
     language_server-protocol (3.17.0.5)
     launchy (3.1.1)
-      addressable (~> 2.8)
-      childprocess (~> 5.0)
-      logger (~> 1.6)
     letter_opener (1.10.0)
       launchy (>= 2.2, < 4)
     letter_opener_web (3.0.0)
@@ -320,22 +308,6 @@ GEM
     nokogiri (1.18.10)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
-    nokogiri (1.18.10-aarch64-linux-gnu)
-      racc (~> 1.4)
-    nokogiri (1.18.10-aarch64-linux-musl)
-      racc (~> 1.4)
-    nokogiri (1.18.10-arm-linux-gnu)
-      racc (~> 1.4)
-    nokogiri (1.18.10-arm-linux-musl)
-      racc (~> 1.4)
-    nokogiri (1.18.10-arm64-darwin)
-      racc (~> 1.4)
-    nokogiri (1.18.10-x86_64-darwin)
-      racc (~> 1.4)
-    nokogiri (1.18.10-x86_64-linux-gnu)
-      racc (~> 1.4)
-    nokogiri (1.18.10-x86_64-linux-musl)
-      racc (~> 1.4)
     noticed (1.6.3)
       http (>= 4.0.0)
       rails (>= 5.2.0)
@@ -369,12 +341,6 @@ GEM
       racc
     pdfkit (0.8.7.3)
     pg (1.6.2)
-    pg (1.6.2-aarch64-linux)
-    pg (1.6.2-aarch64-linux-musl)
-    pg (1.6.2-arm64-darwin)
-    pg (1.6.2-x86_64-darwin)
-    pg (1.6.2-x86_64-linux)
-    pg (1.6.2-x86_64-linux-musl)
     pg_search (2.3.7)
       activerecord (>= 6.1)
       activesupport (>= 6.1)
@@ -515,22 +481,6 @@ GEM
     sass-embedded (1.93.2)
       google-protobuf (~> 4.31)
       rake (>= 13)
-    sass-embedded (1.93.2-aarch64-linux-gnu)
-      google-protobuf (~> 4.31)
-    sass-embedded (1.93.2-aarch64-linux-musl)
-      google-protobuf (~> 4.31)
-    sass-embedded (1.93.2-arm-linux-gnueabihf)
-      google-protobuf (~> 4.31)
-    sass-embedded (1.93.2-arm-linux-musleabihf)
-      google-protobuf (~> 4.31)
-    sass-embedded (1.93.2-arm64-darwin)
-      google-protobuf (~> 4.31)
-    sass-embedded (1.93.2-x86_64-darwin)
-      google-protobuf (~> 4.31)
-    sass-embedded (1.93.2-x86_64-linux-gnu)
-      google-protobuf (~> 4.31)
-    sass-embedded (1.93.2-x86_64-linux-musl)
-      google-protobuf (~> 4.31)
     scenic (1.9.0)
       activerecord (>= 4.0.0)
       railties (>= 4.0.0)
@@ -583,6 +533,15 @@ GEM
       concurrent-ruby (~> 1)
     warden (1.2.9)
       rack (>= 2.0.9)
+    warden-jwt_auth (0.8.0)
+      actionview (>= 6.0.0)
+      activemodel (>= 6.0.0)
+      bindex (>= 0.4.0)
+      dry-auto_inject (>= 0.8, < 2)
+      dry-configurable (>= 0.13, < 2)
+      jwt (~> 2.1)
+      railties (>= 6.0.0)
+      warden (~> 1.2)
     web-console (4.2.1)
       actionview (>= 6.0.0)
       activemodel (>= 6.0.0)
@@ -609,16 +568,7 @@ GEM
     zeitwerk (2.7.3)
 
 PLATFORMS
-  aarch64-linux
-  aarch64-linux-gnu
-  aarch64-linux-musl
-  arm-linux-gnu
-  arm-linux-musl
-  arm64-darwin
   ruby
-  x86_64-darwin
-  x86_64-linux-gnu
-  x86_64-linux-musl
 
 DEPENDENCIES
   airbrake
@@ -637,6 +587,7 @@ DEPENDENCIES
   delayed_job (~> 4.1.0)
   delayed_job_active_record
   devise (~> 4.9.3)
+  devise-jwt
   directo!
   faker
   faraday (>= 2.14.0)
@@ -648,6 +599,7 @@ DEPENDENCIES
   i18n-debug
   jbuilder (~> 2.11)
   jsbundling-rails
+  jsonapi-serializer
   jwt
   letter_opener (~> 1.8)
   letter_opener_web (~> 3.0)
