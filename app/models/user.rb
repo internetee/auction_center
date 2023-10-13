@@ -3,6 +3,7 @@ require 'identity_code'
 class User < ApplicationRecord
   include Bannable
   include ReferenceNo
+  include Devise::JWT::RevocationStrategies::JTIMatcher
 
   PARTICIPANT_ROLE = 'participant'.freeze
   ADMINISTATOR_ROLE = 'administrator'.freeze
@@ -12,7 +13,7 @@ class User < ApplicationRecord
   TARA_PROVIDER = 'tara'.freeze
 
   devise :database_authenticatable, :recoverable, :rememberable, :validatable, :confirmable,
-         :timeoutable
+         :timeoutable, :jwt_authenticatable, jwt_revocation_strategy: self
 
   alias_attribute :country_code, :alpha_two_country_code
 
