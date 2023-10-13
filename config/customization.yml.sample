@@ -19,6 +19,7 @@ default: &default
   vapid_private: "2xl1lvaQARjFHRCKrPo2B-MbTAc1IZ3UrfugDh6cJiE="
 
   mobile_sms_sent_time_limit_in_minutes: 1
+  jwt_secret: ''
 
   mailer:
     # Host to which links from emails should redirect to
