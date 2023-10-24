@@ -2,6 +2,8 @@ class DomainParticipateAuction < ApplicationRecord
   belongs_to :user
   belongs_to :auction
 
+  validates :user_id, uniqueness: { scope: :auction_id }
+
   enum status: ['paid', 'prepayment', 'returned']
 
   scope :search_by_auction_name_and_user_email, ->(origin) {

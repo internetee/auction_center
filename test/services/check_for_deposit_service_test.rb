@@ -43,4 +43,34 @@ class CheckForDepositServiceTest < ActiveSupport::TestCase
 
     refute @auction.allow_to_set_bid?(@user)
   end
+
+  def test_should_not_create_duplicates
+    @auction.update(enable_deposit: true, requirement_deposit_in_cents: 50000)
+    @auction.reload
+
+    refute @auction.allow_to_set_bid?(@user)
+    refute @auction.domain_participate_auctions.where(user: @user).present?
+
+    EisBilling::CheckForDepositService.call(
+      domain_name: @auction.domain_name,
+      user_uuid: @user.uuid,
+      user_email: @user.email,
+      transaction_amount: 500.0,
+      invoice_number: @invoice.number
+    )
+
+    EisBilling::CheckForDepositService.call(
+      domain_name: @auction.domain_name,
+      user_uuid: @user.uuid,
+      user_email: @user.email,
+      transaction_amount: 500.0,
+      invoice_number: @invoice.number
+    )
+    @user.reload && @auction.reload
+
+    assert @auction.allow_to_set_bid?(@user)
+    assert @auction.domain_participate_auctions.where(user: @user).present?
+
+    assert_equal @auction.domain_participate_auctions.count, 1
+  end
 end

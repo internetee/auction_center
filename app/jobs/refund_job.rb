@@ -29,7 +29,7 @@ class RefundJob < ApplicationJob
   end
 
   def post(path, params = {})
-      connection.post(path, JSON.dump(params))
+    connection.post(path, JSON.dump(params))
   end
 
   def connection
