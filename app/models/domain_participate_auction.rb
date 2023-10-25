@@ -2,11 +2,14 @@ class DomainParticipateAuction < ApplicationRecord
   belongs_to :user
   belongs_to :auction
 
-  enum status: ['paid', 'prepayment', 'returned']
+  validates :user_id, uniqueness: { scope: :auction_id }
 
-  scope :search_by_auction_name_and_user_email, ->(origin) {
+  enum status: %w[paid prepayment returned]
+
+  scope :search_by_auction_name_and_user_email, lambda { |origin|
     if origin.present?
-      joins(:user).joins(:auction).where('users.email ILIKE ? OR auctions.domain_name ILIKE ?', "%#{origin}%", "%#{origin}%")
+      joins(:user).joins(:auction)
+                  .where('users.email ILIKE ? OR auctions.domain_name ILIKE ?', "%#{origin}%", "%#{origin}%")
     end
   }
 
@@ -15,6 +18,6 @@ class DomainParticipateAuction < ApplicationRecord
   end
 
   def send_deposit_status_to_billing_system
-    EisBilling::DepositStatusService.call(domain_name: auction.domain_name, user_uuid: user.uuid, status: status)
+    EisBilling::DepositStatusService.call(domain_name: auction.domain_name, user_uuid: user.uuid, status:)
   end
 end
