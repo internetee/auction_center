@@ -1,3 +1,6 @@
+25.10.2023
+* Fixed duplicate deposit record issue https://github.com/internetee/auction_center/pull/1170
+
 11.10.2023
 * Added missing attribute name to a validation error message https://github.com/internetee/auction_center/pull/1162
 * Fixed registration term info in the automatic email messages https://github.com/internetee/auction_center/issues/1163
