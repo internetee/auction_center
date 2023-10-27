@@ -83,11 +83,13 @@ Rails.application.configure do
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
 
+
   # Use a different logger for distributed setups.
   # require 'syslog/logger'
   # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new 'auction')
   config.logger = ActiveSupport::Logger.new(STDOUT)
-  #
+  config.colorize_logging = false
+
   # if ENV['RAILS_LOG_TO_DOCKER_STDOUT'].present?
   #   $stdout.sync = true
   #   config.rails_semantic_logger.add_file_appender = false
