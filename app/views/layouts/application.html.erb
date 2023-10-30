@@ -70,7 +70,7 @@
       <%= turbo_frame_tag "modal" %>
       <%= yield %>
     </main>
-    <%= render 'google_analytics', tracking_id: google_analytics.tracking_id if google_analytics.enabled? %>
+    <%= render 'application/google_analytics', tracking_id: google_analytics.tracking_id if google_analytics.enabled? %>
 
     <%= component 'common/footer' %>
   </body>
