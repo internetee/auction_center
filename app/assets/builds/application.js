@@ -7417,7 +7417,8 @@
       if (response.unauthenticated && response.authenticationURL) {
         return Promise.reject(window.location.href = response.authenticationURL);
       }
-      if (response.ok && response.isTurboStream) {
+      const responseStatusIsTurboStreamable = response.ok || response.unprocessableEntity;
+      if (responseStatusIsTurboStreamable && response.isTurboStream) {
         await response.renderTurboStream();
       }
       return response;
@@ -7443,7 +7444,7 @@
         headers: this.headers,
         body: this.formattedBody,
         signal: this.signal,
-        credentials: "same-origin",
+        credentials: this.credentials,
         redirect: this.redirect
       };
     }
@@ -7514,6 +7515,9 @@
     }
     get redirect() {
       return this.options.redirect || "follow";
+    }
+    get credentials() {
+      return this.options.credentials || "same-origin";
     }
     get additionalHeaders() {
       return this.options.headers || {};
