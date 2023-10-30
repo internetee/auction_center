@@ -10,7 +10,7 @@
       "ansi-html-community": "0.0.8",
       "babel-plugin-macros": "^3.1.0",
       "browserslist": "^4.16.8",
-      "chartkick": "^4.0.5",
+      "chartkick": "^5.0.0",
       "css-loader": "^5.2.7",
       "css-what": "^6.0.0",
       "file-loader": "^6.2.0",
