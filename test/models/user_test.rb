@@ -5,6 +5,9 @@ class UserTest < ActiveSupport::TestCase
     super
 
     @administrator = users(:administrator)
+
+    stub_request(:post, "https://eis_billing_system:3000/api/v1/invoice_generator/reference_number_generator")
+      .to_return(status: 200, body: "{\"reference_number\":\"12332\"}", headers: {})
   end
 
   def test_required_fields
@@ -394,6 +397,42 @@ class UserTest < ActiveSupport::TestCase
 
     user.reload && auction.reload
     refute user.participated_in_english_auction?(auction)
+  end
+
+  def test_reference_number_is_assigned_to_user_when_user_is_created
+    user = boilerplate_user
+    user.mobile_phone = '+372500100300'
+    user.country_code = 'EE'
+
+    refute user.persisted?
+    assert_nil user.reference_no
+
+    user.save! && user.reload
+
+    assert user.persisted?
+    assert user.reference_no
+  end
+
+  def test_reference_number_is_assigned_to_user_when_user_is_updated
+    user = users(:participant)
+
+    assert_nil user.reference_no
+    user.email = 'example@email.ee'
+    user.save && user.reload
+
+    assert user.reference_no
+  end
+
+  def test_reference_number_is_not_assigned_to_user_when_user_is_admin
+    user = users(:administrator)
+    assert_nil user.reference_no
+    assert user.roles.include?('administrator')
+
+    user.email = 'admin@admin.ee'
+    user.save && user.reload
+
+    assert_nil user.reference_no
+
   end
 
   def boilerplate_user

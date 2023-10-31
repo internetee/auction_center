@@ -2,6 +2,8 @@ require 'identity_code'
 
 class User < ApplicationRecord
   include Bannable
+  include ReferenceNo
+
   PARTICIPANT_ROLE = 'participant'.freeze
   ADMINISTATOR_ROLE = 'administrator'.freeze
   ROLES = %w[administrator participant].freeze
