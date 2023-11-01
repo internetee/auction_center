@@ -4,10 +4,10 @@ class UserTest < ActiveSupport::TestCase
   def setup
     super
 
-    @administrator = users(:administrator)
-
     stub_request(:post, "https://eis_billing_system:3000/api/v1/invoice_generator/reference_number_generator")
       .to_return(status: 200, body: "{\"reference_number\":\"12332\"}", headers: {})
+
+    @administrator = users(:administrator)
   end
 
   def test_required_fields

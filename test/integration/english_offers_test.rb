@@ -6,12 +6,15 @@ class EnglishOffersIntegrationTest < ActionDispatch::IntegrationTest
   include Turbo::Streams::ActionHelper
 
   def setup
+    stub_request(:post, "https://eis_billing_system:3000/api/v1/invoice_generator/reference_number_generator")
+      .to_return(status: 200, body: "{\"reference_number\":\"12332\"}", headers: {})
+    
     @user = users(:participant)
     @user_two = users(:second_place_participant)
     @auction = auctions(:english)
     @user.autobiders.destroy_all
     @user.reload
-    
+
     sign_in @user
 
     travel_to Time.parse('2010-07-05 11:30 +0000').in_time_zone

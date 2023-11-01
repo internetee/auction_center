@@ -13,6 +13,9 @@ class AdminBulkActionServiceTest < ActionDispatch::IntegrationTest
     @user = users(:participant)
     @second_place_participant = users(:second_place_participant)
 
+    stub_request(:post, "http://eis_billing_system:3000/api/v1/invoice_generator/reference_number_generator").
+      to_return(status: 200, body: "{\"reference_number\":\"12332\"}", headers: {})
+
     travel_to Time.parse('2010-07-05 10:30 +0000').in_time_zone
   end
 

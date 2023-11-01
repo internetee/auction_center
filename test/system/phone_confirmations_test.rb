@@ -11,6 +11,9 @@ class PhoneConfirmationsTest < ApplicationSystemTestCase
     @valid_auction_with_no_offers = auctions(:valid_without_offers)
     travel_to Time.parse('2010-07-05 10:31 +0000').in_time_zone
 
+    stub_request(:post, "http://eis_billing_system:3000/api/v1/invoice_generator/reference_number_generator").
+      to_return(status: 200, body: "{\"reference_number\":\"12332\"}", headers: {})
+
     sign_in(@user)
   end
 

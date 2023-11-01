@@ -23,7 +23,9 @@ class BankTransaction < ApplicationRecord
   def invoice
     return unless user
 
-    @invoice ||= user.invoices.order(created_at: :asc).issued.where.not(status: :canceled).find_by(total: sum)
+    invoices = user.invoices.order(created_at: :asc).issued.to_a
+
+    @invoice ||= invoices.select { |i| i.total == Money.from_amount(sum, Setting.find_by(code: 'auction_currency').retrieve) }.first
   end
 
   def autobind_invoice
@@ -31,6 +33,7 @@ class BankTransaction < ApplicationRecord
 
     payment_order = PaymentOrder.find_by(invoice_id: invoice.id) ||
                     PaymentOrders::EveryPay.create(invoices: [invoice], user: invoice.user)
+    payment_order.response = { 'transaction_time' => Time.zone.now, 'payment_state' => 'settled' }
 
     payment_order.save
     payment_order.mark_invoice_as_paid

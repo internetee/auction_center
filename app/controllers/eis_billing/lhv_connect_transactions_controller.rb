@@ -1,18 +1,20 @@
 module EisBilling
-  class LhvConnectTransactionsController < EisBilling::BaseController
+  class LHVConnectTransactionsController < EisBilling::BaseController
     def create
       if params['_json'].nil? || params['_json'].empty?
         render json: { message: 'MISSING PARAMS' }, status: :unprocessable_entity
         return
       end
 
-      bank_statement = BankStatement.create(bank_code: Setting.registry_bank_code, iban: Setting.registry_iban)
+      # Setting.registry_bank_code
+      # Setting.registry_iban
+      bank_statement = BankStatement.create(bank_code: '689', iban: 'EE557700771000598731')
 
       params['_json'].each do |incoming_transaction|
-        process_transactions(incoming_transaction, bank_statement)
+        process_transactions(incoming_transaction['table'], bank_statement)
       end
 
-      render status: :ok, json: { message: 'RECEIVED', params: params }
+      render status: :ok, json: { message: 'RECEIVED', params: }
     end
 
     private
@@ -26,12 +28,12 @@ module EisBilling
                                     .create!(transaction_attributes(incoming_transaction))
 
         if transaction.user.blank?
-          inform_admin
+          inform_admin(incoming_transaction)
 
           next
         end
 
-        approve_payments(transaction) unless transaction.non_canceled?
+        approve_payments(transaction)
       end
     end
 
@@ -40,9 +42,7 @@ module EisBilling
     end
 
     def inform_admin
-      puts '--- inform_admin ---'
-      puts '--- inform_admin ---'
-      puts '--- inform_admin ---'
+      AdminMailer.transaction_mail.deliver_later
     end
 
     def transaction_attributes(incoming_transaction)
@@ -51,7 +51,7 @@ module EisBilling
         currency: incoming_transaction['currency'],
         paid_at: incoming_transaction['date'],
         reference_no: incoming_transaction['payment_reference_number'],
-        description: incoming_transaction['payment_description'],
+        description: incoming_transaction['payment_description']
       }
     end
   end

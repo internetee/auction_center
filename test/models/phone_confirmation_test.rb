@@ -5,6 +5,9 @@ class PhoneConfirmationTest < ActiveSupport::TestCase
   def setup
     super
 
+    stub_request(:post, "http://eis_billing_system:3000/api/v1/invoice_generator/reference_number_generator").
+      to_return(status: 200, body: "{\"reference_number\":\"12332\"}", headers: {})
+
     @user = users(:participant)
     @user.update!(mobile_phone_confirmed_at: nil)
     @phone_confirmation = PhoneConfirmation.new(@user)

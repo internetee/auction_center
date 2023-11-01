@@ -1,3 +1,5 @@
+require 'countries'
+
 # rubocop:disable Metrics
 
 class Invoice < ApplicationRecord
