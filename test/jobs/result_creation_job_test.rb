@@ -27,6 +27,9 @@ class ResultCreationJobTest < ActiveJob::TestCase
 
       stub_request(:post, "http://eis_billing_system:3000/api/v1/e_invoice/e_invoice").
         to_return(status: 200, body: "", headers: {})
+
+      stub_request(:patch, 'http://eis_billing_system:3000/api/v1/invoice/update_invoice_data')
+        .to_return(status: 200, body: @message.to_json, headers: {})
   end
 
   def teardown

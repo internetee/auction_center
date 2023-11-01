@@ -6,6 +6,9 @@ class InvoicesTest < ApplicationSystemTestCase
   def setup
     super
 
+    stub_request(:patch, 'http://eis_billing_system:3000/api/v1/invoice/update_invoice_data')
+      .to_return(status: 200, body: @message.to_json, headers: {})
+
     @user = users(:participant)
     @invoice = invoices(:payable)
 

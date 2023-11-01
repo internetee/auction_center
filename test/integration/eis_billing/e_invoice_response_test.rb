@@ -7,6 +7,9 @@ class EInvoiceResponseTest < ActionDispatch::IntegrationTest
     sign_in users(:participant)
     @invoice = invoices(:payable)
     Spy.on_instance_method(EisBilling::BaseController, :authorized).and_return(true)
+
+    stub_request(:patch, 'http://eis_billing_system:3000/api/v1/invoice/update_invoice_data')
+      .to_return(status: 200, body: @message.to_json, headers: {})
   end
 
   def test_invoice_should_be_mark_as_sent
