@@ -14,6 +14,12 @@ module EisBilling
       )
     end
 
+    def patch(path, params = {})
+      respond_with(
+        connection.patch(path, JSON.dump(params))
+      )
+    end
+
     private
 
     def respond_with(response)
