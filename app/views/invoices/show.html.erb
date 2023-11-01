@@ -116,11 +116,7 @@
       </div>
       <div class="column right aligned">
         <% unless @invoice.cancelled? %>
-          <% if @invoice.e_invoice_sent? %>
-            <a href="https://eservice.omniva.eu" target="_blank"><img src="/images/finbite.png" alt="EInvoice" style="height:40px;"/></a>
-          <% else %>
-            <%= button_to t('invoices.show.send_e_invoice'), send_e_invoice_path(uuid: @invoice.uuid), class: 'ui button default', data: { turbo: false } %>
-          <% end %>
+          <%= button_to t('invoices.show.send_e_invoice'), send_e_invoice_path(uuid: @invoice.uuid), class: 'ui button default', data: { turbo: false } %>
         <% end %>
       </div>
       </div>
