@@ -1,3 +1,6 @@
+01.11.2023
+* update billing with invoice profile update https://github.com/internetee/auction_center/pull/1181
+
 25.10.2023
 * Fixed duplicate deposit record issue https://github.com/internetee/auction_center/pull/1170
 
