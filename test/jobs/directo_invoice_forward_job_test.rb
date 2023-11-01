@@ -8,6 +8,9 @@ class DirectoInvoiceForwardJobTest < ActiveJob::TestCase
     @directo_enabled = settings(:directo_integration_enabled)
     @directo_api_url = settings(:directo_api_url)
     @invoice = invoices(:payable)
+
+    stub_request(:patch, 'http://eis_billing_system:3000/api/v1/invoice/update_invoice_data')
+      .to_return(status: 200, body: @message.to_json, headers: {})
   end
 
   def test_collection_of_empty_paid_invoices_returns_nil

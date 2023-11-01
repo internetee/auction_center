@@ -268,6 +268,16 @@ class Invoice < ApplicationRecord
     self.billing_address = address
     self.billing_vat_code = vat_code
     self.billing_alpha_two_country_code = billing_profile.alpha_two_country_code
+
+    send_updated_invoice_infromation_to_billing_service
+  end
+
+  def send_updated_invoice_infromation_to_billing_service
+    res = EisBilling::UpdateInvoiceDataService.call(invoice_number: number, transaction_amount: total.to_f)
+    return if res.result?
+
+    logger.error("Failed to update invoice data for invoice number #{number}")
+    errors.add(:base, I18n.t('invoices.update_invoice_data_failed'))
   end
 
   def self.with_billing_profile(billing_profile_id:)

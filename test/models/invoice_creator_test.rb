@@ -37,6 +37,9 @@ class InvoiceCreatorTest < ActiveSupport::TestCase
 
     stub_request(:post, 'http://eis_billing_system:3000/api/v1/invoice_generator/oneoff')
         .to_return(status: 200, body: @message.to_json, headers: {})
+
+    stub_request(:patch, 'http://eis_billing_system:3000/api/v1/invoice/update_invoice_data')
+      .to_return(status: 200, body: @message.to_json, headers: {})
   end
 
   def test_an_invoice_is_prefilled_with_data_from_winning_offer
