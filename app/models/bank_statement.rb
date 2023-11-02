@@ -1,13 +1,17 @@
+# frozen_string_literal: true
+
 class BankStatement < ApplicationRecord
+  include LHVProcessTransactions
+
   has_many :bank_transactions
 
   accepts_nested_attributes_for :bank_transactions
 
   validates :bank_code, :iban, presence: true
 
-  FULLY_BINDED = 'fully_binded'.freeze
-  PARTIALLY_BINDED = 'partially_binded'.freeze
-  NOT_BINDED = 'not_binded'.freeze
+  FULLY_BINDED = 'fully_binded'
+  PARTIALLY_BINDED = 'partially_binded'
+  NOT_BINDED = 'not_binded'
 
   def status
     if bank_transactions.unbinded.count == bank_transactions.count

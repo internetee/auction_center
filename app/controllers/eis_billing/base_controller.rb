@@ -1,16 +1,20 @@
 module EisBilling
   class InvoiceNotFound < StandardError; end
 
+  class LHVMissingParamsError < StandardError
+    def initialize(message = I18n.t('.lhv_missing_params_error'))
+      super(message)
+    end
+  end
+
   class BaseController < ApplicationController
     protect_from_forgery with: :null_session
-    # skip_authorization_check # Temporary solution
-    skip_before_action :verify_authenticity_token # Temporary solution
+    skip_before_action :verify_authenticity_token
     before_action :authorized
 
     INITIATOR = 'billing'.freeze
 
     def auth_header
-      # { Authorization: 'Bearer <token>' }
       request.headers['Authorization']
     end
 

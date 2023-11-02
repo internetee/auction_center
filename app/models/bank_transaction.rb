@@ -24,7 +24,6 @@ class BankTransaction < ApplicationRecord
     return unless user
 
     invoices = user.invoices.order(created_at: :asc).issued.to_a
-
     @invoice ||= invoices.select { |i| i.total == Money.from_amount(sum, Setting.find_by(code: 'auction_currency').retrieve) }.first
   end
 

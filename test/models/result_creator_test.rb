@@ -26,6 +26,9 @@ class ResultCreatorTest < ActiveSupport::TestCase
 
     stub_request(:patch, 'http://eis_billing_system:3000/api/v1/invoice/update_invoice_data')
       .to_return(status: 200, body: @message.to_json, headers: {})
+
+    stub_request(:any, /eis_billing_system/)
+      .to_return(status: 200, body: "{\"reference_number\":\"12332\"}", headers: {})
   end
 
   def teardown

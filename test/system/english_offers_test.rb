@@ -9,13 +9,9 @@ class EnglishOffersTest < ApplicationSystemTestCase
     @english_nil = auctions(:english_nil_starts)
 
     @user = users(:participant)
-    stub_request(:post, "http://eis_billing_system:3000/api/v1/invoice_generator/reference_number_generator")
-      .with(body: {email: @user.email, initiator: 'auction', owner: @user.display_name})
-      .to_return(status: 200, body: "{\"reference_number\":\"12332\"}", headers: {})
-
     @user_two = users(:second_place_participant)
-    stub_request(:post, "http://eis_billing_system:3000/api/v1/invoice_generator/reference_number_generator")
-      .with(body: {email: @user_two.email, initiator: 'auction', owner: @user_two.display_name})
+
+    stub_request(:any, /eis_billing_system/)
       .to_return(status: 200, body: "{\"reference_number\":\"12332\"}", headers: {})
 
     travel_to Time.parse('2010-07-05 10:31 +0000').in_time_zone

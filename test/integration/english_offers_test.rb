@@ -6,9 +6,6 @@ class EnglishOffersIntegrationTest < ActionDispatch::IntegrationTest
   include Turbo::Streams::ActionHelper
 
   def setup
-    stub_request(:post, "https://eis_billing_system:3000/api/v1/invoice_generator/reference_number_generator")
-      .to_return(status: 200, body: "{\"reference_number\":\"12332\"}", headers: {})
-    
     @user = users(:participant)
     @user_two = users(:second_place_participant)
     @auction = auctions(:english)
@@ -16,6 +13,9 @@ class EnglishOffersIntegrationTest < ActionDispatch::IntegrationTest
     @user.reload
 
     sign_in @user
+
+    stub_request(:any, /eis_billing_system/)
+      .to_return(status: 200, body: "{\"reference_number\":\"12332\"}", headers: {})
 
     travel_to Time.parse('2010-07-05 11:30 +0000').in_time_zone
   end
@@ -381,7 +381,7 @@ class EnglishOffersIntegrationTest < ActionDispatch::IntegrationTest
 
   def test_multiple_users_can_set_bids
     10.times do |i|
-      u = User.create(
+      u = User.new(
         email: "user_t#{i}@auction.test",
         password: "password123",
         alpha_two_country_code: 'LV',
@@ -397,6 +397,8 @@ class EnglishOffersIntegrationTest < ActionDispatch::IntegrationTest
         terms_and_conditions_accepted_at: Time.parse("2010-07-05 00:16:00 UTC"),
         locale: 'en',
       )
+
+      u.save && u.reload
 
       BillingProfile.create_default_for_user(u.id)
       u.reload
@@ -558,10 +560,12 @@ class EnglishOffersIntegrationTest < ActionDispatch::IntegrationTest
 
 
   def test_notification_should_receive_only_participant_who_bid_was_overbidded
+    WebMock.reset!
+
     assert @auction.offers.empty?
 
     5.times do |i|
-      u = User.create(
+      u = User.new(
         email: "user_t#{i}@auction.test",
         password: "password123",
         alpha_two_country_code: 'LV',
@@ -578,7 +582,7 @@ class EnglishOffersIntegrationTest < ActionDispatch::IntegrationTest
         locale: 'en',
       )
 
-      u.reload
+      u.save && u.reload
       b = BillingProfile.create_default_for_user(u.id)
 
       params = {
@@ -618,6 +622,9 @@ class EnglishOffersIntegrationTest < ActionDispatch::IntegrationTest
         billing_profile_id:@user.billing_profiles.first.id
       }
     }
+
+    stub_request(:post, "https://eis_billing_system:3000/api/v1/invoice_generator/reference_number_generator")
+      .to_return(status: 200, body: "{\"reference_number\":\"#{rand(100000..999999)}\"}", headers: {})
 
     sign_in @user
 

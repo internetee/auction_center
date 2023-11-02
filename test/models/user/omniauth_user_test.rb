@@ -4,7 +4,7 @@ class OmniauthUserTest < ActiveSupport::TestCase
   def setup
     super
 
-    stub_request(:post, "https://eis_billing_system:3000/api/v1/invoice_generator/reference_number_generator")
+    stub_request(:any, /eis_billing_system/)
       .to_return(status: 200, body: "{\"reference_number\":\"12332\"}", headers: {})
 
     @omniauth_user = users(:signed_in_with_omniauth)

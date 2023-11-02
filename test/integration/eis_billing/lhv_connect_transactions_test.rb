@@ -25,12 +25,12 @@ class LHVConnectTransactionsIntegrationTest < ActionDispatch::IntegrationTest
     assert_equal invoice.total, Money.from_amount(10.00, 'EUR')
     assert_equal invoice.status, 'issued'
 
-    test_transaction_1 = OpenStruct.new(amount: 10.00,
-                                        currency: 'EUR',
-                                        date: Time.zone.today,
-                                        payment_reference_number: '2199812',
-                                        payment_description: 'description 2199812')
-
+    test_transaction_1 = { amount: 10.00,
+                           currency: 'EUR',
+                           date: Time.zone.today,
+                           payment_reference_number: '2199812',
+                           payment_description: 'description 2199812'
+                          }
 
     lhv_transactions = []
     lhv_transactions << test_transaction_1
