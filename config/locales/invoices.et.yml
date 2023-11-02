@@ -18,6 +18,7 @@ et:
     vat_amount: "Käibemaks"
     vat_exclusive: "Käibemaksuta"
     paid_at: "Makstud"
+    reference_no: "Viitenumber"
     title: "Arve nr %{number}"
     download: "Laadi alla"
     number: "Number"

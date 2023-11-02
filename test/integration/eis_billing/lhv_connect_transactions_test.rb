@@ -4,6 +4,9 @@ class LHVConnectTransactionsIntegrationTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   setup do
+    stub_request(:any, /eis_billing_system/)
+      .to_return(status: 200, body: "{\"reference_number\":\"12332\"}", headers: {})
+
     @invoice = invoices(:orphaned)
     @user = users(:participant)
 

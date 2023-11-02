@@ -4,9 +4,6 @@ class OmniauthUserTest < ActiveSupport::TestCase
   def setup
     super
 
-    stub_request(:any, /eis_billing_system/)
-      .to_return(status: 200, body: "{\"reference_number\":\"12332\"}", headers: {})
-
     @omniauth_user = users(:signed_in_with_omniauth)
     @input_hash = {
       'provider' => 'tara',

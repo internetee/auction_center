@@ -3,8 +3,6 @@ require 'support/mock_summary_report'
 
 class NotificationMailerTest < ActionMailer::TestCase
   def setup
-    super
-
     @time = Time.parse('2010-07-05 10:30 +0000').in_time_zone
     travel_to @time
 
@@ -13,9 +11,6 @@ class NotificationMailerTest < ActionMailer::TestCase
 
     @participant = users(:participant)
     @participant.update!(daily_summary: true)
-
-    stub_request(:any, /eis_billing_system/)
-      .to_return(status: 200, body: "{\"reference_number\":\"12332\"}", headers: {})
   end
 
   def teardown

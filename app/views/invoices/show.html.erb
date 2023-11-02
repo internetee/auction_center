@@ -49,6 +49,10 @@
               <%= I18n.l(@invoice.paid_at) %>
             </div>
           <% end %>
+          <div class="item">
+            <div class="header"><%= t('invoices.reference_no') %></div>
+            <%= @invoice.user.reference_no %>
+          </div>
         </div>
       </div>
       <div class="column sixteen wide">

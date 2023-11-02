@@ -29,6 +29,7 @@ participant:
   terms_and_conditions_accepted_at: <%= Time.parse("2010-07-05 00:16:00 UTC") %>
   uuid: 'dec265a9-4b4b-4165-83fd-9283700eae9c'
   locale: 'en'
+  reference_no: '1234567890'
 
 second_place_participant:
   email: 'second_place@auction.test'
@@ -44,6 +45,7 @@ second_place_participant:
   terms_and_conditions_accepted_at: <%= Time.parse("2010-07-05 00:16:00 UTC") %>
   uuid: '7869501d-4de6-499e-b0d1-dfb63e6e2a66'
   locale: 'en'
+  reference_no: '1234567890'
 
 signed_in_with_omniauth:
   email: 'omniauth@auction.test'
@@ -60,3 +62,4 @@ signed_in_with_omniauth:
   locale: 'en'
   uid: 'EE51007050665'
   provider: 'tara'
+  reference_no: '1234567890'

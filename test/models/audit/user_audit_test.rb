@@ -2,10 +2,8 @@ require 'test_helper'
 
 class UserAuditTest < ActiveSupport::TestCase
   def setup
-    super
-
     stub_request(:any, /eis_billing_system/)
-      .to_return(status: 200, body: "{\"reference_number\":\"12332\"}", headers: {})
+      .to_return(status: 200, body: "{\"reference_number\":\"#{rand(111..999)}\"}", headers: {})
 
     @user = users(:participant)
     travel_to Time.parse('2010-07-05 10:30 +0000').in_time_zone

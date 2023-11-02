@@ -15,7 +15,7 @@ class EnglishOffersIntegrationTest < ActionDispatch::IntegrationTest
     sign_in @user
 
     stub_request(:any, /eis_billing_system/)
-      .to_return(status: 200, body: "{\"reference_number\":\"12332\"}", headers: {})
+      .to_return(status: 200, body: "{\"reference_number\":\"#{rand(111..999)}\"}", headers: {})
 
     travel_to Time.parse('2010-07-05 11:30 +0000').in_time_zone
   end
@@ -560,8 +560,6 @@ class EnglishOffersIntegrationTest < ActionDispatch::IntegrationTest
 
 
   def test_notification_should_receive_only_participant_who_bid_was_overbidded
-    WebMock.reset!
-
     assert @auction.offers.empty?
 
     5.times do |i|
