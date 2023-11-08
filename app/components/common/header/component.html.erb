@@ -1,10 +1,10 @@
     <header class="c-header" data-controller='hamburger' data-hamburger-open-class='is-active'>
       <div class="c-header__menu">
-        <button class="c-header__toggle u-bg-blue-gradient js-nav-toggle hamburger hamburger--collapse" data-action='hamburger#toggle'>
+        <button class="c-header__toggle u-bg-green-gradient js-nav-toggle hamburger hamburger--collapse" data-action='hamburger#toggle'>
           <span class="hamburger-box">
             <span class="hamburger-inner"></span>
           </span>
-          <span><%= t('common.open_portal') %>l</span>
+          <span><%= t('common.header.auction_portal') %></span>
         </button>
       </div>
       <div class="c-toolbar js-toolbar" data-hamburger-target='menu'>
@@ -12,18 +12,19 @@
           <div class="c-toolbar__nav">
             <ul class="s-toolbar-nav">
               <li>
-                <a href="https://internet.ee"><%= t('common.open_portal') %>l</a>
+                <a href="https://internet.ee"><%= t('common.open_portal') %></a>
               </li>
+
               <li class="is-active" data-controller='navbar--expandable'>
-                <a>Oksjonikeskkond</a>
+                <a><%= t('common.header.auction_portal') %></a>
                 <span class="o-arrow js-submenu-toggle" data-action='click->navbar--expandable#expand'></span>
                 
                 <ul class="submenu" data-navbar--expandable-target='element'>
                   <%= regular_menu_list %>
                   <%= component 'common/header/notification', notifications: notifications %>
                 </ul>
-
               </li>
+
               <li>
                 <a href="https://www.internet.ee/registrar-portal"><%= t('common.registrar_portal') %></a>
               </li>

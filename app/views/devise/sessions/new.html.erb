@@ -1,56 +1,54 @@
 <%= component 'common/hero', title: t(:sign_in) %>
-<!-- Login -->
+
 <div class="o-container">
   <div class="c-block c-login">
     <div class="o-grid o-grid--two-col o-grid--sep">
-      <div class="c-login--wrapper">
-        <h2 class="c-login__title u-h3"><%= t('.sign_in_with_identity_document') %></h2>
+      <div class="o-card">
+        <h2 class="o-card__title c-login__title"><%= t('.sign_in_with_identity_document') %></h2>
         <p class="c-login__explanation">
           <%= t('.identity_document_text')%>
         </p>
+
         <div class="c-login__buttons-wrapper u-flex u-content-sp u-content-center">
-          <%= button_to t(:sign_in), "/auth/tara", data: { turbo: false }, class: "c-login__button c-btn c-btn--blue-secondary", target: '_top' %>
+          <%= component 'common/buttons/button_to', title_caption: t(:sign_in), link: "/auth/tara", color: 'blue-secondary' %>
           <div class="c-login__icons u-flex u-content-sp u-content-center">
             <%= render partial: 'svg/id_auth' %>
           </div>
         </div>
       </div>
-      <div class="c-login--wrapper">
-        <h2 class="c-login__title u-h3"><%= t('.sign_in_with_password') %></h2>
-        <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: 'c-login__form' }) do |f| %>
+      <div class="o-card">
+        <h2 class="o-card__title c-login__title"><%= t('.sign_in_with_password') %></h2>
+        <%= form_for resource, as: resource_name, url: session_path(resource_name), html: { class: 'c-login__form' } do |f| %>
           <div class="c-login__input">
-            <%= f.label :email, t('users.email') %>
-            <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+            <%= component 'common/form/email_field', form: f, attribute: :email, 
+                                                     options: { autocomplete: 'email', autofocus: true, label_caption: t('users.email') } %>
           </div>
           <div class="c-login__input">
-            <%= f.label :password, t('users.password') %>
-            <%= f.password_field :password, autocomplete: "current-password" %>
+            <%= component 'common/form/password_field', form: f, attribute: :password, 
+                                                     options: { autocomplete: 'password', autofocus: true, label_caption: t('users.password') } %>
           </div>
           <div class="c-login__btns-wrapper u-flex u-align-start u-content-sp">
             <div class="c-login__btns">
-              <%= f.button t(:sign_in), class: "c-btn c-btn--green c-login__btn",  data: { turbo: false } %>
-              <%= link_to t('users.index.create_an_account'), new_user_path, class: "c-btn c-btn--ghost c-login__btn" %>
+              <%= component 'common/form/form_button', form: f, btn_title: t(:sign_in), data_turbo: false %>
+              <%= component 'common/links/link_button', link_title: t('users.index.create_an_account'), href: new_user_path, color: 'ghost' %>
             </div>
-            <% if devise_mapping.rememberable? -%>
-              <label class="o-checkbox-container c-login__checkbox-container">
-                <span class="o-checkbox-text"><%= t('users.remember_me') %></span>
-                <%= f.check_box :remember_me, class: 'o-checkbox-sample' %>
-                <span class="o-checkmark-sample"></span>
-              </label>
-            <% end -%>
+
+            <%= component 'common/form/checkbox', label_title: t('users.remember_me'), form: f, attribute: :remember_me if devise_mapping.rememberable?  %>
           </div>
           <div class="c-login__links u-flex u-align-center u-content-sp">
-            <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
-                <%= link_to t('devise.shared.links.forgot_your_password'), new_password_path(resource_name), class: 'c-btn  c-login__remind-link js-modal-toggle-fp', data: { turbo_frame: 'modal' } %><br />
-            <% end -%>
+            <%= link_to t('devise.shared.links.forgot_your_password'),
+                        new_password_path(resource_name),
+                        class: 'c-btn  c-login__remind-link js-modal-toggle-fp',
+                        data: { turbo_frame: 'modal' } if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
 
-            <%- if devise_mapping.confirmable? && controller_name != 'confirmations' %>
-                <%= link_to t('devise.shared.links.didnt_receive_confirmation_instructions'), new_confirmation_path(resource_name), class: 'c-login__remind-link js-modal-toggle', data: { turbo_frame: 'modal' } %><br />
-            <% end -%>
+            <%= link_to t('devise.shared.links.didnt_receive_confirmation_instructions'),
+                        new_confirmation_path(resource_name),
+                        class: 'c-login__remind-link js-modal-toggle',
+                        data: { turbo_frame: 'modal' } if devise_mapping.confirmable? && controller_name != 'confirmations' %>
           </div>
         <% end %>
       </div>
     </div>
   </div>
 </div>
-<!-- Login -->
+

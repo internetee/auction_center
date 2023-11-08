@@ -46,16 +46,10 @@ class InvoicesController < ApplicationController
     send_data(raw_pdf, filename: @invoice.filename)
   end
 
-  def invoices_list_by_status(status)
-    Invoice.accessible_by(current_ability)
-           .where(user_id: current_user.id)
-           .where(status: status)
-           .order(due_date: :desc)
-  end
-
   def pay_all_bills
-    issued_invoices = invoices_list_by_status(Invoice.statuses[:issued])
-    response = EisBilling::BulkInvoicesService.call(invoices: issued_invoices,
+    payable_invoices = Invoice.accessible_by(current_ability)
+                              .where(user_id: current_user.id).to_a.select(&:payable?)
+    response = EisBilling::BulkInvoicesService.call(invoices: payable_invoices,
                                                     customer_url: linkpay_callback_url)
 
     if response.result?
@@ -73,7 +67,7 @@ class InvoicesController < ApplicationController
       "user_email #{current_user.email}"
     response = EisBilling::PayDepositService.call(amount: auction.deposit,
                                                   customer_url: deposit_callback_url,
-                                                  description: description)
+                                                  description:)
 
     if response.result?
       redirect_to response.instance['oneoff_redirect_link'], allow_other_host: true, format: :html
@@ -98,7 +92,7 @@ class InvoicesController < ApplicationController
 
   def send_e_invoice
     invoice = Invoice.accessible_by(current_ability).find_by!(uuid: params[:uuid])
-    response = EisBilling::SendEInvoice.call(invoice: invoice, payable: !invoice.paid?)
+    response = EisBilling::SendEInvoice.call(invoice:, payable: !invoice.paid?)
 
     if response.result?
       redirect_to invoice_path(invoice.uuid), notice: t('.sent_to_omniva')
@@ -107,11 +101,17 @@ class InvoicesController < ApplicationController
     end
   end
 
+  private
+
+  def invoices_list_by_status(status)
+    Invoice.accessible_by(current_ability)
+           .where(user_id: current_user.id)
+           .where(status:)
+           .order(due_date: :desc)
+  end
+
   def update_predicate
-    puts '----------------'
-    puts @invoice.issued?
-    puts '----------------'
-    @invoice.issued? && @invoice.update(update_params)
+    @invoice.payable? && @invoice.update(update_params)
   end
 
   def update_params

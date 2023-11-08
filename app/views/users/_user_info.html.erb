@@ -12,7 +12,7 @@
         </div>
       </div>
       <form class="c-account__form">
-        <div class="c-account__input c-account__input--editabl u-mb-20">
+        <div class="c-account__input c-account__input--editable u-mb-20">
           <label><%= t('users.email') %></label>
           <input id="input1" type="email" placeholder="" value="<%= @user.email %>" readonly="">
         </div>
@@ -23,13 +23,13 @@
           </div>
           <div class="c-account__input c-account__input--readonly u-mb-20">
             <label><%= t('users.identity_code') %></label>
-            <input type='text' value='<%= @user.identity_code %>' readonly />
+            <span><%= @user.identity_code %></span>
           </div>
-          <div class="c-account__input c-account__input--readonly u-mb-20">
+          <div class="c-account__input c-account__input--readonly">
             <label><%= t('users.country_code') %></label>
             <span><%= @user.country_code || Setting.find_by(code: 'default_country').retrieve %></span>
           </div>
-          <div class="c-account__input c-account__input--readonly u-mb-20">
+          <div class="c-account__input c-account__input--readonly">
             <label for="input2"><%= t('created_at') %></label>
             <span><%= I18n.l(@user.created_at) %></span>
           </div>
