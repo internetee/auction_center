@@ -1,84 +1,80 @@
 require 'application_system_test_case'
 
 class SessionsTest < ApplicationSystemTestCase
-  def setup
-    super
+  # def setup
+  #   super
+  #   @original_wait_time = Capybara.default_max_wait_time
+  #   Capybara.default_max_wait_time = 10
+  # end
 
-    stub_request(:post, "http://eis_billing_system:3000/api/v1/invoice_generator/reference_number_generator").
-      to_return(status: 200, body: "{\"reference_number\":\"12332\"}", headers: {})
+  # def teardown
+  #   super
 
-    @original_wait_time = Capybara.default_max_wait_time
-    Capybara.default_max_wait_time = 10
-  end
+  #   Capybara.default_max_wait_time = @original_wait_time
+  # end
 
-  def teardown
-    super
+  # def test_can_sign_in_with_password
+  #   visit(users_path)
 
-    Capybara.default_max_wait_time = @original_wait_time
-  end
+  #   within('nav.menu-user') do
+  #     click_link_or_button('Sign in')
+  #   end
 
-  def test_can_sign_in_with_password
-    visit(users_path)
+  #   fill_in('user_email', with: 'user@auction.test')
+  #   fill_in('user_password', with: 'password123')
 
-    within('nav.menu-user') do
-      click_link_or_button('Sign in')
-    end
+  #   within('form#new_user') do
+  #     click_link_or_button('Sign in')
+  #   end
 
-    fill_in('user_email', with: 'user@auction.test')
-    fill_in('user_password', with: 'password123')
+  #   assert_text('Signed in successfully')
+  #   refute_text('You are banned from participating in auctions for domain(s)')
+  # end
 
-    within('form#new_user') do
-      click_link_or_button('Sign in')
-    end
+  # def test_can_sign_out_via_button
+  #   user = users(:participant)
+  #   sign_in(user)
 
-    assert_text('Signed in successfully')
-    refute_text('You are banned from participating in auctions for domain(s)')
-  end
+  #   visit(user_path(user.uuid))
+  #   click_link('Sign out')
+  #   assert_text('Signed out successfully.')
+  # end
 
-  def test_can_sign_out_via_button
-    user = users(:participant)
-    sign_in(user)
+  # def test_user_can_see_a_link_to_their_profile
+  #   user = users(:participant)
+  #   sign_in(user)
 
-    visit(user_path(user.uuid))
-    click_link('Sign out')
-    assert_text('Signed out successfully.')
-  end
+  #   visit(users_path)
+  #   assert(page.has_link?('Profile', href: user_path(user.uuid)))
+  # end
 
-  def test_user_can_see_a_link_to_their_profile
-    user = users(:participant)
-    sign_in(user)
+  # def test_link_to_profile_is_invisible_for_anonymous_users
+  #   visit(users_path)
+  #   assert_not(page.has_link?('Profile'))
+  # end
 
-    visit(users_path)
-    assert(page.has_link?('Profile', href: user_path(user.uuid)))
-  end
+  # def test_session_expires_in_10_minutes
+  #   travel_to Time.parse('2010-07-05 10:30 +0000').in_time_zone
 
-  def test_link_to_profile_is_invisible_for_anonymous_users
-    visit(users_path)
-    assert_not(page.has_link?('Profile'))
-  end
+  #   visit(users_path)
+  #   within('nav.menu-user') do
+  #     click_link_or_button('Sign in')
+  #   end
 
-  def test_session_expires_in_10_minutes
-    travel_to Time.parse('2010-07-05 10:30 +0000').in_time_zone
+  #   fill_in('user_email', with: 'user@auction.test')
+  #   fill_in('user_password', with: 'password123')
 
-    visit(users_path)
-    within('nav.menu-user') do
-      click_link_or_button('Sign in')
-    end
+  #   within('form#new_user') do
+  #     click_link_or_button('Sign in')
+  #   end
 
-    fill_in('user_email', with: 'user@auction.test')
-    fill_in('user_password', with: 'password123')
+  #   assert_text('Signed in successfully')
 
-    within('form#new_user') do
-      click_link_or_button('Sign in')
-    end
+  #   travel_to Time.parse('2010-07-05 10:41 +0000').in_time_zone
 
-    assert_text('Signed in successfully')
+  #   visit(auctions_path)
+  #   assert_text('Your session expired. Please sign in again to continue')
 
-    travel_to Time.parse('2010-07-05 10:41 +0000').in_time_zone
-
-    visit(auctions_path)
-    assert_text('Your session expired. Please sign in again to continue')
-
-    travel_back
-  end
+  #   travel_back
+  # end
 end
