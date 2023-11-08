@@ -108,6 +108,9 @@ class InvoicesController < ApplicationController
   end
 
   def update_predicate
+    puts '----------------'
+    puts @invoice.issued?
+    puts '----------------'
     @invoice.issued? && @invoice.update(update_params)
   end
 

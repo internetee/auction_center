@@ -22,99 +22,104 @@
             <%- end %>
           </div>
         </div>
+
         <div class="c-modal__main">
-          <div class="c-modal__grid u-align-start u-flex-wrap">
-            <div class="c-modal__col">
-              <label for="select1"><%= t('invoices.issued_for') %></label>
-               <input id="input5" readonly class="u-bg-silver-gradient" required type="email" placeholder="<%= @invoice.billing_profile.user_name %>" />
-                <div class="u-text-right">
-                  <span class="o-input-desc"><%= t('invoices.billing_profile_description') %></span>
-                </div>
+            <div class="c-modal__grid u-align-start u-flex-wrap">
+              <div class="c-modal__col">
+
+            <%= form_with model: @invoice, url: invoice_path(@invoice.uuid) do |f| %>
+                <%= component 'common/form/dropdown_input', form: f, attribute: :billing_profile_id, 
+                      enum: options_for_select(BillingProfile.where(user_id: invoice.user_id).pluck(:name, :id), current_billing_profile),
+                      label: t('billing_profiles_name') %>
+
+                <%= f.submit %>
+            <% end %>
+              </div>
+              <div class="c-modal__col">
+                <label class="c-modal__text-title"><%= t('invoices.issuer') %></label>
+                <span class="c-modal__text"><%= invoice_issuer%></span>
+              </div>
             </div>
-            <div class="c-modal__col">
-              <label class="c-modal__text-title"><%= t('invoices.issuer') %></label>
-              <span class="c-modal__text">Eesti Interneti SA</span>
-            </div>
-          </div>
-          <div class="c-modal__grid u-flex-wrap u-mt-24">
-            <div class="c-modal__col">
-              <label class="c-modal__text-title"><%= t('invoices.issued_for') %></label>
-              <span class="c-modal__text">Tartu mnt 201-28, Tallinn, Harjumaa, Estonia</span>
-            </div>
-            <div class="c-modal__col">
-              <label class="c-modal__text-title"><%= t('invoices.address') %></label>
-              <span class="c-modal__text"><%= Setting.find_by(code: 'invoice_issuer_address').retrieve %></span>
-              <div class="c-modal__extrainfo u-flex u-align-start u-mt-32">
-                <div class="c-modal__extrainfo-col">
-                  <label class="c-modal__text-title"><%= t('reg_no') %></label>
-                  <span class="c-modal__text"><%= Setting.find_by(code: 'invoice_issuer_reg_no').retrieve %></span>
-                </div>
-                <div class="c-modal__extrainfo-col">
-                  <label class="c-modal__text-title">VAT nr</label>
-                  <span class="c-modal__text"><%= Setting.find_by(code: 'invoice_issuer_vat_number').retrieve %></span>
+            <div class="c-modal__grid u-flex-wrap u-mt-24">
+              <div class="c-modal__col">
+                <label class="c-modal__text-title"><%= t('invoices.issued_for') %></label>
+                <span class="c-modal__text"><%= issuer_for %></span>
+              </div>
+              <div class="c-modal__col">
+                <label class="c-modal__text-title"><%= t('invoices.address') %></label>
+                <span class="c-modal__text"><%= invoice_issuer_address %></span>
+                <div class="c-modal__extrainfo u-flex u-align-start u-mt-32">
+                  <div class="c-modal__extrainfo-col">
+                    <label class="c-modal__text-title"><%= t('reg_no') %></label>
+                    <span class="c-modal__text"><%= invoice_issuer_reg_no %></span>
+                  </div>
+                  <div class="c-modal__extrainfo-col">
+                    <label class="c-modal__text-title">VAT nr</label>
+                    <span class="c-modal__text"><%= invoice_issuer_vat_number %></span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <!-- Table -->
-          <div class="c-table--responsive u-flex-wrap u-mt-40">
-            <% header_collection = [{ column: nil, caption: '#', options: { class: "" } },
-                      { column: nil, caption: t('invoices.item'), options: { class: "" } },
-                      { column: nil, caption: nil, options: { class: "" } },
-                      { column: nil, caption: t('invoices.price'), options: { class: "" } },
-                      ] %>
-            <%= component 'common/table', header_collection:, options: { class: '' } do %>
-              <tbody>
-                <% @invoice.items.each_with_index do |item, index| %>
-                  <tr>
-                    <td><%= index + 1 %></td>
-                    <td>
-                      <%= I18n.t('invoice_items.name',
-                                   domain_name: item.invoice.result.auction.domain_name,
-                                   auction_end: item.invoice.result.auction.ends_at.to_date) %>
-                    </td>
-                    <td></td>
-                    <td><%= item.price %></td>
-                  </tr>
-                <% end %>
-              </tbody>
-              <tfoot>
-                <tr>
-                  <td scope="col"></td>
-                  <td scope="col"><%= t('invoices.vat_amount') %></td>
-                  <td><%= number_to_percentage(@invoice.vat_rate * 100, precision: 0) %></td>
-                  <td scope="col"><%= t('offers.price_in_currency', price: @invoice.vat) %></td>
-                </tr>
-                <tr>
-                  <th scope="col"></th>
-                  <th scope="col"><%= t('invoices.total') %></th>
-                  <td></td>
-                  <th scope="col"><%= t('offers.price_in_currency', price: @invoice.total + (@invoice.enable_deposit? ? @invoice.deposit : 0.0)) %>
-                  </th>
-                </tr>
-                <% if @invoice.enable_deposit? %>
-                  <tr style=''>
-                    <td scope="col" style='font-weight: bold; background-color: #f0e68c; border-top-color: "#ccc";'></td>
-                    <td scope="col" style='font-weight: bold; background-color: #f0e68c; border-top-color: "#ccc";'><%= t('invoices.deposit') %></td>
-                    <td style='background-color: #f0e68c;'></td>
-                    <td scope="col" style='font-weight: bold; background-color: #f0e68c; border-top-color: "#ccc";'><%= t('offers.price_in_currency', price: @invoice.deposit) %></td>
-                  </tr>
-                  <tr>
-                    <td scope="col" style='font-weight: bold; background-color: #f0e68c;'></td>
-                    <td scope="col" style='font-weight: bold; background-color: #f0e68c;'><%= t('invoices.amount_due') %></td>
-                    <td style='background-color: #f0e68c;'></td>
-                    <td scope="col" style='font-weight: bold; color: red; background-color: #f0e68c;'><%= t('offers.price_in_currency', price: @invoice.total) %></td>
-                  </tr>
-                <% end %>
-              <% end %>
-            </div>
             <!-- Table -->
-          </div>
-          <div class="c-modal__footer u-flex u-align-center u-content-sp">
-            <%= link_to t('invoices.download'), download_invoice_path(@invoice.uuid), { class: 'c-btn c-btn--ghost', download: true } %>
-            <%= button_to t('invoices.show.pay'), oneoff_invoice_path(uuid: @invoice.uuid), class: 'c-btn c-btn--green', data: {turbo: false} if @invoice.payable? %>
-          </div>
+            <div class="c-table--responsive u-flex-wrap u-mt-40">
+              <% header_collection = [{ column: nil, caption: '#', options: { class: "" } },
+                        { column: nil, caption: t('invoices.item'), options: { class: "" } },
+                        { column: nil, caption: nil, options: { class: "" } },
+                        { column: nil, caption: t('invoices.price'), options: { class: "" } },
+                        ] %>
+              <%= component 'common/table', header_collection:, options: { class: '' } do %>
+                <tbody>
+                  <% @invoice.items.each_with_index do |item, index| %>
+                    <tr>
+                      <td><%= index + 1 %></td>
+                      <td>
+                        <%= I18n.t('invoice_items.name',
+                                    domain_name: item.invoice.result.auction.domain_name,
+                                    auction_end: item.invoice.result.auction.ends_at.to_date) %>
+                      </td>
+                      <td></td>
+                      <td><%= item.price %></td>
+                    </tr>
+                  <% end %>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td scope="col"></td>
+                    <td scope="col"><%= t('invoices.vat_amount') %></td>
+                    <td><%= number_to_percentage(@invoice.vat_rate * 100, precision: 0) %></td>
+                    <td scope="col"><%= t('offers.price_in_currency', price: @invoice.vat) %></td>
+                  </tr>
+                  <tr>
+                    <th scope="col"></th>
+                    <th scope="col"><%= t('invoices.total') %></th>
+                    <td></td>
+                    <th scope="col"><%= t('offers.price_in_currency', price: @invoice.total + (@invoice.enable_deposit? ? @invoice.deposit : 0.0)) %>
+                    </th>
+                  </tr>
+                  <% if @invoice.enable_deposit? %>
+                    <tr style=''>
+                      <td scope="col" style='font-weight: bold; background-color: #f0e68c; border-top-color: "#ccc";'></td>
+                      <td scope="col" style='font-weight: bold; background-color: #f0e68c; border-top-color: "#ccc";'><%= t('invoices.deposit') %></td>
+                      <td style='background-color: #f0e68c;'></td>
+                      <td scope="col" style='font-weight: bold; background-color: #f0e68c; border-top-color: "#ccc";'><%= t('offers.price_in_currency', price: @invoice.deposit) %></td>
+                    </tr>
+                    <tr>
+                      <td scope="col" style='font-weight: bold; background-color: #f0e68c;'></td>
+                      <td scope="col" style='font-weight: bold; background-color: #f0e68c;'><%= t('invoices.amount_due') %></td>
+                      <td style='background-color: #f0e68c;'></td>
+                      <td scope="col" style='font-weight: bold; color: red; background-color: #f0e68c;'><%= t('offers.price_in_currency', price: @invoice.total) %></td>
+                    </tr>
+                  <% end %>
+                <% end %>
+              </div>
+              <!-- Table -->
+            </div>
+            <div class="c-modal__footer u-flex u-align-center u-content-sp">
+              <%= link_to t('invoices.download'), download_invoice_path(@invoice.uuid), { class: 'c-btn c-btn--ghost', download: true } %>
+              <%= button_to t('invoices.show.pay'), oneoff_invoice_path(uuid: @invoice.uuid), class: 'c-btn c-btn--green', data: {turbo: false} if @invoice.payable? %>
+            </div>
         </div>
+
       </div>
     </div>
   </div>
