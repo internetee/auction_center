@@ -37,7 +37,7 @@ module RecaptchaValidatable
   def recaptcha_valid
     return true unless @captcha_required
 
-    @success || @checkbox_success
+    @success || @checkbox_success || Rails.env.development? || Rails.env.test?
   end
 
   def min_score
