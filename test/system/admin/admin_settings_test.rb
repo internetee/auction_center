@@ -1,12 +1,12 @@
 require 'application_system_test_case'
 
 class AdminSettingsTest < ApplicationSystemTestCase
-  def setup
-    super
+  # def setup
+  #   super
 
-    @user = users(:administrator)
-    sign_in(@user)
-  end
+  #   @user = users(:administrator)
+  #   sign_in(@user)
+  # end
 
   # def test_administrator_can_update_settings_value
   #   visit admin_settings_path
