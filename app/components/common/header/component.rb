@@ -26,7 +26,7 @@ module Common
 
         m = menu.map do |item|
           content_tag('li') do
-            content_tag('a', item[:name], href: item[:path])
+            content_tag('a', item[:name], href: item[:path], style: active_class(item[:path]))
           end
         end
 
@@ -35,6 +35,10 @@ module Common
 
       def current_language
         I18n.locale == :et ? 'Est' : 'Eng'
+      end
+
+      def active_class(link_path)
+        current_page?(link_path) ? 'text-decoration: underline;' : ''
       end
 
       private

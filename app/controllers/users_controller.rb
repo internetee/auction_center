@@ -74,24 +74,21 @@ class UsersController < ApplicationController
 
         if @user.valid?
           @user.save!
-          
+
           flash[:notice] = notification_for_update(email_changed)
           format.html do
             redirect_to user_path(@user.uuid)
           end
           format.json { render :show, status: :ok, location: @user }
-          format.turbo_stream
         else
-
           flash.now[:alert] = @user.errors.full_messages.join(', ')
-
           format.json { render json: @user.errors, status: :unprocessable_entity }
-          format.turbo_stream
         end
       else
         flash.now[:alert] = t('.incorrect_password')
-        format.turbo_stream
       end
+
+      format.turbo_stream
     end
   end
 

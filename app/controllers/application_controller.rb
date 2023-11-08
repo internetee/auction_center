@@ -11,10 +11,10 @@ class ApplicationController < ActionController::Base
     policy.style_src :self, 'www.gstatic.com', :unsafe_inline
   end
 
-  rescue_from CanCan::AccessDenied do |_exception|
-    flash[:alert] = I18n.t('unauthorized.message')
-    # redirect_to root_url
-    render turbo_stream: turbo_stream.replace('flash', partial: 'common/flash', locals: { flash: flash })
+  rescue_from CanCan::AccessDenied do |exception|
+    flash[:alert] = exception
+
+    render turbo_stream: turbo_stream.replace('flash', partial: 'common/flash', locals: { flash: })
   end
 
   def set_locale

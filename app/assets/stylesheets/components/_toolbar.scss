@@ -57,7 +57,11 @@
   }
 
   & > li a {
-    font-weight: 800;
+    font-weight: 400;
+
+    .active {
+      font-weight: 800;
+    }
 
     @include mq(desktop) {
       font-weight: 500;

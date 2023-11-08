@@ -1,6 +1,8 @@
 et:
   unauthorized:
     message: Teil ei ole õigust selle lehe kasutamiseks!
+    manage:
+      user: "Teil ei ole õigust oma profiili muuta. Teil on keelatud osaleda .ee domeenioksjonitel korduvalt tasumata arvete tõttu."
   new: "Uus"
   back: "Tagasi"
   update: "Uuenda"

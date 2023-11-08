@@ -1,6 +1,8 @@
 en:
   unauthorized:
     message: You are not authorized to access this page.
+    manage:
+      user: "You are not authorized to manage profile. You are banned from participating in .ee domain auctions due to multiple overdue invoices."
   new: "New"
   back: "Back"
   update: "Update"
