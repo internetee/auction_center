@@ -4,10 +4,8 @@ class Auction < ApplicationRecord # rubocop:disable Metrics
   include Searchable
   include PgSearch::Model
 
-
   BLIND = '0'.freeze
   ENGLISH = '1'.freeze
-
 
   after_create :find_auction_turns
   validates :domain_name, presence: true

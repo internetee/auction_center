@@ -6,7 +6,7 @@
   
   <td><%= component 'common/auction_type_icon', auction: auction %></td>
 
-  <td>25-01-2023 | 23:59:59</td>
+  <td><%= l(auction.ends_at) %></td>
 
   <td>
     <% if auction.english? %>
@@ -21,50 +21,14 @@
       <%= english_auction_presenter.bidder_name(auction.currently_winning_offer, user) %>
     </td>
   <% else %>
-    <td>
-      <% if auction.users_offer_uuid %>
-        <strong><%= t('auctions.you') %></strong>
-      <% end %>
-    </td>
+    <td><%= tag.strong t('auctions.you') if auction.users_offer_uuid %></td>
   <% end %>
 
   <td class="u-text-left u-text-center-l">
-    <% if user %>      
-      <% if auction.english? %>
-
-        <% if auction.users_offer_uuid || updated %>
-          <div class="c-btn-group c-btn-group--ghost">
-            <%= link_to edit_english_offer_path(auction.users_offer_uuid), class: "c-btn c-btn--ghost c-btn--icon", title: "Edit", data: { turbo_frame: 'modal' } do %>
-              <span class="o-edit-icon"></span>
-            <% end %>
-          </div>
-        <% else %>
-          <% if auction.allow_to_set_bid?(user) %>
-            <%= link_to t('auctions.bid'), new_auction_english_offer_path(auction_uuid: auction.uuid), class: "c-btn c-btn--green js-modal-toggle", data: { turbo_frame: 'modal' } %>
-          <% else %>
-            <%= link_to t('auctions.deposit'), new_auction_english_offer_path(auction_uuid: auction.uuid), class: "c-btn c-btn--orange js-modal-toggle", data: { turbo_frame: 'modal' } %>
-          <% end %>
-        <% end %>
-
-      <% else %>
-
-        <% if auction.users_offer_uuid || updated %>
-          <div class="c-btn-group c-btn-group--ghost">
-            <%= link_to edit_offer_path(auction.users_offer_uuid), class: "c-btn c-btn--ghost c-btn--icon", title: "Edit", data: { turbo_frame: 'modal' } do %>
-              <span class="o-edit-icon"></span>
-            <% end %>
-
-            <%= button_to offer_path(auction.offer_from_user(user).uuid), method: :delete, form: { data: { turbo_confirm: t(".confirm_delete") } }, class: "c-btn c-btn--ghost c-btn--icon" do %>
-              <span class="o-delete-icon"></span>
-            <% end %>
-          </div>
-        <% else %>
-          <%= link_to t('auctions.bid'), new_auction_offer_path(auction_uuid: auction.uuid), class: "c-btn c-btn--green js-modal-toggle-po", data: { turbo_frame: 'modal' } %>
-        <% end %>
-
-      <% end %>
+    <% if user %>
+      <%= component 'pages/auction/auction_action_button', user: user, auction: auction, updated: updated %>
     <% else %>
-      <%= link_to t('auctions.bid'), new_user_session_path, class: "c-btn c-btn--green js-modal-toggle-po", target: '_top' %>
+      <%= component 'common/links/link_button', link_title: t('auctions.bid'), href: new_user_session_path, color: 'green', target: '_top' %>
     <% end %>
   </td>
 </tr>

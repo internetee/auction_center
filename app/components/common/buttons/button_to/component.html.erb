@@ -1,1 +1,7 @@
-<%= button_to @title_caption, @link, data: { turbo: @data_turbo }, class: "c-login__button c-btn #{colorize}", target: @target %>
+<% if content.present? %>
+  <%= button_to @href, class: "c-btn--icon c-btn #{colorize}", data: { **@data_attributes }, target: @target, method: @method, form: { **form_attributes } do %>
+    <%= content %>
+  <% end %>
+<% else %>
+  <%= button_to @link_title, @href, class: "c-login__button c-btn #{colorize}", data: { **@data_attributes }, target: @target, method: @method, form: { **form_attributes } %>
+<% end %>

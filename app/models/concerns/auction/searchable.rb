@@ -3,8 +3,8 @@
 module Auction::Searchable
   extend ActiveSupport::Concern
 
-  BLIND = '0'
-  ENGLISH = '1'
+  BLIND = 'blind'
+  ENGLISH = 'english'
 
   included do
     scope :active, -> { where('starts_at <= ? AND ends_at >= ?', Time.now.utc, Time.now.utc) }
@@ -81,6 +81,10 @@ module Auction::Searchable
                                                        enable_deposit]) || 'id'
       sort_direction = params[:direction].presence_in(%w[asc desc]) || 'desc'
       is_from_admin = params[:admin] == 'true'
+
+      puts '---------'
+      puts params
+      puts '---------'
 
       query =
         with_highest_offers
