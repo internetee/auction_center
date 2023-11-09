@@ -6,10 +6,8 @@
   <%= turbo_stream_from "auctions" %>
 <% end %>
 
-<!-- Cards -->
 <%= component 'pages/auction/cards' %>
-<!-- Cards -->
-<!-- Table -- Sortable -->
+
 <div class="o-container">
   <div class="c-table c-table--sortable" data-controller="english-offers" 
     data-action="turbo:before-stream-render@document->english-offers#beforeStreamRender"
@@ -18,56 +16,8 @@
     data-english-offers-participate-text-value="<%= t('auctions.participate') %>"
     data-english-offers-english-text-value="<%= t('auctions.english') %>"
     data-english-offers-blind-text-value="<%= t('auctions.blind') %>">
-    <%= form_with url: auctions_path, 
-                    method: :get, data: { controller: 'form--debounce form--filter',
-                        form__debounce_target: 'form',
-                        form__filter_target: 'form',
-                        turbo_action: "advance",
-                        turbo_frame: "results",
-                        action: 'input->form--debounce#search' 
-                        } do |f| %>
-      <div class="c-table__filters">
-        <div class="c-table__filters__btns" style='position: relative'>
-          <%= f.radio_button :type, 'all', class: "js-table-filter-btn", checked: true, style: 'visibility: hidden; position: absolute;', id: 'filter_all_button', data: { form__filter_target: 'button' } %>
-          
-          <%= f.label :type_all, t('auction.all'), class: "c-table__filters__btn is-active js-table-filter-btn", style: 'cursor: pointer;', for: 'filter_all_button', data: { form__filter_target: 'label', action: "click->form--filter#click" } %>
-          
-          <%= f.radio_button :type, 'english', class: "js-table-filter-btn", style: 'visibility: hidden; position: absolute;', id: 'filter_IO_button', data: { form__filter_target: 'button' } %>
-          
-          <%= f.label :type_english, class: "c-table__filters__btn js-table-filter-btn", style: 'cursor: pointer;', for: 'filter_IO_button', data: { form__filter_target: 'label', action: "click->form--filter#click" } do %>
-            <span class="o-io-icon"></span><span class="u-hidden-m"> <%= t('auction.english_auction') %></span>
-          <% end %>
-          
-          <%= f.radio_button :type, 'blind', class: "js-table-filter-btn", style: 'visibility: hidden; position: absolute;', id: 'filter_PO_button', data: { form__filter_target: 'button' } %>
 
-          <%= f.label :type_blind, class: "c-table__filters__btn js-table-filter-btn", style: 'cursor: pointer;', for: 'filter_PO_button', data: { form__filter_target: 'label', action: "click->form--filter#click" } do %>
-            <span class="o-po-icon"></span>
-            <span class="u-hidden-m"> <%= t('auction.blind_auction') %></span>
-          <% end %>
-        </div>
-
-        <div class="c-table__filters__search">
-          <%= f.search_field :domain_name, value: params[:domain_name], placeholder: t('search_by_domain_name'), class: 'c-table__search__input js-table-search-dt' %>
-        </div>
-        
-        <div class="c-table__filters__more">
-          <% if current_user&.daily_summary %>
-            <%= link_to t('auction.unsubscribe_for_notifications'), user_toggle_sub_path, class: "c-btn c-btn--ghost" %>
-          <% elsif current_user %>
-            <%= link_to t('auction.subscribe_for_notifications'), user_toggle_sub_path(current_user), class: "c-btn c-btn--ghost" %>
-          <% end %>
-        </div>
-        <div class="c-auctions__legend">
-          <div><span class="o-io-icon o-icon--sm"></span>
-            <%= t('auction.english_auction') %>
-          </div>
-          <div><span class="o-po-icon o-icon--sm"></span>
-            <%= t('auction.blind_auction') %>
-          </div>
-        </div>
-
-      </div>
-    <% end %>
+    <%= component 'pages/auction/filter', current_user: current_user %>
 
     <!-- 
     These parameters are passed to the Common::Table::Component. These parameters are used to generate headers in the table component. The name "column_name" indicates the name of the column. This is necessary for sorting, so the name of this column should correspond to the name of the column in the database table. If you want to make it so that the data is not sorted by the column, then you should add a nil value. "Caption" is the table header, and "options" are additional parameters that are passed into the tags. 
@@ -100,7 +50,7 @@
   </div>
 
   <div class="u-text-center u-mt-40">
-    <%= link_to t('auctions.all_list'), auctions_path(show_all: 'true'), class: 'c-btn c-btn--ghost' %>
+    <%= component 'common/links/link_button', link_title: t('auctions.all_list'), href: auctions_path(show_all: 'true'), color: 'ghost' %>
   </div>
 </div>
 <!-- Table -- Sortable  -->

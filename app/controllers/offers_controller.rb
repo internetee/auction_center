@@ -89,7 +89,7 @@ class OffersController < ApplicationController
 
     if @offer.can_be_modified? && @offer.destroy
       respond_to do |format|
-        format.html { redirect_to offers_path, notice: t(:deleted), status: :see_other }
+        format.html { redirect_to auctions_path, notice: t(:deleted), status: :see_other }
         format.json { head :no_content }
       end
     else
