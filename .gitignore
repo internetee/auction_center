@@ -52,3 +52,6 @@ yarn-debug.log*
 yarn-debug.log*
 .yarn-integrity
 /public/assets/
+/public/assets/builds
+public/assets/builds/*
+app/assets/builds/*
