@@ -32,7 +32,7 @@ class AuctionBiddingPerformanceTest < ActionCable::Channel::TestCase
 
     Turbo::StreamsChannel.broadcast_render_later_to("auctions",
       template: "auctions/streams/updated_list",
-      locals: { auction: @auction }
+      locals: { auction: @auction, user: @user, updated: false }
     )
 
     assert_enqueued_jobs 1

@@ -170,7 +170,7 @@ class UserTest < ActiveSupport::TestCase
                         password_confirmation: 'password')
 
     assert_not(new_user.valid?)
-    assert_equal(['has already been taken'], new_user.errors[:email])
+    assert_equal([I18n.t('errors.messages.taken', attribute: 'Email')], new_user.errors[:email])
   end
 
   def test_identity_code_must_be_unique_for_a_country

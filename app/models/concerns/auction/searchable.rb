@@ -82,10 +82,6 @@ module Auction::Searchable
       sort_direction = params[:direction].presence_in(%w[asc desc]) || 'desc'
       is_from_admin = params[:admin] == 'true'
 
-      puts '---------'
-      puts params
-      puts '---------'
-
       query =
         with_highest_offers
         .with_domain_name(params[:domain_name])
