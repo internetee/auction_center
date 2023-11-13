@@ -7188,13 +7188,9 @@
 
   // app/javascript/controllers/form/debounce_controller.js
   var debounce_controller_default = class extends Controller {
-    connect() {
-      console.log("connected");
-    }
     search() {
       clearTimeout(this.timeout);
       this.timeout = setTimeout(() => {
-        console.log("submit");
         this.formTarget.requestSubmit();
       }, 300);
     }

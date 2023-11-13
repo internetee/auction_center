@@ -55,6 +55,7 @@ class EnglishOffersController < ApplicationController
     else
       @show_checkbox_recaptcha = true unless @success
       flash.now[:alert] = t('english_offers.form.captcha_verification')
+
       redirect_to root_path, status: :see_other
     end
   end
@@ -151,7 +152,7 @@ class EnglishOffersController < ApplicationController
   end
 
   def create_predicate(auction)
-    @offer.save! && auction.update_minimum_bid_step(create_params[:price].to_f) && @offer.reload
+    @offer.save && auction.update_minimum_bid_step(create_params[:price].to_f) && @offer.reload
   end
 
   def create_params

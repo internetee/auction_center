@@ -296,6 +296,19 @@ auction_iban:
   description: |
     IBAN of the account that should appear in invoice as issuer.
   value: 'EE557700771000598731'
+
+invoice_issuer_address:
+  code: 'invoice_issuer_address'
+  description: |
+    Default issuer address
+  value: 'Paldiski mnt 80, Tallinn, Harjumaa, 10617 Estonia'
+  value_format: string
+
+organization_phone:
+  code: 'organization_phone'
+  description: |
+    Default organization phone
+  value: '+372 727 1000'
   value_format: string
 
 estonian_vat_rate:

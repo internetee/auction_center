@@ -27,13 +27,10 @@ class Ability
     can %i[read create update delete], Autobider, user_id: user.id
 
     if user.banned?
-      puts '---- HERE ?'
       restrictions_from_bans
     elsif user.not_phone_number_confirmed_unique?
-      puts '---- or HERE ?'
       phone_not_unique_restrictions
     else
-      puts '------ or maybe HERE?'
       no_restrictions_on_offers_and_users
     end
   end

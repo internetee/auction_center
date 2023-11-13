@@ -1,6 +1,32 @@
 require 'application_system_test_case'
 
 class SessionsTest < ApplicationSystemTestCase
+  test "visit login page" do
+    visit new_user_session_path
+    assert_selector "h2", text: I18n.t('devise.sessions.new.sign_in_with_identity_document')
+    assert_selector "h2", text: I18n.t('devise.sessions.new.sign_in_with_password')
+  end
+
+  test "login with email and password" do
+    visit new_user_session_path
+  
+    within('div.o-card:nth-of-type(2)') do
+      fill_in I18n.t('users.email'), with: users(:participant).email
+      fill_in I18n.t('users.password'), with: "secret"
+  
+      click_on I18n.t(:sign_in)
+    end
+
+    assert_current_path new_user_session_path
+  end
+
+  test "links for password recovery and account confirmation are present" do
+    visit new_user_session_path
+
+    assert_selector "a", text: I18n.t('devise.shared.links.forgot_your_password')
+    assert_selector "a", text: I18n.t('devise.shared.links.didnt_receive_confirmation_instructions')
+  end
+
   # def setup
   #   super
   #   @original_wait_time = Capybara.default_max_wait_time
