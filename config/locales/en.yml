@@ -199,3 +199,9 @@ en:
       passed: Passed
       failed: Failed
       
+  pages:
+    auction:
+      auction_action_button:
+        edit_and_remove_blind_offer:
+          component:
+            confirm_delete: "Are you sure you want to delete this blind offer?"

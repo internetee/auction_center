@@ -12,12 +12,15 @@ require 'capybara/rails'
 require 'capybara/minitest'
 require 'webmock/minitest'
 require 'spy/integration'
+require 'support/component_helpers'
 
 require 'rake'
 Rake::Task.clear
 Rails.application.load_tasks
 
 class ActiveSupport::TestCase
+  include ComponentHelpers
+
   WebMock.allow_net_connect!
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
   fixtures :all

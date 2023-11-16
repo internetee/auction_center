@@ -174,3 +174,10 @@ et:
   no_any_notifications: Uued teated puuduvad
   webpush_title_outbidded: Üle pakutud
   webpush_title_lost: Kaotasid
+
+  pages:
+    auction:
+      auction_action_button:
+        edit_and_remove_blind_offer:
+          component:
+            confirm_delete: "Oled kindel, et soovid kustutada pimedat pakkumist?"
