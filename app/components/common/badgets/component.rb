@@ -9,18 +9,17 @@ module Common
         @status = status
       end
 
-      # rubocop:disable Style/HashLikeCase
       def badget_class
-        case status
-        when 'paid'
-          'c-badge c-badge--green'
-        when 'prepayment'
-          'c-badge c-badge--green c-badge--circle'
-        when 'returned'
-          'c-badge c-badge--blue'
-        when 'pending'
-          'c-badge c-badge--yellow'
-        end
+        classes[status]
+      end
+
+      def classes
+        {
+          'paid' => 'c-badge c-badge--green',
+          'prepayment' => 'c-badge c-badge--green c-badge--circle',
+          'returned' => 'c-badge c-badge--blue',
+          'pending' => 'c-badge c-badge--yellow'
+        }
       end
     end
   end

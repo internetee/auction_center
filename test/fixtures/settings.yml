@@ -317,3 +317,11 @@ estonian_vat_rate:
     Estonian VAT rate in percent. Default: 0.22
   value: '0.22'
   value_format: decimal
+
+contact_organization_email:
+  code: 'contact_organization_email'
+  description: |
+    Default organization email
+  value: 'info@internet.ee'
+  value_format: string
+

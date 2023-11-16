@@ -50,6 +50,7 @@ en:
       paid: "Paid"
       prepayment: "Prepayment"
       returned: "Returned"
+      pending: "Pending"
 
     show:
       change_billing_profile: "Change billing profile"

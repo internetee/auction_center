@@ -51,6 +51,7 @@ et:
       paid: "Makstud"
       prepayment: "Ettemaks"
       returned: "Tagastatud"
+      pending: "Ootel"
 
     show:
       change_billing_profile: "Muuda arve aadressi"
