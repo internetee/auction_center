@@ -1,6 +1,8 @@
 module Common
   module Header
     class Component < ApplicationViewComponent
+      include Devise::Controllers::Helpers
+
       attr_reader :notifications
 
       def initialize(notifications:)
