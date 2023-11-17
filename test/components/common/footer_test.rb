@@ -1,6 +1,6 @@
 require "test_helper"
 
-class ButtonToTest < ViewComponent::TestCase
+class FooterTest < ViewComponent::TestCase
   include ViewComponent::SystemTestHelpers
 
   def test_render_component
