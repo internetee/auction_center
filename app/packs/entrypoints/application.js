@@ -11,7 +11,8 @@
 import Rails from 'rails-ujs';
 Rails.start();
 
-require("chartkick").use(require("highcharts"))
+import "chartkick/chart.js"
+import "highcharts"
 import "@hotwired/turbo-rails"
 import "./controllers"
 // import "controllers"
