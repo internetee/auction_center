@@ -55,6 +55,19 @@ export default class extends Controller {
   }
 
   timeDifference() {
-    return this.endTime - new Date().getTime();
+    const convertedToTimeZone = this.convertDateToTimeZone(new Date().getTime(), 'Europe/Tallinn');
+    return this.endTime - new Date(convertedToTimeZone).getTime();
+  }
+
+  convertDateToTimeZone(date, timeZone) {
+    return new Intl.DateTimeFormat('en-US', {
+      timeZone: timeZone,
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+    }).format(date);
   }
 }
