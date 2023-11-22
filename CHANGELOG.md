@@ -1,3 +1,7 @@
+21.11.2023
+* fixed issue with displaying incorrect status notification for a running auction due to timezone differences: https://github.com/internetee/auction_center/issues/1171
+* fix for the main menu error in mobile views https://github.com/internetee/auction_center/pull/1184
+
 01.11.2023
 * update billing with invoice profile update https://github.com/internetee/auction_center/pull/1181
 
