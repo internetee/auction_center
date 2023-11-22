@@ -2,22 +2,17 @@ module Common
   module Form
     module Label
       class Component < ApplicationViewComponent
-        attr_reader :attribute, :form, :title, :for_component, :data_attributes, :style, :css_class
+        attr_reader :attribute, :form, :title, :options
 
-        def initialize(attribute:, form:, title:, for_component:, options:, data_attributes: {})
+        def initialize(attribute:, form:, title: nil, options: {})
           super
 
           @attribute = attribute
-          @title = title
           @form = form
-          @for_component = for_component
-          @data_attributes = data_attributes
-
-          @style = options[:style]
-          @css_class = options[:css_class]
+          @title = title
+          @options = options
         end
       end
     end
   end
 end
-

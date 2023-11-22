@@ -1,6 +1,6 @@
 <div class="c-btn-group c-btn-group--ghost">
   <%= component 'common/links/link_button', link_title: nil, href: edit_english_offer_path(@auction.users_offer_uuid),
-                color: 'ghost', data_attributes: { turbo_frame: 'modal' } do %>
+                color: 'ghost', options: { data: { turbo_frame: 'modal' } } do %>
     <span class="o-edit-icon"></span>
   <% end %>
 </div>

@@ -1,7 +1,7 @@
 <% if content.present? %>
-    <%= @form.label @attribute, class: "c-table__filters__btn js-table-filter-btn #{@css_class}", style: @style, for: @for_component, data: { **@data_attributes} do %>
+    <%= @form.label @attribute, **@options do %>
       <%= content %>
     <% end %>
 <% else %>
-  <%= @form.label @attribute, @title, class: "c-table__filters__btn js-table-filter-btn #{@css_class}", style: @style, for: @for_component, data: { **@data_attributes} %>
+  <%= @form.label @attribute, @title, **@options %>
 <% end %>

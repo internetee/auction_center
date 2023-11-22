@@ -1,7 +1,7 @@
 <%= component 'common/hero', title: t('.title') %>
 <!-- Table -->
 <div class="o-container">
-  
-  <%= render 'outstanding_invoices' %>
-  <%= render 'paid_invoices' %>
+  <%= component 'pages/invoices/outstanding_invoices', issued_invoices: @issued_invoices, cancelled_payable_invoices: @cancelled_payable_invoices,
+      cancelled_expired_invoices: @cancelled_expired_invoices, unpaid_invoices_count: @unpaid_invoices_count %>
+  <%= component 'pages/invoices/paid_invoices', paid_invoices: @paid_invoices, deposit_paid: @deposit_paid %>
 </div>

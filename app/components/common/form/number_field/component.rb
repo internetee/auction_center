@@ -1,15 +1,17 @@
 module Common
   module Form
-    module Checkbox
+    module NumberField
       class Component < ApplicationViewComponent
-        attr_reader :label_title, :form, :attribute
 
-        def initialize(label_title:, form:, attribute:)
+        attr_reader :form, :attribute, :options
+
+        def initialize(form:, attribute:, options: {})
           super
 
-          @label_title = label_title
           @form = form
           @attribute = attribute
+
+          @options = options
         end
       end
     end

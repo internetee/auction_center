@@ -28,7 +28,7 @@
     <% if user %>
       <%= component 'pages/auction/auction_action_button', user: user, auction: auction, updated: updated %>
     <% else %>
-      <%= component 'common/links/link_button', link_title: t('auctions.bid'), href: new_user_session_path, color: 'green', target: '_top' %>
+      <%= component 'common/links/link_button', link_title: t('auctions.bid'), href: new_user_session_path, color: 'green', options: { target: '_top' } %>
     <% end %>
   </td>
 </tr>

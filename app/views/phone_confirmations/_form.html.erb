@@ -2,8 +2,8 @@
     <div class="ui two column doubling stackable grid">
         <div class="column">
             <div class="field">
-                <%= f.label :confirmation_code %>
-                <%= f.text_field :confirmation_code %>
+              <%= component 'common/form/label', form: f, attribute: :confirmation_code %>
+              <%= component 'common/form/text_field', form: f, attribute: :confirmation_code %>
             </div>
 
             <div class="column wide sixteen">

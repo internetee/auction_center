@@ -11,28 +11,28 @@
         </div>
         <div class="c-account__form">
           <div class="c-account__input c-account__input--editable u-mb-20 is-editable">
-            <%= f.label :email, t('users.email') %>
-            <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+            <%= component 'common/form/label', form: f, attribute: :email, title: t('users.email') %>
+            <%= component 'common/form/email_field', form: f, attribute: :email, options: { autocomplete: 'email', autofocus: true } %>
           </div>
           <div class="c-account__input-wrapper u-flex u-align-start">
             <div class="c-account__input c-account__input--editable u-mb-20 is-editable">
-              <%= f.label :given_names, t('users.given_names') %>
-              <%= f.text_field :given_names, autofocus: true %>
+              <%= component 'common/form/label', form: f, attribute: :given_names, title: t('users.given_names') %>
+              <%= component 'common/form/text_field', form: f, attribute: :given_names, options: { autofocus: true } %>
             </div>
             <div class="c-account__input c-account__input--editable u-mb-20 is-editable">
-              <%= f.label :surname, t('users.surname') %>
-              <%= f.text_field :surname, autofocus: true %>
+              <%= component 'common/form/label', form: f, attribute: :surname, title: t('users.surname') %>
+              <%= component 'common/form/text_field', form: f, attribute: :surname, options: { autofocus: true } %>
             </div>
             <div class="c-account__input c-account__input--editable u-mb-20 is-editable">
-              <%= f.label :mobile_phone, t('users.mobile_phone') %>
-              <%= f.telephone_field :mobile_phone, autofocus: true, autocomplete: "off", placeholder: "+372xxxxxxxx" %>
+              <%= component 'common/form/label', form: f, attribute: :mobile_phone, title: t('users.mobile_phone') %>
+              <%= component 'common/form/telephone_field', form: f, attribute: :mobile_phone, options: { autofocus: true, autocomplete: "off", placeholder: "+372xxxxxxxx" } %>
             </div>
             <div class="c-account__input c-account__input--readonly u-mb-20">
-              <%= f.label :identity_code, t('users.identity_code') %>
+              <%= component 'common/form/label', form: f, attribute: :identity_code, title: t('users.identity_code') %>
               <%= tag.span user.identity_code if user.identity_code.present? %>
             </div>
             <div class="c-account__input c-account__input--readonly u-mb-20">
-              <%= f.label :country, t('users.country_code') %>
+              <%= component 'common/form/label', form: f, attribute: :country, title: t('users.country') %>
               <span><%= user.country_code || Setting.find_by(code: 'default_country').retrieve %></span>
             </div>
             <div class="c-account__input c-account__input--readonly u-mb-20">
@@ -42,6 +42,7 @@
           </div>
         </div>
       </div>
+
       <div class="o-card">
         <h2 class="o-card__title c-account__title u-mb-36"><%= t('users.show.settings') %></h2>
         <div class="c-account__checkbox u-flex u-align-center u-mb-30">
@@ -54,32 +55,45 @@
           </label>
           <span class="c-account__chekboxtitle"><%= t('common.webpush_modal.webpush_title') %>: <%= t('yes') %></span>
         </div>
+
         <div class="c-account__checkbox u-flex u-align-center u-mb-30">
+          <%# ======== TODO: Fixed the problem with nested label component ======= %>
           <%= f.label :daily_summary, class: 'o-checkbox' do %>
-            <%= f.check_box :daily_summary, data: { 
+            <%= component 'common/form/checkboxes/rounded_checkbox', form: f, attribute: :daily_summary,
+                options: {
                   controller: 'form--checkbox-autosubmit', form__checkbox_autosubmit_target: 'checkbox',
-                  form__checkbox_autosubmit_url_value: user_path(user.uuid), action: 'change->form--checkbox-autosubmit#submit' } %>
-            <div class="o-checkbox__slider round"></div>
+                  form__checkbox_autosubmit_url_value: user_path(user.uuid), action: 'change->form--checkbox-autosubmit#submit' 
+                } 
+            %>
           <% end %>
+          <%# ===================== %>
+
           <span class="c-account__chekboxtitle"><%= t('users.show.daily_summary') %>: <strong><%= @user.daily_summary ? t('yes') : t('no') %></strong></span>
         </div>
+
         <a href="" title="" class="c-acount__link"><%= t('users.terms_and_conditions_link') %></a>
+
         <div class="c-acount__buttons u-flex u-align-center">
-          <%= link_to t(:billing), billing_profiles_path, class: "c-btn c-btn--ghost c-acount__button", target: '_top' %>
+          <%= component 'common/links/link_button', link_title: t(:billing), href: billing_profiles_path, color: 'ghost', options: { target: '_top' }  %>
+          
+          <%# ======= TODO: Resolve the problem with nested elements in button_to component ========= %>
           <%= button_to user_path(@user.uuid), method: :delete, form: { data: { turbo_confirm: t("are_you_sure") } },
-                          class: "c-btn c-btn--ghost c-acount__button c-acount__button--icon", target: '_top' do %>
-            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="12" fill="none"><path fill="#212224" d="M0 2.544a.558.558 0 0 0 .558.557h.297v6.593a1.838 1.838 0 0 0 1.836 1.836H7.31a1.838 1.838 0 0 0 1.836-1.836V3.1h.297a.558.558 0 1 0 0-1.115H7.49V1.41C7.49.633 6.857 0 6.08 0H3.92c-.777 0-1.41.632-1.41 1.41v.575H.558A.558.558 0 0 0 0 2.544ZM3.626 1.41c0-.162.132-.294.294-.294h2.16c.162 0 .294.132.294.294v.576H3.626V1.41ZM1.971 3.101H8.03v6.593a.721.721 0 0 1-.72.72H2.69a.721.721 0 0 1-.72-.72V3.1Z"/><path fill="#212224" d="M3.613 9.387a.558.558 0 0 0 .557-.558V4.688a.558.558 0 0 0-1.115 0v4.141a.558.558 0 0 0 .558.558Zm2.773 0a.558.558 0 0 0 .557-.558V4.688a.558.558 0 0 0-1.115 0v4.141a.558.558 0 0 0 .558.558Z"/></svg>
+              class: "c-btn c-btn--ghost c-acount__button c-acount__button--icon", target: '_top' do %>
+            <%= render 'svg/trash' %>
             <span><%= t('users.show.delete') %></span>
           <% end %>
+          <%# =================== %>
+
         </div>
       </div>
+
       <div class="o-card">
-        <% if user.persisted? || (user.signed_in_with_identity_document? && user.encrypted_password.blank?) %>
-          <h2 class="o-card__title c-account__title c-account__title--password"><%= t('.new_password') %></h2>
-        <% else %>
-          <h2 class="o-card__title c-account__title c-account__title--password"><%= t('users.password') %></h2>
-        <% end %>
+        <h2 class="o-card__title c-account__title c-account__title--password">
+          <% user.persisted? || (user.signed_in_with_identity_document? && user.encrypted_password.blank?) ? t('.new_password') : t('users.password') %>
+        </h2>
+
         <div class="c-account__input u-mb-20">
+          <%# ======= TODO: Fixed nested label component ======= %>
           <%= f.label :password, class: "c-account__label-explain" do %>
             <div>
               <%= t('users.password')  %>
@@ -87,27 +101,32 @@
             </div>
             <%= tag.span t('.password_requirements', minimum: @minimum_password_length) if @minimum_password_length  %>
           <% end %>
-          <%= f.password_field :password, autocomplete: "new-password" %>
+          <%# ===================== %>
+
+          <%= component 'common/form/password_field', form: f, attribute: :password, options: {  autocomplete: "new-password" } %>
           <%= tag.span t('.you_can_leave_blank'), class: "c-account__input-explain" if user.persisted? || (user.signed_in_with_identity_document? && user.encrypted_password.blank?) %>
         </div>
+
         <div class="c-account__input">
-          <%= f.label :password_confirmation, t('users.password_confirmation') %>
-          <%= f.password_field :password_confirmation, autocomplete: "off" %>
+          <%= component 'common/form/label', form: f, attribute: :password_confirmation, title: t('users.password_confirmation') %>
+          <%= component 'common/form/password_field', form: f, attribute: :password_confirmation, options: {  autocomplete: "off" } %>
         </div>
       </div>
+
       <div class="o-card o-card--no-shadow">
         <% if user.persisted? && !user.signed_in_with_identity_document? %>
             <h2 class="o-card__title c-account__title c-account__title--password c-account__title--confirm">Kinnita muudatused</h2>
             <p class="c-account__subtitle"><%= t('.we_need_your_password') %></p>
             <div class="c-account__input u-mb-48">
-              <%= f.label :current_password, t('users.current_password') %>
-              <%= f.password_field :current_password, autocomplete: "off" %>
+              <%= component 'common/form/label', form: f, attribute: :current_password, title: t('users.current_password') %>
+              <%= component 'common/form/password_field', form: f, attribute: :current_password, options: {  autocomplete: "off" } %>
             </div>
         <% end %>
 
-        <%= link_to t(:cancel), '#', class: "c-btn c-btn--ghost c-account__btn", data: { turbo_frame: 'user_info' } %>
-        <%= f.button class: "c-btn c-btn--green c-account__btn u-ml-16" do %><%= t(:submit) %><% end %>
+        <%= component 'common/links/link_button', link_title: t(:cancel), href: '#', color: 'ghost', options: { data: { turbo_frame: 'user_info' } }  %>
+        <%= component 'common/form/form_button', form: f, btn_title: t(:submit) %>
       </div>
+
     </div>
   <% end %>
 <% end %>

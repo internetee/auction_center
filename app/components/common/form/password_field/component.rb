@@ -3,7 +3,7 @@ module Common
     module PasswordField
       class Component < ApplicationViewComponent
 
-        attr_reader :form, :attribute, :autocomple, :autofocus, :label_caption
+        attr_reader :form, :attribute, :options
 
         def initialize(form:, attribute:, options:)
           super
@@ -11,9 +11,7 @@ module Common
           @form = form
           @attribute = attribute
 
-          @autocomple = options[:autocomple]
-          @autofocus = options[:autofocus]
-          @label_caption = options[:label_caption]
+          @options = options
         end
       end
     end

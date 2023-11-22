@@ -1,0 +1,13 @@
+<% if @type == 'close' %>
+  <%= link_to @href, class: "c-btn #{colorize} c-btn--icon", **@options do %>
+    <span class="o-close-icon"></span>
+  <% end %>
+<% elsif @type == 'edit' %>
+  <%= link_to @href, class: "c-btn #{colorize} c-btn--icon", **@options do %>
+    <span class="o-edit-icon"></span>
+  <% end %>
+<% elsif @type == 'delete' %>
+  <%= button_to @href, class: "c-btn #{colorize} c-btn--icon", **@options do %>
+    <span class="o-delete-icon"></span>
+  <% end %>
+<% end %>

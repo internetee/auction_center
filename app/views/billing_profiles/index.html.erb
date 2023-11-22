@@ -1,6 +1,5 @@
 <%= component 'common/hero', title: t('.title') %>
 
-<!-- Adressess -->
 <div class="o-container">
     <div class="c-block c-account c-account--adresses">
         <div class="o-grid o-grid--two-col-desktop o-grid--address o-grid--sep" id='billing_profile_containers'>
@@ -17,8 +16,9 @@
 
         </div>
         <div class="u-text-center u-mt-48">
-          <%= link_to t('billing_profiles.new.title'), new_billing_profile_path, class: "c-btn c-btn--green", data: { turbo_frame: 'new_billing_profile' } %>
+          <%= component 'common/links/link_button', link_title: t('billing_profiles.new.title'), href: new_billing_profile_path,
+              color: 'green', options: { data: { turbo_frame: 'new_billing_profile' } } %>
         </div>
     </div>
 </div>
-<!-- account -->
+
