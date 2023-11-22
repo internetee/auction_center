@@ -1,2 +1,1 @@
-<%= form.label @attribute, @label %>
-<%= @form.select @attribute, @enum, { include_blank: @include_blank }, { } %>
+<%= @form.select @attribute, @enum, { **@first_options }, { **@second_options } %>

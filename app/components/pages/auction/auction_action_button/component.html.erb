@@ -7,7 +7,7 @@
     <% else %>
       <%# if need to create new offer for english auction %>
       <%= component 'common/links/link_button', link_title: deposit_value[:link_title], href: new_auction_english_offer_path(auction_uuid: auction.uuid),
-                    color: deposit_value[:color], data_attributes: { turbo_frame: 'modal' } %>
+                    color: deposit_value[:color], options: { data: { turbo_frame: 'modal' } } %>
     <% end %>
 
   <% else %>
@@ -18,7 +18,7 @@
     <% else %>
       <%# if need to create new offer for blind auction %>
       <%= component 'common/links/link_button', link_title: t('auctions.bid'), href: new_auction_offer_path(auction_uuid: auction.uuid),
-                    color: 'green', data_attributes: { turbo_frame: 'modal' } %>
+                    color: 'green', options: { data: { turbo_frame: 'modal' } } %>
     <% end %>
 
   <% end %>

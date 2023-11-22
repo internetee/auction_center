@@ -2,15 +2,15 @@ module Common
   module Form
     module FormButton
       class Component < ApplicationViewComponent
-        attr_reader :btn_title, :form, :data_turbo, :color
+        attr_reader :btn_title, :form, :color, :options
 
-        def initialize(btn_title:, form:, data_turbo:, color: 'green')
+        def initialize(btn_title:, form:, color: 'green', options: {})
           super
 
           @btn_title = btn_title
           @form = form
-          @data_turbo = data_turbo
           @color = color
+          @options = options
         end
 
         def colorize

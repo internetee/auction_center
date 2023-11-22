@@ -1,90 +1,83 @@
-<!-- Account -->
-
-
-      <div class="o-card">
-        <h2 class="o-card__title c-account__title"><%= t('users.edit.contact_data') %></h2>
-        <div class="c-account__input u-mb-20">
-          <%= f.label :email, t('users.email') %>
-          <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-        </div>
-        <div class="c-account__input u-mb-20">
-          <%= f.label :mobile_phone, t('users.mobile_phone') %>
-          <%= f.telephone_field :mobile_phone, autofocus: true, autocomplete: "off", placeholder: "+372xxxxxxxx" %>
-        </div>
-        <div class="c-account__input u-mb-20">
-          <%= f.label :given_names, t('users.given_names') %>
-          <%= f.text_field :given_names, autofocus: true %>
-        </div>
-        <div class="c-account__input u-mb-20">
-          <%= f.label :surname, t('users.surname') %>
-          <%= f.text_field :surname, autofocus: true %>
-        </div>
-        <div class="c-account__input u-mb-20">
-          <%= f.label :password, class: "c-account__label-explain"  do %>
-            <div>
-              <%= t('users.password') %>
-              <% if @user.persisted? || (@user.signed_in_with_identity_document? && @user.encrypted_password.blank?) %>
-                <span>(<%= t('.you_can_leave_blank') %>)</span>
-              <% end %>
-            </div>
-            <span><%= t('users.form.password_requirements', minimum: @minimum_password_length) if @minimum_password_length %></span>
-          <% end %>
-
-          <%= f.password_field :password, autocomplete: "off" %>
-          <span class="c-account__input-explain"><%= t('users.form.password_requirements', minimum: @minimum_password_length) if @minimum_password_length %></span>
-        </div>
-        <div class="c-account__input">
-          <%= f.label :password_confirmation, t('users.password_confirmation') %>
-          <%= f.password_field :password_confirmation, autocomplete: "off" %>
-        </div>
+<div class="o-card">
+  <h2 class="o-card__title c-account__title"><%= t('users.edit.contact_data') %></h2>
+  <div class="c-account__input u-mb-20">
+    <%= component 'common/form/label', form: f, attribute: :email, title: t('users.email') %>
+    <%= component 'common/form/email_field', form: f, attribute: :email, options: { autocomplete: 'email', autofocus: true } %>
+  </div>
+  <div class="c-account__input u-mb-20">
+    <%= component 'common/form/label', form: f, attribute: :mobile_phone, title: t('users.mobile_phone') %>
+    <%= component 'common/form/telephone_field', form: f, attribute: :mobile_phone, options: { autofocus: true, autocomplete: "off", placeholder: "+372xxxxxxxx" } %>
+  </div>
+  <div class="c-account__input u-mb-20">
+    <%= component 'common/form/label', form: f, attribute: :given_names, title: t('users.given_names') %>
+    <%= component 'common/form/text_field', form: f, attribute: :given_names, options: { autofocus: true } %>
+  </div>
+  <div class="c-account__input u-mb-20">
+    <%= component 'common/form/label', form: f, attribute: :surname, title: t('users.surname') %>
+    <%= component 'common/form/text_field', form: f, attribute: :surname, options: { autofocus: true } %>
+  </div>
+  <div class="c-account__input u-mb-20">
+    <%# TODO: Fixed the problem with nested label component  %>
+    <%= f.label :password, class: "c-account__label-explain"  do %>
+      <div>
+        <%= t('users.password') %>
+        <% if @user.persisted? || (@user.signed_in_with_identity_document? && @user.encrypted_password.blank?) %>
+          <span>(<%= t('.you_can_leave_blank') %>)</span>
+        <% end %>
       </div>
+      <span><%= t('users.form.password_requirements', minimum: @minimum_password_length) if @minimum_password_length %></span>
+    <% end %>
 
-      <div class="o-card-wrapper">
-        <div class="o-card o-card--personaldata">
-          <h2 class="o-card__title c-account__title"><%= t('auth.tara.form.data_from_identity_document') %></h2>
-          <div class="c-account__input u-mb-20">
-            <%= f.label :identity_code, t('users.identity_code') %>
-            <% if @user.identity_code.present? %>
-              <%= f.text_field :identity_code, readonly: @user.new_record? ? false : true, value: @user.identity_code %>
-            <% else %>
-              <%= f.text_field :identity_code, readonly: false %>
-            <% end %>
-          </div>
-          <div class="c-account__input u-mb-30-48">
-            <%= f.label :country, t('users.country_code') %>
-            <% if @user.signed_in_with_identity_document? %>
-              <div>
-                <%= f.text_field :country_code,
-                                  value: @user.country_code || Setting.find_by(code: 'default_country').retrieve,
-                                  readonly: true %>
-              </div>
-            <% else %>
-              <%= f.select :country_code,
-                              options_for_select(
-                                  Countries.for_selection,
-                                  @user.country_code || Setting.find_by(code: 'default_country').retrieve
-                              ),
-                              { readonly: false } %>
-            <% end %>
-          </div>
-          <label class="o-checkbox-container o-checkbox-container--grey">
-            <div class="o-checkbox-text">
-              <%= t('users.i_accept_terms_and_conditions_html',
-                              link: link_to(t('users.terms_and_conditions_link'), Setting.find_by(code: 'terms_and_conditions_link').retrieve)) %>
-            </div>
-            <%= f.check_box :accepts_terms_and_conditions, { value: @user.accepts_terms_and_conditions, class: "o-checkbox-sample" }, "true", "false" %>
-            <span class="o-checkmark-sample"></span>
-          </label>
-          <label class="o-checkbox-container o-checkbox-container--green">
-            <div class="o-checkbox-text">
-              <span><%= t('.daily_summary') %></span>
-            </div>
-            <%= f.check_box :daily_summary, class: 'o-checkbox-sample' %>
-            <span class="o-checkmark-sample"></span>
-          </label>
+    <%= component 'common/form/password_field', form: f, attribute: :password, options: {  autocomplete: "off" } %>
+    <span class="c-account__input-explain"><%= t('users.form.password_requirements', minimum: @minimum_password_length) if @minimum_password_length %></span>
+  </div>
+
+  <div class="c-account__input">
+    <%= component 'common/form/label', form: f, attribute: :password_confirmation, title: t('users.password_confirmation') %>
+    <%= component 'common/form/password_field', form: f, attribute: :password_confirmation, options: {  autocomplete: "off" } %>
+  </div>
+</div>
+
+<div class="o-card-wrapper">
+  <div class="o-card o-card--personaldata">
+    <h2 class="o-card__title c-account__title"><%= t('auth.tara.form.data_from_identity_document') %></h2>
+    <div class="c-account__input u-mb-20">
+      <%= component 'common/form/label', form: f, attribute: :identity_code, title: t('users.identity_code') %>
+
+      <% if @user.identity_code.present? %>
+        <%= component 'common/form/text_field', form: f, attribute: :identity_code, options: { readonly: @user.new_record? ? false : true, value: @user.identity_code  } %>
+      <% else %>
+        <%= component 'common/form/text_field', form: f, attribute: :identity_code, options: { readonly: false } %>
+      <% end %>
+    </div>
+    <div class="c-account__input u-mb-30-48">
+      <%= component 'common/form/label', form: f, attribute: :country_code, title: t('users.country_code') %>
+      <% if @user.signed_in_with_identity_document? %>
+        <div>
+        <%= component 'common/form/text_field', form: f, attribute: :country_code, 
+                      options: { value: @user.country_code || Setting.find_by(code: 'default_country').retrieve, readonly: true  } %>
         </div>
-        <button class="c-btn c-btn--green c-account__btn">Registreeru</button>
+      <% else %>
+        <%= component 'common/form/dropdown_input', form: f, attribute: :country_code, 
+                      enum: options_for_select(Countries.for_selection,@user.country_code || Setting.find_by(code: 'default_country').retrieve),
+                      first_options: { readonly: false } %>
+      <% end %>
+    </div>
+
+    <%# TODO: Modify checkbox label nested component to add support this variant of nested checkbox %>
+    <label class="o-checkbox-container o-checkbox-container--grey">
+      <div class="o-checkbox-text">
+        <%= t('users.i_accept_terms_and_conditions_html',
+                        link: link_to(t('users.terms_and_conditions_link'), Setting.find_by(code: 'terms_and_conditions_link').retrieve)) %>
       </div>
+      <%= f.check_box :accepts_terms_and_conditions, { value: @user.accepts_terms_and_conditions, class: "o-checkbox-sample" }, "true", "false" %>
 
+      <span class="o-checkmark-sample"></span>
+    </label>
+    <%# ==================  %>
 
-<!-- account -->
+    <%= component 'common/form/checkboxes/checkbox_with_label', label_title: t('.daily_summary'), form: f, attribute: :daily_summary  %>
+
+  </div>
+  <button class="c-btn c-btn--green c-account__btn"><%= t('users.form.sign_up') %></button>
+</div>

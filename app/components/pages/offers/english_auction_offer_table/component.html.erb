@@ -1,0 +1,58 @@
+<!-- Table -->
+<div class="o-container">
+  <div class="c-block">
+    <h2 class="c-block__title u-h3"><%= t('offers.overview') %></h2>
+    <%= component 'common/table', header_collection: overview_table_headers, options: { class: 'table--black' } do %>
+      <%= tag.tbody do %>
+        <tr>
+          <td><strong><%= @offer.auction.domain_name  %></strong></td>
+          <td>2<%= I18n.l(@offer.auction.ends_at) %></td>
+          <td><%= t('offers.price_in_currency', price: @offer.price) %></td>
+          <td><%= t('offers.price_in_currency', price: @offer.total) %></td>
+        </tr>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+<!-- Table -->
+
+<!-- Table-two-col -->
+<div class="o-container">
+  <div class="c-block">
+    <div class="o-grid o-grid--two-col">
+      <div>
+        <h2 class="c-block__title u-h3"><%= t('offers.show.participants_title') %></h2>
+        <%= component 'common/table', header_collection: bidder_table_headers, options: { class: '' } do %>
+          <%= tag.tbody do %>
+            <% @offer.auction.offers.order(updated_at: :desc).each do |offer| %>
+              <tr class="offers-table-row">
+                <td style="<%= offer&.billing_profile&.user_id == current_user.id ? 'color: green;' : '' %>">
+                  <%= offer&.billing_profile&.user_id == current_user.id ? "#{offer.username} (You)" : offer.username %>
+                </td>
+                <td><%= t('offers.price_in_currency', price: offer.price) %></td>
+                <td><%= I18n.l(offer.updated_at) %></td>
+              </tr>
+            <% end %>
+          <% end %>
+        <% end %>
+      </div>
+      <div>
+        <h2 class="c-block__title u-h3"><%= t('offers.show.deposit_title') %></h2>
+        <%= component 'common/table', header_collection: deposit_payment_table_headers, options: { class: '' } do %>
+          <%= tag.tbody do %>
+            <% @offer.auction.domain_participate_auctions.each do |d| %>
+              <tr class="offers-table-row">
+                <td class="monospace" style="<%= d.user_id == current_user.id ? 'color: green;' : '' %>">
+                  <%= d.user.display_name %>
+                </td>
+                <td><%= I18n.l(d.created_at) %></td>
+              </tr>
+            <% end %>
+          <% end %>
+        <% end %>
+
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Table-two-col -->

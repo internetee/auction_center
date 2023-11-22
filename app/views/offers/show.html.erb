@@ -4,23 +4,6 @@
 <div class="o-container">
   <div class="c-block">
     <h2 class="c-block__title u-h3"><%= t('offers.overview') %></h2>
-    <% header_collection = [{ column: nil, caption: t('auctions.domain_name'), options: { class: "" } },
-                            { column: nil, caption: t('auctions.ends_at'), options: { class: "" } },
-                            { column: nil, caption: t('offers.price'), options: { class: "" } },
-                            { column: nil, caption: t('offers.total'), options: { class: "" } }] %>
-    <%= component 'common/table', header_collection:, options: { class: 'table--black' } do %>
-      <%= tag.tbody do %>
-        <tr>
-          <td><strong><%= @offer.auction.domain_name  %></strong></td>
-          <td>2<%= I18n.l(@offer.auction.ends_at) %></td>
-          <td><%= t('offers.price_in_currency', price: @offer.price) %></td>
-          <td><%= t('offers.price_in_currency', price: @offer.total) %></td>
-        </tr>
-      <% end %>
-    <% end %>
+    <%= component 'pages/offers/blind_auction_offer_table', offer: @offer %>
   </div>
 </div>
-<!-- Table -->
-</div>
-</div>
-<!-- Table-two-col -->

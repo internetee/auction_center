@@ -1,18 +1,5 @@
 <%= turbo_frame_tag "modal" do %>
   <div data-controller='modals--offer-modal' data-modals--offer-modal-open-class='is-open'>
-    <!-- Modal - Change Offer -->
-    <%#= component 'modals/change_offer' %>
-    <!-- Modal - Change Offer -->
-
-    <!-- Modal - Change Offer - PO -->
     <%= component 'modals/delete_offer', offer: @offer %>
-    <!-- Modal - Change Offer -->
-
-    <!-- Modal - Edit offer -->
-    <%#= component 'modals/edit_offer' %>
-    <!-- Modal - Edit offer -->
-
-    <!-- Modal - Delete offer -->
-    <%#= component 'modals/delete_offer' %>
   </div>
 <% end %>

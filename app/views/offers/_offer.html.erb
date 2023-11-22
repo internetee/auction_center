@@ -1,3 +1,4 @@
+<%# TODO: Move to component and all logic should be in represent part %>
 <tr>
   <td>
     <% if offer.auction.english? %>
@@ -29,13 +30,11 @@
   </td>
   <td class="u-text-center-l">
     <%- if offer.result %>
-      <%= link_to t('offers.index.claim_your_domain'), result_path(offer.result.uuid), class: "c-btn c-btn--green", data: { turbo_frame: 'modal' } %>
+      <%= component 'common/links/link_button', link_title: t('offers.index.claim_your_domain'), href: result_path(offer.result.uuid), color: 'green', options: { data: { turbo_frame: 'modal' } } %>
     <%- else %>
-      <% unless offer.auction.english? || offer.auction.finished? %>
-        <%= link_to offer_delete_path(offer_uuid: offer.uuid), class: "c-btn c-btn--ghost c-btn--icon", data: { turbo_frame: 'modal' } do %>
-          <span class="o-delete-icon"></span>
-        <% end %>
-      <% end %>
+      <%= component 'common/links/link_button', href: offer_delete_path(offer_uuid: offer.uuid), color: 'ghost', options: { data: { turbo_frame: 'modal' } } do %>
+        <span class="o-delete-icon"></span>
+      <% end unless offer.auction.english? || offer.auction.finished? %>
     <% end %>
   </td>
 </tr>

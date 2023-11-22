@@ -2,18 +2,15 @@ module Common
   module Buttons
     module ButtonTo
       class Component < ApplicationViewComponent
-        attr_reader :title_caption, :href, :data_attributes, :color, :target, :method, :form_attributes
+        attr_reader :title_caption, :href, :color, :options
 
-        def initialize(title_caption:, href:, data_attributes: {}, color: 'blue-secondary', target: '_top', method: :post, form_attributes: {})
+        def initialize(href:, title_caption: nil, color: 'blue-secondary', options: {})
           super
 
           @title_caption = title_caption
           @href = href
-          @data_attributes = data_attributes
-          @target = target
           @color = color
-          @method = method
-          @form_attributes = form_attributes
+          @options = options
         end
 
         def colorize

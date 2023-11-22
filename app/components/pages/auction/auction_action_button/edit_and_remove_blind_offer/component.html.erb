@@ -1,10 +1,10 @@
 <div class="c-btn-group c-btn-group--ghost">
   <%= component 'common/links/link_button', link_title: nil, href: edit_offer_path(@auction.users_offer_uuid),
-                color: 'ghost', data_attributes: { turbo_frame: 'modal' } do %>
+                color: 'ghost', options: { data: { turbo_frame: 'modal' } } do %>
     <span class="o-edit-icon"></span>
   <% end %>
-  <%= component 'common/buttons/button_to', title_caption: nil, href: offer_path(@auction.offer_from_user(@user).uuid), color: 'ghost', method: :delete, 
-                form_attributes:  { data: { turbo_confirm: t(".confirm_delete") } } do %>
+  <%= component 'common/buttons/button_to', title_caption: nil, href: offer_path(@auction.offer_from_user(@user).uuid), color: 'ghost',
+                options: { method: :delete, form: { data: { turbo_confirm: t(".confirm_delete") } } } do %>
     <span class="o-delete-icon"></span>
   <% end %>
 </div>

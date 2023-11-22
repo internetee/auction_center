@@ -5,20 +5,25 @@
       <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put, class: "o-card" }) do |f| %>
         <%= f.hidden_field :reset_password_token %>
         <h2 class="o-card__title c-account__title c-account__title--password"><%= t(:change_your_password) %></h2>
+        
         <div class="c-account__input u-mb-20">
+          <%# TODO: Resolve the problem of nested label components %>
           <%= f.label :password do %>
             <%= t('.new_password') %>
             <% if @minimum_password_length %>
               <span>(<%= t('.min_characters', min_chars: @minimum_password_length ) %>)</span>
             <% end %>
           <% end %>
-          <%= f.password_field :password, autofocus: true, autocomplete: "new-password" %>
+
+          <%= component 'common/form/password_field', form: f, attribute: :password, options: { autofocus: true, autocomplete: "new-password" } %>
         </div>
         <div class="c-account__input">
-          <%= f.label :password_confirmation, t('.confirm_new_password') %><br />
-          <%= f.password_field :password_confirmation, autocomplete: "off" %>
+          <%= component 'common/form/label', form: f, attribute: :password_confirmation, title: t('.confirm_new_password') %>
+          <%= component 'common/form/password_field', form: f, attribute: :password_confirmation, options: {  autocomplete: "off" } %>
         </div>
-        <%= f.submit t(:submit), class: 'c-btn c-btn--green', data: { turbo: false } %>
+
+        <%= component 'common/form/form_button', form: f, color: 'green', btn_title: t(:submit), options: { data: { turbo: false } } %>
+        
         <div class="u-flex u-align-center u-content-sp u-flex-wrap">
           <%= link_to t(:sign_in), new_user_session_path, class: "o-link u-mb-8" %>
           <span class="o-link u-mb-8 js-modal-toggle">

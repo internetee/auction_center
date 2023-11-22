@@ -39,8 +39,8 @@
       <div class="c-table__filters__search ">
         <%= form_with model: @wishlist_item, url: wishlist_items_path do |f| %>
           <%= f.hidden_field :user_id, value: @wishlist_item.user_id %>
-          <%= f.text_field :domain_name, placeholder: t('auctions.domain_name'), data: { action: 'input->wishlist#domainCheck'} %>
-          <%= f.button t(:submit), class: "c-btn c-btn--green c-wishlist__btn", id: "wishlist_item_form_commit", data: { turbo: false } %>
+          <%= component 'common/form/text_field', form: f, attribute: :domain_name, options: { placeholder: t('auctions.domain_name'), data: { action: 'input->wishlist#domainCheck'} } %>
+          <%= component 'common/form/form_button', form: f, btn_title: t(:submit), options: { data: { turbo: false }, id: "wishlist_item_form_commit" } %>
         <% end %>
       </div>
     </div>

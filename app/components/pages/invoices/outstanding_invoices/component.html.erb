@@ -25,15 +25,8 @@
             <!-- 
               These parameters are passed to the Common::Table::Component. These parameters are used to generate headers in the table component. The name "column_name" indicates the name of the column. This is necessary for sorting, so the name of this column should correspond to the name of the column in the database table. If you want to make it so that the data is not sorted by the column, then you should add a nil value. "Caption" is the table header, and "options" are additional parameters that are passed into the tags. 
             -->
-
-            <!-- NB! if you want make columns as sortable, don't forget to wrap the table content within the turbo_frame_tag with the name "results". The name "results" is assigned as a value for the orderable Stimulus controller in the table component. -->
-            <% header_collection = [{ column: nil, caption: t('invoices.item'), options: { class: "" } },
-                                              { column: nil, caption: t('invoices.due_date'), options: { class: "" } },
-                                              { column: nil, caption: t('invoices.total'), options: { class: "" } },
-                                              { column: nil, caption: 'Tegevused', options: { class: "u-text-center-l" } },
-                                              ] %>
             <!-- Options attributes are used as table attributes -->
-            <%= component 'common/table', header_collection:, options: { class: '' } do %>
+            <%= component 'common/table', header_collection: issued_invoice_table_headers, options: { class: '' } do %>
               <!-- "The body of the table also needs to be in the component block, so the component wraps it with the necessary tags." -->
               <% @issued_invoices.each do |invoice| %>
                 <tr>
@@ -46,14 +39,10 @@
             <% end %>
           </div>
         </div>
+
         <div class="c-tabs__content__tab" data-table--tab-target='content'>
           <div class="c-table--responsive">
-            <% header_collection = [{ column: nil, caption: t('invoices.item'), options: { class: "" } },
-                                              { column: nil, caption: t('invoices.due_date'), options: { class: "" } },
-                                              { column: nil, caption: t('invoices.total'), options: { class: "" } },
-                                              { column: nil, caption: 'Tegevused', options: { class: "u-text-center-l" } },
-                                              ] %>
-            <%= component 'common/table', header_collection:, options: { class: '' } do %>
+            <%= component 'common/table', header_collection: overdue_invoice_table_headers, options: { class: '' } do %>
               <% @cancelled_payable_invoices.each do |invoice| %>
                 <tr>
                   <td><strong><%= link_to invoice&.items&.first&.name, invoice_path(invoice.uuid), title: "Invoice", data: { turbo_frame: 'modal' }, style: "color: black;" %></strong></td>
@@ -67,12 +56,7 @@
         </div>
         <div class="c-tabs__content__tab" data-table--tab-target='content'>
           <div class="c-table--responsive">
-            <% header_collection = [{ column: nil, caption: t('invoices.item'), options: { class: "" } },
-                                              { column: nil, caption: t('invoices.due_date'), options: { class: "" } },
-                                              { column: nil, caption: t('invoices.total'), options: { class: "" } },
-                                              { column: nil, caption: 'Tegevused', options: { class: "u-text-center-l" } },
-                                              ] %>
-            <%= component 'common/table', header_collection:, options: { class: '' } do %>
+            <%= component 'common/table', header_collection: cancel_invoice_table_headers, options: { class: '' } do %>
               <% @cancelled_expired_invoices.each do |invoice| %>
                 <tr>
                   <td><strong><%= link_to invoice&.items&.first&.name, invoice_path(invoice.uuid), title: "Invoice", data: { turbo_frame: 'modal' }, style: "color: black;" %></strong></td>

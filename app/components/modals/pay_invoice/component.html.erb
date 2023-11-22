@@ -28,11 +28,10 @@
               <div class="c-modal__col">
 
             <%= form_with model: @invoice, url: invoice_path(@invoice.uuid), data: { controller: 'form--debounce', action: 'change->form--debounce#search', form__debounce_target: 'form' } do |f| %>
+                <%= component 'common/form/label', form: f, attribute: :billing_profile_id, title: t('billing_profiles_name') %>
                 <%= component 'common/form/dropdown_input', form: f, attribute: :billing_profile_id, 
                       enum: options_for_select(BillingProfile.where(user_id: invoice.user_id).pluck(:name, :id), current_billing_profile),
-                      label: t('billing_profiles_name') %>
-
-                <%#= f.submit %>
+                      first_options: { include_blank: false } %>
             <% end %>
               </div>
               <div class="c-modal__col">

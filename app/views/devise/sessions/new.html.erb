@@ -10,7 +10,7 @@
         </p>
 
         <div class="c-login__buttons-wrapper u-flex u-content-sp u-content-center">
-          <%= component 'common/buttons/button_to', title_caption: t(:sign_in), href: "/auth/tara", color: 'blue-secondary', data_attributes: { turbo: false } %>
+          <%= component 'common/buttons/button_to', title_caption: t(:sign_in), href: "/auth/tara", color: 'blue-secondary', options: { data: { turbo: false } } %>
           <div class="c-login__icons u-flex u-content-sp u-content-center">
             <%= render partial: 'svg/id_auth' %>
           </div>
@@ -20,20 +20,20 @@
         <h2 class="o-card__title c-login__title"><%= t('.sign_in_with_password') %></h2>
         <%= form_for resource, as: resource_name, url: session_path(resource_name), html: { class: 'c-login__form' } do |f| %>
           <div class="c-login__input">
-            <%= component 'common/form/email_field', form: f, attribute: :email, 
-                                                     options: { autocomplete: 'email', autofocus: true, label_caption: t('users.email') } %>
+            <%= component 'common/form/label', form: f, attribute: :email, title: t('users.email') %>
+            <%= component 'common/form/email_field', form: f, attribute: :email, options: { autocomplete: 'email', autofocus: true } %>
           </div>
           <div class="c-login__input">
-            <%= component 'common/form/password_field', form: f, attribute: :password, 
-                                                     options: { autocomplete: 'password', autofocus: true, label_caption: t('users.password') } %>
+            <%= component 'common/form/label', form: f, attribute: :password, title: t('users.password') %>
+            <%= component 'common/form/password_field', form: f, attribute: :password, options: { autocomplete: 'password', autofocus: true } %>
           </div>
           <div class="c-login__btns-wrapper u-flex u-align-start u-content-sp">
             <div class="c-login__btns">
-              <%= component 'common/form/form_button', form: f, btn_title: t(:sign_in), data_turbo: false %>
+              <%= component 'common/form/form_button', form: f, btn_title: t(:sign_in), options: { data: { turbo: false } } %>
               <%= component 'common/links/link_button', link_title: t('users.index.create_an_account'), href: new_user_path, color: 'ghost' %>
             </div>
 
-            <%= component 'common/form/checkbox', label_title: t('users.remember_me'), form: f, attribute: :remember_me if devise_mapping.rememberable?  %>
+            <%= component 'common/form/checkboxes/checkbox_with_label', label_title: t('users.remember_me'), form: f, attribute: :remember_me if devise_mapping.rememberable?  %>
           </div>
           <div class="c-login__links u-flex u-align-center u-content-sp">
             <%= link_to t('devise.shared.links.forgot_your_password'),
