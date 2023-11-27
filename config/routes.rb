@@ -6,6 +6,10 @@ Rails.application.routes.draw do
   end
   # mount ActionCable.server => '/cable'
 
+  namespace :api do
+    resource :stream_name, only: :show
+  end
+
   get 'unsubscribe/unsubscribe'
   patch 'unsubscribe/update'
   root to: 'auctions#index'
