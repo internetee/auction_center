@@ -25,6 +25,8 @@ module Auctions
                         locals: { auction:, user:, updated: participants.include?(user) }
       end
 
+      ActionCable.server.broadcast('auctions_api', { auction: })
+
       broadcast_later 'auctions',
                       'auctions/streams/updated_list',
                       locals: { auction:, user: nil, updated: false }
