@@ -17,9 +17,14 @@ module Auctions
     private
 
     def post_call
+      puts '------- DO YOU WORK?'
+      ActionCable.server.broadcast('auctions_api', { auction: })
+      puts '----------'
+
+
       broadcast_later 'auctions',
                       'auctions/streams/updated_list',
-                      locals: { auction: auction }
+                      locals: { auction: }
     end
   end
 end
