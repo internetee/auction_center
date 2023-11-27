@@ -13,10 +13,10 @@ class InvoiceCancellation
       invoice.cancelled!
 
       response = EisBilling::SendInvoiceStatusService.call(invoice_number: invoice.number,
-                                                           status: 'cancelled')
+                                                           status: 'overdue')
       raise ActiveRecord::Rollback, response.errors unless response.result?
 
-      AutomaticBan.new(invoice: invoice, user: user, domain_name: domain_name).create if user
+      AutomaticBan.new(invoice:, user:, domain_name:).create if user
     end
   end
 
