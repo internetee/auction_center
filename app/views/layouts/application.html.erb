@@ -35,70 +35,6 @@
         display: inline;
       }
     }
-
-    /* ============== */
-
-    #gdpr-banner {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        background-color: #4CAF50;
-        padding: 20px;
-        text-align: center;
-        box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.2);
-        z-index: 1000;
-        opacity: 0.9;
-    }
-
-    #gdpr-banner .content {
-        color: white;
-        font-size: 16px;
-        margin-bottom: 10px;
-    }
-
-    #gdpr-banner .content a {
-        color: white;
-        text-decoration: underline;
-    }
-
-    #gdpr-banner .content a:hover {
-        color: white;
-        text-decoration: none;
-    }
-
-    #gdpr-banner .content p {
-        margin-bottom: 10px;
-    }
-
-    #gdpr-banner .content button {
-        margin-right: 10px;
-    }
-
-
-
-    #custom-options {
-        margin-top: 20px;
-        text-align: left;
-    }
-
-    #custom-options label {
-        display: block;
-        margin-bottom: 10px;
-        color: white;
-    }
-
-    #custom-options label input {
-        margin-right: 10px;
-    }
-
-    #custom-options p {
-        margin-bottom: 10px;
-        color: white;
-        font-size: 14px;
-        font-weight: 500;
-    }
-    /* ============= */
     </style>
   </head>
   <body data-controller="push-notification"
@@ -132,41 +68,11 @@
         <%= banned_banner %>
         <%= invalid_data_banner %>
         <%= yield %>
-
-
-
       </main>
 
-      <div id="gdpr-banner">
-          <p class='content'>Мы используем cookies для улучшения вашего опыта. Пожалуйста, примите или настройте свои предпочтения.
-          <%= link_to 'Информация', cookies_path %></p>
-
-          <%= link_to 'Принять все куки', '#', class: 'ui primary button', id: 'accept-all' %>
-          <%= link_to 'Отказаться', '#', class: 'ui primary button', id: 'reject-all' %>
-          <button id="customize" class='ui primary button'>Настроить</button>
-
-          <div id="custom-options" style="display: none;">
-              <label>
-                  <input type="checkbox" id="google-analytics">
-                  Разрешить Google Analytics
-              </label>
-
-              <p>Google Analytics - это мощный инструмент анализа данных, который помогает нам понимать, как вы используете наш сайт. Он собирает информацию о ваших взаимодействиях на сайте, такие как страницы, которые вы посещаете, и время, проведенное на них. Это помогает нам улучшать наш контент и предоставлять более релевантные и полезные услуги для вас.</p>
-
-            <%= link_to 'Принять выборочно', '#', class: 'ui primary button', id: 'accept-optionally' %>
-
-          </div>
-      </div>
-
+      <%= render 'common/cookies' if show_cookie_dialog? %>
       <%= render 'common/footer' %>
-      <%= render 'google_analytics', tracking_id: google_analytics.tracking_id if google_analytics.enabled? %>
+      <%= render 'google_analytics', tracking_id: google_analytics.tracking_id if google_analytics.enabled? && show_google_analytics? %>
     </div>
-
-    <script>
-      document.getElementById('customize').addEventListener('click', function() {
-        var customOptions = document.getElementById('custom-options');
-        customOptions.style.display = customOptions.style.display === 'none' ? 'block' : 'none';
-      });
-    </script>
   </body>
 </html>

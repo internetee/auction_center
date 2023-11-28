@@ -1,6 +1,10 @@
 require 'application_system_test_case'
 
 class GoogleAnalyticsIntegrationTest < ActionDispatch::IntegrationTest
+  def setup
+    patch cookies_path, params: { cookies: 'accepted', analytics_selected: '1' }
+  end
+
   def test_google_analytics_integration
     tracking_id = 'test-tracking-id'
     Rails.configuration.customization[:google_analytics][:tracking_id] = tracking_id

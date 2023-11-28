@@ -48,6 +48,14 @@ module ApplicationHelper
     Rails.configuration.customization[:end_of_procedure]
   end
 
+  def show_cookie_dialog?
+    session[:cookie_dialog] != 'accepted'
+  end
+
+  def show_google_analytics?
+    session[:google_analytics] == 'accepted'
+  end
+
   private
 
   def ban_error_message(domains, valid_until)

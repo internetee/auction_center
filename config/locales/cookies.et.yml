@@ -1,0 +1,35 @@
+et:
+  cookies:
+    index:
+      title: "Küpsised"
+      information_html: |
+        <h2>Optimeerige oma veebikogemus Google Analyticsiga</h2>
+        <p>
+          Google Analytics on võimas andmeanalüüsi tööriist, mis aitab meil mõista, kuidas te meie veebisaiti kasutate. See kogub teavet teie interaktsioonide kohta saidil, nagu külastatavad lehed ja nendel veedetud aeg. See aitab meil parandada oma sisu ja pakkuda teile asjakohasemaid ja kasulikumaid teenuseid.
+        </p>
+        <h2>Kuidas see töötab?</h2>
+        <p>
+          Kui külastate meie saiti, kasutab Google Analytics küpsiseid, et jälgida teie tegevust. Me kasutame seda teavet trendide analüüsimiseks, saidi haldamiseks, kasutajate liikumise jälgimiseks saidil ja meie üldise auditooriumi demograafilise teabe kogumiseks.
+        </p>
+        <h2>Teie andmed on turvalised</h2>
+        <p>
+          Me austame teie privaatsust. Kõik Google Analyticsi kaudu kogutud andmed on anonüümsed ja neid kasutatakse ainult statistilistel eesmärkidel. Teil on võimalus kontrollida oma küpsiste eelistusi ja loobuda Google Analyticsist, kui te ei soovi, et teie andmeid kasutataks.
+        </p>
+        <h2>Teie nõusolek</h2>
+        <p>
+          Meie küpsiste aktsepteerimisega aitate teil pakkuda paremat kogemust meie veebisaidil. Kui soovite oma sätteid muuta, saate seda teha igal ajal, valides meie küpsisteavituses valiku "Seadista".
+        </p>
+    dialog:
+      google_analytics_description: |
+        Google Analytics on võimas andmeanalüüsi tööriist, mis aitab meil mõista, kuidas te meie veebisaiti kasutate.
+        See kogub teavet teie interaktsioonide kohta saidil, nagu külastatavad lehed ja nendel veedetud aeg.
+        See aitab meil parandada oma sisu ja pakkuda teile asjakohasemaid ja kasulikumaid teenuseid.
+      allow_google_analytics: "Luba Google Analytics"
+      accept_selectively: "Nõustu valikuliselt"
+      configure: "Seadista"
+      decline: "Keeldu"
+      accept_all_cookies: "Nõustu kõigi küpsistega"
+      information_link: "Rohkem infot"
+      information: |
+        Kasutame küpsiseid, et pakkuda teile parimat võimalikku kogemust meie veebisaidil.
+        Need võimaldavad meil analüüsida ka kasutajate käitumist, et pakkuda teile pidevalt veebisaiti paremaks.
