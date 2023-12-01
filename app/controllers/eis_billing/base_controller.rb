@@ -1,4 +1,6 @@
 module EisBilling
+  class InvoiceNotFound < StandardError; end
+
   class BaseController < ApplicationController
     protect_from_forgery with: :null_session
     # skip_authorization_check # Temporary solution
