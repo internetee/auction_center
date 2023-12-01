@@ -18,6 +18,7 @@ en:
     vat_amount: "VAT"
     vat_exclusive: "VAT exclusive"
     paid_at: "Paid at"
+    reference_no: "Reference no."
     title: "Invoice no. %{number}"
     download: "Download"
     number: "Number"

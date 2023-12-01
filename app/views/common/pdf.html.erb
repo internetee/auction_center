@@ -206,6 +206,12 @@
                         <dd>
                             <%= I18n.t("activerecord.enums.invoice.statuses.#{@invoice.status}") %>
                         </dd>
+                        <dt>
+                            <%= t('invoices.reference_no') %>
+                        </dt>
+                        <dd>
+                            <%= @invoice.user.reference_no %>
+                        </dd>
                     </dl>
                 </div>
                 <div class="col-md-6 right">

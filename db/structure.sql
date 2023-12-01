@@ -913,38 +913,6 @@ ALTER SEQUENCE public.auctions_id_seq OWNED BY public.auctions.id;
 
 
 --
--- Name: auto_bids; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.auto_bids (
-    id bigint NOT NULL,
-    wishlist_item_id bigint NOT NULL,
-    cents integer NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: auto_bids_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.auto_bids_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: auto_bids_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.auto_bids_id_seq OWNED BY public.auto_bids.id;
-
-
---
 -- Name: autobiders; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -953,9 +921,10 @@ CREATE TABLE public.autobiders (
     user_id bigint,
     domain_name character varying,
     cents integer,
-    uuid uuid DEFAULT public.gen_random_uuid(),
+    uuid uuid DEFAULT gen_random_uuid(),
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    enable boolean DEFAULT false
 );
 
 
@@ -976,6 +945,81 @@ CREATE SEQUENCE public.autobiders_id_seq
 --
 
 ALTER SEQUENCE public.autobiders_id_seq OWNED BY public.autobiders.id;
+
+
+--
+-- Name: bank_statements; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.bank_statements (
+    id bigint NOT NULL,
+    bank_code character varying,
+    iban character varying,
+    queried_at timestamp(6) without time zone,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: bank_statements_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.bank_statements_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: bank_statements_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.bank_statements_id_seq OWNED BY public.bank_statements.id;
+
+
+--
+-- Name: bank_transactions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.bank_transactions (
+    id bigint NOT NULL,
+    bank_statement_id bigint,
+    bank_reference character varying,
+    iban character varying,
+    currency character varying,
+    buyer_bank_code character varying,
+    buyer_iban character varying,
+    buyer_name character varying,
+    document_no character varying,
+    description character varying,
+    sum numeric,
+    reference_no character varying,
+    paid_at timestamp(6) without time zone,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: bank_transactions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.bank_transactions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: bank_transactions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.bank_transactions_id_seq OWNED BY public.bank_transactions.id;
 
 
 --
@@ -1586,7 +1630,8 @@ CREATE TABLE public.users (
     uid character varying,
     updated_by character varying,
     daily_summary boolean DEFAULT false NOT NULL,
-    discarded_at timestamp without time zone,
+    jti character varying,
+    reference_no character varying,
     CONSTRAINT users_roles_are_known CHECK ((roles <@ ARRAY['participant'::character varying, 'administrator'::character varying]))
 );
 
@@ -1771,17 +1816,24 @@ ALTER TABLE ONLY public.auctions ALTER COLUMN id SET DEFAULT nextval('public.auc
 
 
 --
--- Name: auto_bids id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.auto_bids ALTER COLUMN id SET DEFAULT nextval('public.auto_bids_id_seq'::regclass);
-
-
---
 -- Name: autobiders id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.autobiders ALTER COLUMN id SET DEFAULT nextval('public.autobiders_id_seq'::regclass);
+
+
+--
+-- Name: bank_statements id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.bank_statements ALTER COLUMN id SET DEFAULT nextval('public.bank_statements_id_seq'::regclass);
+
+
+--
+-- Name: bank_transactions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.bank_transactions ALTER COLUMN id SET DEFAULT nextval('public.bank_transactions_id_seq'::regclass);
 
 
 --
@@ -2079,19 +2131,27 @@ ALTER TABLE ONLY public.ar_internal_metadata
 
 
 --
--- Name: auto_bids auto_bids_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.auto_bids
-    ADD CONSTRAINT auto_bids_pkey PRIMARY KEY (id);
-
-
---
 -- Name: autobiders autobiders_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.autobiders
     ADD CONSTRAINT autobiders_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: bank_statements bank_statements_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.bank_statements
+    ADD CONSTRAINT bank_statements_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: bank_transactions bank_transactions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.bank_transactions
+    ADD CONSTRAINT bank_transactions_pkey PRIMARY KEY (id);
 
 
 --
@@ -2443,13 +2503,6 @@ CREATE UNIQUE INDEX index_auctions_on_uuid ON public.auctions USING btree (uuid)
 
 
 --
--- Name: index_auto_bids_on_wishlist_item_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_auto_bids_on_wishlist_item_id ON public.auto_bids USING btree (wishlist_item_id);
-
-
---
 -- Name: index_autobiders_on_domain_name; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2461,6 +2514,13 @@ CREATE INDEX index_autobiders_on_domain_name ON public.autobiders USING btree (d
 --
 
 CREATE INDEX index_autobiders_on_user_id ON public.autobiders USING btree (user_id);
+
+
+--
+-- Name: index_bank_transactions_on_bank_statement_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_bank_transactions_on_bank_statement_id ON public.bank_transactions USING btree (bank_statement_id);
 
 
 --
@@ -2730,6 +2790,13 @@ CREATE UNIQUE INDEX index_users_on_email ON public.users USING btree (email);
 
 
 --
+-- Name: index_users_on_jti; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_users_on_jti ON public.users USING btree (jti);
+
+
+--
 -- Name: index_users_on_provider_and_uid; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2769,6 +2836,7 @@ CREATE INDEX index_wishlist_items_on_domain_name ON public.wishlist_items USING 
 --
 
 CREATE UNIQUE INDEX users_by_identity_code_and_country ON public.users USING btree (alpha_two_country_code, identity_code) WHERE ((alpha_two_country_code)::text = 'EE'::text);
+
 
 --
 -- Name: auctions process_auction_audit; Type: TRIGGER; Schema: public; Owner: -
@@ -2884,14 +2952,6 @@ ALTER TABLE ONLY public.invoices
 
 ALTER TABLE ONLY public.autobiders
     ADD CONSTRAINT fk_rails_3d4f798ed7 FOREIGN KEY (user_id) REFERENCES public.users(id);
-
-
---
--- Name: auto_bids fk_rails_473d19add3; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.auto_bids
-    ADD CONSTRAINT fk_rails_473d19add3 FOREIGN KEY (wishlist_item_id) REFERENCES public.wishlist_items(id);
 
 
 --
@@ -3087,14 +3147,11 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20191025092912'),
 ('20191028092316'),
 ('20191121162323'),
-('20191129102035'),
-('20191206123023'),
 ('20191209073454'),
 ('20191209083000'),
 ('20191209085222'),
 ('20191213082941'),
 ('20191220131845'),
-('20200109093043'),
 ('20200110135003'),
 ('20200115145246'),
 ('20200205092158'),
@@ -3106,7 +3163,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220422094307'),
 ('20220422094556'),
 ('20220422095751'),
-('20220422121056'),
 ('20220425103701'),
 ('20220426082102'),
 ('20220527064738'),
@@ -3125,8 +3181,14 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230419114412'),
 ('20230607092953'),
 ('20230705192353'),
+('20230721102651'),
 ('20230925130405'),
 ('20230927114150'),
-('20231006095158');
+('20231002090548'),
+('20231006095158'),
+('20231013110924'),
+('20231031092610'),
+('20231031122202'),
+('20231031122216');
 
 

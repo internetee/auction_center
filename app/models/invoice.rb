@@ -1,3 +1,5 @@
+require 'countries'
+
 # rubocop:disable Metrics
 
 class Invoice < ApplicationRecord
@@ -79,27 +81,9 @@ class Invoice < ApplicationRecord
 
     case params[:sort]
     when 'channel'
-      # invoices_array = query.to_a
-
-      # if sort_direction == 'asc'
-      #   invoices_array.sort_by do |invoice|
-      #     invoice.paid_with_payment_order&.channel || ''
-      #   end
-      # else
-      #   invoices_array.sort_by do |invoice|
-      #     invoice.paid_with_payment_order&.channel || ''
-      #   end.reverse
-      # end
-
       query.left_outer_joins(:paid_with_payment_order)
            .select("invoices.*, REPLACE(payment_orders.type, 'PaymentOrders::', '') AS payment_order_channel")
-           .order(Arel.sql("payment_order_channel #{sort_direction} NULLS LAST"))
-
-      # query.left_outer_joins(:paid_with_payment_order)
-      # .select("invoices.*, COALESCE(REPLACE(paid_with_payment_orders.type, 'PaymentOrders::', ''), '') AS payment_order_channel")
-      # .order(Arel.sql("payment_order_channel #{sort_direction} NULLS LAST"))
- 
- 
+           .order(Arel.sql("payment_order_channel #{sort_direction} NULLS LAST")) 
     when 'billing_profile_name'
       query.left_outer_joins(:billing_profile).order("billing_profiles.name #{sort_direction}")
     when 'total'

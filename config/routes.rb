@@ -40,6 +40,7 @@ Rails.application.routes.draw do
     put '/directo_response', to: 'directo_response#update', as: 'directo_response'
     put '/e_invoice_response', to: 'e_invoice_response#update', as: 'e_invoice_response'
     resource :invoices, only: %i[update]
+    resources :lhv_connect_transactions, only: :create
   end
 
   namespace :admin, constraints: Constraints::Administrator.new do

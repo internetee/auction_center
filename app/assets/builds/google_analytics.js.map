@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../javascript/google_analytics.js"],
+  "sourcesContent": ["document.addEventListener('turbo:load', (event) => {\n    const googleId = document\n        .getElementById('google-tracking-id')\n        .getAttribute('data-value');\n\n    if (googleId) {\n        window.dataLayer = window.dataLayer || [];\n        function gtag() {\n            dataLayer.push(arguments);\n        };\n        gtag('js', new Date());\n        gtag('config', googleId);\n\n        gtag('config', googleId, {\n            'page_location': event.detail.url,\n            'cookie_prefix': 'AuctionTest',\n            'cookie_domain': 'auction.ee',\n        });\n    };\n});"],
+  "mappings": ";;AAAA,WAAS,iBAAiB,cAAc,CAAC,UAAU;AAC/C,UAAM,WAAW,SACZ,eAAe,oBAAoB,EACnC,aAAa,YAAY;AAE9B,QAAI,UAAU;AAEV,UAASA,QAAT,WAAgB;AACZ,kBAAU,KAAK,SAAS;AAAA,MAC5B;AAFS,iBAAAA;AADT,aAAO,YAAY,OAAO,aAAa,CAAC;AAGvC;AACD,MAAAA,MAAK,MAAM,IAAI,KAAK,CAAC;AACrB,MAAAA,MAAK,UAAU,QAAQ;AAEvB,MAAAA,MAAK,UAAU,UAAU;AAAA,QACrB,iBAAiB,MAAM,OAAO;AAAA,QAC9B,iBAAiB;AAAA,QACjB,iBAAiB;AAAA,MACrB,CAAC;AAAA,IACL;AAAC;AAAA,EACL,CAAC;",
+  "names": ["gtag"]
+}

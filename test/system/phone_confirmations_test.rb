@@ -3,7 +3,6 @@ require 'messente/omnimessage'
 
 class PhoneConfirmationsTest < ApplicationSystemTestCase
   def setup
-    super
     @user = users(:participant)
     @user.update!(mobile_phone_confirmed_at: nil)
     enable_phone_confirmation

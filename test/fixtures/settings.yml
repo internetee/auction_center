@@ -283,3 +283,17 @@ openai_domains_evaluation_prompt:
     Default OpenAI prompt for evaluating domain list
   value: 'Evaluate the following list of .ee domains'
   value_format: string
+
+auction_bank_code:
+  code: 'auction_bank_code'
+  description: |
+    Bank code of the account that should appear in invoice as issuer.
+  value: '689'
+  value_format: string
+
+auction_iban:
+  code: 'auction_iban'
+  description: |
+    IBAN of the account that should appear in invoice as issuer.
+  value: 'EE557700771000598731'
+  value_format: string

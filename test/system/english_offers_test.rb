@@ -2,10 +2,12 @@ require 'application_system_test_case'
 
 class EnglishOffersTest < ApplicationSystemTestCase
   def setup
-    super
-
+    stub_request(:any, /eis_billing_system/)
+      .to_return(status: 200, body: "{\"reference_number\":\"12332\"}", headers: {})
+    
     @english = auctions(:english)
     @english_nil = auctions(:english_nil_starts)
+
     @user = users(:participant)
     @user_two = users(:second_place_participant)
 
