@@ -1,4 +1,5 @@
 01.12.2023
+* LHV-connect support: https://github.com/internetee/auction_center/pull/1180
 * Invoice status syncronisation with billing: https://github.com/internetee/auction_center/pull/1183
 
 21.11.2023
