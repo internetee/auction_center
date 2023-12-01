@@ -1,3 +1,6 @@
+01.12.2023
+* Invoice status syncronisation with billing: https://github.com/internetee/auction_center/pull/1183
+
 21.11.2023
 * fixed issue with displaying incorrect status notification for a running auction due to timezone differences: https://github.com/internetee/auction_center/issues/1171
 * fix for the main menu error in mobile views https://github.com/internetee/auction_center/pull/1184
