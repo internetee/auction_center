@@ -1,6 +1,4 @@
 class CookiesController < ApplicationController
-  def show; end
-
   def update
     session[:cookie_dialog] = 'accepted'
     session[:google_analytics] = if params[:cookies] == 'accepted' || params[:analytics_selected] == '1'
