@@ -17,19 +17,15 @@
     <%= component 'common/form/text_field', form: f, attribute: :surname, options: { autofocus: true } %>
   </div>
   <div class="c-account__input u-mb-20">
-    <%# TODO: Fixed the problem with nested label component  %>
-    <%= f.label :password, class: "c-account__label-explain"  do %>
-      <div>
-        <%= t('users.password') %>
-        <% if @user.persisted? || (@user.signed_in_with_identity_document? && @user.encrypted_password.blank?) %>
-          <span>(<%= t('.you_can_leave_blank') %>)</span>
-        <% end %>
-      </div>
-      <span><%= t('users.form.password_requirements', minimum: @minimum_password_length) if @minimum_password_length %></span>
-    <% end %>
+    <%= component 'common/form/password_field/description', 
+                  form: f, attribute: :password,
+                  user: @user, minimum_password_length: @minimum_password_length %>
 
     <%= component 'common/form/password_field', form: f, attribute: :password, options: {  autocomplete: "off" } %>
-    <span class="c-account__input-explain"><%= t('users.form.password_requirements', minimum: @minimum_password_length) if @minimum_password_length %></span>
+
+    <% tag.span class:"c-account__input-explain" do %>
+      <%= t('users.form.password_requirements', minimum: @minimum_password_length) %>
+    <% end if @minimum_password_length %>
   </div>
 
   <div class="c-account__input">
@@ -52,6 +48,7 @@
     </div>
     <div class="c-account__input u-mb-30-48">
       <%= component 'common/form/label', form: f, attribute: :country_code, title: t('users.country_code') %>
+
       <% if @user.signed_in_with_identity_document? %>
         <div>
         <%= component 'common/form/text_field', form: f, attribute: :country_code, 
@@ -64,17 +61,17 @@
       <% end %>
     </div>
 
-    <%# TODO: Modify checkbox label nested component to add support this variant of nested checkbox %>
     <label class="o-checkbox-container o-checkbox-container--grey">
       <div class="o-checkbox-text">
         <%= t('users.i_accept_terms_and_conditions_html',
                         link: link_to(t('users.terms_and_conditions_link'), Setting.find_by(code: 'terms_and_conditions_link').retrieve)) %>
       </div>
-      <%= f.check_box :accepts_terms_and_conditions, { value: @user.accepts_terms_and_conditions, class: "o-checkbox-sample" }, "true", "false" %>
 
+      <%= f.check_box :accepts_terms_and_conditions,
+          { value: @user.accepts_terms_and_conditions, class: "o-checkbox-sample" }, "true", "false" %>
       <span class="o-checkmark-sample"></span>
+
     </label>
-    <%# ==================  %>
 
     <%= component 'common/form/checkboxes/checkbox_with_label', label_title: t('.daily_summary'), form: f, attribute: :daily_summary  %>
 

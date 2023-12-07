@@ -4,6 +4,7 @@
 <tr class="auctions-table-row" data-turbo-frame="auction_<%= auction.id %>">
   <td class="text-center">
 
+    <%# TODO: Refactor this nested elements and move to the components %>
     <%= form.label "auction_ids_#{auction.id}", class: 'o-checkbox' do %>
       <%= form.check_box :auction_ids, { multiple: true, data: { form__bundle_checkbox_target: 'checkboxes' } }, auction.id, nil  %>
       <div class="o-checkbox__slider round"></div>

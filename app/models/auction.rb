@@ -1,6 +1,5 @@
 class Auction < ApplicationRecord # rubocop:disable Metrics
   include Presentable
-  include SqlQueriable
   include Searchable
   include PgSearch::Model
 

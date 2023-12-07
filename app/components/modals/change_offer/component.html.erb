@@ -35,35 +35,32 @@
             </div>
           </div>
 
-          <%= form_with model: @autobider, url: autobider_url, remote: true, 
-                                data: { turbo_frame: "_top", controller: 'form--autobider-submit form--autobider-validation', form__autobider_submit_target: 'form', form__autobider_validation_bid_min_value: @auction.min_bids_step.to_f }, 
-                                html: {id: ' autobid_form '} do |f| %>
+          <%= form_with **autobider_form_properties do |f| %>
             <div class="c-modal__grid u-align-center u-flex-wrap u-mt-24 u-mt-48-l">
               <%= f.hidden_field :domain_name, value: offer.auction.domain_name %>
               <%= f.hidden_field :user_id, value: offer.user_id %>
               <label><%= t('english_offers.form.autobidder_value') %></label>
+              
               <div class="c-modal__col">
-                <%= f.number_field :price, min: 0.0, step: 0.01, value: number_with_precision(@autobider.price.to_f,precision: 2), 
-                    disabled: @auction.finished? ? true : false, "data-action": "keydown->form--autobider-submit#validatePrice input->form--autobider-submit#validatingInputPrice", "data-form--autobider-submit-target": "price", "data-form--autobider-validation-target": "bidInput" %>
+                <%= component 'common/form/number_field', form: f, **number_field_properties %>
               </div>
+
               <div class="c-modal__col">
                 <div class="u-flex u-flex-wrap u-flex-gap-12">
-                  <label class="o-checkbox" for="checkbox">
-                    <%= f.check_box :enable, id: 'checkbox', data: { form__autobider_submit_target: 'checkbox', action: 'change->form--autobider-submit#submitAutobider' } %>
-                    <div class="o-checkbox__slider round"></div>
-                  </label>
-                  <span class="u-word-nowrap"><%= t('english_offers.form.autobidder') %>: <strong><%= t('english_offers.form.yep') %></strong></span>
+                  <%= component 'common/form/checkboxes/rounded_checkbox', form: f, **autobider_checkbox_properties %>
+
+                  <span class="u-word-nowrap">
+                    <%= t('english_offers.form.autobidder') %>: <strong><%= t('english_offers.form.yep') %></strong>
+                  </span>
                 </div>
               </div>
             </div>
           <% end %>
 
-          <%= form_with model: @offer, url: url, id: 'english_offer_form', data: { turbo: false },
-                                data: { controller: 'autotax-counter', autotax_counter_template_value: t('english_offers.price_with_wat_template'),
-                                autotax_counter_tax_value: "#{offer.billing_profile.present? ? offer.billing_profile.vat_rate : 0.0 }",
-                                autotax_counter_defaulttemplate_value: t('offers.price_is_without_vat')} do |f| %>
+          <%= form_with **offer_form_properties do |f| %>
             <%= f.hidden_field :user_id, value: offer.user_id %>
             <%= f.hidden_field :auction_id, value: offer.auction_id %>
+            
             <div class="c-modal__grid u-flex-wrap u-mt-24 u-mt-48-l">
               <div class="c-modal__col">
                 <label for='min_bids_step'><%= t('english_offers.price') %></label>
@@ -71,11 +68,14 @@
                   <%= component 'modals/change_offer/number_form_field', offer_value: @auction.min_bids_step.to_f, offer_disabled: @auction.finished? %>
                 </span>
               </div>
+            
               <div class="c-modal__col">
                 <label><%= t('english_offers.total') %></label>
                 <span class="c-modal__calculation" data-autotax-counter-target='result'>
                   <% if offer.billing_profile.present? %>
-                    <%= t('offers.price_with_wat', price: (@auction.min_bids_step.to_f * offer.billing_profile.vat_rate.to_f).to_f + @auction.min_bids_step.to_f, tax: offer.billing_profile.vat_rate * 100)  %>
+                    <%= t('offers.price_with_wat',
+                        price: (@auction.min_bids_step.to_f * offer.billing_profile.vat_rate.to_f).to_f + @auction.min_bids_step.to_f,
+                        tax: offer.billing_profile.vat_rate * 100)  %>
                   <% else %>
                     <%= t('offers.price_is_without_vat') %>
                   <% end %>
@@ -84,12 +84,9 @@
             </div>
             <div class="c-modal__select u-mt-24 ">
               <%= f.label :billing_profile, t('.bidder') %>
-              <%= f.select :billing_profile_id,
-                                            billing_profiles = BillingProfile.where(user_id: offer.user_id).collect { |b| [b.name, b.id, {'data-vat-rate' => b.vat_rate}] },
-                                            {},
-                                            class: billing_profiles.size == 1 ? "disabled" : "",
-                                            data: { action: 'change->autotax-counter#updateTax' } %>
+              <%= component 'common/form/dropdown_input', form: f, **billing_profile_dropdown_properties %>
             </div>
+
             <%= link_to t('new_billing_profile'), billing_profiles_path, class: 'c-modal__link c-modal__link--first-col', target: '_top' %>
           <% end %>
         </div>

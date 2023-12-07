@@ -11,11 +11,9 @@ class LabelTest < ViewComponent::TestCase
       attribute: :email, 
       form: @form, 
       title: 'Email', 
-      for_component: 'user_email',
-      options: { style: 'custom-style', css_class: 'extra-class' },
-      data_attributes: { custom_data: 'value' }
+      options: { style: 'custom-style', class: 'extra-class' },
     ))
 
-    assert_selector 'label[for="user_email"].extra-class[style="custom-style"][data-custom-data="value"]', text: 'Email'
+    assert_selector 'label[for="user_email"].extra-class[style="custom-style"]', text: 'Email'
   end
 end

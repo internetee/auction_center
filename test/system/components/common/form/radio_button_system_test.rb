@@ -1,6 +1,6 @@
 require "test_helper"
 
-class Components::Common::Form::RadioButtonSystemTest < ViewComponent::TestCase
+class RadioButtonSystemTest < ViewComponent::TestCase
   include ActionView::Helpers::FormHelper
   include ViewComponent::SystemTestHelpers
   include ActionView::Context

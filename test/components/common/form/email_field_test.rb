@@ -12,9 +12,6 @@ class EmailFieldTest < ViewComponent::TestCase
       options: { autocomplete: 'email', autofocus: true, label_caption: I18n.t('users.email') }
     ))
 
-    assert_selector 'label', text: 'Email'
-    assert_selector 'label[for="user_email"]'
-
     assert_selector 'input#user_email[type="email"][autofocus="autofocus"][name="user[email]"][value="user@auction.test"]'
   end
 end

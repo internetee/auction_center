@@ -32,10 +32,7 @@
             </div>
           </div>
 
-          <%= form_with model: @offer, url: url, id: 'english_offer_form', data: { turbo: false },
-                                data: { controller: 'autotax-counter', autotax_counter_template_value: t('english_offers.price_with_wat_template'),
-                                autotax_counter_tax_value: "#{offer.billing_profile.present? ? offer.billing_profile.vat_rate : 0.0 }",
-                                autotax_counter_defaulttemplate_value: t('offers.price_is_without_vat')} do |f| %>
+          <%= form_with **offer_form_properties do |f| %>
             <%= f.hidden_field :user_id, value: offer.user_id %>
             <%= f.hidden_field :auction_id, value: offer.auction_id %>
             <div class="c-modal__grid u-flex-wrap u-mt-24 u-mt-48-l">
@@ -44,10 +41,9 @@
                 <span id="offer_<%=offer.auction.id%>_form">
                   <%= component 'modals/change_offer/number_form_field', offer_value: current_price, offer_disabled: @auction.finished? %>
                 </span>
-                <span class="c-modal__input-desc">
-                  <%= t('.minimum_offer', minimum: Money.new(Setting.find_by(code: 'auction_minimum_offer').retrieve,
-                          Setting.find_by(code: 'auction_currency').retrieve)) %></span>
+                <span class="c-modal__input-desc"><%= minimum_offer %></span>
               </div>
+
               <div class="c-modal__col">
                 <label>Kokku</label>
                 <span class="c-modal__calculation" data-autotax-counter-target='result'>
@@ -61,11 +57,7 @@
             </div>
             <div class="c-modal__select u-mt-24 ">
               <%= f.label :billing_profile, t('.bidder') %>
-              <%= f.select :billing_profile_id,
-                                            billing_profiles = BillingProfile.where(user_id: offer.user_id).collect { |b| [b.name, b.id, {'data-vat-rate' => b.vat_rate}] },
-                                            {},
-                                            class: billing_profiles.size == 1 ? "disabled" : "",
-                                            data: { action: 'change->autotax-counter#updateTax' } %>
+              <%= component 'common/form/dropdown_input', form: f, **billing_profile_dropdown_properties %>
             </div>
             <%= link_to t('new_billing_profile'), billing_profiles_path, class: 'c-modal__link c-modal__link--first-col', target: '_top' %>
           <% end %>
@@ -79,11 +71,9 @@
           <% if @auction.in_progress? %>
           <div class="c-modal__footer__col">
             
-            <%= button_to offer_path(@auction.offer_from_user(current_user).uuid), method: :delete, form: { data: { turbo_confirm: t(".confirm_delete") } }, class: "c-btn c-btn--ghost c-btn--icon" do %>
-              <span class="o-delete-icon"></span>
-            <% end if @auction.offer_from_user(@current_user).present? %>
+            <%= component 'common/action_button', **delete_action_button_properties if @auction.offer_from_user(@current_user).present? %>
 
-            <%= submit_tag t(:submit), class: "c-btn c-btn--green", id: 'bid_action', form: 'english_offer_form', style: 'cursor: pointer;', data: { turbo: false } %>
+            <%= submit_tag t(:submit), **submit_form_button_properties %>
           </div>
           <% end %>
 

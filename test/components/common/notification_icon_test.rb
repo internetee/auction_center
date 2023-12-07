@@ -14,7 +14,8 @@ class NotificationIconTest < ViewComponent::TestCase
     render_inline(Common::Notifications::Icon::Component.new(notification: @notification, readed: false))
 
     assert_selector "span.o-trophy-icon"
-    assert_selector "h5.c-notification__header__title", text: 'You won!' do
+    assert_selector "h5.c-notification__header__title" do
+      assert_text(/^You won! ?/)
       assert_selector "span.o-new"
     end
   end
@@ -22,43 +23,50 @@ class NotificationIconTest < ViewComponent::TestCase
   def test_render_differnt_types
     @notification.update(type: "AuctionWinnerNotification") && @notification.reload
     render_inline(Common::Notifications::Icon::Component.new(notification: @notification, readed: false))
+
     assert_selector "span.o-trophy-icon"
-    assert_selector "h5.c-notification__header__title", text: "You won! " do
+    assert_selector "h5.c-notification__header__title" do
+      assert_text(/^You won! ?/)
       assert_selector "span.o-new"
     end
 
     @notification.update(type: "AuctionLooserNotification") && @notification.reload
     render_inline(Common::Notifications::Icon::Component.new(notification: @notification, readed: false))
     assert_selector "span.o-hammer-icon"
-    assert_selector "h5.c-notification__header__title", text: "You Lose! " do
+    assert_selector "h5.c-notification__header__title" do
+      assert_text(/^You Lose! ?/)
       assert_selector "span.o-new"
     end
 
     @notification.update(type: "OfferNotification") && @notification.reload
     render_inline(Common::Notifications::Icon::Component.new(notification: @notification, readed: false))
     assert_selector "span.o-hammer-icon"
-    assert_selector "h5.c-notification__header__title", text: "New Bid! " do
+    assert_selector "h5.c-notification__header__title" do
+      assert_text(/^New Bid! ?/)
       assert_selector "span.o-new"
     end
 
     @notification.update(type: "AuctionWinnerNotification") && @notification.reload
     render_inline(Common::Notifications::Icon::Component.new(notification: @notification, readed: true))
     assert_selector "span.c-notification__header__icon.o-trophy-icon"
-    assert_selector "h5.c-notification__header__title", text: "You won! " do
+    assert_selector "h5.c-notification__header__title" do
+      assert_text(/^You won! ?/)
       assert_selector "span.o-new"
     end
 
     @notification.update(type: "AuctionLooserNotification") && @notification.reload
     render_inline(Common::Notifications::Icon::Component.new(notification: @notification, readed: true))
     assert_selector "span.c-notification__header__icon.o-hammer-icon"
-    assert_selector "h5.c-notification__header__title", text: "You Lose! " do
+    assert_selector "h5.c-notification__header__title" do
+      assert_text(/^You Lose! ?/)
       assert_selector "span.o-new"
     end
 
     @notification.update(type: "OfferNotification") && @notification.reload
     render_inline(Common::Notifications::Icon::Component.new(notification: @notification, readed: true))
     assert_selector "span.c-notification__header__icon.o-hammer-icon"
-    assert_selector "h5.c-notification__header__title", text: "New Bid! " do
+    assert_selector "h5.c-notification__header__title" do
+      assert_text(/^New Bid! ?/)
       assert_selector "span.o-new"
     end
   end

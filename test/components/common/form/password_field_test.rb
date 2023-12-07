@@ -8,11 +8,9 @@ class PasswordFieldTest < ViewComponent::TestCase
     form = ActionView::Helpers::FormBuilder.new(:user, @user, self, {})
 
     render_inline(Common::Form::PasswordField::Component.new(
-      form: form, attribute: :password, 
-      options: { autocomplete: 'password', autofocus: true, label_caption: I18n.t('users.password') }
+      form: form, attribute: :password, options: { autocomplete: 'password', autofocus: true }
     ))
 
-    assert_selector 'label', text: 'Password'
     assert_selector 'input[type="password"][autofocus="autofocus"][name="user[password]"][id="user_password"]'  
   end
 end

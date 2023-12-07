@@ -6,9 +6,12 @@
                           action: 'input->form--debounce#search' } do |form| %>
     <div class="c-table__filters">
       <%= form.hidden_field :auction_id, value: auction.id %>
+      
       <%= form.search_field :search_string, value: params[:search_string], placeholder: 'Input user name, email or phone number', class: 'c-table__search__input js-table-search-dt' %>
       <div>
         <label>Show only those who have made a deposit</label>
+
+        <%# TODO: Refactor this nested elements and move to the components %>
         <label class="o-checkbox" for="with_deposit_participants">
           <%= form.check_box :with_deposit_participants, { data: { name: 'first_checkbox' } }, 1, nil %>
           <div class="o-checkbox__slider round"></div>
@@ -16,6 +19,8 @@
       </div>
       <div>
         <label>Show only those who haven't made a deposit</label>
+
+        <%# TODO: Refactor this nested elements and move to the components %>
         <label class="o-checkbox" for="without_deposit_participants">
           <%= form.check_box :without_deposit_participants, { data: { name: 'second_checkbox' } }, 1, nil %>
           <div class="o-checkbox__slider round"></div>

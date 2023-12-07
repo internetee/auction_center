@@ -1,0 +1,5 @@
+<%= button_to @path, method: :delete, form: { data: { turbo_confirm: t("are_you_sure") } },
+    class: "c-btn c-btn--ghost c-acount__button c-acount__button--icon", target: '_top' do %>
+  <%= render 'svg/trash' %>
+  <span><%= @text %></span>
+<% end %>

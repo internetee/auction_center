@@ -8,7 +8,7 @@ class LinkButtonTest < ViewComponent::TestCase
   def test_render_component
     render_inline(Common::Links::LinkButton::Component.new(
       link_title: 'Link', href: route.new_auction_english_offer_path(auction_uuid: @auction.uuid),
-                    color: 'blue-secondary', data_attributes: { } )
+                    color: 'blue-secondary', options: { } )
     )
 
     assert_selector "a.c-btn.c-btn--blue-secondary[href='#{route.new_auction_english_offer_path(auction_uuid: @auction.uuid)}']", text: 'Link'
@@ -17,7 +17,7 @@ class LinkButtonTest < ViewComponent::TestCase
   def test_render_nested_component
     render_inline(Common::Links::LinkButton::Component.new(
       link_title: 'Link', href: route.new_auction_english_offer_path(auction_uuid: @auction.uuid),
-                    color: 'blue-secondary', data_attributes: { } )
+                    color: 'blue-secondary', options: { } )
     ) do
       'Edit'
     end
@@ -29,37 +29,37 @@ class LinkButtonTest < ViewComponent::TestCase
   def test_inline_button_colorize
     render_inline(Common::Links::LinkButton::Component.new(
       link_title: 'Link', href: route.new_auction_english_offer_path(auction_uuid: @auction.uuid),
-                    color: 'blue-secondary', data_attributes: { } )
+                    color: 'blue-secondary', options: { } )
     )
     assert_selector "a.c-btn.c-btn--blue-secondary[href='#{route.new_auction_english_offer_path(auction_uuid: @auction.uuid)}']", text: 'Link'
 
     render_inline(Common::Links::LinkButton::Component.new(
       link_title: 'Link', href: route.new_auction_english_offer_path(auction_uuid: @auction.uuid),
-                    color: 'green', data_attributes: { } )
+                    color: 'green', options: { } )
     )
     assert_selector "a.c-btn.c-btn--green[href='#{route.new_auction_english_offer_path(auction_uuid: @auction.uuid)}']", text: 'Link'
 
     render_inline(Common::Links::LinkButton::Component.new(
       link_title: 'Link', href: route.new_auction_english_offer_path(auction_uuid: @auction.uuid),
-                    color: 'blue', data_attributes: { } )
+                    color: 'blue', options: { } )
     )
     assert_selector "a.c-btn.c-btn--blue[href='#{route.new_auction_english_offer_path(auction_uuid: @auction.uuid)}']", text: 'Link'
 
     render_inline(Common::Links::LinkButton::Component.new(
       link_title: 'Link', href: route.new_auction_english_offer_path(auction_uuid: @auction.uuid),
-                    color: 'orange', data_attributes: { } )
+                    color: 'orange', options: { } )
     )
     assert_selector "a.c-btn.c-btn--orange[href='#{route.new_auction_english_offer_path(auction_uuid: @auction.uuid)}']", text: 'Link'
 
     render_inline(Common::Links::LinkButton::Component.new(
       link_title: 'Link', href: route.new_auction_english_offer_path(auction_uuid: @auction.uuid),
-                    color: 'black', data_attributes: { } )
+                    color: 'black', options: { } )
     )
     assert_selector "a.c-btn.c-btn--black[href='#{route.new_auction_english_offer_path(auction_uuid: @auction.uuid)}']", text: 'Link'
 
     render_inline(Common::Links::LinkButton::Component.new(
       link_title: 'Link', href: route.new_auction_english_offer_path(auction_uuid: @auction.uuid),
-                    color: 'ghost', data_attributes: { } )
+                    color: 'ghost', options: { } )
     )
     assert_selector "a.c-btn.c-btn--ghost[href='#{route.new_auction_english_offer_path(auction_uuid: @auction.uuid)}']", text: 'Link'
   end
@@ -67,7 +67,7 @@ class LinkButtonTest < ViewComponent::TestCase
   def test_nested_button_colorize
     render_inline(Common::Links::LinkButton::Component.new(
       link_title: 'Link', href: route.new_auction_english_offer_path(auction_uuid: @auction.uuid),
-                    color: 'blue-secondary', data_attributes: { } )
+                    color: 'blue-secondary', options: { } )
     ) do
       'Edit'
     end
@@ -75,7 +75,7 @@ class LinkButtonTest < ViewComponent::TestCase
 
     render_inline(Common::Links::LinkButton::Component.new(
       link_title: 'Link', href: route.new_auction_english_offer_path(auction_uuid: @auction.uuid),
-                    color: 'green', data_attributes: { } )
+                    color: 'green', options: { } )
     ) do
       'Edit'
     end
@@ -83,7 +83,7 @@ class LinkButtonTest < ViewComponent::TestCase
 
     render_inline(Common::Links::LinkButton::Component.new(
       link_title: 'Link', href: route.new_auction_english_offer_path(auction_uuid: @auction.uuid),
-                    color: 'blue', data_attributes: { } )
+                    color: 'blue', options: { } )
     ) do
       'Edit'
     end
@@ -91,7 +91,7 @@ class LinkButtonTest < ViewComponent::TestCase
 
     render_inline(Common::Links::LinkButton::Component.new(
       link_title: 'Link', href: route.new_auction_english_offer_path(auction_uuid: @auction.uuid),
-                    color: 'orange', data_attributes: { } )
+                    color: 'orange', options: { } )
     ) do
       'Edit'
     end
@@ -99,7 +99,7 @@ class LinkButtonTest < ViewComponent::TestCase
 
     render_inline(Common::Links::LinkButton::Component.new(
       link_title: 'Link', href: route.new_auction_english_offer_path(auction_uuid: @auction.uuid),
-                    color: 'black', data_attributes: { } )
+                    color: 'black', options: { } )
     ) do
       'Edit'
     end
@@ -107,7 +107,7 @@ class LinkButtonTest < ViewComponent::TestCase
 
     render_inline(Common::Links::LinkButton::Component.new(
       link_title: 'Link', href: route.new_auction_english_offer_path(auction_uuid: @auction.uuid),
-                    color: 'ghost', data_attributes: { } )
+                    color: 'ghost', options: { } )
     ) do
       'Edit'
     end
