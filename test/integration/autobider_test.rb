@@ -45,10 +45,6 @@ class AutobiderIntegrationTest < ActionDispatch::IntegrationTest
     @user.reload
     @auction.reload
 
-    puts '---'
-    puts @auction.offers.first.inspect
-    puts '---'
-
     assert_equal @auction.offers.first.cents, Money.from_amount(@auction.starting_price.to_f).cents
   end
 

@@ -20,7 +20,7 @@ class AutobiderController < ApplicationController
       flash[:alert] = t('english_offers.form.captcha_verification')
     end
 
-    redirect_to root_path
+    render turbo_stream: turbo_stream.replace('flash', partial: 'common/flash', locals: { flash: })
   end
 
   def edit
@@ -41,13 +41,15 @@ class AutobiderController < ApplicationController
         auction = Auction.where(domain_name: @autobider.domain_name).order(:created_at).last
         AutobiderService.autobid(auction)
 
-        redirect_to root_path, notice: I18n.t('english_offers.form.autobidder_created')
+        flash[:notice] = t('english_offers.form.autobidder_created')
       else
-        redirect_to root_path, notice: t(:something_went_wrong)
+        flash[:alert] = t('something_went_wrong')
       end
     else
-      redirect_to root_path, alert: t('english_offers.form.captcha_verification')
+      flash[:alert] = t('english_offers.form.captcha_verification')
     end
+
+    render turbo_stream: turbo_stream.replace('flash', partial: 'common/flash', locals: { flash: })
   end
 
   private
