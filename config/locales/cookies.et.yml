@@ -5,10 +5,10 @@ et:
       analytics_title: Statistika ja analüütika küpsised
       analytics_description: |
         Aitavad meil mõista, kuidas konkreetne külastaja veebilehte kasutab. Nii näeme, kui palju inimesi kindlal ajavahemikul lehte külastab, kuidas veebilehtedel liigutakse ja millele klikitakse. Need küpsised annavad meile infot, mille põhjal parendada kliendikogemust.
-      allow_google_analytics: "Luba Google Analytics"
+      allow_google_analytics: "Luba statistika- ja analüüsiküpsis"
       accept_selectively: "Nõustu valikuliselt"
       configure: "Seadista"
-      decline: "Keeldu"
+      decline: "Keeldu kõigest"
       accept_all_cookies: "Nõustu kõigi küpsistega"
       information_link: "siit."
       information: |

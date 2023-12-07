@@ -1,11 +1,10 @@
 <div id="gdpr-banner" data-controller='cookie'>
   <h2 style='color: white;'><%= t('cookies.dialog.title') %></h2>
   <p class='content'><%= t('cookies.dialog.information') %>
-  <%= link_to t('cookies.dialog.information_link'), 'https://www.internet.ee/eis/kupsised-internet-ee-lehel' %></p>
+  <%= link_to t('cookies.dialog.information_link'), 'https://www.internet.ee/eis/kupsised-internet-ee-lehel', target: '_blank' %></p>
 
   <div style='display: flex; justify-content: center; gap: 10px; margin-bottom: 20px;'>
     <%= button_to t('cookies.dialog.accept_all_cookies'), cookies_path(cookies: 'accepted'), method: :patch, class: 'ui primary button', id: 'accept-all'%>
-    <%= link_to t('cookies.dialog.decline'), cookies_path(cookies: 'declined'), method: :patch, class: 'ui red button', id: 'reject-all' %>
   </div>
 
   <button id="customize" class='ui primary button' data-action="cookie#expandCustomOptions"><%= t('cookies.dialog.configure') %></button>
@@ -13,14 +12,14 @@
   <div id="custom-options" style="display: none;" class='u-container field' data-cookie-target="customOptions">
     <%= form_with url: cookies_path, method: :patch do |form| %>
       <div class='ui checkbox'>
-        <%= form.check_box :analytics_selected, { id: 'google-analytics' }, 1, nil %>
+        <%= form.check_box :analytics_selected, { id: 'google-analytics', checked: true }, 1, nil %>
         <%= form.label :analytics_selected, t('cookies.dialog.allow_google_analytics') %>
       </div>
 
-      <h4 style='color: white; margin: 5px 0; padding: 0; margin-bottom: 0;'><%= t('cookies.dialog.analytics_title') %><h4>
       <p style='margin-bottom: 20px; margin-top: 0;'><%= t('cookies.dialog.analytics_description') %></p>
 
       <%= form.submit t('cookies.dialog.accept_selectively'), class: 'ui primary button', id: 'accept-optionally' %>
+      <%= link_to t('cookies.dialog.decline'), cookies_path(cookies: 'declined'), method: :patch, class: 'ui red button', id: 'reject-all' %>
     <% end %>
   </div>
 </div>

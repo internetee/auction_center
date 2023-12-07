@@ -5,10 +5,10 @@ en:
       analytics_title: Statistics and Analytics Cookies
       analytics_description: |
         Help us understand how a specific visitor uses the website. This way we see how many people visit the site during a certain period, how they navigate through web pages, and what they click on. These cookies provide us with information based on which we improve the customer experience.
-      allow_google_analytics: "Allow Google Analytics"
+      allow_google_analytics: "Allow Statistics and Analytics Cookie"
       accept_selectively: "Accept Selectively"
       configure: "Configure"
-      decline: "Decline"
+      decline: "Decline all"
       accept_all_cookies: "Accept All Cookies"
       information_link: "here."
       information: |
