@@ -1,6 +1,31 @@
 require 'application_system_test_case'
 
 class AuctionsTest < ApplicationSystemTestCase
+  def setup
+    @blind_auction = auctions(:valid_with_offers)
+    @english_auction = auctions(:english)
+  end
+
+  def test_if_anonymous_click_to_offer_he_redirect_to_login_page
+
+  end
+
+  def test_if_user_click_to_offer_open_modal_window_for_blind_auction
+
+  end
+
+  def test_if_user_click_to_offer_open_modal_window_for_english_auction
+
+  end
+
+  def test_user_can_sort_auctions
+
+  end
+
+  def test_user_can_filter_auctions
+    
+  end
+
   # include ActiveJob::TestHelper
 
   # def setup

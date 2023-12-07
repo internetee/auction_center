@@ -13,7 +13,7 @@ module Pages
         def header_collection
           [{ column: 'auctions.domain_name', caption: t('auctions.domain_name'), options: { class: 'sorting' } },
            { column: 'auctions.platform', caption: 'Tüüp', options: { class: 'sorting' } },
-           { column: 'price', caption: t('.your_last_offer'), options: { class: 'sorting' } },
+           { column: nil, caption: t('.your_last_offer'), options: { class: '' } },
            { column: nil, caption: t('offers.total'), options: { class: '' } },
            { column: 'auctions.ends_at', caption: t('auctions.ends_at'),
              options: { class: 'sorting' } },

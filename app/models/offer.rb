@@ -1,7 +1,7 @@
 class Offer < ApplicationRecord
   include ActionView::RecordIdentifier
   include Broadcast
-  include Filter
+  include Searchable
 
   belongs_to :user, optional: true
   belongs_to :auction, optional: false

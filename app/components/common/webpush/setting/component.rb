@@ -4,9 +4,9 @@ module Common
       class Component < ApplicationViewComponent
         def data_data
           {
-            controller: 'profile-webpush',
-            profile_webpush_target: 'checkbox',
-            profile_webpush_vapid_public_value: Rails.configuration.customization[:vapid_public],
+            controller: 'push-notification',
+            # profile_webpush_target: 'checkbox',
+            push_notification_vapid_public_value: Rails.configuration.customization[:vapid_public],
             action: 'change->push-notification#setupPushNotifications'
           }
         end

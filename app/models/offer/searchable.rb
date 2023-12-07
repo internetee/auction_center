@@ -1,4 +1,4 @@
-module Offer::Filter
+module Offer::Searchable
   extend ActiveSupport::Concern
 
   included do

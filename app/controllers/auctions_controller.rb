@@ -22,10 +22,6 @@ class AuctionsController < ApplicationController
   private
 
   def fetch_auctions_list
-    puts '===='
-    puts params
-    puts '===='
-
     if should_sort_auctions?
       Auction.active.ai_score_order.search(params, current_user).with_user_offers(current_user&.id)
     else

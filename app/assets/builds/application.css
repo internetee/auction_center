@@ -6477,6 +6477,81 @@ table .c-btn--icon {
   margin: 0.5rem 0 0 0;
 }
 
+.pagy-nav .page.prev,
+.pagy-nav .page.prev a,
+.pagy-nav .page.next,
+.pagy-nav .page.next a {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 1rem !important;
+  border: 1px solid #E2E2E2 !important;
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  padding: 0 !important;
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+  border: none !important;
+  padding: 0.25rem 0.25rem !important;
+  width: 5rem;
+}
+
+.pagy-nav .page.active {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 1rem !important;
+  border: 1px solid #E2E2E2 !important;
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  padding: 0 !important;
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+  background-color: #48A23F !important;
+  border-color: #48A23F !important;
+  color: #FFFFFF !important;
+}
+
+.pagy-nav .page.gap {
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+}
+
+.pagy-nav .page a {
+  text-decoration: none;
+  color: black !important;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 1rem !important;
+  border: 1px solid #E2E2E2 !important;
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  padding: 0 !important;
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+}
+
+.pagy-nav .page a:hover {
+  color: #212224 !important;
+  background: #E2E2E2 !important;
+}
+
+.pagy-nav {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 3rem;
+  gap: 1.5rem;
+}
+.pagy-nav span {
+  display: flex;
+  gap: 0.5rem;
+}
+
 .u-clear-both {
   clear: both;
 }
