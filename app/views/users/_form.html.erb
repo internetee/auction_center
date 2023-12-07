@@ -45,28 +45,22 @@
 
       <div class="o-card">
         <h2 class="o-card__title c-account__title u-mb-36"><%= t('users.show.settings') %></h2>
+
         <div class="c-account__checkbox u-flex u-align-center u-mb-30">
-          <label class="o-checkbox" for="webpush">
-            <input type="checkbox" id="webpush" data-controller='profile-webpush'
-                            data-profile-webpush-target='checkbox'
-                            data-profile-webpush-vapid-public-value="<%= Rails.configuration.customization[:vapid_public] %>"
-                            data-action='change->push-notification#setupPushNotifications' />
-            <div class="o-checkbox__slider round"></div>
-          </label>
+          <%= component 'common/webpush/setting' %>
           <span class="c-account__chekboxtitle"><%= t('common.webpush_modal.webpush_title') %>: <%= t('yes') %></span>
         </div>
 
         <div class="c-account__checkbox u-flex u-align-center u-mb-30">
-          <%# ======== TODO: Fixed the problem with nested label component ======= %>
-          <%= f.label :daily_summary, class: 'o-checkbox' do %>
             <%= component 'common/form/checkboxes/rounded_checkbox', form: f, attribute: :daily_summary,
                 options: {
-                  controller: 'form--checkbox-autosubmit', form__checkbox_autosubmit_target: 'checkbox',
-                  form__checkbox_autosubmit_url_value: user_path(user.uuid), action: 'change->form--checkbox-autosubmit#submit' 
+                  id: :daily_summary,
+                  data: {
+                    controller: 'form--checkbox-autosubmit', form__checkbox_autosubmit_target: 'checkbox',
+                    form__checkbox_autosubmit_url_value: user_path(user.uuid), action: 'change->form--checkbox-autosubmit#submit' 
+                  }
                 } 
             %>
-          <% end %>
-          <%# ===================== %>
 
           <span class="c-account__chekboxtitle"><%= t('users.show.daily_summary') %>: <strong><%= @user.daily_summary ? t('yes') : t('no') %></strong></span>
         </div>
@@ -75,14 +69,7 @@
 
         <div class="c-acount__buttons u-flex u-align-center">
           <%= component 'common/links/link_button', link_title: t(:billing), href: billing_profiles_path, color: 'ghost', options: { target: '_top' }  %>
-          
-          <%# ======= TODO: Resolve the problem with nested elements in button_to component ========= %>
-          <%= button_to user_path(@user.uuid), method: :delete, form: { data: { turbo_confirm: t("are_you_sure") } },
-              class: "c-btn c-btn--ghost c-acount__button c-acount__button--icon", target: '_top' do %>
-            <%= render 'svg/trash' %>
-            <span><%= t('users.show.delete') %></span>
-          <% end %>
-          <%# =================== %>
+          <%= component 'common/buttons/delete_button_with_text', path: user_path(@user.uuid), text: t('users.show.delete') %>
 
         </div>
       </div>
@@ -93,18 +80,16 @@
         </h2>
 
         <div class="c-account__input u-mb-20">
-          <%# ======= TODO: Fixed nested label component ======= %>
-          <%= f.label :password, class: "c-account__label-explain" do %>
-            <div>
-              <%= t('users.password')  %>
-              <%= tag.span t('.you_can_leave_blank') if user.persisted? || (user.signed_in_with_identity_document? && user.encrypted_password.blank?) %>
-            </div>
-            <%= tag.span t('.password_requirements', minimum: @minimum_password_length) if @minimum_password_length  %>
-          <% end %>
-          <%# ===================== %>
+          <%= component 'common/form/password_field/description', 
+                       form: f, attribute: :password,
+                       user: current_user, minimum_password_length: @minimum_password_length %>
 
           <%= component 'common/form/password_field', form: f, attribute: :password, options: {  autocomplete: "new-password" } %>
-          <%= tag.span t('.you_can_leave_blank'), class: "c-account__input-explain" if user.persisted? || (user.signed_in_with_identity_document? && user.encrypted_password.blank?) %>
+          
+          <%= tag.span t('.you_can_leave_blank'),
+              class: "c-account__input-explain" if user.persisted? || 
+              (user.signed_in_with_identity_document? && user.encrypted_password.blank?) %>
+
         </div>
 
         <div class="c-account__input">
@@ -123,7 +108,8 @@
             </div>
         <% end %>
 
-        <%= component 'common/links/link_button', link_title: t(:cancel), href: '#', color: 'ghost', options: { data: { turbo_frame: 'user_info' } }  %>
+        <%= component 'common/links/link_button', link_title: t(:cancel), href: '#', color: 'ghost',
+            options: { data: { turbo_frame: 'user_info' } }  %>
         <%= component 'common/form/form_button', form: f, btn_title: t(:submit) %>
       </div>
 

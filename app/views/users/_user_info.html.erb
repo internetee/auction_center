@@ -38,16 +38,8 @@
     <div class="o-card">
       <h2 class="o-card__title c-account__title u-mb-36"><%= t('users.show.settings') %></h2>
 
-
-
       <div class="c-account__checkbox u-flex u-align-center u-mb-30">
-        <label class="o-checkbox" for="webpush">
-          <input type="checkbox" id="webpush" data-controller='profile-webpush'
-                          data-profile-webpush-target='checkbox'
-                          data-profile-webpush-vapid-public-value="<%= Rails.configuration.customization[:vapid_public] %>"
-                          data-action='change->push-notification#setupPushNotifications' />
-          <div class="o-checkbox__slider round"></div>
-        </label>
+        <%= component 'common/webpush/setting' %>
         <span class="c-account__chekboxtitle"><%= t('common.webpush_modal.webpush_title') %>: <%= t('yes') %></span>
       </div>
 
@@ -63,15 +55,7 @@
       <a href="" title="" class="c-acount__link"><%= t('users.terms_and_conditions_link') %></a>
       <div class="c-acount__buttons u-flex u-align-center">
         <%= component 'common/links/link_button', link_title: t(:billing), href: billing_profiles_path, color: 'ghost', options: { target: '_top' } %>
-
-        <%# TODO: Resolve the problem with nested elements in button_to component %>
-        <%= button_to user_path(@user.uuid), method: :delete, form: { data: { turbo_confirm: t("are_you_sure") } },
-                          class: "c-btn c-btn--ghost c-acount__button c-acount__button--icon", target: '_top' do %>
-          <%= render 'svg/trash' %>
-          <span><%= t('users.show.delete') %></span>
-        <% end %>
-        <%# =================== %>
-
+        <%= component 'common/buttons/delete_button_with_text', path: user_path(@user.uuid), text: t('users.show.delete') %>
       </div>
     </div>
   </div>

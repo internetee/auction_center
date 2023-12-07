@@ -8,7 +8,7 @@ class CheckboxTest < ViewComponent::TestCase
 
     form = ActionView::Helpers::FormBuilder.new(:user, model, self, {})
 
-    render_inline(Common::Form::Checkbox::Component.new(
+    render_inline(Common::Form::Checkboxes::CheckboxWithLabel::Component.new(
       label_title: 'First name',
       form: form,
       attribute: :given_names

@@ -47,6 +47,83 @@ module Modals
           content.html_safe
         end
       end
+
+      def number_field_properties
+        {
+          attribute: :price,
+          options: {
+            min: 0.0,
+            step: 0.01,
+            value: number_with_precision(@autobider.price.to_f, precision: 2),
+            disabled: is_number_field_disabled?,
+            data: {
+              action: 'keydown->form--autobider-submit#validatePrice input->form--autobider-submit#validatingInputPrice',
+              form__autobider_submit_target: 'price',
+              form__autobider_validation_target: 'bidInput'
+            }
+          }
+        }
+      end
+
+      def autobider_form_properties
+        {
+          model: @autobider,
+          url: autobider_url,
+          data: {
+            turbo_frame: '_top',
+            controller: 'form--autobider-submit form--autobider-validation',
+            form__autobider_submit_target: 'form',
+            form__autobider_validation_bid_min_value: @auction.min_bids_step.to_f
+          },
+          html: { id: ' autobid_form ' }
+        }
+      end
+
+      def autobider_checkbox_properties
+        {
+          attribute: :enable,
+          options: {
+            id: 'checkbox',
+            data: {
+              form__autobider_submit_target: 'checkbox',
+              action: 'change->form--autobider-submit#submitAutobider'
+            }
+          }
+        }
+      end
+
+      def is_number_field_disabled?
+        @auction.finished? ? true : false
+      end
+
+      def offer_form_properties
+        {
+          model: @offer,
+          url:,
+          id: 'english_offer_form',
+          data: {
+            turbo: false,
+            controller: 'autotax-counter',
+            autotax_counter_template_value: t('english_offers.price_with_wat_template'),
+            autotax_counter_tax_value: "#{offer.billing_profile.present? ? offer.billing_profile.vat_rate : 0.0}",
+            autotax_counter_defaulttemplate_value: t('offers.price_is_without_vat')
+          }
+        }
+      end
+
+      def billing_profile_dropdown_properties
+        {
+          attribute: :billing_profile_id, 
+          enum: billing_profiles = BillingProfile.where(user_id: offer.user_id).collect do |b| 
+            [b.name, b.id, {'data-vat-rate' => b.vat_rate}] 
+          end,
+          first_options: { },
+          second_options: { 
+            class: billing_profiles.size == 1 ? "disabled" : "",
+            data: { action: 'change->autotax-counter#updateTax' } 
+          }
+        }
+      end
     end
   end
 end
