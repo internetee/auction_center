@@ -22,6 +22,10 @@ class AuctionsController < ApplicationController
   private
 
   def fetch_auctions_list
+    puts '===='
+    puts params
+    puts '===='
+
     if should_sort_auctions?
       Auction.active.ai_score_order.search(params, current_user).with_user_offers(current_user&.id)
     else
@@ -30,7 +34,7 @@ class AuctionsController < ApplicationController
   end
 
   def should_sort_auctions?
-    params[:sort].blank? && params[:direction].blank?
+    params[:sort_by].blank? && params[:sort_direction].blank?
   end
 
   def per_page_count

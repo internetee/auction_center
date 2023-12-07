@@ -7,7 +7,7 @@ module Queries::Auction
     end
 
     def call
-      joins(<<-SQL
+      Auction.joins(<<-SQL
       LEFT JOIN (
         SELECT offers.auction_id, offers.username
         FROM offers

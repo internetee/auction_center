@@ -12,7 +12,7 @@ module Queries::Auction
 
     def call
       if @user
-        joins(<<-SQL
+        Auction.joins(<<-SQL
           LEFT JOIN (
             SELECT auction_id, MAX(cents) AS max_offer_cents
             FROM offers
@@ -26,7 +26,7 @@ module Queries::Auction
         SQL
              )
       else
-        joins(<<-SQL
+        Auction.joins(<<-SQL
           LEFT JOIN (
             SELECT auction_id, MAX(cents) AS max_offer_cents
             FROM offers

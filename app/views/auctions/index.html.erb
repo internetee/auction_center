@@ -25,8 +25,8 @@
     <% header_collection = [{ column: 'domain_name', caption: t('auctions.domain_name'), options: { class: "sorting" } },
                             { column: 'platform', caption: t('auctions.auction_type'), options: { class: "sorting" } },
                             { column: 'ends_at', caption: t('auctions.ends_at'), options: { class: "sorting" } },
-                            { column: nil, caption: t('auctions.current_price'), options: { class: "sorting" } },
-                            { column: nil, caption: t('auctions.offer_owner'), options: { class: "sorting" } },
+                            { column: 'users_price', caption: t('auctions.current_price'), options: { class: "sorting" } },
+                            { column: 'username', caption: t('auctions.offer_owner'), options: { class: "sorting" } },
                             { column: nil, caption: t('auctions.offer_actions'), options: { class: 'u-text-left u-text-center-l' } }] %>
 
     <!-- In the Stimulus controller, I use the Turbo class with frame parameters named 'results' for table sorting. This means that rendering the table with the new sort order should occur within the scope of the turbo_frame_tag with the name "results". For it to work correctly, it's necessary to wrap the table content within this turbo_frame_tag with "results" name. The name "results" is assigned as a value for the orderable Stimulus controller in the table component. -->
