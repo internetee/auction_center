@@ -1,3 +1,6 @@
+08.12.2023
+* Cookie management improvements: https://github.com/internetee/auction_center/issues/1185
+
 01.12.2023
 * LHV-connect support: https://github.com/internetee/auction_center/pull/1180
 * Invoice status syncronisation with billing: https://github.com/internetee/auction_center/pull/1183
