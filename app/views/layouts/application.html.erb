@@ -35,7 +35,6 @@
         display: inline;
       }
     }
-
     </style>
   </head>
   <body data-controller="push-notification"
@@ -69,14 +68,11 @@
         <%= banned_banner %>
         <%= invalid_data_banner %>
         <%= yield %>
-
-
-
       </main>
+
+      <%= render 'common/cookies' if show_cookie_dialog? %>
       <%= render 'common/footer' %>
-      <%= render 'google_analytics', tracking_id: google_analytics.tracking_id if google_analytics.enabled? %>
-
-
+      <%= render 'google_analytics', tracking_id: google_analytics.tracking_id if google_analytics.enabled? && show_google_analytics? %>
     </div>
   </body>
 </html>

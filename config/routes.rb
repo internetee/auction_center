@@ -14,6 +14,8 @@ Rails.application.routes.draw do
     resources :versions, only: :index
   end
 
+  resource :cookies, only: %i[update]
+
   resources :histories, only: :index do
     resources :bids, only: :show
   end

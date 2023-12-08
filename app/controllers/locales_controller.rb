@@ -8,7 +8,8 @@ class LocalesController < ApplicationController
       cookies[:locale] = permitted_locale
     end
 
-    redirect_back(fallback_location: root_path)
+    # redirect_back(fallback_location: root_path)
+    redirect_to request.referer || root_path
   end
 
   def permitted_locale

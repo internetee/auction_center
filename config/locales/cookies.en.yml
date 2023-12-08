@@ -1,0 +1,15 @@
+en:
+  cookies:
+    dialog:
+      title: auction.internet.ee website uses cookies.
+      analytics_title: Statistics and Analytics Cookies
+      analytics_description: |
+        Help us understand how a specific visitor uses the website. This way we see how many people visit the site during a certain period, how they navigate through web pages, and what they click on. These cookies provide us with information based on which we improve the customer experience.
+      allow_google_analytics: "Allow Statistics and Analytics Cookie"
+      accept_selectively: "Accept Selectively"
+      configure: "Configure"
+      decline: "Decline all"
+      accept_all_cookies: "Accept All Cookies"
+      information_link: "here."
+      information: |
+        To ensure the best user experience for our services, our websites use cookies. We use cookies to personalize content and ads, and to provide social media features. We ask for your permission to use cookies that are not necessarily essential for the basic functions of our website. Please read our detailed descriptions and rules of cookies 
