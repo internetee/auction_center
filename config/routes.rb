@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     resource :stream_name, only: :show
+    resource :offers, only: :create
   end
 
   get 'unsubscribe/unsubscribe'
