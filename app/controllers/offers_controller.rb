@@ -5,6 +5,7 @@ class OffersController < ApplicationController
   before_action :check_for_ban, only: :create
   before_action :authorize_phone_confirmation
   before_action :authorize_offer_for_user, except: %i[new index create]
+  skip_before_action :verify_authenticity_token
 
   respond_to :html, :json
 
