@@ -10,6 +10,8 @@ class EnglishOffersController < ApplicationController
   # order is important
   include EnglishOffers::Offerable
 
+  skip_before_action :verify_authenticity_token
+
   include RecaptchaValidatable
   recaptcha_action 'english_offer'
   include OfferNotifable
