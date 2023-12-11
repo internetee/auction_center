@@ -74,10 +74,10 @@
 
                         <tbody id="finished-auctions-table">
                             <% @auctions.each do |auction| %>
-                                <tr class="finished-auctions-table-row">
+                                <tr class="finished-auctions-table-row" data-controller="auction-timezone" data-auction-timezone-end-time-value="<%= auction.ends_at.iso8601 %>">
                                     <td class="monospace"><%= auction.domain_name %></td>
                                     <td><%= auction.starts_at.to_formatted_s(:long) %></td>
-                                    <td><%= auction.ends_at.to_formatted_s(:long) %></td>
+                                    <td><span data-auction-timezone-target="display"><%= auction.ends_at %></span></td>
                                     <td><%= auction.currently_winning_offer&.price if auction.platform == 'english' %></td>
                                     <td>
                                         <%= t("auctions.#{auction.platform&.downcase.presence || 'blind (lagacy)'}") %>

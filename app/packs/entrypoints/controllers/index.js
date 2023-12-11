@@ -41,3 +41,5 @@ import AutotaxCounterController from "./autotax_counter_controller"
 application.register("autotax-counter", AutotaxCounterController)
 import CookieController from "./cookie_controller"
 application.register("cookie", CookieController)
+import AuctionTimezoneController from "./auction_timezone_controller"
+application.register("auction-timezone", AuctionTimezoneController)

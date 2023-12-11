@@ -20,7 +20,7 @@
         <tbody id="offers-table-body">
           <% @offers.each do |offer| %>
             <% auction = offer.auction %>
-            <tr class="offers-table-row">
+            <tr class="offers-table-row" data-controller="auction-timezone" data-auction-timezone-end-time-value="<%= auction.ends_at.iso8601 %>">
               <td class="monospace"><%= link_to offer.auction.domain_name, offer_path(offer.uuid) %></td>
               <td><span class='span-mobile-only'><b><%= t('.your_last_offer') %>:</b></span> <%= t('offers.price_in_currency', price: offer.price) %></td>
               <td><span class='span-mobile-only'><b><%= t('offers.total') %>:</b></span> <%= t('offers.price_in_currency', price: offer.total) %></td>
@@ -29,7 +29,7 @@
                 <%- if auction.finished? %>
                   <%= t('auctions.finished') %>
                 <% else %>
-                  <%= I18n.l(auction.ends_at) %>
+                  <span data-auction-timezone-target="display"><%= auction.ends_at %></span>
                 <% end %>
               </td>
               <td>
