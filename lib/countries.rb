@@ -1,4 +1,3 @@
-# encoding: UTF-8
 module Countries
   ALPHA_2_SELECTION = [{ name: 'Afghanistan', code: 'AF' },
                        { name: 'Åland Islands', code: 'AX' },
@@ -259,7 +258,8 @@ module Countries
                { code: 'CY', rate: BigDecimal('0.19') },
                { code: 'CZ', rate: BigDecimal('0.21') },
                { code: 'DK', rate: BigDecimal('0.25') },
-               { code: 'EE', rate: BigDecimal('0.2') },
+               { code: 'EE',
+                 rate: BigDecimal(Rails.application.config.customization['is_new_vat_rate_available'] ? '0.22' : '0.2') },
                { code: 'FI', rate: BigDecimal('0.24') },
                { code: 'FR', rate: BigDecimal('0.2') },
                { code: 'DE', rate: BigDecimal('0.19') },
@@ -278,7 +278,7 @@ module Countries
                { code: 'SK', rate: BigDecimal('0.2') },
                { code: 'SI', rate: BigDecimal('0.22') },
                { code: 'ES', rate: BigDecimal('0.21') },
-               { code: 'SE', rate: BigDecimal('0.25') },].freeze
+               { code: 'SE', rate: BigDecimal('0.25') }].freeze
 
   def self.for_selection
     ALPHA_2_SELECTION.collect { |i| [i[:name], i[:code]] }
