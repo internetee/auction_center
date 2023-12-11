@@ -9,6 +9,22 @@ Bundler.require(*Rails.groups)
 
 module AuctionCenter
   class Application < Rails::Application
+
+    class RequestLoggerMiddleware
+      def initialize(app)
+        @app = app
+      end
+
+      def call(env)
+        Rails.logger.info "Request: #{env['REQUEST_METHOD']} #{env['PATH_INFO']}"
+        Rails.logger.info "Headers: #{env.select { |k, v| k.start_with? 'HTTP_' }}"
+        Rails.logger.info "Body: #{env['rack.input'].read}"
+        env['rack.input'].rewind
+
+        @app.call(env)
+      end
+    end
+
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.0
     config.active_support.to_time_preserves_timezone = :zone
@@ -18,6 +34,7 @@ module AuctionCenter
     config.active_model.i18n_customize_full_message = true
     config.autoload_paths += %W(#{config.root}/app/models/concerns)
 
+    config.middleware.insert_before 0, RequestLoggerMiddleware
 
     # config.autoload_paths += Dir[Rails.root.join('app', 'presenters', '**/')]
     # config.autoload_paths += Dir[Rails.root.join('app', 'broadcasts', '**/')]
