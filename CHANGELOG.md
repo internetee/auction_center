@@ -1,3 +1,6 @@
+13.12.2023
+* Auction start and end times are now in user local timezone https://github.com/internetee/auction_center/issues/1187
+
 08.12.2023
 * Cookie management improvements: https://github.com/internetee/auction_center/issues/1185
 
