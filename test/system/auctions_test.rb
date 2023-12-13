@@ -72,7 +72,6 @@ class AuctionsTest < ApplicationSystemTestCase
     visit(auction_path(@auction.uuid))
 
     assert(page.has_content?(:visible, 'with-offers.test'))
-    assert(page.has_content?(:visible, '2010-07-06 10:30'))
   end
 
   def test_for_english_auction_should_be_bid_button

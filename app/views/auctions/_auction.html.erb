@@ -1,4 +1,4 @@
-<tr class="auctions-table-row contents" id="<%= dom_id(auction) %>" data-platform="<%= auction.platform %>">
+<tr class="auctions-table-row contents" id="<%= dom_id(auction) %>" data-platform="<%= auction.platform %>" data-controller="auction-timezone" data-auction-timezone-end-time-value="<%= auction.ends_at.iso8601 %>">
     <% english_auction_presenter = EnglishBidsPresenter.new(auction) %>
     <td class="auction-domain-name monospace">
         <%= link_to auction_path(auction.uuid), target: '_top' do %>
@@ -7,7 +7,7 @@
     </td>
     <td>
         <span class="auctions-table-mobile-infotainment"><%= t('auctions.ends_at') %> </span>
-        <%= I18n.l(auction.ends_at) %>
+        <span data-auction-timezone-target="display"><%= auction.ends_at %></span>
     </td>
     <td>
         <span class="auctions-table-mobile-infotainment"><%= t('auctions.auction_type') %> </span>

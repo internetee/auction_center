@@ -15,9 +15,9 @@
                         <td class="monospace"><%= @offer.auction.domain_name %></td>
                     </tr>
 
-                    <tr>
+                    <tr data-controller="auction-timezone" data-auction-timezone-end-time-value="<%= @offer.auction.ends_at.iso8601 %>">
                         <td><strong><%= t('auctions.ends_at') %></strong></td>
-                        <td><%= I18n.l(@offer.auction.ends_at) %></td>
+                        <td><span data-auction-timezone-target="display"><%= @offer.auction.ends_at %></span></td>
                     </tr>
                     <tr>
                         <td><strong><%= t('offers.price') %></strong></td>
