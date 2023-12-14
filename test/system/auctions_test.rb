@@ -1,32 +1,149 @@
 require 'application_system_test_case'
+require "test_helper"
 
 class AuctionsTest < ApplicationSystemTestCase
   def setup
+    super
+
+    travel_to Time.parse('2010-07-05 10:40 +0000').in_time_zone
+
     @blind_auction = auctions(:valid_with_offers)
     @english_auction = auctions(:english)
+
+    @user = users(:participant)
   end
 
   def test_if_anonymous_click_to_offer_he_redirect_to_login_page
+    visit('/')
 
+    click_link_or_button(I18n.t('auctions.bid'), match: :first)
+
+    assert_current_path new_user_session_path
   end
 
   def test_if_user_click_to_offer_open_modal_window_for_blind_auction
+    sign_in @user
 
+    visit('/')
+
+    within("tr[data-platform='english']", match: :first) do
+      assert(page.has_content?(:visible, '0.0 €'))
+
+      click_link_or_button(I18n.t('auctions.bid'))
+    end
+
+    assert_selector('.c-modal', visible: true)
   end
 
   def test_if_user_click_to_offer_open_modal_window_for_english_auction
+    sign_in @user
+
+    visit('/')
+
+    within("#auction_#{@blind_auction.id}", match: :first) do
+      assert(page.has_content?(:visible, @blind_auction.currently_winning_offer.price))
+
+      find('a.c-btn.c-btn--ghost.c-btn--icon', match: :first).click
+    end
+
+    assert_selector('.c-modal', visible: true)
+  end
+
+  def test_subscribe_to_notifications
+    sign_in @user
+
+    visit('/')
+
+    assert(page.has_content?(:visible, I18n.t('auctions.subscribe_for_notifications')))
+    click_link_or_button(I18n.t('auctions.subscribe_for_notifications'))
+
+    assert(page.has_content?(:visible, I18n.t('auctions.unsubscribe_for_notifications')))
+  end
+
+  def test_show_all
+    sign_in @user
+
+    visit('/')
+
+    assert(page.has_content?(:visible, I18n.t('auctions.all_list')))
+    click_link_or_button(I18n.t('auctions.all_list'))
+
+    assert_current_path auctions_path + '?show_all=true'
+  end
+
+  def test_sort_table
+    # TODO: Stimulus actions not work in test mode
+    # --------------------------------------------
+
+    # sign_in @user
+
+    # visit('/')
+
+    # list_of_domain = page.all('tbody#bids tr.contents td:first-child').map(&:text)
+
+    # puts list_of_domain
+    # puts '-----'
+
+    # find('.sorting', text: I18n.t('auctions.domain_name', match: :first)).click
+
+    # list_of_domain = page.all('tbody#bids tr.contents td:first-child').map(&:text)
+
+    # puts list_of_domain
+  end
+
+  def test_filter_auction_list
+    # TODO: Stimulus actions not work in test mode
+    # --------------------------------------------
+
+  #   sign_in @user
+
+  #   visit('/')
+
+  #   list_of_domain = page.all('tbody#bids tr.contents td:first-child').map(&:text)
+
+  #   puts list_of_domain
+  #   puts '-----'
+
+  #   find('#domain_name').set('english_auction.test')
+  #   sleep 1
+
+
+  #   list_of_domain = page.all('tbody#bids tr.contents td:first-child').map(&:text)
+
+  #   puts list_of_domain
+  #   puts '-----'
 
   end
 
-  def test_user_can_sort_auctions
+  # AUTOBIDER ========================================
+
+  def test_autobider_available_only_for_english_type_auctions
+    sign_in @user
+
+    visit('/')
+
+    within("tr[data-platform='english']", match: :first) do
+      assert(page.has_content?(:visible, '0.0 €'))
+
+      click_link_or_button(I18n.t('auctions.bid'))
+    end
+
+    assert_selector '.c-modal', visible: true
+    assert_selector '#autobider_price', visible: true
+    assert_selector "input[name='autobider[enable]']"
+
+    assert(page.has_content?(:visible, "#{I18n.t('english_offers.form.autobider')}: #{I18n.t('english_offers.form.nope')}" ))
+  end
+
+  def test_autobider_not_available_for_blind_auctions
 
   end
 
-  def test_user_can_filter_auctions
-    
+  def test_autobidder_could_not_be_enable_if_price_is_less_than_minimum_required
+
   end
 
-  # include ActiveJob::TestHelper
+  def test_user_can_set_autobider_and_unset_autobider
 
   # def setup
   #   super
