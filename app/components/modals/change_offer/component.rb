@@ -54,7 +54,8 @@ module Modals
           options: {
             min: 0.0,
             step: 0.01,
-            value: number_with_precision(@autobider.price.to_f, precision: 2),
+            # value: number_with_precision(@autobider.price.to_f, precision: 2) || @auction.min_bids_step.to_f,
+            value: number_with_precision(@autobider.price.to_f, precision: 2, delimiter: '', separator: '.') || @auction.min_bids_step.to_f,
             disabled: is_number_field_disabled?,
             data: {
               action: 'keydown->form--autobider-submit#validatePrice input->form--autobider-submit#validatingInputPrice',

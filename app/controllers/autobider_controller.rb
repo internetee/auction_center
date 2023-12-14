@@ -20,7 +20,10 @@ class AutobiderController < ApplicationController
       flash[:alert] = t('english_offers.form.captcha_verification')
     end
 
-    render turbo_stream: turbo_stream.replace('flash', partial: 'common/flash', locals: { flash: })
+    render turbo_stream: [
+      turbo_stream.replace('flash', partial: 'common/flash', locals: { flash: }),
+      turbo_stream.update('autobider-status', html: @autobider.enable ? I18n.t('english_offers.form.yep') : I18n.t('english_offers.form.nope'))
+      ]
   end
 
   def edit
