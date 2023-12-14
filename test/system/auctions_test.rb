@@ -136,7 +136,21 @@ class AuctionsTest < ApplicationSystemTestCase
   end
 
   def test_autobider_not_available_for_blind_auctions
+    sign_in @user
 
+    visit('/')
+
+    within("#auction_#{@blind_auction.id}", match: :first) do
+      assert(page.has_content?(:visible, @blind_auction.currently_winning_offer.price))
+
+      find('a.c-btn.c-btn--ghost.c-btn--icon', match: :first).click
+    end
+
+    assert_selector '.c-modal', visible: true
+    assert_no_selector '#autobider_price', visible: true
+    assert_no_selector "input[name='autobider[enable]']"
+
+    refute(page.has_content?(:visible, "#{I18n.t('english_offers.form.autobider')}: #{I18n.t('english_offers.form.nope')}" ))
   end
 
   def test_autobidder_could_not_be_enable_if_price_is_less_than_minimum_required

@@ -50,7 +50,7 @@
                   <%= component 'common/form/checkboxes/rounded_checkbox', form: f, **autobider_checkbox_properties %>
 
                   <span class="u-word-nowrap">
-                    <%= t('english_offers.form.autobider') %>: <strong><%= t('english_offers.form.nope') %></strong>
+                    <%= t('english_offers.form.autobider') %>: <strong id='autobider-status'><%= @autobider.enable ? t('english_offers.form.yep') : t('english_offers.form.nope') %></strong>
                   </span>
                 </div>
               </div>
