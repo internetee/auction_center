@@ -7,13 +7,13 @@
 
       <%= component 'common/form/radio_button', form: f, title: 'english', attribute: :type, data_attributes: { **form_filter_target }, options: { **radio_btn_style, id: 'filter_IO_button'} %>
       <%= f.label :type_english, class: "c-table__filters__btn js-table-filter-btn", style: 'cursor: pointer;', for: 'filter_IO_button', data: { **form_filter_data_attrs } do %>
-        <span class="o-io-icon"></span><span class="u-hidden-m"><%= t('auction.english_auction') %></span>
+        <span class="o-io-icon"></span><span class="u-hidden-m"><%= t('auctions.english_auction') %></span>
       <% end %>
       
       <%= component 'common/form/radio_button', form: f, title: 'blind', attribute: :type, 
                     data_attributes: { **form_filter_target }, options: { **radio_btn_style, id: 'filter_PO_button'} %>
       <%= f.label :type_blind, class: "c-table__filters__btn js-table-filter-btn", style: 'cursor: pointer;', for: 'filter_PO_button', data: { **form_filter_data_attrs } do %>
-        <span class="o-po-icon"></span><span class="u-hidden-m"> <%= t('auction.blind_auction') %></span>
+        <span class="o-po-icon"></span><span class="u-hidden-m"> <%= t('auctions.blind_auction') %></span>
       <% end %>
     </div>
 
@@ -24,8 +24,8 @@
     <%= component 'pages/auction/notification_subscribe', current_user: @current_user %>
 
     <div class="c-auctions__legend">
-      <div><span class="o-io-icon o-icon--sm"></span><%= t('auction.english_auction') %></div>
-      <div><span class="o-po-icon o-icon--sm"></span><%= t('auction.blind_auction') %></div>
+      <div><span class="o-io-icon o-icon--sm"></span><%= t('auctions.english_auction') %></div>
+      <div><span class="o-po-icon o-icon--sm"></span><%= t('auctions.blind_auction') %></div>
     </div>
   </div>
 <% end %>

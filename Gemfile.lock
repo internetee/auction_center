@@ -409,9 +409,14 @@ GEM
       faraday-multipart (>= 1)
     ruby-progressbar (1.13.0)
     ruby2_keywords (0.0.5)
+    rubyzip (2.3.2)
     scenic (1.7.0)
       activerecord (>= 4.0.0)
       railties (>= 4.0.0)
+    selenium-webdriver (4.12.0)
+      rexml (~> 3.2, >= 3.2.5)
+      rubyzip (>= 1.2.2, < 3.0)
+      websocket (~> 1.0)
     simplecov (0.17.1)
       docile (~> 1.1)
       json (>= 1.8, < 3)
@@ -466,6 +471,10 @@ GEM
       activemodel (>= 6.0.0)
       bindex (>= 0.4.0)
       railties (>= 6.0.0)
+    webdrivers (5.2.0)
+      nokogiri (~> 1.6)
+      rubyzip (>= 1.3.0)
+      selenium-webdriver (~> 4.0)
     webfinger (1.2.0)
       activesupport
       httpclient (>= 2.4)
@@ -477,6 +486,7 @@ GEM
       hkdf (~> 0.2)
       jwt (~> 2.0)
     webrick (1.8.1)
+    websocket (1.2.10)
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
@@ -495,7 +505,7 @@ DEPENDENCIES
   bullet
   byebug
   cancancan
-  capybara (>= 2.15)
+  capybara (~> 3.39.2)
   chartkick
   cssbundling-rails
   cuprite
@@ -551,6 +561,7 @@ DEPENDENCIES
   valvat
   view_component
   web-console (>= 3.3.0)
+  webdrivers
   webmock
   webpush
 
