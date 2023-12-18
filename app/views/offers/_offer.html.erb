@@ -10,7 +10,7 @@
   <td><%= component 'common/auction_type_icon', auction: offer.auction %></td>
   <td><b><%= t('.your_last_offer') %>:</b> <%= t('offers.price_in_currency', price: offer.price) %></td>
   <td><%= t('offers.price_in_currency', price: offer.total) %></td>
-  <td><%= offer.auction.finished? ? t('auctions.finished') : tag.span(offer.auction.ends_at, data: { auction_timezone_target: 'display'}) %></td>
+  <td><%= offer.auction.finished? ? t('auctions.finished') : tag.span(offer.auction.ends_at, data: { auction_timezone_target: 'endtime'}) %></td>
   
   <td>
     <%- if offer.auction.finished? %>

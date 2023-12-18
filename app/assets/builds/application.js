@@ -8609,18 +8609,22 @@
 
   // controllers/auction_timezone_controller.js
   var auction_timezone_controller_default = class extends Controller {
-    static values = { endTime: String };
-    static targets = ["display"];
+    static values = { startTime: String, endTime: String };
+    static targets = ["endtime", "starttime"];
     connect() {
       this.updateTime();
     }
     updateTime() {
-      if (!this.hasDisplayTarget) {
-        return;
+      if (this.hasEndtimeTarget) {
+        const endTime = new Date(this.endTimeValue);
+        const userLocalTime = endTime.toLocaleString(void 0, { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone });
+        this.endtimeTarget.textContent = userLocalTime;
       }
-      const endTime = new Date(this.endTimeValue);
-      const userLocalTime = endTime.toLocaleString(void 0, { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone });
-      this.displayTarget.textContent = userLocalTime;
+      if (this.hasStarttimeTarget) {
+        const startTime = new Date(this.startTimeValue);
+        const userLocalTime = startTime.toLocaleString(void 0, { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone });
+        this.starttimeTarget.textContent = userLocalTime;
+      }
     }
   };
 
