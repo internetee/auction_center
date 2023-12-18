@@ -56,6 +56,12 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   
   Capybara.server = :puma, { Silent: true }
 
+  def take_screenshot
+    return super unless Capybara.last_used_session
+
+    Capybara.using_session(Capybara.last_used_session) { super }
+  end
+
   private
 
   def extract_primary_link_from_last_mail

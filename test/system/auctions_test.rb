@@ -118,6 +118,7 @@ class AuctionsTest < ApplicationSystemTestCase
   # AUTOBIDER ========================================
 
   def test_autobider_available_only_for_english_type_auctions
+    Autobider.destroy_all
     sign_in @user
 
     visit('/')
@@ -153,11 +154,31 @@ class AuctionsTest < ApplicationSystemTestCase
     refute(page.has_content?(:visible, "#{I18n.t('english_offers.form.autobider')}: #{I18n.t('english_offers.form.nope')}" ))
   end
 
-  def test_autobidder_could_not_be_enable_if_price_is_less_than_minimum_required
+  def test_user_can_set_autobider_and_unset_autobider
+    Autobider.destroy_all
 
+    sign_in @user
+
+    visit('/')
+
+    within("tr[data-platform='english']", match: :first) do
+      assert(page.has_content?(:visible, '0.0 €'))
+
+      click_link_or_button(I18n.t('auctions.bid'))
+    end
+
+    assert_selector '.c-modal', visible: true
+
+    assert(page.has_content?(:visible, "#{I18n.t('english_offers.form.autobider')}: #{I18n.t('english_offers.form.nope')}" ))
+    
+    find('#autobider_price').set('100')
+    # find('.o-checkbox__slider').click
+    find('#checkbox').set(true)
+
+    # TODO: Turbo stream not work in test mode
+    # assert(page.has_content?(:visible, "#{I18n.t('english_offers.form.autobider')}: #{I18n.t('english_offers.form.yep')}" ))
   end
 
-  def test_user_can_set_autobider_and_unset_autobider
 
   # def setup
   #   super
