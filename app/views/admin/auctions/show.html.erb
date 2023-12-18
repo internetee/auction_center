@@ -1,5 +1,5 @@
 <%= component 'common/hero', title: "#{t('.title')}: #{@auction.domain_name}"  %>
-<div class="o-container">
+<div class="o-container" data-controller="auction-timezone" data-auction-timezone-end-time-value="<%= auction.ends_at.iso8601 %>" data-auction-timezone-start-time-value="<%= auction.starts_at.iso8601 %>">
   <div class="c-table c-table--sortable" data-controller='form--bundle-checkbox'>
     <%= component 'common/table', header_collection: [], options: { class: 'js-table-dt dataTable no-footer' } do %>
       <%= tag.tbody id: "auctions-table-body", class: 'contents' do %>
@@ -11,22 +11,24 @@
         </tr>
         <tr>
           <td><strong><%= t('auctions.starts_at') %></strong></td>
-          <td><%= I18n.l(@auction.starts_at) if @auction.starts_at.present? %>
-          </tr>
-          <tr data-controller="auction-timezone" data-auction-timezone-end-time-value="<%= @auction.ends_at.iso8601 %>">
+          <%= tag.td do %>
+            <span data-auction-timezone-target="starttime"><%= auction.starts_at %></span>
+          <% end @auction.starts_at.present? %>
+        </tr>
+        <tr>
             <td><strong><%= t('auctions.ends_at') %></strong></td>
             <%= tag.td do %>
-              <span data-auction-timezone-target="display"><%= @auction.ends_at %></span>
+              <span data-auction-timezone-target="endtime"><%= auction.ends_at %></span>
             <% end @auction.ends_at.present? %>
+        </tr>
+        <%- if @auction.offer_from_user(current_user).present? %>
+          <tr>
+                <td><strong><%= t('auctions.your_current_price') %></strong></td>
+                <td><%= @auction.current_price_from_user(current_user) %></td>
           </tr>
-          <%- if @auction.offer_from_user(current_user).present? %>
-            <tr>
-              <td><strong><%= t('auctions.your_current_price') %></strong></td>
-              <td><%= @auction.current_price_from_user(current_user) %></td>
-            </tr>
-          <% end %>
         <% end %>
       <% end %>
+    <% end %>
 
       <div class="c-table__filters__btns" style='padding: 1rem 0; display: flex; justify-content: end;'>
         <%= button_to t(:delete), admin_auction_path(@auction), method: :delete, class: "c-btn c-btn--red", form: { data: { turbo_confirm: t(".confirm_delete") } } %>

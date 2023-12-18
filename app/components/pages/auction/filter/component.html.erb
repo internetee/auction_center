@@ -23,7 +23,7 @@
     
 
     <div class="c-table__filters__more">
-      <% if current_page?(auctions_path) %>
+      <% if current_page?(auctions_path) || current_page?(root_path) %>
         <%= component 'common/links/link_button', link_title: t(:finished_auctions), href: histories_path, color: 'ghost' %>
       <% else %>
         <%= component 'common/links/link_button', link_title: t(:auctions_name), href: auctions_path, color: 'ghost' %>
