@@ -1,4 +1,4 @@
-<tr id="<%= dom_id(auction) %>" data-platform="<%= auction.platform %>" class="contents">
+<tr id="<%= dom_id(auction) %>" data-platform="<%= auction.platform %>" class="contents" data-controller="auction-timezone" data-auction-timezone-end-time-value="<%= auction.ends_at.iso8601 %>">
   
   <% english_auction_presenter = EnglishBidsPresenter.new(auction) %>
 
@@ -6,7 +6,7 @@
   
   <td><%= component 'common/auction_type_icon', auction: auction %></td>
 
-  <td><%= l(auction.ends_at) %></td>
+  <td><span data-auction-timezone-target="display"><%= auction.ends_at %></span></td>
 
   <td>
     <% if auction.english? %>

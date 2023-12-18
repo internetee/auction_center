@@ -1,5 +1,5 @@
 <%# TODO: Move to component and all logic should be in represent part %>
-<tr>
+<tr data-controller="auction-timezone" data-auction-timezone-end-time-value="<%= offer.auction.ends_at.iso8601 %>">>
   <td>
     <% if offer.auction.english? %>
       <%= link_to offer.auction.domain_name, english_offer_path(offer.uuid), style: 'color: black;', target: '_top' %>
@@ -10,8 +10,7 @@
   <td><%= component 'common/auction_type_icon', auction: offer.auction %></td>
   <td><b><%= t('.your_last_offer') %>:</b> <%= t('offers.price_in_currency', price: offer.price) %></td>
   <td><%= t('offers.price_in_currency', price: offer.total) %></td>
-  <td><%= offer.auction.finished? ? t('auctions.finished') : I18n.l(offer.auction.ends_at) %>
-  </td>
+  <td><%= offer.auction.finished? ? t('auctions.finished') : tag.span(offer.auction.ends_at, data: { auction_timezone_target: 'display'}) %></td>
   
   <td>
     <%- if offer.auction.finished? %>

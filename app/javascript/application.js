@@ -2,3 +2,4 @@
 import "./turbo_streams"
 import "@hotwired/turbo-rails"
 import "./controllers"
+

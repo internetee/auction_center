@@ -60,3 +60,12 @@ application.register("hamburger", HamburgerController);
 
 import ExpandableController from "./navbar/expandable_controller";
 application.register("navbar--expandable", ExpandableController);
+
+import CookieConsentController from "./cookie_consent_controller";
+application.register("cookie-consent", CookieConsentController);
+
+import GoogleAnalyticsController from "./google_analytics_controller";
+application.register("google-analytics", GoogleAnalyticsController);
+
+import AuctionTimezoneController from "./auction_timezone_controller";
+application.register("auction-timezone", AuctionTimezoneController);
