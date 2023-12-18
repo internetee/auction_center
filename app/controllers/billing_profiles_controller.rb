@@ -5,6 +5,11 @@ class BillingProfilesController < ApplicationController
   before_action :authorize_billing_profile_for_user, except: %i[new index create]
   before_action :store_location, only: :new
 
+  rescue_from ActiveRecord::RecordNotUnique do |_exception|
+    flash[:alert] = t('billing_profiles.vat_code_already_exists')
+    render turbo_stream: turbo_stream.replace('flash', partial: 'common/flash', locals: { flash: })
+  end
+
   # GET /billing_profiles
   def index
     @billing_profiles = BillingProfile.accessible_by(current_ability)

@@ -1,14 +1,64 @@
 require 'application_system_test_case'
 
 class BillingProfilesTest < ApplicationSystemTestCase
-  # def setup
-  #   super
 
-  #   @user = users(:participant)
-  #   @billing_profile = billing_profiles(:private_person)
-  #   @company_billing_profile = billing_profiles(:company)
-  #   sign_in(@user)
-  # end
+  def setup
+    super
+
+    @user = users(:participant)
+    @billing_profile = billing_profiles(:private_person)
+    @company_billing_profile = billing_profiles(:company)
+    sign_in(@user)
+  end
+
+  def test_user_can_change_his_billing_profile
+    Offer.destroy_all
+    @user.reload
+    @billing_profile.reload
+
+    visit billing_profiles_path
+
+    user_name_field = find('.o-card__title.c-account__title', match: :first)
+    assert_equal @user.display_name, user_name_field.value
+    assert user_name_field[:readonly]
+
+    vap_code_field = find('#input1', match: :first)
+    assert_equal @billing_profile.vat_code, vap_code_field.value.empty? ? nil : @billing_profile.vat_code
+    assert vap_code_field[:readonly]
+
+    street_field = find('#input2', match: :first)
+    assert_equal @billing_profile.street, street_field.value
+    assert street_field[:readonly]
+
+    city_field = find('#input3', match: :first)
+    assert_equal @billing_profile.city, city_field.value
+    assert city_field[:readonly]
+
+    postal_code_field = find('#input4', match: :first)
+    assert_equal @billing_profile.postal_code, postal_code_field.value
+    assert postal_code_field[:readonly]
+
+    find("a.c-btn.c-btn--ghost.c-btn--icon[href='/billing_profiles/762b09cb-bf40-4cf7-bdab-09cf677d0d0f/edit']").click
+
+    # TODO:
+    # Here should be wot turbo request format
+
+    find('input[name="billing_profile[name]"]').set('Sasha Belyi')
+    find('input[name="billing_profile[street]"]').set('Paldiski mnt 12')
+    find('input[name="billing_profile[city]"]').set('Tallinn')
+    find('input[name="billing_profile[postal_code]"]').set('10137')
+    find('select[name="billing_profile[country_code]"]').select('Estonia')
+
+    find('.c-btn.c-btn--ghost.c-btn--icon.js-modal-delete-toggle').click
+
+    user_name_field = find('.o-card__title.c-account__title', match: :first)
+    assert_equal 'Sasha Belyi', user_name_field.value
+    assert user_name_field[:readonly]
+  end
+
+  def test_user_can_delete_his_billing_profile
+
+  end
 
   # def test_user_details_contains_a_link_to_billing
   #   visit user_path(@user.uuid)
