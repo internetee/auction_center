@@ -5,7 +5,6 @@
   var __getOwnPropNames = Object.getOwnPropertyNames;
   var __getProtoOf = Object.getPrototypeOf;
   var __hasOwnProp = Object.prototype.hasOwnProperty;
-  var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
   var __esm = (fn, res) => function __init() {
     return fn && (res = (0, fn[__getOwnPropNames(fn)[0]])(fn = 0)), res;
   };
@@ -25,17 +24,17 @@
     return to;
   };
   var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
+    // If the importer is in node compatibility mode or this is not an ESM
+    // file that has been converted to a CommonJS file using a Babel-
+    // compatible transform (i.e. "__esModule" has not been set), then set
+    // "default" to the CommonJS "module.exports" for node compatibility.
     isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
     mod
   ));
-  var __publicField = (obj, key, value) => {
-    __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
-    return value;
-  };
 
-  // node_modules/toastify-js/src/toastify.js
+  // ../../node_modules/toastify-js/src/toastify.js
   var require_toastify = __commonJS({
-    "node_modules/toastify-js/src/toastify.js"(exports, module) {
+    "../../node_modules/toastify-js/src/toastify.js"(exports, module) {
       (function(root, factory) {
         if (typeof module === "object" && module.exports) {
           module.exports = factory();
@@ -74,6 +73,7 @@
         Toastify2.lib = Toastify2.prototype = {
           toastify: version,
           constructor: Toastify2,
+          // Initializing the object with required parameters
           init: function(options) {
             if (!options) {
               options = {};
@@ -105,6 +105,7 @@
             }
             return this;
           },
+          // Building the DOM element
           buildToast: function() {
             if (!this.options) {
               throw "Toastify is not initialized";
@@ -158,8 +159,8 @@
               closeElement.innerHTML = "&#10006;";
               closeElement.addEventListener(
                 "click",
-                function(event) {
-                  event.stopPropagation();
+                function(event2) {
+                  event2.stopPropagation();
                   this.removeElement(this.toastElement);
                   window.clearTimeout(this.toastElement.timeOutValue);
                 }.bind(this)
@@ -175,7 +176,7 @@
               var self2 = this;
               divElement.addEventListener(
                 "mouseover",
-                function(event) {
+                function(event2) {
                   window.clearTimeout(divElement.timeOutValue);
                 }
               );
@@ -194,8 +195,8 @@
             if (typeof this.options.destination !== "undefined") {
               divElement.addEventListener(
                 "click",
-                function(event) {
-                  event.stopPropagation();
+                function(event2) {
+                  event2.stopPropagation();
                   if (this.options.newWindow === true) {
                     window.open(this.options.destination, "_blank");
                   } else {
@@ -207,8 +208,8 @@
             if (typeof this.options.onClick === "function" && typeof this.options.destination === "undefined") {
               divElement.addEventListener(
                 "click",
-                function(event) {
-                  event.stopPropagation();
+                function(event2) {
+                  event2.stopPropagation();
                   this.options.onClick();
                 }.bind(this)
               );
@@ -222,6 +223,7 @@
             }
             return divElement;
           },
+          // Displaying the toast
           showToast: function() {
             this.toastElement = this.buildToast();
             var rootElement;
@@ -254,6 +256,7 @@
             }
             this.removeElement(this.toastElement);
           },
+          // Removing the element from the DOM
           removeElement: function(toastElement) {
             toastElement.className = toastElement.className.replace(" on", "");
             window.setTimeout(
@@ -336,10 +339,10 @@
     }
   });
 
-  // node_modules/@hotwired/turbo-rails/node_modules/@rails/actioncable/src/adapters.js
+  // ../../node_modules/@hotwired/turbo-rails/node_modules/@rails/actioncable/src/adapters.js
   var adapters_default;
   var init_adapters = __esm({
-    "node_modules/@hotwired/turbo-rails/node_modules/@rails/actioncable/src/adapters.js"() {
+    "../../node_modules/@hotwired/turbo-rails/node_modules/@rails/actioncable/src/adapters.js"() {
       adapters_default = {
         logger: self.console,
         WebSocket: self.WebSocket
@@ -347,10 +350,10 @@
     }
   });
 
-  // node_modules/@hotwired/turbo-rails/node_modules/@rails/actioncable/src/logger.js
+  // ../../node_modules/@hotwired/turbo-rails/node_modules/@rails/actioncable/src/logger.js
   var logger_default;
   var init_logger = __esm({
-    "node_modules/@hotwired/turbo-rails/node_modules/@rails/actioncable/src/logger.js"() {
+    "../../node_modules/@hotwired/turbo-rails/node_modules/@rails/actioncable/src/logger.js"() {
       init_adapters();
       logger_default = {
         log(...messages) {
@@ -363,12 +366,12 @@
     }
   });
 
-  // node_modules/@hotwired/turbo-rails/node_modules/@rails/actioncable/src/connection_monitor.js
+  // ../../node_modules/@hotwired/turbo-rails/node_modules/@rails/actioncable/src/connection_monitor.js
   var now, secondsSince, ConnectionMonitor, connection_monitor_default;
   var init_connection_monitor = __esm({
-    "node_modules/@hotwired/turbo-rails/node_modules/@rails/actioncable/src/connection_monitor.js"() {
+    "../../node_modules/@hotwired/turbo-rails/node_modules/@rails/actioncable/src/connection_monitor.js"() {
       init_logger();
-      now = () => new Date().getTime();
+      now = () => (/* @__PURE__ */ new Date()).getTime();
       secondsSince = (time) => (now() - time) / 1e3;
       ConnectionMonitor = class {
         constructor(connection) {
@@ -409,6 +412,7 @@
           this.disconnectedAt = now();
           logger_default.log("ConnectionMonitor recorded disconnect");
         }
+        // Private
         startPolling() {
           this.stopPolling();
           this.poll();
@@ -473,10 +477,10 @@
     }
   });
 
-  // node_modules/@hotwired/turbo-rails/node_modules/@rails/actioncable/src/internal.js
+  // ../../node_modules/@hotwired/turbo-rails/node_modules/@rails/actioncable/src/internal.js
   var internal_default;
   var init_internal = __esm({
-    "node_modules/@hotwired/turbo-rails/node_modules/@rails/actioncable/src/internal.js"() {
+    "../../node_modules/@hotwired/turbo-rails/node_modules/@rails/actioncable/src/internal.js"() {
       internal_default = {
         "message_types": {
           "welcome": "welcome",
@@ -499,10 +503,10 @@
     }
   });
 
-  // node_modules/@hotwired/turbo-rails/node_modules/@rails/actioncable/src/connection.js
+  // ../../node_modules/@hotwired/turbo-rails/node_modules/@rails/actioncable/src/connection.js
   var message_types, protocols, supportedProtocols, indexOf, Connection, connection_default;
   var init_connection = __esm({
-    "node_modules/@hotwired/turbo-rails/node_modules/@rails/actioncable/src/connection.js"() {
+    "../../node_modules/@hotwired/turbo-rails/node_modules/@rails/actioncable/src/connection.js"() {
       init_adapters();
       init_connection_monitor();
       init_internal();
@@ -575,6 +579,7 @@
         isActive() {
           return this.isState("open", "connecting");
         }
+        // Private
         isProtocolSupported() {
           return indexOf.call(supportedProtocols, this.getProtocol()) >= 0;
         }
@@ -606,11 +611,11 @@
       };
       Connection.reopenDelay = 500;
       Connection.prototype.events = {
-        message(event) {
+        message(event2) {
           if (!this.isProtocolSupported()) {
             return;
           }
-          const { identifier, message, reason, reconnect, type } = JSON.parse(event.data);
+          const { identifier, message, reason, reconnect, type } = JSON.parse(event2.data);
           switch (type) {
             case message_types.welcome:
               this.monitor.recordConnect();
@@ -637,7 +642,7 @@
             return this.close({ allowReconnect: false });
           }
         },
-        close(event) {
+        close(event2) {
           logger_default.log("WebSocket onclose event");
           if (this.disconnected) {
             return;
@@ -654,10 +659,10 @@
     }
   });
 
-  // node_modules/@hotwired/turbo-rails/node_modules/@rails/actioncable/src/subscription.js
+  // ../../node_modules/@hotwired/turbo-rails/node_modules/@rails/actioncable/src/subscription.js
   var extend, Subscription;
   var init_subscription = __esm({
-    "node_modules/@hotwired/turbo-rails/node_modules/@rails/actioncable/src/subscription.js"() {
+    "../../node_modules/@hotwired/turbo-rails/node_modules/@rails/actioncable/src/subscription.js"() {
       extend = function(object, properties) {
         if (properties != null) {
           for (let key in properties) {
@@ -673,6 +678,7 @@
           this.identifier = JSON.stringify(params);
           extend(this, mixin);
         }
+        // Perform a channel action with the optional data passed as an attribute
         perform(action, data = {}) {
           data.action = action;
           return this.send(data);
@@ -687,10 +693,10 @@
     }
   });
 
-  // node_modules/@hotwired/turbo-rails/node_modules/@rails/actioncable/src/subscription_guarantor.js
+  // ../../node_modules/@hotwired/turbo-rails/node_modules/@rails/actioncable/src/subscription_guarantor.js
   var SubscriptionGuarantor, subscription_guarantor_default;
   var init_subscription_guarantor = __esm({
-    "node_modules/@hotwired/turbo-rails/node_modules/@rails/actioncable/src/subscription_guarantor.js"() {
+    "../../node_modules/@hotwired/turbo-rails/node_modules/@rails/actioncable/src/subscription_guarantor.js"() {
       init_logger();
       SubscriptionGuarantor = class {
         constructor(subscriptions) {
@@ -735,10 +741,10 @@
     }
   });
 
-  // node_modules/@hotwired/turbo-rails/node_modules/@rails/actioncable/src/subscriptions.js
+  // ../../node_modules/@hotwired/turbo-rails/node_modules/@rails/actioncable/src/subscriptions.js
   var Subscriptions;
   var init_subscriptions = __esm({
-    "node_modules/@hotwired/turbo-rails/node_modules/@rails/actioncable/src/subscriptions.js"() {
+    "../../node_modules/@hotwired/turbo-rails/node_modules/@rails/actioncable/src/subscriptions.js"() {
       init_subscription();
       init_subscription_guarantor();
       init_logger();
@@ -754,6 +760,7 @@
           const subscription = new Subscription(this.consumer, params, mixin);
           return this.add(subscription);
         }
+        // Private
         add(subscription) {
           this.subscriptions.push(subscription);
           this.consumer.ensureActiveConnection();
@@ -815,7 +822,7 @@
     }
   });
 
-  // node_modules/@hotwired/turbo-rails/node_modules/@rails/actioncable/src/consumer.js
+  // ../../node_modules/@hotwired/turbo-rails/node_modules/@rails/actioncable/src/consumer.js
   function createWebSocketURL(url) {
     if (typeof url === "function") {
       url = url();
@@ -832,7 +839,7 @@
   }
   var Consumer;
   var init_consumer = __esm({
-    "node_modules/@hotwired/turbo-rails/node_modules/@rails/actioncable/src/consumer.js"() {
+    "../../node_modules/@hotwired/turbo-rails/node_modules/@rails/actioncable/src/consumer.js"() {
       init_connection();
       init_subscriptions();
       Consumer = class {
@@ -862,7 +869,7 @@
     }
   });
 
-  // node_modules/@hotwired/turbo-rails/node_modules/@rails/actioncable/src/index.js
+  // ../../node_modules/@hotwired/turbo-rails/node_modules/@rails/actioncable/src/index.js
   var src_exports = {};
   __export(src_exports, {
     Connection: () => connection_default,
@@ -888,7 +895,7 @@
     }
   }
   var init_src = __esm({
-    "node_modules/@hotwired/turbo-rails/node_modules/@rails/actioncable/src/index.js"() {
+    "../../node_modules/@hotwired/turbo-rails/node_modules/@rails/actioncable/src/index.js"() {
       init_connection();
       init_connection_monitor();
       init_consumer();
@@ -901,7 +908,7 @@
     }
   });
 
-  // node_modules/@hotwired/turbo/dist/turbo.es2017-esm.js
+  // ../../node_modules/@hotwired/turbo/dist/turbo.es2017-esm.js
   (function() {
     if (window.Reflect === void 0 || window.customElements === void 0 || window.customElements.polyfillWrapFlushCallback) {
       return;
@@ -948,8 +955,8 @@
     const candidate = element ? element.closest("input, button") : null;
     return (candidate === null || candidate === void 0 ? void 0 : candidate.type) == "submit" ? candidate : null;
   }
-  function clickCaptured(event) {
-    const submitter = findSubmitterFromClickTarget(event.target);
+  function clickCaptured(event2) {
+    const submitter = findSubmitterFromClickTarget(event2.target);
     if (submitter && submitter.form) {
       submittersByForm.set(submitter.form, submitter);
     }
@@ -977,14 +984,14 @@
     FrameLoadingStyle2["eager"] = "eager";
     FrameLoadingStyle2["lazy"] = "lazy";
   })(FrameLoadingStyle || (FrameLoadingStyle = {}));
-  var FrameElement = class extends HTMLElement {
+  var FrameElement = class _FrameElement extends HTMLElement {
     static get observedAttributes() {
       return ["disabled", "complete", "loading", "src"];
     }
     constructor() {
       super();
       this.loaded = Promise.resolve();
-      this.delegate = new FrameElement.delegateConstructor(this);
+      this.delegate = new _FrameElement.delegateConstructor(this);
     }
     connectedCallback() {
       this.delegate.connect();
@@ -1186,18 +1193,18 @@
     return template.content;
   }
   function dispatch(eventName, { target, cancelable, detail } = {}) {
-    const event = new CustomEvent(eventName, {
+    const event2 = new CustomEvent(eventName, {
       cancelable,
       bubbles: true,
       composed: true,
       detail
     });
     if (target && target.isConnected) {
-      target.dispatchEvent(event);
+      target.dispatchEvent(event2);
     } else {
-      document.documentElement.dispatchEvent(event);
+      document.documentElement.dispatchEvent(event2);
     }
-    return event;
+    return event2;
   }
   function nextAnimationFrame() {
     return new Promise((resolve) => requestAnimationFrame(() => resolve()));
@@ -1380,12 +1387,12 @@
     }
     async receive(response) {
       const fetchResponse = new FetchResponse(response);
-      const event = dispatch("turbo:before-fetch-response", {
+      const event2 = dispatch("turbo:before-fetch-response", {
         cancelable: true,
         detail: { fetchResponse },
         target: this.target
       });
-      if (event.defaultPrevented) {
+      if (event2.defaultPrevented) {
         this.delegate.requestPreventedHandlingResponse(this, fetchResponse);
       } else if (fetchResponse.succeeded) {
         this.delegate.requestSucceededWithResponse(this, fetchResponse);
@@ -1422,7 +1429,7 @@
     }
     async allowRequestToBeIntercepted(fetchOptions) {
       const requestInterception = new Promise((resolve) => this.resolveRequestPromise = resolve);
-      const event = dispatch("turbo:before-fetch-request", {
+      const event2 = dispatch("turbo:before-fetch-request", {
         cancelable: true,
         detail: {
           fetchOptions,
@@ -1431,16 +1438,16 @@
         },
         target: this.target
       });
-      if (event.defaultPrevented)
+      if (event2.defaultPrevented)
         await requestInterception;
     }
     willDelegateErrorHandling(error2) {
-      const event = dispatch("turbo:fetch-request-error", {
+      const event2 = dispatch("turbo:fetch-request-error", {
         target: this.target,
         cancelable: true,
         detail: { request: this, error: error2 }
       });
-      return !event.defaultPrevented;
+      return !event2.defaultPrevented;
     }
   };
   var AppearanceObserver = class {
@@ -1517,7 +1524,7 @@
         return FormEnctype.urlEncoded;
     }
   }
-  var FormSubmission = class {
+  var FormSubmission = class _FormSubmission {
     static confirmMethod(message, _element, _submitter) {
       return Promise.resolve(confirm(message));
     }
@@ -1571,7 +1578,7 @@
       const { initialized, requesting } = FormSubmissionState;
       const confirmationMessage = getAttribute("data-turbo-confirm", this.submitter, this.formElement);
       if (typeof confirmationMessage === "string") {
-        const answer = await FormSubmission.confirmMethod(confirmationMessage, this.formElement, this.submitter);
+        const answer = await _FormSubmission.confirmMethod(confirmationMessage, this.formElement, this.submitter);
         if (!answer) {
           return;
         }
@@ -1770,13 +1777,13 @@
         this.eventTarget.removeEventListener("submit", this.submitBubbled, false);
         this.eventTarget.addEventListener("submit", this.submitBubbled, false);
       };
-      this.submitBubbled = (event) => {
-        if (!event.defaultPrevented) {
-          const form = event.target instanceof HTMLFormElement ? event.target : void 0;
-          const submitter = event.submitter || void 0;
+      this.submitBubbled = (event2) => {
+        if (!event2.defaultPrevented) {
+          const form = event2.target instanceof HTMLFormElement ? event2.target : void 0;
+          const submitter = event2.submitter || void 0;
           if (form && submissionDoesNotDismissDialog(form, submitter) && submissionDoesNotTargetIFrame(form, submitter) && this.delegate.willSubmitForm(form, submitter)) {
-            event.preventDefault();
-            event.stopImmediatePropagation();
+            event2.preventDefault();
+            event2.stopImmediatePropagation();
             this.delegate.formSubmitted(form, submitter);
           }
         }
@@ -1913,19 +1920,19 @@
   };
   var LinkInterceptor = class {
     constructor(delegate, element) {
-      this.clickBubbled = (event) => {
-        if (this.respondsToEventTarget(event.target)) {
-          this.clickEvent = event;
+      this.clickBubbled = (event2) => {
+        if (this.respondsToEventTarget(event2.target)) {
+          this.clickEvent = event2;
         } else {
           delete this.clickEvent;
         }
       };
-      this.linkClicked = (event) => {
-        if (this.clickEvent && this.respondsToEventTarget(event.target) && event.target instanceof Element) {
-          if (this.delegate.shouldInterceptLinkClick(event.target, event.detail.url, event.detail.originalEvent)) {
+      this.linkClicked = (event2) => {
+        if (this.clickEvent && this.respondsToEventTarget(event2.target) && event2.target instanceof Element) {
+          if (this.delegate.shouldInterceptLinkClick(event2.target, event2.detail.url, event2.detail.originalEvent)) {
             this.clickEvent.preventDefault();
-            event.preventDefault();
-            this.delegate.linkClickIntercepted(event.target, event.detail.url, event.detail.originalEvent);
+            event2.preventDefault();
+            this.delegate.linkClickIntercepted(event2.target, event2.detail.url, event2.detail.originalEvent);
           }
         }
         delete this.clickEvent;
@@ -1958,14 +1965,14 @@
         this.eventTarget.removeEventListener("click", this.clickBubbled, false);
         this.eventTarget.addEventListener("click", this.clickBubbled, false);
       };
-      this.clickBubbled = (event) => {
-        if (event instanceof MouseEvent && this.clickEventIsSignificant(event)) {
-          const target = event.composedPath && event.composedPath()[0] || event.target;
+      this.clickBubbled = (event2) => {
+        if (event2 instanceof MouseEvent && this.clickEventIsSignificant(event2)) {
+          const target = event2.composedPath && event2.composedPath()[0] || event2.target;
           const link = this.findLinkFromClickTarget(target);
           if (link && doesNotTargetIFrame(link)) {
             const location2 = this.getLocationForLink(link);
-            if (this.delegate.willFollowLinkToLocation(link, location2, event)) {
-              event.preventDefault();
+            if (this.delegate.willFollowLinkToLocation(link, location2, event2)) {
+              event2.preventDefault();
               this.delegate.followedLinkToLocation(link, location2);
             }
           }
@@ -1986,8 +1993,8 @@
         this.started = false;
       }
     }
-    clickEventIsSignificant(event) {
-      return !(event.target && event.target.isContentEditable || event.defaultPrevented || event.which > 1 || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey);
+    clickEventIsSignificant(event2) {
+      return !(event2.target && event2.target.isContentEditable || event2.defaultPrevented || event2.which > 1 || event2.altKey || event2.ctrlKey || event2.metaKey || event2.shiftKey);
     }
     findLinkFromClickTarget(target) {
       return findClosestRecursively(target, "a[href]:not([target^=_]):not([download])");
@@ -2237,7 +2244,7 @@
       return defaultValue;
     }
   }
-  var ProgressBar = class {
+  var ProgressBar = class _ProgressBar {
     static get defaultCSS() {
       return unindent`
       .turbo-progress-bar {
@@ -2249,8 +2256,8 @@
         background: #0076ff;
         z-index: 2147483647;
         transition:
-          width ${ProgressBar.animationDuration}ms ease-out,
-          opacity ${ProgressBar.animationDuration / 2}ms ${ProgressBar.animationDuration / 2}ms ease-in;
+          width ${_ProgressBar.animationDuration}ms ease-out,
+          opacity ${_ProgressBar.animationDuration / 2}ms ${_ProgressBar.animationDuration / 2}ms ease-in;
         transform: translate3d(0, 0, 0);
       }
     `;
@@ -2300,7 +2307,7 @@
     }
     fadeProgressElement(callback) {
       this.progressElement.style.opacity = "0";
-      setTimeout(callback, ProgressBar.animationDuration * 1.5);
+      setTimeout(callback, _ProgressBar.animationDuration * 1.5);
     }
     uninstallProgressElement() {
       if (this.progressElement.parentNode) {
@@ -2309,7 +2316,7 @@
     }
     startTrickling() {
       if (!this.trickleInterval) {
-        this.trickleInterval = window.setInterval(this.trickle, ProgressBar.animationDuration);
+        this.trickleInterval = window.setInterval(this.trickle, _ProgressBar.animationDuration);
       }
     }
     stopTrickling() {
@@ -2324,7 +2331,7 @@
     createStylesheetElement() {
       const element = document.createElement("style");
       element.type = "text/css";
-      element.textContent = ProgressBar.defaultCSS;
+      element.textContent = _ProgressBar.defaultCSS;
       if (this.cspNonce) {
         element.nonce = this.cspNonce;
       }
@@ -2420,7 +2427,7 @@
     }
     return element;
   }
-  var PageSnapshot = class extends Snapshot {
+  var PageSnapshot = class _PageSnapshot extends Snapshot {
     static fromHTMLString(html = "") {
       return this.fromDocument(parseHTMLDocument(html));
     }
@@ -2448,7 +2455,7 @@
       for (const clonedPasswordInput of clonedElement.querySelectorAll('input[type="password"]')) {
         clonedPasswordInput.value = "";
       }
-      return new PageSnapshot(clonedElement, this.headSnapshot);
+      return new _PageSnapshot(clonedElement, this.headSnapshot);
     }
     get headElement() {
       return this.headSnapshot.element;
@@ -2778,7 +2785,7 @@
       }
     }
     recordTimingMetric(metric) {
-      this.timingMetrics[metric] = new Date().getTime();
+      this.timingMetrics[metric] = (/* @__PURE__ */ new Date()).getTime();
     }
     getTimingMetrics() {
       return Object.assign({}, this.timingMetrics);
@@ -2975,10 +2982,10 @@
     shouldInterceptLinkClick(element, _location, _event) {
       return this.shouldRedirect(element);
     }
-    linkClickIntercepted(element, url, event) {
+    linkClickIntercepted(element, url, event2) {
       const frame = this.findFrameElement(element);
       if (frame) {
-        frame.delegate.linkClickIntercepted(element, url, event);
+        frame.delegate.linkClickIntercepted(element, url, event2);
       }
     }
     willSubmitForm(element, submitter) {
@@ -3022,9 +3029,9 @@
       this.restorationData = {};
       this.started = false;
       this.pageLoaded = false;
-      this.onPopState = (event) => {
+      this.onPopState = (event2) => {
         if (this.shouldHandlePopState()) {
-          const { turbo } = event.state || {};
+          const { turbo } = event2.state || {};
           if (turbo) {
             this.location = new URL(window.location.href);
             const { restorationIdentifier } = turbo;
@@ -3317,16 +3324,16 @@
     constructor(delegate) {
       this.sources = /* @__PURE__ */ new Set();
       this.started = false;
-      this.inspectFetchResponse = (event) => {
-        const response = fetchResponseFromEvent(event);
+      this.inspectFetchResponse = (event2) => {
+        const response = fetchResponseFromEvent(event2);
         if (response && fetchResponseIsStream(response)) {
-          event.preventDefault();
+          event2.preventDefault();
           this.receiveMessageResponse(response);
         }
       };
-      this.receiveMessageEvent = (event) => {
-        if (this.started && typeof event.data == "string") {
-          this.receiveMessageHTML(event.data);
+      this.receiveMessageEvent = (event2) => {
+        if (this.started && typeof event2.data == "string") {
+          this.receiveMessageHTML(event2.data);
         }
       };
       this.delegate = delegate;
@@ -3368,9 +3375,9 @@
       this.delegate.receivedMessageFromStream(StreamMessage.wrap(html));
     }
   };
-  function fetchResponseFromEvent(event) {
+  function fetchResponseFromEvent(event2) {
     var _a;
-    const fetchResponse = (_a = event.detail) === null || _a === void 0 ? void 0 : _a.fetchResponse;
+    const fetchResponse = (_a = event2.detail) === null || _a === void 0 ? void 0 : _a.fetchResponse;
     if (fetchResponse instanceof FetchResponse) {
       return fetchResponse;
     }
@@ -3785,8 +3792,8 @@
     }
     submittedFormLinkToLocation() {
     }
-    willFollowLinkToLocation(link, location2, event) {
-      return this.elementIsNavigatable(link) && locationIsVisitable(location2, this.snapshot.rootLocation) && this.applicationAllowsFollowingLinkToLocation(link, location2, event);
+    willFollowLinkToLocation(link, location2, event2) {
+      return this.elementIsNavigatable(link) && locationIsVisitable(location2, this.snapshot.rootLocation) && this.applicationAllowsFollowingLinkToLocation(link, location2, event2);
     }
     followedLinkToLocation(link, location2) {
       const action = this.getActionForLink(link);
@@ -3846,8 +3853,8 @@
       }
     }
     allowsImmediateRender({ element }, options) {
-      const event = this.notifyApplicationBeforeRender(element, options);
-      const { defaultPrevented, detail: { render } } = event;
+      const event2 = this.notifyApplicationBeforeRender(element, options);
+      const { defaultPrevented, detail: { render } } = event2;
       if (this.view.renderer && render) {
         this.view.renderer.renderElement = render;
       }
@@ -3870,17 +3877,17 @@
       this.notifyApplicationAfterFrameRender(fetchResponse, frame);
     }
     applicationAllowsFollowingLinkToLocation(link, location2, ev) {
-      const event = this.notifyApplicationAfterClickingLinkToLocation(link, location2, ev);
-      return !event.defaultPrevented;
+      const event2 = this.notifyApplicationAfterClickingLinkToLocation(link, location2, ev);
+      return !event2.defaultPrevented;
     }
     applicationAllowsVisitingLocation(location2) {
-      const event = this.notifyApplicationBeforeVisitingLocation(location2);
-      return !event.defaultPrevented;
+      const event2 = this.notifyApplicationBeforeVisitingLocation(location2);
+      return !event2.defaultPrevented;
     }
-    notifyApplicationAfterClickingLinkToLocation(link, location2, event) {
+    notifyApplicationAfterClickingLinkToLocation(link, location2, event2) {
       return dispatch("turbo:click", {
         target: link,
-        detail: { url: location2.href, originalEvent: event },
+        detail: { url: location2.href, originalEvent: event2 },
         cancelable: true
       });
     }
@@ -4275,12 +4282,12 @@
       clearBusyState(formElement, this.findFrameElement(formElement));
     }
     allowsImmediateRender({ element: newFrame }, options) {
-      const event = dispatch("turbo:before-frame-render", {
+      const event2 = dispatch("turbo:before-frame-render", {
         target: this.element,
         detail: Object.assign({ newFrame }, options),
         cancelable: true
       });
-      const { defaultPrevented, detail: { render } } = event;
+      const { defaultPrevented, detail: { render } } = event2;
       if (this.view.renderer && render) {
         this.view.renderer.renderElement = render;
       }
@@ -4380,12 +4387,12 @@
           session.visit(url, options);
         }
       };
-      const event = dispatch("turbo:frame-missing", {
+      const event2 = dispatch("turbo:frame-missing", {
         target: this.element,
         detail: { response, visit: visit2 },
         cancelable: true
       });
-      return !event.defaultPrevented;
+      return !event2.defaultPrevented;
     }
     handleFrameMissingFromResponse(fetchResponse) {
       this.view.missing();
@@ -4532,7 +4539,7 @@
       }
     }
   }
-  var StreamElement = class extends HTMLElement {
+  var StreamElement = class _StreamElement extends HTMLElement {
     static async renderElement(newElement) {
       await newElement.performAction();
     }
@@ -4548,10 +4555,10 @@
     async render() {
       var _a;
       return (_a = this.renderPromise) !== null && _a !== void 0 ? _a : this.renderPromise = (async () => {
-        const event = this.beforeRenderEvent;
-        if (this.dispatchEvent(event)) {
+        const event2 = this.beforeRenderEvent;
+        if (this.dispatchEvent(event2)) {
           await nextAnimationFrame();
-          await event.detail.render(this);
+          await event2.detail.render(this);
         }
       })();
     }
@@ -4622,7 +4629,7 @@
       return new CustomEvent("turbo:before-stream-render", {
         bubbles: true,
         cancelable: true,
-        detail: { newStream: this, render: StreamElement.renderElement }
+        detail: { newStream: this, render: _StreamElement.renderElement }
       });
     }
     get targetElementsById() {
@@ -4698,7 +4705,7 @@
   window.Turbo = Turbo2;
   start();
 
-  // app/javascript/turbo_streams/toast.js
+  // turbo_streams/toast.js
   var import_toastify_js = __toESM(require_toastify());
   StreamActions.toast = function() {
     const message = this.getAttribute("message");
@@ -4714,6 +4721,7 @@
       stopOnFocus: true,
       offset: {
         y: "9em"
+        // vertical axis - can be a number or a string indicating unity. eg: '2em'
       },
       style: {
         background
@@ -4721,19 +4729,19 @@
     }).showToast();
   };
 
-  // app/javascript/turbo_streams/close_modal.js
+  // turbo_streams/close_modal.js
   StreamActions.close_modal = function() {
     const modalClass = this.getAttribute("modal-class");
     const openClass = this.getAttribute("open-class");
     const formId = this.getAttribute("form-id");
     const modal = document.querySelector(`.${modalClass}`);
     const form = document.getElementById(formId);
-    form.addEventListener("submit", (event) => {
+    form.addEventListener("submit", (event2) => {
       modal.classList.toggle(openClass);
     });
   };
 
-  // node_modules/@hotwired/turbo-rails/app/javascript/turbo/cable.js
+  // ../../node_modules/@hotwired/turbo-rails/app/javascript/turbo/cable.js
   var consumer;
   async function getConsumer() {
     return consumer || setConsumer(createConsumer2().then(setConsumer));
@@ -4750,7 +4758,7 @@
     return subscriptions.create(channel, mixin);
   }
 
-  // node_modules/@hotwired/turbo-rails/app/javascript/turbo/snakeize.js
+  // ../../node_modules/@hotwired/turbo-rails/app/javascript/turbo/snakeize.js
   function walk(obj) {
     if (!obj || typeof obj !== "object")
       return obj;
@@ -4767,7 +4775,7 @@
     }, {});
   }
 
-  // node_modules/@hotwired/turbo-rails/app/javascript/turbo/cable_stream_source_element.js
+  // ../../node_modules/@hotwired/turbo-rails/app/javascript/turbo/cable_stream_source_element.js
   var TurboCableStreamSourceElement = class extends HTMLElement {
     async connectedCallback() {
       connectStreamSource(this);
@@ -4783,8 +4791,8 @@
         this.subscription.unsubscribe();
     }
     dispatchMessageEvent(data) {
-      const event = new MessageEvent("message", { data });
-      return this.dispatchEvent(event);
+      const event2 = new MessageEvent("message", { data });
+      return this.dispatchEvent(event2);
     }
     subscriptionConnected() {
       this.setAttribute("connected", "");
@@ -4802,10 +4810,10 @@
     customElements.define("turbo-cable-stream-source", TurboCableStreamSourceElement);
   }
 
-  // node_modules/@hotwired/turbo-rails/app/javascript/turbo/fetch_requests.js
-  function encodeMethodIntoRequestBody(event) {
-    if (event.target instanceof HTMLFormElement) {
-      const { target: form, detail: { fetchOptions } } = event;
+  // ../../node_modules/@hotwired/turbo-rails/app/javascript/turbo/fetch_requests.js
+  function encodeMethodIntoRequestBody(event2) {
+    if (event2.target instanceof HTMLFormElement) {
+      const { target: form, detail: { fetchOptions } } = event2;
       form.addEventListener("turbo:submit-start", ({ detail: { formSubmission: { submitter } } }) => {
         const body = isBodyInit(fetchOptions.body) ? fetchOptions.body : new URLSearchParams();
         const method = determineFetchMethod(submitter, body, form);
@@ -4847,10 +4855,10 @@
     return body instanceof FormData || body instanceof URLSearchParams;
   }
 
-  // node_modules/@hotwired/turbo-rails/app/javascript/turbo/index.js
+  // ../../node_modules/@hotwired/turbo-rails/app/javascript/turbo/index.js
   addEventListener("turbo:before-fetch-request", encodeMethodIntoRequestBody);
 
-  // node_modules/@hotwired/stimulus/dist/stimulus.js
+  // ../../node_modules/@hotwired/stimulus/dist/stimulus.js
   var EventListener = class {
     constructor(eventTarget, eventName, eventOptions) {
       this.eventTarget = eventTarget;
@@ -4870,8 +4878,8 @@
     bindingDisconnected(binding) {
       this.unorderedBindings.delete(binding);
     }
-    handleEvent(event) {
-      const extendedEvent = extendEvent(event);
+    handleEvent(event2) {
+      const extendedEvent = extendEvent(event2);
       for (const binding of this.bindings) {
         if (extendedEvent.immediatePropagationStopped) {
           break;
@@ -4890,12 +4898,12 @@
       });
     }
   };
-  function extendEvent(event) {
-    if ("immediatePropagationStopped" in event) {
-      return event;
+  function extendEvent(event2) {
+    if ("immediatePropagationStopped" in event2) {
+      return event2;
     } else {
-      const { stopImmediatePropagation } = event;
-      return Object.assign(event, {
+      const { stopImmediatePropagation } = event2;
+      return Object.assign(event2, {
         immediatePropagationStopped: false,
         stopImmediatePropagation() {
           this.immediatePropagationStopped = true;
@@ -4989,19 +4997,19 @@
     }
   };
   var defaultActionDescriptorFilters = {
-    stop({ event, value }) {
+    stop({ event: event2, value }) {
       if (value)
-        event.stopPropagation();
+        event2.stopPropagation();
       return true;
     },
-    prevent({ event, value }) {
+    prevent({ event: event2, value }) {
       if (value)
-        event.preventDefault();
+        event2.preventDefault();
       return true;
     },
-    self({ event, value, element }) {
+    self({ event: event2, value, element }) {
       if (value) {
-        return element === event.target;
+        return element === event2.target;
       } else {
         return true;
       }
@@ -5078,14 +5086,14 @@
       const eventTarget = this.eventTargetName ? `@${this.eventTargetName}` : "";
       return `${this.eventName}${eventFilter}${eventTarget}->${this.identifier}#${this.methodName}`;
     }
-    isFilterTarget(event) {
+    isFilterTarget(event2) {
       if (!this.keyFilter) {
         return false;
       }
       const filteres = this.keyFilter.split("+");
       const modifiers = ["meta", "ctrl", "alt", "shift"];
       const [meta, ctrl, alt, shift] = modifiers.map((modifier) => filteres.includes(modifier));
-      if (event.metaKey !== meta || event.ctrlKey !== ctrl || event.altKey !== alt || event.shiftKey !== shift) {
+      if (event2.metaKey !== meta || event2.ctrlKey !== ctrl || event2.altKey !== alt || event2.shiftKey !== shift) {
         return true;
       }
       const standardFilter = filteres.filter((key) => !modifiers.includes(key))[0];
@@ -5095,7 +5103,7 @@
       if (!Object.prototype.hasOwnProperty.call(this.keyMappings, standardFilter)) {
         error(`contains unknown key filter: ${this.keyFilter}`);
       }
-      return this.keyMappings[standardFilter].toLowerCase() !== event.key.toLowerCase();
+      return this.keyMappings[standardFilter].toLowerCase() !== event2.key.toLowerCase();
     }
     get params() {
       const params = {};
@@ -5158,9 +5166,9 @@
     get identifier() {
       return this.context.identifier;
     }
-    handleEvent(event) {
-      if (this.willBeInvokedByEvent(event) && this.applyEventModifiers(event)) {
-        this.invokeWithEvent(event);
+    handleEvent(event2) {
+      if (this.willBeInvokedByEvent(event2) && this.applyEventModifiers(event2)) {
+        this.invokeWithEvent(event2);
       }
     }
     get eventName() {
@@ -5173,36 +5181,36 @@
       }
       throw new Error(`Action "${this.action}" references undefined method "${this.methodName}"`);
     }
-    applyEventModifiers(event) {
+    applyEventModifiers(event2) {
       const { element } = this.action;
       const { actionDescriptorFilters } = this.context.application;
       let passes = true;
       for (const [name, value] of Object.entries(this.eventOptions)) {
         if (name in actionDescriptorFilters) {
           const filter = actionDescriptorFilters[name];
-          passes = passes && filter({ name, value, event, element });
+          passes = passes && filter({ name, value, event: event2, element });
         } else {
           continue;
         }
       }
       return passes;
     }
-    invokeWithEvent(event) {
-      const { target, currentTarget } = event;
+    invokeWithEvent(event2) {
+      const { target, currentTarget } = event2;
       try {
         const { params } = this.action;
-        const actionEvent = Object.assign(event, { params });
+        const actionEvent = Object.assign(event2, { params });
         this.method.call(this.controller, actionEvent);
-        this.context.logDebugActivity(this.methodName, { event, target, currentTarget, action: this.methodName });
+        this.context.logDebugActivity(this.methodName, { event: event2, target, currentTarget, action: this.methodName });
       } catch (error2) {
         const { identifier, controller, element, index } = this;
-        const detail = { identifier, controller, element, index, event };
+        const detail = { identifier, controller, element, index, event: event2 };
         this.context.handleError(error2, `invoking action "${this.action}"`, detail);
       }
     }
-    willBeInvokedByEvent(event) {
-      const eventTarget = event.target;
-      if (event instanceof KeyboardEvent && this.action.isFilterTarget(event)) {
+    willBeInvokedByEvent(event2) {
+      const eventTarget = event2.target;
+      if (event2 instanceof KeyboardEvent && this.action.isFilterTarget(event2)) {
         return false;
       }
       if (this.element === eventTarget) {
@@ -6523,7 +6531,7 @@
       return element.matches(selector) && controllerAttribute.split(" ").includes(outletName);
     }
   };
-  var Scope = class {
+  var Scope = class _Scope {
     constructor(schema, element, identifier, logger) {
       this.targets = new TargetSet(this);
       this.classes = new ClassMap(this);
@@ -6556,7 +6564,7 @@
       return this.element === document.documentElement;
     }
     get documentScope() {
-      return this.isDocumentScope ? this : new Scope(this.schema, document.documentElement, this.identifier, this.guide.logger);
+      return this.isDocumentScope ? this : new _Scope(this.schema, document.documentElement, this.identifier, this.guide.logger);
     }
   };
   var ScopeObserver = class {
@@ -7131,9 +7139,9 @@
     }
     dispatch(eventName, { target = this.element, detail = {}, prefix = this.identifier, bubbles = true, cancelable = true } = {}) {
       const type = prefix ? `${prefix}:${eventName}` : eventName;
-      const event = new CustomEvent(type, { detail, bubbles, cancelable });
-      target.dispatchEvent(event);
-      return event;
+      const event2 = new CustomEvent(type, { detail, bubbles, cancelable });
+      target.dispatchEvent(event2);
+      return event2;
     }
   };
   Controller.blessings = [
@@ -7146,13 +7154,15 @@
   Controller.outlets = [];
   Controller.values = {};
 
-  // app/javascript/controllers/application.js
+  // controllers/application.js
   var application = Application.start();
   application.debug = document.documentElement.classList.contains("debug");
   window.Stimulus = application;
 
-  // app/javascript/controllers/modals/offer_modal_controller.js
+  // controllers/modals/offer_modal_controller.js
   var offer_modal_controller_default = class extends Controller {
+    static classes = ["open"];
+    static targets = ["modal"];
     connect() {
       this.modalTarget.classList.toggle(this.openClass);
     }
@@ -7160,34 +7170,33 @@
       this.modalTarget.classList.toggle(this.openClass);
     }
   };
-  __publicField(offer_modal_controller_default, "classes", ["open"]);
-  __publicField(offer_modal_controller_default, "targets", ["modal"]);
 
-  // app/javascript/controllers/modals/modal_controller.js
+  // controllers/modals/modal_controller.js
   var modal_controller_default = class extends Controller {
+    static targets = ["modal"];
     connect() {
       console.log("Modal connected");
     }
-    open(event) {
-      event.preventDefault();
+    open(event2) {
+      event2.preventDefault();
       this.modalTarget.showModal();
       this.modalTarget.addEventListener("click", (e) => this.backdropClick(e));
       console.log("Modal opened");
     }
-    close(event) {
-      event.preventDefault();
+    close(event2) {
+      event2.preventDefault();
       this.modalTarget.close();
       console.log("Modal close");
     }
-    backdropClick(event) {
-      event.target === this.modalTarget && this.close(event);
+    backdropClick(event2) {
+      event2.target === this.modalTarget && this.close(event2);
       console.log("Modal close");
     }
   };
-  __publicField(modal_controller_default, "targets", ["modal"]);
 
-  // app/javascript/controllers/form/debounce_controller.js
+  // controllers/form/debounce_controller.js
   var debounce_controller_default = class extends Controller {
+    static targets = ["form"];
     search() {
       clearTimeout(this.timeout);
       this.timeout = setTimeout(() => {
@@ -7195,12 +7204,12 @@
       }, 300);
     }
   };
-  __publicField(debounce_controller_default, "targets", ["form"]);
 
-  // app/javascript/controllers/form/filter_controller.js
+  // controllers/form/filter_controller.js
   var filter_controller_default = class extends Controller {
-    click(event) {
-      const label = event.currentTarget;
+    static targets = ["button", "label"];
+    click(event2) {
+      const label = event2.currentTarget;
       this.resetAll();
       label.classList.add("is-active");
     }
@@ -7209,10 +7218,10 @@
       this.labelTargets.forEach((l) => l.classList.remove("is-active"));
     }
   };
-  __publicField(filter_controller_default, "targets", ["button", "label"]);
 
-  // app/javascript/controllers/form/autobider_submit_controller.js
+  // controllers/form/autobider_submit_controller.js
   var autobider_submit_controller_default = class extends Controller {
+    static targets = ["form", "price", "checkbox"];
     connect() {
       this.validatingInputPrice();
     }
@@ -7230,11 +7239,11 @@
         this.formTarget.requestSubmit();
       }, 300);
     }
-    validatePrice(event) {
-      const char = event.key;
+    validatePrice(event2) {
+      const char = event2.key;
       const value = this.priceTarget.value;
       if (![".", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "Backspace", "Delete", "Tab", "Enter", "ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(char) || char == "." && value.includes(".")) {
-        event.preventDefault();
+        event2.preventDefault();
       }
     }
     validatingInputPrice() {
@@ -7245,10 +7254,10 @@
       }
     }
   };
-  __publicField(autobider_submit_controller_default, "targets", ["form", "price", "checkbox"]);
 
-  // app/javascript/controllers/form/bundle_checkbox_controller.js
+  // controllers/form/bundle_checkbox_controller.js
   var bundle_checkbox_controller_default = class extends Controller {
+    static targets = ["hiddenField", "checkboxes"];
     collect_ids() {
       if (this.hasCheckboxesTarget == false)
         return;
@@ -7262,10 +7271,10 @@
       });
     }
   };
-  __publicField(bundle_checkbox_controller_default, "targets", ["hiddenField", "checkboxes"]);
 
-  // app/javascript/controllers/form/checkbox_toggle_controller.js
+  // controllers/form/checkbox_toggle_controller.js
   var checkbox_toggle_controller_default = class extends Controller {
+    static targets = ["enableDeposit", "disableDeposit"];
     connect() {
       this.enableDepositTarget.addEventListener("click", (source) => {
         this.disableDepositTarget.checked = false;
@@ -7275,9 +7284,8 @@
       });
     }
   };
-  __publicField(checkbox_toggle_controller_default, "targets", ["enableDeposit", "disableDeposit"]);
 
-  // node_modules/@rails/request.js/src/fetch_response.js
+  // ../../node_modules/@rails/request.js/src/fetch_response.js
   var FetchResponse2 = class {
     constructor(response) {
       this.response = response;
@@ -7338,7 +7346,7 @@
     }
   };
 
-  // node_modules/@rails/request.js/src/request_interceptor.js
+  // ../../node_modules/@rails/request.js/src/request_interceptor.js
   var RequestInterceptor = class {
     static register(interceptor) {
       this.interceptor = interceptor;
@@ -7351,7 +7359,7 @@
     }
   };
 
-  // node_modules/@rails/request.js/src/lib/utils.js
+  // ../../node_modules/@rails/request.js/src/lib/utils.js
   function getCookie(name) {
     const cookies = document.cookie ? document.cookie.split("; ") : [];
     const prefix = `${encodeURIComponent(name)}=`;
@@ -7395,7 +7403,7 @@
     }
   }
 
-  // node_modules/@rails/request.js/src/fetch_request.js
+  // ../../node_modules/@rails/request.js/src/fetch_request.js
   var FetchRequest2 = class {
     constructor(method, url, options = {}) {
       this.method = method;
@@ -7530,8 +7538,10 @@
     }
   };
 
-  // app/javascript/controllers/form/checkbox_autosubmit_controller.js
+  // controllers/form/checkbox_autosubmit_controller.js
   var checkbox_autosubmit_controller_default = class extends Controller {
+    static targets = ["checkbox"];
+    static values = { url: String };
     submit() {
       clearTimeout(this.timeout);
       this.timeout = setTimeout(() => {
@@ -7556,11 +7566,13 @@
       }
     }
   };
-  __publicField(checkbox_autosubmit_controller_default, "targets", ["checkbox"]);
-  __publicField(checkbox_autosubmit_controller_default, "values", { url: String });
 
-  // app/javascript/controllers/form/autosave_controller.js
+  // controllers/form/autosave_controller.js
   var autosave_controller_default = class extends Controller {
+    static targets = ["form", "select"];
+    static values = {
+      select: String
+    };
     connect() {
       this.selectValue = this.selectTarget.value;
     }
@@ -7572,13 +7584,12 @@
       }
     }
   };
-  __publicField(autosave_controller_default, "targets", ["form", "select"]);
-  __publicField(autosave_controller_default, "values", {
-    select: String
-  });
 
-  // app/javascript/controllers/table/ordeable_controller.js
+  // controllers/table/ordeable_controller.js
   var ordeable_controller_default = class extends Controller {
+    static values = { direction: String, column: String, frameName: String };
+    static targets = ["th"];
+    static classes = ["asc", "desc"];
     initialize() {
       this.classHandle = this.classHandle.bind(this);
     }
@@ -7604,17 +7615,16 @@
       }
     }
   };
-  __publicField(ordeable_controller_default, "values", { direction: String, column: String, frameName: String });
-  __publicField(ordeable_controller_default, "targets", ["th"]);
-  __publicField(ordeable_controller_default, "classes", ["asc", "desc"]);
 
-  // app/javascript/controllers/table/tab_controller.js
+  // controllers/table/tab_controller.js
   var tab_controller_default = class extends Controller {
+    static targets = ["tab", "content"];
+    static classes = ["active"];
     initialize() {
       this.showTab = this.showTab.bind(this);
     }
-    showTab(event) {
-      const index = event.params.index;
+    showTab(event2) {
+      const index = event2.params.index;
       this.tabTargets.forEach((tab) => {
         tab.classList.remove(this.activeClass);
       });
@@ -7625,16 +7635,20 @@
       this.contentTargets[index].classList.add(this.activeClass);
     }
   };
-  __publicField(tab_controller_default, "targets", ["tab", "content"]);
-  __publicField(tab_controller_default, "classes", ["active"]);
 
-  // app/javascript/controllers/autotax_counter_controller.js
+  // controllers/autotax_counter_controller.js
   var autotax_counter_controller_default = class extends Controller {
+    static targets = ["result"];
+    static values = {
+      tax: String,
+      template: String,
+      defaulttemplate: String
+    };
     connect() {
       this.updateTax();
     }
-    count(event) {
-      const value = parseFloat(event.target.value);
+    count(event2) {
+      const value = parseFloat(event2.target.value);
       const result = this.resultTarget;
       if (!isNaN(value) && value > 0) {
         const tax = parseFloat(this.taxValue) || 0;
@@ -7645,22 +7659,24 @@
         result.innerHTML = this.defaulttemplateValue;
       }
     }
-    updateTax(event) {
+    updateTax(event2) {
       let selectElement = this.element.querySelector("select");
       this.taxValue = selectElement.options[selectElement.selectedIndex].dataset.vatRate || 0;
       const priceElement = this.element.querySelector('[name="offer[price]"]');
       this.count({ target: priceElement });
     }
   };
-  __publicField(autotax_counter_controller_default, "targets", ["result"]);
-  __publicField(autotax_counter_controller_default, "values", {
-    tax: String,
-    template: String,
-    defaulttemplate: String
-  });
 
-  // app/javascript/controllers/english_offers_controller.js
+  // controllers/english_offers_controller.js
   var english_offers_controller_default = class extends Controller {
+    static values = {
+      userId: String,
+      decimalMark: String,
+      bidText: String,
+      participateText: String,
+      englishText: String,
+      blindText: String
+    };
     beforeStreamRender(e) {
       var content = e.target.templateElement.content;
       var currentPrice = content.querySelector(".current_price");
@@ -7688,17 +7704,14 @@
       }
     }
   };
-  __publicField(english_offers_controller_default, "values", {
-    userId: String,
-    decimalMark: String,
-    bidText: String,
-    participateText: String,
-    englishText: String,
-    blindText: String
-  });
 
-  // app/javascript/controllers/countdown_controller.js
+  // controllers/countdown_controller.js
   var countdown_controller_default = class extends Controller {
+    static values = {
+      date: String,
+      refreshInterval: { type: Number, default: 1e3 },
+      messageTimer: { type: String, default: "<b>${days}d ${hours}h ${minutes}m ${seconds}s</b>" }
+    };
     connect() {
       if (this.dateValue) {
         this.endTime = new Date(this.dateValue).getTime();
@@ -7733,17 +7746,16 @@
       this.element.innerHTML = this.messageTimerValue.replace("${days}", days).replace("${hours}", hours).replace("${minutes}", minutes).replace("${seconds}", seconds);
     }
     timeDifference() {
-      return this.endTime - new Date().getTime();
+      return this.endTime - (/* @__PURE__ */ new Date()).getTime();
     }
   };
-  __publicField(countdown_controller_default, "values", {
-    date: String,
-    refreshInterval: { type: Number, default: 1e3 },
-    messageTimer: { type: String, default: "<b>${days}d ${hours}h ${minutes}m ${seconds}s</b>" }
-  });
 
-  // app/javascript/controllers/profile_webpush_controller.js
+  // controllers/profile_webpush_controller.js
   var profile_webpush_controller_default = class extends Controller {
+    static values = {
+      vapidPublic: String
+    };
+    static targets = ["checkbox"];
     connect() {
       console.log("webpush connected!");
       if ("serviceWorker" in navigator && "PushManager" in window) {
@@ -7794,13 +7806,13 @@
       });
     }
   };
-  __publicField(profile_webpush_controller_default, "values", {
-    vapidPublic: String
-  });
-  __publicField(profile_webpush_controller_default, "targets", ["checkbox"]);
 
-  // app/javascript/controllers/push_notification_controller.js
+  // controllers/push_notification_controller.js
   var push_notification_controller_default = class extends Controller {
+    static values = {
+      vapidPublic: String,
+      userLogin: Boolean
+    };
     connect() {
       if (!this.userLoginValue)
         return;
@@ -7890,22 +7902,20 @@
       return outputArray;
     }
   };
-  __publicField(push_notification_controller_default, "values", {
-    vapidPublic: String,
-    userLogin: Boolean
-  });
 
-  // app/javascript/controllers/toggle_controller.js
+  // controllers/toggle_controller.js
   var toggle_controller_default = class extends Controller {
+    static classes = ["toggle"];
+    static targets = ["element"];
     toggle() {
       this.elementTarget.classList.toggle(this.toggleClass);
     }
   };
-  __publicField(toggle_controller_default, "classes", ["toggle"]);
-  __publicField(toggle_controller_default, "targets", ["element"]);
 
-  // app/javascript/controllers/navbar/hamburger_controller.js
+  // controllers/navbar/hamburger_controller.js
   var hamburger_controller_default = class extends Controller {
+    static targets = ["menu"];
+    static classes = ["open"];
     connect() {
     }
     toggle() {
@@ -7913,11 +7923,10 @@
       this.menuTarget.style.display = this.menuTarget.classList.contains(this.openClass) ? "block" : "none";
     }
   };
-  __publicField(hamburger_controller_default, "targets", ["menu"]);
-  __publicField(hamburger_controller_default, "classes", ["open"]);
 
-  // app/javascript/controllers/navbar/expandable_controller.js
+  // controllers/navbar/expandable_controller.js
   var expandable_controller_default = class extends Controller {
+    static targets = ["element"];
     expand() {
       if (this.elementTarget.style.display === "block") {
         this.elementTarget.style.display = "none";
@@ -7926,9 +7935,696 @@
       }
     }
   };
-  __publicField(expandable_controller_default, "targets", ["element"]);
 
-  // app/javascript/controllers/index.js
+  // ../../node_modules/vanilla-cookieconsent/dist/cookieconsent.js
+  !function() {
+    "use strict";
+    var n = "initCookieConsent";
+    "undefined" != typeof window && "function" != typeof window[n] && (window[n] = function(n2) {
+      var t, o, e, i, r, a, c, u, f, d, v, l, s, p, b, m, y, g, h, _, w, k, x, S, J, O, j, N, T, D, C, U, z, E, I, L = { mode: "opt-in", current_lang: "en", auto_language: null, autorun: true, page_scripts: true, hide_from_bots: true, cookie_name: "cc_cookie", cookie_expiration: 182, cookie_domain: location.hostname, cookie_path: "/", cookie_same_site: "Lax", use_rfc_cookie: false, autoclear_cookies: true, revision: 0, script_selector: "data-cookiecategory" }, M = {}, R = {}, A = null, G = true, H = false, P = false, q = false, B = false, F = true, K = [], Q = false, V = [], W = [], X = [], Y = false, Z = [], $2 = [], nn = [], tn = [], on = [], en = document.documentElement, rn = function(n3) {
+        "number" == typeof (t = n3).cookie_expiration && (L.cookie_expiration = t.cookie_expiration), "number" == typeof t.cookie_necessary_only_expiration && (L.cookie_necessary_only_expiration = t.cookie_necessary_only_expiration), "boolean" == typeof t.autorun && (L.autorun = t.autorun), "string" == typeof t.cookie_domain && (L.cookie_domain = t.cookie_domain), "string" == typeof t.cookie_same_site && (L.cookie_same_site = t.cookie_same_site), "string" == typeof t.cookie_path && (L.cookie_path = t.cookie_path), "string" == typeof t.cookie_name && (L.cookie_name = t.cookie_name), "function" == typeof t.onAccept && (v = t.onAccept), "function" == typeof t.onFirstAction && (s = t.onFirstAction), "function" == typeof t.onChange && (l = t.onChange), "opt-out" === t.mode && (L.mode = "opt-out"), "number" == typeof t.revision && (t.revision > -1 && (L.revision = t.revision), B = true), "boolean" == typeof t.autoclear_cookies && (L.autoclear_cookies = t.autoclear_cookies), true === t.use_rfc_cookie && (L.use_rfc_cookie = true), "boolean" == typeof t.hide_from_bots && (L.hide_from_bots = t.hide_from_bots), L.hide_from_bots && (Y = navigator && (navigator.userAgent && /bot|crawl|spider|slurp|teoma/i.test(navigator.userAgent) || navigator.webdriver)), L.page_scripts = true === t.page_scripts, "browser" === t.auto_language || true === t.auto_language ? L.auto_language = "browser" : "document" === t.auto_language && (L.auto_language = "document"), L.auto_language, L.current_lang = sn(t.languages, t.current_lang);
+      }, an = function(n3) {
+        for (var t2 = "accept-", o2 = c2("c-settings"), e2 = c2(t2 + "all"), i2 = c2(t2 + "necessary"), r2 = c2(t2 + "custom"), a2 = 0; a2 < o2.length; a2++)
+          o2[a2].setAttribute("aria-haspopup", "dialog"), wn(o2[a2], "click", function(n4) {
+            n4.preventDefault(), M.showSettings(0);
+          });
+        for (a2 = 0; a2 < e2.length; a2++)
+          wn(e2[a2], "click", function(n4) {
+            u2(n4, "all");
+          });
+        for (a2 = 0; a2 < r2.length; a2++)
+          wn(r2[a2], "click", function(n4) {
+            u2(n4);
+          });
+        for (a2 = 0; a2 < i2.length; a2++)
+          wn(i2[a2], "click", function(n4) {
+            u2(n4, []);
+          });
+        function c2(t3) {
+          return (n3 || document).querySelectorAll('[data-cc="' + t3 + '"]');
+        }
+        function u2(n4, t3) {
+          n4.preventDefault(), M.accept(t3), M.hideSettings(), M.hide();
+        }
+      }, cn = function(n3, t2) {
+        return t2.hasOwnProperty(n3) ? n3 : kn(t2).length > 0 ? t2.hasOwnProperty(L.current_lang) ? L.current_lang : kn(t2)[0] : void 0;
+      }, un = function(n3) {
+        if (true === t.force_consent && xn(en, "force--consent"), !h) {
+          h = ln("div");
+          var o2 = ln("div"), e2 = ln("div");
+          h.id = "cm", o2.id = "c-inr-i", e2.id = "cm-ov", h.tabIndex = -1, h.setAttribute("role", "dialog"), h.setAttribute("aria-modal", "true"), h.setAttribute("aria-hidden", "false"), h.setAttribute("aria-labelledby", "c-ttl"), h.setAttribute("aria-describedby", "c-txt"), g.appendChild(h), g.appendChild(e2), h.style.visibility = e2.style.visibility = "hidden", e2.style.opacity = 0;
+        }
+        var i2 = t.languages[n3].consent_modal.title;
+        i2 && (_ || ((_ = ln("h2")).id = "c-ttl", o2.appendChild(_)), _.innerHTML = i2);
+        var r2 = t.languages[n3].consent_modal.description;
+        B && (r2 = F ? r2.replace("{{revision_message}}", "") : r2.replace("{{revision_message}}", t.languages[n3].consent_modal.revision_message || "")), w || ((w = ln("div")).id = "c-txt", o2.appendChild(w)), w.innerHTML = r2;
+        var a2, c2 = t.languages[n3].consent_modal.primary_btn, u2 = t.languages[n3].consent_modal.secondary_btn;
+        c2 && (k || ((k = ln("button")).id = "c-p-bn", k.className = "c-bn", k.appendChild(On(1)), "accept_all" === c2.role && (a2 = "all"), wn(k, "click", function() {
+          M.hide(), M.accept(a2);
+        })), k.firstElementChild.innerHTML = t.languages[n3].consent_modal.primary_btn.text), u2 && (x || ((x = ln("button")).id = "c-s-bn", x.className = "c-bn c_link", x.appendChild(On(1)), "accept_necessary" === u2.role ? wn(x, "click", function() {
+          M.hide(), M.accept([]);
+        }) : wn(x, "click", function() {
+          M.showSettings(0);
+        })), x.firstElementChild.innerHTML = t.languages[n3].consent_modal.secondary_btn.text);
+        var f2 = t.gui_options;
+        J || ((J = ln("div")).id = "c-inr", J.appendChild(o2)), S || ((S = ln("div")).id = "c-bns", f2 && f2.consent_modal && true === f2.consent_modal.swap_buttons ? (u2 && S.appendChild(x), c2 && S.appendChild(k), S.className = "swap") : (c2 && S.appendChild(k), u2 && S.appendChild(x)), (c2 || u2) && J.appendChild(S), h.appendChild(J)), H = true, an(J);
+      }, fn = function(n3) {
+        if (O)
+          (C = ln("div")).id = "s-bl";
+        else {
+          (O = ln("div")).tabIndex = -1;
+          var o2 = ln("div"), e2 = ln("div"), i2 = ln("div");
+          j = ln("div"), N = ln("h2");
+          var r2 = ln("div");
+          (T = ln("button")).appendChild(On(2));
+          var a2 = ln("div");
+          D = ln("div");
+          var c2 = ln("div"), u2 = false;
+          wn(O, "mouseup", function(n4) {
+            !q || u2 || j.contains(n4.target) || M.hideSettings();
+          }), wn(O, "mousedown", function(n4) {
+            q && (u2 = j.contains(n4.target));
+          }), O.id = "s-cnt", o2.id = "c-vln", i2.id = "c-s-in", e2.id = "cs", N.id = "s-ttl", j.id = "s-inr", r2.id = "s-hdr", D.id = "s-bl", T.id = "s-c-bn", c2.id = "cs-ov", a2.id = "s-c-bnc", T.className = "c-bn", O.setAttribute("role", "dialog"), O.setAttribute("aria-modal", "true"), O.setAttribute("aria-hidden", "true"), O.setAttribute("aria-labelledby", "s-ttl"), O.style.visibility = c2.style.visibility = "hidden", c2.style.opacity = 0, a2.appendChild(T), wn(document, "keydown", function(n4) {
+            27 === n4.keyCode && q && M.hideSettings();
+          }, true), wn(T, "click", function() {
+            M.hideSettings();
+          });
+        }
+        var v2 = t.languages[n3].settings_modal;
+        T.setAttribute("aria-label", v2.close_btn_label || "Close"), d = v2.blocks, f = v2.cookie_table_headers;
+        var l2 = v2.cookie_table_caption, s2 = d.length;
+        N.innerHTML = v2.title;
+        for (var p2 = 0; p2 < s2; ++p2) {
+          var b2 = d[p2].title, m2 = d[p2].description, y2 = d[p2].toggle, h2 = d[p2].cookie_table, _2 = true === t.remove_cookie_tables, w2 = !!m2 || !_2 && !!h2, k2 = ln("div"), x2 = ln("div");
+          if (m2) {
+            var S2 = ln("div");
+            S2.className = "p", S2.insertAdjacentHTML("beforeend", m2);
+          }
+          var J2 = ln("div");
+          if (J2.className = "title", k2.className = "c-bl", x2.className = "desc", void 0 !== y2) {
+            var L2 = "c-ac-" + p2, A2 = ln(w2 ? "button" : "div"), H2 = ln("label"), P2 = ln("input"), B2 = ln("span"), F2 = ln("span"), K2 = ln("span"), Q2 = ln("span");
+            A2.className = w2 ? "b-tl exp" : "b-tl", H2.className = "b-tg", P2.className = "c-tgl", K2.className = "on-i", Q2.className = "off-i", B2.className = "c-tg", F2.className = "t-lb", w2 && (A2.setAttribute("aria-expanded", "false"), A2.setAttribute("aria-controls", L2)), P2.type = "checkbox", B2.setAttribute("aria-hidden", "true");
+            var V2 = y2.value;
+            P2.value = V2, F2.textContent = b2, A2.insertAdjacentHTML("beforeend", b2), J2.appendChild(A2), B2.appendChild(K2), B2.appendChild(Q2), G ? y2.enabled ? (P2.checked = true, !C && nn.push(true), y2.enabled && !C && X.push(V2)) : !C && nn.push(false) : vn(R.categories, V2) > -1 ? (P2.checked = true, !C && nn.push(true)) : !C && nn.push(false), !C && tn.push(V2), y2.readonly && (P2.disabled = true, xn(B2, "c-ro"), !C && on.push(V2)), xn(x2, "b-acc"), xn(J2, "b-bn"), xn(k2, "b-ex"), x2.id = L2, x2.setAttribute("aria-hidden", "true"), H2.appendChild(P2), H2.appendChild(B2), H2.appendChild(F2), J2.appendChild(H2), w2 && function(n4, t2, o3) {
+              wn(A2, "click", function() {
+                Jn(t2, "act") ? (Sn(t2, "act"), o3.setAttribute("aria-expanded", "false"), n4.setAttribute("aria-hidden", "true")) : (xn(t2, "act"), o3.setAttribute("aria-expanded", "true"), n4.setAttribute("aria-hidden", "false"));
+              }, false);
+            }(x2, k2, A2);
+          } else if (b2) {
+            var W2 = ln("div");
+            W2.className = "b-tl", W2.setAttribute("role", "heading"), W2.setAttribute("aria-level", "3"), W2.insertAdjacentHTML("beforeend", b2), J2.appendChild(W2);
+          }
+          if (b2 && k2.appendChild(J2), m2 && x2.appendChild(S2), !_2 && void 0 !== h2) {
+            for (var Y2 = document.createDocumentFragment(), Z2 = 0; Z2 < f.length; ++Z2) {
+              var $3 = ln("th"), en2 = f[Z2];
+              if ($3.setAttribute("scope", "col"), en2) {
+                var rn2 = en2 && kn(en2)[0];
+                $3.textContent = f[Z2][rn2], Y2.appendChild($3);
+              }
+            }
+            var an2 = ln("tr");
+            an2.appendChild(Y2);
+            var cn2 = ln("thead");
+            cn2.appendChild(an2);
+            var un2 = ln("table");
+            if (l2) {
+              var fn2 = ln("caption");
+              fn2.innerHTML = l2, un2.appendChild(fn2);
+            }
+            un2.appendChild(cn2);
+            for (var dn2 = document.createDocumentFragment(), sn2 = 0; sn2 < h2.length; sn2++) {
+              for (var pn2 = ln("tr"), bn2 = 0; bn2 < f.length; ++bn2)
+                if (en2 = f[bn2]) {
+                  rn2 = kn(en2)[0];
+                  var mn2 = ln("td");
+                  mn2.insertAdjacentHTML("beforeend", h2[sn2][rn2]), mn2.setAttribute("data-column", en2[rn2]), pn2.appendChild(mn2);
+                }
+              dn2.appendChild(pn2);
+            }
+            var yn2 = ln("tbody");
+            yn2.appendChild(dn2), un2.appendChild(yn2), x2.appendChild(un2);
+          }
+          (y2 && b2 || !y2 && (b2 || m2)) && (k2.appendChild(x2), C ? C.appendChild(k2) : D.appendChild(k2));
+        }
+        U || ((U = ln("div")).id = "s-bns"), E || ((E = ln("button")).id = "s-all-bn", E.className = "c-bn", U.appendChild(E), wn(E, "click", function() {
+          M.accept("all"), M.hideSettings(), M.hide();
+        })), E.innerHTML = v2.accept_all_btn;
+        var gn2 = v2.reject_all_btn;
+        if (gn2 && (I || ((I = ln("button")).id = "s-rall-bn", I.className = "c-bn", wn(I, "click", function() {
+          M.accept([]), M.hideSettings(), M.hide();
+        }), j.className = "bns-t", U.appendChild(I)), I.innerHTML = gn2), z || ((z = ln("button")).id = "s-sv-bn", z.className = "c-bn", U.appendChild(z), wn(z, "click", function() {
+          M.accept(), M.hideSettings(), M.hide();
+        })), z.innerHTML = v2.save_settings_btn, C)
+          return j.replaceChild(C, D), void (D = C);
+        r2.appendChild(N), r2.appendChild(a2), j.appendChild(r2), j.appendChild(D), j.appendChild(U), i2.appendChild(j), e2.appendChild(i2), o2.appendChild(e2), O.appendChild(o2), g.appendChild(O), g.appendChild(c2);
+      };
+      M.updateLanguage = function(n3, o2) {
+        if ("string" == typeof n3) {
+          var e2 = cn(n3, t.languages);
+          return (e2 !== L.current_lang || true === o2) && (L.current_lang = e2, H && un(e2), fn(e2), true);
+        }
+      };
+      var dn = function(n3) {
+        var t2 = d.length, o2 = -1;
+        Q = false;
+        var e2 = hn("", "all"), i2 = [L.cookie_domain, "." + L.cookie_domain];
+        if ("www." === L.cookie_domain.slice(0, 4)) {
+          var r2 = L.cookie_domain.substr(4);
+          i2.push(r2), i2.push("." + r2);
+        }
+        for (var a2 = 0; a2 < t2; a2++) {
+          var c2 = d[a2];
+          if (c2.hasOwnProperty("toggle")) {
+            var u2 = vn(K, c2.toggle.value) > -1;
+            if (!nn[++o2] && c2.hasOwnProperty("cookie_table") && (n3 || u2)) {
+              var v2 = c2.cookie_table, l2 = kn(f[0])[0], s2 = v2.length;
+              "on_disable" === c2.toggle.reload && u2 && (Q = true);
+              for (var p2 = 0; p2 < s2; p2++) {
+                var b2 = i2, m2 = v2[p2], y2 = [], g2 = m2[l2], h2 = m2.is_regex || false, _2 = m2.domain || null, w2 = m2.path || false;
+                if (_2 && (b2 = [_2, "." + _2]), h2)
+                  for (var k2 = 0; k2 < e2.length; k2++)
+                    e2[k2].match(g2) && y2.push(e2[k2]);
+                else {
+                  var x2 = vn(e2, g2);
+                  x2 > -1 && y2.push(e2[x2]);
+                }
+                y2.length > 0 && (_n(y2, w2, b2), "on_clear" === c2.toggle.reload && (Q = true));
+              }
+            }
+          }
+        }
+      }, vn = function(n3, t2) {
+        return n3.indexOf(t2);
+      }, ln = function(n3) {
+        var t2 = document.createElement(n3);
+        return "button" === n3 && t2.setAttribute("type", n3), t2;
+      }, sn = function(n3, t2) {
+        return "browser" === L.auto_language ? cn(pn(), n3) : "document" === L.auto_language ? cn(document.documentElement.lang, n3) : "string" == typeof t2 ? L.current_lang = cn(t2, n3) : (L.current_lang, L.current_lang);
+      }, pn = function() {
+        var n3 = navigator.language || navigator.browserLanguage;
+        return n3.length > 2 && (n3 = n3[0] + n3[1]), n3.toLowerCase();
+      };
+      M.allowedCategory = function(n3) {
+        if (G && "opt-in" !== L.mode)
+          t2 = X;
+        else
+          var t2 = JSON.parse(hn(L.cookie_name, "one", true) || "{}").categories || [];
+        return vn(t2, n3) > -1;
+      }, M.run = function(t2) {
+        if (!document.getElementById("cc_div")) {
+          if (rn(t2), Y)
+            return;
+          R = JSON.parse(hn(L.cookie_name, "one", true) || "{}");
+          var c2 = void 0 !== (i = R.consent_uuid);
+          if ((o = R.consent_date) && (o = new Date(o)), (e = R.last_consent_update) && (e = new Date(e)), A = void 0 !== R.data ? R.data : null, B && R.revision !== L.revision && (F = false), H = G = !(c2 && F && o && e && i), function() {
+            (y = ln("div")).id = "cc--main", y.style.position = "fixed", y.innerHTML = '<div id="cc_div" class="cc_div"></div>', g = y.children[0];
+            var t3 = L.current_lang;
+            H && un(t3), fn(t3), (n2 || document.body).appendChild(y);
+          }(), function() {
+            var n3 = ["[href]", "button", "input", "details", '[tabindex="0"]'];
+            function t3(t4, o2) {
+              try {
+                var e2 = t4.querySelectorAll(n3.join(':not([tabindex="-1"]), '));
+              } catch (o3) {
+                return t4.querySelectorAll(n3.join(", "));
+              }
+              o2[0] = e2[0], o2[1] = e2[e2.length - 1];
+            }
+            t3(j, $2), H && t3(h, Z);
+          }(), function(n3, t3) {
+            if ("object" == typeof n3) {
+              var o2 = n3.consent_modal, e2 = n3.settings_modal;
+              H && o2 && i2(h, ["box", "bar", "cloud"], ["top", "middle", "bottom"], ["zoom", "slide"], o2.layout, o2.position, o2.transition), e2 && i2(O, ["bar"], ["left", "right"], ["zoom", "slide"], e2.layout, e2.position, e2.transition);
+            }
+            function i2(n4, t4, o3, e3, i3, r2, a2) {
+              if (r2 = r2 && r2.split(" ") || [], vn(t4, i3) > -1 && (xn(n4, i3), ("bar" !== i3 || "middle" !== r2[0]) && vn(o3, r2[0]) > -1))
+                for (var c3 = 0; c3 < r2.length; c3++)
+                  xn(n4, r2[c3]);
+              vn(e3, a2) > -1 && xn(n4, a2);
+            }
+          }(t2.gui_options), an(), L.autorun && H && M.show(t2.delay || 0), setTimeout(function() {
+            xn(y, "c--anim");
+          }, 30), setTimeout(function() {
+            wn(document, "keydown", function(n3) {
+              if ("Tab" === n3.key && (P || q) && r) {
+                var t3 = Tn();
+                n3.shiftKey ? t3 !== r[0] && a.contains(t3) || (n3.preventDefault(), jn(r[1])) : t3 !== r[1] && a.contains(t3) || (n3.preventDefault(), jn(r[0]));
+              }
+            });
+          }, 100), G)
+            "opt-out" === L.mode && (L.mode, bn());
+          else {
+            var u2 = "boolean" == typeof R.rfc_cookie;
+            (!u2 || u2 && R.rfc_cookie !== L.use_rfc_cookie) && (R.rfc_cookie = L.use_rfc_cookie, gn(L.cookie_name, JSON.stringify(R))), p = yn(mn()), bn(), "function" == typeof v && v(R);
+          }
+        }
+      };
+      var bn = function() {
+        if (L.page_scripts) {
+          var n3 = R.categories || [];
+          G && "opt-out" === L.mode && (n3 = X);
+          var t2 = document.querySelectorAll("script[" + L.script_selector + "]"), o2 = function(t3, e2) {
+            if (e2 < t3.length) {
+              var i2 = t3[e2], r2 = i2.getAttribute(L.script_selector);
+              if (vn(n3, r2) > -1) {
+                i2.type = i2.getAttribute("data-type") || "text/javascript", i2.removeAttribute(L.script_selector);
+                var a2 = i2.getAttribute("data-src");
+                a2 && i2.removeAttribute("data-src");
+                var c2 = ln("script");
+                if (c2.textContent = i2.innerHTML, function(n4, t4) {
+                  for (var o3 = t4.attributes, e3 = o3.length, i3 = 0; i3 < e3; i3++) {
+                    var r3 = o3[i3].nodeName;
+                    n4.setAttribute(r3, t4[r3] || t4.getAttribute(r3));
+                  }
+                }(c2, i2), a2 ? c2.src = a2 : a2 = i2.src, a2 && (c2.readyState ? c2.onreadystatechange = function() {
+                  "loaded" !== c2.readyState && "complete" !== c2.readyState || (c2.onreadystatechange = null, o2(t3, ++e2));
+                } : c2.onload = function() {
+                  c2.onload = null, o2(t3, ++e2);
+                }), i2.parentNode.replaceChild(c2, i2), a2)
+                  return;
+              }
+              o2(t3, ++e2);
+            }
+          };
+          o2(t2, 0);
+        }
+      };
+      M.set = function(n3, t2) {
+        return "data" === n3 && function(n4, t3) {
+          var o2 = false;
+          if ("update" === t3) {
+            var e2 = typeof (A = M.get("data")) == typeof n4;
+            if (e2 && "object" == typeof A)
+              for (var i2 in !A && (A = {}), n4)
+                A[i2] !== n4[i2] && (A[i2] = n4[i2], o2 = true);
+            else
+              !e2 && A || A === n4 || (A = n4, o2 = true);
+          } else
+            A = n4, o2 = true;
+          return o2 && (R.data = A, gn(L.cookie_name, JSON.stringify(R))), o2;
+        }(t2.value, t2.mode);
+      }, M.get = function(n3, t2) {
+        return JSON.parse(hn(t2 || L.cookie_name, "one", true) || "{}")[n3];
+      }, M.getConfig = function(n3) {
+        return L[n3] || t[n3];
+      };
+      var mn = function() {
+        return V = R.categories || [], W = tn.filter(function(n3) {
+          return -1 === vn(V, n3);
+        }), { accepted: V, rejected: W };
+      }, yn = function(n3) {
+        var t2 = "custom", o2 = on.length;
+        return n3.accepted.length === tn.length ? t2 = "all" : n3.accepted.length === o2 && (t2 = "necessary"), t2;
+      };
+      M.getUserPreferences = function() {
+        var n3 = mn();
+        return { accept_type: yn(n3), accepted_categories: n3.accepted, rejected_categories: n3.rejected };
+      }, M.loadScript = function(n3, t2, o2) {
+        var e2 = "function" == typeof t2;
+        if (document.querySelector('script[src="' + n3 + '"]'))
+          e2 && t2();
+        else {
+          var i2 = ln("script");
+          if (o2 && o2.length > 0)
+            for (var r2 = 0; r2 < o2.length; ++r2)
+              o2[r2] && i2.setAttribute(o2[r2].name, o2[r2].value);
+          e2 && (i2.onload = t2), i2.src = n3, document.head.appendChild(i2);
+        }
+      }, M.updateScripts = function() {
+        bn();
+      }, M.show = function(n3, t2) {
+        true === t2 && un(L.current_lang), H && (b = Tn(), r = Z, a = h, P = true, h.removeAttribute("aria-hidden"), setTimeout(function() {
+          xn(en, "show--consent");
+        }, n3 > 0 ? n3 : t2 ? 30 : 0));
+      }, M.hide = function() {
+        H && (P = false, jn(c), h.setAttribute("aria-hidden", "true"), Sn(en, "show--consent"), jn(b), b = null);
+      }, M.showSettings = function(n3) {
+        q = true, O.removeAttribute("aria-hidden"), P ? m = Tn() : b = Tn(), a = O, r = $2, setTimeout(function() {
+          xn(en, "show--settings");
+        }, n3 > 0 ? n3 : 0);
+      }, M.hideSettings = function() {
+        q = false, Nn(), jn(u), O.setAttribute("aria-hidden", "true"), Sn(en, "show--settings"), P ? (jn(m), m = null, a = h, r = Z) : (jn(b), b = null);
+      }, M.accept = function(n3, t2) {
+        var r2 = n3 || void 0, a2 = t2 || [], c2 = [];
+        if (r2)
+          if ("object" == typeof r2 && "number" == typeof r2.length)
+            for (var u2 = 0; u2 < r2.length; u2++)
+              -1 !== vn(tn, r2[u2]) && c2.push(r2[u2]);
+          else
+            "string" == typeof r2 && ("all" === r2 ? c2 = tn.slice() : -1 !== vn(tn, r2) && c2.push(r2));
+        else
+          c2 = function() {
+            for (var n4 = document.querySelectorAll(".c-tgl") || [], t3 = [], o2 = 0; o2 < n4.length; o2++)
+              n4[o2].checked && t3.push(n4[o2].value);
+            return t3;
+          }();
+        if (a2.length >= 1)
+          for (u2 = 0; u2 < a2.length; u2++)
+            c2 = c2.filter(function(n4) {
+              return n4 !== a2[u2];
+            });
+        for (u2 = 0; u2 < tn.length; u2++)
+          true === on.includes(tn[u2]) && -1 === vn(c2, tn[u2]) && c2.push(tn[u2]);
+        !function(n4) {
+          K = [];
+          var t3 = O.querySelectorAll(".c-tgl") || [];
+          if (t3.length > 0)
+            for (var r3 = 0; r3 < t3.length; r3++)
+              -1 !== vn(n4, tn[r3]) ? (t3[r3].checked = true, nn[r3] || (K.push(tn[r3]), nn[r3] = true)) : (t3[r3].checked = false, nn[r3] && (K.push(tn[r3]), nn[r3] = false));
+          !G && L.autoclear_cookies && K.length > 0 && dn(), o || (o = /* @__PURE__ */ new Date()), i || (i = ("10000000-1000-4000-8000" + -1e11).replace(/[018]/g, function(n5) {
+            try {
+              return (n5 ^ (window.crypto || window.msCrypto).getRandomValues(new Uint8Array(1))[0] & 15 >> n5 / 4).toString(16);
+            } catch (n6) {
+              return "";
+            }
+          })), R = { categories: n4, level: n4, revision: L.revision, data: A, rfc_cookie: L.use_rfc_cookie, consent_date: o.toISOString(), consent_uuid: i }, (G || K.length > 0) && (F = true, e = e ? /* @__PURE__ */ new Date() : o, R.last_consent_update = e.toISOString(), p = yn(mn()), gn(L.cookie_name, JSON.stringify(R)), bn()), G && (L.autoclear_cookies && dn(true), "function" == typeof s && s(M.getUserPreferences(), R), "function" == typeof v && v(R), G = false, "opt-in" === L.mode) || ("function" == typeof l && K.length > 0 && l(R, K), Q && location.reload());
+        }(c2);
+      }, M.eraseCookies = function(n3, t2, o2) {
+        var e2 = [], i2 = o2 ? [o2, "." + o2] : [L.cookie_domain, "." + L.cookie_domain];
+        if ("object" == typeof n3 && n3.length > 0)
+          for (var r2 = 0; r2 < n3.length; r2++)
+            this.validCookie(n3[r2]) && e2.push(n3[r2]);
+        else
+          this.validCookie(n3) && e2.push(n3);
+        _n(e2, t2, i2);
+      };
+      var gn = function(n3, t2) {
+        var o2 = L.cookie_expiration;
+        "number" == typeof L.cookie_necessary_only_expiration && "necessary" === p && (o2 = L.cookie_necessary_only_expiration), t2 = L.use_rfc_cookie ? encodeURIComponent(t2) : t2;
+        var e2 = /* @__PURE__ */ new Date();
+        e2.setTime(e2.getTime() + 24 * o2 * 60 * 60 * 1e3);
+        var i2 = n3 + "=" + (t2 || "") + "; expires=" + e2.toUTCString() + "; Path=" + L.cookie_path + ";";
+        i2 += " SameSite=" + L.cookie_same_site + ";", location.hostname.indexOf(".") > -1 && L.cookie_domain && (i2 += " Domain=" + L.cookie_domain + ";"), "https:" === location.protocol && (i2 += " Secure;"), document.cookie = i2;
+      }, hn = function(n3, t2, o2) {
+        var e2;
+        if ("one" === t2) {
+          if ((e2 = (e2 = document.cookie.match("(^|;)\\s*" + n3 + "\\s*=\\s*([^;]+)")) ? o2 ? e2.pop() : n3 : "") && n3 === L.cookie_name) {
+            try {
+              e2 = JSON.parse(e2);
+            } catch (n4) {
+              try {
+                e2 = JSON.parse(decodeURIComponent(e2));
+              } catch (n5) {
+                e2 = {};
+              }
+            }
+            e2 = JSON.stringify(e2);
+          }
+        } else if ("all" === t2) {
+          var i2 = document.cookie.split(/;\s*/);
+          e2 = [];
+          for (var r2 = 0; r2 < i2.length; r2++)
+            e2.push(i2[r2].split("=")[0]);
+        }
+        return e2;
+      }, _n = function(n3, t2, o2) {
+        for (var e2 = t2 || "/", i2 = 0; i2 < n3.length; i2++) {
+          for (var r2 = 0; r2 < o2.length; r2++)
+            document.cookie = n3[i2] + "=; path=" + e2 + (0 == o2[r2].indexOf(".") ? "; domain=" + o2[r2] : "") + "; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+          n3[i2];
+        }
+      };
+      M.validCookie = function(n3) {
+        return "" !== hn(n3, "one", true);
+      }, M.validConsent = function() {
+        return !G;
+      };
+      var wn = function(n3, t2, o2, e2) {
+        n3.addEventListener(t2, o2, true === e2 && { passive: true });
+      }, kn = function(n3) {
+        if ("object" == typeof n3)
+          return Object.keys(n3);
+      }, xn = function(n3, t2) {
+        n3.classList.add(t2);
+      }, Sn = function(n3, t2) {
+        n3.classList.remove(t2);
+      }, Jn = function(n3, t2) {
+        return n3.classList.contains(t2);
+      }, On = function(n3) {
+        var t2 = ln("span");
+        return t2.tabIndex = -1, 1 === n3 ? c = t2 : u = t2, t2;
+      }, jn = function(n3) {
+        n3 && n3 instanceof HTMLElement && n3.focus();
+      }, Nn = function() {
+        for (var n3 = j.querySelectorAll(".c-tgl"), t2 = 0; t2 < n3.length; t2++) {
+          var o2 = n3[t2].value, e2 = on.includes(o2);
+          n3[t2].checked = e2 || M.allowedCategory(o2);
+        }
+      }, Tn = function() {
+        return document.activeElement;
+      };
+      return M;
+    });
+  }();
+
+  // controllers/cookie_consent_controller.js
+  var cookie_consent_controller_default = class extends Controller {
+    connect() {
+      var cc = initCookieConsent();
+      cc.run({
+        current_lang: "en",
+        autoclear_cookies: false,
+        // default: false
+        page_scripts: true,
+        // default: false
+        // mode: 'opt-in'                          // default: 'opt-in'; value: 'opt-in' or 'opt-out'
+        // delay: 0,                               // default: 0
+        auto_language: "document",
+        // default: null; could also be 'browser' or 'document'
+        // autorun: true,                          // default: true
+        // force_consent: false,                   // default: false
+        // hide_from_bots: true,                   // default: true
+        // remove_cookie_tables: false             // default: false
+        cookie_name: "cc_cookie",
+        // default: 'cc_cookie'
+        // cookie_expiration: 182,                 // default: 182 (days)
+        // cookie_necessary_only_expiration: 182   // default: disabled
+        // cookie_domain: location.hostname,       // default: current domain
+        // cookie_path: '/',                       // default: root
+        // cookie_same_site: 'Lax',                // default: 'Lax'
+        // use_rfc_cookie: false,                  // default: false
+        revision: 0,
+        // default: 0
+        onFirstAction: function(user_preferences, cookie) {
+        },
+        onAccept: function(cookie) {
+        },
+        onChange: function(cookie, changed_categories) {
+        },
+        gui_options: {
+          consent_modal: {
+            layout: "cloud",
+            position: "bottom center",
+            transition: "slide",
+            swap_buttons: false
+          },
+          settings_modal: {
+            layout: "box",
+            position: "right",
+            transition: "slide"
+          }
+        },
+        languages: {
+          en: {
+            consent_modal: {
+              title: "We use cookies!",
+              description: 'To ensure the best user experience for our services, our websites use cookies. We use cookies to personalize content and ads, and to provide social media features. We ask for your permission to use cookies that are not necessarily essential for the basic functions of our website. Please read our detailed descriptions and rules of cookies <a class="cc__link" href="https://www.internet.ee/eif/cookies-on-internet-ee-webpage" target="_blank">here</a>.',
+              primary_btn: {
+                text: "ACCEPT ALL",
+                role: "accept_all"
+                // 'accept_selected' or 'accept_all'
+              },
+              secondary_btn: {
+                text: "SETTINGS",
+                role: "settings"
+                // 'settings' or 'accept_necessary'
+              }
+            },
+            settings_modal: {
+              title: "Cookie Settings",
+              save_settings_btn: "SAVE SETTINGS",
+              accept_all_btn: "ACCEPT ALL",
+              reject_all_btn: "REJECT ALL",
+              close_btn_label: "Close",
+              // cookie_table_headers: [
+              //     { col1: 'Name' },
+              //     { col2: 'Domain' },
+              //     { col3: 'Expiration' },
+              //     { col4: 'Description' },
+              // ],
+              blocks: [
+                {
+                  title: "Cookie usage",
+                  description: 'We use cookies to help you navigate efficiently and perform certain functions. You will find detailed information about all cookies under each consent category below. The cookies that are categorized as "Necessary" are stored on your browser as they are essential for enabling the basic functionalities of the site.'
+                },
+                {
+                  title: "Strictly necessary cookies",
+                  description: "Help us make the website more user-friendly by activating essential functions. The website cannot function properly without these cookies. As these cookies are needed for the secure provision of services, the visitor cannot refuse them.",
+                  toggle: {
+                    value: "necessary",
+                    enabled: true,
+                    readonly: true
+                    // cookie categories with readonly=true are all treated as "necessary cookies"
+                  }
+                  // cookie_table: [
+                  //     // list of all expected cookies
+                  //     {
+                  //         col1: '_registrar_center2_session',
+                  //         col2: 'registrar.internet.ee',
+                  //         col3: 'At the end of the session',
+                  //         col4: 'Session cookie used by web application for maintaining session state for a user.',
+                  //         is_regex: true,
+                  //     },
+                  //     {
+                  //         col1: 'request_ip',
+                  //         col2: 'registrar.internet.ee',
+                  //         col3: '1 day',
+                  //         col4: "Used to store the IP address of the user's request for various purposes, like rate limiting or logging in.",
+                  //     },
+                  //     {
+                  //         col1: 'locale',
+                  //         col2: 'registrar.internet.ee',
+                  //         col3: '2 years',
+                  //         col4: "Used to store the user's preferred language setting.",
+                  //     },
+                  // ],
+                },
+                {
+                  title: "Statistics and Analytics Cookies",
+                  description: "Help us understand how a specific visitor uses the website. This way we see how many people visit the site during a certain period, how they navigate through web pages, and what they click on. These cookies provide us with information based on which we improve the customer experience.",
+                  toggle: {
+                    value: "analytics",
+                    enabled: true,
+                    readonly: false
+                    // cookie categories with readonly=true are all treated as "necessary cookies"
+                  }
+                }
+              ]
+            }
+          },
+          et: {
+            consent_modal: {
+              title: "Kasutame k\xFCpsiseid!",
+              description: 'Meie teenuste parima kasutajakogemuse tagamiseks kasutavad meie veebisaidid k\xFCpsiseid. Kasutame k\xFCpsiseid sisu ja reklaamide isikup\xE4rastamiseks, sotsiaalse meedia funktsioonide pakkumiseks. K\xFCsime sinult luba, et kasutada k\xFCpsiseid, mis ei ole tingimata vajalikud meie veebilehe p\xF5hifunktsioonide toimimiseks. Palun loe meie k\xFCpsiste \xFCksikasjalikke kirjeldusi ja reegleid <a class="cc__link" href="https://www.internet.ee/eis/kupsised-internet-ee-lehel" target="_blank">siit</a>.',
+              primary_btn: {
+                text: "LUBA K\xD5IK",
+                role: "accept_all"
+                // 'accept_selected' or 'accept_all'
+              },
+              secondary_btn: {
+                text: "SEADISTUSED",
+                role: "settings"
+                // 'settings' or 'accept_necessary'
+              }
+            },
+            settings_modal: {
+              title: "K\xFCpsiste seaded",
+              save_settings_btn: "SALVESTA",
+              accept_all_btn: "LUBA K\xD5IK",
+              reject_all_btn: "KEELA K\xD5IK",
+              close_btn_label: "Sulge",
+              // cookie_table_headers: [
+              //     { col1: 'Nimi' },
+              //     { col2: 'Domeen' },
+              //     { col3: 'Kehtivus' },
+              //     { col4: 'Kirjeldus' },
+              // ],
+              blocks: [
+                {
+                  title: "K\xFCpsiste kasutamine",
+                  description: 'Kasutame k\xFCpsiseid, et aidata Teil t\xF5husalt navigeerida ja teatud funktsioone t\xE4ita. \xDCksikasjalikku teavet k\xF5igi k\xFCpsiste kohta leiate allpool iga n\xF5usolekukategooria alt. K\xFCpsistest, mis on liigitatud kui "Vajalikud" ei saa loobuda, sest need on olulised saidi p\xF5hifunktsioonide toimimiseks.'
+                },
+                {
+                  title: "Vajalikud k\xFCpsised",
+                  description: "Veebileht ei saa ilma nende k\xFCpsisteta korralikult toimida. Seet\xF5ttu ei ole k\xFClastajal v\xF5imalik neist keelduda.",
+                  toggle: {
+                    value: "necessary",
+                    enabled: true,
+                    readonly: true
+                    // cookie categories with readonly=true are all treated as "necessary cookies"
+                  }
+                  // cookie_table: [
+                  //     // list of all expected cookies
+                  //     {
+                  //         col1: '_registrar_center2_session',
+                  //         col2: 'registrar.internet.ee',
+                  //         col3: 'Sessiooni lõpus',
+                  //         col4: 'Sessiooni küpsis, mida veebirakendus kasutab kasutaja seansi oleku säilitamiseks.',
+                  //         is_regex: true,
+                  //     },
+                  //     {
+                  //         col1: 'request_ip',
+                  //         col2: 'registrar.internet.ee',
+                  //         col3: '1 päev',
+                  //         col4: "Kasutatakse kasutaja päringu IP-aadressi salvestamiseks mitmesugustel eesmärkidel, nagu rate limiting või sisselogimine.",
+                  //     },
+                  //     {
+                  //         col1: 'locale',
+                  //         col2: 'registrar.internet.ee',
+                  //         col3: '2 aastat',
+                  //         col4: "Kasutatakse kasutaja eelistatud keeleseade salvestamiseks.",
+                  //     },
+                  // ],
+                },
+                {
+                  title: "Statistics and Analytics Cookies",
+                  description: "Aitavad meil m\xF5ista, kuidas konkreetne k\xFClastaja veebilehte kasutab. Nii n\xE4eme, kui palju inimesi kindlal ajavahemikul lehte k\xFClastab, kuidas veebilehtedel liigutakse ja millele klikitakse. Need k\xFCpsised annavad meile infot, mille p\xF5hjal parendada kliendikogemust.",
+                  toggle: {
+                    value: "analytics",
+                    enabled: true,
+                    readonly: false
+                    // cookie categories with readonly=true are all treated as "necessary cookies"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      });
+    }
+  };
+
+  // controllers/google_analytics_controller.js
+  var google_analytics_controller_default = class extends Controller {
+    connect() {
+      const googleId = document.getElementById("google-tracking-id").getAttribute("data-value");
+      if (googleId) {
+        let gtag = function() {
+          dataLayer.push(arguments);
+        };
+        window.dataLayer = window.dataLayer || [];
+        ;
+        gtag("js", /* @__PURE__ */ new Date());
+        gtag("config", googleId);
+        gtag("config", googleId, {
+          "page_location": event.detail.url,
+          "cookie_prefix": "AuctionTest",
+          "cookie_domain": "auction.ee"
+        });
+      }
+      ;
+      console.log("Google Analytics controller connected...");
+    }
+  };
+
+  // controllers/auction_timezone_controller.js
+  var auction_timezone_controller_default = class extends Controller {
+    static values = { endTime: String };
+    static targets = ["display"];
+    connect() {
+      this.updateTime();
+    }
+    updateTime() {
+      if (!this.hasDisplayTarget) {
+        return;
+      }
+      const endTime = new Date(this.endTimeValue);
+      const userLocalTime = endTime.toLocaleString(void 0, { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone });
+      this.displayTarget.textContent = userLocalTime;
+    }
+  };
+
+  // controllers/index.js
   application.register("modals--offer-modal", offer_modal_controller_default);
   application.register("modals--modal", modal_controller_default);
   application.register("form--debounce", debounce_controller_default);
@@ -7948,12 +8644,26 @@
   application.register("toggle", toggle_controller_default);
   application.register("hamburger", hamburger_controller_default);
   application.register("navbar--expandable", expandable_controller_default);
+  application.register("cookie-consent", cookie_consent_controller_default);
+  application.register("google-analytics", google_analytics_controller_default);
+  application.register("auction-timezone", auction_timezone_controller_default);
 })();
-/*!
- * Toastify js 1.12.0
- * https://github.com/apvarun/toastify-js
- * @license MIT licensed
- *
- * Copyright (C) 2018 Varun A P
- */
-//# sourceMappingURL=assets/application.js.map
+/*! Bundled license information:
+
+toastify-js/src/toastify.js:
+  (*!
+   * Toastify js 1.12.0
+   * https://github.com/apvarun/toastify-js
+   * @license MIT licensed
+   *
+   * Copyright (C) 2018 Varun A P
+   *)
+
+vanilla-cookieconsent/dist/cookieconsent.js:
+  (*!
+   * CookieConsent v2.9.2
+   * https://www.github.com/orestbida/cookieconsent
+   * Author Orest Bida
+   * Released under the MIT License
+   *)
+*/

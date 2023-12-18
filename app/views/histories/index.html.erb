@@ -1,104 +1,58 @@
-<%# TODO: Make as auctuion index page %>
+<%= component 'common/hero', title: t('histories.title') %>
 
-<% content_for :hero do %>
-    <div class="hero green">
-        <h1><%= t(:finished) %></h1>
-    </div>
+<% if user_signed_in? %>
+  <%= turbo_stream_from "auctions_#{current_user&.id}" %>
+<% else %>
+  <%= turbo_stream_from "auctions" %>
 <% end %>
 
-<div class="features-grid top narrow grey ">
-    <div class="ui input">
-        <%= form_with url: histories_path, 
-                      method: :get,
-                      data: { controller: 'debounce',
-                              debounce_target: 'form',
-                              turbo_action: "advance",
-                              turbo_frame: "results",
-                              action: 'input->debounce#search' 
-                              }, class: 'ui big form' do |form| %>
-            <div class="inline fields">
-                <div class="field">
-                    <%= form.search_field :domain_name, value: params[:domain_name], placeholder: t('search_by_domain_name'), class: 'prompt' %>
-                </div>
-                <div class="field">
-                    <%= form.label :type, t('auctions.index.select_type') %>
-                    <%= form.select :type, options_for_select(Auction.platforms.map {|k, v| [t("auctions.#{k}"), v]}, selected: params[:type]), { include_blank: t(:all) }, { class: '' } %>
-                </div>
-                <div class="field">
-                    <%= link_to t(:clear), request.path, class: 'ui primary button' %>
-                </div>
-            </div>
-        <% end %>
-    </div>
-</div>
+<%= component 'pages/auction/cards' %>
 
-<div class="u-container">
-    <div class="margin-block">
-        <div class="grid one column">
-            <%= turbo_frame_tag "results" do %>
-                <div class="column">
-                    <div class="ui grid">
-                      <div class="four wide column"><h3><%= t('auctions.finished_auctions') %></h3></div>
+<div class="o-container">
+  <div class="c-table c-table--sortable" data-controller="english-offers" 
+    data-action="turbo:before-stream-render@document->english-offers#beforeStreamRender"
+    data-english-offers-user-id-value="<%= current_user&.id %>"
+    data-english-offers-bid-text-value="<%= t('auctions.bid') %>"
+    data-english-offers-participate-text-value="<%= t('auctions.participate') %>"
+    data-english-offers-english-text-value="<%= t('auctions.english') %>"
+    data-english-offers-blind-text-value="<%= t('auctions.blind') %>">
 
-                      <div class="four wide column"></div>
-                      <div class="four wide column"></div>
+    <%= component 'pages/auction/filter', current_user: current_user %>
 
-                      <div class="four wide column" style='text-align: right;'>
-                        <%= link_to t('histories.current_auctions'), auctions_path, style: 'margin-bottom: 20px; display: block; font-size: 18px; color: #03456f;', target: '_top' %>
-                      </div>
-                    </div>
+    <!-- 
+    These parameters are passed to the Common::Table::Component. These parameters are used to generate headers in the table component. The name "column_name" indicates the name of the column. This is necessary for sorting, so the name of this column should correspond to the name of the column in the database table. If you want to make it so that the data is not sorted by the column, then you should add a nil value. "Caption" is the table header, and "options" are additional parameters that are passed into the tags. 
+    -->
+    <% header_collection = [{ column: 'domain_name', caption: t('auctions.domain_name'), options: { class: "sorting" } },
+                            { column: 'platform', caption: t('auctions.auction_type'), options: { class: "sorting" } },
+                            { column: 'ends_at', caption: t('auctions.ends_at'), options: { class: "sorting" } },
+                            { column: 'users_price', caption: t('auctions.current_price'), options: { class: "sorting" } },
+                            { column: 'username', caption: t('auctions.offer_owner'), options: { class: "sorting" } }] %>
 
-                    <table class="ui table" id="finished-auctions-table">
-                        <thead>
-                            <tr>
-                                <th scope="col">
-                                    <%= t('auctions.domain_name') %>
-                                    <%= sort_link_to "", "domain_name" %>
-                                </th>
-                                <th scope="col">
-                                  <%= t('auctions.starts_at') %>
-                                  <%= sort_link_to "", "starts_at" %>  
-                                </th>
-                                <th scope="col">
-                                  <%= t('auctions.finished_at') %>
-                                  <%= sort_link_to "", "ends_at" %> 
-                                </th>
-                                <th scope="col">
-                                  <%= t('auctions.winning_bid') %>
-                                  <%= sort_link_to "", "users_price" %> 
-                                </th>
-                                <th scope="col">
-                                  <%= t('auctions.auction_type') %>
-                                  <%= sort_link_to "", "platform" %>   
-                                </th>
-                            </tr>
-                        </thead>
+    <!-- In the Stimulus controller, I use the Turbo class with frame parameters named 'results' for table sorting. This means that rendering the table with the new sort order should occur within the scope of the turbo_frame_tag with the name "results". For it to work correctly, it's necessary to wrap the table content within this turbo_frame_tag with "results" name. The name "results" is assigned as a value for the orderable Stimulus controller in the table component. -->
+    <%= turbo_frame_tag "results" do %>
 
-                        <tbody id="finished-auctions-table">
-                            <% @auctions.each do |auction| %>
-                                <tr class="finished-auctions-table-row" data-controller="auction-timezone" data-auction-timezone-end-time-value="<%= auction.ends_at.iso8601 %>">
-                                    <td class="monospace"><%= auction.domain_name %></td>
-                                    <td><%= auction.starts_at.to_formatted_s(:long) %></td>
-                                    <td><span data-auction-timezone-target="display"><%= auction.ends_at %></span></td>
-                                    <td><%= auction.currently_winning_offer&.price if auction.platform == 'english' %></td>
-                                    <td>
-                                        <%= t("auctions.#{auction.platform&.downcase.presence || 'blind (lagacy)'}") %>
-                                    </td>
-                                </tr>
-                            <% end %>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="column">
-                    <div style="margin-top:10px; text-align: center;">
-                        <% if @pagy.pages > 1 %>
-                            <div class="footer">
-                                <%== pagy_nav(@pagy) %>
-                            </div>
-                        <% end %>
-                    </div>
-                </div>
+      <!-- Options attributes are used as table attributes -->
+      <%= component 'common/table', header_collection:, options: { class: 'js-table-dt dataTable no-footer' } do %>
+
+        <!-- "The body of the table also needs to be in the component block, so the component wraps it with the necessary tags." -->
+
+        <%= tag.tbody id: "bids", class: 'contents' do %>
+            <% @auctions.each do |auction| %>
+                <tr class="finished-auctions-table-row" data-controller="auction-timezone" data-auction-timezone-end-time-value="<%= auction.ends_at.iso8601 %>">
+                    <td class="monospace"><%= auction.domain_name %></td>
+                    <td><%= auction.starts_at.to_formatted_s(:long) %></td>
+                    <td><span data-auction-timezone-target="display"><%= auction.ends_at %></span></td>
+                    <td><%= auction.currently_winning_offer&.price if auction.platform == 'english' %></td>
+                    <td>
+                        <%= t("auctions.#{auction.platform&.downcase.presence || 'blind (lagacy)'}") %>
+                    </td>
+                </tr>
             <% end %>
-        </div>
-    </div>
+        <% end %>
+      <% end %>
+
+      <%= component 'common/pagy', pagy: @pagy %>
+    <% end %>
+
+  </div>
 </div>

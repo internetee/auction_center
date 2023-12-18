@@ -1,4 +1,8 @@
-document.addEventListener('turbo:load', (event) => {
+// app/javascript/controllers/english_offers_controller.js
+import { Controller } from "@hotwired/stimulus"
+
+export default class extends Controller {
+  connect() {
     const googleId = document
         .getElementById('google-tracking-id')
         .getAttribute('data-value');
@@ -17,4 +21,7 @@ document.addEventListener('turbo:load', (event) => {
             'cookie_domain': 'auction.ee',
         });
     };
-});
+
+    console.log('Google Analytics controller connected...');
+  }
+}

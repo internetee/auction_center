@@ -4,9 +4,9 @@
     <h2 class="c-block__title u-h3"><%= t('offers.overview') %></h2>
     <%= component 'common/table', header_collection: overview_table_headers, options: { class: 'table--black' } do %>
       <%= tag.tbody do %>
-        <tr>
+        <tr data-controller="auction-timezone" data-auction-timezone-end-time-value="<%= @offer.auction.ends_at.iso8601 %>">
           <td><strong><%= @offer.auction.domain_name  %></strong></td>
-          <td>2<%= I18n.l(@offer.auction.ends_at) %></td>
+          <td><span data-auction-timezone-target="display"><%= @offer.auction.ends_at %></span></td>
           <td><%= t('offers.price_in_currency', price: @offer.price) %></td>
           <td><%= t('offers.price_in_currency', price: @offer.total) %></td>
         </tr>

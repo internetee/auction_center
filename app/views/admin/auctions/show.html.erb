@@ -13,9 +13,11 @@
           <td><strong><%= t('auctions.starts_at') %></strong></td>
           <td><%= I18n.l(@auction.starts_at) if @auction.starts_at.present? %>
           </tr>
-          <tr>
+          <tr data-controller="auction-timezone" data-auction-timezone-end-time-value="<%= @auction.ends_at.iso8601 %>">
             <td><strong><%= t('auctions.ends_at') %></strong></td>
-            <td><%= I18n.l(@auction.ends_at) if @auction.ends_at.present? %></td>
+            <%= tag.td do %>
+              <span data-auction-timezone-target="display"><%= @auction.ends_at %></span>
+            <% end @auction.ends_at.present? %>
           </tr>
           <%- if @auction.offer_from_user(current_user).present? %>
             <tr>
