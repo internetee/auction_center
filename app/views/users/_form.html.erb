@@ -51,17 +51,11 @@
           <span class="c-account__chekboxtitle"><%= t('common.webpush_modal.webpush_title') %></span>
         </div>
 
-        <div class="c-account__checkbox u-flex u-align-center u-mb-30">
-            <%= component 'common/form/checkboxes/rounded_checkbox', form: f, attribute: :daily_summary,
-                options: {
-                  id: :daily_summary,
-                  data: {
-                    controller: 'form--checkbox-autosubmit', form__checkbox_autosubmit_target: 'checkbox',
-                    form__checkbox_autosubmit_url_value: user_path(user.uuid), action: 'change->form--checkbox-autosubmit#submit' 
-                  }
-                } 
-            %>
-
+        <div class="c-account__checkbox u-flex u-align-center u-mb-30" data-controller="daily-summary">
+          <label class="o-checkbox" for="checkbox2">
+            <input type="checkbox" id="checkbox2" data-action="change->daily-summary#updateDailtSummary" <%= current_user.daily_summary ? 'checked' : '' %> />
+            <div class="o-checkbox__slider round"></div>
+          </label>
           <span class="c-account__chekboxtitle"><%= t('users.show.daily_summary') %></span>
         </div>
 

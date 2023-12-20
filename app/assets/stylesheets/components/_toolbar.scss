@@ -1,12 +1,11 @@
 .c-toolbar {
   color: $white-color;
   display: none;
-  min-width: rem(375px);
-  width: auto;
+  width: rem(375px);
+  max-width: 100%;
   border-radius: rem(0 0 8px 8px);
-  overflow: hidden;
+  // overflow: hidden;
   @include box-shadow-light;
-  background-color: $black-color;
   position: absolute;
   top: rem(50.4px);
   left: 0;
@@ -20,6 +19,7 @@
     min-width: unset;
     display: block;
     padding-right: 0;
+    background-color: $black-color;
   }
 }
 
@@ -56,12 +56,8 @@
     flex-direction: row;
   }
 
-  & > li a {
-    font-weight: 400;
-
-    .active {
-      font-weight: 800;
-    }
+  &>li a {
+    font-weight: 800;
 
     @include mq(desktop) {
       font-weight: 500;
@@ -73,25 +69,31 @@
     gap: rem(6px);
     flex-wrap: wrap;
     align-items: center;
+    width: 100%;
 
     &:nth-child(1) a:hover {
       background-color: $primary-blue-color;
       color: $white-color;
     }
+
     &:nth-child(2) a:hover {
       background-color: $primary-green-color;
       color: $white-color;
     }
+
     &:nth-child(3) a:hover {
       background-color: $primary-orange-color;
       color: $white-color;
     }
+
     &:nth-child(4) a:hover {
       background-color: $secondary-blue-color;
       color: $white-color;
     }
-    &:nth-child(n+5) a:hover {
+
+    &:nth-child(n + 5) a:hover {
       color: $white-color;
+
       @include mq(desktop) {
         background-color: #000000;
       }
@@ -115,10 +117,9 @@
     white-space: nowrap;
 
     &:hover {
-
       @include mq(desktop) {
-      color: $primary-blue-color;
-    }
+        color: $primary-blue-color;
+      }
     }
 
     @include mq(desktop) {
@@ -128,7 +129,7 @@
   }
 
   li.is-active {
-    & > a {
+    &>a {
       @include mq(desktop) {
         box-shadow: 0px 0px 40px rgba(0, 0, 0, 0.2);
       }
@@ -160,6 +161,7 @@
 
     .submenu {
       display: block;
+
       @include mq(desktop) {
         background-color: $primary-blue-color;
         display: flex;
@@ -179,7 +181,8 @@
       }
     }
 
-    .submenu a, .submenu button {
+    .submenu a,
+    .submenu button {
       text-transform: uppercase;
       font-weight: 500;
       background: transparent;
@@ -198,7 +201,7 @@
   .submenu {
     width: 100%;
     list-style: none;
-    padding: rem(0 0 8px 24px);
+    padding: rem(0 0 0 24px);
     margin: 0;
     display: none;
 
@@ -208,7 +211,7 @@
     }
   }
 
-  & > li {
+  &>li {
     padding: rem(16px 0);
 
     @include mq(desktop) {
@@ -217,11 +220,13 @@
 
     &:nth-child(2) {
       background: $primary-green-color;
+      box-shadow: 0px 0px 48px 0px rgba(0, 0, 0, 0.12);
 
       @include mq(desktop) {
         background: transparent;
       }
     }
+
     &:nth-child(3) {
       background: $primary-orange-color;
 
@@ -229,6 +234,7 @@
         background: transparent;
       }
     }
+
     &:nth-child(4) {
       background: $secondary-blue-color;
 
@@ -236,6 +242,7 @@
         background: transparent;
       }
     }
+
     &:nth-child(5) {
       background: $black-color;
 
@@ -313,7 +320,6 @@
   display: flex;
   justify-content: space-between;
 
-
   @include mq(desktop) {
     margin-right: 0;
     width: auto;
@@ -332,21 +338,28 @@
   }
 }
 
-.c-toolbar__notice {
-  display: flex !important;
+.s-toolbar-nav .c-toolbar__notice-wrapper {
+  display: none;
+
+  @include mq(desktop) {
+    display: flex;
+  }
+}
+
+.c-header .c-toolbar__notice {
+  display: flex;
   gap: rem(9px);
-  color: $white-color;
   align-items: center;
   white-space: nowrap;
-  text-decoration: none;
-  font-weight: 500;
-  font-size: rem(14px);
-  line-height: rem(20px);
-  padding: rem(0 24px 0 0) !important;
 
   span {
+    text-transform: capitalize;
     display: flex;
     gap: rem(4px);
+    font-size: rem(14px);
+    font-weight: 500;
+    line-height: rem(20px);
+    color: $white-color;
   }
 
   sup {
@@ -358,10 +371,93 @@
   }
 
   &:hover {
-    color: $black-color !important;
+    svg path {
+      fill: $grey-200-color;
+    }
+
+    span {
+      color: $grey-200-color;
+    }
+  }
+}
+
+.c-toolbar__lang-socials {
+  box-shadow: 0px 0px 48px 0px rgba(0, 0, 0, 0.12);
+  background: $white-color;
+  color: $black-color;
+  border-radius: 0 0 0.5rem 0.5rem;
+  width: 100%;
+  padding: rem(16px 25px 18px 16px);
+  display: flex;
+  justify-content: space-between;
+
+  @include mq(desktop) {
+    display: none;
+  }
+
+  .c-header__lang {
+    .c-dropdown__label__lang {
+      color: $black-color;
+    }
 
     svg {
-      fill: $black-color !important;
+      fill: $black-color;
+    }
+
+    .c-dropdown__list {
+      left: -0.5rem;
+      right: auto;
+    }
+  }
+}
+
+// .c-header__lang {
+//   margin-left: auto;
+//   margin-right: rem(20px);
+//   @include mq(desktop) {
+//     margin-right: rem(32px);
+//   }
+
+//   @include mq(ultra) {
+//     margin-left: 0;
+//     margin-right: rem(50px);
+//   }
+// }
+.c-header__tools {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-left: auto;
+  margin-right: rem(20px);
+
+  @include mq(desktop) {
+    margin-right: rem(32px);
+  }
+
+  @include mq(ultra) {
+    margin-left: 0;
+    margin-right: rem(50px);
+  }
+
+  .c-toolbar__notice {
+    display: flex;
+    text-decoration: none;
+
+    span {
+      gap: 0;
+    }
+
+    @include mq(desktop) {
+      margin-right: rem(32px);
+      display: none;
+    }
+  }
+
+  .c-header__lang {
+    display: none;
+
+    @include mq(desktop) {
+      display: block;
     }
   }
 }

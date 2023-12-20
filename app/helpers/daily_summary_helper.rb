@@ -1,0 +1,2 @@
+module DailySummaryHelper
+end

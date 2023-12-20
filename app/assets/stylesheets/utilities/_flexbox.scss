@@ -1,7 +1,8 @@
-.u-flex{
+.u-flex {
   display: flex;
 }
-.u-flex-col{
+
+.u-flex-col {
   flex-direction: column;
 }
 
@@ -18,12 +19,15 @@
 .u-align-center {
   align-items: center;
 }
+
 .u-align-start {
   align-items: flex-start;
 }
-.u-align-end{
+
+.u-align-end {
   align-items: flex-end;
 }
+
 .u-content-center {
   justify-content: center;
 }
@@ -31,9 +35,11 @@
 .u-content-sp {
   justify-content: space-between;
 }
+
 .u-content-start {
   justify-content: flex-start;
 }
+
 .u-content-end {
   justify-content: flex-end;
 }

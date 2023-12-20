@@ -28,7 +28,9 @@ class UsersController < ApplicationController
     @user = current_user
     @user.daily_summary = !@user.daily_summary
     @user.save!
-    redirect_to :auctions, notice: t('.subscription_status_toggled_flash')
+
+    flash[:notice] = t('.subscription_status_toggled_flash')
+    render turbo_stream: turbo_stream.replace('flash', partial: 'common/flash', locals: { flash: })
   end
 
   # POST /users/new

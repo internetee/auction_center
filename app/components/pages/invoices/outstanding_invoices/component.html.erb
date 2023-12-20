@@ -12,11 +12,21 @@
           <%= t('invoices.cancelled_expired') %> <sup>(<%= @cancelled_expired_invoices.count %>)</sup>
         </button>
 
-        <%= tag.div class: 'c-tabs__nav__btn--ind' do %>
-          <%= button_to pay_all_bills_invoices_path, method: :post, style: 'background-color: inherit; color: inherit; text-decoration: none; border: none; box-shadow: none;' do %>
-            <%= t('.pay') %> <sup>(<%= @unpaid_invoices_count %>)</sup>
-          <% end %>
-        <% end if @unpaid_invoices_count.positive?%>
+        <div data-table--tab-target='payablebtn' style='margin-left: auto'>
+          <%= tag.div class: 'c-tabs__nav__btn--ind', style:'margin-right: auto' do %>
+            <%= button_to pay_all_issued_invoices_path, method: :post, style: 'background-color: inherit; color: inherit; text-decoration: none; border: none; box-shadow: none;' do %>
+              <%= t('invoices.pay_all') %> <sup>(<%= @issued_invoices.count %>)</sup>
+            <% end %>
+          <% end if @issued_invoices.count.positive? %>
+        </div>
+
+        <div data-table--tab-target='payablebtn' style='margin-left: auto'>
+          <%= tag.div class: 'c-tabs__nav__btn--ind' do %>
+            <%= button_to pay_all_cancelled_payable_invoices_path, method: :post, style: 'background-color: inherit; color: inherit; text-decoration: none; border: none; box-shadow: none;' do %>
+              <%= t('invoices.pay_all') %> <sup>(<%= @cancelled_payable_invoices.count %>)</sup>
+            <% end %>
+          <% end if @cancelled_payable_invoices.count.positive? %>
+        </div>
 
       </div>
       <div class="c-tabs__content">

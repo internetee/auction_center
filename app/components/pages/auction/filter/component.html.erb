@@ -22,19 +22,13 @@
     </div>
     
 
-    <div class="c-table__filters__more">
-      <% if current_page?(auctions_path) || current_page?(root_path) %>
-        <%= component 'common/links/link_button', link_title: t(:finished_auctions), href: histories_path, color: 'ghost' %>
-      <% else %>
-        <%= component 'common/links/link_button', link_title: t(:auctions_name), href: auctions_path, color: 'ghost' %>
-      <% end %>
-
+    <div class="c-table__filters__more" style="justify-content: flex-end;">
       <%= component 'pages/auction/notification_subscribe', current_user: @current_user %>
     </div>
 
     <div class="c-auctions__legend">
-      <div><span class="o-io-icon o-icon--sm"></span><%= t('auctions.english_auction') %></div>
-      <div><span class="o-po-icon o-icon--sm"></span><%= t('auctions.blind_auction') %></div>
+      <div><span class="o-io-icon o-icon--sm"></span> <%= t('auctions.english_auction').downcase %></div>
+      <div><span class="o-po-icon o-icon--sm"></span> <%= t('auctions.blind_auction').downcase %></div>
     </div>
   </div>
 <% end %>

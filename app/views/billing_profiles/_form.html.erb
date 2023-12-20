@@ -1,37 +1,46 @@
 <%= turbo_frame_tag dom_id(billing_profile) do %>
   <div class="o-card">
     <%= form_with model: billing_profile, url: billing_profile_path(billing_profile.uuid), class: "c-account__form" do |f| %>
-      <div class="c-account__input c-account__input--editable c-account__input-title u-flex u-align-center u-content-sp u-mb-20 ">
+      <div class="c-account__title-wrapper c-account__input c-account__input--editable c-account__input-title u-flex u-content-sp">
         <input type="text" class="o-card__title c-account__title" placeholder="" value="<%= billing_profile.name %>" readonly>
-        <div class="c-account_editicons u-flex u-align-center u-content-sp">
+        
+        <div class="c-account_editicons u-flex u-align-center u-content-end">
           <%# TODO: Resolve the problem of nested elements in button component %>
-          <%= f.button class: "c-btn c-btn--ghost c-btn--icon js-modal-delete-toggle" do %>
+          <%= f.button style: 'background: transparent; border: none;' do %>
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none"><circle cx="16" cy="16" r="15.5" fill="#E3FEE0" stroke="#48A23F"/><path fill="#E3FEE0" d="M8 8h16v16H8z"/><path stroke="#48A23F" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 15.818 14.125 19 21 12"/></svg>
           <% end %>
-          <%= component 'common/action_button', type: 'close', href: '#', options: { data: { turbo_frame: dom_id(billing_profile) }} %>
+
+          <%= link_to '#', data: { turbo_frame: dom_id(billing_profile) } do %>
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none"><circle cx="16" cy="16" r="15.5" fill="#FFEEE1" stroke="#FF6E00"/><path stroke="#FF6E00" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m12 12 8 8M12 20l8-8"/></svg>
+          <% end %>
         </div>
+
       </div>
       <div class="c-account__input c-account__input--editable u-mb-20 is-editable">
-        <%= component 'common/form/label', form: f, attribute: :vat_code, title: t('illing_profiles.vat_code') %>
+        <%#= component 'common/form/label', form: f, attribute: :vat_code, title: t('illing_profiles.vat_code') %>
+        <label for="input1"><%= t('billing_profiles.vat_code') %></label>
         <%= component 'common/form/text_field', form: f, attribute: :vat_code, options: { autofocus: true } %>
       </div>
+
       <div class="c-account__input-wrapper u-flex u-align-start u-content-start">
         <div class="c-account__input c-account__input--editable u-mb-20 is-editable">
-          <%= component 'common/form/label', form: f, attribute: :street, title: t('illing_profiles.street') %>
+          <%#= component 'common/form/label', form: f, attribute: :street, title: t('illing_profiles.street') %>
+          <label for="input2"><%= t('billing_profiles.street') %></label>
           <%= component 'common/form/text_field', form: f, attribute: :street, options: { autofocus: true } %>
         </div>
         <div class="c-account__input c-account__input--editable u-mb-20 is-editable">
-          <%= component 'common/form/label', form: f, attribute: :city, title: t('illing_profiles.city') %>
+          <%#= component 'common/form/label', form: f, attribute: :city, title: t('illing_profiles.city') %>
+          <label for="input3"><%= t('billing_profiles.city') %></label>
           <%= component 'common/form/text_field', form: f, attribute: :city, options: { autofocus: true } %>
         </div>
         <div class="c-account__input c-account__input--editable u-mb-20 is-editable">
-          <%= component 'common/form/label', form: f, attribute: :postal_code, title: t('illing_profiles.postal_code') %>
+          <%#= component 'common/form/label', form: f, attribute: :postal_code, title: t('illing_profiles.postal_code') %>
+          <label for="input3"><%= t('billing_profiles.postal_code') %></label>
           <%= component 'common/form/text_field', form: f, attribute: :postal_code, options: { autofocus: true } %>
         </div>
         <div class="c-account__input c-account__input--editable u-mb-20 is-editable">
-          <%= component 'common/form/label', form: f, attribute: :country_code, title: t('illing_profiles.country_code') %>
-          <%= f.select :country_code, options_for_select(Countries.for_selection,
-                billing_profile.country_code || Setting.find_by(code: 'default_country').retrieve), {} %>
+          <%#= component 'common/form/label', form: f, attribute: :country_code, title: t('illing_profiles.country_code') %>
+          <label for="input3"><%= t('billing_profiles.country') %></label>
 
           <%= component 'common/form/dropdown_input', form: f, attribute: :country_code, 
                         enum: options_for_select(Countries.for_selection, billing_profile.country_code || Setting.find_by(code: 'default_country').retrieve) %>

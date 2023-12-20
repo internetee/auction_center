@@ -45,10 +45,11 @@
   @include btn;
   background: $secondary-blue-color;
   border: 1px solid $secondary-blue-color;
+
   &:hover {
     background: $white-color;
     color: $secondary-blue-color;
-    
+
   }
 }
 
@@ -61,6 +62,7 @@
     color: $black-color;
   }
 }
+
 @mixin btn-white {
   @include btn;
   background: $white-color;

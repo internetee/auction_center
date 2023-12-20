@@ -69,3 +69,6 @@ application.register("google-analytics", GoogleAnalyticsController);
 
 import AuctionTimezoneController from "./auction_timezone_controller";
 application.register("auction-timezone", AuctionTimezoneController);
+
+import DailySummaryController from "./daily_summary_controller";
+application.register("daily-summary", DailySummaryController);

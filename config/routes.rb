@@ -95,6 +95,11 @@ Rails.application.routes.draw do
   resources :billing_profiles, param: :uuid
   match '/status', via: :get, to: 'health_checks#index'
 
+  scope module: :invoices do
+    resource :pay_all_cancelled_payable_invoices, only: :create
+    resource :pay_all_issued_invoices, only: :create
+  end
+
   resources :invoices, only: %i[show edit update index], param: :uuid do
     member do
       get 'download'
@@ -103,6 +108,8 @@ Rails.application.routes.draw do
     end
 
     collection do
+
+      # TODO: Remove it. It is deprecated
       post 'invoices/pay_all_bills', to: 'invoices#pay_all_bills', as: 'pay_all_bills'
     end
 
