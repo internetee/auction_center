@@ -1,17 +1,18 @@
 <%= turbo_frame_tag dom_id(billing_profile) do %>
   <div class="o-card">
     <div class="c-account__form">
-      <div class="c-account__input c-account__input--editable c-account__input-title u-flex u-align-center u-content-sp u-mb-20 ">
+      <div class="c-account__title-wrapper c-account__input c-account__input--editable c-account__input-title u-flex u-content-sp">
         <input type="text" class="o-card__title c-account__title" placeholder="" value="<%= billing_profile.name %>" readonly>
-        <div class="c-account_editicons u-flex u-align-center u-content-sp">
+        <div class="c-account_editicons u-flex u-align-center u-content-end">
 
-          <%= button_to billing_profile_path(uuid: billing_profile.uuid), method: :delete, data: {turbo_method: :delete, turbo_confirm: "Are you sure to delete "}, target: '_top', class: "c-btn c-btn--ghost c-btn--icon js-modal-delete-toggle" do %>
-            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="12" fill="none"><path fill="#212224" d="M0 2.544a.558.558 0 0 0 .558.557h.297v6.593a1.838 1.838 0 0 0 1.836 1.836H7.31a1.838 1.838 0 0 0 1.836-1.836V3.1h.297a.558.558 0 1 0 0-1.115H7.49V1.41C7.49.633 6.857 0 6.08 0H3.92c-.777 0-1.41.632-1.41 1.41v.575H.558A.558.558 0 0 0 0 2.544ZM3.626 1.41c0-.162.132-.294.294-.294h2.16c.162 0 .294.132.294.294v.576H3.626V1.41ZM1.971 3.101H8.03v6.593a.721.721 0 0 1-.72.72H2.69a.721.721 0 0 1-.72-.72V3.1Z"/><path fill="#212224" d="M3.613 9.387a.558.558 0 0 0 .557-.558V4.688a.558.558 0 0 0-1.115 0v4.141a.558.558 0 0 0 .558.558Zm2.773 0a.558.558 0 0 0 .557-.558V4.688a.558.558 0 0 0-1.115 0v4.141a.558.558 0 0 0 .558.558Z"/></svg>
+          <%= button_to billing_profile_path(uuid: billing_profile.uuid), method: :delete, data: {turbo_method: :delete, turbo_confirm: "Are you sure to delete "}, target: '_top', style: 'background: transparent; border: none;' do %>
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none"><circle cx="16" cy="16" r="15.5" fill="#FFEEE1" stroke="#FF6E00"/><path stroke="#FF6E00" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m12 12 8 8M12 20l8-8"/></svg>
           <% end %>
 
           <%= component 'common/action_button', type: 'edit', href: edit_billing_profile_path(billing_profile.uuid), options: { data: { turbo_frame: dom_id(billing_profile) }} %>
         </div>
       </div>
+
       <div class="c-account__input c-account__input--editable u-mb-20">
         <label for="input1"><%= t('billing_profiles.vat_code') %></label>
         <input id="input1" type="text" placeholder="" value="<%= billing_profile.vat_code %>" readonly/>

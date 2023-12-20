@@ -42,6 +42,7 @@ et:
     marked_as_paid: "Arve makstuks märgitud."
     already_paid: "Arve on juba makstud."
     paid_deposit_title: Deposiidi maksed
+    pay_all: "Maksa kõik arved"
     paid_deposit: 
       date: Kuupäev
       sum: Summa

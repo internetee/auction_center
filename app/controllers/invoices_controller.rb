@@ -28,7 +28,7 @@ class InvoicesController < ApplicationController
     @cancelled_payable_invoices = invoices_list_by_status(Invoice.statuses[:cancelled]).with_ban
     @cancelled_expired_invoices = invoices_list_by_status(Invoice.statuses[:cancelled]).without_ban
 
-    @unpaid_invoices_count = @issued_invoices.count + @cancelled_payable_invoices.count + @cancelled_expired_invoices.count
+    # @unpaid_invoices_count = @issued_invoices.count + @cancelled_payable_invoices.count
 
     @paid_invoices = invoices_list_by_status(Invoice.statuses[:paid])
     @deposit_paid = current_user.domain_participate_auctions.order(created_at: :desc)
@@ -46,6 +46,7 @@ class InvoicesController < ApplicationController
     send_data(raw_pdf, filename: @invoice.filename)
   end
 
+  # TODO: Remove. It is deprecated
   def pay_all_bills
     payable_invoices = Invoice.accessible_by(current_ability)
                               .where(user_id: current_user.id).to_a.select(&:payable?)

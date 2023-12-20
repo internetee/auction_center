@@ -25,11 +25,13 @@
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
 .o-grid--two-col-laptop {
   @include mq(laptop) {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
 .o-grid--two-col-desktop {
   @include mq(desktop) {
     grid-template-columns: repeat(2, 1fr);
@@ -45,42 +47,55 @@
 .o-grid--sep {
   row-gap: rem(48px);
 }
-.o-grid--wishlist{
+
+.o-grid--wishlist {
   row-gap: rem(24px);
-  @include mq(tablet){
-      row-gap: rem(40px);
+
+  @include mq(tablet) {
+    row-gap: rem(40px);
   }
-  @include mq(laptop){
-      row-gap: 0;
+
+  @include mq(laptop) {
+    row-gap: 0;
   }
 }
-.o-grid--auction{
+
+.o-grid--auction {
   column-gap: rem(24px);
-  @include mq(tablet){
-      column-gap: rem(50px);
+
+  @include mq(tablet) {
+    column-gap: rem(50px);
   }
 }
-.o-grid--auction-cards{
+
+.o-grid--auction-cards {
   column-gap: rem(16px);
-  @include mq(laptop){
-      column-gap: rem(48px);
+
+  @include mq(laptop) {
+    column-gap: rem(48px);
   }
 }
-.c-account {
+
+.c-account,
+.c-login {
   .o-grid--two-col {
-      grid-template-columns: repeat(1,1fr);
-      @include mq(laptop){
-          grid-template-columns: repeat(2,1fr);
-      }
+    grid-template-columns: repeat(1, 1fr);
+
+    @include mq(laptop) {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
+
   .o-grid--sep {
-      row-gap: rem(20px);
-      @include mq(tablet){
-          row-gap: rem(40px);
-      }
-      @include mq(laptop){
-          row-gap: rem(50px);
-          column-gap: rem(50px);
-      }
+    row-gap: rem(20px);
+
+    @include mq(tablet) {
+      row-gap: rem(40px);
+    }
+
+    @include mq(laptop) {
+      row-gap: rem(50px);
+      column-gap: rem(50px);
+    }
   }
 }

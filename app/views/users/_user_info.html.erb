@@ -44,9 +44,9 @@
       </div>
 
 
-      <div class="c-account__checkbox u-flex u-align-center u-mb-30">
-        <label class="o-checkbox u-disabled" for="checkbox2">
-          <input disabled type="checkbox" id="checkbox2" <%= @user.daily_summary ? 'checked' : '' %> />
+      <div class="c-account__checkbox u-flex u-align-center u-mb-30" data-controller="daily-summary">
+        <label class="o-checkbox" for="checkbox2">
+          <input type="checkbox" id="checkbox2" data-action="change->daily-summary#updateDailtSummary" <%= current_user.daily_summary ? 'checked' : '' %> />
           <div class="o-checkbox__slider round"></div>
         </label>
         <span class="c-account__chekboxtitle"><%= t('users.show.daily_summary') %></span>

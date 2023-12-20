@@ -1,42 +1,159 @@
     <header class="c-header" data-controller='hamburger' data-hamburger-open-class='is-active'>
-      <div class="c-header__menu">
-        <button class="c-header__toggle u-bg-green-gradient js-nav-toggle hamburger hamburger--collapse" data-action='hamburger#toggle'>
-          <span class="hamburger-box">
-            <span class="hamburger-inner"></span>
-          </span>
-          <span><%= t('common.header.auction_portal') %></span>
-        </button>
-      </div>
-      <div class="c-toolbar js-toolbar" data-hamburger-target='menu'>
-        <div class="c-toolbar__grid">
-          <div class="c-toolbar__nav">
-            <ul class="s-toolbar-nav">
-              <li>
-                <a href="https://internet.ee"><%= t('common.open_portal') %></a>
-              </li>
+        <div class="c-header__menu">
+            <button class="c-header__toggle u-bg-green-gradient js-nav-toggle hamburger hamburger--collapse" data-action='hamburger#toggle'>
+                <span class="hamburger-box">
+                    <span class="hamburger-inner"></span>
+                </span>
+                <span><%= t('common.header.auction_portal') %></span>
+            </button>
+        </div>
+        <div class="c-toolbar js-toolbar" data-hamburger-target='menu'>
+            <div class="c-toolbar__grid">
+                <div class="c-toolbar__nav">
+                    <ul class="s-toolbar-nav">
+                        <li>
+                            <a href="https://internet.ee"><%= t('common.open_portal') %></a>
+                            <span class="o-arrow js-submenu-toggle"></span>
+                            <ul class="submenu">
+                                <li>
+                                    <a href="#">Info</a>
+                                    <span class="o-arrow o-arrow--visible-on-desktop js-submenu-toggle"></span>
+                                    <ul class="submenu">
+                                        <li>
+                                            <a href="#">hell</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        
+                        <li class="is-active" data-controller='navbar--expandable'>
+                            <a><%= t('common.header.auction_portal') %></a>
+                            <span class="o-arrow js-submenu-toggle" data-action='click->navbar--expandable#expand'></span>
 
-              <li class="is-active" data-controller='navbar--expandable'>
-                <a><%= t('common.header.auction_portal') %></a>
-                <span class="o-arrow js-submenu-toggle" data-action='click->navbar--expandable#expand'></span>
-                
-                <ul class="submenu" data-navbar--expandable-target='element'>
-                  <%= regular_menu_list %>
-                  <%= component 'common/header/notification', notifications: notifications %>
-                </ul>
-              </li>
+                            <ul class="submenu" data-navbar--expandable-target='element'>
+                                <%= regular_menu_list %>
+                                <%= component 'common/header/notification', notifications: notifications %>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="https://www.internet.ee/registrar-portal"><%= t('common.registrar_portal') %></a>
+                        </li>
+                        <li>
+                            <a href="https://registrant.internet.ee"><%= t('common.registrant_portal') %></a>
+                        </li>
+                        <li>
+                            <a href="#">eeIDc-hero</a>
+                        </li>
+                    </ul>
+                </div>
 
-              <li>
-                <a href="https://www.internet.ee/registrar-portal"><%= t('common.registrar_portal') %></a>
-              </li>
-              <li>
-                <a href="https://registrant.internet.ee"><%= t('common.registrant_portal') %></a>
-              </li>
-              <li>
-                <a href="#">eeIDc-hero</a>
-              </li>
-            </ul>
-          </div>
-          <div class="c-toolbar__socials">
+                <div class="c-toolbar__lang-socials">
+                    <div class="c-header__lang">
+                        <div class="c-dropdown">
+                            <span class="c-dropdown__label" onclick="this.parentNode.classList.toggle('is-open')">
+                                <span class="c-dropdown__label__lang">
+                                    <%= current_language %>
+                                </span>
+                                <%= render 'svg/down_arrow' %>
+                            </span>
+
+                            <ul class="c-dropdown__list s-dropdown-list">
+                                <%= languages %>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="c-socials">
+                        <a href="" class="c-socials__link" target="_blank">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="white"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M8 0C3.582 0 0 3.582 0 8C0 12.418 3.582 16 8 16C12.418 16 16 12.418 16 8C16 3.582 12.418 0 8 0ZM9.744 7.9995H8.6245V12.0615H6.946V8H6.1075V6.6H6.946V5.7595C6.946 4.6175 7.4195 3.9385 8.7645 3.9385H9.8845V5.3385H9.1845C8.661 5.3385 8.626 5.5345 8.626 5.899L8.6245 6.6H9.8925L9.744 7.9995Z">
+                                </path>
+                            </svg>
+                        </a>
+                        <a href="" class="c-socials__link" target="_blank">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="white"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M8 0C3.582 0 0 3.582 0 8C0 12.418 3.582 16 8 16C12.418 16 16 12.418 16 8C16 3.582 12.418 0 8 0ZM12.22 5.4285C12.183 5.4905 11.993 5.708 11.79 5.9065C11.446 6.248 11.4275 6.285 11.4275 6.571C11.4275 7.0115 11.219 7.931 11.01 8.4335C10.623 9.3775 9.794 10.3525 8.9645 10.8435C7.7975 11.5325 6.2435 11.707 4.935 11.303C4.499 11.166 3.7495 10.8185 3.7495 10.7565C3.7495 10.7375 3.9765 10.713 4.2535 10.7065C4.8321 10.6943 5.39825 10.5363 5.8995 10.247L6.231 10.048L5.85 9.918C5.3095 9.7315 4.8245 9.303 4.7015 8.8995C4.6645 8.769 4.677 8.7625 5.0205 8.7625L5.3765 8.7565L5.0755 8.6135C4.719 8.433 4.3935 8.1295 4.234 7.8185C4.1175 7.595 3.97 7.03 4.013 6.9865C4.0255 6.968 4.1545 7.0055 4.3015 7.055C4.725 7.2105 4.7805 7.173 4.535 6.912C4.0745 6.44 3.933 5.7385 4.154 5.074L4.2585 4.776L4.664 5.1795C5.4935 5.993 6.47 6.4775 7.5875 6.62L7.8945 6.657L7.876 6.3525C7.821 5.564 8.306 4.8435 9.074 4.564C9.3565 4.4645 9.836 4.4525 10.149 4.539C10.272 4.576 10.505 4.7005 10.671 4.812L10.972 5.017L11.3035 4.911C11.488 4.8555 11.7335 4.762 11.844 4.7C11.9485 4.644 12.0405 4.613 12.0405 4.6315C12.0405 4.737 11.813 5.0975 11.623 5.296C11.3645 5.5755 11.4385 5.6005 11.9605 5.414C12.275 5.3105 12.2815 5.3105 12.22 5.4285Z">
+                                </path>
+                            </svg>
+                        </a>
+                        <a href="" class="c-socials__link" target="_blank">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="white"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M8 0C3.582 0 0 3.5815 0 8C0 12.418 3.582 16 8 16C12.418 16 16 12.418 16 8C16 3.5815 12.418 0 8 0ZM5.922 11.1385H4.29V6.2285H5.922V11.1385ZM5.106 5.558H5.0955C4.5475 5.558 4.1935 5.1805 4.1935 4.7095C4.1935 4.228 4.5585 3.8615 5.1165 3.8615C5.6745 3.8615 6.0185 4.228 6.029 4.7095C6.029 5.181 5.6745 5.558 5.106 5.558ZM11.8065 11.1385H10.1745V8.5115C10.1745 7.8515 9.9385 7.4015 9.3475 7.4015C8.897 7.4015 8.6285 7.705 8.5105 7.9985C8.4675 8.1035 8.4565 8.25 8.4565 8.3965V11.1385H6.825C6.825 11.1385 6.8465 6.6895 6.825 6.2285H8.457V6.924C8.6735 6.5895 9.0615 6.113 9.928 6.113C11.0015 6.113 11.8065 6.815 11.8065 8.323V11.1385Z">
+                                </path>
+                            </svg>
+                        </a>
+                        <a href="" class="c-socials__link" target="_blank">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="white"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <g clip-path="url(#clip0_739_409)">
+                                    <path d="M6.91406 9.62948L9.63006 7.99998L6.91406 6.37048V9.62948Z"></path>
+                                    <path
+                                        d="M8 0C3.582 0 0 3.5815 0 8C0 12.4185 3.582 16 8 16C12.418 16 16 12.418 16 8C16 3.582 12.418 0 8 0ZM12.344 8.3505C12.344 9.1005 12.257 9.8505 12.257 9.8505C12.257 9.8505 12.172 10.4895 11.912 10.77C11.5815 11.139 11.2115 11.141 11.0415 11.163C9.8255 11.256 8 11.259 8 11.259C8 11.259 5.741 11.237 5.046 11.166C4.8525 11.1275 4.419 11.1385 4.088 10.77C3.8275 10.489 3.743 9.8505 3.743 9.8505C3.743 9.8505 3.656 9.101 3.656 8.3505V7.6475C3.656 6.8975 3.743 6.148 3.743 6.148C3.743 6.148 3.828 5.509 4.088 5.2275C4.4185 4.858 4.7885 4.856 4.9585 4.835C6.174 4.741 7.998 4.741 7.998 4.741H8.002C8.002 4.741 9.826 4.741 11.0415 4.835C11.211 4.856 11.5815 4.858 11.912 5.227C12.1725 5.5085 12.257 6.1475 12.257 6.1475C12.257 6.1475 12.344 6.8975 12.344 7.6475V8.3505Z">
+                                    </path>
+                                </g>
+                                <defs>
+                                    <clipPath id="clip0_739_409">
+                                        <rect width="16" height="16"></rect>
+                                    </clipPath>
+                                </defs>
+                            </svg>
+                        </a>
+                        <a href="" class="c-socials__link" target="_blank">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="white"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M8 0C3.582 0 0 3.582 0 8C0 12.418 3.582 16 8 16C12.418 16 16 12.418 16 8C16 3.582 12.418 0 8 0ZM5.952 10.9755C5.83075 10.9758 5.71063 10.9521 5.59852 10.906C5.4864 10.8598 5.38448 10.792 5.29858 10.7064C5.21268 10.6208 5.14448 10.5192 5.09788 10.4072C5.05128 10.2953 5.0272 10.1753 5.027 10.054C5.0349 9.81381 5.13586 9.58609 5.30857 9.41897C5.48127 9.25186 5.71218 9.15843 5.9525 9.15843C6.19282 9.15843 6.42373 9.25186 6.59643 9.41897C6.76914 9.58609 6.8701 9.81381 6.878 10.054C6.878 10.564 6.464 10.9755 5.952 10.9755ZM8.2755 10.974C8.27693 10.5464 8.19353 10.1228 8.03012 9.72763C7.8667 9.33249 7.62653 8.97368 7.3235 8.672C7.02275 8.36901 6.66486 8.12871 6.27056 7.96504C5.87627 7.80136 5.45341 7.71757 5.0265 7.7185V6.3865C7.555 6.3865 9.613 8.4445 9.613 10.974H8.2755ZM10.637 10.9735C10.637 7.877 8.1195 5.3565 5.027 5.357V4.0245C8.857 4.0245 11.9735 7.143 11.9735 10.9735H10.637Z">
+                                </path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="c-header__tools" data-controller='toggle' data-toggle-toggle-class='is-hidden'>
+            <% if user_signed_in? %>
+                <a class="c-toolbar__notice" href="#" data-action="toggle#toggle">
+                    <span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none">
+                            <path fill="#fff"
+                                d="M8 15.333A1.334 1.334 0 0 0 9.333 14H6.667A1.333 1.333 0 0 0 8 15.333Zm-5.333-2.666h10.666a.666.666 0 0 0 .472-1.138l-1.139-1.138V6.667a4.67 4.67 0 0 0-4-4.614v-.72a.667.667 0 1 0-1.333 0v.72a4.67 4.67 0 0 0-4 4.614v3.724l-1.138 1.138a.667.667 0 0 0 .472 1.138Zm1.804-1.529a.667.667 0 0 0 .196-.471v-4a3.333 3.333 0 1 1 6.666 0v4c0 .176.07.346.195.471l.196.195H4.276l.195-.195Z" />
+                        </svg>
+                        <sup>(<%= current_user&.notifications&.unread&.count %>)</sup>
+                    </span>
+                </a>
+
+                <div class="c-notices is-hidden js-notices" data-toggle-target='element'>
+                    <div class="js-notices-list">
+
+                        <% current_user&.notifications&.unread&.limit(5)&.each do |n| %>
+                        <div class="c-notice">
+                        <div class="c-notice__header">
+                            <%= component 'common/notifications/icon', notification: n, readed: false %>
+                        </div>
+                        <div class="c-notice__main"><%= n.to_notification.message %></div>
+                        <div class="c-notice__footer">
+                            <div class="c-notification__header__date"><%= I18n.t('.notification_received', datetime: I18n.l(n.created_at)) %></div>
+                        </div>
+                        </div>
+                        <% end %>
+
+                    </div>
+                    <div class="c-notices__footer u-text-center">
+                        <%= link_to t('notifications.show_all'), notifications_path, class: 'o-link' %>
+                    </div>
+                </div>
+            <% end %>
+            
+
             <% if user_signed_in? %>
               <%= link_to destroy_user_session_path, class: "c-header__user", method: :delete, data: { 'turbo-method': 'delete' } do %>
                 <%= render 'svg/person' %><%= t(:sign_out) %>
@@ -46,20 +163,21 @@
                 <%= render 'svg/person' %><%= t(:sign_in) %>
               <% end %>
             <% end %>
-          </div>
-          <div class="c-toolbar__lang">
-          </div>
-        </div>
-      </div>
 
-      <div class="c-header__lang">
-        <div class="c-dropdown">
-          <span class="c-dropdown__label" onclick="this.parentNode.classList.toggle('is-open')">
-            <span class="c-dropdown__label__lang"><%= current_language %></span><%= render 'svg/down_arrow' %>
-          </span>
-          <ul class="c-dropdown__list s-dropdown-list">
-            <%= languages %>
-          </ul>
+            <div class="c-header__lang">
+                <div class="c-dropdown">
+                    <span class="c-dropdown__label" onclick="this.parentNode.classList.toggle('is-open')">
+                        <span class="c-dropdown__label__lang">
+                            <%= current_language %>
+                        </span>
+                        <%= render 'svg/down_arrow' %>
+                    </span>
+
+                    <ul class="c-dropdown__list s-dropdown-list">
+                        <%= languages %>
+                    </ul>
+
+                </div>
+            </div>
         </div>
-      </div>
     </header>

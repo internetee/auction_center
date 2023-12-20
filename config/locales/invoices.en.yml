@@ -41,6 +41,7 @@ en:
     marked_as_paid: "Invoice marked as paid."
     already_paid: "Invoice is already paid."
     paid_deposit_title: "Paid deposits"
+    pay_all: Pay all invoices
     paid_deposit: 
       date: Date
       sum: Sum

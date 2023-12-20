@@ -45,6 +45,10 @@
 }
 .c-login__checkbox-container{
     margin-top: rem(7px);
+
+    .o-checkbox-text{
+        white-space: nowrap;
+    }
 }
 .c-login__links {
     flex-wrap: wrap;

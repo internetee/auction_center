@@ -1,11 +1,10 @@
 .c-footer {
-  background: linear-gradient(90deg, #003D63 1.35%, #064F7C 98.65%);
+  background: linear-gradient(90deg, #003d63 1.35%, #064f7c 98.65%);
   margin-top: rem(70px);
 
   @include mq(tablet) {
     margin-top: rem(185px);
   }
-
 
   @include mq(desktop) {
     margin-top: rem(105px);
@@ -17,9 +16,11 @@
   flex-wrap: wrap;
   gap: rem(32px);
   position: relative;
-
+  @include mq(tablet) {
+    gap: rem(40px);
+  }
   @include mq(desktop) {
-    gap: rem(85px);
+    gap: rem(112px);
     flex-wrap: nowrap;
   }
 }
@@ -35,17 +36,13 @@
   padding: rem(20px 18px);
   transform-origin: bottom left;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: space-around;
   transform: translateY(-20px);
 
   @include mq(tablet) {
     padding: rem(22px 20px);
     top: -22%;
     position: absolute;
-  }
-
-  @include mq(laptop) {
-    top: -50%;
   }
 
   @media (min-width: 992px) and (max-width: 1044px) {
@@ -84,21 +81,23 @@
 
 .c-footer__highlight__grid--row-t {
   @include mq(tablet) {
-    width: 45%;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-around;
+    flex: 1;
+    align-items: flex-end;
   }
 
   @include mq(desktop) {
     width: auto;
     flex-direction: column;
+    align-items: center;
   }
 }
 
 .c-footer__highlight__title {
   font-weight: 900;
-  font-size: rem(14px);
-  line-height: rem(18px);
+  font-size: rem(16px);
+  line-height: rem(20px);
   text-align: left;
   color: $white-color;
   margin: 0;
@@ -108,9 +107,10 @@
   }
 }
 
-.c-footer__highlight__info, .c-footer__highlight__contact {
+.c-footer__highlight__info,
+.c-footer__highlight__contact {
   font-weight: 500;
-  font-size: rem(14px);
+  font-size: rem(16px);
   line-height: rem(22px);
   text-align: left;
   color: $white-color;
@@ -143,21 +143,23 @@
 
 .c-footer__grid__row {
   display: flex;
+  justify-content: space-between;
   flex-wrap: wrap;
   position: relative;
-  gap: rem(32px);
+  row-gap: rem(32px);
   flex-grow: 1;
   padding-top: rem(10px);
   padding-bottom: rem(38px);
+  justify-content: space-between;
 
   @include mq(tablet) {
     padding-bottom: rem(10px);
-    gap: rem(72px);
+    gap: rem(30px);
     padding-top: rem(72px);
   }
 
   @include mq(desktop) {
-    gap: rem(32px);
+    row-gap: rem(16px);
     padding-bottom: 0;
     flex-wrap: nowrap;
     justify-content: space-between;
@@ -168,6 +170,47 @@
 .s-footer-col {
   color: $white-color;
   line-height: rem(24px);
+
+  &:nth-child(1) {
+    width: 100%;
+    @include mq(tablet) {
+      width: calc(100% / 3);
+    }
+    @include mq(desktop) {
+      width: calc(100% / 4);
+    }
+  }
+  &:nth-child(2) {
+    width: 100%;
+    @include mq(tablet) {
+      width: calc(100% / 3);
+      flex: 1;
+    }
+    @include mq(desktop) {
+      width: calc(100% / 4);
+      flex: unset;
+    }
+  }
+  &:nth-child(3) {
+    width: 100%;
+    @include mq(tablet) {
+      padding-right: 0;
+      width: calc(100% / 3 - 4rem);
+      flex: unset;
+    }
+    @include mq(desktop) {
+      width: calc(100% / 4);
+    }
+  }
+  &:nth-child(4) {
+    width: 100%;
+
+    @include mq(desktop) {
+      width: calc(100% / 4);
+      align-items: flex-start;
+    }
+    
+  }
 
   p {
     color: $white-color;
@@ -186,6 +229,10 @@
 
   .c-socials {
     gap: rem(8px);
+    margin-bottom: rem(46px);
+    @include mq(desktop) {
+      display: flex;
+    }
 
     a {
       width: rem(24px);
@@ -202,25 +249,36 @@
 
 .c-footer__sviiter {
   position: absolute;
-  bottom: rem(38px);
+  bottom: rem(36px);
   right: 0;
 
-  @include mq(laptop) {
-    bottom: rem(10px);
+  @include mq(tablet) {
+    bottom: rem(50px);
+    right: rem(16px);
   }
-
-  svg, svg path {
+  @include mq(desktop) {
+    bottom: rem(10px);
+    right: 1rem;
+  }
+  @include mq(menu) {
+    bottom: rem(10px);
+    right: 3rem;
+  }
+  svg,
+  svg path {
     transition: $transition;
   }
 
   &:hover {
-    svg, svg path {
+    svg,
+    svg path {
       fill: $white-color;
     }
   }
 
   a:hover {
-    svg, svg path {
+    svg,
+    svg path {
       fill: $primary-blue-color;
     }
   }

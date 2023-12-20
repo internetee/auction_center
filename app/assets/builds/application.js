@@ -7538,6 +7538,12 @@
     }
   };
 
+  // ../../node_modules/@rails/request.js/src/verbs.js
+  async function get(url, options) {
+    const request = new FetchRequest2("get", url, options);
+    return request.perform();
+  }
+
   // controllers/form/checkbox_autosubmit_controller.js
   var checkbox_autosubmit_controller_default = class extends Controller {
     static targets = ["checkbox"];
@@ -7618,10 +7624,17 @@
 
   // controllers/table/tab_controller.js
   var tab_controller_default = class extends Controller {
-    static targets = ["tab", "content"];
+    static targets = ["tab", "content", "payablebtn"];
     static classes = ["active"];
     initialize() {
       this.showTab = this.showTab.bind(this);
+    }
+    connect() {
+      console.log(this.payablebtnTargets);
+      if (this.payablebtnTargets.length > 0) {
+        this.payablebtnTargets[0].style.display = "block";
+        this.payablebtnTargets[1].style.display = "none";
+      }
     }
     showTab(event2) {
       const index = event2.params.index;
@@ -7633,6 +7646,18 @@
       });
       this.tabTargets[index].classList.add(this.activeClass);
       this.contentTargets[index].classList.add(this.activeClass);
+      if (this.payablebtnTargets.length > 0) {
+        if (index == 0) {
+          this.payablebtnTargets[0].style.display = "block";
+          this.payablebtnTargets[1].style.display = "none";
+        } else if (index == 1) {
+          this.payablebtnTargets[1].style.display = "block";
+          this.payablebtnTargets[0].style.display = "none";
+        } else {
+          this.payablebtnTargets[0].style.display = "none";
+          this.payablebtnTargets[1].style.display = "none";
+        }
+      }
     }
   };
 
@@ -8628,6 +8653,16 @@
     }
   };
 
+  // controllers/daily_summary_controller.js
+  var daily_summary_controller_default = class extends Controller {
+    updateDailtSummary(_event) {
+      clearTimeout(this.timeout);
+      this.timeout = setTimeout(() => {
+        get("/profile/toggle_subscription");
+      }, 500);
+    }
+  };
+
   // controllers/index.js
   application.register("modals--offer-modal", offer_modal_controller_default);
   application.register("modals--modal", modal_controller_default);
@@ -8651,6 +8686,7 @@
   application.register("cookie-consent", cookie_consent_controller_default);
   application.register("google-analytics", google_analytics_controller_default);
   application.register("auction-timezone", auction_timezone_controller_default);
+  application.register("daily-summary", daily_summary_controller_default);
 })();
 /*! Bundled license information:
 
