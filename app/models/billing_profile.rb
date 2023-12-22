@@ -1,6 +1,8 @@
 require 'countries'
 
 class BillingProfile < ApplicationRecord
+  OLD_EST_RATE_VAT = '0.2'.freeze
+
   alias_attribute :country_code, :alpha_two_country_code
 
   validates :name, presence: true
@@ -57,7 +59,16 @@ class BillingProfile < ApplicationRecord
 
   def vat_rate
     # return Countries.vat_rate_from_alpha2_code(country_code) if country_code == 'EE'
-    return BigDecimal(Setting.find_by(code: :estonian_vat_rate).retrieve, 2) if country_code == 'EE'
+    # return BigDecimal(Setting.find_by(code: :estonian_vat_rate).retrieve, 2) if country_code == 'EE'
+
+    if country_code == 'EE'
+      # if Time.zone.now.year < 2024
+      #   return BigDecimal(OLD_EST_RATE_VAT)
+      # else
+      return BigDecimal(Setting.find_by(code: :estonian_vat_rate).retrieve, 2) 
+      # end
+    end
+
     return BigDecimal('0') if vat_code.present?
 
     Countries.vat_rate_from_alpha2_code(country_code)
