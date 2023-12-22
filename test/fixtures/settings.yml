@@ -297,3 +297,10 @@ auction_iban:
     IBAN of the account that should appear in invoice as issuer.
   value: 'EE557700771000598731'
   value_format: string
+
+estonian_vat_rate:
+  code: 'estonian_vat_rate'
+  description: |
+    Estonian VAT rate in percent. Default: 0.22
+  value: '0.22'
+  value_format: decimal

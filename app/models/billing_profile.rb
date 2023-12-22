@@ -56,7 +56,8 @@ class BillingProfile < ApplicationRecord
   end
 
   def vat_rate
-    return Countries.vat_rate_from_alpha2_code(country_code) if country_code == 'EE'
+    # return Countries.vat_rate_from_alpha2_code(country_code) if country_code == 'EE'
+    return BigDecimal(Setting.find_by(code: :estonian_vat_rate).retrieve, 2) if country_code == 'EE'
     return BigDecimal('0') if vat_code.present?
 
     Countries.vat_rate_from_alpha2_code(country_code)

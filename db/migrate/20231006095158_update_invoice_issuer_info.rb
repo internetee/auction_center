@@ -121,12 +121,12 @@ class UpdateInvoiceIssuerInfo < ActiveRecord::Migration[7.0]
   end
 
   def down
-    Seting.find_by(code: :invoice_issuer_reg_no).delete
-    Seting.find_by(code: :invoice_issuer_vat_no).delete
-    Seting.find_by(code: :invoice_issuer_street).delete
-    Seting.find_by(code: :invoice_issuer_state).delete
-    Seting.find_by(code: :invoice_issuer_zip).delete
-    Seting.find_by(code: :invoice_issuer_city).delete
-    Seting.find_by(code: :invoice_issuer_country_code).delete
+    Setting.find_by(code: :invoice_issuer_reg_no).delete
+    Setting.find_by(code: :invoice_issuer_vat_no).delete
+    Setting.find_by(code: :invoice_issuer_street).delete
+    Setting.find_by(code: :invoice_issuer_state).delete
+    Setting.find_by(code: :invoice_issuer_zip).delete
+    Setting.find_by(code: :invoice_issuer_city).delete
+    Setting.find_by(code: :invoice_issuer_country_code).delete
   end
 end

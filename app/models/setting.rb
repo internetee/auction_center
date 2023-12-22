@@ -13,6 +13,7 @@ class Setting < ApplicationRecord
     boolean: :boolean_format,
     hash: :hash_format,
     array: :array_format,
+    decimal: :decimal_format
   }.with_indifferent_access.freeze
 
   def self.default_scope
@@ -64,6 +65,10 @@ class Setting < ApplicationRecord
 
   def array_format
     JSON.parse(value).to_a
+  end
+
+  def decimal_format
+    value.to_f
   end
 
   def auction_duration_value

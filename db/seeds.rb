@@ -484,3 +484,14 @@ openai_domains_evaluation_prompt_setting = Setting.new(code: :openai_domains_eva
                                                        description: openai_evaluation_prompt_description,
                                                        value_format: 'string')
 openai_domains_evaluation_prompt_setting.save
+
+# Estonian VAT rate
+estonian_vat_rate_description = <<~TEXT.squish
+  Default Estonian vat rate. Should be in decimal format like this: 0.2
+TEXT
+
+estonian_vat_rate_setting = Setting.new(code: :estonian_vat_rate,
+                                                       value: '0.2',
+                                                       description: estonian_vat_rate_description,
+                                                       value_format: 'decimal')
+estonian_vat_rate_setting.save!
