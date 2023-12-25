@@ -194,7 +194,7 @@ class Invoice < ApplicationRecord
     # return Countries.vat_rate_from_alpha2_code(country_code) if country_code == 'EE'
     
     if country_code == 'EE'
-      if created_at.year < 2024 
+      if created_at.year < 2023
         return BigDecimal(OLD_EST_RATE_VAT)
       else
         return BigDecimal(Setting.find_by(code: :estonian_vat_rate).retrieve, 2) 
