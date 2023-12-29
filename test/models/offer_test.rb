@@ -103,7 +103,10 @@ class OfferTest < ActiveSupport::TestCase
     assert_equal(offer.total, Money.new('500', 'EUR'))
 
     offer.billing_profile = nil
-    assert_equal(offer.total, Money.new('600', 'EUR'))
+
+    travel_to Time.zone.local(2024, 1, 1, 0, 0, 0) do
+      assert_equal(offer.total, Money.new('610', 'EUR'))
+    end
   end
 
   def test_offer_must_be_higher_than_minimum_value_allowed_in_settings

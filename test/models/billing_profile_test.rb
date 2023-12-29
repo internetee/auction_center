@@ -8,6 +8,8 @@ class BillingProfileTest < ActiveSupport::TestCase
     @billing_profile = billing_profiles(:company)
     @orphaned_profile = billing_profiles(:orphaned)
 
+    @setting = settings(:estonian_vat_rate)
+
     stub_request(:patch, 'http://eis_billing_system:3000/api/v1/invoice/update_invoice_data')
       .to_return(status: 200, body: @message.to_json, headers: {})
   end
@@ -82,14 +84,20 @@ class BillingProfileTest < ActiveSupport::TestCase
     assert_equal(BigDecimal('0'), @billing_profile.vat_rate)
 
     @billing_profile.update(country_code: 'EE')
-    assert_equal(BigDecimal('0.20'), @billing_profile.vat_rate)
+    
+    travel_to Time.zone.local(2024, 1, 1, 0, 0, 0) do
+      assert_equal(BigDecimal(Setting.find_by(code: :estonian_vat_rate).retrieve, 2), @billing_profile.vat_rate)
+    end
    end
 
   def test_customer_from_outside_european_union_has_vat_rate_0
     assert_equal(BigDecimal('0'), @billing_profile.vat_rate)
 
     @billing_profile.update(country_code: 'EE')
-    assert_equal(BigDecimal('0.20'), @billing_profile.vat_rate)
+
+    travel_to Time.zone.local(2024, 1, 1, 0, 0, 0) do
+      assert_equal(BigDecimal(Setting.find_by(code: :estonian_vat_rate).retrieve, 2), @billing_profile.vat_rate)
+    end
 
     @billing_profile.update(country_code: 'US')
     assert_equal(BigDecimal('0'), @billing_profile.vat_rate)
