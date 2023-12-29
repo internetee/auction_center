@@ -6,30 +6,36 @@ module Api
     skip_before_action :verify_authenticity_token
 
     def create
-      # Offer offer = Offer(
-      #   auctionId: widget.auction.uuid,
-      #   cents: _bidAmount!.toInt(),
-      #   userId: user.uuid,
-      # );
-
-      # offerBloc.add(AddOfferEvent(offer: offer, authToken: user.tempTokenStore!, auctionType: widget.auction.type!));
-      # Navigator.of(context).pop();
       puts '====='
       puts params
       puts '====='
 
-      auction = Auction.find_by(uuid: params[:auctionId])
+      auction = Auction.find_by(uuid: params[:bid][:auction_id])
+      return if auction.nil?
+      
+      offer = auction.offer_from_user(current_user.uuid)
 
-      offer = Offer.new
-      offer.price = params[:cents]
+      billing_profile = current_user.billing_profiles.find_by(uuid: params[:bid][:billing_profile_id])
+    
+      if offer.nil?
+        offer = Offer.new(
+          auction: auction,
+          user: current_user,
+          cents: Money.from_amount(params[:bid][:price]).cents,
+          billing_profile: billing_profile,
+          username: Username::GenerateUsernameService.new.call
+        )
+      else
+        offer.cents = Money.from_amount(params[:bid][:price]).cents
+      end
 
-      puts '====='
-      puts auction.inspect
-      puts offer.inspect
-      puts current_user.inspect
-      puts '====='
+      if offer.save
+        Auctions::UpdateListBroadcastService.call({ auction: auction })
 
-      render json: { status: 'ok' }, status: :ok
+        render json: { status: 'ok' }, status: :ok
+      else
+        render json: { status: 'error' }, status: :unprocessable_entity
+      end
     end
   end
 end

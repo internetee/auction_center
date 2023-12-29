@@ -25,7 +25,18 @@ module Auctions
                         locals: { auction:, user:, updated: participants.include?(user) }
       end
 
-      ActionCable.server.broadcast('auctions_api', { auction: })
+
+      auction_json = {
+        domain_name: auction.domain_name,
+        starts_at: auction.starts_at,
+        ends_at: auction.ends_at,
+        id: auction.uuid,
+        highest_bid: auction.currently_winning_offer&.price.to_f,
+        highest_bidder: auction.currently_winning_offer&.username,
+        auction_type: auction&.platform
+      }
+
+      ActionCable.server.broadcast('auctions_api', { auction: auction_json })
 
       broadcast_later 'auctions',
                       'auctions/streams/updated_list',
