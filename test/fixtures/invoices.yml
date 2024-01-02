@@ -20,6 +20,7 @@ payable:
   billing_address: "Baker Street 221B, NW1 6XE London, United Kingdom"
   billing_vat_code: "12234567890"
   billing_alpha_two_country_code: "GB"
+  vat_rate: 0.0
 
 orphaned:
   result: orphaned
@@ -39,3 +40,4 @@ orphaned:
   billing_name: "Orphan Profile"
   billing_address: "Baker Street 221B, NW1 6XE London, United Kingdom"
   billing_alpha_two_country_code: "GB"
+  vat_rate: 0.0

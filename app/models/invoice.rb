@@ -30,11 +30,10 @@ class Invoice < ApplicationRecord
   before_update :update_billing_info
 
   before_create :set_invoice_number
+  before_update :recalculate_vat_rate
 
   delegate :enable_deposit?, to: :enable_deposit?
   delegate :deposit, to: :deposit
-
-  attr_accessor :vat_rate
 
   scope :with_search_scope, (lambda do |origin|
     if origin.present?
@@ -118,6 +117,20 @@ class Invoice < ApplicationRecord
     result.auction.deposit
   end
 
+  def recalculate_vat_rate
+    return if billing_profile_id == billing_profile_id_was
+
+    self.vat_rate = assign_vat_rate
+  end
+
+  def assign_vat_rate
+    return BigDecimal(Setting.find_by(code: :estonian_vat_rate).retrieve, 2) if country_code == 'EE'
+
+    return BigDecimal('0') if vat_code.present?
+
+    Countries.vat_rate_from_alpha2_code(country_code)
+  end
+
   def billing_restrictions_issue
     errors.add(:base, I18n.t('cannot get access'))
     logger.error('PROBLEM WITH TOKEN')
@@ -188,22 +201,6 @@ class Invoice < ApplicationRecord
     country_name = Countries.name_from_alpha2_code(country_code)
     postal_code_with_city = [postal_code, city].join(' ')
     [street, postal_code_with_city, country_name].compact.join(', ')
-  end
-
-  def vat_rate
-    return tax_fresh_rate if country_code == 'EE'
-
-    return BigDecimal('0') if vat_code.present?
-
-    Countries.vat_rate_from_alpha2_code(country_code)
-  end
-
-  def tax_fresh_rate
-    if created_at.year < 2024
-      BigDecimal(OLD_EST_RATE_VAT)
-    else
-      BigDecimal(Setting.find_by(code: :estonian_vat_rate).retrieve, 2) 
-    end
   end
 
   def filename
