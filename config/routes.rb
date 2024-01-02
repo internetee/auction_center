@@ -7,8 +7,12 @@ Rails.application.routes.draw do
   # mount ActionCable.server => '/cable'
 
   namespace :api do
-    resource :stream_name, only: :show
-    resource :offers, only: :create
+    namespace :v1 do
+      resource :stream_name, only: :show
+      resource :offers, only: :create
+      resource :autobiders, only: :create
+      resource :auctions, only: :show
+    end
   end
 
   get 'unsubscribe/unsubscribe'
