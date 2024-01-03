@@ -27,9 +27,10 @@ class Invoice < ApplicationRecord
   validates :billing_profile, presence: true, on: :create
 
   validate :user_id_must_be_the_same_as_on_billing_profile_or_nil
-  before_update :update_billing_info
 
   before_create :set_invoice_number
+
+  before_update :update_billing_info
   before_update :recalculate_vat_rate
 
   delegate :enable_deposit?, to: :enable_deposit?
@@ -84,7 +85,7 @@ class Invoice < ApplicationRecord
     when 'channel'
       query.left_outer_joins(:paid_with_payment_order)
            .select("invoices.*, REPLACE(payment_orders.type, 'PaymentOrders::', '') AS payment_order_channel")
-           .order(Arel.sql("payment_order_channel #{sort_direction} NULLS LAST")) 
+           .order(Arel.sql("payment_order_channel #{sort_direction} NULLS LAST"))
     when 'billing_profile_name'
       query.left_outer_joins(:billing_profile).order("billing_profiles.name #{sort_direction}")
     when 'total'
@@ -122,6 +123,8 @@ class Invoice < ApplicationRecord
     return unless payable?
 
     self.vat_rate = assign_vat_rate
+
+    send_updated_invoice_infromation_to_billing_service
   end
 
   def assign_vat_rate
