@@ -206,7 +206,6 @@ class Invoice < ApplicationRecord
     end
   end
 
-
   def filename
     return unless title
 

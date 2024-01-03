@@ -269,11 +269,7 @@
                                     <td scope="col"></td>
                                     <td scope="col"><%= t('invoices.vat_amount') %></td>
                                     <td>
-                                        <%# if @invoice.billing_profile.present? %>
-                                            <%#= number_to_percentage(@invoice.billing_profile.vat_rate * 100, precision: 0) %>
-                                        <%# else %>
-                                            <%= number_to_percentage(@invoice.billing_vat_rate * 100, precision: 0) %>
-                                        <%# end %>
+                                        <%= number_to_percentage(@invoice.vat_rate * 100, precision: 0) %>
                                     </td>
                                     <td scope="col"><%= t('offers.price_in_currency', price: @invoice.vat) %></td>
                                 </tr>
