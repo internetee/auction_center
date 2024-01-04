@@ -1,0 +1,2 @@
+(self.webpackChunkauction_center=self.webpackChunkauction_center||[]).push([[651],{713:function(){document.addEventListener("turbo:load",(function(){setTimeout((function(){var e=document.getElementById("payment-order-form");e&&e.submit()}),1e3)}))}},function(e){var n;n=713,e(e.s=n)}]);
+//# sourceMappingURL=payment_orders-119213ecf56cdbecc99c.js.map
