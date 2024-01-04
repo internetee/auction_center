@@ -49,11 +49,11 @@ module ApplicationHelper
   end
 
   def show_cookie_dialog?
-    session[:cookie_dialog] != 'accepted'
+    cookies[:cookie_dialog] != 'accepted'
   end
 
   def show_google_analytics?
-    session[:google_analytics] == 'accepted'
+    cookies[:google_analytics] == 'accepted'
   end
 
   private
