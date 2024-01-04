@@ -1,6 +1,7 @@
 04.01.2024
 * Changed effective time of cookie policy cookie https://github.com/internetee/auction_center/pull/1192
 * Fixed vat rate lable in pdf invoices https://github.com/internetee/auction_center/issues/1196
+* Quick fix for syncing invoice data with billing https://github.com/internetee/auction_center/pull/1198
 
 13.12.2023
 * Auction start and end times are now in user local timezone https://github.com/internetee/auction_center/issues/1187
