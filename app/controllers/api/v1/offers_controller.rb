@@ -29,6 +29,11 @@ module Api
         if offer.save
           Auctions::UpdateListBroadcastService.call({ auction: auction })
 
+          auction.update_minimum_bid_step(params[:bid][:price].to_f)
+
+          AutobiderService.autobid(auction)
+          auction.update_ends_at(offer)
+
           render json: { status: 'ok' }, status: :ok
         else
           render json: { status: 'error' }, status: :unprocessable_entity

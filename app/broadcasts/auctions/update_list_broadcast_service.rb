@@ -33,6 +33,7 @@ module Auctions
         id: auction.uuid,
         highest_bid: auction.currently_winning_offer&.price.to_f,
         highest_bidder: auction.currently_winning_offer&.username,
+        min_bids_step: auction.min_bids_step,
         auction_type: auction&.platform
       }
 
