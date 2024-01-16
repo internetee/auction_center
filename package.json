@@ -40,7 +40,8 @@
       "turbolinks": "^5.2.0",
       "typeface-raleway": "^1.1.13",
       "url-loader": "^4.1.1",
-      "ws": "^8.2.1"
+      "ws": "^8.2.1",
+      "webpack": "^5.60.0"
    },
    "babel": {
       "presets": [
@@ -66,7 +67,6 @@
       "karma-qunit": "^4.1.2",
       "karma-webpack": "^5.0.0",
       "qunit": "^2.16.0",
-      "webpack": "^5.60.0",
       "webpack-cli": "^4.8.0",
       "webpack-dev-server": "^4.3.1"
    }

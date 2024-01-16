@@ -1,0 +1,2 @@
+(self.webpackChunkauction_center=self.webpackChunkauction_center||[]).push([[766],{93:function(){document.addEventListener("turbo:load",(function(e){var t=document.getElementById("google-tracking-id").getAttribute("data-value");if(t){var n=function(){dataLayer.push(arguments)};window.dataLayer=window.dataLayer||[],n("js",new Date),n("config",t),n("config",t,{page_location:e.detail.url,cookie_prefix:"AuctionTest",cookie_domain:"auction.ee"})}}))}},function(e){var t;t=93,e(e.s=t)}]);
+//# sourceMappingURL=google_analytics-764e16b04d2725a52e1c.js.map

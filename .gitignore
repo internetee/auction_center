@@ -38,20 +38,20 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
-/public/packs
-/public/packs-test
+# /public/packs
+# /public/packs-test
 yarn-debug.log*
 .yarn-integrity
 
 /test/fixtures/files/seb_key.pem
 /test/fixtures/files/seb_pub.pem
-/public/packs
-/public/packs-test
+# /public/packs
+# /public/packs-test
 /node_modules
 /yarn-error.log
 yarn-debug.log*
 .yarn-integrity
-/public/assets/
-/public/assets/builds
-public/assets/builds/*
-app/assets/builds/*
+# /public/assets/
+# /public/assets/builds
+# public/assets/builds/*
+# app/assets/builds/*

@@ -1,0 +1,135 @@
+{
+  "actioncable.js": "/packs-test/js/actioncable.chunk.js",
+  "application.css": "/packs-test/application.css",
+  "application.css.map": "/packs-test/application.css.map",
+  "application.js": "/packs-test/js/application.js",
+  "css/application.css": "/packs-test/css/application.css",
+  "css/application.css.map": "/packs-test/css/application.css.map",
+  "entrypoints": {
+    "application": {
+      "assets": {
+        "js": [
+          "/packs-test/js/runtime.js",
+          "/packs-test/js/vendors-node_modules_libphonenumber-js_index_es6_exports_format_js-node_modules_libphonenumbe-79e2c3.js",
+          "/packs-test/js/vendors-node_modules_punycode_punycode_es6_js.js",
+          "/packs-test/js/vendors-node_modules_hotwired_stimulus_dist_stimulus_js-node_modules_hotwired_turbo-rails_app-89e855.js",
+          "/packs-test/js/application.js"
+        ],
+        "css": [
+          "/packs-test/css/application.css",
+          "/packs-test/application.css"
+        ]
+      }
+    },
+    "google_analytics": {
+      "assets": {
+        "js": [
+          "/packs-test/js/runtime.js",
+          "/packs-test/js/google_analytics.js"
+        ]
+      }
+    },
+    "payment_orders": {
+      "assets": {
+        "js": [
+          "/packs-test/js/runtime.js",
+          "/packs-test/js/payment_orders.js"
+        ]
+      }
+    },
+    "users": {
+      "assets": {
+        "js": [
+          "/packs-test/js/runtime.js",
+          "/packs-test/js/vendors-node_modules_libphonenumber-js_index_es6_exports_format_js-node_modules_libphonenumbe-79e2c3.js",
+          "/packs-test/js/users.js"
+        ]
+      }
+    },
+    "wishlist_items": {
+      "assets": {
+        "js": [
+          "/packs-test/js/runtime.js",
+          "/packs-test/js/vendors-node_modules_punycode_punycode_es6_js.js",
+          "/packs-test/js/wishlist_items.js"
+        ]
+      }
+    }
+  },
+  "google_analytics.js": "/packs-test/js/google_analytics.js",
+  "js/actioncable.chunk.js.map": "/packs-test/js/actioncable.chunk.js.map",
+  "js/application.js.map": "/packs-test/js/application.js.map",
+  "js/google_analytics.js.map": "/packs-test/js/google_analytics.js.map",
+  "js/payment_orders.js.map": "/packs-test/js/payment_orders.js.map",
+  "js/runtime.js.map": "/packs-test/js/runtime.js.map",
+  "js/users.js.map": "/packs-test/js/users.js.map",
+  "js/vendors-node_modules_hotwired_stimulus_dist_stimulus_js-node_modules_hotwired_turbo-rails_app-89e855.js": "/packs-test/js/vendors-node_modules_hotwired_stimulus_dist_stimulus_js-node_modules_hotwired_turbo-rails_app-89e855.js",
+  "js/vendors-node_modules_hotwired_stimulus_dist_stimulus_js-node_modules_hotwired_turbo-rails_app-89e855.js.map": "/packs-test/js/vendors-node_modules_hotwired_stimulus_dist_stimulus_js-node_modules_hotwired_turbo-rails_app-89e855.js.map",
+  "js/vendors-node_modules_libphonenumber-js_index_es6_exports_format_js-node_modules_libphonenumbe-79e2c3.js": "/packs-test/js/vendors-node_modules_libphonenumber-js_index_es6_exports_format_js-node_modules_libphonenumbe-79e2c3.js",
+  "js/vendors-node_modules_libphonenumber-js_index_es6_exports_format_js-node_modules_libphonenumbe-79e2c3.js.map": "/packs-test/js/vendors-node_modules_libphonenumber-js_index_es6_exports_format_js-node_modules_libphonenumbe-79e2c3.js.map",
+  "js/vendors-node_modules_punycode_punycode_es6_js.js": "/packs-test/js/vendors-node_modules_punycode_punycode_es6_js.js",
+  "js/vendors-node_modules_punycode_punycode_es6_js.js.map": "/packs-test/js/vendors-node_modules_punycode_punycode_es6_js.js.map",
+  "js/wishlist_items.js.map": "/packs-test/js/wishlist_items.js.map",
+  "payment_orders.js": "/packs-test/js/payment_orders.js",
+  "runtime.js": "/packs-test/js/runtime.js",
+  "static/brand-icons.eot": "/packs-test/static/brand-icons-607a77859353c0cc1882.eot",
+  "static/brand-icons.svg": "/packs-test/static/brand-icons-3c45c98f6f6c1b009c08.svg",
+  "static/brand-icons.ttf": "/packs-test/static/brand-icons-5818bbd07dfd7095920a.ttf",
+  "static/brand-icons.woff": "/packs-test/static/brand-icons-ee26f57bc9e3619b022b.woff",
+  "static/brand-icons.woff2": "/packs-test/static/brand-icons-31015e861aeb30ff8355.woff2",
+  "static/deja-vu-sans-mono.woff": "/packs-test/static/deja-vu-sans-mono-db2db1518f3f686edd34.woff",
+  "static/flags.png": "/packs-test/static/flags-99f63ae7a743f21ab308.png",
+  "static/hero-blue.png": "/packs-test/static/hero-blue-bd37a71eacfff18b8698.png",
+  "static/hero-green.png": "/packs-test/static/hero-green-2926755bda6f4e3fdf9a.png",
+  "static/hero-orange.png": "/packs-test/static/hero-orange-6e4042cc9acfc10b53bf.png",
+  "static/html-pattern.png": "/packs-test/static/html-pattern-b0b0752fdc80cbf2e4da.png",
+  "static/icons.eot": "/packs-test/static/icons-7eefe04dc985dd4ad38b.eot",
+  "static/icons.svg": "/packs-test/static/icons-18df003f90a7f1313b98.svg",
+  "static/icons.ttf": "/packs-test/static/icons-32267f3b4db33a7c85ee.ttf",
+  "static/icons.woff": "/packs-test/static/icons-a940d584750708f5435c.woff",
+  "static/icons.woff2": "/packs-test/static/icons-9451d5fee89b51a20f8a.woff2",
+  "static/logo-m.svg": "/packs-test/static/logo-m-d7f1351358a11078f631.svg",
+  "static/outline-icons.eot": "/packs-test/static/outline-icons-0747be4cba2f8600544f.eot",
+  "static/outline-icons.svg": "/packs-test/static/outline-icons-ab47faeab8ddc5f809ec.svg",
+  "static/outline-icons.ttf": "/packs-test/static/outline-icons-c3146b3524e97475c094.ttf",
+  "static/outline-icons.woff": "/packs-test/static/outline-icons-8b892b7904a39e37c53d.woff",
+  "static/outline-icons.woff2": "/packs-test/static/outline-icons-c52405129ae48097815d.woff2",
+  "static/raleway-latin-100.woff": "/packs-test/static/raleway-latin-100-b0fca85ee49e3971c045.woff",
+  "static/raleway-latin-100.woff2": "/packs-test/static/raleway-latin-100-16d7dcebbcc7dee6b7c8.woff2",
+  "static/raleway-latin-100italic.woff": "/packs-test/static/raleway-latin-100italic-4c06a4ee32ce7b3b091d.woff",
+  "static/raleway-latin-100italic.woff2": "/packs-test/static/raleway-latin-100italic-dafbfe171d778172c57f.woff2",
+  "static/raleway-latin-200.woff": "/packs-test/static/raleway-latin-200-b5cd4204f7fc864d773e.woff",
+  "static/raleway-latin-200.woff2": "/packs-test/static/raleway-latin-200-c95847626f3360d879e9.woff2",
+  "static/raleway-latin-200italic.woff": "/packs-test/static/raleway-latin-200italic-f9ed96b19cd4b0a7ee5a.woff",
+  "static/raleway-latin-200italic.woff2": "/packs-test/static/raleway-latin-200italic-a06d7fd4fecf6f769b96.woff2",
+  "static/raleway-latin-300.woff": "/packs-test/static/raleway-latin-300-8f254453a1fc40c97013.woff",
+  "static/raleway-latin-300.woff2": "/packs-test/static/raleway-latin-300-1be2c8dbe8588729c85c.woff2",
+  "static/raleway-latin-300italic.woff": "/packs-test/static/raleway-latin-300italic-6d4ac1d3b0a6e2c3ae5a.woff",
+  "static/raleway-latin-300italic.woff2": "/packs-test/static/raleway-latin-300italic-570b544b0afb1e88be8b.woff2",
+  "static/raleway-latin-400.woff": "/packs-test/static/raleway-latin-400-f8d47ad7f580d88f4807.woff",
+  "static/raleway-latin-400.woff2": "/packs-test/static/raleway-latin-400-d0033942a11996c40380.woff2",
+  "static/raleway-latin-400italic.woff": "/packs-test/static/raleway-latin-400italic-68c0bd48ad5470c34432.woff",
+  "static/raleway-latin-400italic.woff2": "/packs-test/static/raleway-latin-400italic-b555863d757a83720f7d.woff2",
+  "static/raleway-latin-500.woff": "/packs-test/static/raleway-latin-500-627800d124ceee1f74f4.woff",
+  "static/raleway-latin-500.woff2": "/packs-test/static/raleway-latin-500-86050dec57a4fdafb363.woff2",
+  "static/raleway-latin-500italic.woff": "/packs-test/static/raleway-latin-500italic-eb7a94a4abbb87742f65.woff",
+  "static/raleway-latin-500italic.woff2": "/packs-test/static/raleway-latin-500italic-5ef638e15485a61b1601.woff2",
+  "static/raleway-latin-600.woff": "/packs-test/static/raleway-latin-600-21c028af1b458a12a29e.woff",
+  "static/raleway-latin-600.woff2": "/packs-test/static/raleway-latin-600-0a42ae35c39a08f3db47.woff2",
+  "static/raleway-latin-600italic.woff": "/packs-test/static/raleway-latin-600italic-4d6bafd6fb17ead14def.woff",
+  "static/raleway-latin-600italic.woff2": "/packs-test/static/raleway-latin-600italic-4773bb08635e12dc9219.woff2",
+  "static/raleway-latin-700.woff": "/packs-test/static/raleway-latin-700-6aded4d72c6088cfa96b.woff",
+  "static/raleway-latin-700.woff2": "/packs-test/static/raleway-latin-700-368328471c9cb6626306.woff2",
+  "static/raleway-latin-700italic.woff": "/packs-test/static/raleway-latin-700italic-744e43f35d44a20783d1.woff",
+  "static/raleway-latin-700italic.woff2": "/packs-test/static/raleway-latin-700italic-e430931267180c156abd.woff2",
+  "static/raleway-latin-800.woff": "/packs-test/static/raleway-latin-800-9f55a982c90528f32916.woff",
+  "static/raleway-latin-800.woff2": "/packs-test/static/raleway-latin-800-c1d9d698b3aea9612cc9.woff2",
+  "static/raleway-latin-800italic.woff": "/packs-test/static/raleway-latin-800italic-18fd02483646c7a5d9c5.woff",
+  "static/raleway-latin-800italic.woff2": "/packs-test/static/raleway-latin-800italic-e87d055fb33f4e0b8cb9.woff2",
+  "static/raleway-latin-900.woff": "/packs-test/static/raleway-latin-900-7916b2df8f4907823671.woff",
+  "static/raleway-latin-900.woff2": "/packs-test/static/raleway-latin-900-6b4dcc755b6685d1f417.woff2",
+  "static/raleway-latin-900italic.woff": "/packs-test/static/raleway-latin-900italic-eaf775c2192c8a32f14b.woff",
+  "static/raleway-latin-900italic.woff2": "/packs-test/static/raleway-latin-900italic-ee04d481fc9443398a11.woff2",
+  "users.js": "/packs-test/js/users.js",
+  "wishlist_items.js": "/packs-test/js/wishlist_items.js"
+}
