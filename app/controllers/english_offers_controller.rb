@@ -30,6 +30,8 @@ class EnglishOffersController < ApplicationController
     unless check_first_bid_for_english_auction(create_params, @auction)
       formatted_starting_price = format('%.2f', @auction.starting_price)
       flash[:alert] = t('english_offers.create.bid_must_be', minimum: formatted_starting_price)
+      Rails.logger.info("User #{current_user.id} tried to create offer for auction #{auction.id} but it failed. Errors: #{offer.errors.full_messages}")
+  
       redirect_to new_auction_english_offer_path(auction_uuid: @auction.uuid) and return
     end
 
@@ -42,6 +44,8 @@ class EnglishOffersController < ApplicationController
         broadcast_update_auction_offer(@auction)
         send_outbided_notification(auction: @auction, offer: @offer, flash: flash)
         update_auction_values(@auction, t('english_offers.create.created'))
+
+        Rails.logger.info("User #{current_user.id} created offer #{offer.id} for auction #{auction.id}")
       else
         flash[:alert] = if @offer.errors.full_messages_for(:cents).present?
                           @offer.errors.full_messages_for(:cents).join
@@ -49,11 +53,14 @@ class EnglishOffersController < ApplicationController
                           @offer.errors.full_messages.join('; ')
                         end
 
+        Rails.logger.info("User #{current_user.id} tried to create offer for auction #{auction.id} but it failed. Errors: #{offer.errors.full_messages}")
         redirect_to root_path
       end
     else
       @show_checkbox_recaptcha = true unless @success
       flash.now[:alert] = t('english_offers.form.captcha_verification')
+      Rails.logger.info("User #{current_user.id} tried to create offer for auction #{auction.id} but it failed. Errors: #{offer.errors.full_messages}")
+
       render :new, status: :unprocessable_entity
     end
   end
@@ -113,6 +120,7 @@ class EnglishOffersController < ApplicationController
   def check_for_ban
     if Ban.valid.where(user_id: current_user).where(domain_name: @auction.domain_name).any? || current_user.completely_banned?
       redirect_to root_path, flash: { alert: I18n.t('.english_offers.create.ban') } and return
+      Rails.logger.info("User #{current_user.id} tried to create offer for auction #{auction.id} but it failed. Errors: #{offer.errors.full_messages}")
     end
   end
 
@@ -125,6 +133,7 @@ class EnglishOffersController < ApplicationController
     auction.update_ends_at(@offer)
 
     flash[:notice] = message_text
+    Rails.logger.info("User #{current_user.id} updated offer #{offer.id} for auction #{auction.id}")
     redirect_to edit_english_offer_path(@offer.uuid)
   end
 
@@ -134,6 +143,8 @@ class EnglishOffersController < ApplicationController
 
     flash[:alert] =
       "#{t('english_offers.show.bid_failed', price: format('%.2f', auction.highest_price.to_f).tr('.', ','))}"
+
+    Rails.logger.info("User #{current_user.id} tried to update offer #{offer.id} for auction #{auction.id} but it failed. Errors: #{offer.errors.full_messages}")
     redirect_to edit_english_offer_path(auction.users_offer_uuid) and return
   end
 

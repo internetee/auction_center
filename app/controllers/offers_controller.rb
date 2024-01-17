@@ -29,14 +29,17 @@ class OffersController < ApplicationController
       if existing_offer
         format.html do
           redirect_to offer_path(existing_offer.uuid), notice: t('offers.already_exists')
+          Rails.loggfer.info("User #{current_user.id} tried to create offer for auction #{auction.id} but it already exists")
         end
       elsif create_predicate
         format.html { redirect_to offer_path(@offer.uuid), notice: t('.created') }
         format.json { render :show, status: :created, location: @offer }
+        Rails.logger.info("User #{current_user.id} created offer #{offer.id} for auction #{auction.id}")
       else
         @show_checkbox_recaptcha = true unless @success
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @offer.errors, status: :unprocessable_entity }
+        Rails.logger.info("User #{current_user.id} tried to create offer for auction #{auction.id} but it failed. Errors: #{offer.errors.full_messages}")
       end
     end
   end
@@ -71,10 +74,12 @@ class OffersController < ApplicationController
       if update_predicate
         format.html { redirect_to offer_path(@offer.uuid), notice: t(:updated) }
         format.json { render :show, status: :ok, location: @offer }
+        Rails.logger.info("User #{current_user.id} updated offer #{offer.id} for auction #{auction.id}")
       else
         @show_checkbox_recaptcha = true unless @success
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @offer.errors, status: :unprocessable_entity }
+        Rails.logger.info("User #{current_user.id} tried to update offer #{offer.id} for auction #{auction.id} but it failed. Errors: #{offer.errors.full_messages}")
       end
     end
   end
@@ -87,6 +92,7 @@ class OffersController < ApplicationController
     respond_to do |format|
       format.html { redirect_to auction_path(@offer.auction.uuid), notice: t(:deleted) }
       format.json { head :no_content }
+      Rails.logger.info("User #{current_user.id} deleted offer #{offer.id} for auction #{auction.id}")
     end
   end
 
@@ -107,6 +113,7 @@ class OffersController < ApplicationController
   end
 
   def create_predicate
+    Rails.logger.info("User #{current_user.id} tried to create offer for auction #{auction.id} but recaptcha failed") unless recaptcha_valid
     recaptcha_valid && @offer.save && @offer.reload
   end
 
