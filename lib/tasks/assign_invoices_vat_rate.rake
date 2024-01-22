@@ -1,7 +1,7 @@
 namespace :invoices do
   desc 'Assign vat rate to invoices what have vat rate of nil'
   task assign_invoices_vat_rate: :environment do
-    Invoice.where(vat_rate: nil, country_code: 'EE', vat_code: nil).in_batches do |batch_invoices|
+    Invoice.where(vat_rate: [nil, 0.0], country_code: 'EE').in_batches do |batch_invoices|
       batch_invoices.where('created_at < ?', '2024-01-01').update_all(vat_rate: 0.2)
       batch_invoices.where('created_at >= ?', '2024-01-01').update_all(vat_rate: 0.22)
     end
