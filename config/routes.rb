@@ -12,6 +12,7 @@ Rails.application.routes.draw do
       resource :offers, only: :create
       resource :autobiders, only: :create
       resource :auctions, only: :show
+      resources :invoices, only: :index
     end
   end
 
