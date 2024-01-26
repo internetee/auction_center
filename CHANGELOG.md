@@ -1,5 +1,5 @@
 26.01.2024
-* vat rate calculation and fixing lofic refactor https://github.com/internetee/auction_center/pull/1194
+* Refactored vat rate calculation and fixing logic https://github.com/internetee/auction_center/pull/1194
 
 04.01.2024
 * Changed effective time of cookie policy cookie https://github.com/internetee/auction_center/pull/1192
