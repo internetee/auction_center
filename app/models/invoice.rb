@@ -27,14 +27,14 @@ class Invoice < ApplicationRecord
   validates :billing_profile, presence: true, on: :create
 
   validate :user_id_must_be_the_same_as_on_billing_profile_or_nil
-  before_update :update_billing_info
 
   before_create :set_invoice_number
 
+  before_update :update_billing_info
+  before_update :recalculate_vat_rate
+
   delegate :enable_deposit?, to: :enable_deposit?
   delegate :deposit, to: :deposit
-
-  attr_accessor :vat_rate
 
   scope :with_search_scope, (lambda do |origin|
     if origin.present?
@@ -85,7 +85,7 @@ class Invoice < ApplicationRecord
     when 'channel'
       query.left_outer_joins(:paid_with_payment_order)
            .select("invoices.*, REPLACE(payment_orders.type, 'PaymentOrders::', '') AS payment_order_channel")
-           .order(Arel.sql("payment_order_channel #{sort_direction} NULLS LAST")) 
+           .order(Arel.sql("payment_order_channel #{sort_direction} NULLS LAST"))
     when 'billing_profile_name'
       query.left_outer_joins(:billing_profile).order("billing_profiles.name #{sort_direction}")
     when 'total'
@@ -116,6 +116,23 @@ class Invoice < ApplicationRecord
 
   def deposit
     result.auction.deposit
+  end
+
+  def recalculate_vat_rate
+    return if billing_profile_id == billing_profile_id_was
+    return unless payable?
+
+    self.vat_rate = assign_vat_rate
+
+    send_updated_invoice_infromation_to_billing_service
+  end
+
+  def assign_vat_rate
+    return BigDecimal(Setting.find_by(code: :estonian_vat_rate).retrieve, 2) if country_code == 'EE'
+
+    return BigDecimal('0') if vat_code.present?
+
+    Countries.vat_rate_from_alpha2_code(country_code)
   end
 
   def billing_restrictions_issue
@@ -188,22 +205,6 @@ class Invoice < ApplicationRecord
     country_name = Countries.name_from_alpha2_code(country_code)
     postal_code_with_city = [postal_code, city].join(' ')
     [street, postal_code_with_city, country_name].compact.join(', ')
-  end
-
-  def vat_rate
-    return tax_fresh_rate if country_code == 'EE'
-
-    return BigDecimal('0') if vat_code.present?
-
-    Countries.vat_rate_from_alpha2_code(country_code)
-  end
-
-  def tax_fresh_rate
-    if created_at.year < 2024
-      BigDecimal(OLD_EST_RATE_VAT)
-    else
-      BigDecimal(Setting.find_by(code: :estonian_vat_rate).retrieve, 2) 
-    end
   end
 
   def filename

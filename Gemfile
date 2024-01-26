@@ -26,14 +26,12 @@ gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 6.4.0'
 gem 'rails', '>= 6.0.3.5'
 gem 'rails-i18n'
-# gem 'rails_semantic_logger'
 gem 'recaptcha'
 gem 'ruby-openai'
 gem 'scenic'
 gem 'simpleidn'
 gem 'skylight'
 gem 'sprockets', '~> 4.0'
-# gem 'turbolinks', '~> 5'
 gem 'turbo-rails'
 gem 'webpacker', '~> 6.0.0.rc.5'
 gem 'webpush'
@@ -49,6 +47,12 @@ group :development, :test do
 
   # https://github.com/rubocop/rubocop-performance
   gem 'rubocop-performance', require: false
+  gem "ruby-lsp"
+  gem "rubocop"
+  gem "rubocop-packaging"
+  gem "rubocop-rspec"
+  gem "rubocop-shopify"
+  gem "rubocop-thread_safety"
 end
 
 group :development do

@@ -1,7 +1,5 @@
 class InvoiceCreator
-  attr_reader :result_id
-  attr_reader :result
-  attr_reader :invoice
+  attr_reader :result_id, :result, :invoice
 
   def initialize(result_id)
     @result_id = result_id
@@ -45,7 +43,7 @@ class InvoiceCreator
   end
 
   def send_invoice_to_billing_system(invoice)
-    response = EisBilling::Invoice.call(invoice: invoice)
+    response = EisBilling::Invoice.call(invoice:)
     if response.result?
       link = response.instance['everypay_link']
       invoice.update(payment_link: link)
@@ -56,14 +54,7 @@ class InvoiceCreator
 
   def assign_price
     invoice.cents = result_offer.cents
-    invoice.invoice_items = [
-      InvoiceItem.new(invoice: invoice,
-                      cents: result_offer.cents,
-                      name: I18n.t('invoice_items.name',
-                                   domain_name: result_auction.domain_name,
-                                   auction_end: result_auction.ends_at.to_date,
-                                   locale: I18n.default_locale)),
-    ]
+    invoice.invoice_items = [assign_invoice_item]
   end
 
   def assign_billing_address
@@ -86,6 +77,7 @@ class InvoiceCreator
 
     ActiveRecord::Base.transaction do
       assign_invoice_associations
+      invoice.vat_rate = assign_vat_rate
       result_auction.enable_deposit ? assign_price_with_deposit : assign_price
       set_issue_and_due_date
       assign_billing_address
@@ -95,23 +87,33 @@ class InvoiceCreator
   end
 
   def assign_price_with_deposit
-    # total = result_offer.cents - result_auction.requirement_deposit_in_cents
-
-    # invoice.cents = total
     invoice.cents = result_offer.cents
-    invoice.invoice_items = [
-      InvoiceItem.new(invoice: invoice,
-                      cents: result_offer.cents,
-                      name: I18n.t('invoice_items.name',
-                                    domain_name: result_auction.domain_name,
-                                    auction_end: result_auction.ends_at.to_date,
-                                    locale: I18n.default_locale)),
-    ]
+    invoice.invoice_items = [assign_invoice_item]
+  end
+
+  def assign_invoice_item
+    InvoiceItem.new(invoice:,
+                    cents: result_offer.cents,
+                    name: I18n.t('invoice_items.name',
+                                 domain_name: result_auction.domain_name,
+                                 auction_end: result_auction.ends_at.to_date,
+                                 locale: I18n.default_locale))
   end
 
   def mark_as_paid_if_sum_is_zero
     return unless invoice.total.zero?
 
     invoice.mark_as_paid_at(Time.zone.now)
+  end
+
+  def assign_vat_rate
+    if invoice.billing_alpha_two_country_code == 'EE'
+      return BigDecimal(Setting.find_by(code: :estonian_vat_rate).retrieve,
+                        2)
+    end
+
+    return BigDecimal('0') if invoice.vat_code.present?
+
+    Countries.vat_rate_from_alpha2_code(invoice.billing_alpha_two_country_code)
   end
 end
