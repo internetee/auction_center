@@ -16,6 +16,8 @@ module Auctions
 
     private
 
+    # rubocop:disable Metrics/AbcSize
+    # rubocop:disable Metrics/MethodLength
     def post_call
       participants = auction.offers.map(&:user)
 
@@ -34,7 +36,9 @@ module Auctions
         highest_bid: auction.currently_winning_offer&.price.to_f,
         highest_bidder: auction.currently_winning_offer&.username,
         min_bids_step: auction.min_bids_step,
-        auction_type: auction&.platform
+        auction_type: auction&.platform,
+        enable_deposit: auction.enable_deposit,
+        requirement_deposit_in_cents: auction.requirement_deposit_in_cents
       }
 
       ActionCable.server.broadcast('auctions_api', { auction: auction_json })
