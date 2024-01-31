@@ -8,4 +8,6 @@ json.array! @auctions_list do |auction|
   json.highest_bidder auction.currently_winning_offer&.username
   json.min_bids_step auction.min_bids_step.to_f
   json.auction_type auction&.platform
+  json.enable_deposit auction.enable_deposit
+  json.requirement_deposit_in_cents auction.requirement_deposit_in_cents
 end
