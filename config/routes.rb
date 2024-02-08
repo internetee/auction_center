@@ -18,6 +18,7 @@ Rails.application.routes.draw do
         end
       end
       resources :invoices, only: :index
+      resources :billing_profiles, only: %i[index update create destroy]
     end
   end
 
