@@ -17,7 +17,7 @@ class PhoneConfirmations::SendSmsController < ApplicationController
 
     @show_checkbox_recaptcha = true unless @success
 
-    redirect_to new_user_phone_confirmation_path(@phone_confirmation.user.uuid), status: :see_other, turbo: false
+    redirect_to new_user_phone_confirmation_path(@phone_confirmation.user.uuid), status: :see_other
   end
 
   private

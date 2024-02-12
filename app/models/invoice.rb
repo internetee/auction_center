@@ -120,6 +120,7 @@ class Invoice < ApplicationRecord
 
   def recalculate_vat_rate
     return unless payable?
+    return if billing_profile_id == billing_profile_id_was
 
     self.vat_rate = assign_vat_rate
 
