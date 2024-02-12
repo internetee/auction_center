@@ -5,7 +5,7 @@
 <% end %>
 
 <div class="u-container" data-controller='timeleft'
-                         data-timeleft-date-value="<%= I18n.l(current_user.mobile_phone_confirmed_sms_send_at + PhoneConfirmation::TIME_LIMIT) %>"
+                         data-timeleft-date-value="<%= current_user.mobile_phone_confirmed_sms_send_at.present? ? I18n.l(current_user.mobile_phone_confirmed_sms_send_at + PhoneConfirmation::TIME_LIMIT) : I18n.l(Time.zone.now) %>"
                          data-timeleft-refresh-interval-value="500" data-timeleft-message-timer-value="<%= I18n.t('phone_confirmations.new.send_again') %>" 
                          data-timeleft-default-message-timer-value="<%= I18n.t('phone_confirmations.new.send_code') %>">
     <div class="u-container margin-block">

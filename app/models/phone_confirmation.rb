@@ -3,7 +3,7 @@ require 'messente/omnimessage'
 class PhoneConfirmation
   attr_reader :user
 
-  TIME_LIMIT = AuctionCenter::Application.config.customization[:mobile_sms_sent_time_limit_in_minutes] || 1.minutes
+  TIME_LIMIT = AuctionCenter::Application.config.customization[:mobile_sms_sent_time_limit_in_minutes].to_i.minutes || 1.minutes
 
   def initialize(user)
     @user = user
