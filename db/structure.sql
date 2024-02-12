@@ -1632,6 +1632,7 @@ CREATE TABLE public.users (
     daily_summary boolean DEFAULT false NOT NULL,
     jti character varying,
     reference_no character varying,
+    mobile_phone_confirmed_sms_send_at timestamp(6) without time zone,
     CONSTRAINT users_roles_are_known CHECK ((roles <@ ARRAY['participant'::character varying, 'administrator'::character varying]))
 );
 
@@ -3192,6 +3193,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20231031122216'),
 ('20231116093310'),
 ('20231222074427'),
-('20231222085647');
+('20231222085647'),
+('20240209111309');
 
 

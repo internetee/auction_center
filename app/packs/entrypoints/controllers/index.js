@@ -43,3 +43,5 @@ import CookieController from "./cookie_controller"
 application.register("cookie", CookieController)
 import AuctionTimezoneController from "./auction_timezone_controller"
 application.register("auction-timezone", AuctionTimezoneController)
+import TimeleftController from "./timeleft_controller"
+application.register("timeleft", TimeleftController)

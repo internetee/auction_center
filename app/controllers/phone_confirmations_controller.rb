@@ -3,13 +3,14 @@ class PhoneConfirmationsController < ApplicationController
   before_action :set_phone_confirmation
   before_action :authorize_user
 
+  include RecaptchaValidatable
+  recaptcha_action 'phone_confirmation'
+
   def new
     if @phone_confirmation.confirmed?
       redirect_to user_path(@phone_confirmation.user.uuid), notice: t('.already_confirmed')
     elsif @phone_confirmation.user.not_phone_number_confirmed_unique?
       redirect_to user_path(@phone_confirmation.user.uuid)
-    else
-      PhoneConfirmationJob.perform_later(@phone_confirmation.user.id)
     end
   end
 

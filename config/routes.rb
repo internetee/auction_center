@@ -125,7 +125,11 @@ Rails.application.routes.draw do
   resources :results, only: :show, param: :uuid
 
   resources :users, param: :uuid do
-    resources :phone_confirmations, only: %i[new create]
+    resources :phone_confirmations, only: %i[new create] do
+      scope module: :phone_confirmations do
+        post :send_sms, to: 'send_sms#create', on: :collection
+      end
+    end
   end
 
   resources :wishlist_items, param: :uuid, only: %i[index edit create destroy update]
