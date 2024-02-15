@@ -300,7 +300,6 @@ class Invoice < ApplicationRecord
 
   def prepare_payment_fields(time)
     self.paid_at = time
-    # self.vat_rate = billing_profile.present? ? billing_profile.vat_rate : vat_rate
     self.paid_amount = total
   end
 end
