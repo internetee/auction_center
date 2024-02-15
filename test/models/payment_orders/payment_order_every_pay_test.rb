@@ -51,46 +51,6 @@ class PaymentOrderEveryPayTest < ActiveSupport::TestCase
     travel_back
   end
 
-  # def test_form_fields_are_filled_according_to_schema
-  #   @orphaned_invoice.cents = Money.from_amount(1000.00, Setting.find_by(code: 'auction_currency').retrieve).cents
-  #   assert_equal Money.from_amount(1200.00, Setting.find_by(code: 'auction_currency').retrieve), @orphaned_invoice.total
-
-  #   expected_fields = {
-  #     api_username: 'api_user',
-  #     account_id: 'EUR3D1',
-  #     timestamp: '1522542600',
-  #     amount: '1200.00',
-  #     transaction_type: 'charge',
-  #     hmac_fields: 'account_id,amount,api_username,callback_url,customer_url,hmac_fields,locale,nonce,order_reference,timestamp,transaction_type',
-  #     locale: 'en',
-  #   }
-  #   form_fields = @every_pay.form_fields
-  #   expected_fields.each do |k, v|
-  #     assert_equal(v, form_fields[k])
-  #   end
-  # end
-
-  # def test_form_fields_with_estonian_locale
-  #   @every_pay.user = @user
-  #   @orphaned_invoice.cents = Money.from_amount(1234.56, Setting.find_by(code: 'auction_currency').retrieve).cents
-  #   assert_equal Money.from_amount(1481.47, Setting.find_by(code: 'auction_currency').retrieve), @orphaned_invoice.total
-  #   @user.update!(locale: :et)
-
-  #   expected_fields = {
-  #     api_username: 'api_user',
-  #     account_id: 'EUR3D1',
-  #     timestamp: '1522542600',
-  #     amount: '1481.47',
-  #     transaction_type: 'charge',
-  #     hmac_fields: 'account_id,amount,api_username,callback_url,customer_url,hmac_fields,locale,nonce,order_reference,timestamp,transaction_type',
-  #     locale: 'et',
-  #   }
-  #   form_fields = @every_pay.form_fields
-  #   expected_fields.each do |k, v|
-  #     assert_equal(v, form_fields[k])
-  #   end
-  # end
-
   def test_form_url_returns_the_constant
     assert_equal(PaymentOrders::EveryPay::URL, @every_pay.form_url)
   end
@@ -98,12 +58,6 @@ class PaymentOrderEveryPayTest < ActiveSupport::TestCase
   def test_channel
     assert_equal('EveryPay', @every_pay.channel)
   end
-
-  # def test_mark_invoice_as_paid_works_when_response_is_valid
-  #   @every_pay.mark_invoice_as_paid
-
-  #   assert(@every_pay.invoices.all?(&:paid?))
-  # end
 
   def test_mark_invoice_as_paid_does_not_work_when_response_is_invalid
     @fake_every_pay.mark_invoice_as_paid

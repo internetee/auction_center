@@ -16,4 +16,9 @@ namespace :invoices do
       end
     end
   end
+
+  task assign_values_to_old_invoices: :environment do
+    Invoice.where('created_at < ?', '2024-01-01').where(country_code: 'EE', vat_rate: 0.22)
+           .update_all(vat_rate: 0.2, in_directo: false)
+  end
 end

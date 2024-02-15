@@ -128,6 +128,7 @@ class Invoice < ApplicationRecord
   end
 
   def assign_vat_rate
+    return BigDecimal(OLD_EST_RATE_VAT, 2) if created_at < Date.new(2024, 1, 1) && country_code == 'EE'
     return BigDecimal(Setting.find_by(code: :estonian_vat_rate).retrieve, 2) if country_code == 'EE'
 
     return BigDecimal('0') if vat_code.present?
@@ -299,7 +300,7 @@ class Invoice < ApplicationRecord
 
   def prepare_payment_fields(time)
     self.paid_at = time
-    self.vat_rate = billing_profile.present? ? billing_profile.vat_rate : vat_rate
+    # self.vat_rate = billing_profile.present? ? billing_profile.vat_rate : vat_rate
     self.paid_amount = total
   end
 end
