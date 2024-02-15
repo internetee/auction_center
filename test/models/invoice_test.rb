@@ -231,6 +231,50 @@ class InvoiceTest < ActiveSupport::TestCase
     assert_equal @payable_invoice.total.to_f, 5.0
   end
 
+  def test_billing_profile_change_should_not_effect_to_old_invoices
+    @payable_invoice.update!(
+      created_at: Date.new(2023, 1, 1).to_time,
+      issue_date: Date.new(2023, 1, 2).to_time,
+      due_date: Date.new(2023, 1, 3).to_time,
+      vat_rate: 0.2,
+    )
+
+    travel_to Date.new(2024, 1, 10).to_time
+
+    assert_equal @payable_invoice.created_at, Date.new(2023, 1, 1).to_time
+
+    user = @payable_invoice.user
+    billing_profile = BillingProfile.create!(name: 'test', country_code: 'EE', user: user, vat_code: nil)
+
+    assert_equal 0.2, @payable_invoice.vat_rate
+
+    @payable_invoice.update!(billing_profile: billing_profile) && @payable_invoice.reload
+
+    assert_equal 0.2, @payable_invoice.vat_rate
+    assert_equal billing_profile, @payable_invoice.billing_profile
+  end
+
+  def test_after_payment_invoice_data_should_not_be_changed
+    @payable_invoice.update!(
+      created_at: Date.new(2023, 1, 1).to_time,
+      issue_date: Date.new(2023, 1, 2).to_time,
+      due_date: Date.new(2023, 1, 3).to_time,
+      vat_rate: 0.2,
+    ) && @payable_invoice.reload
+
+    travel_to Date.new(2024, 1, 10).to_time
+
+    assert_equal @payable_invoice.created_at, Date.new(2023, 1, 1).to_time
+    assert_not @payable_invoice.paid?
+
+    @payable_invoice.mark_as_paid_at(Time.zone.now) && @payable_invoice.reload
+
+    assert_equal @payable_invoice.created_at, Date.new(2023, 1, 1).to_time
+    assert @payable_invoice.paid?
+    assert_equal @payable_invoice.paid_at, Time.zone.now
+    assert_equal @payable_invoice.vat_rate, 0.2
+  end
+
   def invoices_total(invoices)
     invoices.map(&:total)
             .reduce(:+)
