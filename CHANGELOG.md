@@ -1,3 +1,6 @@
+16.02.2024
+* Fixed VAT calculation on billing profile change https://github.com/internetee/auction_center/issues/1211
+
 26.01.2024
 * Refactored vat rate calculation and fixing logic https://github.com/internetee/auction_center/pull/1194
 
