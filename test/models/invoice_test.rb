@@ -231,6 +231,40 @@ class InvoiceTest < ActiveSupport::TestCase
     assert_equal @payable_invoice.total.to_f, 5.0
   end
 
+  def test_invoice_should_be_recalculated_if_billing_profile_updated
+    assert_equal @payable_invoice.total.to_f, 10.0
+    
+    billing_profile = @payable_invoice.billing_profile
+    billing_profile.update(vat_code: nil, alpha_two_country_code: 'LV') && @payable_invoice.reload && billing_profile.reload
+
+    assert_equal Countries.vat_rate_from_alpha2_code(billing_profile.alpha_two_country_code), 0.21
+    assert_equal @payable_invoice.total.to_f, 12.1
+
+    billing_profile = @payable_invoice.billing_profile
+
+    billing_profile.vat_code = '123456'
+    billing_profile.alpha_two_country_code = 'LV'
+    billing_profile.save(validate: false) && @payable_invoice.reload && billing_profile.reload
+
+    assert_equal @payable_invoice.total.to_f, 10.0
+  end
+
+  def test_invoice_should_be_recalculated_if_billing_profile_changed
+    assert_equal @payable_invoice.total.to_f, 10.0
+    billing_profile = @payable_invoice.billing_profile
+    assert billing_profile.vat_code.present?
+
+    private_person = billing_profiles(:private_person)
+    assert_not private_person.vat_code.present?
+    private_person.update(alpha_two_country_code: 'LV') && private_person.reload
+
+    @payable_invoice.billing_profile = private_person
+    @payable_invoice.save(validate: false) && @payable_invoice.reload
+
+    assert_equal Countries.vat_rate_from_alpha2_code(private_person.alpha_two_country_code), 0.21
+    assert_equal @payable_invoice.total.to_f, 12.1
+  end
+
   def invoices_total(invoices)
     invoices.map(&:total)
             .reduce(:+)
