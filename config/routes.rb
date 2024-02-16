@@ -12,7 +12,7 @@ Rails.application.routes.draw do
       resource :offers, only: :create
       resource :autobiders, only: :create
       resource :auctions, only: :show
-      resource :profiles, only: :update do
+      resource :profiles, only: %i[update create] do
         scope module: :profiles do
           resource :passwords, only: :update
         end
