@@ -38,7 +38,7 @@ export default class extends Controller {
 
   update() {
     let difference = this.timeDifference();
-
+  
     if (difference < 0) {
       var expiredMsg = $("#timer_message").data("expiredMessage");
       $("#timer_message").html(expiredMsg);
@@ -47,13 +47,16 @@ export default class extends Controller {
       this.buttonTarget.innerHTML = this.defaultMessageTimerValue;
     } else {
       this.buttonTarget.setAttribute("disabled", "disabled");
-
+  
       let minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
       let seconds = Math.floor((difference % (1000 * 60)) / 1000);
-
-      this.buttonTarget.innerHTML = `${this.messageTimerValue} ${minutes}:${seconds}`
+  
+      let formattedSeconds = seconds < 10 ? `0${seconds}` : seconds;
+  
+      this.buttonTarget.innerHTML = `${this.messageTimerValue} ${minutes}:${formattedSeconds}`
     }
   }
+  
 
   timeDifference() {
     const convertedToTimeZone = this.convertDateToTimeZone(new Date().getTime(), 'Europe/Tallinn');

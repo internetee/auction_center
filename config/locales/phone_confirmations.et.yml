@@ -11,8 +11,8 @@ et:
         Sisesta kood siia ja klõpsa „esita“ mobiilinumbri kinnitamiseks.
         Koodi saatmine võib võtta mitu minutit
       already_confirmed: "Sinu telefoninumber on juba kinnitatud."
-      send_again: Saada kood läbi.
-      send_code: Saada kood.
+      send_again: Saada sms uuest
+      send_code: Saada kood
 
     create:
       confirmed: "Sinu telefoninumber on kinnitatud. Võid esitada pakkumusi."
