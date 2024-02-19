@@ -13,25 +13,27 @@
         <p><%= t('.instructions', number: @phone_confirmation.user.mobile_phone )%></p>
 
         <%= render 'form', phone_confirmation: @phone_confirmation, url: user_phone_confirmations_path %><br />
-        
-        <% if current_user.allow_to_send_sms_again? %>
-          <%= button_to I18n.t('phone_confirmations.new.send_code'), send_sms_user_phone_confirmations_path, class: "ui button primary", data: { timeleft_target: 'button' } %>
-        <% else %>
-          <%= button_to I18n.t('phone_confirmations.new.send_again'), send_sms_user_phone_confirmations_path, class: "ui button primary", data: { timeleft_target: 'button' }, disabled: true %>
-        <% end if render_send_in_button? %>
 
-        <div class="column">
-          <% if @captcha_required %>
-            <% if @show_checkbox_recaptcha %>
-              <div class="field">
-                <br>
-                <%= recaptcha_tags id: 'english_offer', site_key: @recaptcha2_site_key %>
-              </div>
-            <% else %>
-                <%= recaptcha_v3(action: 'english_offer', site_key: @recaptcha3_site_key, turbolinks: true) %>
+        <%= form_with url: send_sms_user_phone_confirmations_path do |f| %>
+          <div class="column">
+            <% if @captcha_required %>
+              <% if @show_checkbox_recaptcha %>
+                <div class="field">
+                  <br>
+                  <%= recaptcha_tags id: 'send_sms', site_key: @recaptcha2_site_key %>
+                </div>
+              <% else %>
+                  <%= recaptcha_v3(action: 'send_sms', site_key: @recaptcha3_site_key, turbolinks: true) %>
+              <% end %>
             <% end %>
+          </div>
+
+          <%if current_user.allow_to_send_sms_again? %>
+            <button class="ui button primary", data-timeleft-target='button'><%= I18n.t('phone_confirmations.new.send_code') %></button>
+          <% else %>
+          <button class="ui button primary", data-timeleft-target='button' disabled><%= I18n.t('phone_confirmations.new.send_again') %></button>
           <% end %>
-        </div>
+        <% end if render_send_in_button? %>
 
     </div>
 </div>
