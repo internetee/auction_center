@@ -1,3 +1,6 @@
+19.02.2024
+* Fixed SMS spamming issue https://github.com/internetee/auction_center/issues/1218
+
 16.02.2024
 * Fixed VAT calculation on billing profile change https://github.com/internetee/auction_center/issues/1211
 
