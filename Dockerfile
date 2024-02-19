@@ -1,15 +1,3 @@
-# FROM internetee/ruby:3.0-buster
-
-# RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install wkhtmltopdf -y > /dev/null
-
-# RUN npm install -g yarn@latest
-# WORKDIR /opt/webapps/app
-# COPY Rakefile Gemfile Gemfile.lock ./
-# RUN gem install bundler && bundle install --jobs 20 --retry 5
-# COPY package.json yarn.lock ./
-# RUN yarn install --check-files
-
-
 FROM internetee/ruby:3.2.2
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
@@ -69,15 +57,6 @@ RUN apt-get install -y --no-install-recommends > /dev/null \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
-# RUN curl https://chromedriver.storage.googleapis.com/2.46/chromedriver_linux64.zip -o /chromedriver_linux64.zip
-# RUN apt-get update > /dev/null \
-#     && apt-get install -yf --no-install-recommends > /dev/null unzip=* \
-#     && apt-get clean \
-#     && rm -rf /var/lib/apt/lists/*
-# RUN unzip chromedriver_linux64.zip -d /usr/local/bin
-# RUN rm /chromedriver_linux64.zip
-
-# RUN npm install --global yarn
 RUN npm install -g yarn@latest
 
 RUN curl https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -o /chrome.deb

@@ -225,4 +225,10 @@ class User < ApplicationRecord
 
     auction.offers.any? { |offer| offer.user == self } || auction.domain_participate_auctions.any? { |p| p.user == self }
   end
+
+  def allow_to_send_sms_again?
+    return true if mobile_phone_confirmed_sms_send_at.blank?
+
+    mobile_phone_confirmed_sms_send_at < PhoneConfirmation::TIME_LIMIT.ago
+  end
 end
