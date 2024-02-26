@@ -46,6 +46,9 @@ application.register("english-offer", EnglishOffer);
 import CountDownController from "./countdown_controller";
 application.register("countdown", CountDownController);
 
+import TimeleftController from "./timeleft_controller"
+application.register("timeleft", TimeleftController)
+
 import ProfileWebpushController from "./profile_webpush_controller";
 application.register("profile-webpush", ProfileWebpushController);
 
