@@ -1,15 +1,13 @@
-<%= form_with(url: url, local: true, scope: :phone_confirmation, id: "phone_confirmation_form", class: "ui form big") do |f| %>
-    <div class="ui two column doubling stackable grid">
-        <div class="column">
-            <div class="field">
-              <%= component 'common/form/label', form: f, attribute: :confirmation_code %>
-              <%= component 'common/form/text_field', form: f, attribute: :confirmation_code %>
-            </div>
+<%= form_with(url: url, local: true, scope: :phone_confirmation, id: "phone_confirmation_form") do |f| %>
+    <div class="c-account__input c-account__input--editable u-mb-20 is-editable">
+      <%= component 'common/form/label', form: f, attribute: :confirmation_code %>
+    </div>
 
-            <div class="column wide sixteen">
-                <%= f.submit t(:submit), class: "ui button primary", data: { turbo: false } %>
-                <%= link_to t(:back), :back, class: "ui button secondary" %>
-            </div>
-        </div>
+    <div class="c-account__input c-account__input--editable u-mb-20 is-editable">
+      <%= component 'common/form/text_field', form: f, attribute: :confirmation_code %>
+    </div>
+
+    <div class="c-account__input c-account__input--editable u-mb-20 is-editable">
+        <%= component 'common/form/form_button', form: f, color: 'green', btn_title: t(:submit), options: { data: { turbo: false } } %>
     </div>
 <% end %>
