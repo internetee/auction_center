@@ -24,8 +24,6 @@ export default class extends Controller {
   }
 
   setupPushNotifications() {
-    console.log('webpush action!');
-
     const applicationServerKey = this.urlBase64ToUint8Array(this.vapidPublicValue);
 
     navigator.serviceWorker.register("/service-worker.js", {scope: "./" }).then((registration) => {

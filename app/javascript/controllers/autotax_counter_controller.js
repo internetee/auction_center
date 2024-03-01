@@ -5,11 +5,12 @@ export default class extends Controller {
   static values = {
     tax: String,
     template: String,
-    defaulttemplate: String
+    defaulttemplate: String,
+    priceElement: { default: 'input[name="offer[price]"]', type: String }
   }
 
   connect() {
-    this.updateTax(); // обновляем значение tax при инициализации
+    this.updateTax();
   }
 
   count(event) {
@@ -30,8 +31,8 @@ export default class extends Controller {
   updateTax(event) {
     let selectElement = this.element.querySelector('select');
     this.taxValue = selectElement.options[selectElement.selectedIndex].dataset.vatRate || 0.0;
+    const priceElement = this.element.querySelector(this.priceElementValue);
 
-    const priceElement = this.element.querySelector('[name="offer[price]"]');
     this.count({target: priceElement});
   }
 }

@@ -22,7 +22,7 @@ module Pages
           [{ column: nil, caption: t('invoices.item'), options: { class: '' } },
            { column: nil, caption: t('invoices.due_date'), options: { class: '' } },
            { column: nil, caption: t('invoices.total'), options: { class: '' } },
-           { column: nil, caption: 'Tegevused',
+           { column: nil, caption: t('actions_name'),
              options: { class: 'u-text-center-l' } }]
         end
 
@@ -30,7 +30,7 @@ module Pages
           [{ column: nil, caption: t('invoices.item'), options: { class: '' } },
            { column: nil, caption: t('invoices.due_date'), options: { class: '' } },
            { column: nil, caption: t('invoices.total'), options: { class: '' } },
-           { column: nil, caption: 'Tegevused',
+           { column: nil, caption: t('actions_name'),
              options: { class: 'u-text-center-l' } }]
         end
 
@@ -38,7 +38,7 @@ module Pages
           [{ column: nil, caption: t('invoices.item'), options: { class: '' } },
            { column: nil, caption: t('invoices.due_date'), options: { class: '' } },
            { column: nil, caption: t('invoices.total'), options: { class: '' } },
-           { column: nil, caption: 'Tegevused',
+           { column: nil, caption: t('actions_name'),
              options: { class: 'u-text-center-l' } }]
         end
       end

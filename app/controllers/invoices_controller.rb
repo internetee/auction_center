@@ -10,10 +10,27 @@ class InvoicesController < ApplicationController
   def update
     respond_to do |format|
       if update_predicate
-        format.html { redirect_to invoice_path(@invoice.uuid), notice: t(:updated) }
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.update('invoice_information', partial: 'invoices/invoice_information', locals: { invoice: @invoice }),
+            turbo_stream.toast(t(:updated), position: "right", background: 'linear-gradient(to right, #11998e, #38ef7d)')
+        ]
+        end
+
+        format.html { redirect_to invoices_path, notice: t(:updated) }
         format.json { render :show, status: :ok, location: @invoice }
       else
-        format.html { redirect_to invoice_path(@invoice.uuid), notice: t(:something_went_wrong) }
+        error_str = if @invoice.errors.empty?
+                      @invoice.payable? ? t(:something_went_wrong) : t('invoices.invoice_already_paid')
+                    else  
+                      @invoice.errors.full_messages.join('; ')
+                    end
+
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.toast(error_str, position: "right", background: 'linear-gradient(to right, #93291E, #ED213A)')
+        end
+
+        format.html { redirect_to invoices_path, status: :see_other, alert: error_str }
         format.json { render json: @invoice.errors, status: :unprocessable_entity }
       end
     end

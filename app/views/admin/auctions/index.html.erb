@@ -1,7 +1,7 @@
 <%= component 'common/hero', title: t('.title')  %>
 <div class="o-container">
   <!-- This stumulus controller `form--bundle-checkbox` is used to determine which checkboxes the user has clicked in order for the server side to process exactly the selected auction options -->
-  <div class="c-table c-table--sortable" data-controller='form--bundle-checkbox'>
+  <div class="c-table c-table--sortable" data-controller='form--bundle-checkbox form--check-all'>
     <h2><%= t('.auctions.filter_panel') %></h2>
     <%= form_with url: admin_auctions_path, method: :get,
                 data: { controller: 'form--debounce', form__debounce_target: 'form', turbo_action: "advance",
@@ -82,7 +82,8 @@
         <div>
           <label><%= t('auctions.index.check_all') %></label>
           <label class="o-checkbox" for="check_all">
-            <%= form.check_box :check_all %>
+            <%#= form.check_box :check_all %>
+            <%= check_box_tag :check_all, false, false, data: { action: 'form--check-all#checkAll' } %>
             <div class="o-checkbox__slider round"></div>
           </label>
         </div>

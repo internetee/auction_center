@@ -29,6 +29,8 @@ class BillingProfilesController < ApplicationController
     @billing_profile = BillingProfile.new(create_params)
     authorize! :manage, @billing_profile
 
+    flash.clear
+
     respond_to do |format|
       if create_predicate
         redirect_uri = "#{session[:return_to]}?billing_profile_id=#{@billing_profile.id}" || billing_profile_path(@billing_profile.uuid)
@@ -45,7 +47,7 @@ class BillingProfilesController < ApplicationController
         format.html { redirect_to redirect_uri }
         format.json { render :show, status: :created, location: @billing_profile }
       else
-        flash[:alert] = @billing_profile.errors.full_messages.to_sentence
+        flash.now[:alert] = @billing_profile.errors.full_messages.to_sentence
 
         format.turbo_stream do
           render turbo_stream: [

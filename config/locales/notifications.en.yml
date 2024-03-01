@@ -2,5 +2,6 @@ en:
   notifications:
     read_all: 'Read all notifications'
     show_all: 'Show all notifications'
-    unreaded_notifications: 'Unreaded notifications'
-    readed_notifications: 'Readed notifications'
+    unreaded_notifications: 'Unread notifications'
+    readed_notifications: 'Read notifications'
+    all_marked_as_read: 'All notifications marked as read'

@@ -1,4 +1,5 @@
-<%= component 'common/hero', title: t('.title')  %>
+<%= component 'common/hero', title: t('.title', invoice_number: @invoice&.number)  %>
+
 <div class="o-container">
   <div class="c-table__filters" >
     <%= link_to t(:versions_name), admin_invoice_versions_path(@invoice), class: "ui button primary" %>

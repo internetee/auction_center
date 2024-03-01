@@ -28,7 +28,7 @@ class WishlistItemsController < ApplicationController
         format.json { render json: @wishlist_item, status: :created }
       else
         format.json { render json: @wishlist_item.errors.full_messages, status: :unprocessable_entity }
-        format.html { redirect_to wishlist_items_path, notice: @wishlist_item.errors.full_messages.join(', ') }
+        format.html { redirect_to wishlist_items_path, alert: @wishlist_item.errors.full_messages.join(', ') }
       end
     end
   end
@@ -49,7 +49,7 @@ class WishlistItemsController < ApplicationController
         format.json { render json: @wishlist_item, status: :created }
       else
         format.json { render json: @wishlist_item.errors.full_messages, status: :unprocessable_entity }
-        format.html { redirect_to wishlist_items_path, notice: @wishlist_item.errors.full_messages.join(', ') }
+        format.html { redirect_to wishlist_items_path, alert: @wishlist_item.errors.full_messages.join(', ') }
       end
     end
   end

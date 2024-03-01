@@ -3,6 +3,8 @@ et:
     billing_profile_must_belong_to_user: "must belong to the same user as invoice"
     is_being_generated: "We are generating the invoice, please check back in a few minutes."
 
+    invoice_already_paid: "Arve on juba makstud."
+
     issue_date: "Arve kuupäev"
     issuer: "Väljastaja"
     issued_for: "Arve saaja"
@@ -59,6 +61,7 @@ et:
       pay: "Maksa"
       redeem: Tühistatud arve tasumine eemaldab vastava arvega seotud rikkumise, kuid ei anna vastava domeeni registreerimiseks eelisõigust.
       send_e_invoice: "Saada E-Arve"
+      total_amount: "Kokku vaja tasuda"
 
     edit:
       title: "Muuda arvet"

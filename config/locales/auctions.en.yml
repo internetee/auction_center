@@ -32,6 +32,7 @@ en:
     blind_auction: Blind auction
     english_auction: English auction
     all: All
+    type: Type
 
     still_in_progress: "Still in progress"
 
