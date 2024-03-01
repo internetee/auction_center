@@ -20,7 +20,12 @@ class EnglishOffersController < ApplicationController
   # GET /auctions/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/offers/new
   def new
     offer = @auction.offer_from_user(current_user.id)
-    redirect_to edit_english_offer_path(offer.uuid) if offer
+
+    if turbo_frame_request?
+      render turbo_stream: turbo_stream.action(:redirect, root_path), notice: t('offers.already_exists') and return
+    else
+      redirect_to root_path, status: :see_other, notice: t('offers.already_exists') and return
+    end if offer
 
     BillingProfile.create_default_for_user(current_user.id)
     @offer = Offer.new(auction_id: @auction.id, user_id: current_user.id)
@@ -31,7 +36,12 @@ class EnglishOffersController < ApplicationController
     unless check_first_bid_for_english_auction(create_params, @auction)
       formatted_starting_price = format('%.2f', @auction.starting_price)
       flash[:alert] = t('english_offers.create.bid_must_be', minimum: formatted_starting_price)
-      redirect_to new_auction_english_offer_path(auction_uuid: @auction.uuid) and return
+
+      if turbo_frame_request?
+        render turbo_stream: turbo_stream.action(:redirect, root_path)
+      else
+        redirect_to root_path, status: :see_other
+      end
     end
 
     @offer = Offer.new(create_params)
@@ -91,6 +101,7 @@ class EnglishOffersController < ApplicationController
         redirect_to root_path
       end
     else
+
       @show_checkbox_recaptcha = true unless @success
       flash.now[:alert] = t('english_offers.form.captcha_verification')
       redirect_to root_path, status: :see_other
@@ -126,7 +137,6 @@ class EnglishOffersController < ApplicationController
     auction.update_ends_at(@offer)
 
     flash[:notice] = message_text
-    # redirect_to edit_english_offer_path(@offer.uuid)
     redirect_to root_path
   end
 
@@ -135,9 +145,13 @@ class EnglishOffersController < ApplicationController
 
     return unless bid_is_bad?(auction: auction, update_params: update_params)
 
-    flash[:alert] =
-      "#{t('english_offers.show.bid_failed', price: format('%.2f', auction.highest_price.to_f).tr('.', ','))}"
-    redirect_to edit_english_offer_path(auction.users_offer_uuid) and return
+    flash[:alert] = "#{t('english_offers.show.bid_failed', price: format('%.2f', auction.highest_price.to_f).tr('.', ','))}"
+
+    if turbo_frame_request?
+      render turbo_stream: turbo_stream.action(:redirect, root_path)
+    else
+      redirect_to root_path, status: :see_other
+    end
   end
 
   def bid_is_bad?(auction:, update_params:)
@@ -195,8 +209,13 @@ class EnglishOffersController < ApplicationController
   def authorize_phone_confirmation
     return unless current_user.requires_phone_number_confirmation?
 
-    redirect_to new_user_phone_confirmation_path(current_user.uuid),
-                notice: t('phone_confirmations.confirmation_required')
+    flash[:notice] = t('phone_confirmations.confirmation_required')
+
+    if turbo_frame_request?
+      render turbo_stream: turbo_stream.action(:redirect, new_user_phone_confirmation_path(current_user.uuid))
+    else
+      redirect_to new_user_phone_confirmation_path(current_user.uuid), status: :see_other
+    end
   end
 
   def authorize_offer_for_user

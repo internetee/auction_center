@@ -3,7 +3,7 @@ module RecaptchaValidatable
 
   included do
     before_action :set_captcha_required
-    before_action :check_recaptcha, only: %i[create update]
+    before_action :check_recaptcha, only: %i[create update], unless: -> { Rails.env.development? || Rails.env.test? }
   end
 
   module ClassMethods
@@ -17,9 +17,7 @@ module RecaptchaValidatable
   end
 
   def set_captcha_required
-    # return if Rails.env.development?
-
-    @captcha_required = current_user.requires_captcha?
+    @captcha_required = Rails.env.development? ? false : current_user.requires_captcha?
     @recaptcha2_site_key = AuctionCenter::Application.config.customization.dig(:recaptcha, :recaptcha2_site_key)
     @recaptcha3_site_key = AuctionCenter::Application.config.customization.dig(:recaptcha, :recaptcha3_site_key)
   end

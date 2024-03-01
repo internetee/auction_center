@@ -9,7 +9,7 @@ en:
     price_with_wat: Total %{price} (+ %{tax}% VAT)
     already_exists: "You already have an offer for this auction."
     must_be_active: "must be active"
-    must_be_higher_than: "must be higher than %{minimum}"
+    must_be_higher_than: "Price must be higher than %{minimum}"
     reminder: |
       NB: This is a blind auction where bids are not public.
       There might be other bids.

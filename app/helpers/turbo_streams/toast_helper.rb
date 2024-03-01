@@ -1,6 +1,6 @@
 module TurboStreams::ToastHelper
-  def toast(message, position: "left")
-    turbo_stream_action_tag :toast, message: message, position: position
+  def toast(message, position: "left", **options)
+    turbo_stream_action_tag :toast, message: message, position: position, **options
   end
 end
 

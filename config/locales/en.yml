@@ -55,6 +55,7 @@ en:
   errors_name: "Errors"
   statistics_name: "Statistics"
   paid_deposits_name: "Paid deposits"
+  actions_name: "Actions"
 
   unsubscribe_mailer_text: "I do not wish to receive daily summary about currently auctioned domains any more"
 
@@ -167,7 +168,8 @@ en:
   errors:
     format: "%{message}"
     messages:
-      taken: "%{attribute} on juba võetud"
+      taken: "%{attribute} is already taken"
+      invalid: "%{attribute} is invalid"
   activerecord:
     errors:
       models:

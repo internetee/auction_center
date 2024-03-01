@@ -31,6 +31,7 @@ et:
     blind_auction: Pime oksjon
     english_auction: Inglise oksjon
     all: Kõik
+    type: Tüüp
 
     still_in_progress: "Töötlemisel"
 

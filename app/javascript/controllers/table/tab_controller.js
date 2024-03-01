@@ -9,8 +9,6 @@ export default class extends Controller {
   }
 
   connect() {
-    console.log(this.payablebtnTargets);
-
     if (this.payablebtnTargets.length > 0) {
       this.payablebtnTargets[0].style.display = "block"
       this.payablebtnTargets[1].style.display = "none"

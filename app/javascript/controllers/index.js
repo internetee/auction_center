@@ -31,6 +31,9 @@ application.register("form--checkbox-autosubmit", Form__CheckboxAutosubmitContro
 import Form__AutosaveController from "./form/autosave_controller";
 application.register("form--autosave", Form__AutosaveController);
 
+import Form__CheckAllController from "./form/check_all_controller";
+application.register("form--check-all", Form__CheckAllController);
+
 import Table__OrdeableController from "./table/ordeable_controller";
 application.register("table--ordeable", Table__OrdeableController);
 
@@ -39,6 +42,9 @@ application.register("table--tab", Table__TabController);
 
 import AutotaxCounter from "./autotax_counter_controller";
 application.register("autotax-counter", AutotaxCounter);
+
+import InvoiceAutotaxCounter from "./invoice_autotax_counter_controller";
+application.register("invoice-autotax-counter", InvoiceAutotaxCounter);
 
 import EnglishOffer from "./english_offers_controller";
 application.register("english-offer", EnglishOffer);

@@ -27,7 +27,7 @@ et:
   billing: "Arveldamine"
   new_billing_profile: "Uus arve aadress"
 
-  profile: "Kasutaja konto"
+  profile: "Kasutajakonto"
   sign_in: "Sisene"
   sign_out: "Logi välja"
   forgot_your_password: "Unustasid salasõna?"
@@ -53,6 +53,7 @@ et:
   bans_name: "Keelud"
   errors_name: "Vead"
   paid_deposits_name: "Deposiidi maksed"
+  actions_name: "Tegevused"
 
   unsubscribe_mailer_text: "Ei soovi enam saada oksjonil olevate domeenide nimekirja meilile"
 
@@ -133,6 +134,7 @@ et:
     format: "%{message}"
     messages:
       taken: "%{attribute} on juba võetud"
+      invalid: "%{attribute} on vigane"
   activerecord:
     errors:
       models:
