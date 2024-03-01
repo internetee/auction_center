@@ -24,7 +24,7 @@
         </div>
 
         <%= turbo_frame_tag "invoice_information" do %>
-          <%= render partial: 'invoices/invoice_information', locals: { invoice: @invoice } %>
+          <%= component 'modals/pay_invoice/invoice_information', invoice: @invoice %>
         <% end %>
 
 

@@ -2,11 +2,11 @@
           <div class="c-modal__grid u-align-start u-flex-wrap">
             <div class="c-modal__col">
           
-                <%= form_with model: invoice, url: invoice_path(invoice.uuid), data: { controller: 'form--debounce', action: 'change->form--debounce#search', form__debounce_target: 'form' } do |f| %>
+                <%= form_with model: @invoice, url: invoice_path(@invoice.uuid), data: { controller: 'form--debounce', action: 'change->form--debounce#search', form__debounce_target: 'form' } do |f| %>
                     <%= component 'common/form/label', form: f, attribute: :billing_profile_id, title: t('billing_profiles_name') %>
                     
                     <%= component 'common/form/dropdown_input', form: f, attribute: :billing_profile_id, 
-                          enum: options_for_select(BillingProfile.where(user_id: invoice.user_id).pluck(:name, :id), params[:billing_profile_id].presence || invoice.billing_profile_id),
+                          enum: options_for_select(BillingProfile.where(user_id: @invoice.user_id).pluck(:name, :id), params[:billing_profile_id].presence || @invoice.billing_profile_id),
                           first_options: { include_blank: false } %>
                 <% end %>
             </div>
@@ -54,7 +54,7 @@
             </thead>
             <tbody>
 
-              <% invoice.items.each_with_index do |item, index| %>
+              <% @invoice.items.each_with_index do |item, index| %>
                 <tr>
                   <td><%= index + 1 %></td>
                   <td><%= I18n.t('invoice_items.name',
@@ -67,21 +67,21 @@
 
               <tr>
                   <td>2</td>
-                  <td><%= t('invoices.vat_amount') %> <%= number_to_percentage(invoice.vat_rate * 100, precision: 0) %></td>
-                  <td><%= t('offers.price_in_currency', price: invoice.vat) %></td>
+                  <td><%= t('invoices.vat_amount') %> <%= number_to_percentage(@invoice.vat_rate * 100, precision: 0) %></td>
+                  <td><%= t('offers.price_in_currency', price: @invoice.vat) %></td>
               </tr>
 
               <tr>
                   <td>3</td>
                   <td><%= t('invoices.total') %></td>
-                  <td><%= t('offers.price_in_currency', price: invoice.total + (invoice.enable_deposit? ? invoice.deposit : 0.0)) %></td>
+                  <td><%= t('offers.price_in_currency', price: @invoice.total + (@invoice.enable_deposit? ? @invoice.deposit : 0.0)) %></td>
               </tr>
 
-              <% if invoice.enable_deposit? %>
+              <% if @invoice.enable_deposit? %>
                 <tr>
                     <td>4</td>
                     <td><%= t('invoices.deposit') %></td>
-                    <td><%= t('offers.price_in_currency', price: invoice.deposit) %></td>
+                    <td><%= t('offers.price_in_currency', price: @invoice.deposit) %></td>
                 </tr>
               <% end %>
 
@@ -89,7 +89,7 @@
             <tfoot>
                 <tr>
                     <td colspan="2"><%= t('invoices.show.total_amount') %></td>
-                    <td><%= t('offers.price_in_currency', price: invoice.total) %></td>
+                    <td><%= t('offers.price_in_currency', price: @invoice.total) %></td>
                 </tr>
             </tfoot>
           </table>

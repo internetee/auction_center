@@ -12,8 +12,9 @@ class InvoicesController < ApplicationController
       if update_predicate
         format.turbo_stream do
           render turbo_stream: [
-            turbo_stream.update('invoice_information', partial: 'invoices/invoice_information', locals: { invoice: @invoice }),
-            turbo_stream.toast(t(:updated), position: "right", background: 'linear-gradient(to right, #11998e, #38ef7d)')
+            turbo_stream.update('invoice_information', 
+              Modals::PayInvoice::InvoiceInformation::Component.new(invoice: @invoice)),
+              turbo_stream.toast(t(:updated), position: "right", background: 'linear-gradient(to right, #11998e, #38ef7d)')
         ]
         end
 
