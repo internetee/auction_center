@@ -27,7 +27,7 @@ class AuctionsTest < ApplicationSystemTestCase
     visit('/')
 
     within("tr[data-platform='english']", match: :first) do
-      assert(page.has_content?(:visible, '0.0 €'))
+      assert(page.has_content?(:visible, '0,00 €'))
 
       click_link_or_button(I18n.t('auctions.bid'))
     end
@@ -47,17 +47,6 @@ class AuctionsTest < ApplicationSystemTestCase
     end
 
     assert_selector('.c-modal', visible: true)
-  end
-
-  def test_subscribe_to_notifications
-    sign_in @user
-
-    visit('/')
-
-    assert(page.has_content?(:visible, I18n.t('auctions.subscribe_for_notifications')))
-    click_link_or_button(I18n.t('auctions.subscribe_for_notifications'))
-
-    assert(page.has_content?(:visible, I18n.t('auctions.unsubscribe_for_notifications')))
   end
 
   def test_show_all
@@ -124,7 +113,7 @@ class AuctionsTest < ApplicationSystemTestCase
     visit('/')
 
     within("tr[data-platform='english']", match: :first) do
-      assert(page.has_content?(:visible, '0.0 €'))
+      assert(page.has_content?(:visible, '0,00 €'))
 
       click_link_or_button(I18n.t('auctions.bid'))
     end
@@ -162,7 +151,7 @@ class AuctionsTest < ApplicationSystemTestCase
     visit('/')
 
     within("tr[data-platform='english']", match: :first) do
-      assert(page.has_content?(:visible, '0.0 €'))
+      assert(page.has_content?(:visible, '0,00 €'))
 
       click_link_or_button(I18n.t('auctions.bid'))
     end

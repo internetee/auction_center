@@ -65,9 +65,11 @@ class BillingProfilesController < ApplicationController
 
   # GET /billing_profiles/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/edit
   def edit
-    return unless turbo_frame_request?
-
-    render partial: 'form', locals: { billing_profile: @billing_profile }
+    if turbo_frame_request?
+      render turbo_frame: 'billing_profile_form', partial: 'form', locals: { billing_profile: @billing_profile }
+    else
+      render partial: 'form', locals: { billing_profile: @billing_profile }
+    end
   end
 
   # PUT /billing_profiles/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b

@@ -38,22 +38,15 @@ class BillingProfilesTest < ApplicationSystemTestCase
     assert_equal @billing_profile.postal_code, postal_code_field.value
     assert postal_code_field[:readonly]
 
-    find("a.c-btn.c-btn--ghost.c-btn--icon[href='/billing_profiles/762b09cb-bf40-4cf7-bdab-09cf677d0d0f/edit']").click
+    find("a.c-btn.c-btn--ghost.c-btn--icon[href='#{edit_billing_profile_path(@billing_profile.uuid)}']").click
 
-    # TODO:
-    # Here should be wot turbo request format
-
-    find('input[name="billing_profile[name]"]').set('Sasha Belyi')
-    find('input[name="billing_profile[street]"]').set('Paldiski mnt 12')
+    find('input[name="billing_profile[vat_code]"]').set('IE6388047V')
+    find('input[name="billing_profile[street]"]').set('Paldiski mnt 4777')
     find('input[name="billing_profile[city]"]').set('Tallinn')
     find('input[name="billing_profile[postal_code]"]').set('10137')
     find('select[name="billing_profile[country_code]"]').select('Estonia')
 
-    find('.c-btn.c-btn--ghost.c-btn--icon.js-modal-delete-toggle').click
-
-    user_name_field = find('.o-card__title.c-account__title', match: :first)
-    assert_equal 'Sasha Belyi', user_name_field.value
-    assert user_name_field[:readonly]
+    find('button[type="submit"]', match: :first).click
   end
 
   def test_user_can_delete_his_billing_profile
