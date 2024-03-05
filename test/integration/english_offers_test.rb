@@ -59,9 +59,7 @@ class EnglishOffersIntegrationTest < ActionDispatch::IntegrationTest
       }
     }
 
-    post auction_english_offers_path(auction_uuid: @auction.uuid),
-         params: params,
-         headers: { "HTTP_REFERER" => root_path }
+    post auction_english_offers_path(auction_uuid: @auction.uuid), params: params
 
     assert @auction.offers.empty?
   end

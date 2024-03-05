@@ -40,7 +40,7 @@ class EnglishOffersController < ApplicationController
       if turbo_frame_request?
         render turbo_stream: turbo_stream.action(:redirect, root_path)
       else
-        redirect_to root_path, status: :see_other
+        redirect_to root_path, status: :see_other and return
       end
     end
 
@@ -60,13 +60,13 @@ class EnglishOffersController < ApplicationController
                           @offer.errors.full_messages.join('; ')
                         end
 
-        redirect_to root_path
+        redirect_to root_path and return
       end
     else
       @show_checkbox_recaptcha = true unless @success
       flash.now[:alert] = t('english_offers.form.captcha_verification')
 
-      redirect_to root_path, status: :see_other
+      redirect_to root_path, status: :see_other and return
     end
   end
 
