@@ -1,0 +1,16 @@
+// Entry point for your Sass build
+@use "toastify-js/src/toastify.css";
+@import "datatables/datatables";
+@import url(styles.scss);
+
+@import "generics/normalize";
+@import "settings/settings";
+@import "mixins/mixins";
+
+@import "elements/elements";
+@import "tools/tools";
+@import "objects/objects";
+@import "elements/elements";
+@import "components/components";
+@import "utilities/utilities";
+@import "vanilla-cookieconsent/dist/cookieconsent";

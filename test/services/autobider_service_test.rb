@@ -99,7 +99,7 @@ class AutobiderServiceTest < ActionDispatch::IntegrationTest
   end
 
   def test_if_two_participants_have_autobiders_should_be_sets_penultimate_value
-    autobider_two = Autobider.create(user: @user_two, domain_name: @english_auction.domain_name, cents: 15_000)
+    autobider_two = Autobider.create(user: @user_two, domain_name: @english_auction.domain_name, cents: 15_000, enable: true)
 
     offer = Offer.new
     offer.auction = @english_auction
@@ -127,7 +127,7 @@ class AutobiderServiceTest < ActionDispatch::IntegrationTest
     offer.billing_profile = @user_two.billing_profiles.first
     offer.save!
 
-    autobider_two = Autobider.create(user: @user_two, domain_name: @english_auction.domain_name, cents: 20_000)
+    autobider_two = Autobider.create(user: @user_two, domain_name: @english_auction.domain_name, cents: 20_000, enable: true)
     assert_equal @autobider.cents, autobider_two.cents
 
     @autobider.update(created_at: Time.zone.now - 20.minutes)
@@ -151,7 +151,7 @@ class AutobiderServiceTest < ActionDispatch::IntegrationTest
     offer.billing_profile = @user_two.billing_profiles.first
     offer.save!
 
-    Autobider.create(user: @user_two, domain_name: @english_auction.domain_name, cents: 15_000)
+    Autobider.create(user: @user_two, domain_name: @english_auction.domain_name, cents: 15_000, enable: true)
     # @autobider.update(created_at: autobider_two.created_at - 1.day) # because travel_to in setup method
     @autobider.reload
 
@@ -163,7 +163,7 @@ class AutobiderServiceTest < ActionDispatch::IntegrationTest
   end
 
   def test_no_apply_for_blind_auction
-    autobider_two = Autobider.create(user: @user_two, domain_name: @auction.domain_name, cents: 20_000)
+    autobider_two = Autobider.create(user: @user_two, domain_name: @auction.domain_name, cents: 20_000, enable: true)
     autobider_two.reload
 
     assert_equal @auction.offers.count, 0
@@ -199,11 +199,11 @@ class AutobiderServiceTest < ActionDispatch::IntegrationTest
     assert_equal @english_auction.currently_winning_offer.cents, 299
     assert_equal @english_auction.min_bids_step, 3.09
 
-    Autobider.create(user: @user_two, domain_name: @english_auction.domain_name, cents: 399)
+    Autobider.create(user: @user_two, domain_name: @english_auction.domain_name, cents: 399, enable: true)
     AutobiderService.autobid(@english_auction)
     @english_auction.reload
 
-    Autobider.create(user: @user, domain_name: @english_auction.domain_name, cents: 400)
+    Autobider.create(user: @user, domain_name: @english_auction.domain_name, cents: 400, enable: true)
     AutobiderService.autobid(@english_auction)
     @english_auction.reload
 
@@ -234,11 +234,11 @@ class AutobiderServiceTest < ActionDispatch::IntegrationTest
     assert_equal @english_auction.currently_winning_offer.cents, 319
     assert_equal @english_auction.min_bids_step, 3.29
 
-    Autobider.create(user: @user_two, domain_name: @english_auction.domain_name, cents: 400)
+    Autobider.create(user: @user_two, domain_name: @english_auction.domain_name, cents: 400, enable: true)
     AutobiderService.autobid(@english_auction)
     @english_auction.reload
 
-    Autobider.create(user: @user, domain_name: @english_auction.domain_name, cents: 400)
+    Autobider.create(user: @user, domain_name: @english_auction.domain_name, cents: 400, enable: true)
     AutobiderService.autobid(@english_auction)
     @english_auction.reload
 
@@ -267,7 +267,7 @@ class AutobiderServiceTest < ActionDispatch::IntegrationTest
     @english_auction.update_minimum_bid_step(1.8)
     @english_auction.reload
 
-    Autobider.create(user: @user, domain_name: @english_auction.domain_name, cents: 200)
+    Autobider.create(user: @user, domain_name: @english_auction.domain_name, cents: 200, enable: true)
 
     offer = Offer.new
     offer.auction = @english_auction
@@ -310,8 +310,38 @@ class AutobiderServiceTest < ActionDispatch::IntegrationTest
     assert_equal @english_auction.ends_at, Time.zone.now + 3.minute
     assert_equal @english_auction.slipping_end, 5
 
-    Autobider.create(user: @user_two, domain_name: @english_auction.domain_name, cents: 99_999)
+    Autobider.create(user: @user_two, domain_name: @english_auction.domain_name, cents: 99_999, enable: true)
     AutobiderService.autobid(@english_auction)
+
+    @english_auction.reload
     assert_equal @english_auction.ends_at, Time.zone.now + 5.minute
+  end
+
+  def test_if_autobider_not_enabled_it_cannot_put_bid
+    Autobider.destroy_all
+    Autobider.create(user: @user_two, domain_name: @english_auction.domain_name, cents: 99_999, enable: false)
+
+    assert_equal Autobider.count, 1
+
+    offer = Offer.new
+    offer.auction = @english_auction
+    offer.user = @user
+    offer.cents = 10_000
+    offer.billing_profile = @user.billing_profiles.first
+    offer.save!
+    offer.reload
+    offer.update(updated_at: Time.zone.now - 2.minute)
+    offer.reload
+
+    @english_auction.update_minimum_bid_step(100)
+    @english_auction.reload
+
+    assert_equal @english_auction.currently_winning_offer, offer
+
+    AutobiderService.autobid(@english_auction)
+
+    @english_auction.reload && offer.reload
+
+    assert_equal @english_auction.currently_winning_offer, offer
   end
 end

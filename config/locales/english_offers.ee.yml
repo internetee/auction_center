@@ -7,17 +7,20 @@ et:
     price_is_without_vat: "Pakkumus ei sisalda käibemaksu."
     price_with_wat: Kokku %{price} (+ %{tax}% käibemaks)
     price_with_wat_template: Kokku {price} (+ {tax}% käibemaks)
+    price_in_currency_template: "{price} €"
+    tax_template: "Käibemaks {tax}%"
     already_exists: "Oled sellele oksjonile pakkumuse juba esitanud."
     errors: "seda pakkumust ei saa salvestada"
     total: "Hind käibemaksuga"
     must_be_active: "Oksjon on lõppenud"
     must_be_active_err: "on lõppenud"
-    must_be_higher_than: "peab olema suurem kui %{minimum}"
+    must_be_higher_than: "Hind peab olema suurem kui %{minimum}"
     reminder: |
       NB: Tegemist on pimeoksjoniga, kus pakkumised ei ole nähtavad.
       Domeeninimele võib olla ka teisi pakkujaid.
       Tee pakkumine vastavalt oma hinnangule domeeninime väärtuse kohta.
     timer: Oksjoni lõpuni on jäänud
+    new_bid: "Uus pakkumus"
 
     new:
       title: "Domeeni registreerimise eelisõiguse pakkumus"
@@ -57,6 +60,8 @@ et:
       autobidder_updated: Automaatpakkuja uuendatud
       autobidder_created: Automaatpakkuja edukalt loodud
       banned: "Teil on sellel oksjonil osalemine keelatud"
+      yep: Jah
+      nope: Ei
 
   activerecord:
     attributes:

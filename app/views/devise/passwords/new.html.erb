@@ -1,23 +1,6 @@
-<% content_for :hero do %>
-    <div class="hero green">
-        <h1><%= t(:forgot_your_password) %></h1>
-    </div>
+<%= turbo_frame_tag "modal" do %>
+  <div data-controller='modals--offer-modal' data-modals--offer-modal-open-class='is-open'>
+    <%= render "devise/shared/error_messages", resource: resource %>
+     <%= component 'modals/forgot_password', resource: resource, resource_name: resource_name %>
+  </div>
 <% end %>
-
-<div class="u-container">
-    <div class="u-container margin-block">
-        <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post, class: 'ui form big' }) do |f| %>
-            <%= render "devise/shared/error_messages", resource: resource %>
-
-            <div class="field">
-                <%= f.label :email %><br />
-                <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-            </div>
-            <%= f.submit t('.reset_button'), class: "ui button primary", data: { turbo: false } %>
-        <% end %>
-
-        <br>
-
-        <%= render "devise/shared/links" %>
-    </div>
-</div>

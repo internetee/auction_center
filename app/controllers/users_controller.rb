@@ -1,5 +1,6 @@
 require 'countries'
 
+# rubocop:disable Metrics
 class UsersController < ApplicationController
   include UserNotices
   before_action :authenticate_user!, only: %i[show edit update destroy edit_authwall]
@@ -19,7 +20,7 @@ class UsersController < ApplicationController
 
   # GET /profile/edit
   def edit_authwall
-    redirect_to edit_user_path(current_user.uuid)
+    redirect_to user_path(current_user.uuid)
   end
 
   # GET /profile/toggle_daily_subscription
@@ -27,7 +28,9 @@ class UsersController < ApplicationController
     @user = current_user
     @user.daily_summary = !@user.daily_summary
     @user.save!
-    redirect_to :auctions, notice: t('.subscription_status_toggled_flash')
+
+    flash[:notice] = t('.subscription_status_toggled_flash')
+    render turbo_stream: turbo_stream.replace('flash', partial: 'common/flash', locals: { flash: })
   end
 
   # POST /users/new
@@ -58,29 +61,36 @@ class UsersController < ApplicationController
   end
 
   # GET /users/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/edit
-  def edit; end
+  def edit
+    return unless turbo_frame_request?
+
+    render partial: 'form', locals: { user: @user }
+  end
 
   # PUT /users/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
   def update
-    if valid_password?
-      @user.attributes = params_for_update
-      email_changed = @user.email_changed?
+    respond_to do |format|
+      if valid_password?
+        @user.attributes = params_for_update
+        email_changed = @user.email_changed?
 
-      respond_to do |format|
         if @user.valid?
           @user.save!
 
+          flash[:notice] = notification_for_update(email_changed)
           format.html do
-            redirect_to user_path(@user.uuid), notice: notification_for_update(email_changed)
+            redirect_to user_path(@user.uuid)
           end
           format.json { render :show, status: :ok, location: @user }
         else
-          format.html { render :edit }
+          flash.now[:alert] = @user.errors.full_messages.join(', ')
           format.json { render json: @user.errors, status: :unprocessable_entity }
         end
+      else
+        flash.now[:alert] = t('.incorrect_password')
       end
-    else
-      redirect_to edit_user_path(@user.uuid), notice: t('.incorrect_password')
+
+      format.turbo_stream
     end
   end
 

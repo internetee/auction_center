@@ -1,0 +1,297 @@
+.c-account__title-wrapper {
+    flex-direction: column-reverse;
+
+    @include mq(tablet) {
+        flex-direction: row;
+    }
+}
+
+.c-account__title {
+    margin-top: 0;
+    margin-bottom: rem(24px);
+
+    @include mq(tablet) {
+        margin-bottom: rem(32px);
+    }
+}
+
+.c-account--mainpage {
+    .c-account_editicons {
+        &>svg:first-child {
+            display: none;
+        }
+    }
+}
+
+.c-account_editicons {
+    gap: 8px;
+    height: rem(32px);
+    margin-bottom: rem(24px);
+
+    &>svg {
+        cursor: pointer;
+        opacity: 1;
+        transition: opacity .3s;
+
+        &:nth-last-child(-n + 2) {
+            display: none;
+        }
+
+        &:hover {
+            opacity: .7;
+        }
+    }
+
+    &.is-editable {
+        >svg {
+            &:nth-last-child(-n + 2) {
+                display: inline-flex;
+            }
+
+            &:nth-child(-n + 2) {
+                display: none;
+            }
+        }
+    }
+}
+
+.c-account__input-wrapper {
+    flex-wrap: wrap;
+    gap: 0;
+    max-width: 450px;
+    justify-content: space-between;
+
+    @include mq(tablet) {
+        column-gap: 15px;
+        justify-content: flex-start;
+    }
+
+    .c-account__input {
+        width: 100%;
+        flex-shrink: 0;
+
+        @include mq(mobile) {
+            width: 50%;
+        }
+
+        @include mq(tablet) {
+            width: rem(131px);
+        }
+
+        &:last-child {
+            @include mq(tablet) {
+                width: rem(165px);
+            }
+        }
+    }
+
+    span {
+        font-weight: 500;
+        font-size: rem(14px);
+        line-height: rem(24px);
+        padding: rem(12px 16px);
+
+        &:last-child {
+            padding-right: 0;
+        }
+    }
+
+    .c-account__input--readonly {
+        label {
+            margin-bottom: rem(20px);
+        }
+
+        input {
+            border: 0;
+            padding: 0;
+        }
+    }
+}
+
+.c-account__input--editable {
+
+    input,
+    select {
+        border-color: transparent;
+        transition: border .5s;
+    }
+
+    &.is-editable {
+
+        input,
+        select {
+            border: 1px solid #e2e2e2;
+        }
+    }
+}
+
+.c-account__checkbox {
+    gap: 16px;
+
+    label {
+        margin: 0;
+    }
+}
+
+.c-account .c-account__checkbox label {
+    margin: 0;
+    margin-top: rem(5px);
+}
+
+.c-account__chekboxtitle {
+    color: $black-color;
+    font-size: rem(14px);
+    font-weight: 500;
+    line-height: rem(24px);
+}
+
+.c-acount__link {
+    color: $primary-blue-color;
+    font-size: rem(14px);
+    font-weight: 500;
+    line-height: rem(24px);
+    text-decoration-line: underline;
+    margin-bottom: rem(30px);
+    display: block;
+}
+
+.c-acount__buttons {
+    gap: 5px;
+
+    @include mq(mobile) {
+        gap: 10px;
+    }
+
+    @include mq(tablet) {
+        gap: 24px;
+    }
+}
+
+.c-acount__button {
+    font-size: rem(11px);
+
+    @include mq(mobile) {
+        font-size: rem(14px);
+    }
+}
+
+.c-acount__button--icon {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.c-account__label-explain {
+    display: flex;
+    justify-content: space-between;
+
+    span {
+        font-weight: 500;
+
+        &:first-child {
+            display: block;
+
+            @include mq(tablet) {
+                display: inline-block;
+            }
+        }
+    }
+
+    &>span {
+        color: $grey-400-color;
+        margin-right: rem(16px);
+        display: none;
+
+        @include mq(tablet) {
+            display: block;
+        }
+
+        @include mq(laptop) {
+            display: none;
+        }
+
+        @include mq(menu) {
+            display: block;
+        }
+    }
+}
+
+.c-account__input-explain {
+    color: $grey-400-color;
+    text-align: right;
+    font-size: rem(14px);
+    font-weight: 500;
+    line-height: rem(24px);
+    display: block;
+
+    @include mq(tablet) {
+        display: none;
+    }
+
+    @include mq(laptop) {
+        display: block;
+    }
+
+    @include mq(menu) {
+        display: none;
+    }
+}
+
+.c-account__title--password {
+    margin-bottom: rem(24px);
+
+    @include mq(tablet) {
+        margin-bottom: rem(32px);
+    }
+}
+
+.o-checkbox-text {
+    margin-left: rem(8px);
+
+    @include mq(tablet) {
+        margin-left: rem(16px);
+    }
+
+    white-space: normal;
+
+    &:first-child {
+        margin-bottom: rem(24px);
+
+        @include mq(tablet) {
+            margin-bottom: rem(32px);
+        }
+    }
+
+    a {
+        color: $primary-blue-color;
+        text-decoration: underline;
+    }
+}
+
+
+.c-account__title--confirm {
+    margin-bottom: rem(8px);
+}
+
+.c-account__subtitle {
+    font-size: rem(14px);
+    font-weight: 500;
+    line-height: rem(24px);
+    margin: rem(0 0 16px 0);
+
+    @include mq(tablet) {
+        margin: rem(0 0 24px 0);
+    }
+
+    @include mq(laptop) {
+        margin: rem(0 0 32px 0);
+    }
+}
+
+.c-account__btns {
+    justify-content: center;
+
+    @include mq(laptop) {
+        justify-content: flex-start;
+    }
+}

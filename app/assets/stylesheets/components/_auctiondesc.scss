@@ -1,0 +1,18 @@
+.c-auctiondesc__wrapper{
+    width: 732px;
+    max-width: 100%;
+    p{
+        color: $black-color;
+        font-size: rem(14px);
+        font-weight: 500;
+        line-height: rem(24px);
+        margin: rem(0 0 16px 0);
+        strong{
+            font-weight: 800; 
+        }
+        a{
+            color: $primary-blue-color;
+            text-decoration: underline;
+        }
+    }
+}

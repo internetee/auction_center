@@ -1,6 +1,8 @@
 et:
   unauthorized:
     message: Teil ei ole õigust selle lehe kasutamiseks!
+    manage:
+      user: "Teil ei ole õigust oma profiili muuta. Teil on keelatud osaleda .ee domeenioksjonitel korduvalt tasumata arvete tõttu."
   new: "Uus"
   back: "Tagasi"
   update: "Uuenda"
@@ -25,7 +27,7 @@ et:
   billing: "Arveldamine"
   new_billing_profile: "Uus arve aadress"
 
-  profile: "Kasutaja konto"
+  profile: "Kasutajakonto"
   sign_in: "Sisene"
   sign_out: "Logi välja"
   forgot_your_password: "Unustasid salasõna?"
@@ -34,12 +36,15 @@ et:
   'yes': "Jah"
   'no': "Ei"
 
+  close: "Sulge"
+  reg_no: "Registrikood"
+
   auctions_name: "Oksjonid"
   billing_profiles_name: "Arve aadressid"
   settings_name: "Seadistus"
   users_name: "Kasutajad"
   results_name: "Tulemused"
-  finished_auctions: "Finished auctions"
+  finished_auctions: "Lõppenud oksjonid"
   result_name: "Olek"
   versions_name: "Versioonid"
   offers_name: "Pakkumused"
@@ -48,6 +53,7 @@ et:
   bans_name: "Keelud"
   errors_name: "Vead"
   paid_deposits_name: "Deposiidi maksed"
+  actions_name: "Tegevused"
 
   unsubscribe_mailer_text: "Ei soovi enam saada oksjonil olevate domeenide nimekirja meilile"
 
@@ -126,6 +132,9 @@ et:
 
   errors:
     format: "%{message}"
+    messages:
+      taken: "%{attribute} on juba võetud"
+      invalid: "%{attribute} on vigane"
   activerecord:
     errors:
       models:
@@ -160,10 +169,17 @@ et:
   notification_received: "Notification reveived at %{datetime}"
   notification_unread: Notifcation unread
   notification_read: Notifcation read
-  participant_outbid: Domeeni nimele {domain_name} on uus pakkumine
+  participant_outbid: Domeeni nimele %{domain_name} on uus pakkumine
   participant_outbid_broadcast: Domeeni nimele %{name} on uus pakkumine
   participant_win_auction: Domeeni oksjon domeeninimele %{name} on lõppenud. Palju õnne teie pakkumine oli parim!
   participant_lost_auction: Domeeni oksjon domeeninimele %{name} on lõppenud. Kahjuks ei olnud teie pakkumine võiduks piisav!
   no_any_notifications: Uued teated puuduvad
   webpush_title_outbidded: Üle pakutud
   webpush_title_lost: Kaotasid
+
+  pages:
+    auction:
+      auction_action_button:
+        edit_and_remove_blind_offer:
+          component:
+            confirm_delete: "Oled kindel, et soovid kustutada pimedat pakkumist?"

@@ -76,7 +76,7 @@ class WishlistItem < ApplicationRecord
     domain_extension = Setting.find_by(code: 'wishlist_supported_domain_extensions').retrieve
     return if domain_extension.empty? || domain_extension.include?(domain_name.split('.', 2).last)
 
-    errors.add(:domain_name, :invalid) if errors[:domain_name].blank?
+    errors.add(:domain_name, I18n.t('wishlist_items.invalid_domain_zone')) if errors[:domain_name].blank?
   end
 
   def restrictions_for_active_auctions

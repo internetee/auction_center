@@ -42,7 +42,7 @@ terms_and_conditions_description = <<~TEXT.squish
         forward slash. Default is: "{\"en\":\"https://example.com\", \"et\":\"https://example.et\"}"
 TEXT
 terms_and_conditions_setting = Setting.new(code: :terms_and_conditions_link,
-                                           value: "{\"en\":\"https://example.com\", \"et\":\"https://example.et\"}",
+                                           value: '{"en":"https://example.com", "et":"https://example.et"}',
                                            description: terms_and_conditions_description,
                                            value_format: 'hash')
 terms_and_conditions_setting.save
@@ -90,8 +90,8 @@ registration_english_auction_term_description = <<~TEXT.squish
 TEXT
 
 registration_english_term_setting = Setting.new(code: :registration_english_term, value: '30',
-                                        description: registration_english_auction_term_description,
-                                        value_format: 'integer')
+                                                description: registration_english_auction_term_description,
+                                                value_format: 'integer')
 
 registration_english_term_setting.save
 
@@ -165,12 +165,11 @@ violations_count_regulations_description = <<~TEXT.squish
 TEXT
 
 violations_count_regulations_setting = Setting.new(code: :violations_count_regulations_link,
-                                            value: "{\"en\":\"https://example.com#some_anchor\"}",
-                                            description: violations_count_regulations_description,
-                                            value_format: 'hash')
+                                                   value: '{"en":"https://example.com#some_anchor"}',
+                                                   description: violations_count_regulations_description,
+                                                   value_format: 'hash')
 
 violations_count_regulations_setting.save
-
 
 # Default domain registration reminder time
 domain_registration_description = <<~TEXT.squish
@@ -198,9 +197,24 @@ invoice_issuer_setting = Setting.new(code: :invoice_issuer, value: invoice_issue
 
 invoice_issuer_setting.save
 
-# Default invoice issuer registration no
+# Default issuer address
+invoice_issuer_address_description = <<~TEXT.squish
+  Default issuer address
+TEXT
+
+invoice_issuer_address_value = <<~TEXT.squish
+  Paldiski mnt 80, Tallinn, Harjumaa, 10617 Estonia,
+TEXT
+
+invoice_issuer_address_setting = Setting.new(code: :invoice_issuer_address, value: invoice_issuer_address_value,
+                                             description: invoice_issuer_address_description,
+                                             value_format: 'string')
+
+invoice_issuer_address_setting.save
+
+# Default issuer reg no
 invoice_issuer_reg_no_description = <<~TEXT.squish
-  Invoice issuer registration number
+  Default issuer reg no
 TEXT
 
 invoice_issuer_reg_no_value = <<~TEXT.squish
@@ -214,8 +228,11 @@ invoice_issuer_reg_no_setting = Setting.new(code: :invoice_issuer_reg_no, value:
 invoice_issuer_reg_no_setting.save
 
 # Default invoice issuer VAT no
+invoice_issuer_reg_no_setting.save
+
+# Default issuer vat number
 invoice_issuer_vat_no_description = <<~TEXT.squish
-  Invoice issuer VAT number.
+  Default issuer vat number
 TEXT
 
 invoice_issuer_vat_no_value = <<~TEXT.squish
@@ -303,6 +320,12 @@ invoice_issuer_country_code_setting = Setting.new(code: :invoice_issuer_country_
 
 invoice_issuer_country_code_setting.save
 
+invoice_issuer_vat_no_setting = Setting.new(code: :invoice_issuer_vat_number, value: invoice_issuer_vat_no_value,
+                                            description: invoice_issuer_vat_no_description,
+                                            value_format: 'string')
+
+invoice_issuer_vat_no_setting.save
+
 # Default invoice reminder
 invoice_reminder_description = <<~TEXT.squish
   Number of days before due date on which reminders about unpaid invoices are sent.
@@ -333,8 +356,8 @@ TEXT
 extensions = ['ee', 'pri.ee', 'com.ee', 'med.ee', 'fie.ee']
 
 domain_extensions = Setting.new(code: :wishlist_supported_domain_extensions, value: extensions,
-                                    description: domain_extensions_description,
-                                    value_format: 'array')
+                                description: domain_extensions_description,
+                                value_format: 'array')
 domain_extensions.save
 
 check_api_url_description = <<~TEXT.squish
@@ -373,9 +396,9 @@ TEXT
 check_tara_url_value = 'https://tara-test.ria.ee/oidc/jwks'
 
 check_tara_url = Setting.new(code: :check_tara_url,
-                            value: check_tara_url_value,
-                            description: check_tara_url_description,
-                            value_format: 'string')
+                             value: check_tara_url_value,
+                             description: check_tara_url_description,
+                             value_format: 'string')
 
 check_tara_url.save
 
@@ -495,3 +518,25 @@ estonian_vat_rate_setting = Setting.new(code: :estonian_vat_rate,
                                                        description: estonian_vat_rate_description,
                                                        value_format: 'decimal')
 estonian_vat_rate_setting.save!
+
+# Default organization phone
+default_organization_phone_description = <<~TEXT.squish
+  Default organization phone
+TEXT
+default_organization_phone_value = '+372 727 1000'
+default_organization_phone_setting = Setting.new(code: :organization_phone,
+                                                 value: default_organization_phone_value,
+                                                 description: default_organization_phone_description,
+                                                 value_format: 'string')
+default_organization_phone_setting.save
+
+# Default organization phone
+contact_organization_email_description = <<~TEXT.squish
+  Default organization email
+TEXT
+contact_organization_email_value = 'info@internet.ee'
+contact_organization_email_setting = Setting.new(code: :contact_organization_email,
+                                                 value: contact_organization_email_value,
+                                                 description: contact_organization_email_description,
+                                                 value_format: 'string')
+contact_organization_email_setting.save

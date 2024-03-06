@@ -1,0 +1,23 @@
+<% content_for :hero do %>
+    <div class="hero green">
+        <h1><%= t('.title') %></h1>
+        <div class="monospace"><%= @offer.auction.domain_name %></div>
+    </div>
+<% end %>
+
+<div class="u-container">
+    <div class="u-container margin-block">
+        <% if @offer.errors.any? %>
+            <div class="ui message">
+                <div class="header">
+                    <%= t(:errors_name) %>
+                </div>
+                <ul id="errors">
+                    <%= @offer.errors.full_messages.first %>
+                </ul>
+            </div>
+        <% end %>
+
+        <%= render 'form', offer: @offer, url: offer_path(@offer.uuid) %>
+    </div>
+</div>

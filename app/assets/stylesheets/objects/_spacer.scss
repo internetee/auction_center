@@ -1,0 +1,11 @@
+.o-spacer {
+
+}
+
+.o-spacer--header {
+  margin-top: 0;
+
+  @include mq(desktop) {
+    margin-top: rem(60px);
+  }
+}

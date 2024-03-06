@@ -176,7 +176,7 @@ class OffersIntegrationTest < ActionDispatch::IntegrationTest
          params: params,
          headers: {}
 
-    assert_equal response.status, 422
+    assert_equal response.status, 303
 
     @auction.reload
     assert @auction.offers.empty?

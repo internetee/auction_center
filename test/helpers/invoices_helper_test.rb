@@ -5,23 +5,12 @@ class InvoicesHelperTest < ActionView::TestCase
   def setup; end
 
   def test_completed_payment_order_response_is_shown_properly
-    response = paid_order_banklink_response
-    assert_equal 'OK', fetch_errors_from_response(channel: 'SEB',
-                                                  response: response.as_json)
-
     response = paid_everypay_banklink_respose
     assert_equal 'OK', fetch_errors_from_response(channel: 'EveryPay',
                                                   response: response.as_json)
   end
 
   def test_shows_errors_for_failed_payment_order
-    response = paid_order_banklink_response.as_json
-    response['VK_SERVICE'] = '1911'
-
-    assert_includes(fetch_errors_from_response(channel: 'Swedbank',
-                                               response: response),
-                    "Bank responded with code #{response['VK_SERVICE']} (failed)")
-
     response = paid_everypay_banklink_respose.as_json
     response['transaction_result'] = 'failed'
     response['processing_errors'] = [{ code: 123, message: 'Stolen card; Lost card' }].as_json

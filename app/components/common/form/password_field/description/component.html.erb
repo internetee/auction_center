@@ -1,0 +1,7 @@
+<label class="c-account__label-explain" for="<%= "#{@user.class.name.underscore}_password" %>">
+  <div>
+    <%= t('users.password')  %>
+    <%= tag.span t('users.form.you_can_leave_blank') if @user.persisted? || (@user.signed_in_with_identity_document? && @user.encrypted_password.blank?) %>
+  </div>
+  <%= tag.span t('users.form.password_requirements', minimum: @minimum_password_length) if @minimum_password_length  %>
+</label>

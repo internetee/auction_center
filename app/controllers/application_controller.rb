@@ -1,16 +1,20 @@
 class ApplicationController < ActionController::Base
   include Pagy::Backend
 
+  helper_method :turbo_frame_request?
+
   protect_from_forgery with: :exception
   before_action :set_locale
+  before_action :set_notifications
 
   content_security_policy do |policy|
     policy.style_src :self, 'www.gstatic.com', :unsafe_inline
   end
 
-  rescue_from CanCan::AccessDenied do |_exception|
-    flash[:alert] = I18n.t('unauthorized.message')
-    redirect_to root_url
+  rescue_from CanCan::AccessDenied do |exception|
+    flash[:alert] = exception
+
+    render turbo_stream: turbo_stream.replace('flash', partial: 'common/flash', locals: { flash: })
   end
 
   def set_locale
@@ -35,5 +39,14 @@ class ApplicationController < ActionController::Base
     else
       update_params
     end
+  end
+
+  def after_sign_in_path_for(_resource)
+    root_path
+  end
+
+  def set_notifications
+    # don't change the name, it's used in the header and can be conflict with notification variable in notifications page
+    @notifications_for_header = current_user&.notifications&.unread&.order(created_at: :desc)&.limit(5)
   end
 end

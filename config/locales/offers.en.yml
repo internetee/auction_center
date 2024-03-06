@@ -9,12 +9,15 @@ en:
     price_with_wat: Total %{price} (+ %{tax}% VAT)
     already_exists: "You already have an offer for this auction."
     must_be_active: "must be active"
-    must_be_higher_than: "must be higher than %{minimum}"
+    must_be_higher_than: "Price must be higher than %{minimum}"
     reminder: |
       NB: This is a blind auction where bids are not public.
       There might be other bids.
       Make an offer according to the value the domain name holds to you.
     out_of_range: Your bid is denied - maximum bid size exceeded!
+    change_bid: Change bid
+    delete_title: "You are removing your offer"
+    overview: "Overview"
 
     new:
       title: "Offer for the reservation of the domain name"

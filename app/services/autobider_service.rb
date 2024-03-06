@@ -29,7 +29,7 @@ class AutobiderService
   def filter_autobider_for_banned_users(autobiders:)
     collection_ids = autobiders.select { |autobider| restrict_for_banned_user(autobider: autobider) }.pluck(:id)
 
-    Autobider.where(id: collection_ids)
+    Autobider.where(id: collection_ids, enable: true)
   end
 
   def reject_autobiders_which_bid_equal_to_auction_current_price(filtered_autobiders:, auction:)

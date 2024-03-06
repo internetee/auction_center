@@ -29,7 +29,7 @@ class SettingTest < ActiveSupport::TestCase
     new_subject = @subject.dup
 
     assert_not(new_subject.valid?)
-    assert_equal(['has already been taken'], new_subject.errors[:code])
+    assert_equal([I18n.t('errors.messages.taken', attribute: 'Code')], new_subject.errors[:code])
   end
 
   def test_terms_and_conditions_parsing_and_multilocale

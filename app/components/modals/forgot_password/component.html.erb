@@ -1,0 +1,38 @@
+<div class="c-modal-overlay c-modal--fp js-modal-fp" data-modals--offer-modal-target='modal'>
+  <div class="c-modal c-modal--bill">
+    <div class="c-modal__scroll">
+      <div class="c-modal__scroll__content">
+        <button class="c-modal__close-btn js-close-modal" data-action='modals--offer-modal#close'>
+          <span class="o-close-icon"></span>
+        </button>
+        <div class="c-modal__header">
+          <div class="c-modal__header__title">
+            <span class="o-fp-icon"></span>
+            <span><%= t('profile') %></span>
+          </div>
+          <div class="c-modal__header__subject">
+            <span class="c-modal__header__subject__title"><%= t(:forgot_your_password) %></span>
+          </div>
+          <div class="c-modal__header__desc">
+            <span><%= t('devise.passwords.new.reset_button') %></span>
+          </div>
+        </div>
+        <div class="c-modal__main">
+          <%= form_for(@resource, as: @resource_name, url: password_path(@resource_name), html: { method: :post, class: 'c-fp__form' }, data: { turbo: false }) do |f| %>
+            <div class="c-fp__input">
+              <%= f.label :email %><br />
+              <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+            </div>
+            <div class="c-fp__btns-wrapper u-flex u-align-end u-content-sp">
+              <div class="c-login__links u-flex u-flex-col u-align-start u-content-sp">
+                <%= link_to t('devise.shared.links.log_in'), new_session_path(@resource_name), class: 'c-login__remind-link', data: { turbo: false } %>
+                <%= link_to t('devise.shared.links.didnt_receive_confirmation_instructions'), '#', class: 'c-login__remind-link', data: { turbo: false } %>
+              </div>
+              <button type='submit' class="c-btn c-btn--blue c-fp__btn" data-turbo="false"><%= t('devise.passwords.new.reset_button') %></button>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

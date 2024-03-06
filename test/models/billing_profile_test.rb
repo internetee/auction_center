@@ -44,7 +44,7 @@ class BillingProfileTest < ActiveSupport::TestCase
     duplicate = @billing_profile.dup
 
     assert_not(duplicate.valid?)
-    assert(duplicate.errors[:vat_code].include? 'has already been taken')
+    assert(duplicate.errors[:vat_code].include? I18n.t('errors.messages.taken', attribute: 'Vat code'))
 
     private_person_profile = billing_profiles(:private_person)
 

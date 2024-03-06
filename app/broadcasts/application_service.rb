@@ -16,7 +16,7 @@ class ApplicationService
   private
 
   def broadcast_later(channel, template, **params)
-    Turbo::StreamsChannel.broadcast_render_later_to(
+    Turbo::StreamsChannel.broadcast_render_to(
       channel,
       template: template,
       **params

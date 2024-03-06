@@ -11,8 +11,6 @@ export default class extends Controller {
     if (this.dateValue) {
       this.endTime = new Date(this.dateValue).getTime();
 
-      // console.log(this.dateValue);
-
       this.update();
       this.timer = setInterval(() => {
         this.update();

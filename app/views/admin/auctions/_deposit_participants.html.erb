@@ -1,65 +1,75 @@
-<div class="margin-block">
+<div style='c-table c-table--sortable'>
   <h2><%= t('auctions.show.user_list') %></h2>
-  <div class="content">
-    <%= form_with url: admin_auction_path(@auction), 
-                  method: :get,
-                  data: { controller: 'debounce',
-                          debounce_target: 'form',
-                          turbo_action: "advance",
-                          turbo_frame: "results",
-                          action: 'input->debounce#search' 
-                          }, class: 'ui form' do |form| %>
-    <div class="field">
-      <%= form.search_field :search_string, value: params[:search_string], placeholder: 'Search by user name, email and phone number', class: 'prompt' %>
-    </div>
-    <%= form.hidden_field :auction_id, value: auction.id %>
-    <div class="field" style="display: flex; justify-content: space-evenly; width: 100%;" data-controller="checkbox_toggle">
-        <div class="ui checkbox">
-          <%= form.check_box :with_deposit_participants, { data: { name: 'first_checkbox' } }, 1, nil %>
-          <label>Show only those who have made a deposit</label>
-        </div>
+  <%= form_with url: admin_auction_path(@auction),  method: :get,
+                  data: { controller: 'form--debounce', form__debounce_target: 'form',
+                          turbo_action: "advance", turbo_frame: "results",
+                          action: 'input->form--debounce#search' } do |form| %>
+    <div class="c-table__filters">
+      <%= form.hidden_field :auction_id, value: auction.id %>
+      
+      <%= form.search_field :search_string, value: params[:search_string], placeholder: 'Input user name, email or phone number', class: 'c-table__search__input js-table-search-dt' %>
+      <div>
+        <label>Show only those who have made a deposit</label>
 
-        <div class="ui checkbox">
+        <%# TODO: Refactor this nested elements and move to the components %>
+        <label class="o-checkbox" for="with_deposit_participants">
+          <%= form.check_box :with_deposit_participants, { data: { name: 'first_checkbox' } }, 1, nil %>
+          <div class="o-checkbox__slider round"></div>
+        </label>
+      </div>
+      <div>
+        <label>Show only those who haven't made a deposit</label>
+
+        <%# TODO: Refactor this nested elements and move to the components %>
+        <label class="o-checkbox" for="without_deposit_participants">
           <%= form.check_box :without_deposit_participants, { data: { name: 'second_checkbox' } }, 1, nil %>
-          <label>Show only those who haven't made a deposit</label>
-        </div>
+          <div class="o-checkbox__slider round"></div>
+        </label>
+      </div>
     </div>
-    <% end %>
-  </div>
+  <% end %>
 
   <div class="content">
     <%= form_with url: apply_auction_participants_admin_auctions_path do |form| %>
       <%= form.hidden_field :auction_uuid, value: auction.uuid %>
-      <div class="buttons">
-        <%= form.submit t('auctions.show.apply'), class: 'ui button primary', style: 'margin-bottom: 20px;' %>
+      <div class="c-table__filters">
+        <div class="c-table__filters__btns" style='display: flex !important; align-items: center !important; justify-content: space-between !important; width: 100%;'>
+          <%= form.submit t('auctions.show.apply'), class: 'c-btn c-btn--blue', style: 'padding: 0 30px;' %>
+        </div>
       </div>
 
+      <% header_collection = [ { column: nil, caption: t('offers.price'), options: { class: "" } },
+                               { column: nil, caption: 'Email', options: { class: "" } },
+                               { column: nil, caption: t('auctions.show.allow'), options: { class: "" } },] %>
+
       <%= turbo_frame_tag "results" do %>
-        <table class="ui table" id="auctions-offers-table">
-          <thead>
-            <tr>
-              <th scope="col"><%= t('offers.price') %></th>
-              <th scope="col">Email</th>
-              <th scope="col" style="text-align: center"><%= t('auctions.show.allow') %></th>
-            </tr>
-            <tbody id="offers-table-body">
-              
+        <!-- Options attributes are used as table attributes -->
+        <%= component 'common/table', header_collection:, options: { class: 'js-table-dt' } do %>
+          <!-- "The body of the table also needs to be in the component block, so the component wraps it with the necessary tags." -->
+          <%= tag.tbody id: "auctions-table-body", class: 'contents' do %>
+            <%- if @users.present? %>
               <% @users.each do |user| %>
                 <%= render partial: 'deposit_participant', locals: { user: user, form: form, auction: auction } %>
               <% end %>
-            </tbody>
-          </table>
-
-          <div class="column" style="margin-top:10px; text-align: center;">
-            <% if @pagy.pages > 1 %>
-                <div class="footer">
-                    <%== pagy_nav(@pagy) %>
-                </div>
-            <% end %>
-          </div>
-
+            <%- else %>
+              <tr>
+                <td colspan="3" style="text-align: center; font-weight: bold; font-size: 1.2rem; padding: 3rem 0 !important;"><%= t(:no_offers) %></td>
+              </tr>
+            <%- end %>
+          <% end %>
         <% end %>
       <% end %>
 
-    </div>
+      <%= turbo_frame_tag "results" do %>
+        <div class="column" style="margin-top:10px; text-align: center;">
+          <% if @pagy.pages > 1 %>
+            <div class="footer">
+              <%== pagy_nav(@pagy) %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+      <%= component 'common/pagy', pagy: @pagy %>
+    <% end %>
   </div>
+</div>

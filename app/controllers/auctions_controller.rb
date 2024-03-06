@@ -19,13 +19,6 @@ class AuctionsController < ApplicationController
     render plain: ''
   end
 
-  # GET /auctions/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
-  def show
-    @auction = Auction.with_user_offers(current_user)
-                      .accessible_by(current_ability)
-                      .find_by!(uuid: params[:uuid])
-  end
-
   private
 
   def fetch_auctions_list
@@ -37,7 +30,7 @@ class AuctionsController < ApplicationController
   end
 
   def should_sort_auctions?
-    params[:sort].blank? && params[:direction].blank?
+    params[:sort_by].blank? && params[:sort_direction].blank?
   end
 
   def per_page_count

@@ -1,6 +1,8 @@
 en:
   unauthorized:
     message: You are not authorized to access this page.
+    manage:
+      user: "You are not authorized to manage profile. You are banned from participating in .ee domain auctions due to multiple overdue invoices."
   new: "New"
   back: "Back"
   update: "Update"
@@ -35,6 +37,9 @@ en:
   'yes': "Yes"
   'no': "No"
 
+  close: Close
+  reg_no: "Registration code"
+
   auctions_name: "Auctions"
   billing_profiles_name: "Billing Profiles"
   settings_name: "Settings"
@@ -50,13 +55,14 @@ en:
   errors_name: "Errors"
   statistics_name: "Statistics"
   paid_deposits_name: "Paid deposits"
+  actions_name: "Actions"
 
   unsubscribe_mailer_text: "I do not wish to receive daily summary about currently auctioned domains any more"
 
   notification_received: "Notification reveived at %{datetime}"
   notification_unread: Notifcation unread
   notification_read: Notifcation read
-  participant_outbid: "The auction for {domain_name} has new bid"
+  participant_outbid: "The auction for %{domain_name} has new bid"
   participant_outbid_broadcast: "The auction for %{name} has new bid"
   participant_win_auction: Domain auction for %{name} is finished. Congratulations your bid was the highes!
   participant_lost_auction: Domain auction for %{name} is finished. Unfortunately your bid was not enough to win!
@@ -161,6 +167,9 @@ en:
 
   errors:
     format: "%{message}"
+    messages:
+      taken: "%{attribute} is already taken"
+      invalid: "%{attribute} is invalid"
   activerecord:
     errors:
       models:
@@ -192,3 +201,9 @@ en:
       passed: Passed
       failed: Failed
       
+  pages:
+    auction:
+      auction_action_button:
+        edit_and_remove_blind_offer:
+          component:
+            confirm_delete: "Are you sure you want to delete this blind offer?"

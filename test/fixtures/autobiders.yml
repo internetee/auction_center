@@ -8,5 +8,6 @@ one:
   user: participant
   domain_name: english_auction.test
   cents: 20_000
+  enable: true
 two: {}
 # column: value

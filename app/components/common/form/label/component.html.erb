@@ -1,0 +1,7 @@
+<% if content.present? %>
+    <%= @form.label @attribute, **@options do %>
+      <%= content %>
+    <% end %>
+<% else %>
+  <%= @form.label @attribute, @title, **@options %>
+<% end %>

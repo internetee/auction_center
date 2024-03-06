@@ -6,7 +6,8 @@ class AdminBulkActionService
   end
 
   def self.apply_for_english_auction(auction_elements:)
-    admin_handler = new(auction_elements: auction_elements)
+    admin_handler = new(auction_elements:)
+
     admin_handler.apply_english_auction
   end
 
@@ -30,9 +31,10 @@ class AdminBulkActionService
         wishlists = WishlistItem.where(domain_name: auction.domain_name)
         wishlists.each do |wishlist|
           Autobider.create(
-            user_id: wishlist.user_id, 
-            domain_name: wishlist.domain_name, 
-            cents: wishlist.cents
+            user_id: wishlist.user_id,
+            domain_name: wishlist.domain_name,
+            cents: wishlist.cents,
+            enable: true
           )
         end
 

@@ -121,6 +121,11 @@ GEM
     crack (0.4.5)
       rexml
     crass (1.0.6)
+    cssbundling-rails (1.2.0)
+      railties (>= 6.0.0)
+    cuprite (0.14.3)
+      capybara (~> 3.0)
+      ferrum (~> 0.13.0)
     data_migrate (9.1.0)
       activerecord (>= 6.0)
       railties (>= 6.0)
@@ -150,10 +155,17 @@ GEM
     faraday-multipart (1.0.4)
       multipart-post (~> 2)
     faraday-net_http (3.0.2)
+    ferrum (0.13)
+      addressable (~> 2.5)
+      concurrent-ruby (~> 1.1)
+      webrick (~> 1.7)
+      websocket-driver (>= 0.6, < 0.8)
     ffi (1.15.5)
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
       rake
+    freezolite (0.3.0)
+      require-hooks (~> 0.1)
     globalid (1.1.0)
       activesupport (>= 5.0)
     hashdiff (1.0.1)
@@ -163,6 +175,7 @@ GEM
       rails (>= 6.0.0)
       stimulus-rails
       turbo-rails
+    htmlbeautifier (1.4.2)
     http (5.1.1)
       addressable (~> 2.8)
       http-cookie (~> 1.0)
@@ -179,6 +192,8 @@ GEM
     jbuilder (2.11.5)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
+    jsbundling-rails (1.1.2)
+      railties (>= 6.0.0)
     json (2.6.3)
     json-jwt (1.16.3)
       activesupport (>= 4.2)
@@ -188,6 +203,10 @@ GEM
       faraday-follow_redirects
     jwt (2.7.1)
     language_server-protocol (3.17.0.3)
+    launchy (2.5.2)
+      addressable (~> 2.8)
+    letter_opener (1.8.1)
+      launchy (>= 2.2, < 3)
     listen (3.8.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -267,11 +286,17 @@ GEM
       activerecord (>= 5.2)
       activesupport (>= 5.2)
     prism (0.19.0)
+    prettier_print (1.2.1)
+    propshaft (0.7.0)
+      actionpack (>= 7.0.0)
+      activesupport (>= 7.0.0)
+      rack
+      railties (>= 7.0.0)
     pry (0.14.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
     public_suffix (5.0.1)
-    puma (6.4.0)
+    puma (5.6.7)
       nio4r (~> 2.0)
     racc (1.7.1)
     rack (2.2.7)
@@ -282,8 +307,6 @@ GEM
       json-jwt (>= 1.11.0)
       rack (>= 2.1.0)
     rack-protection (3.0.6)
-      rack
-    rack-proxy (0.7.6)
       rack
     rack-test (2.1.0)
       rack (>= 1.3)
@@ -332,6 +355,7 @@ GEM
     regexp_parser (2.8.1)
     request_store (1.5.1)
       rack (>= 1.4)
+    require-hooks (0.1.0)
     responders (3.1.0)
       actionpack (>= 5.2)
       railties (>= 5.2)
@@ -370,20 +394,22 @@ GEM
       language_server-protocol (~> 3.17.0)
       prism (>= 0.19.0, < 0.20)
       sorbet-runtime (>= 0.5.5685)
+    ruby-lsp (0.7.6)
+      language_server-protocol (~> 3.17.0)
+      sorbet-runtime
+      syntax_tree (>= 6.1.1, < 7)
+    ruby-lsp-rails (0.2.2)
+      rails (>= 6.0)
+      ruby-lsp (>= 0.6.2, < 0.8.0)
+      sorbet-runtime (>= 0.5.9897)
     ruby-openai (4.2.0)
       faraday (>= 1)
       faraday-multipart (>= 1)
     ruby-progressbar (1.13.0)
     ruby2_keywords (0.0.5)
-    rubyzip (2.3.2)
     scenic (1.7.0)
       activerecord (>= 4.0.0)
       railties (>= 4.0.0)
-    selenium-webdriver (4.10.0)
-      rexml (~> 3.2, >= 3.2.5)
-      rubyzip (>= 1.2.2, < 3.0)
-      websocket (~> 1.0)
-    semantic_range (3.0.0)
     simplecov (0.17.1)
       docile (~> 1.1)
       json (>= 1.8, < 3)
@@ -404,6 +430,8 @@ GEM
       activesupport (>= 3)
       attr_required (>= 0.0.5)
       httpclient (>= 2.4)
+    syntax_tree (6.1.1)
+      prettier_print (>= 1.2.0)
     thor (1.2.2)
     timeout (0.4.0)
     turbo-rails (1.4.0)
@@ -425,6 +453,10 @@ GEM
       public_suffix
     valvat (1.4.0)
       rexml (>= 3.2, < 4.0)
+    view_component (3.4.0)
+      activesupport (>= 5.2.0, < 8.0)
+      concurrent-ruby (~> 1.0)
+      method_source (~> 1.0)
     warden (1.2.9)
       rack (>= 2.0.9)
     web-console (4.2.0)
@@ -439,15 +471,10 @@ GEM
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
-    webpacker (6.0.0.rc.6)
-      activesupport (>= 5.2)
-      rack-proxy (>= 0.6.1)
-      railties (>= 5.2)
-      semantic_range (>= 2.3.0)
     webpush (1.1.0)
       hkdf (~> 0.2)
       jwt (~> 2.0)
-    websocket (1.2.9)
+    webrick (1.8.1)
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
@@ -466,8 +493,10 @@ DEPENDENCIES
   bullet
   byebug
   cancancan
-  capybara (>= 2.15)
+  capybara (~> 3.39.2)
   chartkick
+  cssbundling-rails
+  cuprite
   data_migrate
   delayed_job (~> 4.1.0)
   delayed_job_active_record
@@ -475,10 +504,14 @@ DEPENDENCIES
   directo!
   faker
   faraday
+  freezolite
   hotwire-rails (~> 0.1.3)
+  htmlbeautifier
   i18n-debug
   jbuilder (~> 2.11)
+  jsbundling-rails
   jwt
+  letter_opener (~> 1.8)
   listen (>= 3.0.5, < 3.9)
   lograge
   mimemagic (~> 0.4.3)
@@ -491,8 +524,9 @@ DEPENDENCIES
   pdfkit
   pg (>= 0.18, < 2.0)
   pg_search
+  propshaft
   pry
-  puma (~> 6.4.0)
+  puma (~> 5.6.7)
   rails (>= 6.0.3.5)
   rails-i18n
   recaptcha
@@ -504,19 +538,18 @@ DEPENDENCIES
   rubocop-shopify
   rubocop-thread_safety
   ruby-lsp
+  ruby-lsp-rails
   ruby-openai
   scenic
-  selenium-webdriver
   simplecov (~> 0.10, < 0.18)
   simpleidn
   skylight
-  sprockets (~> 4.0)
   spy
   turbo-rails
   valvat
+  view_component
   web-console (>= 3.3.0)
   webmock
-  webpacker (~> 6.0.0.rc.5)
   webpush
 
 BUNDLED WITH

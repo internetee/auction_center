@@ -1,0 +1,46 @@
+<div class="c-modal-overlay js-modal-edit" data-modals--offer-modal-target='modal'>
+    <div class="c-modal">
+        <div class="c-modal__scroll">
+            <div class="c-modal__scroll__content">
+                <button class="c-modal__close-btn js-close-modal" data-action='modals--offer-modal#close'>
+                    <span class="o-close-icon"></span>
+                </button>
+                <div class="c-modal__header">
+                    <div class="c-modal__header__title">
+                        <span class="o-edit-icon--green"></span>
+                        <span><%= t('results.show.title') %></span>
+                    </div>
+                    <div class="c-modal__header__subject">
+                        <span class="c-modal__header__subject__title"><%= @result.auction.domain_name %></span>
+                        <span class="o-po-icon o-io-icon--bg-orange"></span>
+                    </div>
+                    <div class="c-modal__header__desc">
+                        <span><%= t('results.status') %></span> <span class="c-badge c-badge--yellow"><%= @result.status.humanize %></span>
+                    </div>
+                </div>
+                <div class="c-modal__main">
+                    <div class="">
+                        <label><%= t('results.registration_code') %></label>
+                        <input class="u-bg-silver-gradient" name="" value="<%= registration_code_or_information %>" disabled>
+                        <span class="c-modal__input-desc u-text-right u-mt-8"><%= t('results.show.description') %></span>
+                    </div>
+                    <div class="u-flex u-flex-wrap u-flex-gap-50-l u-flex-gap-24 u-mt-8">
+                        <div>
+                            <p class="u-mb-8"><%= t('results.pay_invoice_before') %></p>
+                            <strong><%= pay_invoice_before %></strong>
+                        </div>
+                        <div>
+                            <p class="u-mb-8"><%= t('results.register_before') %></p>
+                            <strong><%= @result.registration_due_date %></strong>
+                        </div>
+                    </div>
+                </div>
+                <div class="c-modal__footer">
+                    <div class="c-modal__footer__col">
+                        <button class="c-btn c-btn--ghost" data-action='modals--offer-modal#close'><%= t('close') %></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

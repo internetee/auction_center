@@ -1,5 +1,7 @@
 class Offer < ApplicationRecord
   include ActionView::RecordIdentifier
+  include Broadcast
+  include Searchable
 
   belongs_to :user, optional: true
   belongs_to :auction, optional: false
@@ -16,9 +18,6 @@ class Offer < ApplicationRecord
   validate :validate_accessebly_to_set_bid, on: :create
 
   DEFAULT_PRICE_VALUE = 1
-
-  after_create_commit :broadcast_replace_auction
-  after_update_commit :broadcast_replace_auction
 
   attr_accessor :skip_autobider, :skip_if_wishlist_case, :skip_validation
 

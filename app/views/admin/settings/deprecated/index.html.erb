@@ -1,0 +1,32 @@
+<% content_for :hero do %>
+    <div class="hero orange">
+        <h1><%= t('.title') %></h1>
+    </div>
+<% end %>
+
+<div class="u-container">
+    <div class="margin-block">
+            <table class="ui table unstackable fixed" id="settings-table">
+                <thead>
+                    <tr>
+                        <th scope="col"><%= t('settings.code') %></th>
+                        <th scope="col"><%= t('settings.description') %></th>
+                        <th scope="col"><%= t('settings.value') %></th>
+                    </tr>
+                </thead>
+
+                <tbody id="settings-table-body">
+                    <% @settings.each do |setting| %>
+                        <tr class="settings-table-row">
+                            <td class="setting-code">
+                                <%=link_to setting.code, admin_setting_path(setting) %>
+                            </td>
+                            <td><%= setting.description %></td>
+                            <td><%= formatted_setting_value(setting.value) %></td>
+                        </tr>
+                    <% end %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
