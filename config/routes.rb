@@ -11,6 +11,7 @@ Rails.application.routes.draw do
       resource :stream_name, only: :show
       resource :offers, only: :create
       resource :autobiders, only: :create
+      resource :tara_auth_session, only: :create
       resource :auctions, only: :show
       resource :profiles, only: %i[update create] do
         scope module: :profiles do

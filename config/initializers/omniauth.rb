@@ -9,7 +9,8 @@ OmniAuth.config.logger = Rails.logger
 # Block GET requests to avoid exposing self to CVE-2015-9284
 OmniAuth.config.allowed_request_methods = [:post]
 
-signing_keys = AuctionCenter::Application.config.customization.dig(:tara, :keys).to_json
+# signing_keys = AuctionCenter::Application.config.customization.dig(:tara, :keys).to_json
+signing_keys = AuctionCenter::Application.config.customization.dig(:tara, :tara_keys).to_json
 issuer = AuctionCenter::Application.config.customization.dig(:tara, :issuer)
 host = AuctionCenter::Application.config.customization.dig(:tara, :host)
 identifier = AuctionCenter::Application.config.customization.dig(:tara, :identifier)
@@ -32,11 +33,9 @@ Rails.application.config.middleware.use OmniAuth::Builder do
     send_nonce: true,
     issuer: issuer,
     discovery: discovery,
-
     client_options: {
       scheme: 'https',
       host: host,
-
       authorization_endpoint: auth_endpoint || '/oidc/authorize',
       token_endpoint: token_endpoint || '/oidc/token',
       userinfo_endpoint: nil, # Not implemented
