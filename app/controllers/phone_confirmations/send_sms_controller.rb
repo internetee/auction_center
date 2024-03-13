@@ -7,7 +7,8 @@ class PhoneConfirmations::SendSmsController < ApplicationController
   recaptcha_action 'send_sms'
 
   def create
-    if current_user.allow_to_send_sms_again? && recaptcha_valid
+    # && recaptcha_valid
+    if current_user.allow_to_send_sms_again? 
       PhoneConfirmationJob.perform_now(@phone_confirmation.user.id)
 
       flash[:notice] = I18n.t('phone_confirmations.create.sms_sent')
