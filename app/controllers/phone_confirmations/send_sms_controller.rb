@@ -7,7 +7,6 @@ class PhoneConfirmations::SendSmsController < ApplicationController
   recaptcha_action 'send_sms'
 
   def create
-    # && recaptcha_valid
     if current_user.allow_to_send_sms_again? 
       PhoneConfirmationJob.perform_now(@phone_confirmation.user.id)
 
@@ -15,8 +14,6 @@ class PhoneConfirmations::SendSmsController < ApplicationController
     else
       flash[:alert] = I18n.t('phone_confirmations.create.sms_not_sent')
     end
-
-    @show_checkbox_recaptcha = true unless @success
 
     redirect_to new_user_phone_confirmation_path(@phone_confirmation.user.uuid), status: :see_other
   end
