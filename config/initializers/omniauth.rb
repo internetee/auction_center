@@ -11,6 +11,7 @@ OmniAuth.config.allowed_request_methods = [:get, :post]
 
 # signing_keys = AuctionCenter::Application.config.customization.dig(:tara, :keys).to_json
 # signing_keys = AuctionCenter::Application.config.customization.dig(:tara, :tara_keys).to_json
+
 issuer = AuctionCenter::Application.config.customization.dig(:tara, :issuer)
 host = AuctionCenter::Application.config.customization.dig(:tara, :host)
 identifier = AuctionCenter::Application.config.customization.dig(:tara, :identifier)

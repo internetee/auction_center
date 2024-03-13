@@ -4,13 +4,9 @@ class ApplicationController < ActionController::Base
   helper_method :turbo_frame_request?
 
   protect_from_forgery with: :exception
-<<<<<<< HEAD
   before_action :clear_flash, :store_user_location!, if: :storable_location?
   before_action :set_locale
-=======
-  before_action :set_locale, :clear_flash, :store_user_location!, if: :storable_location?
 
->>>>>>> 544562fb (updated)
   before_action :notifications_for_header
 
   content_security_policy do |policy|
