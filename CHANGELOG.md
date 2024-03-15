@@ -1,3 +1,6 @@
+12.03.2024
+* Removed captcha check from phone confirmation process https://github.com/internetee/auction_center/pull/1230
+
 19.02.2024
 * Fixed SMS spamming issue https://github.com/internetee/auction_center/issues/1218
 
