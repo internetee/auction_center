@@ -94,8 +94,9 @@ GEM
     amazing_print (1.5.0)
     ast (2.4.2)
     attr_required (1.0.1)
+    base64 (0.2.0)
     bcrypt (3.1.19)
-    bindata (2.4.15)
+    bindata (2.5.0)
     bindex (0.8.1)
     bootsnap (1.16.0)
       msgpack (~> 1.2)
@@ -180,9 +181,10 @@ GEM
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
     json (2.6.3)
-    json-jwt (1.16.3)
+    json-jwt (1.16.6)
       activesupport (>= 4.2)
       aes_key_wrap
+      base64
       bindata
       faraday (~> 2.0)
       faraday-follow_redirects
