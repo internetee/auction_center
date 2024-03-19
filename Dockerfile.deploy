@@ -15,7 +15,7 @@ ENV TRUSTED_PROXY_IP "$TRUSTED_PROXY_IP"
 
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4EB27DB2A3B88B8B
 RUN apt-get update
-RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
+RUN curl -sL https://deb.nodesource.com/setup_18.x | bash -
 RUN apt-get install -y nodejs
 
 RUN npm install -g yarn@latest
