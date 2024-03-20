@@ -87,6 +87,8 @@
               <%= component 'common/form/dropdown_input', form: f, **billing_profile_dropdown_properties %>
             </div>
 
+            <%= component 'captcha', captcha_required: @captcha_required, show_checkbox_recaptcha: @show_checkbox_recaptcha, action: 'english_offer' %>
+
             <%= link_to t('new_billing_profile'), billing_profiles_path, class: 'c-modal__link c-modal__link--first-col', target: '_top' %>
           <% end %>
         </div>
@@ -99,7 +101,7 @@
           </div>
         </div>
 
-        <%= component 'captcha', captcha_required: @captcha_required, show_checkbox_recaptcha: @show_checkbox_recaptcha, action: 'english_offer' %>
+        <%#= component 'captcha', captcha_required: @captcha_required, show_checkbox_recaptcha: @show_checkbox_recaptcha, action: 'english_offer' %>
 
       </div>
     </div>
