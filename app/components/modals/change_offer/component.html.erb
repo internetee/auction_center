@@ -45,6 +45,8 @@
                 <%= component 'common/form/number_field', form: f, **number_field_properties %>
               </div>
 
+              <%= component 'captcha', captcha_required: @captcha_required, show_checkbox_recaptcha: @show_checkbox_recaptcha, action: 'autobidder' %>
+
               <div class="c-modal__col">
                 <div class="u-flex u-flex-wrap u-flex-gap-12">
                   <%= component 'common/form/checkboxes/rounded_checkbox', form: f, **autobider_checkbox_properties %>

@@ -39,12 +39,17 @@
             <div class="c-modal__main__info c-modal__main__info--orange u-align-center u-content-center u-flex-col">
               <div><span><%= t('offers.new.deposit_enable') %></span>
                 <h3 class="u-h2 u-mt-0 u-mb-30"><%= "#{number_with_precision(@auction.deposit, precision: 2)} €" %></h3>
-                  <%= button_to t('offers.new.make_deposit'), english_offer_deposit_auction_path(uuid: @auction.uuid, current_user: @current_user),
+                  <%#= button_to t('offers.new.make_deposit'), english_offer_deposit_auction_path(uuid: @auction.uuid, current_user: @current_user),
                                     class: "c-btn c-btn-white c-btn--fs", method: :post, data: { turbo: false } %>
+
+                  <%= form_with url: english_offer_deposit_auction_path(uuid: @auction.uuid, current_user: @current_user), data: { turbo: false} do |f| %>
+                    <%= component 'captcha', captcha_required: @captcha_required, show_checkbox_recaptcha: @show_checkbox_recaptcha, action: 'english_offer' %>
+
+                    <%= f.submit t('offers.new.make_deposit'), class: "c-btn c-btn-white c-btn--fs" %>
+                  <% end %>
                 </div>
               </div>
             </div>
-            <%= component 'captcha', captcha_required: @captcha_required, show_checkbox_recaptcha: @show_checkbox_recaptcha, action: 'english_offer' %>
           </div>
         </div>
       </div>

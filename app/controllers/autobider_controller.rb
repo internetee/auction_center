@@ -2,7 +2,9 @@ class AutobiderController < ApplicationController
   before_action :authenticate_user!
   before_action :set_auction, only: %i[new edit update create]
   before_action :allow_any_action_with_autobider
+  
   include RecaptchaValidatable
+  recaptcha_action 'autobidder'
 
   def update
     @autobider = Autobider.find_by(uuid: params[:uuid])
@@ -17,6 +19,7 @@ class AutobiderController < ApplicationController
         flash[:alert] = I18n.t('something_went_wrong')
       end
     else
+      @show_checkbox_recaptcha = true unless @success
       flash[:alert] = t('english_offers.form.captcha_verification')
     end
 
@@ -49,6 +52,7 @@ class AutobiderController < ApplicationController
         flash[:alert] = t('something_went_wrong')
       end
     else
+      @show_checkbox_recaptcha = true unless @success
       flash[:alert] = t('english_offers.form.captcha_verification')
     end
 
