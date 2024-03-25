@@ -31,7 +31,7 @@ config.navigational_formats = ['*/*', :html, :turbo_stream]
 
 config.jwt do |jwt|
   jwt.secret = AuctionCenter::Application.config.customization[:jwt_secret]
-  jwt.dispatch_requests = [ ['POST', %r{^/sessions/sign_in$}] ]
+  jwt.dispatch_requests = [ ['POST', %r{^/sessions/sign_in$}], ['POST', %r{^/api/v1/tara_auth_session}] ]
   jwt.revocation_requests = [ ['DELETE', %r{^/sessions/sign_out$}] ]
   jwt.expiration_time = 30.minutes.to_i
 end
