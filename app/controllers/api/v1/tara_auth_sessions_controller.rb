@@ -18,7 +18,7 @@ module Api
 
         if @user.present?
           sign_in(User, @user)
-          render json: { message: 'User signed in', user: @user }, status: :ok
+          render json: { message: 'User signed in', user: @user, token: current_token }, status: :ok
         else
           render json: { error: 'User not found' }, status: :not_found
         end
@@ -29,6 +29,10 @@ module Api
       def check_for_permission
         # TODO:
         true
+      end
+
+      def current_token
+        request.env['warden-jwt_auth.token']
       end
     end
   end
