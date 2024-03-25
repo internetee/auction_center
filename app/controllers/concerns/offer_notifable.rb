@@ -18,7 +18,8 @@ module OfferNotifable
 
   def prepend_data(participant:, auction:, offer:, flash:)
     I18n.with_locale(participant.locale || I18n.default_locale) do
-      OfferNotification.with(offer:).deliver_later(participant)
+      OfferNotification.with(offer:).deliver_later(participant) if offer.present?
+
       flash[:notice] = I18n.t('.participant_outbid', domain_name: auction.domain_name)
       broadcast_outbid_to_notifications(participant:, flash:)
     end
