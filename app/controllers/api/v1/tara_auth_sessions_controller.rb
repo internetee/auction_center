@@ -1,19 +1,25 @@
 module Api
   module V1
     class TaraAuthSessionsController < ApplicationController
-      before_action :check_for_permission, only: %i[create]
-
       respond_to :json
 
       skip_before_action :verify_authenticity_token
 
       def create
+        received_hmac = params[:token]
+        message = Rails.configuration.customization[:mobile_secret_word]
+
+        unless valid_hmac?(received_hmac, message)
+          render json: { error: 'Invalid HMAC' }, status: :unauthorized
+          return
+        end
+
         identity = params[:identity_code]
         first_name = params[:first_name]
         last_name = params[:last_name]
         country_code = params[:country_code]
 
-        @user = User.find_by(identity_code: identity, country_code: country_code)
+        @user = User.find_by(identity_code: identity, country_code:)
         @user.update(given_names: first_name, surname: last_name) if @user.present?
 
         if @user.present?
@@ -26,9 +32,11 @@ module Api
 
       private
 
-      def check_for_permission
-        # TODO:
-        true
+      def valid_hmac?(received_hmac, message)
+        secret_key = Rails.configuration.customization[:mobile_secret_key]
+        digest = OpenSSL::Digest.new('sha256')
+        hmac = OpenSSL::HMAC.digest(digest, secret_key, message)
+        Base64.strict_encode64(hmac) == received_hmac
       end
 
       def current_token

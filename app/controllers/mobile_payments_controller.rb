@@ -7,5 +7,17 @@ class MobilePaymentsController < ApplicationController
     redirect_to mobile_payments_path
   end
 
+  def deposit_callback
+    EisBilling::SendCallbackService.call(reference_number: linkpay_params[:payment_reference])
+
+    redirect_to mobile_payments_path
+  end
+
   def index; end
+
+  private
+
+  def linkpay_params
+    params.permit(:order_reference, :payment_reference)
+  end
 end
