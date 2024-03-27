@@ -86,3 +86,5 @@ gem 'pagy', '~> 6.0'
 gem 'faker'
 
 gem 'noticed', '~> 1.6'
+gem 'devise-jwt'
+gem 'jsonapi-serializer'

@@ -137,9 +137,21 @@ GEM
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
+    devise-jwt (0.11.0)
+      devise (~> 4.0)
+      warden-jwt_auth (~> 0.8)
     docile (1.4.0)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
+    dry-auto_inject (1.0.1)
+      dry-core (~> 1.0)
+      zeitwerk (~> 2.6)
+    dry-configurable (1.1.0)
+      dry-core (~> 1.0, < 2)
+      zeitwerk (~> 2.6)
+    dry-core (1.0.1)
+      concurrent-ruby (~> 1.0)
+      zeitwerk (~> 2.6)
     erubi (1.12.0)
     faker (3.2.0)
       i18n (>= 1.8.11, < 2)
@@ -188,6 +200,8 @@ GEM
       bindata
       faraday (~> 2.0)
       faraday-follow_redirects
+    jsonapi-serializer (2.2.0)
+      activesupport (>= 4.2)
     jwt (2.7.1)
     language_server-protocol (3.17.0.3)
     listen (3.8.0)
@@ -429,6 +443,11 @@ GEM
       rexml (>= 3.2, < 4.0)
     warden (1.2.9)
       rack (>= 2.0.9)
+    warden-jwt_auth (0.8.0)
+      dry-auto_inject (>= 0.8, < 2)
+      dry-configurable (>= 0.13, < 2)
+      jwt (~> 2.1)
+      warden (~> 1.2)
     web-console (4.2.0)
       actionview (>= 6.0.0)
       activemodel (>= 6.0.0)
@@ -474,12 +493,14 @@ DEPENDENCIES
   delayed_job (~> 4.1.0)
   delayed_job_active_record
   devise
+  devise-jwt
   directo!
   faker
   faraday
   hotwire-rails (~> 0.1.3)
   i18n-debug
   jbuilder (~> 2.11)
+  jsonapi-serializer
   jwt
   listen (>= 3.0.5, < 3.9)
   lograge
