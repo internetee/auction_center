@@ -18,12 +18,29 @@ module Api
                        cancelled_payable_invoices: @cancelled_payable_invoices, cancelled_expired_invoices: @cancelled_expired_invoices, deposit_paid: @deposit_paid }
       end
 
+      def pay_deposit
+        auction = Auction.find_by(uuid: params[:id])
+
+        render json: { errors: 'Auction not found' } and return unless auction
+
+        description = "auction_deposit #{auction.domain_name}, user_uuid #{current_user.uuid}, " \
+          "user_email #{current_user.email}"
+
+        response = EisBilling::PayDepositService.call(amount: auction.deposit,
+                                                      customer_url: mobile_payments_deposit_callback_url, description:)
+        if response.result?
+          render json: { oneoff_redirect_link: response.instance['oneoff_redirect_link'] }
+        else
+          render json: { errors: response.errors }
+        end
+      end
+
       private
 
       def invoices_list_by_status(status)
         Invoice.accessible_by(current_ability)
                .where(user_id: current_user.id)
-               .where(status: status)
+               .where(status:)
                .order(due_date: :desc)
       end
     end

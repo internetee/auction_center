@@ -22,6 +22,8 @@ default: &default
   auction_filter_available: false
   ended_auctions_link_available: false
   jwt_secret: ''
+  mobile_secret_key: ''
+  mobile_secret_word: ''
 
   mailer:
     # Host to which links from emails should redirect to
