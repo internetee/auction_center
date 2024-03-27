@@ -19,6 +19,8 @@ Rails.application.routes.draw do
         end
       end
       resources :invoices, only: :index
+      post 'pay_deposit', to: 'invoices#pay_deposit'
+
       resources :billing_profiles, only: %i[index update create destroy]
     end
   end
@@ -143,6 +145,7 @@ Rails.application.routes.draw do
   match '/linkpay_deposit_callback', via: %i[get], to: 'linkpay#deposit_callback', as: :deposit_callback
 
   match '/mobile_payments_callback', via: %i[get], to: 'mobile_payments#callback', as: :mobile_payments_callback
+  match '/mobile_payments_deposit_callback', via: %i[get], to: 'mobile_payments#deposit_callback', as: :mobile_payments_deposit_callback
   get '/mobile_payments', to: 'mobile_payments#index', as: :mobile_payments
 
   resource :locale, only: :update
