@@ -6,28 +6,29 @@ module Api
 
       skip_before_action :verify_authenticity_token
 
+      def index
+        offers = Offer.includes(:auction)
+                  .includes(:result)
+                  .where(user_id: current_user)
+                  .order('auctions.ends_at DESC')
+
+        Rails.logger.info '---- offers ----'
+        Rails.logger.info(offers.inspect)
+        Rails.logger.info '----'
+
+        # price with tax
+        render json: offers.as_json(include: [:auction, :billing_profile])
+      end
+
       # rubocop:disable Metrics/AbcSize
       # rubocop:disable Metrics/MethodLength
       def create
-        Rails.logger.info('----')
-        Rails.logger.info(params)
-        Rails.logger.info('----')
-
-        #{"bid"=>{"price"=>320.0, "auction_id"=>"2a893210-f1f1-4be8-9d78-b793f1fa0ec6", "billing_profile_id"=>"23"}, 
-        #"controller"=>"api/v1/offers", "action"=>"create", "offer"=>{}}
-
         auction = Auction.find_by(uuid: params[:bid][:auction_id])
         return if auction.nil?
 
         billing_profile = current_user.billing_profiles.find_by(id: params[:bid][:billing_profile_id])
 
         offer = auction.offer_from_user(current_user.id)
-
-        Rails.logger.info('----')
-        Rails.logger.info(current_user.inspect)
-        Rails.logger.info(billing_profile.inspect)
-        Rails.logger.info(offer.inspect)
-        Rails.logger.info('----')
 
         if offer.nil?
           offer = Offer.new(
