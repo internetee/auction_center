@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resource :stream_name, only: :show
-      resource :offers, only: :create
+      resources :offers, only: [:create, :index]
       resource :autobiders, only: :create
       resource :tara_auth_session, only: :create
       resource :auctions, only: :show
