@@ -5,7 +5,8 @@ module OfferNotifable
     participant_id = last_higher_bidder(auction)
     participant = User.find(participant_id)
 
-    OfferNotification.with(offer: offer).deliver_later(participant)
+    OfferNotification.with(offer: offer).deliver_later(participant) if offer.present?
+
     flash[:notice] = "websocket_domain_name, #{auction.domain_name}"
     broadcast_outbid_to_notifications(participant: participant, flash: flash)
   end
