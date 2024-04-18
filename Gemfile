@@ -80,7 +80,7 @@ gem 'redis', '~> 5.0'
 gem 'pg_search'
 
 # For pagination
-gem 'pagy', '~> 6.0'
+gem 'pagy', '~> 7.0'
 
 # For mock username
 gem 'faker'
