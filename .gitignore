@@ -55,4 +55,5 @@ yarn-debug.log*
 /public/assets/builds
 public/assets/builds/*
 app/assets/builds/*
+
 .DS_Store
