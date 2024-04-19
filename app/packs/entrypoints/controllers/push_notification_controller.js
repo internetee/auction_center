@@ -7,6 +7,8 @@ export default class extends Controller {
   };
 
   connect() {
+    console.log('Push Notification Controller connected');
+
     if (!this.userLoginValue) return;
 
     let subscribed = localStorage.getItem('block-webpush-modal');

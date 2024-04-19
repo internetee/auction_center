@@ -7,6 +7,7 @@
     <%= csp_meta_tag %>
     <%= javascript_pack_tag 'application', 'data-turbo-track': 'reload' %>
     <%= stylesheet_pack_tag 'application', "data-turbo-track": 'reload' %>
+    
     <style>
       table thead {
           background-color: black !important;
@@ -36,6 +37,7 @@
       }
     }
     </style>
+
   </head>
   <body data-controller="push-notification"
         data-push-notification-vapid-public-value="<%= Rails.configuration.customization[:vapid_public] %>"
@@ -74,5 +76,6 @@
       <%= render 'common/footer' %>
       <%= render 'google_analytics', tracking_id: google_analytics.tracking_id if google_analytics.enabled? && show_google_analytics? %>
     </div>
+
   </body>
 </html>

@@ -8,8 +8,8 @@
 // appropriate layout file, like app/views/layouts/application.html.erb
 
 // Default Rails javascript and turbolinks
-import Rails from 'rails-ujs';
-Rails.start();
+// import Rails from 'rails-ujs';
+// Rails.start();
 
 import "chartkick/chart.js"
 import "highcharts"

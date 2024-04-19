@@ -23,37 +23,39 @@ export default class extends Controller {
   setupPushNotifications() {
     const applicationServerKey = this.urlBase64ToUint8Array(this.vapidPublicValue);
 
-    navigator.serviceWorker.register("/service-worker.js", {scope: "./" }).then((registration) => {
-      registration.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: applicationServerKey
-      }).then((subscription) => {
+    if (window.isSecureContext) {
+      navigator.serviceWorker.register("/service-worker.js", {scope: "./" }).then((registration) => {
+        registration.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: applicationServerKey
+        }).then((subscription) => {
 
-        const endpoint = subscription.endpoint;
-        const p256dh = btoa(String.fromCharCode.apply(null, new Uint8Array(subscription.getKey('p256dh'))));
-        const auth = btoa(String.fromCharCode.apply(null, new Uint8Array(subscription.getKey('auth'))));
+          const endpoint = subscription.endpoint;
+          const p256dh = btoa(String.fromCharCode.apply(null, new Uint8Array(subscription.getKey('p256dh'))));
+          const auth = btoa(String.fromCharCode.apply(null, new Uint8Array(subscription.getKey('auth'))));
 
-        fetch('/push_subscriptions', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-          },
-          body: JSON.stringify({
-            subscription: {
-              endpoint: endpoint,
-              p256dh: p256dh,
-              auth: auth
-            }
-          })
+          fetch('/push_subscriptions', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({
+              subscription: {
+                endpoint: endpoint,
+                p256dh: p256dh,
+                auth: auth
+              }
+            })
+          });
+
+          localStorage.setItem('block-webpush-modal', 'true');
+          document.querySelector('.webpush-modal').style.display = 'none';
+          this.buttonTarget.style.disabled = true;
+          this.buttonTarget.classList.add('disabled');
         });
-
-        localStorage.setItem('block-webpush-modal', 'true');
-        document.querySelector('.webpush-modal').style.display = 'none';
-        this.buttonTarget.style.disabled = true;
-        this.buttonTarget.classList.add('disabled');
       });
-    });
+    }
   }
 
 }
