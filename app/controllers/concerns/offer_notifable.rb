@@ -5,10 +5,10 @@ module OfferNotifable
     participant_id = last_higher_bidder(auction)
     participant = User.find(participant_id)
 
-    OfferNotification.with(offer: offer).deliver_later(participant) if offer.present?
+    OfferNotification.with(offer:).deliver_later(participant) unless offer.blank?
 
     flash[:notice] = "websocket_domain_name, #{auction.domain_name}"
-    broadcast_outbid_to_notifications(participant: participant, flash: flash)
+    broadcast_outbid_to_notifications(participant:, flash:)
   end
 
   def last_higher_bidder(auction)
@@ -17,7 +17,7 @@ module OfferNotifable
 
   def broadcast_outbid_to_notifications(participant:, flash:)
     Turbo::StreamsChannel.broadcast_update_to(
-      [participant, :flash], target: 'flash-notice', partial: 'common/flash', locals: { flash: flash}
+      [participant, :flash], target: 'flash-notice', partial: 'common/flash', locals: { flash: }
     )
   end
 end

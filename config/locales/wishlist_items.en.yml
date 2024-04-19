@@ -31,4 +31,4 @@ en:
           attributes:
             domain_name:
               taken: "%{attribute} is already in your wishlist"
-              invalid: "%{attribute} is not a valid domain name"
+              invalid: "%{attribute} is not valid"

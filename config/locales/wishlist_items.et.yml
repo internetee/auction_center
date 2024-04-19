@@ -30,4 +30,4 @@ et:
           attributes:
             domain_name:
               taken: "%{attribute} on juba nimekirjas"
-              invalid: "%{attribute} pole sobiv domeeninimi"
+              invalid: "%{attribute} pole sobiv"

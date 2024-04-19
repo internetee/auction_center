@@ -30,6 +30,11 @@ export default class extends Controller {
 
   parseResponse(data) {
     let divElement = document.createElement("span");
+    
+    while (this.validationBoxTarget.firstChild) {
+      this.validationBoxTarget.removeChild(this.validationBoxTarget.firstChild);
+    }
+
     this.validationBoxTarget.style.display = "block";
 
     if (data.status == "wrong") {
