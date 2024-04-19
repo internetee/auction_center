@@ -51,8 +51,7 @@
     </div>
 </div>
 
-<%# data-controller="wishlist" %>
-<div class="u-container" data-controller="wishlist">
+<div class="u-container" data-controller="wishlist" data-wishlist-url-value=<%= wishlists_domain_validities_path %>>
     <div class="margin-block">
         <div class="grid one column">
             <h2><%= t('.new_item') %></h2>
@@ -71,10 +70,10 @@
 
                 <div class="field">
                     <%= f.label :domain_name, t('auctions.domain_name') %>
-                    <%= f.text_field :domain_name, data: { action: 'input->wishlist#domainCheck'} %>
+                    <%= f.text_field :domain_name, data: { action: 'input->wishlist#domainCheck', wishlist_target: "input" } %>
                 </div>
 
-                <div class="field" style="border: 1px solid; padding: 10px; display: none;" id="validation-box">
+                <div class="field" style="border: 1px solid; padding: 10px; display: none;" data-wishlist-target="validationBox">
                 </div>
 
                 <div class="buttons">
