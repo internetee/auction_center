@@ -9,7 +9,7 @@
     <%= stylesheet_pack_tag 'application', "data-turbo-track": 'reload' %>
     <%= javascript_pack_tag 'users', 'data-turbolinks-track': 'reload' %>
 
-    <% if Rails.env.production? %>
+    <% if Rails.env.production? || Rails.env.staging? %>
       <%= javascript_include_tag "https://www.googletagmanager.com/gtag/js?id=#{tracking_id}" %>
       <meta name="google-analytics-id" content=<%= tracking_id %>>
     <% end %>
