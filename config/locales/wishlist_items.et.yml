@@ -1,5 +1,6 @@
 et:
   wishlist_items:
+    suitable_domain: "Domeeninimi sobib soovide nimekirja"
     too_many_items: "Soovide nimekiri suuruse piirang on ületatud"
     in_progress: "Oksjon juba mängus"
 
@@ -28,4 +29,5 @@ et:
         wishlist_item:
           attributes:
             domain_name:
-              taken: "on juba nimekirjas"
+              taken: "%{attribute} on juba nimekirjas"
+              invalid: "%{attribute} pole sobiv domeeninimi"

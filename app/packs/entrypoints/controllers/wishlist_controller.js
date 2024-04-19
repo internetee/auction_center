@@ -2,12 +2,9 @@ import { Controller } from "@hotwired/stimulus"
 import Rails from 'rails-ujs';
 
 export default class extends Controller {
-  connect() {
-  }
-
   domainCheck() {
     let wishlistInputField = document.querySelector('#wishlist_item_domain_name');
-    let url = `/domain_wishlist_availability?domain_name=${wishlistInputField.value}`;
+    let url = `/wishlists/domain_validities?domain_name=${wishlistInputField.value}`;
 
     let validationBox = document.querySelector('#validation-box');
     validationBox.style.display = "none";
@@ -38,7 +35,7 @@ export default class extends Controller {
       validationBox.style.color = 'red'; 
       validationBox.style.borderColor = 'red'; 
     } else {
-      divElement.textContent = `Suitable domain`;
+      divElement.textContent = data.message;
       validationBox.style.color = 'green'; 
       validationBox.style.borderColor = 'green'; 
     }

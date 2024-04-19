@@ -26,7 +26,6 @@ Rails.application.routes.draw do
     end
   end
 
-  get 'domain_wishlist_availability', to: 'wishlist_items#domain_wishlist_availability', as: :domain_wishlist_availability
 
   resource :push_subscriptions, only: %i[create destroy]
   # delete 'push_subscriptions', to: 'push_subscriptions#destroy', on: :collection
@@ -132,7 +131,11 @@ Rails.application.routes.draw do
     end
   end
 
+  namespace :wishlists do
+    resource :domain_validities, only: :show
+  end
   resources :wishlist_items, param: :uuid, only: %i[index edit create destroy update]
+
   resources :autobider, param: :uuid, only: [:create, :update, :edit, :new]
 
   mount OkComputer::Engine, at: '/healthcheck', as: :healthcheck

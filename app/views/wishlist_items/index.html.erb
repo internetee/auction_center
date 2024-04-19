@@ -52,7 +52,7 @@
 </div>
 
 <%# data-controller="wishlist" %>
-<div class="u-container">
+<div class="u-container" data-controller="wishlist">
     <div class="margin-block">
         <div class="grid one column">
             <h2><%= t('.new_item') %></h2>
@@ -103,8 +103,8 @@
                             <td><%= index + 1 %></td>
                             <td><%= wishlist_item.domain_name %></td>
                             <td>
-                                <%= link_to t(:delete), wishlist_item_path(wishlist_item.uuid),
-                                 method: :delete, data: { confirm: t(:are_you_sure) },
+                                <%= button_to t(:delete), wishlist_item_path(wishlist_item.uuid),
+                                 method: :delete, form: { data: { 'turbo-confirm': 'Are you sure?' } },
                                 class: "ui button red", target: '_top' %>
                             </td>
                             <td data-turbo="true">

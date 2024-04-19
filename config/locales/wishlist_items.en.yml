@@ -1,5 +1,6 @@
 en:
   wishlist_items:
+    suitable_domain: "Domain is suitable for wishlist"
     too_many_items: "Wishlist has too many items"
     in_progress: "Auction already in game"
 
@@ -29,4 +30,5 @@ en:
         wishlist_item:
           attributes:
             domain_name:
-              taken: "is already in your wishlist"
+              taken: "%{attribute} is already in your wishlist"
+              invalid: "%{attribute} is not a valid domain name"
