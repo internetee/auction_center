@@ -6,10 +6,10 @@ module ApplicationHelper
     Rails.configuration.customization['application_name']
   end
 
-  # def google_analytics
-  #   tracking_id = Rails.configuration.customization.dig(:google_analytics, :tracking_id)
-  #   GoogleAnalytics.new(tracking_id: tracking_id)
-  # end
+  def google_analytics
+    tracking_id = Rails.configuration.customization.dig(:google_analytics, :tracking_id)
+    GoogleAnalytics.new(tracking_id: tracking_id)
+  end
 
   def tracking_id
     Rails.configuration.customization.dig(:google_analytics, :tracking_id)

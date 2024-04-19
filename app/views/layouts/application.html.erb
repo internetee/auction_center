@@ -3,13 +3,13 @@
   <head>
     <title><%= t('common.header.auction_portal') %></title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= javascript_pack_tag 'application', 'data-turbo-track': 'reload' %>
     <%= stylesheet_pack_tag 'application', "data-turbo-track": 'reload' %>
-    <%= javascript_pack_tag 'users', 'data-turbolinks-track': 'reload' %>
 
-    <% if Rails.env.production? || Rails.env.staging? %>
+    <% if (Rails.env.production? || Rails.env.staging?) && google_analytics.enabled? && show_google_analytics? %>
       <%= javascript_include_tag "https://www.googletagmanager.com/gtag/js?id=#{tracking_id}" %>
       <meta name="google-analytics-id" content=<%= tracking_id %>>
     <% end %>
@@ -51,9 +51,10 @@
 
       <%= render 'common/webpush_modal' if user_signed_in? %>
 
-    <div class="app-wrapper">
+    <div class="app-wrapper" data-turbo-permanent>
 
       <%= render 'common/header' %>
+      
       <main class="main-layout">
   
         <%= yield :hero %>
@@ -78,7 +79,6 @@
 
       <%= render 'common/cookies' if show_cookie_dialog? %>
       <%= render 'common/footer' %>
-      <%#= render 'google_analytics', tracking_id: google_analytics.tracking_id if google_analytics.enabled? && show_google_analytics? %>
     </div>
 
   </body>

@@ -1,4 +1,3 @@
-// app/javascript/controllers/debounce_controller.js
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
@@ -20,13 +19,15 @@ export default class extends Controller {
       });
     }
 
-    showMenu() {
+    showNotificationMenu(_event) {
+0
       // const mobileBox = document.querySelector('.dropdown-custom-mobile');
 
       if (this.menuTarget.style.visibility === 'hidden') {
         this.menuTarget.style.visibility = 'visible';
         this.menuTarget.style.zIndex = 999999;
-      } else {
+      } 
+      else {
         this.menuTarget.style.visibility = 'hidden';
       }
     }

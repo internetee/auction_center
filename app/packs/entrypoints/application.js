@@ -14,8 +14,7 @@
 import "chartkick/chart.js"
 import "highcharts"
 import "@hotwired/turbo-rails"
-import "./controllers"
-// import "controllers"
+
 import './stylesheets/application.scss'
 import './stylesheets/transition.css'
 // UI modules
@@ -33,6 +32,8 @@ import 'typeface-raleway';
 import '../entrypoints/users.js';
 import '../entrypoints/wishlist_items.js'
 import '../entrypoints/payment_orders.js'
+
+import "./controllers"
 
 $(document).on('turbo:load', function() {
     $('.ui.dropdown').dropdown();
