@@ -7,6 +7,12 @@
     <%= csp_meta_tag %>
     <%= javascript_pack_tag 'application', 'data-turbo-track': 'reload' %>
     <%= stylesheet_pack_tag 'application', "data-turbo-track": 'reload' %>
+    <%= javascript_pack_tag 'users', 'data-turbolinks-track': 'reload' %>
+
+    <% if Rails.env.production? %>
+      <%= javascript_include_tag "https://www.googletagmanager.com/gtag/js?id=#{tracking_id}" %>
+      <meta name="google-analytics-id" content=<%= tracking_id %>>
+    <% end %>
     
     <style>
       table thead {
@@ -46,11 +52,9 @@
       <%= render 'common/webpush_modal' if user_signed_in? %>
 
     <div class="app-wrapper">
+
       <%= render 'common/header' %>
       <main class="main-layout">
-
-
-
   
         <%= yield :hero %>
     
@@ -74,7 +78,7 @@
 
       <%= render 'common/cookies' if show_cookie_dialog? %>
       <%= render 'common/footer' %>
-      <%= render 'google_analytics', tracking_id: google_analytics.tracking_id if google_analytics.enabled? && show_google_analytics? %>
+      <%#= render 'google_analytics', tracking_id: google_analytics.tracking_id if google_analytics.enabled? && show_google_analytics? %>
     </div>
 
   </body>

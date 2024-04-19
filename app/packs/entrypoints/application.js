@@ -51,6 +51,16 @@ $(document).on('turbo:load', function() {
             $('.main-header').removeClass('u-fixed');
         }
     });
+
+    let googleIdAnalytics = document.querySelector("meta[name='google-analytics-id']")?.content;
+
+    if (googleIdAnalytics) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+  
+      gtag('config', googleIdAnalytics);
+    }
 });
 
 $(document).ready(function(){
