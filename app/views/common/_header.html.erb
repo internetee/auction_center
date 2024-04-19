@@ -64,8 +64,8 @@
       <div>
         <%= turbo_frame_tag :notification do %>
           <%= turbo_stream_from current_user, :notifications %>
-          <%= turbo_frame_tag "notifications", src: notifications_path %>
-        <% end if current_user%>
+          <%= turbo_frame_tag "notifications", src: notifications_path, loading: :lazy %>
+        <% end if current_user %>
       </div>
 
       <button type="button" class="btn btn-menu" data-menu-toggle="">
