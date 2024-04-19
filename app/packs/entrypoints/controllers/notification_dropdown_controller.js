@@ -2,33 +2,18 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
     static targets = ["menu"]
+    static classes = ["dropdown", "bell"]
 
     connect() {
-      const box = document.querySelector('.dropdown-custom');
-
-      if (box === null || box === 'undefined') return;
-
       document.addEventListener("click", function(event) {
-        if (!event.target.closest('.dropdown-custom') && !event.target.closest('.bell-broadcast')) {
-          box.style.visibility = 'hidden';
-        }
-
-        if (!event.target.closest('.dropdown-custom-mobile') && !event.target.closest('.bell-broadcast')) {
-          box.style.visibility = 'hidden';
+        if (!event.target.closest(this.dropdownClass) && !event.target.closest(this.bellClass) && this.hasMenuTarget) {
+          this.menuTarget.style.visibility = 'hidden';
         }
       });
     }
 
     showNotificationMenu(_event) {
-0
-      // const mobileBox = document.querySelector('.dropdown-custom-mobile');
-
-      if (this.menuTarget.style.visibility === 'hidden') {
-        this.menuTarget.style.visibility = 'visible';
-        this.menuTarget.style.zIndex = 999999;
-      } 
-      else {
-        this.menuTarget.style.visibility = 'hidden';
-      }
+      this.menuTarget.style.visibility = (this.menuTarget.style.visibility === 'hidden' ? 'visible' : 'hidden');
+      this.menuTarget.style.zIndex = (this.menuTarget.style.visibility === 'visible' ? 999999 : 0);
     }
 }
