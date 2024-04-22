@@ -12,14 +12,14 @@ class OfferNotification < Noticed::Base
   def webpush_format
     {
       title: I18n.t('.webpush_title_outbidded'),
-      body: I18n.t('.participant_outbid_broadcast', name: params[:offer].auction.domain_name),
+      body: I18n.t('.participant_outbid_broadcast', name: params[:offer]&.auction&.domain_name),
       icon: 'https://example.com/icon.png'
     }
   end
 
   def message
-    # return 'No data' if params[:offer].blank?
+    return if params[:offer].blank?
 
-    I18n.t('.participant_outbid_broadcast', name: params[:offer].auction.domain_name)
+    I18n.t('.participant_outbid_broadcast', name: params[:offer]&.auction&.domain_name) if params.is_a?(Hash)
   end
 end
