@@ -1,4 +1,4 @@
-<%= turbo_frame_tag "notifications" do %>
+
   <div style='position: relative; display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer;' 
        data-controller='notification-dropdown update_notifications' data-update_notifications-url-value="<%= mark_as_read_notifications_path(format: :turbo_stream) %>"
        data-notification-dropdown-dropdown-class="dropdown-custom" data-notification-dropdown-bell-class="bell-broadcast">
@@ -23,4 +23,4 @@
       </ul>
     </div>
   </div>
-<% end %>
+
