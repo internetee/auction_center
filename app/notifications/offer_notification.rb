@@ -18,8 +18,9 @@ class OfferNotification < Noticed::Base
   end
 
   def message
+    return unless params.is_a?(Hash)
     return if params[:offer].blank?
 
-    I18n.t('.participant_outbid_broadcast', name: params[:offer]&.auction&.domain_name) if params.is_a?(Hash)
+    I18n.t('.participant_outbid_broadcast', name: params[:offer]&.auction&.domain_name)
   end
 end
