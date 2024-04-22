@@ -70,7 +70,7 @@ class WishlistItemTest < ActiveSupport::TestCase
 
     item = WishlistItem.new(user: @user, domain_name: 'some')
     assert_not(item.valid?)
-    assert_equal(['Domain name is invalid'], item.errors[:domain_name])
+    assert_equal(['Domain name is not valid'], item.errors[:domain_name])
   end
 
   def test_domain_has_valid_extension
