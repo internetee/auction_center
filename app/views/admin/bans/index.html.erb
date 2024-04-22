@@ -62,8 +62,8 @@
               <% end %>
             </td>
             <td>
-              <%= link_to t(:delete), admin_ban_path(ban), method: :delete,
-                            data: { confirm: t(:are_you_sure) }, target: '_top',
+              <%= button_to t(:delete), admin_ban_path(ban), method: :delete,
+                            form: { data: { 'turbo-confirm': 'Are you sure?' } }, target: '_top',
                             class: "ui button secondary" %>
               <%= link_to t(:versions_name),
                                 admin_ban_versions_path(ban), class: "ui button primary" %>

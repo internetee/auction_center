@@ -56,9 +56,9 @@
                   <%= link_to t('.claim_your_domain'), result_path(offer.result.uuid) %>
                 <%- else %>
                   <% unless auction.english? || auction.finished? %>
-                    <%= link_to t('auctions.delete_your_offer'), 
+                    <%= button_to t('auctions.delete_your_offer'), 
                                             offer_path(offer.uuid), target: '_top',
-                                            method: :delete, data: { confirm: t(:are_you_sure) }, class: "ui button red" %>
+                                            method: :delete, form: { data: { 'turbo-confirm': 'Are you sure?' } }, class: "ui button red" %>
                   <% end %>
                 <% end %>
               </td>
