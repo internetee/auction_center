@@ -4,7 +4,7 @@
   <ul>
     <li>
       <% if current_user %>
-        <%= button_to(destroy_user_session_path, method: :delete, class: "item clear-button", data: {  "turbo-method": 'delete' }) do %>
+        <%= button_to(destroy_user_session_path, method: :delete, class: "item clear-button", data: {  "turbo-method": 'delete' }, style: 'color: red;') do %>
           <i aria-hidden="true" class="user icon"></i><%= t(:sign_out) %>
         <% end %>
 
