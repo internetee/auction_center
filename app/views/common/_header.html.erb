@@ -1,12 +1,10 @@
-
-
 <div class="ui sidebar inverted vertical menu right mobile-menu">
   <%= navigation_links(current_user) %>
   <%= locale_links %>
   <ul>
     <li>
       <% if current_user %>
-        <%= link_to(destroy_user_session_path, method: :delete, class: "item", data: {  "turbo-method": 'delete' }) do %>
+        <%= button_to(destroy_user_session_path, method: :delete, class: "item clear-button", data: {  "turbo-method": 'delete' }) do %>
           <i aria-hidden="true" class="user icon"></i><%= t(:sign_out) %>
         <% end %>
 
@@ -32,7 +30,7 @@
     </nav>
     <nav class="menu-user aligned">
       <% if current_user %>
-        <%= link_to destroy_user_session_path, target: '_top', method: :delete, data: { 'turbo-method': 'delete' }, id: 'sign-in' do %>
+        <%= button_to destroy_user_session_path, target: '_top', method: :delete, class: 'clear-button', data: { 'turbo-method': 'delete' }, id: 'sign-in' do %>
           <i aria-hidden="true" class="user icon"></i><%= t(:sign_out) %>
         <% end %>
       <% else %>

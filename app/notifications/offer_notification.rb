@@ -18,6 +18,8 @@ class OfferNotification < Noticed::Base
   end
 
   def message
+    # return 'No data' if params[:offer].blank?
+
     I18n.t('.participant_outbid_broadcast', name: params[:offer].auction.domain_name)
   end
 end

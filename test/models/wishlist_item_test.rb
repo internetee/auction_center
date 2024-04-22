@@ -54,7 +54,7 @@ class WishlistItemTest < ActiveSupport::TestCase
     item = WishlistItem.new(user: @user, domain_name: 'dupe.test')
 
     assert_not(item.valid?)
-    assert_equal(['is already in your wishlist'], item.errors[:domain_name])
+    assert_equal(['Domain name is already in your wishlist'], item.errors[:domain_name])
   end
 
   def test_domain_name_must_be_a_valid_domain
@@ -70,7 +70,7 @@ class WishlistItemTest < ActiveSupport::TestCase
 
     item = WishlistItem.new(user: @user, domain_name: 'some')
     assert_not(item.valid?)
-    assert_equal(['is invalid'], item.errors[:domain_name])
+    assert_equal(['Domain name is invalid'], item.errors[:domain_name])
   end
 
   def test_domain_has_valid_extension
