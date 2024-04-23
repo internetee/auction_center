@@ -53,7 +53,7 @@ class WishlistItemsTest < ApplicationSystemTestCase
     click_link_or_button('Submit')
 
     assert_not(page.has_css?('div.notice', text: 'Created successfully.'))
-    assert(page.has_text?('is invalid'))
+    assert(page.has_text?('Domain name is not valid'))
   end
 
   def test_must_not_exceed_total_list_capacity

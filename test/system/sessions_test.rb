@@ -40,7 +40,7 @@ class SessionsTest < ApplicationSystemTestCase
     sign_in(user)
 
     visit(user_path(user.uuid))
-    click_link('Sign out')
+    click_link_or_button('Sign out')
     assert_text('Signed out successfully.')
   end
 

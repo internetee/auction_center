@@ -167,7 +167,7 @@ class BansTest < ApplicationSystemTestCase
     visit admin_bans_path
 
     within('tbody#bans-table-body') do
-      assert(page.has_link?('Delete', href: admin_ban_path(@ban)))
+      assert(page.has_button?('Delete'))
     end
 
     accept_confirm do
