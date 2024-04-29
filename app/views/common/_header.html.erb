@@ -79,7 +79,7 @@
                     </p>
                   </li>
                 <% else %>
-                  <%= render current_user.notifications.limit(6) %>
+                  <%= render current_user.notifications.order(created_at: :desc).limit(6) %>
                 <% end %>
                   
               </ul>

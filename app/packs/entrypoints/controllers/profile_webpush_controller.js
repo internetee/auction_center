@@ -23,7 +23,7 @@ export default class extends Controller {
   setupPushNotifications() {
     const applicationServerKey = this.urlBase64ToUint8Array(this.vapidPublicValue);
 
-    if (window.isSecureContext) {
+    // if (window.isSecureContext) {
       navigator.serviceWorker.register("/service-worker.js", {scope: "./" }).then((registration) => {
         registration.pushManager.subscribe({
           userVisibleOnly: true,
@@ -55,7 +55,7 @@ export default class extends Controller {
           this.buttonTarget.classList.add('disabled');
         });
       });
-    }
+    // }
   }
 
 }

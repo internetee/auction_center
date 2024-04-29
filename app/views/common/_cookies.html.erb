@@ -19,7 +19,7 @@
       <p style='margin-bottom: 20px; margin-top: 0;'><%= t('cookies.dialog.analytics_description') %></p>
 
       <%= form.submit t('cookies.dialog.accept_selectively'), class: 'ui primary button', id: 'accept-optionally' %>
-      <%= link_to t('cookies.dialog.decline'), cookies_path(cookies: 'declined'), method: :patch, class: 'ui red button', id: 'reject-all' %>
+      <%= button_to t('cookies.dialog.decline'), cookies_path(cookies: 'declined'), method: :patch, class: 'ui red button', id: 'reject-all' %>
     <% end %>
   </div>
 </div>

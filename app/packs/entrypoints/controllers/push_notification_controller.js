@@ -44,7 +44,7 @@ export default class extends Controller {
   setupPushNotifications() {
     const applicationServerKey = this.urlBase64ToUint8Array(this.vapidPublicValue);
 
-    if (window.isSecureContext) {
+    // if (window.isSecureContext) {
       navigator.serviceWorker.register("/service-worker.js", { scope: "./" }).then((registration) => {
         console.log('Service Worker registered successfully:', registration);
 
@@ -78,7 +78,7 @@ export default class extends Controller {
       }).catch(err => {
         console.log('Service Worker registration failed:', err);
       });;
-    }
+    // }
   }
 
   close() {
