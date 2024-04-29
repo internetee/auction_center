@@ -9,8 +9,8 @@ class Notification < ApplicationRecord
     subscriptions = WebpushSubscription.all
 
     message = {
-      title: 'Заголовок уведомления',
-      body: 'Текст уведомления',
+      title: 'Notification title',
+      body: 'Notifcation body',
       icon: 'https://example.com/icon.png'
     }
 

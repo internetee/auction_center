@@ -56,7 +56,7 @@ class WishlistItemsController < ApplicationController
         format.turbo_stream do
           render turbo_stream: [
             turbo_stream.append(dom_id(wishlist_item), partial: 'wishlist_items/starting_price',
-                                                       locals: { wishlist_item: wishlist_item })
+                                                       locals: { wishlist_item: })
           ]
         end
         format.html { redirect_to wishlist_items_path }
@@ -65,18 +65,6 @@ class WishlistItemsController < ApplicationController
         format.html { redirect_to wishlist_items_path }
       end
     end
-  end
-
-  # this method used by wishlist stimulus controller
-  def domain_wishlist_availability
-    wishlist_item = current_user.wishlist_items.build(domain_name: params[:domain_name])
-    if wishlist_item.valid?
-      msg = { status: 'fine', domain_name: params[:domain_name] }
-    else
-      msg = { status: 'wrong', domain_name: params[:domain_name], errors: wishlist_item.errors.full_messages }
-    end
-
-    render json: msg
   end
 
   private

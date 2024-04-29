@@ -8,8 +8,8 @@
 // appropriate layout file, like app/views/layouts/application.html.erb
 
 // Default Rails javascript and turbolinks
-import Rails from 'rails-ujs';
-Rails.start();
+// import Rails from 'rails-ujs';
+// Rails.start();
 
 import "chartkick/chart.js"
 import "highcharts"
@@ -51,6 +51,16 @@ $(document).on('turbo:load', function() {
             $('.main-header').removeClass('u-fixed');
         }
     });
+
+    let googleIdAnalytics = document.querySelector("meta[name='google-analytics-id']")?.content;
+
+    if (googleIdAnalytics) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+  
+      gtag('config', googleIdAnalytics);
+    }
 });
 
 $(document).ready(function(){

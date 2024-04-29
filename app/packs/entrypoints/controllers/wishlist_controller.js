@@ -2,18 +2,18 @@ import { Controller } from "@hotwired/stimulus"
 import Rails from 'rails-ujs';
 
 export default class extends Controller {
-  connect() {
+  static targets = ['input', 'validationBox']
+
+  static values = {
+    url: String
   }
 
   domainCheck() {
-    let wishlistInputField = document.querySelector('#wishlist_item_domain_name');
-    let url = `/domain_wishlist_availability?domain_name=${wishlistInputField.value}`;
+    const url = this.urlValue + `?domain_name=${this.inputTarget.value}`;
+    this.validationBoxTarget.style.display = "none";
+    this.validationBoxTarget.innerHTML = ''
 
-    let validationBox = document.querySelector('#validation-box');
-    validationBox.style.display = "none";
-    validationBox.innerHTML = ''
-
-    if (wishlistInputField.value === '') return;
+    if (this.inputTarget.value === '') return;
 
     clearTimeout(this.timeout)
     this.timeout = setTimeout(() => {
@@ -29,20 +29,24 @@ export default class extends Controller {
   }
 
   parseResponse(data) {
-    let validationBox = document.querySelector('#validation-box');
     let divElement = document.createElement("span");
-    validationBox.style.display = "block";
+    
+    while (this.validationBoxTarget.firstChild) {
+      this.validationBoxTarget.removeChild(this.validationBoxTarget.firstChild);
+    }
+
+    this.validationBoxTarget.style.display = "block";
 
     if (data.status == "wrong") {
       divElement.textContent = data.errors;
-      validationBox.style.color = 'red'; 
-      validationBox.style.borderColor = 'red'; 
+      this.validationBoxTarget.style.color = 'red'; 
+      this.validationBoxTarget.style.borderColor = 'red'; 
     } else {
-      divElement.textContent = `Suitable domain`;
-      validationBox.style.color = 'green'; 
-      validationBox.style.borderColor = 'green'; 
+      divElement.textContent = data.message;
+      this.validationBoxTarget.style.color = 'green'; 
+      this.validationBoxTarget.style.borderColor = 'green'; 
     }
 
-    validationBox.appendChild(divElement);
+    this.validationBoxTarget.appendChild(divElement);
   }
 }

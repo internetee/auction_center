@@ -36,9 +36,9 @@
 
 
             <div class="buttons">
-                <%= link_to t(:delete), admin_auction_path(@auction),
+                <%= button_to t(:delete), admin_auction_path(@auction),
                 method: :delete,
-                data: { confirm: t(:are_you_sure) } ,
+                form: { data: { 'turbo-confirm': 'Are you sure?' } },
                 class: "ui button secondary", target: '_top' %>
 
                 <%- if @auction.result %>

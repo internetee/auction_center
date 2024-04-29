@@ -11,6 +11,10 @@ module ApplicationHelper
     GoogleAnalytics.new(tracking_id: tracking_id)
   end
 
+  def tracking_id
+    Rails.configuration.customization.dig(:google_analytics, :tracking_id)
+  end
+
   def navigation_links(current_user)
     content_tag(:ul) do
       links(user_link_list) if current_user&.role?(User::PARTICIPANT_ROLE)

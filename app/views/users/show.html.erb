@@ -67,8 +67,8 @@
                             class="ui button primary"><%= t('.webpush_available') %></button>
                     <%= link_to t(:edit), edit_user_path(@user.uuid), class: "ui button primary" %>
                     <%= link_to t(:billing), billing_profiles_path, class: "ui button primary" %>
-                    <%= link_to t('.delete'), user_path(@user.uuid),
-                    method: :delete, data: { confirm: t(:are_you_sure) },
+                    <%= button_to t('.delete'), user_path(@user.uuid),
+                    method: :delete, form: { data: { 'turbo-confirm': 'Are you sure?' } },
                     class: "ui button red" %>
                 </div>
             </div>

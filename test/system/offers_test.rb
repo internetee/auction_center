@@ -131,7 +131,7 @@ class OffersTest < ApplicationSystemTestCase
     sign_in(@user)
     visit offer_path(@offer.uuid)
 
-    assert(page.has_link?('Delete'))
+    assert(page.has_button?('Delete'))
 
     accept_confirm do
       click_link_or_button('Delete')
@@ -144,7 +144,7 @@ class OffersTest < ApplicationSystemTestCase
     sign_in(@user)
     visit offer_path(@expired_offer.uuid)
 
-    assert_not(page.has_link?('Delete'))
+    assert_not(page.has_button?('Delete'))
   end
 
   def test_participant_cannot_submit_an_offer_for_old_auction

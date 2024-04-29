@@ -52,8 +52,8 @@
                 <div class="buttons">
                     <%= link_to t(:edit), edit_billing_profile_path(billing_profile.uuid), class: "ui button primary" %>
                     <% if billing_profile.deletable? %>
-                    <%= link_to t(:delete), billing_profile_path(billing_profile.uuid),
-                        method: :delete, data: { confirm: t(:are_you_sure) },
+                    <%= button_to t(:delete), billing_profile_path(billing_profile.uuid),
+                        method: :delete, form: { data: { 'turbo-confirm': 'Are you sure?' } },
                         class: "ui button red", target: '_top' %>
                     <% else %>
                     <%= content_tag :div, link_to(t(:delete), '#', class: "ui button secondary disabled"),

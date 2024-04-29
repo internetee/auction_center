@@ -13,7 +13,7 @@ class DeleteUserTest < ApplicationSystemTestCase
     sign_in(@user)
     visit user_path(@user.uuid)
 
-    assert(page.has_link?('Delete account'))
+    assert(page.has_button?('Delete account'))
 
     accept_confirm do
       click_link_or_button('Delete account')
@@ -27,7 +27,7 @@ class DeleteUserTest < ApplicationSystemTestCase
     sign_in(@user)
     visit user_path(@user.uuid)
 
-    assert(page.has_link?('Delete account'))
+    assert(page.has_button?('Delete account'))
 
     accept_confirm do
       click_link_or_button('Delete account')
