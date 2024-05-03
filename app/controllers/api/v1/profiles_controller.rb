@@ -16,10 +16,6 @@ module Api
       end
 
       def create
-        puts '----'
-        puts params_for_create
-        puts '----'
-
         user = User.new(params_for_create)
 
         if user.save

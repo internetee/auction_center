@@ -105,12 +105,43 @@ class Offer < ApplicationRecord
   def total
     return price * (DEFAULT_PRICE_VALUE + billing_profile.vat_rate) if billing_profile.present?
 
-    if user&.country_code == 'EE' || user&.country_code.nil?
-      default_vat = Setting.find_by(code: :estonian_vat_rate).retrieve
-    else
-      default_vat = Countries.vat_rate_from_alpha2_code(user.country_code)
+    default_vat = if user&.country_code == 'EE' || user&.country_code.nil?
+                    Setting.find_by(code: :estonian_vat_rate).retrieve
+                  else
+                    Countries.vat_rate_from_alpha2_code(user.country_code)
+                  end
+
+    price * (DEFAULT_PRICE_VALUE + (Invoice.find_by(result:)&.vat_rate || default_vat))
+  end
+
+  def auction_status
+    return 'you_won' if auction.finished? && result
+    return 'you_lost' if auction.finished? && auction.result && !result
+
+    if auction.english?
+      return 'you_are_winning' if auction.currently_winning_offer == self
+
+      return 'you_are_loosing'
     end
 
-    price * (DEFAULT_PRICE_VALUE + (Invoice.find_by(result: result)&.vat_rate || default_vat))
+    'still_in_progress'
+  end
+
+  def api_total
+    total.to_d
+  end
+
+  def api_price
+    price.to_d
+  end
+
+  def api_bidders
+    auction.offers.map do |offer|
+      {
+        username: offer.username,
+        price: offer.price.to_d,
+        updated_at: offer.updated_at
+      }
+    end
   end
 end
