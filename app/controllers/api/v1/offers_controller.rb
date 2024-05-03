@@ -8,16 +8,15 @@ module Api
 
       def index
         offers = Offer.includes(:auction)
-                  .includes(:result)
-                  .where(user_id: current_user)
-                  .order('auctions.ends_at DESC')
-
-        Rails.logger.info '---- offers ----'
-        Rails.logger.info(offers.inspect)
-        Rails.logger.info '----'
+                      .includes(:result)
+                      .where(user_id: current_user)
+                      .order('auctions.ends_at DESC')
 
         # price with tax
-        render json: offers.as_json(include: [:auction, :billing_profile])
+        render json: offers.as_json(
+          include: %i[auction billing_profile],
+          methods: %i[auction_status api_price api_total api_bidders]
+        )
       end
 
       # rubocop:disable Metrics/AbcSize
