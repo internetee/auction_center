@@ -5,6 +5,9 @@ class OffersController < ApplicationController
   before_action :check_for_ban, only: :create
   before_action :authorize_phone_confirmation
   before_action :authorize_offer_for_user, except: %i[new index create]
+  skip_before_action :verify_authenticity_token
+
+  respond_to :html, :json
 
   include RecaptchaValidatable
   recaptcha_action 'offer'
@@ -49,6 +52,11 @@ class OffersController < ApplicationController
                   .order('auctions.ends_at DESC')
 
     @pagy, @offers = pagy(offers, items: params[:per_page] ||= 15)
+
+    respond_to do |format|
+      format.html
+      format.json { render json: @offers.as_json(include: [:auction, :billing_profile]) }
+    end
   end
 
   # GET /offers/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b

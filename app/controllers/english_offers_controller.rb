@@ -12,6 +12,8 @@ class EnglishOffersController < ApplicationController
   before_action :prevent_check_for_invalid_bid, only: [:update]
   before_render :find_or_initialize_autobidder, only: %i[new create edit update]
 
+  skip_before_action :verify_authenticity_token
+
   include RecaptchaValidatable
   recaptcha_action 'english_offer'
   include OfferNotifable
