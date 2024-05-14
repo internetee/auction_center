@@ -13,6 +13,8 @@ en:
   all: All
   clear: Clear
 
+  paid: "Paid"
+
   in_local_language: "English"
 
   procedure_warning:  "Warning: Start of the day procedures takes place between 0:00 and 1:00 am EEST. During that time we close auctioned from previous day and start auctions of the new day. The list of auctions may not be complete during that time. You can order full daily auction list to your email by checking the \"Daily summary to email\" option under your auction user profile"
