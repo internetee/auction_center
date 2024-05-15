@@ -38,8 +38,8 @@ et:
     submit_offer: "Paku hind!"
     edit_your_offer: "Muuda pakkumust"
     delete_your_offer: "Kustuta pakkumine"
-    subscribe_for_notifications: "Telli teavitused"
-    unsubscribe_for_notifications: "Tühista teavitused"
+    subscribe_for_notifications: "Telli veebiteavitused"
+    unsubscribe_for_notifications: "Tühista veebiteavitused"
 
     show:
       title: "Oksjoni andmed"
