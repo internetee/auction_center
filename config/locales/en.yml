@@ -15,7 +15,7 @@ en:
 
   in_local_language: "English"
 
-  procedure_warning:  "Warning: Start of the day procedures takes place between 0:00 and 1:00 am EEST. During that time we close auctioned from previous day and start auctions of the new day. The list of auctions may not be complete during that time. You can order full daily auction list to your email by checking the \"Daily summary to email\" option under your auction user profile"
+  procedure_warning:  "Warning: Start of the day procedures takes place between 0:00 and 1:00 am EEST. During that time we close auctioned from previous day and start auctions of the new day. The list of auctions may not be complete during that time. You can order full daily auction list to your email by checking the \"Send daily summary to email\" option under your auction user profile"
 
   created: "Created successfully."
   updated: "Updated successfully."
@@ -104,7 +104,7 @@ en:
     recorded_at: 'Recorded at'
     new_values: 'New values'
 
-  created_at: "Created at"
+  created_at: "User created at"
   updated_at: "Updated at"
 
   is_invalid: "%{attribute} is invalid"
