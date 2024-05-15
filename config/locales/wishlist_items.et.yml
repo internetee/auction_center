@@ -19,7 +19,7 @@ et:
       notification_title: "Oota teadet"
       notification_description: |
         Saadame teile e-posti teel teavituse, kui soovitud domeeninimi läheb oksjonile.
-        Kuna domeeninimi võib oksjonile jõudmiseks palju aega võtta, ei aegu soovid nimekirjas.
+        Kuna domeeninimi võib oksjonile jõudmiseks palju aega võtta, ei aegu soovide nimekirja lisatud domeenid.
       change_starting_price: Muuda
 
   activerecord:
