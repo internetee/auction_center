@@ -37,7 +37,7 @@
             <%= f.hidden_field :auction_id, value: offer.auction_id %>
             <div class="c-modal__grid u-flex-wrap u-mt-24 u-mt-48-l">
               <div class="c-modal__col">
-                <label>Pakkumus</label>
+                <label><%= t('offers.price') %></label>
                 <span id="offer_<%=offer.auction.id%>_form">
                   <%= component 'modals/change_offer/number_form_field', offer_value: current_price, offer_disabled: @auction.finished? %>
                 </span>
@@ -45,7 +45,7 @@
               </div>
 
               <div class="c-modal__col">
-                <label>Kokku</label>
+                <label><%= t('offers.total') %></label>
                 <span class="c-modal__calculation" data-autotax-counter-target='result'>
                   <% if offer.billing_profile.present? %>
                     <%= t('offers.price_with_wat', price: (@auction.min_bids_step.to_f * offer.billing_profile.vat_rate.to_f).to_f + @auction.min_bids_step.to_f, tax: offer.billing_profile.vat_rate * 100)  %>
