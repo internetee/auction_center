@@ -5,7 +5,7 @@ et:
     i_accept_terms_and_conditions: "Nõustun tingimustega"
     price_in_currency: "%{price} €"
     price_is_without_vat: "Pakkumus ei sisalda käibemaksu."
-    price_with_wat: Kokku %{price} (+ %{tax}% käibemaks)
+    price_with_wat: "%{price} € (+ %{tax}% käibemaks)"
     already_exists: "Oled sellele oksjonile pakkumuse juba esitanud."
     errors: "seda pakkumust ei saa salvestada"
     total: "Hind käibemaksuga"
@@ -17,7 +17,7 @@ et:
       Tee pakkumine vastavalt oma hinnangule domeeninime väärtuse kohta.
     out_of_range: Pakkumine ebaõnnestus! Pakkumine ületab süsteemi poolt lubatud maksimaalset summat!
     change_bid: Muuda pakkumist
-    delete_title: "Pakkumuse kustutamine"
+    delete_title: "Pakkumuse eemaldamine"
     overview: "Ülevaade"
 
     new:

@@ -45,7 +45,7 @@
               </div>
 
               <div class="c-modal__col">
-                <label><%= t('offers.total') %></label>
+              <label><%= t('offers.total') %></label>
                 <span class="c-modal__calculation" data-autotax-counter-target='result'>
                   <% if offer.billing_profile.present? %>
                     <%= t('offers.price_with_wat', price: (@auction.min_bids_step.to_f * offer.billing_profile.vat_rate.to_f).to_f + @auction.min_bids_step.to_f, tax: offer.billing_profile.vat_rate * 100)  %>
