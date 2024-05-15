@@ -86,7 +86,7 @@ et:
     sessions:
       signed_in: "Oled sisse logitud."
       new:
-        sign_in_with_identity_document: "Logi sisse isikut tõendava dokumendiga."
+        sign_in_with_identity_document: "Logi sisse isikut tõendava dokumendiga"
         identity_document_text: |
           Sisene kasutades Eesti (sh e-residendi) ID kaarti,
           Mobiil-IDd, pangalinki või EU liikmeriikide elektroonset isikutunnistust (EIDAS).

@@ -17,7 +17,7 @@ et:
       Tee pakkumine vastavalt oma hinnangule domeeninime väärtuse kohta.
     out_of_range: Pakkumine ebaõnnestus! Pakkumine ületab süsteemi poolt lubatud maksimaalset summat!
     change_bid: Muuda pakkumist
-    delete_title: "Pakkumuse eemaldamine"
+    delete_title: "Pakkumuse kustutamine"
     overview: "Ülevaade"
 
     new:
