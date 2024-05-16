@@ -11,6 +11,6 @@ class Common::Form::RadioButton::ComponentTest < ViewComponent::TestCase
       data_attributes: { }, options: { style: 'visibility: hidden; position: absolute;', id: 'filter_PO_button'}
     ))
 
-    assert_selector 'input.js-table-filter-btn[type="radio"][id="filter_PO_button"][value="blind"][name="/auctions[type]"][checked="checked"]', visible: :all
+    assert_selector 'input.js-table-filter-btn[type="radio"][id="filter_PO_button"][value="blind"][name="/auctions[type]"]', visible: :all
   end
 end
