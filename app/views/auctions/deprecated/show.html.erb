@@ -27,7 +27,7 @@
               <td><strong><%= t('auctions.auction_type') %></strong></td>
               <td><%= t("auctions.#{@auction.platform&.downcase.presence || 'blind'}") %></td>
             </tr>
-            <tr data-controller="auction-timezone" data-auction-timezone-end-time-value="<%= @auction.ends_at.iso8601 %>">
+            <tr data-controller="auction-timezone" data-auction-timezone-end-time-value="<%= @auction.ends_at&.iso8601 %>">
               <td><strong><%= t('auctions.ends_at') %></strong></td>
               <td><span data-auction-timezone-target="display"><%= @auction.ends_at %></span></td>
             </tr>

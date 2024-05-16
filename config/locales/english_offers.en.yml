@@ -24,7 +24,7 @@ en:
     new:
       title: "Offer for the reservation of the domain name"
       errors: "prohibited this offer from being saved"
-      minimum_offer: "Minimum offer is %{minimum}."
+      minimum_offer: "Minimum offer value is %{minimum}."
 
     show:
       title: "Your offer"
@@ -54,7 +54,7 @@ en:
     form:
       bidder: "Bidder"
       offer: "Offer"
-      minimum_offer: "Minimum offer is %{minimum}."
+      minimum_offer: "Minimum offer value is %{minimum}."
       captcha_verification: "Captcha verification failed"
       offer_title: Offer
       autobider: "Autobidder"

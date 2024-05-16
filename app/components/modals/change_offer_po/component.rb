@@ -35,7 +35,7 @@ module Modals
       end
 
       def minimum_offer
-        I18n.t('.minimum_offer', minimum: Money.new(Setting.find_by(code: 'auction_minimum_offer').retrieve,
+        I18n.t('.offers.form.minimum_offer', minimum: Money.new(Setting.find_by(code: 'auction_minimum_offer').retrieve,
                                                     Setting.find_by(code: 'auction_currency').retrieve))
       end
 

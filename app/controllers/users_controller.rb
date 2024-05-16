@@ -3,11 +3,11 @@ require 'countries'
 # rubocop:disable Metrics
 class UsersController < ApplicationController
   include UserNotices
-  before_action :authenticate_user!, only: %i[show edit update destroy edit_authwall]
+
+  before_action :authenticate_user!, only: %i[show edit update destroy edit_authwall toggle_subscription]
   before_action :set_user, only: %i[show edit update destroy]
   before_action :set_minimum_password_length, only: %i[new edit]
-  before_action :authorize_user, except: %i[new index create show edit_authwall
-                                            toggle_subscription]
+  before_action :authorize_user, except: %i[new index create show edit_authwall toggle_subscription]
 
   # GET /users
   def index; end
@@ -30,7 +30,10 @@ class UsersController < ApplicationController
     @user.save!
 
     flash[:notice] = t('.subscription_status_toggled_flash')
-    render turbo_stream: turbo_stream.replace('flash', partial: 'common/flash', locals: { flash: })
+
+    # render turbo_stream: turbo_stream.replace('flash', partial: 'common/flash', locals: { flash: })
+    # render turbo_stream: turbo_stream.toast(t(:updated), position: "right", background: 'linear-gradient(to right, #11998e, #38ef7d)')
+    redirect_to root_path
   end
 
   # POST /users/new

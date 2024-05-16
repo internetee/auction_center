@@ -1,6 +1,6 @@
 <!-- Table -->
 <div class="o-container">
-  <div class="c-block" data-controller="auction-timezone" data-auction-timezone-end-time-value="<%= @offer.auction.ends_at.iso8601 %>">
+  <div class="c-block" data-controller="auction-timezone" data-auction-timezone-end-time-value="<%= @offer.auction.ends_at&.iso8601 %>">
     <h2 class="c-block__title u-h3"><%= t('offers.overview') %></h2>
     <%= component 'common/table', header_collection: overview_table_headers, options: { class: 'table--black' } do %>
       <%= tag.tbody do %>

@@ -49,4 +49,14 @@ class ApplicationController < ActionController::Base
     # don't change the name, it's used in the header and can be conflict with notification variable in notifications page
     @notifications_for_header = current_user&.notifications&.unread&.order(created_at: :desc)&.limit(5)
   end
+
+  protected
+
+  def authenticate_user!
+    return if user_signed_in?
+
+    sign_out @user
+    flash[:alert] = t('devise.failure.unauthenticated')
+    render turbo_stream: turbo_stream.action(:redirect, root_path)
+  end
 end
