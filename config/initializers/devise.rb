@@ -8,14 +8,14 @@ class TurboFailureApp < Devise::FailureApp
     end
   end
 
-  def redirect
-    message = warden.message || warden_options[:message]
-    if message == :timeout && scope == :user
-      http_auth 
-    else 
-      super
-    end
-  end
+  # def redirect
+  #   message = warden.message || warden_options[:message]
+  #   if message == :timeout && scope == :user
+  #     http_auth 
+  #   else 
+  #     super
+  #   end
+  # end
 
   def skip_format?
     %w(html turbo_stream */*).include? request_format.to_s

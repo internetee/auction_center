@@ -56,7 +56,13 @@ class ApplicationController < ActionController::Base
     return if user_signed_in?
 
     sign_out @user
+
     flash[:alert] = t('devise.failure.unauthenticated')
-    render turbo_stream: turbo_stream.action(:redirect, root_path)
+
+    if turbo_frame_request?
+      render turbo_stream: turbo_stream.action(:redirect, root_path)
+    else
+      redirect_to root_path
+    end
   end
 end

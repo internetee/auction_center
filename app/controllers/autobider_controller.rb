@@ -11,7 +11,7 @@ class AutobiderController < ApplicationController
 
     if recaptcha_valid
       if @autobider.update(strong_params)
-        auction = Auction.where(domain_name: @autobider.domain_name).order(:created_at).last
+        auction = Auction.where(domain_name: @autobider.domain_name).last
         AutobiderService.autobid(auction) unless skip_autobid(auction)
 
         flash[:notice] = I18n.t('english_offers.form.autobidder_updated')
