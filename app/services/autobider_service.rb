@@ -22,9 +22,6 @@ class AutobiderService
 
     return if filtered_autobiders.empty?
 
-    # filtered_ids = filtered_autobiders.group_by(&:cents).map { |cents, autobidders| autobidders.min_by(&:created_at) }.pluck(:id)
-    # filtered_autobiders = Autobider.where(id: filtered_ids)
-
     if filtered_autobiders.size == 1
       bider.autobid_for_single_pericipant(autobider: filtered_autobiders.first)
     elsif filtered_autobiders.size > 1
@@ -119,27 +116,6 @@ class AutobiderService
   end
 
   def autobid_for_multiple_users(autobiders:, auction:)
-    # highest_price = autobiders.order(cents: :asc).last(2).first.cents
-    # highest_autobider = autobiders.where('cents >= ?', highest_price).reorder(created_at: :asc).first
-
-    # owner = highest_autobider.user
-
-    # # last_created_autobider = autobiders.order(:created_at).last
-    # # owner = last_created_autobider.user if last_created_autobider.cents == highest_price
-
-    # # offer = auction.currently_winning_offer
-    # # return if offer.present? && offer.cents >= highest_price
-
-    # offer = create_or_update_offer(owner: owner, auction: auction, price: highest_price)
-
-    # money = Money.new(highest_price).to_f
-    # auction.update_minimum_bid_step(money)
-    # auction.reload
-
-    # higher_autobider = autobiders.order('cents DESC').first
-
-    # update_bid_if_somebody_has_higher(highest_autobider: higher_autobider, auction: auction, highest_price: highest_price)
-    # auction.update_ends_at(offer)
     smaller_price = autobiders.order(cents: :asc).last(2).first.cents
     two_highest_autobiders = autobiders.where('cents >= ?', smaller_price).order(cents: :asc).last(2)
 
@@ -149,7 +125,6 @@ class AutobiderService
     if smaller_bidder.cents == higher_bidder.cents
       autobiders_with_same_price = autobiders.where(cents: smaller_bidder.cents)
       whois_daddy = autobiders_with_same_price.min_by(&:created_at)
-      # whois_daddy = smaller_bidder.created_at < higher_bidder.created_at ? smaller_bidder : higher_bidder
 
       min_bid_step_in_cents = transform_money_to_cents(auction.min_bids_step)
       skip_validation = min_bid_step_in_cents > whois_daddy.cents ? true : false
@@ -166,55 +141,43 @@ class AutobiderService
 
       return if offer.present? && offer.cents >= higher_bidder.cents
 
-      # if offer.present?
-        if offer.present? && offer.cents >= smaller_bidder.cents
-          min_bid_step_in_cents = transform_money_to_cents(auction.min_bids_step)
-          skip_validation = min_bid_step_in_cents > higher_bidder.cents ? true : false
+      if offer.present? && offer.cents >= smaller_bidder.cents
+        min_bid_step_in_cents = transform_money_to_cents(auction.min_bids_step)
+        skip_validation = min_bid_step_in_cents > higher_bidder.cents ? true : false
 
-          if skip_validation
-            offer = create_or_update_offer(owner: highest_autobider_owner,
-                                            auction: auction,
-                                            price: higher_bidder.cents,
-                                            skip_validation: skip_validation)
+        if skip_validation
+          offer = create_or_update_offer(owner: highest_autobider_owner,
+                                          auction: auction,
+                                          price: higher_bidder.cents,
+                                          skip_validation: skip_validation)
 
-            money = Money.new(higher_bidder.cents).to_f
-            auction.update_minimum_bid_step(money)
-            auction.reload
-
-            auction.update_ends_at(offer)
-          else
-            offer = create_or_update_offer(owner: highest_autobider_owner,
-                                            auction: auction,
-                                            price: min_bid_step_in_cents)
-
-            money = Money.new(min_bid_step_in_cents).to_f
-            auction.update_minimum_bid_step(money)
-            auction.reload
-
-            auction.update_ends_at(offer)
-          end
-        else
-          offer = create_or_update_offer(owner: smaller_bidder.user, auction: auction, price: smaller_bidder.cents)
-
-          money = Money.new(smaller_bidder.cents).to_f
+          money = Money.new(higher_bidder.cents).to_f
           auction.update_minimum_bid_step(money)
           auction.reload
 
           auction.update_ends_at(offer)
+        else
+          offer = create_or_update_offer(owner: highest_autobider_owner,
+                                          auction: auction,
+                                          price: min_bid_step_in_cents)
 
-          update_bid_if_somebody_has_higher(highest_autobider: higher_bidder, auction: auction)
+          money = Money.new(min_bid_step_in_cents).to_f
+          auction.update_minimum_bid_step(money)
+          auction.reload
+
+          auction.update_ends_at(offer)
         end
-      # else
-      #   offer = create_or_update_offer(owner: smaller_bidder.user, auction: auction, price: smaller_bidder.cents)
+      else
+        offer = create_or_update_offer(owner: smaller_bidder.user, auction: auction, price: smaller_bidder.cents)
 
-      #   money = Money.new(smaller_bidder.cents).to_f
-      #   auction.update_minimum_bid_step(money)
-      #   auction.reload
+        money = Money.new(smaller_bidder.cents).to_f
+        auction.update_minimum_bid_step(money)
+        auction.reload
 
-      #   auction.update_ends_at(offer)
+        auction.update_ends_at(offer)
 
-      #   update_bid_if_somebody_has_higher(highest_autobider: higher_bidder, auction: auction)
-      # end
+        update_bid_if_somebody_has_higher(highest_autobider: higher_bidder, auction: auction)
+      end
     end
   end
 
