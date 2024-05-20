@@ -52,8 +52,17 @@ class ActiveAuctionsAiSortingJob < ApplicationJob
       messages: [
         { role: 'system', content: system_message },
         { role: 'user', content: format(auctions_list) },
-        { role: 'user', content: 'Response in JSON format: [{id:, domain_name:, ai_score:}]' }
-      ]
+        { role: 'user', content: 'Please provide a detailed response in JSON format without any text and only the result.
+          Here is an example of how I expect the JSON output:
+          [
+            {
+              id:,
+              domain_name:,
+              ai_score:
+            }
+          ]' }
+      ],
+      temperature: 0.7
     }
   end
 
