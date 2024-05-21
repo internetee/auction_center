@@ -83,9 +83,9 @@
 // Custom Checkbox
 .o-checkbox {
   display: inline-block;
-  height: rem(16px);
+  height: rem(19px);
   position: relative;
-  width: rem(30px);
+  width: rem(33px);
 
   &.u-disabled {
     opacity: 0.6;
@@ -111,11 +111,11 @@
   background: $gradient-grey;
   bottom: 2px;
   content: "";
-  height: rem(12px);
+  height: rem(15px);
   left: 2px;
   position: absolute;
   transition: .4s;
-  width: rem(12px);
+  width: rem(15px);
 }
 
 input:checked + .o-checkbox__slider {

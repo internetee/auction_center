@@ -13,7 +13,7 @@
         <% if wishlist_item == item %>
           <tr>
             <td><%= index + 1 %></td>
-            <td><%= item.domain_name %></td>
+            <td><h3><%= item.domain_name %></h3></td>
             <td data-turbo="true">
               <%= form_for wishlist_item, url: wishlist_item_path(uuid: wishlist_item.uuid), method: :patch do |f| %>
                 <div style='display: flex; gap: 0 10px; align-items: center; margin-right: 5px; width: 200px;'>

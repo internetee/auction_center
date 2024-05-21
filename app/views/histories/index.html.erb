@@ -40,7 +40,7 @@
             <% @auctions.each do |auction| %>
                 <tr class="finished-auctions-table-row" data-controller="auction-timezone"
                     data-auction-timezone-end-time-value="<%= auction.ends_at&.iso8601 %>" data-auction-timezone-start-time-value="<%= auction.starts_at.iso8601 %>">
-                    <td class="monospace"><%= auction.domain_name %></td>
+                    <td class="monospace"><h3><%= auction.domain_name %></h3></td>
                     <td><span data-auction-timezone-target="starttime"><%= auction.starts_at %></span></td>
                     <td><span data-auction-timezone-target="endtime"><%= auction.ends_at %></span></td>
                     <td><%= auction.currently_winning_offer&.price if auction.platform == 'english' %></td>

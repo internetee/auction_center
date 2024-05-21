@@ -5,7 +5,7 @@
     <%= component 'common/table', header_collection: overview_table_headers, options: { class: 'table--black' } do %>
       <%= tag.tbody do %>
         <tr>
-          <td><strong><%= @offer.auction.domain_name  %></strong></td>
+          <td><h3><%= @offer.auction.domain_name  %></h3></td>
           <td><span data-auction-timezone-target="endtime"><%= @offer.auction.ends_at %></span></td>
           <td><%= t('offers.price_in_currency', price: @offer.price) %></td>
           <td><%= t('offers.price_in_currency', price: @offer.total) %></td>

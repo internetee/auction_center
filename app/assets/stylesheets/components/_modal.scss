@@ -360,6 +360,10 @@
 .c-modal__footer__col {
   display: flex;
   gap: rem(24px);
+  .c-btn {
+    font-size: rem(14px);
+    cursor: pointer;
+  }
 }
 
 .c-modal--error {

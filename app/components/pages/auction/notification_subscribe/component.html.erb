@@ -1,7 +1,6 @@
-
-  <% if @current_user&.daily_summary %>
-    <%= component 'common/links/link_button', link_title: t('auctions.unsubscribe_for_notifications'), href: user_toggle_sub_path, color: 'ghost' %>
-  <% elsif @current_user %>
-    <%= component 'common/links/link_button', link_title: t('auctions.subscribe_for_notifications'), href: user_toggle_sub_path(@current_user), color: 'ghost' %>
-  <% end %>
+<% if @current_user.daily_summary %>
+  <%= component 'common/links/link_button', link_title: t('auctions.unsubscribe_for_notifications'), href: user_toggle_sub_path, color: 'ghost' %>
+<% else %>
+  <%= component 'common/links/link_button', link_title: t('auctions.subscribe_for_notifications'), href: user_toggle_sub_path(@current_user), color: 'ghost' %>
+<% end %>
 

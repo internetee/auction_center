@@ -20,11 +20,6 @@
     <div class="c-table__filters__search">
       <%= component 'common/form/search_field', form: f, attribute: :domain_name, value: params[:domain_name], placeholder: t('search_by_domain_name') %>
     </div>
-    
-
-    <div class="c-table__filters__more" style="justify-content: flex-end;">
-      <%= component 'pages/auction/notification_subscribe', current_user: @current_user %>
-    </div>
 
     <div class="c-auctions__legend">
       <div><span class="o-io-icon o-icon--sm"></span> <%= t('auctions.english_auction').downcase %></div>
