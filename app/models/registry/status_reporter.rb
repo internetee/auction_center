@@ -64,7 +64,7 @@ module Registry
     def registration_deadline
       case result.status
       when 'awaiting_payment'
-        result.invoice.due_date.end_of_day
+        result.invoice&.due_date&.end_of_day
       when 'payment_received'
         result.registration_due_date.end_of_day
       end
