@@ -39,8 +39,8 @@ class BillingProfile < ApplicationRecord
 
   def vat_code_must_be_registered_in_vies
     # Vat code validation only for EU countries
-    vat_code = Countries.vat_rate_from_alpha2_code(self.country_code)
-    return if vat_code.blank? || vat_code == BigDecimal(0)
+    vat_rate = Countries.vat_rate_from_alpha2_code(self.country_code)
+    return if vat_code.blank? || vat_rate == BigDecimal(0)
 
     errors.add(:vat_code, I18n.t('billing_profiles.vat_validation_error')) unless Valvat.new(self.vat_code).exists?
   end
