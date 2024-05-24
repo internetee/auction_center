@@ -29,8 +29,6 @@ class BillingProfilesController < ApplicationController
     @billing_profile = BillingProfile.new(create_params)
     authorize! :manage, @billing_profile
 
-    flash.clear
-
     respond_to do |format|
       if create_predicate
         redirect_uri = "#{session[:return_to]}?billing_profile_id=#{@billing_profile.id}" || billing_profile_path(@billing_profile.uuid)

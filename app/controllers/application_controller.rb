@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   helper_method :turbo_frame_request?
 
   protect_from_forgery with: :exception
-  before_action :set_locale
+  before_action :set_locale, :clear_flash
   before_action :set_notifications
 
   content_security_policy do |policy|
@@ -15,15 +15,6 @@ class ApplicationController < ActionController::Base
     flash[:alert] = exception
 
     render turbo_stream: turbo_stream.replace('flash', partial: 'common/flash', locals: { flash: })
-  end
-
-  def set_locale
-    if params[:localize].present? && I18n.available_locales.include?(params[:localize].to_sym)
-      cookies[:locale] = params[:localize]
-    end
-
-    I18n.locale = current_user&.locale || cookies[:locale] || I18n.default_locale
-    @pagy_locale = I18n.locale.to_s
   end
 
   def store_location
@@ -48,6 +39,21 @@ class ApplicationController < ActionController::Base
   def set_notifications
     # don't change the name, it's used in the header and can be conflict with notification variable in notifications page
     @notifications_for_header = current_user&.notifications&.unread&.order(created_at: :desc)&.limit(5)
+  end
+
+  private
+
+  def set_locale
+    if params[:localize].present? && I18n.available_locales.include?(params[:localize].to_sym)
+      cookies[:locale] = params[:localize]
+    end
+
+    I18n.locale = current_user&.locale || cookies[:locale] || I18n.default_locale
+    @pagy_locale = I18n.locale.to_s
+  end
+
+  def clear_flash
+    flash.clear if turbo_frame_request?
   end
 
   protected
