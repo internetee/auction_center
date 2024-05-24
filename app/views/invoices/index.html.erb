@@ -1,4 +1,5 @@
-<%= component 'common/hero', title: t('.title') %>
+<% content_for :title, t('histories.title') %>
+
 <!-- Table -->
 <div class="o-container">
   <%= component 'pages/invoices/outstanding_invoices', issued_invoices: @issued_invoices, cancelled_payable_invoices: @cancelled_payable_invoices,

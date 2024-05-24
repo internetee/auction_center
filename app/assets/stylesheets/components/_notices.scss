@@ -1,4 +1,6 @@
 .c-notices {
+  overflow: auto;
+  height: rem(440px);
   background-color: $white-color;
   @include box-shadow;
   position: absolute;

@@ -1,4 +1,4 @@
-<%= component 'common/hero', title: t('.title') %>
+<% content_for :title, t(".title") %>
 
 <% if user_signed_in? %>
   <%= turbo_stream_from "auctions_#{current_user&.id}" %>

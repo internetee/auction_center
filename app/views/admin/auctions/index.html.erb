@@ -1,4 +1,5 @@
-<%= component 'common/hero', title: t('.title')  %>
+<% content_for :title, t(".title") %>
+
 <div class="o-container">
   <!-- This stumulus controller `form--bundle-checkbox` is used to determine which checkboxes the user has clicked in order for the server side to process exactly the selected auction options -->
   <div class="c-table c-table--sortable" data-controller='form--bundle-checkbox form--check-all'>

@@ -1,6 +1,6 @@
 @mixin btn {
   font-weight: 500;
-  font-size: rem(14px);
+  font-size: rem(16px);
   line-height: rem(32px);
   text-align: center;
   display: inline-block;
@@ -12,20 +12,32 @@
   border: none;
   font-family: $font-family;
 
-
   &:disabled {
     pointer-events: none;
-    filter: grayscale(1) opacity(0.4);
+    background-color: $grey-200-color;
+    border-color: $grey-200-color;
+    color: $grey-400-color;
   }
 }
 
 @mixin btn-orange {
   @include btn;
   background: $primary-orange-color;
+  border: 1px solid $primary-orange-color;
 
   &:hover {
     background: $white-color;
     color: $primary-orange-color;
+  }
+}
+@mixin btn-orange-light {
+  @include btn;
+  background: $orange-light;
+  border: 1px solid $primary-orange-color;
+  color: $primary-orange-color;
+
+  &:hover {
+    background: $white-color;
   }
 }
 
@@ -45,11 +57,10 @@
   @include btn;
   background: $secondary-blue-color;
   border: 1px solid $secondary-blue-color;
-
   &:hover {
     background: $white-color;
     color: $secondary-blue-color;
-
+    
   }
 }
 
@@ -60,19 +71,6 @@
   &:hover {
     background: $white-color;
     color: $black-color;
-  }
-}
-
-@mixin btn-white {
-  @include btn;
-  background: $white-color;
-  color: $black-color;
-  border: 1px solid $white-color;
-
-  &:hover {
-    background: transparent;
-    color: $white-color;
-    background: transparent;
   }
 }
 
@@ -87,6 +85,16 @@
   }
 }
 
+@mixin btn-green-light {
+  @include btn;
+  color: $primary-green-color;
+  background-color: $green-light;
+  border: 1px solid $primary-green-color;
+
+  &:hover {
+    background: $white-color;
+  }
+}
 
 @mixin btn-red {
   @include btn;

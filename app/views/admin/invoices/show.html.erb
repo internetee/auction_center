@@ -1,4 +1,4 @@
-<%= component 'common/hero', title: t('.title', invoice_number: @invoice&.number)  %>
+<% content_for :title, t('.title', invoice_number: @invoice&.number) %>
 
 <div class="o-container">
   <div class="c-table__filters" >

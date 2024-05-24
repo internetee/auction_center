@@ -57,6 +57,19 @@
 
     <main>
       <%= turbo_frame_tag "modal" %>
+      <%= component 'common/hero', title: yield(:title) %>
+      <div class="o-container">
+        <% if Time.zone.now.between?(Time.zone.parse(start_of_procedure), Time.zone.parse(end_of_procdure)) %>
+          <div class="c-toast js-toast c-toast--error">
+            <%= t('procedure_warning') %>
+            <div class="c-toast__control">
+              <button class="c-toast__close js-close-toast"></button>
+            </div>
+          </div>
+        <% end %>
+        <%= banned_banner %>
+        <%= invalid_data_banner %>
+      </div>
       <%= yield %>
     </main>
 

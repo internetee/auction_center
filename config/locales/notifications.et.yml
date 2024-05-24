@@ -5,3 +5,5 @@ et:
     unreaded_notifications: 'Lugemata teated'
     readed_notifications: 'Loetud teated'
     all_marked_as_read: 'Kõik teated märgitud loetuks'
+    index:
+      title: "Teavitused"

@@ -1,4 +1,5 @@
-<%= component 'common/hero', title: "#{t('.title')}: #{@auction.domain_name}"  %>
+<% content_for :title, "#{t('.title')}: #{@auction.domain_name}" %>
+
 <div class="o-container" data-controller="auction-timezone" data-auction-timezone-end-time-value="<%= auction.ends_at&.iso8601 %>" data-auction-timezone-start-time-value="<%= auction.starts_at.iso8601 %>">
   <div class="c-table c-table--sortable" data-controller='form--bundle-checkbox'>
     <%= component 'common/table', header_collection: [], options: { class: 'js-table-dt dataTable no-footer' } do %>
