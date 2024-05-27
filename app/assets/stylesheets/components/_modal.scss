@@ -317,6 +317,10 @@
       padding-left: 0;
     }
   }
+
+  input[type="submit"] {
+    cursor: pointer;
+  }
 }
 
 .c-modal__calculation {

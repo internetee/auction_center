@@ -31,8 +31,8 @@ en:
       we_will_contact_winner: |
         Once the auction time has ended, we will send an email to
         the auction winner.
-      min_bid: Minimum bid is
-      current_price: Current price is
+      min_bid: Minimum bid
+      current_price: Current price
       bid_failed: Bid failed, current price is %{price}
 
     create:

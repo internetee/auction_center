@@ -26,9 +26,8 @@
               <h3 class="u-h2 u-m-none"><%= Money.new(Setting.find_by(code: 'auction_minimum_offer').retrieve) %> €</h3>
             </div>
             <div class="c-modal__main__info c-modal__main__info--black">
-              <strong><%= t('english_offers.show.current_price') %></strong>
+              <strong><%= t('auctions.you') %></strong>
               <h3 class="u-h2 u-m-none"><%= current_price %> €</h3>
-              <span>S<%= t('auctions.you') %></span>
             </div>
           </div>
 

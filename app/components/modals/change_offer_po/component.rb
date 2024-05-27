@@ -30,7 +30,7 @@ module Modals
         if auction.offer_from_user(current_user).present?
           auction.current_price_from_user(current_user)
         else
-          Money.new(Setting.find_by(code: 'auction_minimum_offer').retrieve)
+          Money.new(0)
         end
       end
 
