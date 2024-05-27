@@ -1,72 +1,74 @@
-    <header class="c-header" data-controller='hamburger' data-hamburger-open-class='is-active'>
-        <div class="c-header__menu">
-            <button class="c-header__toggle u-bg-green-gradient js-nav-toggle hamburger hamburger--collapse" data-action='hamburger#toggle'>
-                <span class="hamburger-box">
-                    <span class="hamburger-inner"></span>
-                </span>
-                <span><%= t('common.header.auction_portal') %></span>
-            </button>
-        </div>
-        <div class="c-toolbar js-toolbar" data-hamburger-target='menu'>
-            <div class="c-toolbar__grid">
-                <div class="c-toolbar__nav">
-                    <ul class="s-toolbar-nav">
-                        <li>
-                            <a href="https://internet.ee"><%= t('common.header.open_portal') %></a>
-                        </li>
-                        
-                        <li class="is-active" data-controller='navbar--expandable'>
-                            <a><%= t('common.header.auction_portal') %></a>
-                            <span class="o-arrow js-submenu-toggle" data-action='click->navbar--expandable#expand'></span>
+<header class="c-header" data-controller='hamburger' data-hamburger-open-class='is-active'>
+    
+    <div class="c-header__menu">
+        <button class="c-header__toggle u-bg-green-gradient js-nav-toggle hamburger hamburger--collapse" data-action='hamburger#toggle'>
+            <span class="hamburger-box">
+                <span class="hamburger-inner"></span>
+            </span>
+            <span><%= t('common.header.auction_portal') %></span>
+        </button>
+    </div>
 
-                            <ul class="submenu" data-navbar--expandable-target='element'>
-                                <%= regular_menu_list %>
-                                <%= component 'common/header/notification', notifications: notifications %>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="https://www.internet.ee/registrar-portal"><%= t('common.header.registrar_portal') %></a>
-                        </li>
-                        <li>
-                            <a href="https://registrant.internet.ee"><%= t('common.header.registrant_portal') %></a>
-                        </li>
-                        <li>
-                            <a href="https://eeid.ee">eeID</a>
-                        </li>
-                    </ul>
-                </div>
+    <div class="c-toolbar js-toolbar" data-hamburger-target='menu'>
+        <div class="c-toolbar__grid">
+            <div class="c-toolbar__nav">
+                <ul class="s-toolbar-nav">
+                    <li>
+                        <a href="https://internet.ee"><%= t('common.header.open_portal') %></a>
+                    </li>
+                    
+                    <li class="is-active" data-controller='navbar--expandable'>
+                        <a><%= t('common.header.auction_portal') %></a>
+                        <span class="o-arrow js-submenu-toggle" data-action='click->navbar--expandable#expand'></span>
 
-                <div class="c-toolbar__socials">
-                    <% if user_signed_in? %>
-                        <%= link_to destroy_user_session_path, class: "c-header__user", method: :delete, data: { 'turbo-method': 'delete' } do %>
-                            <%= render 'svg/person' %><%= t(:sign_out) %>
-                        <% end %>
-                    <% else %>
-                        <%= link_to new_user_session_path, class: "c-header__user" do %>
-                            <%= render 'svg/person' %><%= t(:sign_in) %>
-                        <% end %>
-                    <% end %>
-                </div>
-
-                <div class="c-toolbar__lang">
-
-                </div>
-            </div>
-        </div>
-
-        <div class="c-header__lang">
-            <div class="c-dropdown">
-                <span class="c-dropdown__label" onclick="this.parentNode.classList.toggle('is-open')">
-                    <span class="c-dropdown__label__lang">
-                        <%= current_language %>
-                    </span>
-                    <%= render 'svg/down_arrow' %>
-                </span>
-
-                <ul class="c-dropdown__list s-dropdown-list">
-                    <%= languages %>
+                        <ul class="submenu" data-navbar--expandable-target='element'>
+                            <%= regular_menu_list %>
+                            <%= component 'common/header/notification', notifications: notifications %>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="https://www.internet.ee/registrar-portal"><%= t('common.header.registrar_portal') %></a>
+                    </li>
+                    <li>
+                        <a href="https://registrant.internet.ee"><%= t('common.header.registrant_portal') %></a>
+                    </li>
+                    <li>
+                        <a href="https://eeid.ee">eeID</a>
+                    </li>
                 </ul>
             </div>
-        </div>
 
-    </header>
+            <div class="c-toolbar__socials">
+                <% if user_signed_in? %>
+                    <%= link_to destroy_user_session_path, class: "c-header__user", method: :delete, data: { 'turbo-method': 'delete' } do %>
+                        <%= render 'svg/person' %><%= t(:sign_out) %>
+                    <% end %>
+                <% else %>
+                    <%= link_to new_user_session_path, class: "c-header__user" do %>
+                        <%= render 'svg/person' %><%= t(:sign_in) %>
+                    <% end %>
+                <% end %>
+            </div>
+
+            <div class="c-toolbar__lang">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="c-header__lang">
+        <div class="c-dropdown">
+            <span class="c-dropdown__label" onclick="this.parentNode.classList.toggle('is-open')">
+                <span class="c-dropdown__label__lang">
+                    <%= current_language %>
+                </span>
+                <%= render 'svg/down_arrow' %>
+            </span>
+
+            <ul class="c-dropdown__list s-dropdown-list">
+                <%= languages %>
+            </ul>
+        </div>
+    </div>
+
+</header>
