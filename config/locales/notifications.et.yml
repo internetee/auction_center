@@ -5,3 +5,6 @@ et:
     unreaded_notifications: 'Lugemata teavitused'
     readed_notifications: 'Loetud teavitused'
     all_marked_as_read: 'Kõik teavitused märgitud loetuks'
+    index:
+      title: "Teavitused"
+

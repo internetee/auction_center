@@ -24,15 +24,15 @@ en:
     new:
       title: "Offer for the reservation of the domain name"
       errors: "prohibited this offer from being saved"
-      minimum_offer: "Minimum offer is %{minimum}."
+      minimum_offer: "Minimum offer value is %{minimum}."
 
     show:
       title: "Your offer"
       we_will_contact_winner: |
         Once the auction time has ended, we will send an email to
         the auction winner.
-      min_bid: Minimum bid is
-      current_price: Current price is
+      min_bid: Minimum bid
+      current_price: Current price
       bid_failed: Bid failed, current price is %{price}
 
     create:
@@ -54,7 +54,7 @@ en:
     form:
       bidder: "Bidder"
       offer: "Offer"
-      minimum_offer: "Minimum offer is %{minimum}."
+      minimum_offer: "Minimum offer value is %{minimum}."
       captcha_verification: "Captcha verification failed"
       offer_title: Offer
       autobider: "Autobidder"

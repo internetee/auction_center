@@ -11,7 +11,6 @@ class EnglishOffersController < ApplicationController
   before_action :authorize_phone_confirmation
   # before_action :authorize_offer_for_user, except: %i[new create]
   before_action :prevent_check_for_invalid_bid, only: [:update]
-  before_render :find_or_initialize_autobidder, only: %i[new create edit update]
 
   include RecaptchaValidatable
   recaptcha_action 'english_offer'
@@ -115,7 +114,7 @@ class EnglishOffersController < ApplicationController
   end
 
   def find_or_initialize_autobidder
-    @autobider = current_user.autobiders.find_or_initialize_by(domain_name: @auction.domain_name)
+    @autobider = current_user&.autobiders&.find_or_initialize_by(domain_name: @auction.domain_name)
   end
 
   def update_not_allowed(auction)

@@ -1,7 +1,7 @@
     <%= component 'common/table', header_collection: header_collection, options: { class: 'table--black' } do %>
       <%= tag.tbody do %>
-        <tr data-controller="auction-timezone" data-auction-timezone-end-time-value="<%= @offer.auction.ends_at.iso8601 %>">
-          <td><strong><%= @offer.auction.domain_name  %></strong></td>
+        <tr data-controller="auction-timezone" data-auction-timezone-end-time-value="<%= @offer.auction.ends_at&.iso8601 %>">
+          <td><h3><%= @offer.auction.domain_name  %></h3></td>
           <td><span data-auction-timezone-target="endtime"><%= @offer.auction.ends_at %></span></td>
           <td><%= t('offers.price_in_currency', price: @offer.price) %></td>
           <td><%= t('offers.price_in_currency', price: @offer.total) %></td>

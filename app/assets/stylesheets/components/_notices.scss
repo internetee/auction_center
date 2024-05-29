@@ -49,3 +49,12 @@
 .c-notice__main {
   margin: rem(8px 0);
 }
+
+// Do not show notices in hamburger menu
+.js-notices-list {
+  display: none;
+
+  @include mq(desktop) {
+    display: block;
+  }
+}

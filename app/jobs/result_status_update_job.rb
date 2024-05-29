@@ -1,8 +1,9 @@
 class ResultStatusUpdateJob < ApplicationJob
   def perform
-    Result.pending_status_report.map do |result|
+    Result.pending_status_report.each do |result|
       Registry::StatusReporter.new(result).call
-    rescue Registry::CommunicationError => e
+    rescue StandardError, Registry::CommunicationError => e
+      Rails.logger.info e
       Airbrake.notify(e)
       next
     end

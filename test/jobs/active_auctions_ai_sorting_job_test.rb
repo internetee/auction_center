@@ -11,7 +11,7 @@ class ActiveAuctionsAiSortingJobTest < ActiveJob::TestCase
 
   def test_perform_with_enabled_openai_integration
     stub_request(:post, 'https://api.openai.com/v1/chat/completions')
-      .to_return(status: 200, body: ai_response.to_json, headers: {})
+      .to_return_json(status: 200, body: ai_response, headers: {})
 
     Feature.stub(:open_ai_integration_enabled?, true) do
       assert_ai_score_changes
@@ -46,7 +46,7 @@ class ActiveAuctionsAiSortingJobTest < ActiveJob::TestCase
     {
       'choices' => [{
         'message' => {
-          'content' => "[\n  {\n    \"id\": #{@auction1.id},\n    \"ai_score\": 9\n  }," \
+          'content': "[\n  {\n    \"id\": #{@auction1.id},\n    \"ai_score\": 9\n  }," \
                         "\n  {\n    \"id\": #{@auction2.id},\n    \"ai_score\": 7\n  }," \
                         "\n  {\n    \"id\": #{@auction3.id},\n    \"ai_score\": 4\n  }\n]"
         }

@@ -181,6 +181,8 @@ class Auction < ApplicationRecord # rubocop:disable Metrics
   end
 
   def finished?
+    return false if ends_at.nil?
+
     if valid?
       Time.now.utc > ends_at
     else

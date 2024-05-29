@@ -36,12 +36,13 @@ module ApplicationHelper
     message = ban_error_message(domains, valid_until)
     return unless message
 
-    content_tag(:div, class: 'ui message ban') do
-      result = content_tag(:div, message, class: 'header')
-      if eligible_violations_present?(domains: domains)
-        result << content_tag(:p, violation_message(domains.size), class: 'violation-message')
+    content_tag(:div, class: 'c-toast js-toast c-toast--error') do
+      content_tag(:div, class: 'c-toast__content') do
+        concat(content_tag(:p, message))
+        if eligible_violations_present?(domains: domains)
+          concat(content_tag(:p, violation_message(domains.size)))
+        end
       end
-      result
     end
   end
 

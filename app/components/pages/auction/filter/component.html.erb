@@ -2,16 +2,16 @@
   <div class="c-table__filters">
     <div class="c-table__filters__btns" style='position: relative'>
       <%= component 'common/form/radio_button', form: f, title: 'all', attribute: :type, 
-                    data_attributes: { **form_filter_target }, options: { **radio_btn_style, id: 'filter_all_button'} %>
+                    data_attributes: { **form_filter_target }, options: { **radio_btn_style, id: 'filter_all_button', checked: true} %>
       <%= f.label :type_all, t('auction.all'), class: "c-table__filters__btn is-active js-table-filter-btn", style: 'cursor: pointer;', for: 'filter_all_button', data: { **form_filter_data_attrs } %>
 
-      <%= component 'common/form/radio_button', form: f, title: 'english', attribute: :type, data_attributes: { **form_filter_target }, options: { **radio_btn_style, id: 'filter_IO_button'} %>
+      <%= component 'common/form/radio_button', form: f, title: 'english', attribute: :type, data_attributes: { **form_filter_target }, options: { **radio_btn_style, id: 'filter_IO_button', checked: false} %>
       <%= f.label :type_english, class: "c-table__filters__btn js-table-filter-btn", style: 'cursor: pointer;', for: 'filter_IO_button', data: { **form_filter_data_attrs } do %>
         <span class="o-io-icon"></span><span class="u-hidden-m"><%= t('auctions.english_auction') %></span>
       <% end %>
       
       <%= component 'common/form/radio_button', form: f, title: 'blind', attribute: :type, 
-                    data_attributes: { **form_filter_target }, options: { **radio_btn_style, id: 'filter_PO_button'} %>
+                    data_attributes: { **form_filter_target }, options: { **radio_btn_style, id: 'filter_PO_button', checked: false} %>
       <%= f.label :type_blind, class: "c-table__filters__btn js-table-filter-btn", style: 'cursor: pointer;', for: 'filter_PO_button', data: { **form_filter_data_attrs } do %>
         <span class="o-po-icon"></span><span class="u-hidden-m"> <%= t('auctions.blind_auction') %></span>
       <% end %>
@@ -19,11 +19,6 @@
 
     <div class="c-table__filters__search">
       <%= component 'common/form/search_field', form: f, attribute: :domain_name, value: params[:domain_name], placeholder: t('search_by_domain_name') %>
-    </div>
-    
-
-    <div class="c-table__filters__more" style="justify-content: flex-end;">
-      <%= component 'pages/auction/notification_subscribe', current_user: @current_user %>
     </div>
 
     <div class="c-auctions__legend">

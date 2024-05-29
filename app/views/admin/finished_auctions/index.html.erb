@@ -1,4 +1,5 @@
-<%= component 'common/hero', title: t('.title')  %>
+<% content_for :title, t('.title') %>
+
 <div class="o-container">
   <div class="c-table c-table--sortable">
     <%= form_with url: admin_finished_auctions_index_path, 

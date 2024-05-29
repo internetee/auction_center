@@ -1,4 +1,4 @@
-<%= component 'common/hero', title: t('.title') %>
+<% content_for :title, t(".title") %>
 
 <% if user_signed_in? %>
   <%= turbo_stream_from "auctions_#{current_user&.id}" %>
@@ -19,13 +19,19 @@
 
     <%= component 'pages/auction/filter', current_user: current_user %>
 
-  <div style='margin: 10px 0;'>
-    <% if current_page?(auctions_path) || current_page?(root_path) %>
-      <%= component 'common/links/link_button', link_title: t(:finished_auctions), href: histories_path, color: 'ghost' %>
-    <% else %>
-      <%= component 'common/links/link_button', link_title: t(:auctions_name), href: auctions_path, color: 'ghost' %>
-    <% end %>
-  </div>
+    <div style="display: flex; margin: 10px 0;">
+      <% if current_page?(auctions_path) || current_page?(root_path) %>
+        <%= component 'common/links/link_button', link_title: t(:finished_auctions), href: histories_path, color: 'ghost' %>
+      <% else %>
+        <%= component 'common/links/link_button', link_title: t(:auctions_name), href: auctions_path, color: 'ghost' %>
+      <% end %>
+
+      <% if @current_user %>
+        <div style="margin-left: auto;">
+          <%= component 'pages/auction/notification_subscribe', current_user: @current_user %>
+        </div>
+      <% end %>
+    </div>
 
     <!-- 
     These parameters are passed to the Common::Table::Component. These parameters are used to generate headers in the table component. The name "column_name" indicates the name of the column. This is necessary for sorting, so the name of this column should correspond to the name of the column in the database table. If you want to make it so that the data is not sorted by the column, then you should add a nil value. "Caption" is the table header, and "options" are additional parameters that are passed into the tags. 

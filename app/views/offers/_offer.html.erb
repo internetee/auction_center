@@ -1,12 +1,12 @@
 <%# TODO: Move to component and all logic should be in represent part %>
-<tr data-controller="auction-timezone" data-auction-timezone-end-time-value="<%= offer.auction.ends_at.iso8601 %>">
-  <td>
+<tr data-controller="auction-timezone" data-auction-timezone-end-time-value="<%= offer.auction.ends_at&.iso8601 %>">
+  <td><h3>
     <% if offer.auction.english? %>
       <%= link_to offer.auction.domain_name, english_offer_path(offer.uuid), style: 'color: black;', target: '_top' %>
     <% else %>
       <%= link_to offer.auction.domain_name, offer_path(offer.uuid), style: 'color: black;', target: '_top' %>
     <% end %>
-  </td>
+  </h3></td>
   <td><%= component 'common/auction_type_icon', auction: offer.auction %></td>
   <td><b><%= t('english_offers.index.your_last_offer') %>:</b> <%= t('offers.price_in_currency', price: offer.price) %></td>
   <td><%= t('offers.price_in_currency', price: offer.total) %></td>

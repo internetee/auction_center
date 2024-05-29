@@ -115,9 +115,9 @@
 .c-table__filters__search {
   flex-grow: 1;
   order: 2;
+  text-align: right;
 
   @include mq(tablet) {
-    text-align: center;
     order: 0;
   }
 }
@@ -153,8 +153,7 @@
   }
 
   @include mq(desktop) {
-    // width: rem(392px);
-    width: auto;
+    width: rem(392px);
   }
 }
 
@@ -247,5 +246,11 @@
     td:nth-child(6) {
       margin-top: rem(8px);
     }
+  }
+}
+
+.c-table--first-col-full {
+  th:first-child, td:first-child {
+    width: 100%;
   }
 }

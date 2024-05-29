@@ -5,11 +5,11 @@
         <%= render 'svg/footer_eis_logo' %>
         <div class="c-footer__highlight__grid c-footer__highlight__grid--row-t">
           <div class="c-footer__highlight__grid">
-            <h4 class="c-footer__highlight__title">
+            <h3 class="c-footer__highlight__title">
               <div>
                 <%= t('common.footer.copyright') %>
               </div>
-            </h4>
+            </h3>
             <div class="c-footer__highlight__info">
               <%= Setting.find_by(code: 'invoice_issuer_address').retrieve %><br>
               <%= t('reg_no') %>: <%= Setting.find_by(code: 'invoice_issuer_reg_no').retrieve %>

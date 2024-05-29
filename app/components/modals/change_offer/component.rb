@@ -35,17 +35,36 @@ module Modals
         offer.auction.finished? ? true : false
       end
 
-      def current_price(offer, current_user)
-        return unless offer
+      # def current_price(offer, current_user)
+      #   return unless offer
 
-        is_user_offer = offer&.billing_profile&.user_id == current_user&.id
-        username = is_user_offer ? I18n.t('auctions.you').to_s : offer.username
-        content_tag(:span, class: 'current_price',
-                           data: { 'user-id': offer.user_id, you: I18n.t('auctions.you') }) do
-          content = "#{offer.price} "
-          content << content_tag(:span, (username.nil? ? '' : "(#{username})"), class: 'bidder')
-          content.html_safe
-        end
+      #   is_user_offer = offer&.billing_profile&.user_id == current_user&.id
+      #   username = is_user_offer ? I18n.t('auctions.you').to_s : offer.username
+      #   content_tag(:span, class: 'current_price',
+      #                      data: { 'user-id': offer.user_id, you: I18n.t('auctions.you') }) do
+      #     content = "#{offer.price} "
+      #     content << content_tag(:span, (username.nil? ? '' : "(#{username})"), class: 'bidder')
+      #     content.html_safe
+      #   end
+      # end
+
+      def current_price
+        return Money.new(0) unless last_actual_offer
+
+        last_actual_offer.price
+      end
+
+      def current_bidder
+        return unless last_actual_offer
+
+        is_user_offer = last_actual_offer&.billing_profile&.user_id == current_user&.id
+        username = is_user_offer ? I18n.t('auctions.you').to_s : last_actual_offer.username
+
+        username
+      end
+
+      def last_actual_offer
+        @last_actual_offer ||= auction.offers.order(updated_at: :desc).first
       end
 
       def number_field_properties

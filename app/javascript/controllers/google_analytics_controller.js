@@ -16,7 +16,7 @@ export default class extends Controller {
         gtag('config', googleId);
 
         gtag('config', googleId, {
-            'page_location': event.detail.url,
+            // 'page_location': event.detail.url,
             'cookie_prefix': 'AuctionTest',
             'cookie_domain': 'auction.ee',
         });

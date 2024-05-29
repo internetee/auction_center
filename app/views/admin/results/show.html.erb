@@ -1,4 +1,5 @@
-<%= component 'common/hero', title: "#{t('.title')}: #{@result.auction.domain_name}"  %>
+<% content_for :title, "#{t('.title')}: #{@result.auction.domain_name}" %>
+
 <div class="o-container">
   <div class="c-table c-table--sortable">
     <%= component 'common/table', header_collection: [], options: { class: 'js-table-dt' } do %>

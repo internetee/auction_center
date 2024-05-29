@@ -94,6 +94,7 @@ jobs:
 
   upload_coverage:
     strategy:
+      fail-fast: false
       matrix:
         os: [ ubuntu-20.04 ]
         ruby: [ '3.2.2' ]
