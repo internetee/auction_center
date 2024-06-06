@@ -47,7 +47,8 @@ module EisBilling
     end
 
     def payment_process(invoice:)
-      payment_order = PaymentOrder.find_by(invoice_id: invoice.id) ||
+      existing_po = invoice.partial_payments? ? nil : PaymentOrder.find_by(invoice_id: invoice.id)
+      payment_order = existing_po ||
                       PaymentOrders::EveryPay.create(invoices: [invoice], user: invoice.user)
 
       payment_order.response = params

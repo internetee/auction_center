@@ -59,3 +59,5 @@ app/assets/builds/*
 /app/assets/builds/*
 !/app/assets/builds/.keep1
 !/app/assets/builds/.keep
+
+Dockerfile.dev

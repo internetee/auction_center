@@ -30,7 +30,16 @@
 
         <div class="c-modal__footer u-flex u-align-center u-content-sp">
           <%= link_to t('invoices.download'), download_invoice_path(@invoice.uuid), { class: 'c-btn c-btn--ghost', download: true } %>
-          <%= button_to t('invoices.show.pay'), oneoff_invoice_path(uuid: @invoice.uuid), class: 'c-btn c-btn--green', data: {turbo: false} if @invoice.payable? %>
+          <% if @invoice.payable? %>
+            <% if @invoice.partial_payments? %>
+              <%= form_with url: oneoff_invoice_path(uuid: @invoice.uuid), data: {turbo: false} do |f| %>
+                <%= component 'common/form/number_field', form: f, **amount_field_properties %>
+                <%= f.submit t('invoices.show.pay'), class: 'c-btn c-btn--green' %>
+              <% end %>
+            <% else %>
+              <%= button_to t('invoices.show.pay'), oneoff_invoice_path(uuid: @invoice.uuid), class: 'c-btn c-btn--green', data: {turbo: false} %>
+            <% end %>
+          <% end %>
         </div>
       </div>
 

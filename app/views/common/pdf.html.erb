@@ -294,6 +294,21 @@
                                         <td scope="col" style='font-weight: bold; color: red; background-color: #f0e68c;'><%= t('offers.price_in_currency', price: @invoice.total) %></td>
                                     </tr>
                                 <% end %>
+
+                                <% if @invoice.partial_payments? && !@invoice.paid? %>
+                                    <tr>
+                                        <th scope="col"></th>
+                                        <th scope="col"><%= t('invoices.total_paid') %></th>
+                                        <th></th>
+                                        <th scope="col"><%= t('offers.price_in_currency', price: @invoice.paid_amount || 0) %></th>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col"></th>
+                                        <th scope="col"><%= t('invoices.show.total_amount') %></th>
+                                        <th></th>
+                                        <th scope="col"><%= t('offers.price_in_currency', price: @invoice.due_amount) %></th>
+                                    </tr>
+                                <% end %>
                             </tfoot>
                         </table>
                     </div>
