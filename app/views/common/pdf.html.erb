@@ -300,7 +300,7 @@
                                         <th scope="col"></th>
                                         <th scope="col"><%= t('invoices.total_paid') %></th>
                                         <th></th>
-                                        <th scope="col"><%= t('offers.price_in_currency', price: @invoice.paid_amount || 0) %></th>
+                                        <th scope="col"><%= t('offers.price_in_currency', price: Money.from_amount(@invoice.paid_amount || 0, @invoice.auction_currency)) %></th>
                                     </tr>
                                     <tr>
                                         <th scope="col"></th>

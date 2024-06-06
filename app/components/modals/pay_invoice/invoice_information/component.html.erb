@@ -88,7 +88,7 @@
                 <tr>
                     <td></td>
                     <td><%= t('invoices.total_paid') %></td>
-                    <td><%= t('offers.price_in_currency', price: @invoice.paid_amount || 0) %></td>
+                    <td><%= t('offers.price_in_currency', price: Money.from_amount(@invoice.paid_amount || 0, @invoice.auction_currency)) %></td>
                 </tr>
               <% end %>
 
