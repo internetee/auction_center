@@ -34,7 +34,7 @@ en:
       social_media: "Social media"
 
     webpush_modal:
-      webpush_title: Web Push
+      webpush_title: 'Enable Web Push notifications'
       webpush_descr: The .ee auction portal employs web push notifications to keep you informed of any over-bidding activity, without requiring you to keep the website open constantly.
       webpush_agree: Agree
       webpush_decline: "No, thanks"

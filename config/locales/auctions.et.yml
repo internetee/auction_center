@@ -21,25 +21,25 @@ et:
     offer_owner: "Pakkuja"
     enable_deposit: "Võimaldage tagatisraha"
     disable_deposit: "Deaktiveeri tagatisraha"
-    deposit: Tagatisraha
-    bid: Paku hind!
-    participate: Osale!
-    all_list: Kuva kõik
-    pagination_list: Kuva 15 leheküljel
-    finished_auctions: Lõppenud oksjonid
-    you: Sinu pakkumus
-    blind_auction: Pime oksjon
-    english_auction: Inglise oksjon
-    all: Kõik
-    type: Tüüp
+    deposit: "Tagatisraha"
+    bid: "Paku hind!"
+    participate: "Osale!"
+    all_list: "Kuva kõik"
+    pagination_list: "Kuva 15 leheküljel"
+    finished_auctions: "Lõppenud oksjonid"
+    you: "Sinu pakkumus"
+    blind_auction: "Pimeoksjon"
+    english_auction: "Inglise oksjon"
+    all: "Kõik"
+    type: "Tüüp"
 
     still_in_progress: "Töötlemisel"
 
     submit_offer: "Paku hind!"
     edit_your_offer: "Muuda pakkumust"
     delete_your_offer: "Kustuta pakkumine"
-    subscribe_for_notifications: "Telli teavitused"
-    unsubscribe_for_notifications: "Tühista teavitused"
+    subscribe_for_notifications: "Telli veebiteavitused"
+    unsubscribe_for_notifications: "Tühista veebiteavitused"
 
     show:
       title: "Oksjoni andmed"

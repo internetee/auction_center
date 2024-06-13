@@ -18,7 +18,7 @@ et:
     current_password: "Praegune salasõna"
     remember_me: "Mäleta mind"
     i_accept_terms_and_conditions_html: "Olen tutvunud ja nõustun %{link}."
-    terms_and_conditions_link: "Domeenide oksjonikeskkonna kasutajatingimustega"
+    terms_and_conditions_link: "Domeenide oksjonikeskkonna kasutajatingimused"
     email_changed: >-
       Palun kinnita eposti aadressi muutus klõpsates uuele aadressile saadetud ekirjas olevale
       kinnituse lingile.
@@ -43,7 +43,7 @@ et:
       errors: "kasutajat ei saa salvestada"
 
     form:
-      password_requirements: "Salasõna vähemalt %{minimum} tähemärki"
+      password_requirements: "Salasõna peab olema vähemalt %{minimum} tähemärki"
       sign_up: "Registreeru"
       contact_data: "Kontaktandmed"
       personal_data: "Isikuandmed"
@@ -63,7 +63,7 @@ et:
       title: "Kasutajaprofiil"
       delete: "Kustuta konto"
       review_terms_and_conditions: "Tutvu tingimustega"
-      daily_summary: "Igapäevane oksjoninimekiri meilile"
+      daily_summary: "Saada igapäevane oksjoninimekiri meilile"
       webpush_available: Veebiteavitused sisse
       settings: Seaded
 

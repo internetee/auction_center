@@ -19,11 +19,11 @@ et:
 
   procedure_warning:  "Hoiatus: Iga päeva alguses ajavahemikul kell 00:00 ja 01:00 toimuvad päeva lõpu ja uue alguse protseduurid. Sellest tulenevalt ei pruugi olla okjonite nimekiri portaalis lõplik. Soovi korral saate tellida omale igapäevase uudiskirja antud päeva oksjonite nimekirjaga aktiveerides oma oksjonikeskkonna kasutaja profiilis valiku \"Igapäevane oksjoninimekiri meilile\""
 
-  created: "Loodud."
-  updated: "Uuendatud."
-  deleted: "Kustutatud."
+  created: "Loodud"
+  updated: "Uuendatud"
+  deleted: "Kustutatud"
   something_went_wrong: "Midagi läks valesti."
-  are_you_sure: "Oled kindel?"
+  are_you_sure: "Kas oled kindel?"
   confirm: "Kinnita"
 
   billing: "Arveldamine"
@@ -83,7 +83,7 @@ et:
     recorded_at: 'Salvestatud'
     new_values: 'Uued väärtused'
 
-  created_at: "Loodud"
+  created_at: "Kasutaja loodud"
   updated_at: "Muudetud"
 
   is_invalid: "vale"
@@ -162,13 +162,13 @@ et:
         offer:
           attributes:
             cents:
-              less_than: Pakkumine ebaõnnestus! Pakkumine ületab süsteemi poolt lubatud maksiaalset summat!
+              less_than: Pakkumine ebaõnnestus! Pakkumine ületab süsteemi poolt lubatud maksimaalset summat!
   okcomputer:
     check:
       passed: Passed
       failed: Failed
 
-  notification_received: "Notification reveived at %{datetime}"
+  notification_received: "Teavitus saadetud %{datetime}"
   notification_unread: Notifcation unread
   notification_read: Notifcation read
   participant_outbid: Domeeni nimele %{domain_name} on uus pakkumine
@@ -185,3 +185,4 @@ et:
         edit_and_remove_blind_offer:
           component:
             confirm_delete: "Oled kindel, et soovid kustutada pimedat pakkumist?"
+

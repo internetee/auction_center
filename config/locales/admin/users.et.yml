@@ -18,7 +18,7 @@ et:
       show:
         title: "Kasutaja"
         ban_this_user: "Keela see kasutaja"
-        daily_summary: "Igapäevane oksjoninimekiri meilile"
+        daily_summary: "Saada igapäevane oksjoninimekiri meilile"
 
       form:
         password_requirements: "vähemalt %{minimum} tähemärki"
