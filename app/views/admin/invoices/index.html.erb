@@ -51,8 +51,8 @@
             <td><%= invoice.notes %></td>
             <td><%= t('offers.price_in_currency', price: invoice.total) %></td>
             <td><%= number_to_percentage(invoice.vat_rate * 100, precision: 0) if invoice.paid? %></td>
-            <td><%= t('offers.price_in_currency', price: invoice.paid_amount) if invoice.paid? %></td>
-            <td><%= invoice.paid_with_payment_order&.channel if invoice.paid? %></td>
+            <td><%= t('offers.price_in_currency', price: invoice.paid_amount) if invoice.paid? || invoice.partial_payments? %></td>
+            <td><%= invoice.paid_with_payment_order&.channel if invoice.paid? || invoice.partial_payments? %></td>
           </tr>
         <% end %>
       <% end %>

@@ -1,7 +1,8 @@
 class InvoicesController < ApplicationController
   before_action :authenticate_user!
   before_action :authorize_user
-  before_action :set_invoice, except: %i[index pay_all_bills oneoff pay_deposit]
+  before_action :set_invoice, except: %i[index pay_all_bills pay_deposit]
+  before_action :validate_amount, only: :oneoff
 
   # GET /invoices/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/edit
   def edit; end
@@ -97,9 +98,10 @@ class InvoicesController < ApplicationController
   end
 
   def oneoff
-    invoice = Invoice.accessible_by(current_ability).find_by!(uuid: params[:uuid])
-    response = EisBilling::OneoffService.call(invoice_number: invoice.number.to_s,
-                                              customer_url: linkpay_callback_url)
+    response = EisBilling::OneoffService.call(invoice_number: @invoice.number.to_s,
+                                              customer_url: linkpay_callback_url,
+                                              amount: params[:amount])
+
 
     if response.result?
       redirect_to response.instance['oneoff_redirect_link'], allow_other_host: true, format: :html
@@ -110,13 +112,12 @@ class InvoicesController < ApplicationController
   end
 
   def send_e_invoice
-    invoice = Invoice.accessible_by(current_ability).find_by!(uuid: params[:uuid])
-    response = EisBilling::SendEInvoice.call(invoice:, payable: !invoice.paid?)
+    response = EisBilling::SendEInvoice.call(invoice: @invoice, payable: !@invoice.paid?)
 
     if response.result?
-      redirect_to invoice_path(invoice.uuid), notice: t('.sent_to_omniva')
+      redirect_to invoice_path(@invoice.uuid), notice: t('.sent_to_omniva')
     else
-      redirect_to invoice_path(invoice.uuid), alert: response.errors
+      redirect_to invoice_path(@invoice.uuid), alert: response.errors
     end
   end
 
@@ -145,5 +146,14 @@ class InvoicesController < ApplicationController
   def authorize_user
     authorize! :read, Invoice
     authorize! :update, Invoice
+  end
+
+  def validate_amount
+    return if params[:amount].nil?
+
+    alert = I18n.t('invoices.amount_must_be_positive') if params[:amount].to_f <= 0
+    alert = I18n.t('invoices.amount_is_too_big') if params[:amount].to_f > @invoice.due_amount.to_f
+
+    redirect_to invoice_path(@invoice.uuid), alert: alert if alert
   end
 end

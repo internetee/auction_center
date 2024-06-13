@@ -57,6 +57,7 @@ Rails.application.routes.draw do
     resources :invoices, except: %i[new create destroy], concerns: %i[auditable] do
       member do
         get 'download'
+        post 'toggle_partial_payments'
       end
     end
     resources :jobs, only: %i[index create]

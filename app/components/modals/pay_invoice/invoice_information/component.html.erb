@@ -53,10 +53,9 @@
               
             </thead>
             <tbody>
-
               <% @invoice.items.each_with_index do |item, index| %>
                 <tr>
-                  <td><%= index + 1 %></td>
+                  <td><%= index += 1 %></td>
                   <td><%= I18n.t('invoice_items.name',
                           domain_name: item.invoice.result.auction.domain_name,
                           auction_end: item.invoice.result.auction.ends_at.to_date) %>
@@ -66,22 +65,30 @@
               <% end %>
 
               <tr>
-                  <td>2</td>
+                  <td></td>
                   <td><%= t('invoices.vat_amount') %> <%= number_to_percentage(@invoice.vat_rate * 100, precision: 0) %></td>
                   <td><%= t('offers.price_in_currency', price: @invoice.vat) %></td>
               </tr>
 
               <tr>
-                  <td>3</td>
+                  <td></td>
                   <td><%= t('invoices.total') %></td>
                   <td><%= t('offers.price_in_currency', price: @invoice.total + (@invoice.enable_deposit? ? @invoice.deposit : 0.0)) %></td>
               </tr>
 
               <% if @invoice.enable_deposit? %>
                 <tr>
-                    <td>4</td>
+                    <td><</td>
                     <td><%= t('invoices.deposit') %></td>
                     <td><%= t('offers.price_in_currency', price: @invoice.deposit) %></td>
+                </tr>
+              <% end %>
+
+              <% if @invoice.partial_payments? && !@invoice.paid? %>
+                <tr>
+                    <td></td>
+                    <td><%= t('invoices.total_paid') %></td>
+                    <td><%= t('offers.price_in_currency', price: Money.from_amount(@invoice.paid_amount || 0, @invoice.auction_currency)) %></td>
                 </tr>
               <% end %>
 
@@ -89,7 +96,13 @@
             <tfoot>
                 <tr>
                     <td colspan="2"><%= t('invoices.show.total_amount') %></td>
-                    <td><%= t('offers.price_in_currency', price: @invoice.total) %></td>
+                    <td>
+                      <% if @invoice.partial_payments? && !@invoice.paid? %>
+                        <%= t('offers.price_in_currency', price: @invoice.due_amount) %>
+                      <% else %>
+                        <%= t('offers.price_in_currency', price: @invoice.total) %>
+                      <% end %>
+                    </td>
                 </tr>
             </tfoot>
           </table>

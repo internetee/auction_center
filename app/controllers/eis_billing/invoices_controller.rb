@@ -41,6 +41,8 @@ module EisBilling
       when 'unpaid'
         @invoice.update(status: 'issued', paid_at: nil)
       when 'paid'
+        return if @invoice.paid?
+
         @invoice.payable? ? @invoice.mark_as_paid_at(Time.zone.now) : @invoice.errors.add(:base, 'Invoice is not payable')
       when 'cancelled'
         @invoice.update(status: 'cancelled', paid_at: nil)
