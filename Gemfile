@@ -75,7 +75,7 @@ group :test do
   gem 'capybara', '>= 2.15'
   gem 'cuprite'
   # gem 'selenium-webdriver'
-  gem 'simplecov', '~> 0.10', '< 0.18', require: false
+  gem 'simplecov', require: false
   gem 'spy'
   gem 'webmock'
 end

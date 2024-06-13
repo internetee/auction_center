@@ -404,11 +404,12 @@ GEM
     scenic (1.7.0)
       activerecord (>= 4.0.0)
       railties (>= 4.0.0)
-    simplecov (0.17.1)
+    simplecov (0.22.0)
       docile (~> 1.1)
-      json (>= 1.8, < 3)
-      simplecov-html (~> 0.10.0)
-    simplecov-html (0.10.2)
+      simplecov-html (~> 0.11)
+      simplecov_json_formatter (~> 0.1)
+    simplecov-html (0.12.3)
+    simplecov_json_formatter (0.1.4)
     simpleidn (0.2.1)
       unf (~> 0.1.4)
     skylight (5.3.4)
@@ -533,7 +534,7 @@ DEPENDENCIES
   ruby-lsp-rails
   ruby-openai
   scenic
-  simplecov (~> 0.10, < 0.18)
+  simplecov
   simpleidn
   skylight
   spy
