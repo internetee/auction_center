@@ -18,7 +18,7 @@ class Auction < ApplicationRecord # rubocop:disable Metrics
   validate :deposit_and_enable_deposit_should_be_togeter, on: :update
 
   has_many :offers, dependent: :delete_all
-  has_many :domain_participate_auctions
+  has_many :domain_participate_auctions, dependent: :delete_all
   has_many :domain_offer_histories
   has_one :result, required: false, dependent: :destroy
 
