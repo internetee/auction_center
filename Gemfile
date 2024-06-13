@@ -52,14 +52,14 @@ group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'pry'
 
-  # # https://github.com/rubocop/rubocop-performance
-  # gem 'rubocop-performance', require: false
-  # gem "ruby-lsp"
-  # gem "rubocop"
-  # gem "rubocop-packaging"
-  # gem "rubocop-rspec"
-  # gem "rubocop-shopify"
-  # gem "rubocop-thread_safety"
+  # https://github.com/rubocop/rubocop-performance
+  gem 'rubocop-performance', require: false
+  gem "ruby-lsp"
+  gem "rubocop"
+  gem "rubocop-packaging"
+  gem "rubocop-rspec"
+  gem "rubocop-shopify"
+  gem "rubocop-thread_safety"
 end
 
 group :development do

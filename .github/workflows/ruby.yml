@@ -98,7 +98,7 @@ jobs:
       matrix:
         os: [ ubuntu-20.04 ]
         ruby: [ '3.2.2' ]
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-20.04
     env:
       CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
       CC_TEST_REPORTER_URL: https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
