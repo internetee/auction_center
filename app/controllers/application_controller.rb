@@ -14,7 +14,11 @@ class ApplicationController < ActionController::Base
   rescue_from CanCan::AccessDenied do |exception|
     flash[:alert] = exception
 
-    render turbo_stream: turbo_stream.replace('flash', partial: 'common/flash', locals: { flash: })
+    if turbo_frame_request?
+      render turbo_stream: turbo_stream.replace('flash', partial: 'common/flash', locals: { flash: })
+    else
+      redirect_to root_path
+    end
   end
 
   def store_location

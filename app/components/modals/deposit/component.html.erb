@@ -28,7 +28,7 @@
             </div>
             <div class="c-modal__main__info c-modal__main__info--black">
               <strong><%= t('english_offers.show.current_price') %></strong>
-              <h3 class="u-h2 u-mt-0 u-mb-40-l"><span id="current_<%= @auction.id %>_price"><%= @auction&.currently_winning_offer&.price  || '0.0' %> €</span></h3>
+              <h3 class="u-h2 u-mt-0 u-mb-40-l"><span id="current_<%= @auction.id %>_price"><%= @auction&.currently_winning_offer&.price  || Money.new(0) %> €</span></h3>
             </div>
             <div class="c-modal__main__info c-modal__main__info--white c-modal__header__desc">
               <div class="c-modal__main__info__wrapper u-flex u-align-start u-content-sp u-flex-col">
