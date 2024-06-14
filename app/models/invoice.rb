@@ -234,6 +234,7 @@ class Invoice < ApplicationRecord
     ActiveRecord::Base.transaction do
       self.vat_rate = billing_profile.present? ? billing_profile.vat_rate : vat_rate
       initial_amount = payment_order.response['initial_amount'].to_f
+      self.paid_amount ||= 0
       self.paid_amount += initial_amount.to_f
       
       self.paid_with_payment_order = payment_order
