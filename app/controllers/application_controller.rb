@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
   end
 
   rescue_from CanCan::AccessDenied do |exception|
-    flash[:alert] = exception
+    flash[:alert] = I18n.t('unauthorized.message')
 
     if turbo_frame_request?
       render turbo_stream: turbo_stream.replace('flash', partial: 'common/flash', locals: { flash: })
