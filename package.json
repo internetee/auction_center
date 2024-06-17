@@ -40,7 +40,7 @@
       "turbolinks": "^5.2.0",
       "typeface-raleway": "^1.1.13",
       "url-loader": "^4.1.1",
-      "ws": "^8.2.1"
+      "ws": "^8.17.1"
    },
    "babel": {
       "presets": [
