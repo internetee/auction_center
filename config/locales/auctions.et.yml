@@ -31,7 +31,7 @@ et:
     blind_auction: "Pimeoksjon"
     english_auction: "Inglise oksjon"
     all: "Kõik"
-    type: "Tüüp"
+    type: "Oksjoni tüüp"
 
     still_in_progress: "Töötlemisel"
 
@@ -70,8 +70,8 @@ et:
       title: "Oksjonil olevad domeenid:"
       1_step_header: "Esita pakkumus"
       1_step_explanation: |
-        enda poolt valitud meelepärasele domeenile.
-        Oksjonid toimuvad vastavalt domeeni tüübile kas pimeoksjoni
+        Esita pakkumus enda poolt valitud meelepärasele domeenile.
+        Sõltuvalt domeeni tüübist toimuvad oksjonid kas pimeoksjoni
         või avatud pakkumistega oksjoni stiilis.
 
       2_step_header: "Oota oksjoni lõppemiseni"
@@ -81,7 +81,7 @@ et:
 
       3_step_header: "Maksa oksjonitasu"
       3_step_explanation: |
-        Kui tasu on makstud, saadetakse sulle registreerimiskood,
+        Kui oksjonitasu on makstud, saadetakse sulle registreerimiskood,
         mida saad kasutada .ee akrediteeritud registripidaja juures.
 
       please_note: |
@@ -138,10 +138,10 @@ et:
 
 
     banned: |
-      Sul on keelatud osaleda oksjonil järgmis(t)ele domeeninime(de)le: %{domain_names}.
+      Sul on keelatud osaleda järgneva(te)l domeeninime(de) oksjoni(te)l: %{domain_names}.
     banned_completely: |
       Korduvalt tasumata jäetud arvete tõttu on Su õigus osaleda .ee domeenioksjonitel
       peatatud kuni %{valid_until}. Tulenevalt Kasutajalepingu punktist 7.3.3. saab Teenuse kasutaja oksjonikeskkonna teenuseid kasutada, kui maksmata arveid on vähem kui %{ban_number_of_strikes}.
     violation_message_html: >-
       Oksjoni reeglite <a href="%{violations_count_regulations_link}">rikkumisi</a>:
-      %{violations_count}. Tulenevalt Kasutajalepingu punktist 7.3.3. saab Teenuse kasutaja oksjonikeskkonna teenuseid kasutada, kui maksmata arveid on vähem kui %{ban_number_of_strikes}.
+      %{violations_count}. Tulenevalt Kasutajalepingu punktist 7.3.3. saab Teenuse kasutaja oksjonikeskkonna teenuseid kasutada juhul kui maksmata arveid on vähem kui %{ban_number_of_strikes}.

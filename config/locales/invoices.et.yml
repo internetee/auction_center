@@ -6,7 +6,7 @@ et:
     invoice_already_paid: "Arve on juba makstud."
 
     issue_date: "Arve kuupäev"
-    issuer: "Väljastaja"
+    issuer: "Arve väljastaja"
     issued_for: "Arve saaja"
     due_date: "Tähtaeg"
     status: "Olek"
