@@ -386,8 +386,6 @@ GEM
       rubocop (~> 1.61)
     rubocop-shopify (2.15.1)
       rubocop (~> 1.51)
-    rubocop-thread_safety (0.5.1)
-      rubocop (>= 0.90.0)
     ruby-lsp (0.7.6)
       language_server-protocol (~> 3.17.0)
       sorbet-runtime
@@ -529,7 +527,6 @@ DEPENDENCIES
   rubocop-performance
   rubocop-rspec
   rubocop-shopify
-  rubocop-thread_safety
   ruby-lsp
   ruby-lsp-rails
   ruby-openai

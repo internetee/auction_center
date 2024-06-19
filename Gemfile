@@ -59,7 +59,7 @@ group :development, :test do
   gem "rubocop-packaging"
   gem "rubocop-rspec"
   gem "rubocop-shopify"
-  gem "rubocop-thread_safety"
+  # gem "rubocop-thread_safety"
 end
 
 group :development do
