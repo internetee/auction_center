@@ -33,10 +33,10 @@
             <% @deposit_paid.each do |deposit| %>
               <tr class="invoices-table-row">
                 <td><%= deposit.created_at.strftime("%Y-%m-%d") %></td>
-                <td><%= deposit.auction.deposit %></td>
+                <td><%= deposit.auction.deposit %> €</td>
                 <td><strong><%= deposit.auction.domain_name %></strong></td>
                 <td><%= component 'common/badgets', status: deposit.status %> <%#= t("invoices.paid_deposit.#{deposit.status}") %></td>
-                <td><%= deposit.refund_time %></td>
+                <td><%= I18n.l(deposit.refund_time) %></td>
               </tr>
             <% end %>
           <% end %>
