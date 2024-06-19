@@ -61,13 +61,13 @@ en:
 
   unsubscribe_mailer_text: "I do not wish to receive daily summary about currently auctioned domains any more"
 
-  notification_received: "Notification reveived at %{datetime}"
+  notification_received: "Notification received at %{datetime}"
   notification_unread: Notifcation unread
   notification_read: Notifcation read
-  participant_outbid: "The auction for %{domain_name} has new bid"
-  participant_outbid_broadcast: "The auction for %{name} has new bid"
-  participant_win_auction: Domain auction for %{name} is finished. Congratulations your bid was the highes!
-  participant_lost_auction: Domain auction for %{name} is finished. Unfortunately your bid was not enough to win!
+  participant_outbid: "The auction for %{domain_name} has a new bid"
+  participant_outbid_broadcast: "The auction for %{name} has a new bid"
+  participant_win_auction: Domain auction for %{name} has ended. Congratulations, your bid was the highest!
+  participant_lost_auction: Domain auction for %{name} has ended. Unfortunately your bid was not enough to win!
   no_any_notifications: No new notifications
   winner_webpush_notification_title: Congratulations!
   webpush_title_lost: "You lost"
@@ -75,7 +75,7 @@ en:
   user: "User"
   deleted_user: "User was deleted"
   banned: |
-    You are banned from participating in auctions for domain(s): %{domain_names}.
+    You are banned from participating in auctions for the following domain(s): %{domain_names}.
   banned_completely: |
     You are banned from participating in .ee domain auctions due to multiple overdue
     invoices until %{valid_until}.
@@ -112,14 +112,14 @@ en:
   is_invalid: "%{attribute} is invalid"
   invalid: "invalid"
   value_is_not_safe: |
-    Please, note, what the only characters allowed is utf-characters of english/estonian alphabet,
-    numbers, forward slashes, apostrophes, dots and hyphens
+    Please note that the only characters allowed are UTF-characters of english/estonian alphabet,
+    numbers, forward slashes, apostrophes, dots and hyphens.
   not_accepted: "Not accepted"
   details: "Details"
   updated_by: "Updated by"
   already_confirmed: |
-    Phone number you've entered is already in use by somebody else.
-    Please, use another phone number
+    The phone number you have entered is already in use.
+    Please use another phone number.
 
   search: "Search"
   search_by_domain_name: "Search by domain name"

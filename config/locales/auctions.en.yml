@@ -4,8 +4,8 @@ en:
     starts_at: 'Starts at'
     ends_at: 'Ends at'
     finished_at: "Finished at"
-    finished: "This auction has finished"
-    winning_bid: Winning bid
+    finished: "This auction has ended"
+    winning_bid: 'Winning bid'
     highest_price: "Highest price"
     auction_type: "Auction type"
     english: "English"
@@ -22,9 +22,9 @@ en:
     offer_owner: "Offer owner"
     enable_deposit: "Enable deposit"
     disable_deposit: "Disable deposit"
-    deposit: Deposit
-    bid: Bid!
-    participate: Participate!
+    deposit: 'Deposit'
+    bid: 'Bid!'
+    participate: 'Participate!'
     all_list: List all auctions
     pagination_list: List 15 auctions per page
     finished_auctions: Finished auctions
@@ -136,9 +136,8 @@ en:
       You are banned from participating in auctions for domain(s): %{domain_names}.
     banned_completely: |
       You are banned from participating in .ee domain auctions due to multiple overdue
-      invoices until %{valid_until}. According to clause 7.3.3 of the .ee Auction Environment User Agreement a user can use the service of the environment if there are less than %{ban_number_of_strikes} unpaid invoices under their user account.
+      invoices until %{valid_until}. According to clause 7.3.3 of the .ee Auction Environment User Agreement, a user may access the service if they have fewer than %{ban_number_of_strikes} unpaid invoices on their account.
     violation_message_html: >-
       Number of current <a href="%{violations_count_regulations_link}">violations</a>:
       %{violations_count}.
-      According to clause 7.3.3 of the .ee Auction Environment User Agreement a user can use the service of the environment if there are less than %{ban_number_of_strikes} unpaid invoices under their user account.
-
+      According to clause 7.3.3 of the .ee Auction Environment User Agreement, a user may access the service if they have fewer than %{ban_number_of_strikes} unpaid invoices on their account.
