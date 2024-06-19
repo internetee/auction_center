@@ -3,11 +3,11 @@ en:
     billing_profile_must_belong_to_user: "must belong to the same user as invoice"
     is_being_generated: "We are generating the invoice, please check back in a few minutes."
 
-    invoice_already_paid: "Invoice is already paid."
+    invoice_already_paid: "The invoice is already paid."
 
     issue_date: "Issue date"
     issuer: "Issuer"
-    issued_for: "Issued for"
+    issued_for: "Issued to"
     due_date: "Due date"
     status: "Status"
     price: "Price"
@@ -40,8 +40,8 @@ en:
     cancelled: "Overdue invoices (banned auctions)"
     cancelled_expired: "Cancelled invoices"
     mark_as_paid: "Mark as paid"
-    marked_as_paid: "Invoice marked as paid."
-    already_paid: "Invoice is already paid."
+    marked_as_paid: "The invoice has been marked as paid."
+    already_paid: "The invoice is already paid."
     paid_deposit_title: "Paid deposits"
     pay_all: Pay all invoices
     partial_payments_activated: "Allowed clients to make partial payments for this invoice"

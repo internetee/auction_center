@@ -133,7 +133,7 @@ en:
         In case of blind auctions you have an option to withdraw your offer at any point, as long as the auction is still in progress. Withdrawing an offer is not possible in case of open English type auctions.
 
     banned: |
-      You are banned from participating in auctions for domain(s): %{domain_names}.
+      You are banned from participating in auctions for the following domain(s): %{domain_names}.
     banned_completely: |
       You are banned from participating in .ee domain auctions due to multiple overdue
       invoices until %{valid_until}. According to clause 7.3.3 of the .ee Auction Environment User Agreement, a user may access the service if they have fewer than %{ban_number_of_strikes} unpaid invoices on their account.

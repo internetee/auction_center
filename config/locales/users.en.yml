@@ -71,7 +71,7 @@ en:
       title: "User profile"
       delete: "Delete account"
       review_terms_and_conditions: "Review terms and conditions"
-      daily_summary: "Daily summary to email"
+      daily_summary: "Send the Daily Summary to email"
       webpush_available: Webpush Available
       settings: Settings
 
