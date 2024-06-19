@@ -36,7 +36,7 @@
                 <td><%= deposit.auction.deposit %> €</td>
                 <td><strong><%= deposit.auction.domain_name %></strong></td>
                 <td><%= component 'common/badgets', status: deposit.status %> <%#= t("invoices.paid_deposit.#{deposit.status}") %></td>
-                <td><%= I18n.l(deposit.refund_time) %></td>
+                <td><%= deposit.refund_time ? I18n.l(deposit.refund_time) : 'N/A' %></td>
               </tr>
             <% end %>
           <% end %>

@@ -54,8 +54,8 @@ et:
       date: Kuupäev
       sum: Summa
       auction_name: Domeen
-      status: Olek
-      refund_time: Tagastatud
+      status: Staatus
+      refund_time: Deposiit tagastatud
       paid: "Makstud"
       prepayment: "Ettemaks"
       returned: "Tagastatud"
