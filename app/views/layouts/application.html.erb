@@ -48,7 +48,7 @@
 
     <%= turbo_frame_tag :flash do %>
       <%= turbo_stream_from current_user, :flash %>
-      <div id='flash-notice' data-outbid-message="<%= I18n.t('.participant_outbid') %>" data-turbo-cache="false">
+      <div id='flash-notice' data-outbid-message="<%= I18n.t('.participant_outbid') %>" data-turbo-temporary>
         <%= render partial: 'common/flash', locals: { flash: flash } %>
       </div>
     <% end %>
@@ -56,7 +56,7 @@
     <%= component 'common/header', notifications: @notifications_for_header %>
 
     <main>
-      <%= turbo_frame_tag "modal" %>
+      <%= turbo_frame_tag "modal", data: { turbo_temporary: true } %>
       <%= component 'common/hero', title: yield(:title) %>
       <%= render "common/static_notices" %>
       <%= yield %>

@@ -178,7 +178,7 @@ class Invoice < ApplicationRecord
   def total
     total_amount = price * (1 + vat_rate)
     total_amount -= deposit if result.auction.enable_deposit?
-    
+
     total_amount.round(2)
   end
 
@@ -236,9 +236,9 @@ class Invoice < ApplicationRecord
       initial_amount = payment_order.response['initial_amount'].to_f
       self.paid_amount ||= 0
       self.paid_amount += initial_amount.to_f
-      
+
       self.paid_with_payment_order = payment_order
-  
+
       if finally_paid?
         self.paid_at = time
         result.mark_as_payment_received(time) unless cancelled?
@@ -248,7 +248,7 @@ class Invoice < ApplicationRecord
         save!
       end
     end
-  
+
     ResultStatusUpdateJob.perform_now
   end
 

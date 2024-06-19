@@ -1,5 +1,5 @@
 <% unless flash.empty? %>
-  <div id="flash" data-turbo-cache="false" data-turbo-temporary>
+  <div id="flash" data-turbo-temporary>
     <% flash.each do |key, value| -%>
         <% next if value.blank? || value == true %>
 
