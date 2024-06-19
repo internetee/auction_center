@@ -46,7 +46,7 @@ en:
       bid_updated: "Bid updated"
 
     index:
-      your_last_offer: "Minu pakkumus"
+      your_last_offer: "My bid"
       claim_your_domain: "Claim your domain"
       you_won: "You won"
       you_lost: "Someone else won"
