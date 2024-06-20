@@ -26,6 +26,8 @@ module Offerable
 
   private
 
+  def authorize_offer_for_user = authorize!(:manage, @offer)
+
   def update_not_allowed(auction) = if params[:controller] == 'english_offers'
                                       !auction.english? || !auction.in_progress?
                                     else
@@ -40,9 +42,7 @@ module Offerable
                                                                  notice: t('offers.already_exists')
                                         end
 
-  def set_offer
-    @offer = current_user.offers.find_by!(uuid: params[:uuid])
-  end
+  def set_offer = @offer = current_user.offers.find_by!(uuid: params[:uuid])
 
   def find_auction
     controller_name = params[:controller]
@@ -61,9 +61,5 @@ module Offerable
     else
       redirect_to new_user_phone_confirmation_path(current_user.uuid), status: :see_other
     end
-  end
-
-  def authorize_offer_for_user
-    authorize! :manage, @offer
   end
 end

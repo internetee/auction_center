@@ -58,12 +58,10 @@ class OffersController < ApplicationController
 
   # PUT /offers/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
   def update
-    auction = @offer.auction
-
-    inform_invalid_captcha and return unless recaptcha_valid
-    redirect_to root_path and return if update_not_allowed(auction)
-
     respond_to do |format|
+      inform_invalid_captcha and return unless recaptcha_valid
+      redirect_to root_path and return if update_not_allowed(@offer.auction)
+
       if update_predicate
         format.html { redirect_to root_path, notice: t(:updated), status: :see_other }
         format.json { render :show, status: :ok, location: @offer }

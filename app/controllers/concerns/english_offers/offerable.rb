@@ -9,9 +9,7 @@ module EnglishOffers
 
     protected
 
-    def broadcast_update_auction_offer(auction)
-      Offers::UpdateBroadcastService.call({ auction: })
-    end
+    def broadcast_update_auction_offer(auction) = Offers::UpdateBroadcastService.call({ auction: })
 
     def update_auction_values(auction, message_text)
       AutobiderService.autobid(auction)
@@ -22,7 +20,6 @@ module EnglishOffers
     end
 
     def inform_about_invalid_bid_amount
-      formatted_starting_price = format('%.2f', @auction.starting_price)
       flash[:alert] = t('english_offers.create.bid_must_be', minimum: formatted_starting_price)
 
       if turbo_frame_request?
@@ -36,13 +33,12 @@ module EnglishOffers
       @autobider = current_user&.autobiders&.find_or_initialize_by(domain_name: @auction.domain_name)
     end
 
+    # rubocop:disable Metrics/AbcSize
     def prevent_check_for_invalid_bid
       auction = Auction.with_user_offers(current_user.id).find_by(uuid: @offer.auction.uuid)
-
       return unless bid_is_bad?(auction:, update_params:)
 
-      flash[:alert] =
-        "#{t('english_offers.show.bid_failed', price: format('%.2f', auction.highest_price.to_f).tr('.', ','))}"
+      flash[:alert] = I18n.t('english_offers.show.bid_failed', price: auction_highest_prrice_message(auction))
 
       if turbo_frame_request?
         render turbo_stream: turbo_stream.action(:redirect, root_path)
@@ -61,6 +57,10 @@ module EnglishOffers
     end
 
     private
+
+    def auction_highest_prrice_message(auction) = format('%.2f', auction.highest_price.to_f).tr('.', ',')
+
+    def formatted_starting_price = format('%.2f', @auction.starting_price)
 
     def bid_is_bad?(auction:, update_params:)
       !additional_check_for_bids(auction, update_params[:price]) ||
