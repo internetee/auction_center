@@ -13,8 +13,8 @@ en:
     offers: "Offers"
     turns_count: "Turns count"
     offer_actions: "Offer actions"
-    your_current_price: "Current offer"
-    current_price: "Current offer"
+    your_current_price: "Current bid"
+    current_price: "Current bid"
     cancel_bid: "Cancel bid"
     starting_price: "Starting price in euros"
     min_bids_step: "Minimum bid steps in euros"
@@ -27,7 +27,7 @@ en:
     participate: 'Participate!'
     all_list: List all auctions
     pagination_list: List 15 auctions per page
-    finished_auctions: Finished auctions
+    finished_auctions: 'Ended auctions'
     you: Your offer
     blind_auction: Blind auction
     english_auction: English auction
@@ -39,11 +39,11 @@ en:
     submit_offer: "Bid!"
     edit_your_offer: "Edit offer"
     delete_your_offer: "Delete"
-    subscribe_for_notifications: "Subscribe for notifications"
-    unsubscribe_for_notifications: "Unsubscribe from notifications"
+    subscribe_for_notifications: "Subscribe for web notifications"
+    unsubscribe_for_notifications: "Unsubscribe from web notifications"
 
     index:
-      title: "Current auctions"
+      title: "Current domain auctions"
       search: "Search by domain name"
       auction_list_tooltip: "Send me daily auctioned domain list by email"
       auction_list_unsubscribe_tooltip: "Unsubscribe me from daily auctioned domain lists"
@@ -72,7 +72,7 @@ en:
       title: "Domains in auction:"
       1_step_header: "Submit an offer"
       1_step_explanation: |
-        to the .ee domain of your choice. Depending on the domain name, the auctions take place either in the style of a blind auction or an open-bid (English) auction.
+        Submit an offer to the .ee domain of your choice. Depending on the domain name, the auctions take place either in the style of a blind auction or an open-bid (English) auction.
 
       2_step_header: "Wait for an auction to end"
       2_step_explanation: |
@@ -133,7 +133,7 @@ en:
         In case of blind auctions you have an option to withdraw your offer at any point, as long as the auction is still in progress. Withdrawing an offer is not possible in case of open English type auctions.
 
     banned: |
-      You are banned from participating in auctions for the following domain(s): %{domain_names}.
+      You are banned from participating in .ee domain auctions for the following domain(s): %{domain_names}.
     banned_completely: |
       You are banned from participating in .ee domain auctions due to multiple overdue
       invoices until %{valid_until}. According to clause 7.3.3 of the .ee Auction Environment User Agreement, a user may access the service if they have fewer than %{ban_number_of_strikes} unpaid invoices on their account.

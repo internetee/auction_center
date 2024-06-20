@@ -1,4 +1,9 @@
 et:
+  auction:
+  # test if this is fixing translation issue OLEG THIS IS #FIXME
+  # context: et.auctions.all should be but currently this is et.auction.all
+  # dont know if this fix even works but will see
+    all: 'Kõik'
   auctions:
     domain_name: 'Domeeninimi'
     starts_at: 'Algus'
@@ -21,7 +26,7 @@ et:
     offer_owner: "Pakkuja"
     enable_deposit: "Võimaldage tagatisraha"
     disable_deposit: "Deaktiveeri tagatisraha"
-    deposit: "Maksa deposiit"
+    deposit: "Maksa deposiit" 
     bid: "Paku hind!"
     participate: "Osale!"
     all_list: "Kuva kõik"
