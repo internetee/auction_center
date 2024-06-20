@@ -171,10 +171,10 @@ et:
   notification_received: "Teavitus saadetud %{datetime}"
   notification_unread: Notifcation unread
   notification_read: Notifcation read
-  participant_outbid: Domeeni nimele %{domain_name} on uus pakkumine
-  participant_outbid_broadcast: Domeeni nimele %{name} on uus pakkumine
-  participant_win_auction: Domeeni oksjon domeeninimele %{name} on lõppenud. Palju õnne teie pakkumine oli parim!
-  participant_lost_auction: Domeeni oksjon domeeninimele %{name} on lõppenud. Kahjuks ei olnud teie pakkumine võiduks piisav!
+  participant_outbid: Domeeninimele %{domain_name} on uus pakkumine
+  participant_outbid_broadcast: Domeeninimele %{name} on uus pakkumine
+  participant_win_auction: Domeenioksjon domeeninimele %{name} on lõppenud. Palju õnne teie pakkumine oli parim!
+  participant_lost_auction: Domeenioksjon domeeninimele %{name} on lõppenud. Kahjuks ei olnud teie pakkumine võiduks piisav!
   no_any_notifications: Uued teated puuduvad
   webpush_title_outbidded: Üle pakutud
   webpush_title_lost: Kaotasid
@@ -184,5 +184,5 @@ et:
       auction_action_button:
         edit_and_remove_blind_offer:
           component:
-            confirm_delete: "Oled kindel, et soovid kustutada pimedat pakkumist?"
+            confirm_delete: "Kas oled kindel, et soovid kustutada pimedat pakkumist?"
 
