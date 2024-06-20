@@ -2,12 +2,9 @@
 
 # rubocop:disable Metrics
 class OffersController < ApplicationController
-  before_action :authenticate_user!
-  before_action :find_auction, only: %i[new create]
-  before_action :set_offer, only: %i[show edit update destroy]
-  before_action :check_for_ban, only: :create
-  before_action :authorize_phone_confirmation
+  include Offerable
 
+  before_action :set_offer, only: %i[show edit update destroy]
   before_action :authorize_offer_for_user, except: %i[new index create delete]
 
   include RecaptchaValidatable
@@ -15,13 +12,7 @@ class OffersController < ApplicationController
 
   # GET /auctions/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/offers/new
   def new
-    offer = @auction.offer_from_user(current_user.id)
-
-    if turbo_frame_request?
-      render turbo_stream: turbo_stream.action(:redirect, root_path), notice: t('offers.already_exists') and return
-    else
-      redirect_to root_path, status: :see_other, notice: t('offers.already_exists') and return
-    end if offer
+    prevent_check_for_existed_offer and return if @auction.offer_from_user(current_user.id)
 
     BillingProfile.create_default_for_user(current_user.id)
     @offer = Offer.new(auction_id: @auction.id, user_id: current_user.id)
@@ -112,20 +103,6 @@ class OffersController < ApplicationController
 
   private
 
-  def find_auction
-    @auction = Auction.find_by!(uuid: params[:auction_uuid], platform: ['blind', nil])
-  end
-
-  def update_not_allowed(auction)
-    auction.english? || !auction.in_progress?
-  end
-
-  def check_for_ban
-    if Ban.valid.where(user_id: current_user).where(domain_name: @auction.domain_name).any? || current_user.completely_banned?
-      redirect_to root_path, flash: { alert: I18n.t('.offers.create.ban') } and return
-    end
-  end
-
   def create_predicate
     recaptcha_valid && @offer.save && @offer.reload
   end
@@ -141,25 +118,5 @@ class OffersController < ApplicationController
   def update_params
     update_params = params.require(:offer).permit(:price, :billing_profile_id)
     merge_updated_by(update_params)
-  end
-
-  def set_offer
-    @offer = current_user.offers.find_by!(uuid: params[:uuid])
-  end
-
-  def authorize_phone_confirmation
-    return unless current_user.requires_phone_number_confirmation?
-
-    flash[:notice] = t('phone_confirmations.confirmation_required')
-
-    if turbo_frame_request?
-      render turbo_stream: turbo_stream.action(:redirect, new_user_phone_confirmation_path(current_user.uuid))
-    else
-      redirect_to new_user_phone_confirmation_path(current_user.uuid), status: :see_other
-    end
-  end
-
-  def authorize_offer_for_user
-    authorize! :manage, @offer
   end
 end

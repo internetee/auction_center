@@ -11,7 +11,7 @@ class RefundJob < ApplicationJob
     d = DomainParticipateAuction.find(domain_participate_auction_id)
 
     if response.status == 200
-      d.update(status: 'returned', refund_date: Time.zone.now)
+      d.update(status: 'returned', refund_time: Time.zone.now)
     else
       inform(d, response.body)
     end

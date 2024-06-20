@@ -156,7 +156,7 @@ class EnglishOffersIntegrationTest < ActionDispatch::IntegrationTest
                                      params: params,
                                      headers: { "HTTP_REFERER" => root_path }
     
-    assert_equal flash[:alert], I18n.t('.english_offers.create.ban')
+    assert_equal flash[:alert], I18n.t('english_offers.create.ban')
     assert @auction.offers.empty?
   end
 
