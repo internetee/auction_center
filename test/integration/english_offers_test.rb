@@ -152,9 +152,7 @@ class EnglishOffersIntegrationTest < ActionDispatch::IntegrationTest
       }
     }
 
-    post auction_english_offers_path(auction_uuid: @auction.uuid),
-                                     params: params,
-                                     headers: { "HTTP_REFERER" => root_path }
+    post auction_english_offers_path(auction_uuid: @auction.uuid), params: params
     
     assert_equal flash[:alert], I18n.t('english_offers.create.ban')
     assert @auction.offers.empty?

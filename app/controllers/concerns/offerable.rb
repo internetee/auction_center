@@ -11,9 +11,17 @@ module Offerable
   protected
 
   def check_for_ban
-    if Ban.valid.where(user_id: current_user).where(domain_name: @auction.domain_name).any? || current_user.completely_banned?
-      redirect_to root_path, flash: { alert: I18n.t("#{params[:controller]}.create.ban") } and return
-    end
+    is_ban = Ban.valid.where(user_id: current_user).where(domain_name: @auction.domain_name).any?
+    is_ban ||= current_user.completely_banned?
+    return unless is_ban
+
+    redirect_to root_path, flash: { alert: I18n.t("#{params[:controller]}.create.ban") } and return
+  end
+
+  def inform_invalid_captcha
+    @show_checkbox_recaptcha = true unless @success
+    flash[:alert] = t('offers.form.captcha_verification')
+    redirect_to root_path, status: :see_other
   end
 
   private

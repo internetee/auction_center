@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics
 class OffersController < ApplicationController
   include Offerable
 
@@ -12,8 +11,6 @@ class OffersController < ApplicationController
 
   # GET /auctions/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/offers/new
   def new
-    prevent_check_for_existed_offer and return if @auction.offer_from_user(current_user.id)
-
     BillingProfile.create_default_for_user(current_user.id)
     @offer = Offer.new(auction_id: @auction.id, user_id: current_user.id)
   end
@@ -21,9 +18,10 @@ class OffersController < ApplicationController
   # POST /auctions/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/offers
   def create
     existing_offer = @auction.offer_from_user(current_user.id)
-
     @offer = Offer.new(create_params)
     authorize! :manage, @offer
+
+    inform_invalid_captcha and return unless recaptcha_valid
 
     respond_to do |format|
       if existing_offer
@@ -34,9 +32,7 @@ class OffersController < ApplicationController
         format.html { redirect_to root_path, notice: t('.created') }
         format.json { render :show, status: :created, location: @offer }
       else
-        @show_checkbox_recaptcha = true unless @success
-        flash[:alert] = recaptcha_valid ? @offer.errors.full_messages.join('; ') : t('offers.form.captcha_verification')
-
+        flash[:alert] = @offer.errors.full_messages.join('; ')
         format.html { redirect_to root_path, status: :see_other }
         format.json { render json: @offer.errors, status: :unprocessable_entity }
       end
@@ -63,6 +59,8 @@ class OffersController < ApplicationController
   # PUT /offers/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
   def update
     auction = @offer.auction
+
+    inform_invalid_captcha and return unless recaptcha_valid
     redirect_to root_path and return if update_not_allowed(auction)
 
     respond_to do |format|
@@ -70,9 +68,7 @@ class OffersController < ApplicationController
         format.html { redirect_to root_path, notice: t(:updated), status: :see_other }
         format.json { render :show, status: :ok, location: @offer }
       else
-        @show_checkbox_recaptcha = true unless @success
-        flash[:alert] = recaptcha_valid ? @offer.errors.full_messages.join('; ') : t('offers.form.captcha_verification')
-
+        flash[:alert] = @offer.errors.full_messages.join('; ')
         format.html { redirect_to root_path, status: :see_other }
         format.json { render json: @offer.errors, status: :unprocessable_entity }
       end
