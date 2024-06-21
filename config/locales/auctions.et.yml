@@ -2,14 +2,14 @@ et:
   auction:
   # OLEG THIS IS #FIXME
   # context: et.auctions.all should be but currently this is et.auction.all
-    all: 'Kõik'
+    all: 'Kõik oksjonid'
   offer:
     change_bid:
       'Muuda pakkumust'
   auctions:
     domain_name: 'Domeeninimi'
     starts_at: 'Algus'
-    ends_at: 'Lõpp'
+    ends_at: 'Oksjoni lõpp'
     finished_at: "Oksjoni lõppkuupäev"
     finished: "Oksjon on lõppenud"
     winning_bid: "Võidupakkumus"
@@ -37,7 +37,7 @@ et:
     you: "Sinu pakkumus"
     blind_auction: "Pimeoksjon"
     english_auction: "Inglise oksjon"
-    all: "Kõik"
+    all: "Kõik oksjonid"
     type: "Oksjoni tüüp"
 
     still_in_progress: "Töötlemisel"

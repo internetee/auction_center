@@ -12,7 +12,7 @@ et:
   submit: "Esita"
   delete: "Kustuta"
   cancel: "Katkesta"
-  all: "Kõik"
+  all: "Kõik oksjonid"
   clear: "Tühista"
 
   in_local_language: "Eesti keeles"
@@ -30,7 +30,7 @@ et:
   new_billing_profile: "Loo uus arve aadress"
 
   profile: "Kasutajakonto"
-  sign_in: "Sisene"
+  sign_in: "Sisene oksjonikeskkonda"
   sign_out: "Logi välja"
   forgot_your_password: "Unustasid salasõna?"
   change_your_password: "Muuda salasõna"
