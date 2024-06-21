@@ -19,10 +19,10 @@ en:
     starting_price: "Starting price in euros"
     min_bids_step: "Minimum bid steps in euros"
     slipping_end: "Slipping end condition in minutes"
-    offer_owner: "Offer owner"
+    offer_owner: "Bidder"
     enable_deposit: "Enable deposit"
     disable_deposit: "Disable deposit"
-    deposit: 'Deposit'
+    deposit: 'Pay the Deposit'
     bid: 'Bid!'
     participate: 'Participate!'
     all_list: List all auctions
