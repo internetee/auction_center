@@ -27,11 +27,7 @@ module Modals
       end
 
       def current_price
-        if auction.offer_from_user(current_user).present?
-          auction.current_price_from_user(current_user)
-        else
-          Money.new(0)
-        end
+        auction.current_price_from_user(current_user) if auction.offer_from_user(current_user).present?
       end
 
       def minimum_offer

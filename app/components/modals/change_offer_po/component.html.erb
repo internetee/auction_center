@@ -27,7 +27,7 @@
             </div>
             <div class="c-modal__main__info c-modal__main__info--black">
               <strong><%= t('auctions.you') %></strong>
-              <h3 class="u-h2 u-m-none"><%= current_price %> €</h3>
+              <h3 class="u-h2 u-m-none"><%= current_price.nil? ? 0.0 : current_price %> €</h3>
             </div>
           </div>
 
