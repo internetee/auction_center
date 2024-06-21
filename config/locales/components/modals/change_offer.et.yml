@@ -1,0 +1,5 @@
+et:
+  modals:
+    change_offer:
+      component:
+        bidder: 'Pakkuja'

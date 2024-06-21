@@ -47,7 +47,8 @@ et:
       claim_your_domain: "Võta domeen"
       you_won: "Oled võitnud"
       you_lost: "Teine pakkuja võitis"
-      new_bid: "Uus pakkumus"
+      you_lose: 'Kaotasid oksjoni'
+      new_bid: "Uus pakkumine!"
 
     form:
       bidder: "Pakkuja"

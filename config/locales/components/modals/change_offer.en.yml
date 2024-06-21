@@ -1,0 +1,5 @@
+en:
+  modals:
+    change_offer:
+      component:
+        bidder: 'Bidder'
