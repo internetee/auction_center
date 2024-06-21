@@ -42,7 +42,7 @@ class NotificationIconTest < ViewComponent::TestCase
     render_inline(Common::Notifications::Icon::Component.new(notification: @notification, readed: false))
     assert_selector "span.o-hammer-icon"
     assert_selector "h5.c-notification__header__title" do
-      assert_text(/^New Bid! ?/)
+      assert_text(I18n.t('english_offers.index.new_bid'))
       assert_selector "span.o-new"
     end
 
@@ -66,7 +66,7 @@ class NotificationIconTest < ViewComponent::TestCase
     render_inline(Common::Notifications::Icon::Component.new(notification: @notification, readed: true))
     assert_selector "span.c-notification__header__icon.o-hammer-icon"
     assert_selector "h5.c-notification__header__title" do
-      assert_text(/^New Bid! ?/)
+      assert_text(I18n.t('english_offers.index.new_bid'))
       assert_selector "span.o-new"
     end
   end
