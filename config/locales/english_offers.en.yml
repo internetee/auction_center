@@ -51,7 +51,7 @@ en:
       you_won: "You won"
       you_lost: "Someone else won"
       you_lose: 'You lost the auction'
-      new_bid: "New bid!"
+      new_bid: "New bid"
 
     form:
       bidder: "Bidder"

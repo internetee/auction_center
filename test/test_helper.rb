@@ -25,6 +25,8 @@ class ActiveSupport::TestCase
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
   fixtures :all
 
+  parallelize(workers: 4)
+
   # Add more helper methods to be used by all tests here...
   def clear_email_deliveries
     ActionMailer::Base.deliveries.clear

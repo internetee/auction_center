@@ -48,7 +48,7 @@ et:
       you_won: "Oled võitnud"
       you_lost: "Teine pakkuja võitis"
       you_lose: 'Kaotasid oksjoni'
-      new_bid: "Uus pakkumine!"
+      new_bid: "Uus pakkumine"
 
     form:
       bidder: "Pakkuja"

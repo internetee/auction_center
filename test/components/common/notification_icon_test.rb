@@ -26,7 +26,7 @@ class NotificationIconTest < ViewComponent::TestCase
 
     assert_selector "span.o-trophy-icon"
     assert_selector "h5.c-notification__header__title" do
-      assert_text(/^You won! ?/)
+      assert_text(I18n.t('english_offers.index.you_won'))
       assert_selector "span.o-new"
     end
 
@@ -34,7 +34,7 @@ class NotificationIconTest < ViewComponent::TestCase
     render_inline(Common::Notifications::Icon::Component.new(notification: @notification, readed: false))
     assert_selector "span.o-hammer-icon"
     assert_selector "h5.c-notification__header__title" do
-      assert_text(/^You Lose! ?/)
+      assert_text(I18n.t('english_offers.index.you_lose'))
       assert_selector "span.o-new"
     end
 
@@ -50,7 +50,7 @@ class NotificationIconTest < ViewComponent::TestCase
     render_inline(Common::Notifications::Icon::Component.new(notification: @notification, readed: true))
     assert_selector "span.c-notification__header__icon.o-trophy-icon"
     assert_selector "h5.c-notification__header__title" do
-      assert_text(/^You won! ?/)
+      assert_text(I18n.t('english_offers.index.you_won'))
       assert_selector "span.o-new"
     end
 
@@ -58,7 +58,7 @@ class NotificationIconTest < ViewComponent::TestCase
     render_inline(Common::Notifications::Icon::Component.new(notification: @notification, readed: true))
     assert_selector "span.c-notification__header__icon.o-hammer-icon"
     assert_selector "h5.c-notification__header__title" do
-      assert_text(/^You Lose! ?/)
+      assert_text(I18n.t('english_offers.index.you_lose'))
       assert_selector "span.o-new"
     end
 
