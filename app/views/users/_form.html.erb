@@ -1,130 +1,112 @@
-<%= form_with(model: user, url: url, local: true, id: 'user_form', class: 'ui form big') do |f| %>
-  <div class="ui two column doubling stackable grid">
-    <div class="column">
-      <h3 class="p3"><%= t('.contact_data') %></h3>
-      <div class="field">
-        <%= f.hidden_field :locale, value: user.persisted? ? user.locale : I18n.locale %>
-        <%= f.label :email, t('users.email') %>
-        <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-        <% if user.pending_reconfirmation? %>
-          <div><%= t('.currently_pending_confirmation',
-                               email: user.unconfirmed_email) %></div>
-        <% end %>
-      </div>
-      <% unless user.signed_in_with_identity_document? %>
-        <div class="field">
-          <%= f.label :mobile_phone, t('users.mobile_phone') %>
-          <%= f.telephone_field :mobile_phone, autofocus: true, autocomplete: "off",
-                      placeholder: "+372xxxxxxxx" %>
+<%= turbo_frame_tag 'user_info' do %>
+  <%= form_with model: user, url: user_path(user.uuid) do |f| %>
+    <%= render partial: 'common/flash', locals: { flash: flash } if turbo_frame_request? %>
+    <div class="o-grid o-grid--two-col o-grid--sep">
+      <div class="o-card">
+        <div class="u-flex u-align-center u-content-sp u-mb-30">
+          <h2 class="o-card__title c-account__title"><%= user.display_name %></h2>
+          <div class="c-account_editicons u-flex u-align-center u-content-sp">
+
+          </div>
         </div>
-      <% end %>
-      <div class="field">
-        <%= f.label :given_names, t('users.given_names') %>
-        <% if user.signed_in_with_identity_document? %>
-          <div class="ui disbled input">
-            <%= f.text_field :given_names, readonly: true, value: user.given_names %>
+        <div class="c-account__form">
+          <div class="c-account__input c-account__input--editable u-mb-20 is-editable">
+            <%= component 'common/form/label', form: f, attribute: :email, title: t('users.email') %>
+            <%= component 'common/form/email_field', form: f, attribute: :email, options: { autocomplete: 'email', autofocus: true } %>
           </div>
-        <% else %>
-          <%= f.text_field :given_names, readonly: false, autofocus: true, autocomplete: "off" %>
-        <% end %>
-      </div>
-      <div class="field">
-        <%= f.label :surname, t('users.surname') %>
-        <% if user.signed_in_with_identity_document? %>
-          <div class="ui disbled input">
-            <%= f.text_field :surname, readonly: true, value: user.surname %>
+          <div class="c-account__input-wrapper u-flex u-align-start">
+            <div class="c-account__input c-account__input--editable u-mb-20 is-editable">
+              <%= component 'common/form/label', form: f, attribute: :given_names, title: t('users.given_names') %>
+              <%= component 'common/form/text_field', form: f, attribute: :given_names, options: { autofocus: true } %>
+            </div>
+            <div class="c-account__input c-account__input--editable u-mb-20 is-editable">
+              <%= component 'common/form/label', form: f, attribute: :surname, title: t('users.surname') %>
+              <%= component 'common/form/text_field', form: f, attribute: :surname, options: { autofocus: true } %>
+            </div>
+            <div class="c-account__input c-account__input--editable u-mb-20 is-editable">
+              <%= component 'common/form/label', form: f, attribute: :mobile_phone, title: t('users.mobile_phone') %>
+              <%= component 'common/form/telephone_field', form: f, attribute: :mobile_phone, options: { autofocus: true, autocomplete: "off", placeholder: "+372xxxxxxxx" } %>
+            </div>
+            <div class="c-account__input c-account__input--readonly u-mb-20">
+              <%= component 'common/form/label', form: f, attribute: :identity_code, title: t('users.identity_code') %>
+              <%= tag.span user.identity_code if user.identity_code.present? %>
+            </div>
+            <div class="c-account__input c-account__input--readonly u-mb-20">
+              <%= component 'common/form/label', form: f, attribute: :country, title: t('users.country') %>
+              <span><%= user.country_code || Setting.find_by(code: 'default_country').retrieve %></span>
+            </div>
+            <div class="c-account__input c-account__input--readonly u-mb-20">
+              <label for="input2"><%= t('created_at') %></label>
+              <span><%= I18n.l(user.created_at) %></span>
+            </div>
           </div>
-        <% else %>
-          <%= f.text_field :surname, readonly: false, autofocus: true, autocomplete: "off" %>
-        <% end %>
-      </div>
-    </div>
-    <div class="column">
-      <h3 class="p3"><%= t('auth.tara.form.data_from_identity_document') %></h3>
-      <div class="field">
-        <%= f.label :identity_code, t('users.identity_code') %>
-        <% if user.identity_code.present? %>
-          <div class="ui disbled input">
-            <%= f.text_field :identity_code, readonly: user.new_record? ? false : true, value: user.identity_code %>
-          </div>
-        <% else %>
-          <%= f.text_field :identity_code, readonly: false %>
-        <% end %>
-      </div>
-      <div class="field">
-        <%= f.label :country, t('users.country_code') %>
-        <% if user.signed_in_with_identity_document? %>
-          <div class="ui disbled input">
-            <%= f.text_field :country_code,
-                        value: user.country_code || Setting.find_by(code: 'default_country').retrieve,
-                        readonly: true %>
-          </div>
-        <% else %>
-          <%= f.select :country_code,
-                    options_for_select(
-                        Countries.for_selection,
-                        user.country_code || Setting.find_by(code: 'default_country').retrieve
-                    ),
-                    {} %>
-        <% end %>
-      </div>
-      <div class="field">
-        <div class="ui checkbox">
-          <%= f.check_box :accepts_terms_and_conditions, { value: user.accepts_terms_and_conditions }, "true", "false" %>
-          <%= f.label :accepts_terms_and_conditions do %>
-            <%= t('users.i_accept_terms_and_conditions_html',
-                          link: link_to(t('users.terms_and_conditions_link'), Setting.find_by(code: 'terms_and_conditions_link').retrieve, target: "_blank")) %>
-          <% end %>
         </div>
       </div>
-      <h3 class="p3"><%= t('.daily_summary') %></h3>
-      <div class="field">
-        <div class="ui checkbox">
-          <%= f.check_box :daily_summary %>
-          <%= f.label :daily_summary %>
+
+      <div class="o-card">
+        <h2 class="o-card__title c-account__title u-mb-36"><%= t('users.show.settings') %></h2>
+
+        <div class="c-account__checkbox u-flex u-align-center u-mb-30">
+          <%= component 'common/webpush/setting' %>
+          <span class="c-account__chekboxtitle"><%= t('common.webpush_modal.webpush_title') %></span>
+        </div>
+
+        <div class="c-account__checkbox u-flex u-align-center u-mb-30" data-controller="daily-summary">
+          <label class="o-checkbox" for="checkbox2">
+            <input type="checkbox" id="checkbox2" data-action="change->daily-summary#updateDailtSummary" <%= current_user.daily_summary ? 'checked' : '' %> />
+            <div class="o-checkbox__slider round"></div>
+          </label>
+          <span class="c-account__chekboxtitle"><%= t('users.show.daily_summary') %></span>
+        </div>
+
+        <a href="" title="" class="c-acount__link"><%= t('users.terms_and_conditions_link') %></a>
+
+        <div class="c-acount__buttons u-flex u-align-center">
+          <%= component 'common/links/link_button', link_title: t(:billing), href: billing_profiles_path, color: 'ghost', options: { target: '_top' }  %>
+          <%= component 'common/buttons/delete_button_with_text', path: user_path(@user.uuid), text: t('users.show.delete') %>
+
         </div>
       </div>
-    </div>
-    <div class="column">
-      <% if user.persisted? || (user.signed_in_with_identity_document? && user.encrypted_password.blank?) %>
-        <h3 class="p3"><%= t('.new_password') %></h3>
-      <% else %>
-        <h3 class="p3"><%= t('users.password') %></h3>
-      <% end %>
-      <div class="field">
-        <%= f.label :password, t('users.password'), class: 'label-password' %>
-        <%= f.password_field :password, autocomplete: "new-password" %>
-        <% if user.persisted? || (user.signed_in_with_identity_document? && user.encrypted_password.blank?) %>
-          <br>
-          <em><%= t('.you_can_leave_blank') %></em><br>
-        <% end %>
-        <% if @minimum_password_length %>
-          <em><%= t('.password_requirements', minimum: @minimum_password_length) %></em>
-        <% end %>
-        <br />
-      </div>
-      <div class="field">
-        <%= f.label :password_confirmation, t('users.password_confirmation') %>
-        <%= f.password_field :password_confirmation, autocomplete: "off" %>
-      </div>
-    </div>
-    <% if user.persisted? && !user.signed_in_with_identity_document? %>
-      <div class="column sixteen wide">
-        <hr>
-        <div class="field">
-          <%= f.label :current_password, t('users.current_password') %>
-          <i><%= t('.we_need_your_password') %></i><br />
-          <%= f.password_field :current_password, autocomplete: "off" %>
+
+      <div class="o-card">
+        <h2 class="o-card__title c-account__title c-account__title--password">
+          <% user.persisted? || (user.signed_in_with_identity_document? && user.encrypted_password.blank?) ? t('.new_password') : t('users.password') %>
+        </h2>
+
+        <div class="c-account__input u-mb-20">
+          <%= component 'common/form/password_field/description', 
+                       form: f, attribute: :password,
+                       user: current_user, minimum_password_length: @minimum_password_length %>
+
+          <%= component 'common/form/password_field', form: f, attribute: :password, options: {  autocomplete: "new-password" } %>
+          
+          <%= tag.span t('.you_can_leave_blank'),
+              class: "c-account__input-explain" if user.persisted? || 
+              (user.signed_in_with_identity_document? && user.encrypted_password.blank?) %>
+
+        </div>
+
+        <div class="c-account__input">
+          <%= component 'common/form/label', form: f, attribute: :password_confirmation, title: t('users.password_confirmation') %>
+          <%= component 'common/form/password_field', form: f, attribute: :password_confirmation, options: {  autocomplete: "off" } %>
         </div>
       </div>
-    <% end %>
-    <div class="column sixteen wide">
-      <% if user.persisted? %>
-        <%= f.submit t(:update), class: "ui button big primary", id: "user_form_commit", data: { turbo: false } %>
-        <%= link_to t(:back), :back, class: "ui button big secondary" %>
-      <% else %>
-        <%= f.submit t('.sign_up'), class: "ui button big primary", id: "user_form_commit", data: { turbo: false } %>
-      <% end %>
+
+      <div class="o-card o-card--no-shadow">
+        <% if user.persisted? && !user.signed_in_with_identity_document? %>
+            <h2 class="o-card__title c-account__title c-account__title--password c-account__title--confirm">Kinnita muudatused</h2>
+            <p class="c-account__subtitle"><%= t('.we_need_your_password') %></p>
+            <div class="c-account__input u-mb-48">
+              <%= component 'common/form/label', form: f, attribute: :current_password, title: t('users.current_password') %>
+              <%= component 'common/form/password_field', form: f, attribute: :current_password, options: {  autocomplete: "off" } %>
+            </div>
+        <% end %>
+
+        <%= component 'common/links/link_button', link_title: t(:cancel), href: '#', color: 'ghost',
+            options: { data: { turbo_frame: 'user_info' } }  %>
+        <%= component 'common/form/form_button', form: f, btn_title: t(:submit) %>
+      </div>
+
     </div>
-  </div>
+  <% end %>
 <% end %>

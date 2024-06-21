@@ -1,4 +1,4 @@
 et:
   invoice_items:
     name: "%{domain_name} (oksjon %{auction_end}) registreerimiskood"
-    deposit: "%{domain_name} deposit"
+    deposit: "%{domain_name} deposiit"

@@ -106,7 +106,8 @@ class LHVConnectTransactionsIntegrationTest < ActionDispatch::IntegrationTest
 
     assert_equal invoice.total, Money.from_amount(10.00, 'EUR')
 
-    payment_order = invoice.payment_orders.first
+    payment_order = invoice.payment_orders.where(status: 'paid').first
+
     invoice.mark_as_paid_at_with_payment_order(Time.zone.now, payment_order) && invoice.reload
 
     assert_equal invoice.status, 'paid'

@@ -5,17 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-    <%= javascript_pack_tag 'application', 'data-turbo-track': 'reload' %>
-    <%= stylesheet_pack_tag 'application', "data-turbo-track": 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbo-track': 'reload' %>
+    <%= stylesheet_link_tag 'application', "data-turbo-track": 'reload' %>
+
     <style>
       table thead {
           background-color: black !important;
       }
-      
+
       <%= ".current_#{current_user&.id}_user" %> {
           color: green !important;
       }
-      
+
       .initial-color {
           color: red;
       }
@@ -26,53 +27,44 @@
                 }
               }
 
-    .span-mobile-only {
+          .span-mobile-only {
       display: none;
-    }
+          }
 
-    @media screen and (max-width: 767px) {
+          @media screen and (max-width: 767px) {
       .span-mobile-only {
         display: inline;
       }
+
     }
     </style>
   </head>
-  <body data-controller="push-notification"
+
+  <body data-controller="push-notification websocket--user cookie-consent"
         data-push-notification-vapid-public-value="<%= Rails.configuration.customization[:vapid_public] %>"
         data-push-notification-user-login-value="<%= user_signed_in? %>">
 
-      <%= render 'common/webpush_modal' if user_signed_in? %>
+    <%= render 'common/webpush_modal' if user_signed_in? %>
 
-    <div class="app-wrapper">
-      <%= render 'common/header' %>
-      <main class="main-layout">
+    <%= turbo_frame_tag :flash do %>
+      <%= turbo_stream_from current_user, :flash %>
+      <div id='flash-notice' data-outbid-message="<%= I18n.t('.participant_outbid') %>" data-turbo-temporary>
+        <%= render partial: 'common/flash', locals: { flash: flash } %>
+      </div>
+    <% end %>
 
+    <%= component 'common/header', notifications: @notifications_for_header %>
 
+    <main>
+      <%= turbo_frame_tag "modal", data: { turbo_temporary: true } %>
+      <%= component 'common/hero', title: yield(:title) %>
+      <%= render "common/static_notices" %>
+      <%= yield %>
+    </main>
 
-  
-        <%= yield :hero %>
-    
-        <%= turbo_frame_tag :flash do %>
-          <%= turbo_stream_from current_user, :flash %>
-          <div id='flash-notice' data-outbid-message="<%= I18n.t('.participant_outbid') %>">
-            <%= render partial: 'common/flash', locals: { flash: flash } %>
-          </div>
-        <% end %>
+    <%= component 'common/footer' %>
 
-        <% if Time.zone.now.between?(Time.zone.parse(start_of_procedure), Time.zone.parse(end_of_procdure))%>
-          <div class="ui message flash" style="background-color: red; color: white;">
-            <div class="header"><%= t('procedure_warning') %></div>
-          </div>
-        <% end %>
+    <%= render 'application/google_analytics', tracking_id: google_analytics.tracking_id if google_analytics.enabled? %>
 
-        <%= banned_banner %>
-        <%= invalid_data_banner %>
-        <%= yield %>
-      </main>
-
-      <%= render 'common/cookies' if show_cookie_dialog? %>
-      <%= render 'common/footer' %>
-      <%= render 'google_analytics', tracking_id: google_analytics.tracking_id if google_analytics.enabled? && show_google_analytics? %>
-    </div>
   </body>
 </html>

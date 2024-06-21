@@ -1,32 +1,22 @@
-<% content_for :hero do %>
-    <div class="hero orange">
-        <h1><%= t('.title') %></h1>
-    </div>
-<% end %>
+<% content_for :title, t('.title') %>
 
-<div class="u-container">
-    <div class="margin-block">
-            <table class="ui table unstackable fixed" id="settings-table">
-                <thead>
-                    <tr>
-                        <th scope="col"><%= t('settings.code') %></th>
-                        <th scope="col"><%= t('settings.description') %></th>
-                        <th scope="col"><%= t('settings.value') %></th>
-                    </tr>
-                </thead>
-
-                <tbody id="settings-table-body">
-                    <% @settings.each do |setting| %>
-                        <tr class="settings-table-row">
-                            <td class="setting-code">
-                                <%=link_to setting.code, admin_setting_path(setting) %>
-                            </td>
-                            <td><%= setting.description %></td>
-                            <td><%= formatted_setting_value(setting.value) %></td>
-                        </tr>
-                    <% end %>
-                </tbody>
-            </table>
-        </div>
-    </div>
+<div class="o-container">
+  <div class="c-table c-table--sortable">
+    <% header_collection = [{column: nil, caption: t('settings.code') , options: {}},
+                            { column: nil, caption: t('settings.description'), options: { class: "" } },
+                            { column: nil, caption: t('settings.value'), options: { class: "" } }] %>
+    <%= component 'common/table', header_collection:, options: { class: 'js-table-dt dataTable no-footer' } do %>
+      <%= tag.tbody class: 'contents' do %>
+        <% @settings.each do |setting| %>
+          <tr class="settings-table-row">
+            <td class="setting-code">
+              <%=link_to setting.code, admin_setting_path(setting) %>
+            </td>
+            <td><%= setting.description %></td>
+            <td><%= formatted_setting_value(setting.value) %></td>
+          </tr>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
 </div>

@@ -1,0 +1,39 @@
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  height: rem(50px);
+  padding: rem(8px 16px);
+  font-weight: 500;
+  font-size: 14px;
+  line-height: rem(24px);
+  text-align: left;
+
+  * {
+    vertical-align: middle;
+  }
+}
+
+td {
+  border-right: 1px solid $grey-200-color;
+  border-bottom: 1px solid $grey-200-color;
+
+  &:last-child {
+    border-right: 0;
+  }
+}
+
+th {
+  background: $primary-green-color;
+  color: $white-color;
+  font-weight: 800;
+}
+
+.table--black {
+
+  th {
+    background: $black-color;
+  }
+}

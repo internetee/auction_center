@@ -6,15 +6,18 @@ en:
     i_accept_terms_and_conditions: "I accept terms and conditions"
     price_in_currency: "%{price} €"
     price_is_without_vat: "The offer does not include VAT."
-    price_with_wat: Total %{price} (+ %{tax}% VAT)
+    price_with_wat: "%Total: {price} € (+ %{tax}% VAT)"
     already_exists: "You already have an offer for this auction."
     must_be_active: "must be active"
-    must_be_higher_than: "must be higher than %{minimum}"
+    must_be_higher_than: "Price must be higher than %{minimum}"
     reminder: |
       NB: This is a blind auction where bids are not public.
       There might be other bids.
       Make an offer according to the value the domain name holds to you.
     out_of_range: Your bid is denied - maximum bid size exceeded!
+    change_bid: Change bid
+    delete_title: "You are removing your offer"
+    overview: "Overview"
 
     new:
       title: "Offer for the reservation of the domain name"
@@ -46,12 +49,12 @@ en:
     index:
       your_last_offer: "My offers"
       claim_your_domain: "Claim your domain"
-      you_won: "You won"
-      you_lost: "Someone else won"
-      you_are_winning: "You are winning"
-      you_are_loosing: "You are loosing"
+      you_won: "Auction won by you"
+      you_lost: "Auction won by another Bidder"
+      you_are_winning: "Currently leading"
+      you_are_loosing: "Currently Outbid"
 
     form:
       bidder: "Bidder"
       offer: "Offer"
-      minimum_offer: "Minimum offer is %{minimum}."
+      minimum_offer: "Minimum offer value is %{minimum}."

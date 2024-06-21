@@ -41,7 +41,8 @@ class PaymentStatusTest < ActionDispatch::IntegrationTest
       transaction_time: Time.zone.now - 2.minute,
       standing_amount: @invoice.total,
       payment_state: 'settled',
-      invoice_number_collection: nil
+      invoice_number_collection: nil,
+      initial_amount: @invoice.total
     }
 
     assert_nil @invoice.paid_at
@@ -62,7 +63,8 @@ class PaymentStatusTest < ActionDispatch::IntegrationTest
       transaction_time: Time.zone.now - 2.minute,
       standing_amount: @invoice.total + invoice_from_result.total,
       payment_state: 'settled',
-      invoice_number_collection: [{number: invoice_from_result.number.to_s }, { number: @invoice.number.to_s }]
+      invoice_number_collection: [{ number: invoice_from_result.number.to_s }, { number: @invoice.number.to_s }],
+      initial_amount: invoice_from_result.total
     }
 
     assert_nil @invoice.paid_at

@@ -1,0 +1,48 @@
+<div class="c-block" data-controller='table--tab' data-table--tab-active-class='is-active'>
+  <h2 class="c-block__title u-flex u-content-sp u-flex-gap-12 u-h3"><%= t('invoices.paid') %> </h2>
+  <div class="c-tabs">
+    <div class="c-tabs__nav">
+      <button class="c-tabs__nav__btn js-tab-btn is-active" data-table--tab-target='tab' data-action="click->table--tab#showTab" data-table--tab-index-param='0'>
+        <%= t('invoices.paid') %> <sup>(<%= @paid_invoices.count %>)</sup>
+      </button>
+      <button class="c-tabs__nav__btn js-tab-btn" data-table--tab-target='tab' data-action="click->table--tab#showTab" data-table--tab-index-param='1'>
+        <%= t('invoices.paid_deposit_title') %> <sup>(<%= @deposit_paid.count %>)</sup>
+      </button>
+
+    </div>
+
+    <div class="c-tabs__content">
+      <div class="c-tabs__content__tab is-active" data-table--tab-target='content'>
+        <div class="c-table--responsive">
+          <%= component 'common/table', header_collection: paid_invoices_headers, options: { class: '' } do %>
+            <% @paid_invoices.each do |invoice| %>
+              <tr class="invoices-table-row">
+                <td><strong><%= link_to t('invoice_items.name', domain_name: invoice&.result&.auction&.domain_name, auction_end: invoice&.result&.auction&.ends_at&.to_date), invoice_path(invoice.uuid), title: "Invoice", data: { turbo_frame: 'modal' }, style: "color: black;" %></strong></td>
+                <td><%= I18n.l(invoice.due_date) %></td>
+                <td><%= invoice.total %></td>
+                <td class="u-text-center-l"><%= link_to t('invoices.show_invoice'), invoice_path(invoice.uuid), class: "c-btn c-btn--ghost js-modal-toggle", title: "Invoice", data: { turbo_frame: 'modal' } %></td>
+              </tr>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="c-tabs__content__tab" data-table--tab-target='content'>
+        <div class="c-table--responsive">
+          <%= component 'common/table', header_collection: deposit_paid_headers, options: { class: '' } do %>
+            <% @deposit_paid.each do |deposit| %>
+              <tr class="invoices-table-row">
+                <td><%= deposit.created_at.strftime("%Y-%m-%d") %></td>
+                <td><%= deposit.auction.deposit %> €</td>
+                <td><strong><%= deposit.auction.domain_name %></strong></td>
+                <td><%= component 'common/badgets', status: deposit.status %> <%#= t("invoices.paid_deposit.#{deposit.status}") %></td>
+                <td><%= deposit.refund_time ? I18n.l(deposit.refund_time) : 'N/A' %></td>
+              </tr>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

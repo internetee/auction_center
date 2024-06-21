@@ -1,10 +1,28 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/BlockLength
+# rubocop:disable Metrics/ModuleLength
 module Auction::Searchable
   extend ActiveSupport::Concern
 
-  BLIND = '0'
-  ENGLISH = '1'
+  BLIND = 'blind'
+  ENGLISH = 'english'
+
+  FILTERING_COLUMNS = %w[domain_name
+                         starts_at
+                         ends_at
+                         highest_offer_cents
+                         number_of_offers
+                         turns_count
+                         starting_price
+                         min_bids_step
+                         slipping_end
+                         platform
+                         requirement_deposit_in_cents
+                         enable_deposit].freeze
+
+  PARAM_LIST = %w[domain_name starts_at ends_at platform users_price].freeze
+  DIRECTION = %w[asc desc].freeze
 
   included do
     scope :active, -> { where('starts_at <= ? AND ends_at >= ?', Time.now.utc, Time.now.utc) }
@@ -22,7 +40,6 @@ module Auction::Searchable
     }
 
     scope :without_offers, -> { includes(:offers).where(offers: { auction_id: nil }) }
-    scope :with_offers, -> { includes(:offers).where.not(offers: { auction_id: nil }) }
     scope :with_domain_name, (lambda do |domain_name|
       return unless domain_name.present?
 
@@ -30,7 +47,7 @@ module Auction::Searchable
     end)
 
     scope :with_type, (lambda do |type|
-      if type.present?
+      if type.present? && type.in?([BLIND, ENGLISH])
         return where(platform: [type, nil]) if type == BLIND
 
         where(platform: type)
@@ -63,23 +80,13 @@ module Auction::Searchable
     end)
   end
 
+  # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Metrics/AbcSize
   class_methods do
     def search(params = {}, current_user = nil)
-      param_list = %w[domain_name starts_at ends_at platform users_price]
-      sort_column = params[:sort].presence_in(param_list) || 'domain_name'
-      sort_admin_column = params[:sort].presence_in(%w[domain_name
-                                                       starts_at
-                                                       ends_at
-                                                       highest_offer_cents
-                                                       number_of_offers
-                                                       turns_count
-                                                       starting_price
-                                                       min_bids_step
-                                                       slipping_end
-                                                       platform
-                                                       requirement_deposit_in_cents
-                                                       enable_deposit]) || 'id'
-      sort_direction = params[:direction].presence_in(%w[asc desc]) || 'desc'
+      sort_column = params[:sort_by].presence_in(PARAM_LIST) || 'domain_name'
+      sort_admin_column = params[:sort_by].presence_in(FILTERING_COLUMNS) || 'id'
+      sort_direction = params[:sort_direction].presence_in(DIRECTION) || 'desc'
       is_from_admin = params[:admin] == 'true'
 
       query =
@@ -91,14 +98,46 @@ module Auction::Searchable
         .with_starts_at_nil(params[:starts_at_nil])
         .with_offers(params[:auction_offer_type], params[:type])
 
-      if params[:sort] == 'users_price'
+      if params[:sort_by] == 'users_price'
         query.with_max_offer_cents_for_english_auction(current_user)
              .order("offers_subquery.max_offer_cents #{sort_direction} NULLS LAST")
-      elsif params[:sort] == 'username'
+      elsif params[:sort_by] == 'username'
         query.sorted_by_winning_offer_username.order("offers_subquery.username #{sort_direction} NULLS LAST")
       else
         query.order("#{is_from_admin ? sort_admin_column : sort_column} #{sort_direction} NULLS LAST")
       end
+    end
+
+    def with_user_offers(user_id)
+      Auction.from(with_user_offers_query(user_id))
+    end
+
+    def with_user_offers_query(user_id)
+      Queries::Auction::WithUserOffersQuery.call(user_id:)
+    end
+
+    def with_highest_offers
+      Auction.from(with_highest_offers_query)
+    end
+
+    def with_highest_offers_query
+      Queries::Auction::WithHighestOffersQuery.call
+    end
+
+    def active_with_offers_count
+      Auction.active.from(with_offers_count_query)
+    end
+
+    def with_offers_count_query
+      Queries::Auction::WithOffersCountQuery.call
+    end
+
+    def with_max_offer_cents_for_english_auction(user = nil)
+      Queries::Auction::WithMaxOfferCentsForEnglishAuction.call(user: user)
+    end
+
+    def sorted_by_winning_offer_username
+      Queries::Auction::SortedByWinningOfferUsername.call
     end
   end
 end

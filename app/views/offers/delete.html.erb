@@ -1,0 +1,5 @@
+<%= turbo_frame_tag "modal" do %>
+  <div data-controller='modals--offer-modal' data-modals--offer-modal-open-class='is-open'>
+    <%= component 'modals/delete_offer', offer: @offer %>
+  </div>
+<% end %>

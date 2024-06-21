@@ -14,8 +14,6 @@ Rails.application.routes.draw do
     resources :versions, only: :index
   end
 
-  resource :cookies, only: %i[update]
-
   resources :histories, only: :index do
     resources :bids, only: :show
   end
@@ -46,7 +44,7 @@ Rails.application.routes.draw do
   end
 
   namespace :admin, constraints: Constraints::Administrator.new do
-    resources :auctions, concerns: %i[auditable] do
+    resources :auctions, concerns: %i[auditable], except: [:show] do
     collection do
       post 'bulk_starts_at', to: 'auctions#bulk_starts_at', as: 'bulk_starts_at'
       post 'apply_auction_participants', to: 'auctions#apply_auction_participants', as: 'apply_auction_participants'
@@ -59,6 +57,7 @@ Rails.application.routes.draw do
     resources :invoices, except: %i[new create destroy], concerns: %i[auditable] do
       member do
         get 'download'
+        post 'toggle_partial_payments'
       end
     end
     resources :jobs, only: %i[index create]
@@ -81,10 +80,12 @@ Rails.application.routes.draw do
   end
 
   devise_for :users, path: 'sessions',
-                     controllers: { confirmations: 'email_confirmations', sessions: 'auth/sessions' }
+                     controllers: { confirmations: 'email_confirmations', sessions: 'auth/sessions', passwords: 'passwords' }
 
   resources :auctions, only: %i[index show], param: :uuid do
-    resources :offers, only: %i[new show create edit update destroy], shallow: true, param: :uuid
+    resources :offers, only: %i[new show create edit update destroy], shallow: true, param: :uuid do
+      get 'delete'
+    end
     resources :english_offers, only: %i[new show create edit update], shallow: true, param: :uuid
     member do
       post 'pay_deposit', to: 'invoices#pay_deposit', as: 'english_offer_deposit'
@@ -95,6 +96,11 @@ Rails.application.routes.draw do
   resources :billing_profiles, param: :uuid
   match '/status', via: :get, to: 'health_checks#index'
 
+  scope module: :invoices do
+    resource :pay_all_cancelled_payable_invoices, only: :create
+    resource :pay_all_issued_invoices, only: :create
+  end
+
   resources :invoices, only: %i[show edit update index], param: :uuid do
     member do
       get 'download'
@@ -103,6 +109,8 @@ Rails.application.routes.draw do
     end
 
     collection do
+
+      # TODO: Remove it. It is deprecated
       post 'invoices/pay_all_bills', to: 'invoices#pay_all_bills', as: 'pay_all_bills'
     end
 

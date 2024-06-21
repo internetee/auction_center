@@ -4,3 +4,11 @@ issued:
   user: second_place_participant
   status: <%= PaymentOrder.statuses[:issued] %>
   uuid: "cec1de76-164f-4c9a-922d-dacde5e99f99"
+
+paid:
+  invoices: [payable]
+  type: PaymentOrders::EveryPay
+  user: second_place_participant
+  status: <%= PaymentOrder.statuses[:paid] %>
+  uuid: "cec1de76-164f-4c9a-922d-dacde5e99f98"
+  response: { initial_amount: 10 }

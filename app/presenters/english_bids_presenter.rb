@@ -14,7 +14,7 @@ class EnglishBidsPresenter
 
   def maximum_bids
     return 'Bad auction type' if auction.platform == 'blind'
-    return 0.0 if auction.offers.empty?
+    return Money.new(0, Setting.find_by(code: 'auction_currency').retrieve) if auction.offers.empty?
 
     Money.new(last_actual_offer.cents, Setting.find_by(code: 'auction_currency').retrieve)
   end

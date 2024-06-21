@@ -3,15 +3,16 @@ module EisBilling
     include EisBilling::Request
     include EisBilling::BaseService
 
-    attr_reader :invoice_number, :customer_url
+    attr_reader :invoice_number, :customer_url, :amount
 
-    def initialize(invoice_number:, customer_url:)
+    def initialize(invoice_number:, customer_url:, amount: nil)
       @invoice_number = invoice_number
       @customer_url = customer_url
+      @amount = amount
     end
 
-    def self.call(invoice_number:, customer_url:)
-      new(invoice_number: invoice_number, customer_url: customer_url).call
+    def self.call(invoice_number:, customer_url:, amount: nil)
+      new(invoice_number: invoice_number, customer_url: customer_url, amount: amount).call
     end
 
     def call
@@ -25,8 +26,11 @@ module EisBilling
     end
 
     def params
-      { invoice_number: invoice_number,
-        customer_url: customer_url }
+      {
+        invoice_number: invoice_number,
+        customer_url: customer_url,
+        amount: amount
+      }
     end
 
     def invoice_oneoff_url

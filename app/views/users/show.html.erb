@@ -1,77 +1,10 @@
-<% content_for :hero do %>
-    <div class="hero green">
-        <h1><%= t('.title') %></h1>
-    </div>
-<% end %>
+<% content_for :title, t('.title') %>
 
-<div class="u-container">
-    <div class="margin-block">
-        <div class="content">
-            <h2><%= @user.display_name %></h2>
-            <div class="body">
-                <table class="ui table very basic padded">
-                    <tbody>
-                        <tr>
-                            <td><strong><%= t('users.email') %></strong></td>
-                            <td><%= (@user.email) %></td>
-                        </tr>
-
-                        <% if @user.mobile_phone.present? %>
-                            <tr>
-                                <td><strong><%= t('users.mobile_phone') %></strong></td>
-                                <td>
-                                    <% if @user.phone_number_confirmed? %>
-                                        <i class="ui icon check circle outtrne"></i>
-                                    <% end %>
-                                    <%= (@user.mobile_phone) %>
-                                </td>
-                            </tr>
-                        <% end %>
-
-                        <tr>
-                            <td><strong><%= t('users.country_code') %></strong></td>
-                            <td>
-                                <i class="flag <%= @user.country_code.downcase %>"></i>
-                                <%= (@user.country_code) %>
-                            </td>
-                        </tr>
-
-                        <% if @user.identity_code.present? %>
-                            <tr>
-                                <td><strong><%= t('users.identity_code') %></strong></td>
-                                <td><%= (@user.identity_code) %></td>
-                            </tr>
-                        <% end %>
-
-                        <tr>
-                            <td><strong><%= t('created_at') %></strong></td>
-                            <td><%= I18n.l(@user.created_at) %></td>
-                        </tr>
-
-                        <tr>
-                            <td><strong><%= t('users.terms_and_conditions') %></strong></td>
-                            <td><%= link_to t('.review_terms_and_conditions'), Setting.find_by(code: 'terms_and_conditions_link').retrieve %></td>
-                        </tr>
-                        <tr>
-                            <td><strong><%= t('.daily_summary') %></strong></td>
-                            <td><%= @user.daily_summary? ? I18n.t('yes') : I18n.t('no')%></td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <div class="buttons">
-                    <button data-controller='profile-webpush'
-                            data-profile-webpush-target='button'
-                            data-profile-webpush-vapid-public-value="<%= Rails.configuration.customization[:vapid_public] %>"
-                            data-action='push-notification#setupPushNotifications'
-                            class="ui button primary"><%= t('.webpush_available') %></button>
-                    <%= link_to t(:edit), edit_user_path(@user.uuid), class: "ui button primary" %>
-                    <%= link_to t(:billing), billing_profiles_path, class: "ui button primary" %>
-                    <%= link_to t('.delete'), user_path(@user.uuid),
-                    method: :delete, data: { confirm: t(:are_you_sure) },
-                    class: "ui button red" %>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="o-container">
+  <div class="c-block c-account">
+    <%= turbo_frame_tag 'user_info' do %>
+      <%= render 'user_info' %>
+    <% end %>
+  </div>
 </div>
+

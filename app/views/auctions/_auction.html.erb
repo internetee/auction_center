@@ -1,32 +1,35 @@
-<tr class="auctions-table-row contents" id="<%= dom_id(auction) %>" data-platform="<%= auction.platform %>" data-controller="auction-timezone" data-auction-timezone-end-time-value="<%= auction.ends_at.iso8601 %>">
-    <% english_auction_presenter = EnglishBidsPresenter.new(auction) %>
-    <td class="auction-domain-name monospace">
-        <%= link_to auction_path(auction.uuid), target: '_top' do %>
-            <%= domain_name_with_embedded_colors(auction.domain_name) %>
-        <% end %>
-    </td>
-    <td>
-        <span class="auctions-table-mobile-infotainment"><%= t('auctions.ends_at') %> </span>
-        <span data-auction-timezone-target="display"><%= auction.ends_at %></span>
-    </td>
-    <td>
-        <span class="auctions-table-mobile-infotainment"><%= t('auctions.auction_type') %> </span>
-        <span class="auction_platform"><%= t("auctions.#{auction.platform&.downcase.presence || 'blind'}") %></span>
-    </td>
-    <td>
-        <% if auction.platform == 'blind' || auction.platform.nil? %>
-            <span class="auctions-table-mobile-infotainment"><%= t('auctions.current_price') %>: </span><%= number_with_precision(auction.users_price, precision: 2, separator: ",") %>
-        <% else %>
-            <span class="auctions-table-mobile-infotainment"><%= t('auctions.current_price') %>:</span>
-            <span class="initial-color current_<%= auction.currently_winning_offer&.user_id %>_user"><%= number_with_precision(english_auction_presenter.maximum_bids, precision: 2, separator: ",") %></span>
-        <% end %>
-    </td>
+<tr id="<%= dom_id(auction) %>" data-platform="<%= auction.platform %>" class="contents" 
+    data-controller="auction-timezone" data-auction-timezone-end-time-value="<%= auction.ends_at&.iso8601 %>">
+  
+  <% english_auction_presenter = EnglishBidsPresenter.new(auction) %>
+
+  <td><h3><%= auction.domain_name %></h3></td>
+  
+  <td><%= component 'common/auction_type_icon', auction: auction %></td>
+
+  <td><span data-auction-timezone-target="endtime"><%= auction.ends_at %></span></td>
+
+  <td>
+    <% if auction.english? %>
+      <span class="initial-color current_<%= auction.currently_winning_offer&.user_id %>_user"><%= english_auction_presenter.maximum_bids %> €</span>
+    <% else %>
+      <%= auction.users_price %> €
+    <% end %>
+  </td>
+
+  <% if auction.english? %>
     <td class="initial-color current_<%= auction.currently_winning_offer&.user_id %>_user">
-        <% if auction.platform != 'blind' && !auction.platform.nil? %>
-            <%= english_auction_presenter.bidder_name(auction.currently_winning_offer, user) %>
-        <% end %>
+      <%= english_auction_presenter.bidder_name(auction.currently_winning_offer, user) %>
     </td>
-    <td class="center aligned">
-        <%= auction.decorate.auction_offer_button(user) %>
-    </td>
+  <% else %>
+    <td><%= tag.strong t('auctions.you') if auction.users_offer_uuid %></td>
+  <% end %>
+
+  <td class="u-text-left u-text-center-l">
+    <% if user %>
+      <%= component 'pages/auction/auction_action_button', user: user, auction: auction, updated: updated %>
+    <% else %>
+      <%= component 'common/links/link_button', link_title: t('auctions.bid'), href: new_user_session_path, color: 'green', options: { target: '_top' } %>
+    <% end %>
+  </td>
 </tr>

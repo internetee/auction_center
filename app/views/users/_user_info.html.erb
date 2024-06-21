@@ -1,0 +1,62 @@
+<%= turbo_frame_tag 'user_info' do %>
+  <div class="o-grid o-grid--two-col o-grid--sep">
+    <div class="o-card">
+      <div class="c-account__title-wrapper u-flex u-content-sp">
+        <h2 class="o-card__title c-account__title"><%= @user.display_name %></h2>
+
+        <div class="c-account_editicons u-flex u-align-center u-content-sp">
+          <%= tag.a href: edit_user_path(uuid: @user.uuid), data: { turbo_frame: 'user_info' } do %>
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none"><circle cx="16" cy="16" r="15.5" stroke="#E2E2E2"/><path fill="#000" d="m20.933 12.893-1.826-1.826a1.333 1.333 0 0 0-1.773-.047l-6 6c-.216.217-.35.502-.38.807l-.287 2.78a.666.666 0 0 0 .667.726h.06l2.78-.253c.304-.03.589-.165.806-.38l6-6a1.28 1.28 0 0 0-.047-1.807Zm-6.88 6.854-2 .186.18-2L16 14.213l1.8 1.8-3.747 3.734Zm4.614-4.627-1.787-1.787L18.18 12 20 13.82l-1.333 1.3Z"/></svg>
+          <% end %>
+        </div>
+      </div>
+      <form class="c-account__form">
+        <div class="c-account__input c-account__input--editable u-mb-20">
+          <label><%= t('users.email') %></label>
+          <input id="input1" type="email" placeholder="" value="<%= @user.email %>" readonly="">
+        </div>
+        <div class="c-account__input-wrapper u-flex u-align-start">
+          <div class="c-account__input c-account__input--editable u-mb-20">
+            <label><%= t('users.mobile_phone') %></label>
+            <input type='tel' value='<%= @user.mobile_phone %>' readonly />
+          </div>
+          <div class="c-account__input c-account__input--readonly u-mb-20">
+            <label><%= t('users.identity_code') %></label>
+            <span><%= @user.identity_code %></span>
+          </div>
+          <div class="c-account__input c-account__input--readonly">
+            <label><%= t('users.country_code') %></label>
+            <span><%= @user.country_code || Setting.find_by(code: 'default_country').retrieve %></span>
+          </div>
+          <div class="c-account__input c-account__input--readonly">
+            <label for="input2"><%= t('created_at') %></label>
+            <span><%= I18n.l(@user.created_at) %></span>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="o-card">
+      <h2 class="o-card__title c-account__title u-mb-36"><%= t('users.show.settings') %></h2>
+
+      <div class="c-account__checkbox u-flex u-align-center u-mb-30">
+        <%= component 'common/webpush/setting' %>
+        <span class="c-account__chekboxtitle"><%= t('common.webpush_modal.webpush_title') %></span>
+      </div>
+
+
+      <div class="c-account__checkbox u-flex u-align-center u-mb-30" data-controller="daily-summary">
+        <label class="o-checkbox" for="checkbox2">
+          <input type="checkbox" id="checkbox2" data-action="change->daily-summary#updateDailtSummary" <%= current_user.daily_summary ? 'checked' : '' %> />
+          <div class="o-checkbox__slider round"></div>
+        </label>
+        <span class="c-account__chekboxtitle"><%= t('users.show.daily_summary') %></span>
+      </div>
+    
+      <a href="" title="" class="c-acount__link"><%= t('users.terms_and_conditions_link') %></a>
+      <div class="c-acount__buttons u-flex u-align-center">
+        <%= component 'common/links/link_button', link_title: t(:billing), href: billing_profiles_path, color: 'ghost', options: { target: '_top' } %>
+        <%= component 'common/buttons/delete_button_with_text', path: user_path(@user.uuid), text: t('users.show.delete') %>
+      </div>
+    </div>
+  </div>
+<% end %>

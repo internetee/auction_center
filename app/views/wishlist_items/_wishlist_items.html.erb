@@ -1,0 +1,36 @@
+<%= turbo_frame_tag 'wishlist_table' do %>
+  <table class="c-wishlist__table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th><%= t('auctions.domain_name') %></th>
+        <th class="u-text-left u-text-center-l"><div style='width: 100px !important;'><%= t('wishlist_items.index.my_bid') %></div></th>
+        <th class="u-text-left u-text-center-l"><%= t('actions') %></th>
+      </tr>
+    </thead>
+    <tbody id="rooms">
+      <% wishlist_items.each_with_index do |wishlist_item, index| %>
+        <tr>
+          <td><%= index + 1 %></td>
+          <td><h3><%= wishlist_item.domain_name %></h3></td>
+          <td data-turbo="true"><%= wishlist_item.price %> €</td>
+          <td class="u-text-left u-text-center-l">
+            <div class="c-btn-group c-btn-group--ghost">
+                <%= component 'common/action_button', type: 'edit', href: edit_wishlist_item_path(wishlist_item.uuid), options: { data: { turbo_frame: 'wishlist_table' } } %>
+                <%= component 'common/action_button', type: 'delete', href: wishlist_item_path(wishlist_item.uuid),
+                  options: { method: :delete, form: { data: { turbo_confirm: t(:are_you_sure) } } } %>
+            </div>
+          </td>
+        <% end %>
+      </tr>
+      <% (wishlist_items.count...Setting.find_by(code: 'wishlist_size').retrieve).each do |index| %>
+        <tr>
+          <td><%= index + 1 %></td>
+          <td></td>
+          <td></td>
+          <td class="u-text-left u-text-center-l"></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

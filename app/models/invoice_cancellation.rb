@@ -7,6 +7,7 @@ class InvoiceCancellation
 
   def cancel
     return unless invoice.overdue?
+    return if invoice.number.blank?
 
     ActiveRecord::Base.transaction do
       result.payment_not_received!

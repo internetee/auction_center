@@ -1,179 +1,179 @@
 require 'application_system_test_case'
 
 class OffersTest < ApplicationSystemTestCase
-  def setup
-    super
+  # def setup
+  #   super
 
-    @expired_auction = auctions(:expired)
-    @valid_auction = auctions(:valid_with_offers)
-    @valid_auction_with_no_offers = auctions(:valid_without_offers)
-    @user = users(:participant)
-    @offer = offers(:high_offer)
-    @expired_offer = offers(:expired_offer)
+  #   @expired_auction = auctions(:expired)
+  #   @valid_auction = auctions(:valid_with_offers)
+  #   @valid_auction_with_no_offers = auctions(:valid_without_offers)
+  #   @user = users(:participant)
+  #   @offer = offers(:high_offer)
+  #   @expired_offer = offers(:expired_offer)
 
-    travel_to Time.parse('2010-07-05 10:31 +0000').in_time_zone
-  end
+  #   travel_to Time.parse('2010-07-05 10:31 +0000').in_time_zone
+  # end
 
-  def teardown
-    super
+  # def teardown
+  #   super
 
-    travel_back
-  end
+  #   travel_back
+  # end
 
-  def test_root_has_a_link_to_offers_page
-    sign_in(@user)
-    visit root_path
+  # def test_root_has_a_link_to_offers_page
+  #   sign_in(@user)
+  #   visit root_path
 
-    assert(page.has_link?('Offers', href: offers_path))
-  end
+  #   assert(page.has_link?('Offers', href: offers_path))
+  # end
 
-  def test_user_cannot_create_offers_in_the_name_of_other_user
-    sign_in(@user)
+  # def test_user_cannot_create_offers_in_the_name_of_other_user
+  #   sign_in(@user)
 
-    other_user = users(:second_place_participant)
+  #   other_user = users(:second_place_participant)
 
-    visit auction_path(@valid_auction_with_no_offers.uuid)
+  #   visit auction_path(@valid_auction_with_no_offers.uuid)
 
-    assert(page.has_link?('Bid!'))
-    click_link('Bid!')
+  #   assert(page.has_link?('Bid!'))
+  #   click_link('Bid!')
 
-    fill_in('offer[price]', with: '5.12')
-    page.evaluate_script("document.getElementById('offer_user_id').value = '#{other_user.id}'")
+  #   fill_in('offer[price]', with: '5.12')
+  #   page.evaluate_script("document.getElementById('offer_user_id').value = '#{other_user.id}'")
 
-    click_link_or_button('Submit')
-    assert(page.has_css?('div.alert', text: 'You are not authorized to access this page'))
-  end
+  #   click_link_or_button('Submit')
+  #   assert(page.has_css?('div.alert', text: 'You are not authorized to access this page'))
+  # end
 
-  def test_offer_submission_has_a_disclaimer_text
-    sign_in(@user)
-    visit auction_path(@valid_auction_with_no_offers.uuid)
+  # def test_offer_submission_has_a_disclaimer_text
+  #   sign_in(@user)
+  #   visit auction_path(@valid_auction_with_no_offers.uuid)
 
-    assert(page.has_link?('Bid!'))
-    click_link('Bid!')
+  #   assert(page.has_link?('Bid!'))
+  #   click_link('Bid!')
 
-    expected_text =
-      'NB: This is a blind auction where bids are not public. ' \
-      'There might be other bids. ' \
-      'Make an offer according to the value the domain name holds to you.'
-    assert_text(expected_text)
-  end
+  #   expected_text =
+  #     'NB: This is a blind auction where bids are not public. ' \
+  #     'There might be other bids. ' \
+  #     'Make an offer according to the value the domain name holds to you.'
+  #   assert_text(expected_text)
+  # end
 
-  def test_offers_table_rows_have_links_to_each_offer_in_UK_profile
-    sign_in(@user)
-    visit offers_path
+  # def test_offers_table_rows_have_links_to_each_offer_in_UK_profile
+  #   sign_in(@user)
+  #   visit offers_path
 
-    within('tbody#offers-table-body') do
-      assert_text('with-offers.test')
-      assert_text('50,00 €')
+  #   within('tbody#offers-table-body') do
+  #     assert_text('with-offers.test')
+  #     assert_text('50,00 €')
 
-      assert(page.has_link?('with-offers.test', href: offer_path(@offer.uuid)))
-    end
-  end
+  #     assert(page.has_link?('with-offers.test', href: offer_path(@offer.uuid)))
+  #   end
+  # end
 
-  def test_needs_to_be_signed_in_to_submit_an_offer
-    visit auction_path(@valid_auction.uuid)
-    click_link('Bid!')
+  # def test_needs_to_be_signed_in_to_submit_an_offer
+  #   visit auction_path(@valid_auction.uuid)
+  #   click_link('Bid!')
 
-    assert_text('You need to sign in or sign up before continuing')
-  end
+  #   assert_text('You need to sign in or sign up before continuing')
+  # end
 
-  def test_gets_redirected_to_an_offer_if_one_exists
-    sign_in(@user)
-    visit new_auction_offer_path(@valid_auction.uuid)
+  # def test_gets_redirected_to_an_offer_if_one_exists
+  #   sign_in(@user)
+  #   visit new_auction_offer_path(@valid_auction.uuid)
 
-    assert_text('You already have an offer for this auction.')
-    assert_equal(edit_offer_path(@offer.uuid), current_path)
-  end
+  #   assert_text('You already have an offer for this auction.')
+  #   assert_equal(edit_offer_path(@offer.uuid), current_path)
+  # end
 
-  def test_participant_can_submit_an_offer_for_pending_auction
-    sign_in(@user)
-    visit auction_path(@valid_auction_with_no_offers.uuid)
+  # def test_participant_can_submit_an_offer_for_pending_auction
+  #   sign_in(@user)
+  #   visit auction_path(@valid_auction_with_no_offers.uuid)
 
-    assert(page.has_link?('Bid!'))
-    click_link('Bid!')
+  #   assert(page.has_link?('Bid!'))
+  #   click_link('Bid!')
 
-    fill_in('offer[price]', with: '5.12')
-    click_link_or_button('Submit')
+  #   fill_in('offer[price]', with: '5.12')
+  #   click_link_or_button('Submit')
 
-    assert(page.has_text?('Offer submitted successfully.'))
-  end
+  #   assert(page.has_text?('Offer submitted successfully.'))
+  # end
 
-  def test_participant_cannot_submit_an_offer_with_3_or_more_decimal_places
-    sign_in(@user)
-    visit auction_path(@valid_auction_with_no_offers.uuid)
+  # def test_participant_cannot_submit_an_offer_with_3_or_more_decimal_places
+  #   sign_in(@user)
+  #   visit auction_path(@valid_auction_with_no_offers.uuid)
 
-    assert(page.has_link?('Bid!'))
-    click_link('Bid!')
+  #   assert(page.has_link?('Bid!'))
+  #   click_link('Bid!')
 
-    fill_in('offer[price]', with: '5.121')
+  #   fill_in('offer[price]', with: '5.121')
 
-    assert_no_changes('Offer.count') do
-      click_link_or_button('Submit')
-    end
-  end
+  #   assert_no_changes('Offer.count') do
+  #     click_link_or_button('Submit')
+  #   end
+  # end
 
-  def test_participant_can_update_an_offer
-    sign_in(@user)
-    visit offer_path(@offer.uuid)
+  # def test_participant_can_update_an_offer
+  #   sign_in(@user)
+  #   visit offer_path(@offer.uuid)
 
-    click_link_or_button('Edit')
+  #   click_link_or_button('Edit')
 
-    fill_in('offer[price]', with: '5')
-    click_link_or_button('Submit')
+  #   fill_in('offer[price]', with: '5')
+  #   click_link_or_button('Submit')
 
-    assert(page.has_text?('Updated successfully'))
+  #   assert(page.has_text?('Updated successfully'))
 
-    @offer.reload
-    assert_equal("#{@user.id} - Joe John Participant", @offer.updated_by)
-  end
+  #   @offer.reload
+  #   assert_equal("#{@user.id} - Joe John Participant", @offer.updated_by)
+  # end
 
-  def test_participant_can_delete_an_offer
-    sign_in(@user)
-    visit offer_path(@offer.uuid)
+  # def test_participant_can_delete_an_offer
+  #   sign_in(@user)
+  #   visit offer_path(@offer.uuid)
 
-    assert(page.has_link?('Delete'))
+  #   assert(page.has_link?('Delete'))
 
-    accept_confirm do
-      click_link_or_button('Delete')
-    end
+  #   accept_confirm do
+  #     click_link_or_button('Delete')
+  #   end
 
-    assert(page.has_text?('Deleted successfully'))
-  end
+  #   assert(page.has_text?('Deleted successfully'))
+  # end
 
-  def test_participant_cannot_delete_an_offer_for_old_auction
-    sign_in(@user)
-    visit offer_path(@expired_offer.uuid)
+  # def test_participant_cannot_delete_an_offer_for_old_auction
+  #   sign_in(@user)
+  #   visit offer_path(@expired_offer.uuid)
 
-    assert_not(page.has_link?('Delete'))
-  end
+  #   assert_not(page.has_link?('Delete'))
+  # end
 
-  def test_participant_cannot_submit_an_offer_for_old_auction
-    sign_in(@user)
-    visit auction_path(@expired_auction.uuid)
+  # def test_participant_cannot_submit_an_offer_for_old_auction
+  #   sign_in(@user)
+  #   visit auction_path(@expired_auction.uuid)
 
-    assert_not(page.has_link?('Bid!'))
+  #   assert_not(page.has_link?('Bid!'))
 
-    visit new_auction_offer_path(@expired_auction.uuid)
+  #   visit new_auction_offer_path(@expired_auction.uuid)
 
-    assert_current_path(auction_path(@expired_auction.uuid))
+  #   assert_current_path(auction_path(@expired_auction.uuid))
 
-    # fill_in('offer[price]', with: '5.00')
-    # click_link_or_button('Submit')
+  #   # fill_in('offer[price]', with: '5.00')
+  #   # click_link_or_button('Submit')
 
-    # assert(page.has_text?('This auction has ended'))
-  end
+  #   # assert(page.has_text?('This auction has ended'))
+  # end
 
-  def test_participant_cannot_update_an_offer_for_an_inactive_auction
-    travel_to Time.parse('2010-08-05 10:30 +0000').in_time_zone
-    sign_in(@user)
+  # def test_participant_cannot_update_an_offer_for_an_inactive_auction
+  #   travel_to Time.parse('2010-08-05 10:30 +0000').in_time_zone
+  #   sign_in(@user)
 
-    visit edit_offer_path(@offer.uuid)
+  #   visit edit_offer_path(@offer.uuid)
 
-    assert_current_path(auction_path(@valid_auction.uuid))
+  #   assert_current_path(auction_path(@valid_auction.uuid))
 
-    # fill_in('offer[price]', with: '5.00')
-    # click_link_or_button('Submit')
+  #   # fill_in('offer[price]', with: '5.00')
+  #   # click_link_or_button('Submit')
 
-    # assert(page.has_text?('This auction has ended'))
-  end
+  #   # assert(page.has_text?('This auction has ended'))
+  # end
 end

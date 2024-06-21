@@ -1,0 +1,58 @@
+  <!-- Modal - deposit4 -->
+<div id="deposit4-v2" class="c-modal-overlay js-modal" data-modals--offer-modal-target='modal'>
+  <div class="c-modal">
+    <div class="c-modal__scroll">
+      <div class="c-modal__scroll__content">
+        <button class="c-modal__close-btn js-close-modal" data-action='modals--offer-modal#close'>
+          <span class="o-close-icon"></span>
+        </button>
+        <div class="c-modal__header">
+          <div class="c-modal__header__title">
+            <span class="o-edit-icon--deposit"></span>
+            <span><%= t('offers.new.make_deposit') %></span>
+          </div>
+          <div class="c-modal__header__subject">
+            <span class="c-modal__header__subject__title"><%= @auction.domain_name %></span>
+          </div>
+          <div class="c-modal__header__desc">
+            <span><%= t('english_offers.timer') %> <strong><%= component 'common/timer', auction: @auction %></strong></span>
+          </div>
+        </div>
+        <div class="c-modal__main">
+          <div class="c-modal__grid c-modal__grid--gap u-flex-wrap">
+            <div class="c-modal__main__info">
+              <span><%= t('english_offers.show.min_bid') %></span>
+              <h3 class="u-h2 u-mt-0 u-mb-40-l">
+                <%= number_with_precision(Money.from_amount(@auction.min_bids_step.to_f, Setting.find_by(code: 'auction_currency').retrieve,  precision: 2)) %> €
+              </h3>
+            </div>
+            <div class="c-modal__main__info c-modal__main__info--black">
+              <strong><%= t('english_offers.show.current_price') %></strong>
+              <h3 class="u-h2 u-mt-0 u-mb-40-l"><span id="current_<%= @auction.id %>_price"><%= @auction&.currently_winning_offer&.price  || Money.new(0) %> €</span></h3>
+            </div>
+            <div class="c-modal__main__info c-modal__main__info--white c-modal__header__desc">
+              <div class="c-modal__main__info__wrapper u-flex u-align-start u-content-sp u-flex-col">
+                <span class="u-mb-60"><strong><%= t('offers.new.deposit_description_html', deposit: number_with_precision(@auction.deposit, precision: 2)) %></strong></span>
+                <button class="c-btn c-btn--ghost c-btn--fs" data-action='modals--offer-modal#close'>Tagasi</button>
+              </div>
+            </div>
+            <div class="c-modal__main__info c-modal__main__info--orange u-align-center u-content-center u-flex-col">
+              <div><span><%= t('offers.new.deposit_enable') %></span>
+                <h3 class="u-h2 u-mt-0 u-mb-30"><%= "#{number_with_precision(@auction.deposit, precision: 2)} €" %></h3>
+                  <%#= button_to t('offers.new.make_deposit'), english_offer_deposit_auction_path(uuid: @auction.uuid, current_user: @current_user),
+                                    class: "c-btn c-btn-white c-btn--fs", method: :post, data: { turbo: false } %>
+
+                  <%= form_with url: english_offer_deposit_auction_path(uuid: @auction.uuid, current_user: @current_user), data: { turbo: false} do |f| %>
+                    <%= component 'captcha', captcha_required: @captcha_required, show_checkbox_recaptcha: @show_checkbox_recaptcha, action: 'english_offer' %>
+
+                    <%= f.submit t('offers.new.make_deposit'), class: "c-btn c-btn-white c-btn--fs" %>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Modal - deposit -->

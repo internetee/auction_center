@@ -1,0 +1,39 @@
+<%# TODO: Move to component and all logic should be in represent part %>
+<tr data-controller="auction-timezone" data-auction-timezone-end-time-value="<%= offer.auction.ends_at&.iso8601 %>">
+  <td><h3>
+    <% if offer.auction.english? %>
+      <%= link_to offer.auction.domain_name, english_offer_path(offer.uuid), style: 'color: black;', target: '_top' %>
+    <% else %>
+      <%= link_to offer.auction.domain_name, offer_path(offer.uuid), style: 'color: black;', target: '_top' %>
+    <% end %>
+  </h3></td>
+  <td><%= component 'common/auction_type_icon', auction: offer.auction %></td>
+  <td><b><%= t('english_offers.index.your_last_offer') %>:</b> <%= t('offers.price_in_currency', price: offer.price) %></td>
+  <td><%= t('offers.price_in_currency', price: offer.total) %></td>
+  <td><%= offer.auction.finished? ? t('auctions.finished') : tag.span(offer.auction.ends_at, data: { auction_timezone_target: 'endtime'}) %></td>
+  
+  <td>
+    <%- if offer.auction.finished? %>
+      <%- if offer.result %>
+        <%= t('offers.index.you_won') %>
+      <%- elsif offer.auction&.result && !offer.result %>
+        <%= t('offers.index.you_lost') %>
+      <% end %>
+    <% else %>
+      <%- if offer.auction.english? %>
+        <%= offer.auction.currently_winning_offer == offer ? raw("<span style='color: green;'>#{t('offers.index.you_are_winning')}</span>") : raw("<span style='color: red;'>#{t('offers.index.you_are_loosing')}</span>") %>
+      <% else %>
+        <%= t('auctions.still_in_progress') %>
+      <% end %>
+    <% end %>
+  </td>
+  <td class="u-text-center-l">
+    <%- if offer.result %>
+      <%= component 'common/links/link_button', link_title: t('offers.index.claim_your_domain'), href: result_path(offer.result.uuid), color: 'green', options: { data: { turbo_frame: 'modal' } } %>
+    <%- else %>
+      <%= component 'common/links/link_button', href: offer_delete_path(offer_uuid: offer.uuid), color: 'ghost', options: { data: { turbo_frame: 'modal' } } do %>
+        <span class="o-delete-icon"></span>
+      <% end unless offer.auction.english? || offer.auction.finished? %>
+    <% end %>
+  </td>
+</tr>

@@ -3,9 +3,11 @@ en:
     billing_profile_must_belong_to_user: "must belong to the same user as invoice"
     is_being_generated: "We are generating the invoice, please check back in a few minutes."
 
+    invoice_already_paid: "The invoice is already paid."
+
     issue_date: "Issue date"
     issuer: "Issuer"
-    issued_for: "Issued for"
+    issued_for: "Issued to"
     due_date: "Due date"
     status: "Status"
     price: "Price"
@@ -28,15 +30,25 @@ en:
     deposit: "Deposit"
     amount_due: "Amount due"
     sent_to_omniva: "E-Invoice was successfully sent"
-
+    issued_invoices: "Issued invoices"
+    show_invoice: "Show invoice"
+    bill: "Bill"
+    billing_profile_description: "The last billing profile through which the bet was made is specified"
+    address: "Address"
     outstanding: "Outstanding invoices"
     paid: "Paid invoices"
     cancelled: "Overdue invoices (banned auctions)"
     cancelled_expired: "Cancelled invoices"
     mark_as_paid: "Mark as paid"
-    marked_as_paid: "Invoice marked as paid."
-    already_paid: "Invoice is already paid."
+    marked_as_paid: "The invoice has been marked as paid."
+    already_paid: "The invoice is already paid."
     paid_deposit_title: "Paid deposits"
+    pay_all: Pay all invoices
+    partial_payments_activated: "Allowed clients to make partial payments for this invoice"
+    allow_partial_payments: "Allow partial payments"
+    disallow_partial_payments: "Disallow partial payments"
+    amount_must_be_positive: "Amount must be greater than 0"
+    amount_is_too_big: "Amount cannot be greater than invoice total amount to pay"
     paid_deposit: 
       date: Date
       sum: Sum
@@ -46,12 +58,14 @@ en:
       paid: "Paid"
       prepayment: "Prepayment"
       returned: "Returned"
+      pending: "Pending"
 
     show:
       change_billing_profile: "Change billing profile"
       pay: "Pay"
       redeem: Paying for cancelled invoice will redeem the violation but will not grant priority right to register that domain
       send_e_invoice: "Send E-Invoice"
+      total_amount: "Total amount due"
 
     edit:
       title: "Edit your invoice"

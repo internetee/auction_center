@@ -1,0 +1,110 @@
+        <div class="c-modal__main">
+          <div class="c-modal__grid u-align-start u-flex-wrap">
+            <div class="c-modal__col">
+          
+                <%= form_with model: @invoice, url: invoice_path(@invoice.uuid), data: { controller: 'form--debounce', action: 'change->form--debounce#search', form__debounce_target: 'form' } do |f| %>
+                    <%= component 'common/form/label', form: f, attribute: :billing_profile_id, title: t('billing_profiles_name') %>
+                    
+                    <%= component 'common/form/dropdown_input', form: f, attribute: :billing_profile_id, 
+                          enum: options_for_select(BillingProfile.where(user_id: @invoice.user_id).pluck(:name, :id), params[:billing_profile_id].presence || @invoice.billing_profile_id),
+                          first_options: { include_blank: false } %>
+                <% end %>
+            </div>
+
+            <div class="c-modal__col">
+              <label class="c-modal__text-title"><%= t('invoices.issuer') %></label>
+              <span class="c-modal__text"><%= Setting.find_by(code: 'invoice_issuer').retrieve  %></span>
+            </div>
+
+          </div>
+
+          <div class="c-modal__grid u-flex-wrap u-mt-24">
+            <div class="c-modal__col">
+              <label class="c-modal__text-title"><%= t('invoices.issued_for') %></label>
+              <span class="c-modal__text"><%= @invoice.address %></span>
+            </div>
+
+            <div class="c-modal__col">
+              <label class="c-modal__text-title"><%= t('invoices.address') %></label>
+              <span class="c-modal__text"><%= Setting.find_by(code: 'invoice_issuer_address').retrieve %></span>
+              <div class="c-modal__extrainfo u-flex u-align-start u-mt-32">
+                <div class="c-modal__extrainfo-col">
+                  <label class="c-modal__text-title"><%= t('reg_no') %></label>
+                  <span class="c-modal__text"><%= Setting.find_by(code: 'invoice_issuer_reg_no').retrieve %></span>
+                </div>
+                <div class="c-modal__extrainfo-col">
+                  <label class="c-modal__text-title">VAT nr</label>
+                  <span class="c-modal__text"><%= Setting.find_by(code: 'invoice_issuer_vat_number').retrieve %></span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Table -->
+          
+          <table class="u-mt-40">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th><%= t('invoices.item') %></th>
+                <th><%= t('invoices.price') %></th>
+              </tr>
+              
+            </thead>
+            <tbody>
+              <% @invoice.items.each_with_index do |item, index| %>
+                <tr>
+                  <td><%= index += 1 %></td>
+                  <td><%= I18n.t('invoice_items.name',
+                          domain_name: item.invoice.result.auction.domain_name,
+                          auction_end: item.invoice.result.auction.ends_at.to_date) %>
+                  </td>
+                  <td><%= item.price %></td>
+                </tr>
+              <% end %>
+
+              <tr>
+                  <td></td>
+                  <td><%= t('invoices.vat_amount') %> <%= number_to_percentage(@invoice.vat_rate * 100, precision: 0) %></td>
+                  <td><%= t('offers.price_in_currency', price: @invoice.vat) %></td>
+              </tr>
+
+              <tr>
+                  <td></td>
+                  <td><%= t('invoices.total') %></td>
+                  <td><%= t('offers.price_in_currency', price: @invoice.total + (@invoice.enable_deposit? ? @invoice.deposit : 0.0)) %></td>
+              </tr>
+
+              <% if @invoice.enable_deposit? %>
+                <tr>
+                    <td><</td>
+                    <td><%= t('invoices.deposit') %></td>
+                    <td><%= t('offers.price_in_currency', price: @invoice.deposit) %></td>
+                </tr>
+              <% end %>
+
+              <% if @invoice.partial_payments? && !@invoice.paid? %>
+                <tr>
+                    <td></td>
+                    <td><%= t('invoices.total_paid') %></td>
+                    <td><%= t('offers.price_in_currency', price: Money.from_amount(@invoice.paid_amount || 0, @invoice.auction_currency)) %></td>
+                </tr>
+              <% end %>
+
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="2"><%= t('invoices.show.total_amount') %></td>
+                    <td>
+                      <% if @invoice.partial_payments? && !@invoice.paid? %>
+                        <%= t('offers.price_in_currency', price: @invoice.due_amount) %>
+                      <% else %>
+                        <%= t('offers.price_in_currency', price: @invoice.total) %>
+                      <% end %>
+                    </td>
+                </tr>
+            </tfoot>
+          </table>
+          <!-- Table -->
+        </div>

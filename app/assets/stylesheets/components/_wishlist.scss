@@ -1,0 +1,16 @@
+.c-whishlist__notice{
+    font-size: rem(14px);
+    font-weight: 500;
+    line-height: rem(24px);
+    display: inline-block;
+    padding-top: 30px;
+    @include mq(tablet){
+        padding-top: 40px;
+    }
+    @include mq(laptop){
+        padding-top: 60px;
+    }
+}
+.c-wishlist__btn{
+    font-size: rem(14px);
+}

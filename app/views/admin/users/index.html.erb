@@ -1,81 +1,44 @@
-<% content_for :hero do %>
-    <div class="hero orange">
-        <h1><%= t('.title') %></h1>
-    </div>
-<% end %>
+<% content_for :title, t('.title') %>
 
-<div class="features-grid top narrow grey">
-    <div class="ui search">
-        <div class="ui massive input icon">
-            <%= form_with(url: admin_users_path, local: true, method: :get) do |f| %>
-                <div class="ui input icon">
-                    <%= f.text_field :search_string, placeholder: t('search') %>
-                </div>
-
-                <%= f.button(class: "ui icon primary button") do %>
-                    <i aria-hidden="true" class="arrow right icon"></i>
-                <% end %>
-            <% end %>
+<div class="o-container">
+  <div class="c-table c-table--sortable">
+    <%= form_with(url: admin_users_path, local: true, method: :get) do |f| %>
+      <div class="c-table__filters" >
+        <div class="c-table__filters__btns" style='display: flex !important; align-items: center !important; justify-content: space-between !important; width: 100%;'>
+          <%= f.search_field :search_string, value: params[:search_string], placeholder: t('search_by_domain_name'), class: 'c-table__search__input js-table-search-dt' %>
+          <div>
+            <%= f.button 'Search', class: "c-btn c-btn--blue" %>
+            <%= link_to 'Clear', request.path, class: 'c-btn c-btn--red' %>
+          </div>
         </div>
-    </div>
-    <div class="field">
-        <%= link_to 'Clear', request.path, class: 'ui primary button' %>
-    </div>
-</div>
-
-<div class="ui container">
-    <div class="margin-block">
-        <table class="ui table unstackable fixed" id="users-table">
-            <thead>
-                <tr>
-                    <th scope="col">
-                        <%= t('users.display_name') %>
-                        <%= sort_link_to "", "surname" %>
-                    </th>
-                    <th scope="col">
-                        <%= t('users.mobile_phone') %>
-                        <%= sort_link_to "", "mobile_phone" %>
-                    </th>
-                    <th scope="col" class="six wide">
-                        <%= t('users.email') %>
-                        <%= sort_link_to "", "email" %>
-                    </th>
-                    <th scope="col">
-                        <%= t('users.roles') %>
-                        <%= sort_link_to "", "roles" %>
-                    </th>
-                    <th></th>
-                </tr>
-            </thead>
-
-            <tbody id="users-table-body">
-                <% @users.each do |user| %>
-                    <tr class="users-table-row">
-                        <td class="user-table-user-name"><%= link_to user.display_name, admin_user_path(user) %></td>
-                        <td>
-                            <% if user.phone_number_confirmed? && @phone_confirmation_toggle %>
-                                <i class="ui icon check circle outline"></i>
-                            <% end %>
-
-                            <%= user.mobile_phone %>
-                        </td>
-                        <td><%= user.email %></td>
-                        <td><%= user.roles.join(', ') %></td>
-                        <td></td>
-                    </tr>
-                <% end %>
-            </tbody>
-        </table>
-
-    <div style="margin-top:10px; text-align: center;">
-    <% if @pagy.pages > 1 %>
-        <div class="footer">
-          <%== pagy_nav(@pagy) %>
-        </div>
+      </div>
+    <% end %>
+    <% header_collection = [{column: 'surname', caption: t('users.display_name'), options: {}},
+                                { column: 'mobile_phone', caption: t('users.mobile_phone'), options: { class: "sorting" } },
+                                { column: 'email', caption: t('users.email'), options: { class: "sorting" } },
+                                { column: 'roles', caption: t('users.roles'), options: { class: "sorting" } }] %>
+    <%= component 'common/table', header_collection:, options: { class: 'js-table-dt dataTable no-footer' } do %>
+      <%= tag.tbody class: 'contents' do %>
+        <% @users.each do |user| %>
+          <tr class="users-table-row">
+            <td class="user-table-user-name"><%= link_to user.display_name, admin_user_path(user) %></td>
+            <td>
+              <% if user.phone_number_confirmed? && @phone_confirmation_toggle %>
+                <i class="ui icon check circle outline"></i>
+              <% end %>
+              <%= user.mobile_phone %>
+            </td>
+            <td><%= user.email %></td>
+            <td><%= user.roles.join(', ') %></td>
+          </tr>
+        <% end %>
       <% end %>
-        <br><br>
-    </div>
+    <% end %>
+    
+    <%= component 'common/pagy', pagy: @pagy %>
 
-        <p><%= link_to t('.new_user'), new_admin_user_path, class: "ui button primary" %></p>
+    <div class="c-table__filters__btns" style='padding: 1rem 0; display: flex; justify-content: end;'>
+      <%= link_to t('.new_user'), new_admin_user_path, class: "c-btn c-btn--green" %>
     </div>
+  </div>
 </div>

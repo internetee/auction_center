@@ -1,0 +1,92 @@
+.c-btn--orange {
+  @include btn-orange;
+}
+.c-btn--orange-light {
+  @include btn-orange-light;
+}
+.c-btn--blue {
+  @include btn-blue;
+}
+
+.c-btn--black {
+  @include btn-black;
+}
+
+.c-btn--green {
+  @include btn-green;
+}
+
+.c-btn--green-light {
+  @include btn-green-light;
+}
+.c-btn--red {
+  @include btn-red;
+}
+
+.c-btn--blue-secondary {
+  @include btn-blue-secondary;
+}
+
+.c-btn--ghost {
+  @include btn-black;
+  color: $black-color;
+  background-color: transparent;
+  border: 1px solid $grey-400-color;
+
+  &:hover {
+    border-color: $black-color;
+    background-color: transparent;
+  }
+}
+
+.c-btn--icon {
+  @include btn-black;
+  color: $black-color;
+  background-color: transparent;
+  border: 1px solid $grey-400-color;
+}
+
+table {
+  .c-btn {
+    font-weight: 500;
+    font-size: rem(14px);
+    line-height: rem(20px);
+    padding: rem(6px 16px);
+  }
+
+  .c-btn--icon {
+    padding: 0 !important;
+  }
+}
+
+.c-btn--icon,
+.c-btn--icon-size {
+  width: rem(32px);
+  height: rem(32px);
+  padding: 0 !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.c-btn-group {
+  display: flex;
+  justify-content: flex-start;
+  gap: rem(16px);
+
+  @include mq(laptop) {
+    justify-content: center;
+  }
+}
+
+.c-account .c-btn {
+  font-size: rem(14px);
+}
+.c-account--changepass {
+  .c-btn {
+    width: 100%;
+    padding: rem(7px 1rem);
+    font-size: rem(15px);
+    margin: 2.5rem 0 1.5rem 0;
+  }
+}

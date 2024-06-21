@@ -1,0 +1,100 @@
+<footer class="c-footer">
+  <div class="o-container">
+    <div class="c-footer__grid">
+      <div class="c-footer__highlight">
+        <%= render 'svg/footer_eis_logo' %>
+        <div class="c-footer__highlight__grid c-footer__highlight__grid--row-t">
+          <div class="c-footer__highlight__grid">
+            <h3 class="c-footer__highlight__title">
+              <div>
+                <%= t('common.footer.copyright') %>
+              </div>
+            </h3>
+            <div class="c-footer__highlight__info">
+              <%= Setting.find_by(code: 'invoice_issuer_address').retrieve %><br>
+              <%= t('reg_no') %>: <%= Setting.find_by(code: 'invoice_issuer_reg_no').retrieve %>
+              <br>
+            </div>
+          </div>
+          <div class="c-footer__highlight__contact">
+            <span>
+              <%= render 'svg/email' %><a href="mailto:<%= Setting.find_by(code: 'contact_organization_email').retrieve %>"><%= Setting.find_by(code: 'contact_organization_email').retrieve %></a>
+            </span>
+            <span>
+              <%= render 'svg/phone' %><a href="tel:<%= Setting.find_by(code: 'organization_phone').retrieve %>"><%= Setting.find_by(code: 'organization_phone').retrieve %></a>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="c-footer__grid__row">
+        <div class="c-footer__row__col s-footer-col">
+          <div>
+            <span style="color: rgb(255, 255, 255);">
+              <b><span style="font-size: 15px;"><%= t('common.footer.help_and_info') %> <br></span></b>
+            </span>
+          </div>
+          <div>
+            <span style="color: rgb(255, 255, 255);">
+              <b><span style="font-size: 15px;"><br></span></b>
+            </span>
+          </div>
+          <div style="line-height: 23px;"><span style="color: rgb(255, 255, 255);"><b></b>
+              <span style="font-size: 13px;"><a href="https://internet.ee/domains/ee-domain-regulation" target="_self"><%= t('common.footer.domain_regulation')%></a></span>
+              <span style="font-size: 15px;"><br></span>
+              <span style="font-size: 13px;"><a href="https://internet.ee/help-and-info/faq" target="_self"><%= t('common.footer.faq')%></a> </span>
+              <span style="font-size: 13px;"><a href="https://internet.ee/help-and-info/statistics" target="_self"><%= t('common.footer.statistics')%></a></span>
+              <span style="font-size: 15px;"><br></span>
+              <span style="font-size: 13px;"><a href="https://internet.ee/domain-disputes/domain-disuptes-committee" target="_self"><%= t('common.footer.dispute_committee') %></a></span>
+              <b><span style="font-size: 15px;"><br></span></b>
+            </span>
+          </div>
+        </div>
+
+        <div class="c-footer__row__col s-footer-col">
+          <div>
+            <b><span style="font-size: 14px;"><%= t('common.footer.registrars') %> </span><br></b>
+          </div>
+          <div><b><br></b></div>
+          <div>
+            <b></b>
+            <span style="font-size: 13px;"><a href="https://internet.ee/registrars/accredited-registrars" target="_self"> <%= t('common.footer.list_of_accredited_registrars')%></a></span><br>
+            <span style="font-size: 13px;">
+              <a href="https://internet.ee/registrars/terms-and-conditions-for-becoming-a-registrar" target="_self"> <%= t('common.footer.terms_and_conditions_for_registrars') %></a>
+            </span><br>
+            <span style="font-size: 13px;"><a href="https://internet.ee/registrars/become-a-ee-elite-partner" target="_self"> <%= t('common.footer.partner_programme') %></a></span>
+            <b><br></b>
+          </div>
+        </div>
+
+        <div class="c-footer__row__col s-footer-col">
+          <div><b><span style="font-size: 14px;"><%= t('common.footer.estonian_internet') %> <br></span></b></div>
+          <div><b><span style="font-size: 14px;"><br></span></b></div>
+          <div>
+            <span style="font-size: 14px;"><a href="https://www.internet.ee/eif" target="_self"><%= t('common.footer.contact_us') %></a></span><br>
+            <span style="font-size: 14px;"><a href="https://www.internet.ee/eif/tasks-and-management" target="_self"><%= t('common.footer.management') %></a></span>
+            <b><span style="font-size: 14px;"><br></span></b>
+            <span style="font-size: 14px;">
+              <a href="https://www.internet.ee/eif/registrars-workgroup" target="_self">
+                <span style="color: rgb(251, 170, 25);"><%= t('common.footer.registrars_working_group') %></span>
+              </a>
+            </span><b>
+            <span style="font-size: 14px;"><br></span></b>
+          </div>
+        </div>
+
+      <div class="c-footer__row__col s-footer-col">
+        <div><b><span style="font-size: 14px;"><%= t('common.footer.social_media') %></span><br></b></div>
+        <div><b><br></b></div>
+        <div class="c-socials">
+          <a href="https://www.facebook.com/EE-748656818569233/" class="c-socials__link" target="_blank"><%= render 'svg/facebook' %></a>
+          <a href="https://twitter.com/Eesti_Internet" class="c-socials__link" target="_blank"><%= render 'svg/twitter' %></a>
+          <% if false %><a href="" class="c-socials__link" target="_blank"><%= render 'svg/linkedin' %></a><% end %>
+          <a href="https://www.youtube.com/channel/UC7nTB6zIwZYPFarlbKuEPRA" class="c-socials__link" target="_blank"><%= render 'svg/youtube' %></a>
+          <a href="https://internet.ee/index.rss" class="c-socials__link" target="_blank"><%= render 'svg/rss' %></a>
+        </div>
+      </div>
+      <a target="_blank" href="https://sviiter.ee" class="c-footer__sviiter"><%= render 'svg/sviiter' %></a>
+    </div>
+  </div>
+</div>
+</footer>

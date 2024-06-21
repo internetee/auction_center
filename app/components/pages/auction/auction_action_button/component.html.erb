@@ -1,0 +1,23 @@
+<% if auction.english? %>
+
+  <% if auction.users_offer_uuid || updated %>
+    <%# if need to edit offer for english auction %>
+    <%= component '.edit_english_offer', auction: @auction %>
+  <% else %>
+    <%# if need to create new offer for english auction %>
+    <%= component 'common/links/link_button', link_title: deposit_value[:link_title], href: new_auction_english_offer_path(auction_uuid: auction.uuid),
+                  color: deposit_value[:color], options: { data: { turbo_frame: 'modal' } } %>
+  <% end %>
+
+<% else %>
+
+  <% if auction.users_offer_uuid || updated %>
+    <%# if need to edit or remove offer for blind auction %>
+    <%= component '.edit_and_remove_blind_offer', auction: @auction, user: @user %>
+  <% else %>
+    <%# if need to create new offer for blind auction %>
+    <%= component 'common/links/link_button', link_title: t('auctions.bid'), href: new_auction_offer_path(auction_uuid: auction.uuid),
+                  color: 'green', options: { data: { turbo_frame: 'modal' } } %>
+  <% end %>
+
+<% end %>

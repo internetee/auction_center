@@ -1,0 +1,31 @@
+<!-- 
+    These parameters are passed to the Common::Table::Component. These parameters are used to generate headers in the table component. The name "column_name" indicates the name of the column. This is necessary for sorting, so the name of this column should correspond to the name of the column in the database table. If you want to make it so that the data is not sorted by the column, then you should add a nil value. "Caption" is the table header, and "options" are additional parameters that are passed into the tags. 
+    -->
+
+<div class="o-container">
+      <%= form_with url: offers_path, 
+                    method: :get, data: { controller: 'form--debounce form--filter',
+                        form__debounce_target: 'form',
+                        form__filter_target: 'form',
+                        turbo_action: "advance",
+                        turbo_frame: "results",
+                        action: 'input->form--debounce#search' 
+                        } do |f| %>
+
+      <%# TODO: Add filter and search feature %>
+      
+      <% end %>
+
+  <div class="c-table c-table--sortable">
+
+    <!-- In the Stimulus controller, I use the Turbo class with frame parameters named 'results' for table sorting. This means that rendering the table with the new sort order should occur within the scope of the turbo_frame_tag with the name "results". For it to work correctly, it's necessary to wrap the table content within this turbo_frame_tag with "results" name. The name "results" is assigned as a value for the orderable Stimulus controller in the table component. -->
+    <%= turbo_frame_tag "results" do %>
+
+      <!-- Options attributes are used as table attributes -->
+      <%= component 'common/table', header_collection: header_collection, options: { class: 'js-table-dt dataTable no-footer' } do %>
+        <!-- "The body of the table also needs to be in the component block, so the component wraps it with the necessary tags." -->
+        <%= render @offers %>
+      <% end %>
+    <% end %>
+  </div>
+</div>

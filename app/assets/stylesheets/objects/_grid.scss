@@ -1,0 +1,101 @@
+.o-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  row-gap: rem(24px);
+  column-gap: rem(20px);
+
+  @include mq(desktop) {
+    column-gap: rem(32px);
+    row-gap: rem(32px);
+  }
+
+  @include mq(wide) {
+    column-gap: rem(40px);
+    row-gap: rem(40px);
+  }
+
+  @include mq(ultra) {
+    column-gap: rem(48px);
+    row-gap: rem(48px);
+  }
+}
+
+.o-grid--two-col {
+  @include mq(tablet) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.o-grid--two-col-laptop {
+  @include mq(laptop) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.o-grid--two-col-desktop {
+  @include mq(desktop) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.o-grid--three-col {
+  @include mq(tablet) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.o-grid--sep {
+  row-gap: rem(48px);
+}
+
+.o-grid--wishlist {
+  row-gap: rem(24px);
+
+  @include mq(tablet) {
+    row-gap: rem(40px);
+  }
+
+  @include mq(laptop) {
+    row-gap: 0;
+  }
+}
+
+.o-grid--auction {
+  column-gap: rem(24px);
+
+  @include mq(tablet) {
+    column-gap: rem(50px);
+  }
+}
+
+.o-grid--auction-cards {
+  column-gap: rem(16px);
+
+  @include mq(laptop) {
+    column-gap: rem(48px);
+  }
+}
+
+.c-account,
+.c-login {
+  .o-grid--two-col {
+    grid-template-columns: repeat(1, 1fr);
+
+    @include mq(laptop) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .o-grid--sep {
+    row-gap: rem(20px);
+
+    @include mq(tablet) {
+      row-gap: rem(40px);
+    }
+
+    @include mq(laptop) {
+      row-gap: rem(50px);
+      column-gap: rem(50px);
+    }
+  }
+}

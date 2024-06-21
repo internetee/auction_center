@@ -1,0 +1,69 @@
+<% content_for :hero do %>
+    <div class="hero green">
+        <h1><%= t('.title') %></h1>
+        <div class="monospace"><%= @offer.auction.domain_name %></div>
+    </div>
+<% end %>
+
+<div class="u-container">
+    <div class="margin-block">
+        <div class="body">
+            <table class="ui table very basic padded">
+                <tbody>
+                    <tr>
+                        <td><strong><%= t('auctions.domain_name') %></strong></td>
+                        <td class="monospace"><%= @offer.auction.domain_name %></td>
+                    </tr>
+
+                    <tr>
+                        <td><strong><%= t('auctions.ends_at') %></strong></td>
+                        <td><%= I18n.l(@offer.auction.ends_at) %></td>
+                    </tr>
+                    <tr>
+                        <td><strong><%= t('offers.price') %></strong></td>
+                        <td><%= t('offers.price_in_currency', price: @offer.price) %></td>
+                    </tr>
+                    <tr>
+                        <td><strong><%= t('offers.total') %></strong></td>
+                        <td><%= t('offers.price_in_currency', price: @offer.total) %></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="buttons">
+                <% if @offer.can_be_modified? %>
+                    <% if !@offer.auction.english? %>
+                        <%= link_to t(:edit), edit_offer_path(@offer.uuid), class: "ui button primary" %>
+              
+                        <%= link_to t(:delete), offer_path(@offer.uuid),
+                            method: :delete, data: { confirm: t(:are_you_sure) }, class: "ui button red" %>
+                    <% else %>
+                        <%#= @offer.auction.decorate.auction_offer_button(current_user) %>
+                        <%= link_to t('auctions.bid'), edit_english_offer_path(@offer.uuid), class: "ui button primary", style: 'margin-bottom: 20px;' %>
+                    <% end %>
+                <% end %>
+            </div>
+        </div>
+
+        <% if current_user&.participated_in_english_auction?(@auction) %>
+
+            <div>
+                <%= render 'offers/participants_table', auction: @auction %>
+            </div>
+        <% end %>
+
+        <% if current_user&.participated_in_english_auction?(@auction) && @auction.finished? %>
+
+            <div style='margin-top: 20px;'>
+                <%= render 'offers/deposit_participants_table', auction: @auction %>
+            </div>
+        <% end %>
+        
+    </div>
+</div>
+
+<% if @auction.english? %>
+<%= render 'auctions/english_bottom_grid' %>
+<% else %>
+<%= render 'auctions/bottom_grid' %>
+<% end %>

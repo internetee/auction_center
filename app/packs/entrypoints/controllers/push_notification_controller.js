@@ -42,8 +42,6 @@ export default class extends Controller {
   setupPushNotifications() {
     const applicationServerKey = this.urlBase64ToUint8Array(this.vapidPublicValue);
 
-    console.log(this.vapidPublicValue);
-
     navigator.serviceWorker.register("/service-worker.js", {scope: "./" }).then((registration) => {
       console.log('Service Worker registered successfully:', registration);
 

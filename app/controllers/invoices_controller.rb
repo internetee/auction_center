@@ -1,7 +1,8 @@
 class InvoicesController < ApplicationController
   before_action :authenticate_user!
   before_action :authorize_user
-  before_action :set_invoice, except: %i[index pay_all_bills oneoff pay_deposit]
+  before_action :set_invoice, except: %i[index pay_all_bills pay_deposit]
+  before_action :validate_amount, only: :oneoff
 
   # GET /invoices/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/edit
   def edit; end
@@ -10,10 +11,28 @@ class InvoicesController < ApplicationController
   def update
     respond_to do |format|
       if update_predicate
-        format.html { redirect_to invoice_path(@invoice.uuid), notice: t(:updated) }
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.update('invoice_information', 
+              Modals::PayInvoice::InvoiceInformation::Component.new(invoice: @invoice)),
+              turbo_stream.toast(t(:updated), position: "right", background: 'linear-gradient(to right, #11998e, #38ef7d)')
+        ]
+        end
+
+        format.html { redirect_to invoices_path, notice: t(:updated) }
         format.json { render :show, status: :ok, location: @invoice }
       else
-        format.html { redirect_to invoice_path(@invoice.uuid), notice: t(:something_went_wrong) }
+        error_str = if @invoice.errors.empty?
+                      @invoice.payable? ? t(:something_went_wrong) : t('invoices.invoice_already_paid')
+                    else  
+                      @invoice.errors.full_messages.join('; ')
+                    end
+
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.toast(error_str, position: "right", background: 'linear-gradient(to right, #93291E, #ED213A)')
+        end
+
+        format.html { redirect_to invoices_path, status: :see_other, alert: error_str }
         format.json { render json: @invoice.errors, status: :unprocessable_entity }
       end
     end
@@ -22,12 +41,15 @@ class InvoicesController < ApplicationController
   # GET /invoices/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
   def show; end
 
-  # GET /invoices
+  # rubocop:disable Metrics/AbcSize
   def index
     @issued_invoices = invoices_list_by_status(Invoice.statuses[:issued])
-    @paid_invoices = invoices_list_by_status(Invoice.statuses[:paid])
     @cancelled_payable_invoices = invoices_list_by_status(Invoice.statuses[:cancelled]).with_ban
     @cancelled_expired_invoices = invoices_list_by_status(Invoice.statuses[:cancelled]).without_ban
+
+    # @unpaid_invoices_count = @issued_invoices.count + @cancelled_payable_invoices.count
+
+    @paid_invoices = invoices_list_by_status(Invoice.statuses[:paid])
     @deposit_paid = current_user.domain_participate_auctions.order(created_at: :desc)
 
     return unless params[:state] == 'payment'
@@ -43,16 +65,11 @@ class InvoicesController < ApplicationController
     send_data(raw_pdf, filename: @invoice.filename)
   end
 
-  def invoices_list_by_status(status)
-    Invoice.accessible_by(current_ability)
-           .where(user_id: current_user.id)
-           .where(status: status)
-           .order(due_date: :desc)
-  end
-
+  # TODO: Remove. It is deprecated
   def pay_all_bills
-    issued_invoices = invoices_list_by_status(Invoice.statuses[:issued])
-    response = EisBilling::BulkInvoicesService.call(invoices: issued_invoices,
+    payable_invoices = Invoice.accessible_by(current_ability)
+                              .where(user_id: current_user.id).to_a.select(&:payable?)
+    response = EisBilling::BulkInvoicesService.call(invoices: payable_invoices,
                                                     customer_url: linkpay_callback_url)
 
     if response.result?
@@ -70,21 +87,24 @@ class InvoicesController < ApplicationController
       "user_email #{current_user.email}"
     response = EisBilling::PayDepositService.call(amount: auction.deposit,
                                                   customer_url: deposit_callback_url,
-                                                  description: description)
+                                                  description:)
+
     if response.result?
-      redirect_to response.instance['oneoff_redirect_link'], allow_other_host: true
+      redirect_to response.instance['oneoff_redirect_link'], allow_other_host: true, format: :html
     else
-      flash.alert = response.errors
+      flash.alert = response.errors['message']
       redirect_to invoices_path
     end
   end
 
   def oneoff
-    invoice = Invoice.accessible_by(current_ability).find_by!(uuid: params[:uuid])
-    response = EisBilling::OneoffService.call(invoice_number: invoice.number.to_s,
-                                              customer_url: linkpay_callback_url)
+    response = EisBilling::OneoffService.call(invoice_number: @invoice.number.to_s,
+                                              customer_url: linkpay_callback_url,
+                                              amount: params[:amount])
+
+
     if response.result?
-      redirect_to response.instance['oneoff_redirect_link'], allow_other_host: true
+      redirect_to response.instance['oneoff_redirect_link'], allow_other_host: true, format: :html
     else
       flash.alert = response.errors['message']
       redirect_to invoices_path
@@ -92,18 +112,26 @@ class InvoicesController < ApplicationController
   end
 
   def send_e_invoice
-    invoice = Invoice.accessible_by(current_ability).find_by!(uuid: params[:uuid])
-    response = EisBilling::SendEInvoice.call(invoice: invoice, payable: !invoice.paid?)
+    response = EisBilling::SendEInvoice.call(invoice: @invoice, payable: !@invoice.paid?)
 
     if response.result?
-      redirect_to invoice_path(invoice.uuid), notice: t('.sent_to_omniva')
+      redirect_to invoice_path(@invoice.uuid), notice: t('.sent_to_omniva')
     else
-      redirect_to invoice_path(invoice.uuid), alert: response.errors
+      redirect_to invoice_path(@invoice.uuid), alert: response.errors
     end
   end
 
+  private
+
+  def invoices_list_by_status(status)
+    Invoice.accessible_by(current_ability)
+           .where(user_id: current_user.id)
+           .where(status:)
+           .order(due_date: :desc)
+  end
+
   def update_predicate
-    @invoice.issued? && @invoice.update(update_params)
+    @invoice.payable? && @invoice.update(update_params)
   end
 
   def update_params
@@ -118,5 +146,14 @@ class InvoicesController < ApplicationController
   def authorize_user
     authorize! :read, Invoice
     authorize! :update, Invoice
+  end
+
+  def validate_amount
+    return if params[:amount].nil?
+
+    alert = I18n.t('invoices.amount_must_be_positive') if params[:amount].to_f <= 0
+    alert = I18n.t('invoices.amount_is_too_big') if params[:amount].to_f > @invoice.due_amount.to_f
+
+    redirect_to invoice_path(@invoice.uuid), alert: alert if alert
   end
 end

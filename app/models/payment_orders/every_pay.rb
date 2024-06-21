@@ -57,13 +57,9 @@ module PaymentOrders
 
       Invoice.transaction do
         invoices.each do |invoice|
-          process_payment(invoice, time)
+          invoice.mark_as_paid_at_with_payment_order(time, self)
         end
       end
-    end
-
-    def process_payment(invoice, time)
-      invoice.mark_as_paid_at_with_payment_order(time, self)
     end
 
     # Check if the intermediary reports payment as settled and we can expect money on

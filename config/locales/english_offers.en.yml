@@ -8,28 +8,31 @@ en:
     price_is_without_vat: "The offer does not include VAT."
     price_with_wat: Total %{price} (+ %{tax}% VAT)
     price_with_wat_template: Total {price} (+ {tax}% VAT)
+    price_in_currency_template: "{price} €"
+    tax_template: "VAT {tax}%"
     already_exists: "You already have an offer for this auction."
     must_be_active: "This auction has ended"
     must_be_active_err: "has ended"
-    must_be_higher_than: "must be higher than %{minimum}"
+    must_be_higher_than: "Price must be higher than %{minimum}"
     reminder: |
       NB: This is a blind auction where bids are not public.
       There might be other bids.
       Make an offer according to the value the domain name holds to you.
     timer: Auction will finish in
+    new_bid: "New bid"
 
     new:
       title: "Offer for the reservation of the domain name"
       errors: "prohibited this offer from being saved"
-      minimum_offer: "Minimum offer is %{minimum}."
+      minimum_offer: "Minimum offer value is %{minimum}."
 
     show:
       title: "Your offer"
       we_will_contact_winner: |
         Once the auction time has ended, we will send an email to
         the auction winner.
-      min_bid: Minimum bid is
-      current_price: Current price is
+      min_bid: Minimum bid
+      current_price: Current price
       bid_failed: Bid failed, current price is %{price}
 
     create:
@@ -43,15 +46,17 @@ en:
       bid_updated: "Bid updated"
 
     index:
-      your_last_offer: "Minu pakkumus"
+      your_last_offer: "My bid"
       claim_your_domain: "Claim your domain"
       you_won: "You won"
       you_lost: "Someone else won"
+      you_lose: 'You lost the auction'
+      new_bid: "New bid"
 
     form:
       bidder: "Bidder"
       offer: "Offer"
-      minimum_offer: "Minimum offer is %{minimum}."
+      minimum_offer: "Minimum offer value is %{minimum}."
       captcha_verification: "Captcha verification failed"
       offer_title: Offer
       autobider: "Autobidder"
@@ -60,6 +65,8 @@ en:
       autobidder_updated: Autobidder updated
       autobidder_created: Autobidder created
       banned: 'You are banned from this auction'
+      yep: 'Yes'
+      nope: 'No'
 
     number_form_field:
       offer: "Offer"

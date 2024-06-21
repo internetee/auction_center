@@ -1,0 +1,176 @@
+<% content_for :hero do %>
+    <div class="hero orange">
+        <h1><%= t('.title', invoice_number: @invoice.number) %></h1>
+    </div>
+<% end %>
+
+<div class="u-container">
+    <div class="margin-block">
+        <div class="ui two column doubling stackable grid">
+            <div class="column sixteen wide">
+                <%= link_to t(:versions_name), admin_invoice_versions_path(@invoice), class: "ui button primary" %>
+                <%= link_to t('invoices.download'), download_admin_invoice_path(@invoice),
+                            { class: 'ui button secondary', download: true } %>
+
+                <% unless @invoice.overdue? || @invoice.paid? %>
+                    <%= link_to t('invoices.mark_as_paid'), edit_admin_invoice_path(@invoice), class: 'ui button secondary' %>
+                <% end %>
+            </div>
+
+            <div class="column">
+                <div class="ui list">
+                    <div class="item">
+                        <div class="header"><%= t('invoices.status') %></div>
+                        <%= I18n.t("activerecord.enums.invoice.statuses.#{@invoice.status}") %>
+                    </div>
+
+                    <div class="item">
+                        <div class="header"><%= t('invoices.issued_for') %></div>
+                        <%= @invoice.recipient %><br>
+                        <%= @invoice.address %>
+                    </div>
+
+                    <% if @invoice.updated_by %>
+                        <div class="item">
+                            <div class="header"><%= t(:updated_by) %></div>
+                            <%= @invoice.updated_by %>
+                        </div>
+                    <% end %>
+
+                    <% if @invoice.notes %>
+                        <div class="item">
+                            <div class="header"><%= t('invoices.notes') %></div>
+                            <%= @invoice.notes %>
+                        </div>
+                    <% end %>
+                </div>
+            </div>
+
+            <div class="column right aligned">
+                <div class="ui list">
+                    <div class="item">
+                        <div class="header"><%= t('invoices.issuer') %></div>
+                        <%= Setting.find_by(code: 'invoice_issuer').retrieve %>
+                    </div>
+
+                    <div class="item">
+                        <div class="header"><%= t('invoices.issue_date') %></div>
+                        <%= @invoice.issue_date %>
+                    </div>
+
+                    <div class="item">
+                        <div class="header"><%= t('invoices.due_date') %></div>
+                        <%= @invoice.due_date %>
+                    </div>
+
+                    <% if @invoice.paid_with_payment_order %>
+                        <div class="item">
+                            <div class="header"><%= t('invoices.paid_through') %></div>
+                            <%= @invoice.paid_with_payment_order&.channel %>
+                        </div>
+                    <% end %>
+                </div>
+            </div>
+
+            <div class="column sixteen wide">
+                <h2><%= t('invoices.items') %></h2>
+                <table class="ui table" id="invoice-items-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col"><%= t('invoices.item') %></th>
+                            <th></th>
+                            <th scope="col"><%= t('invoices.price') %></th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="invoice-items-table-body">
+                        <% @invoice.items.each_with_index do |item, index| %>
+                            <tr>
+                                <td><%= index + 1 %></td>
+                                <td>
+                                <%= I18n.t('invoice_items.name',
+                                   domain_name: item.invoice.result.auction.domain_name,
+                                   auction_end: item.invoice.result.auction.ends_at.to_date) %>
+                                </td>
+                                <td></td>
+                                <td><%= item.price %></td>
+                            </tr>
+                        <% end %>
+                    </tbody>
+
+                    <tfoot>
+                        <tr>
+                            <td scope="col"></td>
+                            <td scope="col"><%= t('invoices.vat_amount') %></td>
+                            <td> <%= number_to_percentage(@invoice.vat_rate * 100, precision: 0) %></td>
+                            <td scope="col"><%= t('offers.price_in_currency', price: @invoice.vat) %></td>
+                        </tr>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col"><%= t('invoices.total') %></th>
+                            <td></td>
+                            <th scope="col"><%= t('offers.price_in_currency', price: @invoice.total + (@invoice.enable_deposit? ? @invoice.deposit : 0.0)) %></th>
+                        </tr>
+
+                        <% if @invoice.paid? %>
+                            <tr>
+                                <th scope="col"></th>
+                                <th scope="col"><%= t('invoices.vat_rate_on_payment') %></th>
+                                <th></th>
+                                <th scope="col"><%= number_to_percentage(@invoice.vat_rate * 100, precision: 0) %></th>
+                            </tr>
+                            <tr>
+                                <th scope="col"></th>
+                                <th scope="col"><%= t('invoices.total_paid') %></th>
+                                <th></th>
+                                <th scope="col"><%= t('offers.price_in_currency', price: @invoice.paid_amount) %></th>
+                            </tr>
+                        <% end %>
+
+                        <% if @invoice.enable_deposit? %>
+                            <tr style=''>
+                                <td scope="col" style='font-weight: bold; background-color: #f0e68c; border-top-color: "#ccc";'></td>
+                                <td scope="col" style='font-weight: bold; background-color: #f0e68c; border-top-color: "#ccc";'><%= t('invoices.deposit') %></td>
+                                <td style='background-color: #f0e68c;'></td>
+                                <td scope="col" style='font-weight: bold; background-color: #f0e68c; border-top-color: "#ccc";'><%= t('offers.price_in_currency', price: @invoice.deposit) %></td>
+                            </tr>
+                            <tr>
+                                <td scope="col" style='font-weight: bold; background-color: #f0e68c;'></td>
+                                <td scope="col" style='font-weight: bold; background-color: #f0e68c;'><%= t('invoices.amount_due') %></td>
+                                <td style='background-color: #f0e68c;'></td>
+                                <td scope="col" style='font-weight: bold; color: red; background-color: #f0e68c;'><%= t('offers.price_in_currency', price: @invoice.total) %></td>
+                            </tr>
+                        <% end %>
+                    </tfoot>
+                </table>
+            </div>
+            <div class="column sixteen wide">
+                <h2><%= t('payment_orders.title') %></h2>
+                <table class="ui table" id="invoice-items-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col"><%= t('payment_orders.channel') %></th>
+                            <th scope="col"><%= t('payment_orders.status') %></th>
+                            <th scope="col"><%= t('payment_orders.initiated') %></th>
+                            <th scope="col"><%= t('payment_orders.response') %></th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="invoice-items-table-body">
+                        <% @payment_orders.each do |payment_order| %>
+                            <tr>
+                                <td><%= payment_order.id %></td>
+                                <td><%= payment_order.channel %></td>
+                                <td><%= payment_order.status %></td>
+                                <td><%= payment_order.created_at %></td>
+                                <td><%= fetch_errors_from_response(channel: payment_order.channel, response: payment_order.response) %></td>
+                            </tr>
+                        <% end %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

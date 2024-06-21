@@ -1,0 +1,101 @@
+input {
+  font-weight: 500;
+  font-size: rem(14px);
+  height: rem(48px);
+  line-height: rem(24px);
+  padding: rem(12px 16px);
+  border: 1px solid $grey-200-color;
+  border-radius: rem(8px);
+  transition: $transition;
+  width: 100%;
+  max-width: 100%;
+  color: $black-color;
+  font-family: $font-family;
+
+  &:focus {
+    border-color: $black-color;
+  }
+
+  &:disabled {
+    color: $grey-400-color;
+    border-color: $grey-200-color;
+
+    &::placeholder {
+      color: $grey-400-color;
+    }
+  }
+}
+
+textarea {
+  font-weight: 500;
+  font-size: rem(14px);
+  line-height: rem(24px);
+  padding: rem(12px 16px);
+  border: 1px solid $grey-200-color;
+  border-radius: rem(8px);
+  transition: $transition;
+  width: 100%;
+  max-width: 100%;
+
+  &:focus {
+    border-color: $black-color;
+  }
+
+  &:disabled {
+    color: $grey-400-color;
+    border-color: $grey-200-color;
+
+    &::placeholder {
+      color: $grey-400-color;
+    }
+  }
+}
+
+select {
+  font-weight: 500;
+  font-size: rem(14px);
+  height: rem(48px);
+  line-height: rem(24px);
+  padding: rem(12px 16px);
+  border: 1px solid $grey-200-color;
+  border-radius: rem(8px);
+  transition: $transition;
+  width: 100%;
+  max-width: 100%;
+  appearance: none;
+  background: transparent 97.5% center/10px 6px no-repeat;
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4.47343 5.77219L0.218112 1.32775C-0.072704 1.02401 -0.072704 0.531547 0.218112 0.227806C0.508928 -0.0759353 0.980434 -0.0759353 1.27125 0.227806L5 4.12228L8.72875 0.227806C9.01957 -0.0759353 9.49107 -0.0759353 9.78189 0.227806C10.0727 0.531547 10.0727 1.02401 9.78189 1.32775L5.52657 5.77219C5.23575 6.07594 4.76425 6.07594 4.47343 5.77219Z' fill='%23212224'/%3E%3C/svg%3E%0A");
+
+  &:focus {
+    border-color: $black-color;
+  }
+
+  &:disabled {
+    color: $grey-400-color;
+    border-color: $grey-200-color;
+    background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4.47343 5.77219L0.218112 1.32775C-0.072704 1.02401 -0.072704 0.531547 0.218112 0.227806C0.508928 -0.0759353 0.980434 -0.0759353 1.27125 0.227806L5 4.12228L8.72875 0.227806C9.01957 -0.0759353 9.49107 -0.0759353 9.78189 0.227806C10.0727 0.531547 10.0727 1.02401 9.78189 1.32775L5.52657 5.77219C5.23575 6.07594 4.76425 6.07594 4.47343 5.77219Z' fill='%23E2E2E2'/%3E%3C/svg%3E%0A");
+
+    &::placeholder {
+      color: $grey-400-color;
+    }
+  }
+}
+
+label {
+  padding-left: rem(16px);
+  margin-bottom: rem(8px);
+  display: block;
+  font-weight: 800;
+  font-size: rem(14px);
+  line-height: rem(24px);
+}
+
+input:not([type="checkbox"]):not([type="radio"]).is-invalid, select.is-invalid, textarea.is-invalid {
+  border-color: $primary-orange-color;
+  background-color: $orange-light;
+
+  & + span {
+    color: $primary-orange-color;
+  }
+}
+

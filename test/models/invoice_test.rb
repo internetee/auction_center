@@ -160,7 +160,7 @@ class InvoiceTest < ActiveSupport::TestCase
 
   def test_mark_as_paid_at_with_payment_order
     time = Time.parse('2010-07-06 10:30 +0000')
-    payment_order = payment_orders(:issued)
+    payment_order = payment_orders(:paid)
     @payable_invoice.mark_as_paid_at_with_payment_order(time, payment_order)
 
     assert(@payable_invoice.paid?)
@@ -168,6 +168,21 @@ class InvoiceTest < ActiveSupport::TestCase
     assert_equal(time.to_date + 14, @payable_invoice.result.registration_due_date)
     assert_equal(time, @payable_invoice.paid_at)
     assert_equal(payment_order, @payable_invoice.paid_with_payment_order)
+  end
+
+  def test_does_not_mark_as_paid_at_with_payment_order_not_fully_paid
+    time = Time.parse('2010-07-06 10:30 +0000')
+    payment_order = payment_orders(:paid)
+    initial_amount = @payable_invoice.total.to_f - 1
+    payment_order.response = { initial_amount: initial_amount }
+    @payable_invoice.mark_as_paid_at_with_payment_order(time, payment_order)
+
+    refute(@payable_invoice.paid?)
+    refute(@payable_invoice.result.payment_received?)
+    refute_equal(time.to_date + 14, @payable_invoice.result.registration_due_date)
+    refute_equal(time, @payable_invoice.paid_at)
+    assert_equal(payment_order, @payable_invoice.paid_with_payment_order)
+    assert_equal(initial_amount, @payable_invoice.paid_amount)
   end
 
   def test_mark_as_paid_populates_vat_rate_and_paid_amount

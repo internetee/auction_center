@@ -1,67 +1,24 @@
-<% content_for :hero do %>
-<div class="hero green">
-    <h1><%= t('.title') %></h1>
-</div>
-<% end %>
+<% content_for :title, t('.title') %>
 
-<div class="u-container">
-    <div class="margin-block">
-        <div class="buttons">
-            <%= link_to t(:new), new_billing_profile_path, class: "ui button primary" %>
-        </div>
+<div class="o-container">
+    <div class="c-block c-account c-account--adresses">
+        <div class="o-grid o-grid--two-col-desktop o-grid--address o-grid--sep" id='billing_profile_containers'>
+            
 
-        <div class="ui two column grid doubling stackable">
-            <% @billing_profiles.each do |billing_profile|  %>
-            <div class="column">
-                <div class="details-list centered-list">
-                    <h2>
-                        <%= link_to billing_profile.name,
-                            billing_profile_path(billing_profile.uuid) %>
-                    </h2>
-
-                    <table class="ui table very basic padded">
-                        <tbody>
-                            <tr>
-                                <td><strong><%= t('billing_profiles.vat_code') %></strong></td>
-                                <td><%= billing_profile.vat_code %></td>
-                            </tr>
-
-                            <tr>
-                                <td><strong><%= t('billing_profiles.street') %></strong></td>
-                                <td><%= billing_profile.street %></td>
-                            </tr>
-
-                            <tr>
-                                <td><strong><%= t('billing_profiles.city') %></strong></td>
-                                <td><%= billing_profile.city %></td>
-                            </tr>
-
-                            <tr>
-                                <td><strong><%= t('billing_profiles.postal_code') %></strong></td>
-                                <td><%= billing_profile.postal_code %></td>
-                            </tr>
-
-                            <tr>
-                                <td><strong><%= t('billing_profiles.country') %></strong></td>
-                                <td><%= billing_profile.country_code %></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="buttons">
-                    <%= link_to t(:edit), edit_billing_profile_path(billing_profile.uuid), class: "ui button primary" %>
-                    <% if billing_profile.deletable? %>
-                    <%= link_to t(:delete), billing_profile_path(billing_profile.uuid),
-                        method: :delete, data: { confirm: t(:are_you_sure) },
-                        class: "ui button red", target: '_top' %>
-                    <% else %>
-                    <%= content_tag :div, link_to(t(:delete), '#', class: "ui button secondary disabled"),
-                        data: {tooltip: t('billing_profiles.in_use_by_offer_short'), inverted: ''}, target: '_top' %>
-                    <% end %>
-                </div>
-            </div>
+          <% @billing_profiles.each do |billing_profile|  %>
+            <%= turbo_frame_tag dom_id(billing_profile) do %>
+              <%= render partial: 'billing_info', locals: { billing_profile: billing_profile } %>
             <% end %>
+          <% end %>
+
+          <%= turbo_frame_tag 'new_billing_profile' %>
+
+
+        </div>
+        <div class="u-text-center u-mt-48">
+          <%= component 'common/links/link_button', link_title: t('billing_profiles.new.title'), href: new_billing_profile_path,
+              color: 'green', options: { data: { turbo_frame: 'new_billing_profile' } } %>
         </div>
     </div>
 </div>
+

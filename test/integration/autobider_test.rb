@@ -19,7 +19,8 @@ class AutobiderIntegrationTest < ActionDispatch::IntegrationTest
       autobider: {
         user_id: @user.id,
         domain_name: @auction.domain_name,
-        price: 10.0
+        price: 10.0,
+        enable: true
       }
     }
 
@@ -34,7 +35,8 @@ class AutobiderIntegrationTest < ActionDispatch::IntegrationTest
       autobider: {
         user_id: @user.id,
         domain_name: @auction.domain_name,
-        price: 10.0
+        price: 10.0,
+        enable: true
       }
     }
 
@@ -43,8 +45,7 @@ class AutobiderIntegrationTest < ActionDispatch::IntegrationTest
     @user.reload
     @auction.reload
 
-    assert_equal @auction.offers.first.cents,
-                 Money.from_amount(@auction.starting_price.to_f).cents
+    assert_equal @auction.offers.first.cents, Money.from_amount(@auction.starting_price.to_f).cents
   end
 
   def test_autobider_creation_should_outbid_existed_offer
@@ -52,7 +53,8 @@ class AutobiderIntegrationTest < ActionDispatch::IntegrationTest
       autobider: {
         user_id: @user.id,
         domain_name: @auction.domain_name,
-        price: 10.0
+        price: 10.0,
+        enable: true
       }
     }
 
@@ -86,7 +88,8 @@ class AutobiderIntegrationTest < ActionDispatch::IntegrationTest
       autobider: {
         user_id: @user.id,
         domain_name: @auction.domain_name,
-        price: 10.0
+        price: 10.0,
+        enable: true
       }
     }
 
@@ -108,7 +111,8 @@ class AutobiderIntegrationTest < ActionDispatch::IntegrationTest
       autobider: {
         user_id: @user.id,
         domain_name: @auction.domain_name,
-        price: 10.0
+        price: 10.0,
+        enable: true
       }
     }
 

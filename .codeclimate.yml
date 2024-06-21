@@ -7,19 +7,39 @@ prepare:
 plugins:
   brakeman:
     enabled: true
+    checks:
+      mass_assign_permit!:
+        enabled: false
   bundler-audit:
     enabled: true
   duplication:
     enabled: true
     config:
+      count_threshold: 3
       languages:
-      - ruby
-      - javascript
+        ruby:
+          mass_threshold: 100
+        javascript:
+          mass_threshold: 100
   eslint:
     enabled: true
+    channel: eslint-5
+  fixme:
+    enabled: true
+    checks:
+      TODO:
+        enabled: false
   rubocop:
     enabled: true
-    channel: rubocop-1-12-1
+    # channel: rubocop-1-56-3
+    config: .rubocop.yml
+checks:
+  method-lines:
+    config:
+      threshold: 40
+  method-count:
+    config:
+      threshold: 25
 exclude_patterns:
   - "bin/"
   - "config/"
@@ -28,4 +48,5 @@ exclude_patterns:
   - "vendor/"
   - "test/"
   - "karma.conf.js"
-  - "app/packs/src/semantic/"
+  - "app/packs/"
+  - "CHANGELOG.md"

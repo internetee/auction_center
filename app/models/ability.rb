@@ -15,6 +15,7 @@ class Ability
 
   def participant
     can :manage, BillingProfile, user_id: user.id
+    can :manage, Notification, user_id: user.id
     can :pay_deposit, Auction
     can %i[read update], Invoice
     can %i[read create], PaymentOrder, user_id: user.id

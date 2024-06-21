@@ -14,3 +14,4 @@ en:
       only_available_after_paying_invoice: "You need to pay the invoice to receive the code."
       domain_already_registered: "Code already used."
       paid: "Paid"
+      description: "When the invoice is paid, the registration code will appear here"

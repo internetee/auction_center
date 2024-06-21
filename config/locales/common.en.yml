@@ -4,14 +4,15 @@ en:
       open_portal: "Public portal"
       auction_portal: "Auction portal"
       registrar_portal_url_html: '<a href= "https://www.internet.ee/registrar-portal"><span>Registrar portal</span></a>'
+      registrar_portal: "Registrar portal"
       registrant_portal: "Registrant portal"
+      notifications: "Notifications"
 
     footer:
-      copyright: "© 2019 Estonian Internet Foundation"
+      copyright: "© 2024 Estonian Internet Foundation"
       address: "Paldiski mnt 80, 10617 Tallinn, Estonia"
       registration_code: "Registration code: 90010019"
 
-    english_links:
       help_and_info: "Help and info"
       domain_regulation: ".ee Domain Regulation"
       faq: "Frequently asked questions"
@@ -30,8 +31,10 @@ en:
       documents: "Documents"
       registrars_working_group: "Registrar's Working group"
 
+      social_media: "Social media"
+
     webpush_modal:
-      webpush_title: Web Push
+      webpush_title: 'Enable Web Push notifications'
       webpush_descr: The .ee auction portal employs web push notifications to keep you informed of any over-bidding activity, without requiring you to keep the website open constantly.
       webpush_agree: Agree
       webpush_decline: "No, thanks"

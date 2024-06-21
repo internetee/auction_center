@@ -1,0 +1,18 @@
+$mq-breakpoints: (
+        mobile:  374px,
+        tablet:  768px,
+        laptop:  992px,
+        desktop: 1120px,
+        wide:    1300px,
+        menu:    1480px,
+        ultra:   1600px
+) !default;
+
+@mixin mq($name, $breakpoints: $mq-breakpoints) {
+  @if map-has-key($breakpoints, $name) {
+    $breakpoint: map-get($breakpoints, $name);
+    @media all and (min-width: $breakpoint) {
+      @content();
+    }
+  }
+}

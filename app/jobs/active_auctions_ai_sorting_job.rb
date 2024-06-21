@@ -7,7 +7,7 @@ class ActiveAuctionsAiSortingJob < ApplicationJob
     auctions_list = Auction.active_with_offers_count
     ai_response = fetch_ai_response(auctions_list)
     process_ai_response(ai_response)
-  rescue OpenAI::Error => e
+  rescue StandardError, OpenAI::Error => e
     handle_openai_error(e)
   end
 
@@ -40,6 +40,7 @@ class ActiveAuctionsAiSortingJob < ApplicationJob
   def fetch_ai_response(auctions_list)
     ai_client = OpenAI::Client.new
     response = ai_client.chat(parameters: chat_parameters(auctions_list))
+
     ai_response = response.dig('choices', 0, 'message', 'content')
     raise StandardError, response.dig('error', 'message') if ai_response.nil?
 
@@ -52,8 +53,17 @@ class ActiveAuctionsAiSortingJob < ApplicationJob
       messages: [
         { role: 'system', content: system_message },
         { role: 'user', content: format(auctions_list) },
-        { role: 'user', content: 'Response in JSON format: [{id:, domain_name:, ai_score:}]' }
-      ]
+        { role: 'user', content: 'Please provide a detailed response in JSON format without any text and only the result.
+          Here is an example of how I expect the JSON output:
+          [
+            {
+              id:,
+              domain_name:,
+              ai_score:
+            }
+          ]' }
+      ],
+      temperature: 0.7
     }
   end
 

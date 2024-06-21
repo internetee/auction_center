@@ -3,8 +3,10 @@ et:
     billing_profile_must_belong_to_user: "must belong to the same user as invoice"
     is_being_generated: "We are generating the invoice, please check back in a few minutes."
 
+    invoice_already_paid: "Arve on juba makstud."
+
     issue_date: "Arve kuupäev"
-    issuer: "Väljastaja"
+    issuer: "Arve väljastaja"
     issued_for: "Arve saaja"
     due_date: "Tähtaeg"
     status: "Olek"
@@ -28,6 +30,11 @@ et:
     deposit: "Ettemaks"
     amount_due: "Tasuda"
     sent_to_omniva: "E-arve saadeti edukalt"
+    issued_invoices: "Väljastatud arved"
+    show_invoice: "Vaata arvet"
+    bill: "Arve"
+    billing_profile_description: "Viimane arve aadress, mille kaudu on tehtud panus, on määratud"
+    address: "Aadress"
 
     outstanding: "Tasumata arved"
     paid: "Tasutud arved"
@@ -37,21 +44,29 @@ et:
     marked_as_paid: "Arve makstuks märgitud."
     already_paid: "Arve on juba makstud."
     paid_deposit_title: Deposiidi maksed
+    pay_all: "Maksa kõik arved"
+    partial_payments_activated: "Lubatud klientidel teha selle arve osalisi makseid"
+    allow_partial_payments: "Luba osalisi makseid"
+    disallow_partial_payments: "Keela osalised maksed"
+    amount_must_be_positive: "Summa peab olema suurem kui 0"
+    amount_is_too_big: "Summa ei tohi olla suurem kui arve kogusumma"
     paid_deposit: 
       date: Kuupäev
       sum: Summa
       auction_name: Domeen
-      status: Olek
-      refund_time: Tagastatud
+      status: Staatus
+      refund_time: Deposiit tagastatud
       paid: "Makstud"
       prepayment: "Ettemaks"
       returned: "Tagastatud"
+      pending: "Ootel"
 
     show:
       change_billing_profile: "Muuda arve aadressi"
       pay: "Maksa"
       redeem: Tühistatud arve tasumine eemaldab vastava arvega seotud rikkumise, kuid ei anna vastava domeeni registreerimiseks eelisõigust.
       send_e_invoice: "Saada E-Arve"
+      total_amount: "Kokku vaja tasuda"
 
     edit:
       title: "Muuda arvet"

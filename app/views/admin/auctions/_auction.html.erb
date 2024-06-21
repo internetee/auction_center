@@ -1,8 +1,15 @@
                             
-<%# name_frame_id = dom_id(auction) %>
+<%# locals: (form:,) -%>
+
 <tr class="auctions-table-row" data-turbo-frame="auction_<%= auction.id %>">
   <td class="text-center">
-    <%= f.check_box :auction_ids, { multiple: true }, auction.id, nil %>
+
+    <%# TODO: Refactor this nested elements and move to the components %>
+    <%= form.label "auction_ids_#{auction.id}", class: 'o-checkbox' do %>
+      <%= form.check_box :auction_ids, { multiple: true, data: { form__bundle_checkbox_target: 'checkboxes', form__check_all_target: 'checkboxes' } }, auction.id, nil  %>
+      <div class="o-checkbox__slider round"></div>
+    <% end %>
+
   </td>
   <td class="auction-domain-name monospace">
     <%= link_to(admin_auction_path(auction.id), target: '_top') do %>

@@ -1,90 +1,70 @@
-<% content_for :hero do %>
-    <div class="hero orange">
-        <h1><%= t('.title') %></h1>
-        <div class="monospace"><%= @result.auction.domain_name %></div>
-    </div>
-<% end %>
+<% content_for :title, "#{t('.title')}: #{@result.auction.domain_name}" %>
 
-<div class="u-container">
-    <div class="margin-block">
-        <div class="content">
-            <div class="body">
-                <table class="ui table very basic padded">
-                    <tbody>
-                        <tr>
-                            <td><strong><%= t('auctions.domain_name') %></strong></td>
-                            <td class="monospace"><%= @result.auction.domain_name %></td>
-                            <tr>
-                                <td><strong><%= t('results.status') %></strong></td>
-                                <td>
-                                    <%= @result.status.humanize %>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td><strong><%= t('results.pay_invoice_before') %></strong></td>
-                                <td>
-                                    <%= pay_invoice_before(@result) %>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td><strong><%= t('results.register_before') %></strong></td>
-                                <td>
-                                    <%= @result.registration_due_date %>
-                                </td>
-                            </tr>
-
-                            <%- if @result.registration_code %>
-                                <tr>
-                                    <td><strong><%= t('results.registration_code') %></strong></td>
-                                    <td>
-                                        <%= @result.registration_code %>
-                                    </td>
-                                </tr>
-                            <% end %>
-
-                            <%- unless @result.no_bids? %>
-                                <tr>
-                                    <td><strong><%= t('results.buyer') %></strong></td>
-                                    <td><%= @buyer %></td>
-                                </tr>
-                            <% end %>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="buttons">
-                <%= link_to t(:versions_name), admin_result_versions_path(@result),
-                class: "ui button primary" %>
-            </div>
-        </div>
-
-        <% if @offers.any? %>
-            <h2><%= t(:offers_name) %></h2>
-            <table class="ui table" id="result-offers-table">
-                <thead>
-                    <tr>
-                        <th scope="col"><%= t('offers.price') %></th>
-                        <th scope="col"><%= t('billing_profiles.name') %></th>
-                        <th scope="col"><%= t(:created_at) %></th>
-                        <th scope="col"><%= t(:updated_at) %></th>
-                        <th scope="col"><%= t(:versions_name)%> </th>
-                    </tr>
-                </thead>
-
-                <tbody id="offers-table-body">
-                    <% @offers.each do |offer| %>
-                        <tr class="offers-table-row">
-                            <td><%= t('offers.price_in_currency', price: offer.price) %></td>
-                            <td><%= offer.billing_profile.present? ? offer.billing_profile.name : offer.user.display_name %></td>
-                            <td><%= I18n.l(offer.created_at) %></td>
-                            <td><%= I18n.l(offer.updated_at) %></td>
-                            <td><%= link_to t(:versions_name), admin_offer_versions_path(offer) %></td>
-                        </tr>
-                    <% end %>
-                </tbody>
-            </table>
+<div class="o-container">
+  <div class="c-table c-table--sortable">
+    <%= component 'common/table', header_collection: [], options: { class: 'js-table-dt' } do %>
+      <%= tag.tbody class: 'contents' do %>
+        <tr>
+          <td><strong><%= t('auctions.domain_name') %></strong></td>
+          <td class="monospace"><%= @result.auction.domain_name %></td>
+          <tr>
+            <td><strong><%= t('results.status') %></strong></td>
+            <td>
+              <%= @result.status.humanize %>
+            </td>
+          </tr>
+          <tr>
+            <td><strong><%= t('results.pay_invoice_before') %></strong></td>
+            <td>
+              <%= pay_invoice_before(@result) %>
+            </td>
+          </tr>
+          <tr>
+            <td><strong><%= t('results.register_before') %></strong></td>
+            <td>
+              <%= @result.registration_due_date %>
+            </td>
+          </tr>
+          <%- if @result.registration_code %>
+            <tr>
+              <td><strong><%= t('results.registration_code') %></strong></td>
+              <td>
+                <%= @result.registration_code %>
+              </td>
+            </tr>
+          <% end %>
+          <%- unless @result.no_bids? %>
+            <tr>
+              <td><strong><%= t('results.buyer') %></strong></td>
+              <td><%= @buyer %></td>
+            </tr>
+          <% end %>
         <% end %>
+      <% end %>
+
+      <div class="c-table__filters__btns" style='padding: 1rem 0; display: flex; justify-content: end;'>
+        <%= link_to t(:versions_name), admin_result_versions_path(@result), class: "c-btn c-btn--blue" %>
+      </div>
+      
+      <% table_headers = [
+        { column: '', caption: t('offers.price'), options: { class: "" } },
+        { column: '', caption: t('billing_profiles.name'), options: { class: "" } },
+        { column: '', caption: t('created_at'), options: { class: "" } },
+        { column: '', caption: t('updated_at'), options: { class: "" } },
+        { column: '', caption: t('versions_name'), options: { class: "" } },
+      ] %>
+      <%= component 'common/table', header_collection: table_headers, options: { class: 'js-table-dt' } do %>
+        <%= tag.tbody class: 'contents' do %>
+          <% @offers.each do |offer| %>
+            <tr class="offers-table-row">
+              <td><%= t('offers.price_in_currency', price: offer.price) %></td>
+              <td><%= offer.billing_profile.present? ? offer.billing_profile.name : offer.user.display_name %></td>
+              <td><%= I18n.l(offer.created_at) %></td>
+              <td><%= I18n.l(offer.updated_at) %></td>
+              <td><%= link_to t(:versions_name), admin_offer_versions_path(offer) %></td>
+            </tr>
+          <% end %>
+        <% end %>
+      <% end %>
     </div>
-</div>
+  </div>

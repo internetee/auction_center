@@ -1,0 +1,24 @@
+<% content_for :hero do %>
+    <div class="hero green">
+        <h1><%= t('.title') %></h1>
+    </div>
+<% end %>
+
+<div class="u-container">
+    <div class="u-container margin-block">
+        <% if @user.errors.any? %>
+            <div class="ui message">
+                <div class="header">
+                    <%= t(:errors_name) %>
+                </div>
+                <ul id="errors">
+                    <% @user.errors.full_messages.each do |message| %>
+                        <li><%= message %></li>
+                    <% end %>
+                </ul>
+            </div>
+        <% end %>
+
+        <%= render 'form', user: @user, url: users_path %>
+    </div>
+</div>

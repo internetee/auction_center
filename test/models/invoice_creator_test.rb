@@ -140,7 +140,6 @@ class InvoiceCreatorTest < ActiveSupport::TestCase
     auction.reload
     user.reload
 
-    
     private_billing_profile = user.billing_profiles.last
     private_billing_profile.update(country_code: 'EE' ) && private_billing_profile.reload
 

@@ -1,0 +1,77 @@
+.c-badge {
+  font-weight: 500;
+  font-size: rem(14px);
+  line-height: rem(24px);
+  padding: 0 rem(16px);
+  display: inline-flex;
+  gap: rem(8px);
+  border-radius: rem(12px);
+  align-items: center;
+  cursor: default;
+
+  &::before {
+    content: '';
+    width: rem(8px);
+    height: rem(8px);
+    display: block;
+    border: 2px solid transparent;
+    border-radius: rem(4px);
+  }
+}
+
+.c-badge--green {
+  background-color: $green-light;
+  color: $primary-green-color;
+
+  &::before {
+    background-color: $primary-green-color;
+    border-color: $primary-green-color;
+  }
+}
+
+.c-badge--yellow {
+  background-color: $yellow-light;
+  color: $primary-yellow-color;
+
+  &::before {
+    background-color: $primary-yellow-color;
+    border-color: $primary-yellow-color;
+  }
+}
+
+.c-badge--red {
+  background-color: #f8d8db;
+  color: #ff2040;
+
+  &::before {
+    background-color: #ff2040;
+    border-color: #ff2040;
+  }
+}
+
+.c-badge--blue {
+  background-color: #dfeff9;
+  color: $primary-blue-color;
+
+  &::before {
+    background-color: $primary-blue-color;
+    border-color: $primary-blue-color;
+  }
+}
+
+
+.c-badge--gray {
+  background-color: $grey-100-color;
+  color: $grey-400-color;
+
+  &::before {
+    background-color: $grey-400-color;
+    border-color: $grey-400-color;
+  }
+}
+
+.c-badge--circle {
+  &::before {
+    background-color: transparent;
+  }
+}

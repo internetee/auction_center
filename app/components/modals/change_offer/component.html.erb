@@ -1,0 +1,112 @@
+<div class="c-modal-overlay js-modal" data-modals--offer-modal-target='modal'>
+  <div class="c-modal">
+    <div class="c-modal__scroll">
+      <div class="c-modal__scroll__content">
+        <button class="c-modal__close-btn js-close-modal" data-action='modals--offer-modal#close'>
+          <span class="o-close-icon"></span>
+        </button>
+        <div class="c-modal__header">
+          <div class="c-modal__header__title">
+            <span class="o-edit-icon--green"></span>
+            <span><%= t('offer.change_bid') %></span>
+          </div>
+          <div class="c-modal__header__subject">
+            <span class="c-modal__header__subject__title"><%= @auction.domain_name %></span>
+            <span class="o-io-icon o-io-icon--bg-blue"></span>
+          </div>
+          <div class="c-modal__header__desc">
+            <span><%= t('english_offers.timer') %> <strong><%= component 'common/timer', auction: @auction %></strong></span>
+          </div>
+        </div>
+        
+        <div class="c-modal__main">
+          <div class="c-modal__grid">
+            <div class="c-modal__main__info">
+              <span><%= t('english_offers.show.min_bid') %></span>
+              <h3 class="u-h2 u-m-none"><span id="mini"><%= Money.from_amount(@auction.min_bids_step.to_f, Setting.find_by(code: 'auction_currency').retrieve,  precision: 2) %> €</span></h3>
+            </div>
+            <div class="c-modal__main__info c-modal__main__info--black">
+              <strong><%= t('english_offers.show.current_price') %></strong>
+              <h3 class="u-h2 u-m-none">
+                <span id="current_<%= @auction.id %>_price">
+                  <%= current_price %> €
+                </span>
+              </h3>
+              <span><%= current_bidder %></span>
+            </div>
+          </div>
+
+          <%= form_with **autobider_form_properties do |f| %>
+            <div class="c-modal__grid u-align-center u-flex-wrap u-mt-24 u-mt-48-l">
+              <%= f.hidden_field :domain_name, value: offer.auction.domain_name %>
+              <%= f.hidden_field :user_id, value: offer.user_id %>
+              <label><%= t('english_offers.form.autobidder_value') %></label>
+              
+              <div class="c-modal__col">
+                <%= component 'common/form/number_field', form: f, **number_field_properties %>
+              </div>
+
+              <%= component 'captcha', captcha_required: @captcha_required, show_checkbox_recaptcha: @show_checkbox_recaptcha, action: 'autobidder' %>
+
+              <div class="c-modal__col">
+                <div class="u-flex u-flex-wrap u-flex-gap-12">
+                  <%= component 'common/form/checkboxes/rounded_checkbox', form: f, **autobider_checkbox_properties %>
+
+                  <span class="u-word-nowrap">
+                    <%= t('english_offers.form.autobider') %>: <strong id='autobider-status'><%= @autobider.enable ? t('english_offers.form.yep') : t('english_offers.form.nope') %></strong>
+                  </span>
+                </div>
+              </div>
+            </div>
+          <% end %>
+
+          <%= form_with **offer_form_properties do |f| %>
+            <%= f.hidden_field :user_id, value: offer.user_id %>
+            <%= f.hidden_field :auction_id, value: offer.auction_id %>
+            
+            <div class="c-modal__grid u-flex-wrap u-mt-24 u-mt-48-l">
+              <div class="c-modal__col">
+                <label for='min_bids_step'><%= t('english_offers.price') %></label>
+                <span id="offer_<%=offer.auction.id%>_form">
+                  <%= component 'modals/change_offer/number_form_field', offer_value: @auction.min_bids_step.to_f, offer_disabled: @auction.finished? %>
+                </span>
+              </div>
+            
+              <div class="c-modal__col">
+                <label><%= t('english_offers.total') %></label>
+                <span class="c-modal__calculation" data-autotax-counter-target='result'>
+                  <% if offer.billing_profile.present? %>
+                    <%= t('offers.price_with_wat',
+                        price: (@auction.min_bids_step.to_f * offer.billing_profile.vat_rate.to_f).to_f + @auction.min_bids_step.to_f,
+                        tax: offer.billing_profile.vat_rate * 100)  %>
+                  <% else %>
+                    <%= t('offers.price_is_without_vat') %>
+                  <% end %>
+                </span>
+              </div>
+            </div>
+            <div class="c-modal__select u-mt-24 ">
+              <%= f.label :billing_profile, t('.bidder') %>
+              <%= component 'common/form/dropdown_input', form: f, **billing_profile_dropdown_properties %>
+            </div>
+
+            <%= component 'captcha', captcha_required: @captcha_required, show_checkbox_recaptcha: @show_checkbox_recaptcha, action: 'english_offer' %>
+
+            <%= link_to t('new_billing_profile'), billing_profiles_path, class: 'c-modal__link c-modal__link--first-col', target: '_top' %>
+          <% end %>
+        </div>
+        <div class="c-modal__footer">
+          <div class="c-modal__footer__col">
+            <button class="c-btn c-btn--ghost" data-action='modals--offer-modal#close'><%= t('close') %></button>
+          </div>
+          <div class="c-modal__footer__col">
+            <%= submit_tag t(:submit), class: "c-btn c-btn--green", id: 'bid_action', form: 'english_offer_form', data: { turbo: false } %>
+          </div>
+        </div>
+
+        <%#= component 'captcha', captcha_required: @captcha_required, show_checkbox_recaptcha: @show_checkbox_recaptcha, action: 'english_offer' %>
+
+      </div>
+    </div>
+  </div>
+</div>

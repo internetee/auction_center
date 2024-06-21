@@ -1,8 +1,14 @@
+# rubocop:disable Metrics
 class BillingProfilesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_billing_profile, only: %i[show edit update destroy]
   before_action :authorize_billing_profile_for_user, except: %i[new index create]
   before_action :store_location, only: :new
+
+  rescue_from ActiveRecord::RecordNotUnique do |_exception|
+    flash[:alert] = t('billing_profiles.vat_code_already_exists')
+    render turbo_stream: turbo_stream.replace('flash', partial: 'common/flash', locals: { flash: })
+  end
 
   # GET /billing_profiles
   def index
@@ -13,9 +19,12 @@ class BillingProfilesController < ApplicationController
   # GET /billing_profiles/new
   def new
     @billing_profile = BillingProfile.new(user_id: current_user.id)
+
+    return unless turbo_frame_request?
+
+    render partial: 'new_form', locals: { billing_profile: @billing_profile }
   end
 
-  # POST /billing_profiles
   def create
     @billing_profile = BillingProfile.new(create_params)
     authorize! :manage, @billing_profile
@@ -23,10 +32,27 @@ class BillingProfilesController < ApplicationController
     respond_to do |format|
       if create_predicate
         redirect_uri = "#{session[:return_to]}?billing_profile_id=#{@billing_profile.id}" || billing_profile_path(@billing_profile.uuid)
-        format.html { redirect_to redirect_uri, notice: t('.created') }
+        flash[:notice] = t(:created)
+
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.replace('flash', partial: 'common/flash', locals: { flash: }),
+            turbo_stream.prepend('billing_profile_containers', partial: 'billing_profiles/billing_info',
+                                                               locals: { billing_profile: @billing_profile }),
+            turbo_stream.remove('new_form')
+          ]
+        end
+        format.html { redirect_to redirect_uri }
         format.json { render :show, status: :created, location: @billing_profile }
       else
-        format.html { render :new }
+        flash.now[:alert] = @billing_profile.errors.full_messages.to_sentence
+
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.replace('flash', partial: 'common/flash', locals: { flash: })
+          ]
+        end
+        format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @billing_profile.errors, status: :unprocessable_entity }
       end
     end
@@ -36,16 +62,40 @@ class BillingProfilesController < ApplicationController
   def show; end
 
   # GET /billing_profiles/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/edit
-  def edit; end
+  def edit
+    if turbo_frame_request?
+      render turbo_frame: 'billing_profile_form', partial: 'form', locals: { billing_profile: @billing_profile }
+    else
+      render partial: 'form', locals: { billing_profile: @billing_profile }
+    end
+  end
 
   # PUT /billing_profiles/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
   def update
     respond_to do |format|
       if update_predicate
-        format.html { redirect_to billing_profile_path(@billing_profile.uuid), notice: t('.updated') }
+        flash[:notice] = t(:updated)
+
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.replace('flash', partial: 'common/flash', locals: { flash: }),
+            turbo_stream.update(@billing_profile, partial: 'billing_profiles/billing_info',
+                                                  locals: { billing_profile: @billing_profile })
+          ]
+        end
+
+        format.html { redirect_to billing_profiles_path, notice: t(:updated) }
         format.json { render :show, status: :ok, location: @billing_profile }
       else
-        format.html { render :edit }
+        flash[:alert] = @billing_profile.errors.full_messages.to_sentence
+
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.replace('flash', partial: 'common/flash', locals: { flash: })
+          ]
+        end
+
+        format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @billing_profile.errors, status: :unprocessable_entity }
       end
     end
@@ -55,9 +105,17 @@ class BillingProfilesController < ApplicationController
   def destroy
     if @billing_profile.deletable?
       @billing_profile.destroy!
-      redirect_to billing_profiles_path, notice: t('.deleted')
+
+      flash[:notice] = t(:deleted)
+      render turbo_stream: [
+        turbo_stream.replace('flash', partial: 'common/flash', locals: { flash: }),
+        turbo_stream.remove(@billing_profile)
+      ]
     else
-      redirect_to billing_profiles_path, notice: @billing_profile.errors[:base].to_sentence
+      flash[:alert] = @billing_profile.errors.full_messages.to_sentence
+      render turbo_stream: [
+        turbo_stream.replace('flash', partial: 'common/flash', locals: { flash: })
+      ]
     end
   end
 

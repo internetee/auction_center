@@ -1,8 +1,15 @@
 et:
+  auction:
+  # OLEG THIS IS #FIXME
+  # context: et.auctions.all should be but currently this is et.auction.all
+    all: 'Kõik oksjonid'
+  offer:
+    change_bid:
+      'Muuda pakkumust'
   auctions:
     domain_name: 'Domeeninimi'
     starts_at: 'Algus'
-    ends_at: 'Lõpp'
+    ends_at: 'Oksjoni lõpp'
     finished_at: "Oksjoni lõppkuupäev"
     finished: "Oksjon on lõppenud"
     winning_bid: "Võidupakkumus"
@@ -21,19 +28,25 @@ et:
     offer_owner: "Pakkuja"
     enable_deposit: "Võimaldage tagatisraha"
     disable_deposit: "Deaktiveeri tagatisraha"
-    deposit: Tagatisraha
-    bid: Paku hind!
-    participate: Osale!
-    all_list: Kuva kõik
-    pagination_list: Kuva 15 leheküljel
-    finished_auctions: Lõppenud oksjonid
-    you: Sinu pakkumus
+    deposit: "Maksa deposiit" 
+    bid: "Paku hind!"
+    participate: "Osale!"
+    all_list: "Kuva kõik"
+    pagination_list: "Kuva 15 leheküljel"
+    finished_auctions: "Lõppenud oksjonid"
+    you: "Sinu pakkumus"
+    blind_auction: "Pimeoksjon"
+    english_auction: "Inglise oksjon"
+    all: "Kõik oksjonid"
+    type: "Oksjoni tüüp"
 
     still_in_progress: "Töötlemisel"
 
     submit_offer: "Paku hind!"
     edit_your_offer: "Muuda pakkumust"
     delete_your_offer: "Kustuta pakkumine"
+    subscribe_for_notifications: "Telli veebiteavitused"
+    unsubscribe_for_notifications: "Tühista veebiteavitused"
 
     show:
       title: "Oksjoni andmed"
@@ -64,8 +77,8 @@ et:
       title: "Oksjonil olevad domeenid:"
       1_step_header: "Esita pakkumus"
       1_step_explanation: |
-        enda poolt valitud meelepärasele domeenile.
-        Oksjonid toimuvad vastavalt domeeni tüübile kas pimeoksjoni
+        Esita pakkumus enda poolt valitud meelepärasele domeenile.
+        Sõltuvalt domeeni tüübist toimuvad oksjonid kas pimeoksjoni
         või avatud pakkumistega oksjoni stiilis.
 
       2_step_header: "Oota oksjoni lõppemiseni"
@@ -75,7 +88,7 @@ et:
 
       3_step_header: "Maksa oksjonitasu"
       3_step_explanation: |
-        Kui tasu on makstud, saadetakse sulle registreerimiskood,
+        Kui oksjonitasu on makstud, saadetakse sulle registreerimiskood,
         mida saad kasutada .ee akrediteeritud registripidaja juures.
 
       please_note: |
@@ -132,10 +145,10 @@ et:
 
 
     banned: |
-      Sul on keelatud osaleda oksjonil järgmis(t)ele domeeninime(de)le: %{domain_names}.
+      Sul on keelatud osaleda järgneva(te)l domeeninime(de) oksjoni(te)l: %{domain_names}.
     banned_completely: |
       Korduvalt tasumata jäetud arvete tõttu on Su õigus osaleda .ee domeenioksjonitel
       peatatud kuni %{valid_until}. Tulenevalt Kasutajalepingu punktist 7.3.3. saab Teenuse kasutaja oksjonikeskkonna teenuseid kasutada, kui maksmata arveid on vähem kui %{ban_number_of_strikes}.
     violation_message_html: >-
       Oksjoni reeglite <a href="%{violations_count_regulations_link}">rikkumisi</a>:
-      %{violations_count}. Tulenevalt Kasutajalepingu punktist 7.3.3. saab Teenuse kasutaja oksjonikeskkonna teenuseid kasutada, kui maksmata arveid on vähem kui %{ban_number_of_strikes}.
+      %{violations_count}. Tulenevalt Kasutajalepingu punktist 7.3.3. saab Teenuse kasutaja oksjonikeskkonna teenuseid kasutada juhul kui maksmata arveid on vähem kui %{ban_number_of_strikes}.

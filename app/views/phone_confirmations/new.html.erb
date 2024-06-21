@@ -1,26 +1,47 @@
-<% content_for :hero do %>
-    <div class="hero green">
-        <h1><%= t('.title') %></h1>
+<% content_for :title, t('.title') %>
+
+  <div class="o-container">
+    <div class="c-block c-account c-account--changepass">
+
+      <div class="u-flex u-content-center" data-controller='timeleft'
+                              data-timeleft-date-value="<%= current_user.mobile_phone_confirmed_sms_send_at.present? ? I18n.l(current_user.mobile_phone_confirmed_sms_send_at + PhoneConfirmation::TIME_LIMIT) : I18n.l(Time.zone.now) %>"
+                              data-timeleft-refresh-interval-value="500" data-timeleft-message-timer-value="<%= I18n.t('phone_confirmations.new.send_again') %>" 
+                              data-timeleft-default-message-timer-value="<%= I18n.t('phone_confirmations.new.send_code') %>">
+        
+          <div>
+            <h3><%= t('.subheader' , number: @phone_confirmation.user.mobile_phone )%></h3>
+            <p><%= t('.instructions', number: @phone_confirmation.user.mobile_phone )%></p>
+
+            <div class="c-account__form">
+              <%= render 'form', phone_confirmation: @phone_confirmation, url: user_phone_confirmations_path %><br />
+            </div>
+
+            <div class="c-account__form">
+              <%= form_with url: send_sms_user_phone_confirmations_path do |f| %>
+  
+                <% if @captcha_required %>
+                  <% if @show_checkbox_recaptcha %>
+                    <div class="field">
+                      <br>
+                      <%= recaptcha_tags id: 'send_sms', site_key: @recaptcha2_site_key %>
+                    </div>
+                  <% else %>
+                      <%= recaptcha_v3(action: 'send_sms', site_key: @recaptcha3_site_key, turbolinks: true) %>
+                  <% end %>
+                <% end %>
+
+                <div class="c-account__input c-account__input--editable u-mb-20 is-editable">
+                  <%if current_user.allow_to_send_sms_again? %>
+                      <button class="ui c-login__button c-btn c-btn--blue", data-timeleft-target='button'><%= I18n.t('phone_confirmations.new.send_code') %></button>
+                  <% else %>
+                    <button class="ui c-login__button c-btn c-btn--blue", data-timeleft-target='button' disabled><%= I18n.t('phone_confirmations.new.send_again') %></button>
+                  <% end %>
+                </div>
+
+              <% end if render_send_in_button? %>
+            </div>
+          </div>
+
     </div>
-<% end %>
-
-<div class="u-container" data-controller='timeleft'
-                         data-timeleft-date-value="<%= current_user.mobile_phone_confirmed_sms_send_at.present? ? I18n.l(current_user.mobile_phone_confirmed_sms_send_at + PhoneConfirmation::TIME_LIMIT) : I18n.l(Time.zone.now) %>"
-                         data-timeleft-refresh-interval-value="500" data-timeleft-message-timer-value="<%= I18n.t('phone_confirmations.new.send_again') %>" 
-                         data-timeleft-default-message-timer-value="<%= I18n.t('phone_confirmations.new.send_code') %>">
-    <div class="u-container margin-block">
-        <h3><%= t('.subheader' , number: @phone_confirmation.user.mobile_phone )%></h3>
-        <p><%= t('.instructions', number: @phone_confirmation.user.mobile_phone )%></p>
-
-        <%= render 'form', phone_confirmation: @phone_confirmation, url: user_phone_confirmations_path %><br />
-
-        <%= form_with url: send_sms_user_phone_confirmations_path do |f| %>
-          <%if current_user.allow_to_send_sms_again? %>
-            <button class="ui button primary", data-timeleft-target='button'><%= I18n.t('phone_confirmations.new.send_code') %></button>
-          <% else %>
-          <button class="ui button primary", data-timeleft-target='button' disabled><%= I18n.t('phone_confirmations.new.send_again') %></button>
-          <% end %>
-        <% end if render_send_in_button? %>
-
-    </div>
+  </div>
 </div>

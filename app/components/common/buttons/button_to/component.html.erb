@@ -1,0 +1,7 @@
+<% if content.present? %>
+  <%= button_to @href, class: "c-btn--icon c-btn #{colorize}", **@options do %>
+    <%= content %>
+  <% end %>
+<% else %>
+  <%= button_to @title_caption, @href, class: "c-login__button c-btn #{colorize}", **@options%>
+<% end %>

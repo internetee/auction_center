@@ -165,15 +165,6 @@ class Invoice < ApplicationRecord
     self.invoice_items = items
   end
 
-  def user_id_must_be_the_same_as_on_billing_profile_or_nil
-    return unless billing_profile
-    return unless user
-
-    return if billing_profile.user_id == user_id
-
-    errors.add(:billing_profile, I18n.t('invoices.billing_profile_must_belong_to_user'))
-  end
-
   def auction_currency
     Rails.cache.fetch(cache_key_with_version, expires_in: 12.hours) do
       Setting.find_by(code: 'auction_currency').retrieve
@@ -185,11 +176,14 @@ class Invoice < ApplicationRecord
   end
 
   def total
-    if result.auction.enable_deposit?
-      (price * (1 + vat_rate) - deposit).round(2)
-    else
-      (price * (1 + vat_rate)).round(2)
-    end
+    total_amount = price * (1 + vat_rate)
+    total_amount -= deposit if result.auction.enable_deposit?
+
+    total_amount.round(2)
+  end
+
+  def due_amount
+    total - Money.from_amount(paid_amount || 0, auction_currency)
   end
 
   def vat
@@ -224,24 +218,37 @@ class Invoice < ApplicationRecord
   # paid in the user interface.
   def mark_as_paid_at(time)
     ActiveRecord::Base.transaction do
-      prepare_payment_fields(time)
+      self.vat_rate = billing_profile.present? ? billing_profile.vat_rate : vat_rate
+      self.paid_amount = total
+      self.paid_at = time
 
       result.mark_as_payment_received(time) unless cancelled?
       clear_linked_ban
       paid!
     end
+
     ResultStatusUpdateJob.perform_now
   end
 
   def mark_as_paid_at_with_payment_order(time, payment_order)
     ActiveRecord::Base.transaction do
-      prepare_payment_fields(time)
+      self.vat_rate = billing_profile.present? ? billing_profile.vat_rate : vat_rate
+      initial_amount = payment_order.response['initial_amount'].to_f
+      self.paid_amount ||= 0
+      self.paid_amount += initial_amount.to_f
+
       self.paid_with_payment_order = payment_order
 
-      result.mark_as_payment_received(time) unless cancelled?
-      clear_linked_ban
-      paid!
+      if finally_paid?
+        self.paid_at = time
+        result.mark_as_payment_received(time) unless cancelled?
+        clear_linked_ban
+        paid!
+      else
+        save!
+      end
     end
+
     ResultStatusUpdateJob.perform_now
   end
 
@@ -291,15 +298,22 @@ class Invoice < ApplicationRecord
 
   private
 
+  def user_id_must_be_the_same_as_on_billing_profile_or_nil
+    return unless billing_profile
+    return unless user
+
+    return if billing_profile.user_id == user_id
+
+    errors.add(:billing_profile, I18n.t('invoices.billing_profile_must_belong_to_user'))
+  end
+
   def clear_linked_ban
     ban = Ban.find_by(invoice_id: id)
     ban.lift if ban.present?
   end
 
-  def prepare_payment_fields(time)
-    self.paid_at = time
-    self.vat_rate = billing_profile.present? ? billing_profile.vat_rate : vat_rate
-    self.paid_amount = total
+  def finally_paid?
+    due_amount <= 0
   end
 end
 # rubocop:enable Metrics/ClassLength

@@ -1,0 +1,60 @@
+.c-notices {
+  background-color: $white-color;
+  @include box-shadow;
+  position: absolute;
+  top: rem(24px);
+  right: 0;
+  width: rem(340px);
+  z-index: 999;
+  padding: rem(0 16px);
+  border-radius: rem(8px);
+  opacity: 1;
+  visibility: visible;
+  transition: $transition;
+  color: $black-color;
+  font-size: rem(14px);
+  line-height: 1.2;
+
+  a {
+    padding: 0 !important;
+  }
+
+  @include mq(laptop) {
+    top: rem(48px);
+    right: rem(32px);
+  }
+
+  &.is-hidden {
+    visibility: hidden;
+    opacity: 0;
+  }
+}
+
+.c-notices__footer {
+  padding: rem(10px 0 12px);
+}
+
+.c-notice {
+  border-bottom: 1px solid $grey-200-color;
+  padding: rem(16px 0);
+}
+
+.c-notice__header {
+  display: flex;
+  gap: rem(8px);
+  align-items: center;
+  font-weight: 800;
+}
+
+.c-notice__main {
+  margin: rem(8px 0);
+}
+
+// Do not show notices in hamburger menu
+.js-notices-list {
+  display: none;
+
+  @include mq(desktop) {
+    display: block;
+  }
+}

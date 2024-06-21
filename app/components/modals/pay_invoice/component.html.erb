@@ -1,0 +1,48 @@
+<div class="c-modal-overlay js-modal" data-modals--offer-modal-target='modal'>
+  <div class="c-modal c-modal--bill">
+    <div class="c-modal__scroll">
+      <div class="c-modal__scroll__content">
+        <button class="c-modal__close-btn js-close-modal" data-action='modals--offer-modal#close'>
+          <span class="o-close-icon"></span>
+        </button>
+        <div class="c-modal__header">
+          <div class="c-modal__header__title">
+            <span class="o-bill-icon"></span>
+            <span><%= t('invoices.bill') %></span>
+          </div>
+          <div class="c-modal__header__subject">
+            <span class="c-modal__header__subject__title"><%= @invoice.title %></span>
+          </div>
+          <div class="c-modal__header__desc">
+            <span><%= t('payment_orders.status') %></span>
+            <%- if @invoice.paid? %>
+              <%= component 'common/badgets', status: 'paid' %>
+            <%- else %>
+              <%= component 'common/badgets', status: 'pending' %>
+            <%- end %>
+          </div>
+        </div>
+
+        <%= turbo_frame_tag "invoice_information" do %>
+          <%= component 'modals/pay_invoice/invoice_information', invoice: @invoice %>
+        <% end %>
+
+
+        <div class="c-modal__footer u-flex u-align-center u-content-sp">
+          <%= link_to t('invoices.download'), download_invoice_path(@invoice.uuid), { class: 'c-btn c-btn--ghost', download: true } %>
+          <% if @invoice.payable? %>
+            <% if @invoice.partial_payments? %>
+              <%= form_with url: oneoff_invoice_path(uuid: @invoice.uuid), data: {turbo: false} do |f| %>
+                <%= component 'common/form/number_field', form: f, **amount_field_properties %>
+                <%= f.submit t('invoices.show.pay'), class: 'c-btn c-btn--green' %>
+              <% end %>
+            <% else %>
+              <%= button_to t('invoices.show.pay'), oneoff_invoice_path(uuid: @invoice.uuid), class: 'c-btn c-btn--green', data: {turbo: false} %>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

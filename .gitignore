@@ -30,8 +30,6 @@
 
 /public/assets
 .byebug_history
-.rubocop-ruby.yml
-.rubocop.yml
 
 # Test files
 /coverage/
@@ -55,5 +53,9 @@ yarn-debug.log*
 /public/assets/builds
 public/assets/builds/*
 app/assets/builds/*
-
 .DS_Store
+/app/assets/builds/*
+!/app/assets/builds/.keep1
+!/app/assets/builds/.keep
+
+Dockerfile.dev

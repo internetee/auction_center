@@ -1,28 +1,54 @@
-<%= turbo_frame_tag "notifications" do %>
-  <div style='position: relative; display: flex; 
-                                flex-direction: column; justify-content: center; align-items: center;
-                                cursor: pointer;' data-controller='dropdown update_notifications'
-                                data-update_notifications-url-value="<%= mark_as_read_notifications_path(format: :turbo_stream) %>">
+<% content_for :title, t(".title") %>
 
-    <div id='bell-broadcast' class='bell-broadcast'>
-      <%= render partial: 'bell', locals: { any_unread: current_user&.notifications&.any?(&:unread?) } %>
-    </div>
-
-
-    <div style='position: absolute; top: 40px; right: -60px; border: 2px solid black; visibility: hidden; background: white; overflow-y: auto; margin-bottom: 30px;' data-dropdown-target='menu' class='dropdown-custom'>
-      <ul id='notifications-list' style='list-style-type: none; padding: 0; margin: 0; width: 350px; max-height: 600px;' >
-          
-          <% if @notifications.present? %>
-            <%= render @notifications %>
-          <% else %>
-            <li style='padding: 10px 20px; display: flex; flex-direction: column; width: 400px;'>
-              <p style='margin-top: 10px; text-weight: bold; font-size: 20px;'>
-                <%= I18n.t('.no_any_notifications') %>
-              </p>
-            </li>
-          <% end %>
-          
-      </ul>
-    </div>
+<!-- Unreaded Notifications -->
+<div class="o-container">
+  <div style='display: flex; justify-content: end;'>
+    <%= component 'common/buttons/button_to', title_caption: t('notifications.read_all'), href: mark_as_read_notifications_path, color: 'orange', options: { method: :patch } %>
   </div>
-<% end %>
+
+  <h2><%= t('notifications.unreaded_notifications') %> <sup>(<%= @unread_notifications&.count %>)</sup></h2>
+  <%= turbo_frame_tag :unread_notifications do %>
+    <div clas`s="c-notifications">
+      <% @unread_notifications.each do |notification| %>
+
+        <article class="c-notification">
+          <header class="c-notification__header">
+            <div class="c-notification__heading">
+              <%= component 'common/notifications/icon', notification: notification, readed: false %>
+            </div>
+            <div class="c-notification__header__date"><%= I18n.t('.notification_received', datetime: I18n.l(notification.created_at)) %></div>
+          </header>
+          <main class="c-notification__main">
+            <%= notification.to_notification.message %>
+          </main>
+        </article>
+      <% end if @unread_notifications.present? %>
+    </div>
+
+    <%= component 'common/pagy', pagy: @unread_pagy %>
+  <% end %>
+<!-- Notifications -->
+
+<!-- Readed Notifications -->
+  <h2><%= t('notifications.readed_notifications') %> <sup>(<%= @read_notifications&.count %>)</sup></h2>
+  <%= turbo_frame_tag :read_notifications do %>
+    <div class="c-notifications c-notifications--ajax">
+      <% @read_notifications&.each do |notification| %>
+        <article class="c-notification c-notification--read">
+          <header class="c-notification__header">
+
+              <%= component 'common/notifications/icon', notification: notification, readed: true %>
+
+            <div class="c-notification__header__date"><%= I18n.t('.notification_received', datetime: I18n.l(notification.created_at)) %></div>
+          </header>
+          <main class="c-notification__main">
+            <%= notification.to_notification.message %>
+          </main>
+        </article>
+      <% end %>
+    </div>
+
+    <%= component 'common/pagy', pagy: @read_pagy %>
+  <% end %>
+<!-- Notifications -->
+</div>

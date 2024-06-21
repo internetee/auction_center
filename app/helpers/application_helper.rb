@@ -11,6 +11,11 @@ module ApplicationHelper
     GoogleAnalytics.new(tracking_id: tracking_id)
   end
 
+  def component(name, *args, **kwargs, &block)
+    component = name.to_s.camelize.constantize::Component
+    render(component.new(*args, **kwargs), &block)
+  end
+
   def navigation_links(current_user)
     content_tag(:ul) do
       links(user_link_list) if current_user&.role?(User::PARTICIPANT_ROLE)
@@ -31,12 +36,13 @@ module ApplicationHelper
     message = ban_error_message(domains, valid_until)
     return unless message
 
-    content_tag(:div, class: 'ui message ban') do
-      result = content_tag(:div, message, class: 'header')
-      if eligible_violations_present?(domains: domains)
-        result << content_tag(:p, violation_message(domains.size), class: 'violation-message')
+    content_tag(:div, class: 'c-toast js-toast c-toast--error') do
+      content_tag(:div, class: 'c-toast__content') do
+        concat(content_tag(:p, message))
+        if eligible_violations_present?(domains: domains)
+          concat(content_tag(:p, violation_message(domains.size)))
+        end
       end
-      result
     end
   end
 

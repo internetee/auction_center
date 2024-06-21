@@ -18,7 +18,7 @@ en:
     current_password: "Current password"
     remember_me: "Remember me"
     i_accept_terms_and_conditions_html: "I have read and agree with %{link}."
-    terms_and_conditions_link: "auction portal user agreement"
+    terms_and_conditions_link: "Auction portal user agreement"
     email_changed: >-
       Confirmation link was sent to new email address. Please confirm the address for the change to
       take an effect!
@@ -43,7 +43,7 @@ en:
       errors: "prohibited this user from being saved"
 
     form:
-      password_requirements: "at least %{minimum} characters"
+      password_requirements: "Password at least %{minimum} characters"
       sign_up: "Sign up"
       contact_data: "Contact data"
       personal_data: "Personal data"
@@ -54,7 +54,7 @@ en:
       daily_summary: "Daily summary"
 
     tara_form:
-      password_requirements: "at least %{minimum} characters"
+      password_requirements: "Password at least %{minimum} characters"
       sign_up: "Sign up"
       contact_data: "Contact data"
       personal_data: "Personal data"
@@ -71,8 +71,9 @@ en:
       title: "User profile"
       delete: "Delete account"
       review_terms_and_conditions: "Review terms and conditions"
-      daily_summary: "Daily summary to email"
+      daily_summary: "Send the Daily Summary to email"
       webpush_available: Webpush Available
+      settings: Settings
 
     destroy:
       deleted: "You have been logged out and your account has been deleted."
@@ -92,6 +93,8 @@ en:
             given_names:
               format: "%{attribute}: %{message}"
             surname:
+              format: "%{attribute}: %{message}"
+            email:
               format: "%{attribute}: %{message}"
 
     attributes:

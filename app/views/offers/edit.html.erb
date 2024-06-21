@@ -1,23 +1,5 @@
-<% content_for :hero do %>
-    <div class="hero green">
-        <h1><%= t('.title') %></h1>
-        <div class="monospace"><%= @offer.auction.domain_name %></div>
-    </div>
+<%= turbo_frame_tag "modal" do %>
+  <div data-controller='modals--offer-modal' data-modals--offer-modal-open-class='is-open'>
+    <%= component 'modals/change_offer_po', offer: @offer, auction: @offer.auction, update: true, current_user: current_user, captcha_required: true, show_checkbox_recaptcha: @show_checkbox_recaptcha  %>
+  </div>
 <% end %>
-
-<div class="u-container">
-    <div class="u-container margin-block">
-        <% if @offer.errors.any? %>
-            <div class="ui message">
-                <div class="header">
-                    <%= t(:errors_name) %>
-                </div>
-                <ul id="errors">
-                    <%= @offer.errors.full_messages.first %>
-                </ul>
-            </div>
-        <% end %>
-
-        <%= render 'form', offer: @offer, url: offer_path(@offer.uuid) %>
-    </div>
-</div>

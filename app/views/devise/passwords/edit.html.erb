@@ -1,31 +1,39 @@
-<% content_for :hero do %>
-    <div class="hero green">
-        <h1><%= t(:change_your_password) %></h1>
+<% content_for :title, t(:change_your_password) %>
+
+<div class="o-container">
+  <div class="c-block c-account c-account--changepass">
+    <div class="u-flex u-content-center">
+      <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put, class: "o-card" }) do |f| %>
+        <%= f.hidden_field :reset_password_token %>
+        <h2 class="o-card__title c-account__title c-account__title--password"><%= t(:change_your_password) %></h2>
+        
+        <div class="c-account__input u-mb-20">
+          <%# TODO: Resolve the problem of nested label components %>
+          <%= f.label :password do %>
+            <%= t('.new_password') %>
+            <% if @minimum_password_length %>
+              <span>(<%= t('.min_characters', min_chars: @minimum_password_length ) %>)</span>
+            <% end %>
+          <% end %>
+
+          <%= component 'common/form/password_field', form: f, attribute: :password, options: { autofocus: true, autocomplete: "new-password" } %>
+        </div>
+        <div class="c-account__input">
+          <%= component 'common/form/label', form: f, attribute: :password_confirmation, title: t('.confirm_new_password') %>
+          <%= component 'common/form/password_field', form: f, attribute: :password_confirmation, options: {  autocomplete: "off" } %>
+        </div>
+
+        <%= component 'common/form/form_button', form: f, color: 'green', btn_title: t(:submit), options: { data: { turbo: false } } %>
+        
+        <div class="u-flex u-align-center u-content-sp u-flex-wrap">
+          <%= link_to t(:sign_in), new_user_session_path, class: "o-link u-mb-8" %>
+          <span class="o-link u-mb-8 js-modal-toggle">
+            <%- if devise_mapping.confirmable? && controller_name != 'confirmations' %>
+              <%= link_to t('devise.shared.links.didnt_receive_confirmation_instructions'), new_confirmation_path(resource_name), class: 'o-link u-mb-8 js-modal-toggl', data: { turbo_frame: 'modal' } %><br />
+            <% end -%>
+          </span>
+        </div>
+      <% end %>
     </div>
-<% end %>
-
-<div class="u-container">
-    <div class="u-container margin-block">
-        <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put, class: "ui form big" }) do |f| %>
-            <%= render "devise/shared/error_messages", resource: resource %>
-            <%= f.hidden_field :reset_password_token %>
-
-            <div class="field">
-                <%= f.label :password, t('.new_password') %><br />
-                <% if @minimum_password_length %>
-                    <em>(<%= t('.min_characters', min_chars: @minimum_password_length ) %>)</em>
-                <% end %>
-                <%= f.password_field :password, autofocus: true, autocomplete: "new-password" %>
-            </div>
-
-            <div class="field">
-                <%= f.label :password_confirmation, t('.confirm_new_password') %><br />
-                <%= f.password_field :password_confirmation, autocomplete: "off" %>
-            </div>
-
-            <%= f.submit nil, class: 'ui button primary', data: { turbo: false } %>
-        <% end %>
-
-        <%= render "devise/shared/links" %>
-    </div>
+  </div>
 </div>

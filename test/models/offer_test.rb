@@ -117,7 +117,7 @@ class OfferTest < ActiveSupport::TestCase
     offer.billing_profile = @billing_profile
 
     assert_not(offer.valid?)
-    assert_equal(['must be higher than 5,00'], offer.errors[:price])
+    assert_equal(['Price must be higher than 5,00'], offer.errors[:price])
 
     offer.cents = 500
     assert(offer.valid?)

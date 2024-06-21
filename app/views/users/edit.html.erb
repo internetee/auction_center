@@ -1,26 +1,9 @@
-<% content_for :hero do %>
-    <div class="hero green">
-        <h1><%= t('.title') %></h1>
-    </div>
-<% end %>
+<% content_for :title, t('.title') %>
 
-<div class="u-container">
-    <div class="u-container margin-block">
-        <% if @user.errors.any? %>
-            <div class="ui message">
-                <div class="header">
-                    <%= t(:errors_name) %>
-                </div>
-                <ul id="errors">
-                    <% @user.errors.full_messages.each do |message| %>
-                        <li><%= message %></li>
-                    <% end %>
-                </ul>
-            </div>
-        <% end %>
-        <%= render 'form', user: @user, url: user_path(@user.uuid) %>
+<div class="o-container">
+    <div class="c-block c-account c-account--profile c-account--mainpage">
+          <%= form_with model: @user, url: user_path(@user.uuid), method: :patch, class: "o-grid o-grid--two-col o-grid--sep" do |f| %>
+            <%= render 'form', f: f %>
+          <% end %>
     </div>
 </div>
-
-<%#= stylesheet_pack_tag 'stylesheets/users', media: 'all', 'data-turbolinks-track': 'reload' %>
-<%= javascript_pack_tag 'users', 'data-turbolinks-track': 'reload' %>

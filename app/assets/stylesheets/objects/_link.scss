@@ -1,0 +1,25 @@
+.o-link {
+  font-weight: 500;
+  font-size: rem(14px);
+  line-height: rem(14px);
+  text-decoration: underline !important;
+  color: $primary-blue-color !important;
+  cursor: pointer;
+
+  &:hover {
+    color: $secondary-blue-color !important;
+  }
+
+  &:visited {
+    color: $primary-blue-color !important;
+
+    &:hover {
+      color: $secondary-blue-color !important;
+    }
+  }
+
+  &:disabled, &.u-disabled {
+    color: $grey-300-color !important;
+    pointer-events: none;
+  }
+}

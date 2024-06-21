@@ -1,35 +1,23 @@
 module OrderableHelper
-  def sort_link_to(name, column)
-    if direction_indicator(column).nil?
-      dir = content_tag(:i, nil, class: 'sort alphabet up icon')
-      name = raw("#{name} #{dir}")
-    else
-      name = raw("#{name} #{direction_indicator(column)}")
-    end
+  # def sortable_column(_name, column, caption)
+  #   tag.th caption, class: 'sorting', data: { controller: 'table--sort-link', turbo_action: 'advance',
+  #                                                    action: 'click->table--sort-link#resortTable',
+  #                                                    'table--sort-link-direction-value': next_direction(column),
+  #                                                    'table--sort-link-column-value': column,
+  #                                                    'table--sort-link-asc-class': 'sorting_asc',
+  #                                                    'table--sort-link-desc-class': 'sorting_desc',
+  #                                                    'table--sort-link-target': 'th' }
+  # end
 
-    params = request.params.merge(sort: column, direction: next_direction(column))
+  # private
 
-    link_to name, params, data: {
-      turbo_action: 'advance',
-      action: 'turbo:click->sort-link#updateForm'
-    }
-  end
+  # def currently_sorted?(column)
+  #   params[:sort] == column.to_s
+  # end
 
-  def next_direction(column)
-    if currently_sorted?(column)
-      params[:direction] == 'asc' ? 'desc' : 'asc'
-    else
-      'asc'
-    end
-  end
+  # def next_direction(column)
+  #   return unless currently_sorted?(column)
 
-  def direction_indicator(column)
-    if currently_sorted?(column)
-      content_tag(:i, nil, class: "sort alphabet #{next_direction(column) == 'asc' ? 'up' : 'down'} icon")
-    end
-  end
-
-  def currently_sorted?(column)
-    params[:sort] == column.to_s
-  end
+  #   params[:direction] == 'asc' ? 'desc' : 'asc'
+  # end
 end

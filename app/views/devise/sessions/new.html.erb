@@ -1,56 +1,54 @@
-<% content_for :hero do %>
-    <div class="hero green">
-        <h1><%= t(:sign_in) %></h1>
-    </div>
-<% end %>
+<% content_for :title, t(:sign_in) %>
 
-<div class="u-container">
-    <div class="u-container margin-block">
-    </div>
-</div>
+<div class="o-container">
+  <div class="c-block c-login">
+    <div class="o-grid o-grid--two-col o-grid--sep">
+      <div class="o-card">
+        <h2 class="o-card__title c-login__title"><%= t('.sign_in_with_identity_document') %></h2>
+        <p class="c-login__explanation">
+          <%= t('.identity_document_text')%>
+        </p>
 
-<div class="login-blocks">
-    <div class="u-container">
-        <div class="list">
-            <div class="item">
-                <div id="tara-sign-in" class="login-block ui segment">
-                    <h3><%= t('.sign_in_with_identity_document') %></h3>
-                    <p><%= t('.identity_document_text')%></p>
-                    <%= button_to t(:sign_in), "/auth/tara", data: { turbo: false }, class: "ui button big primary", target: '_top' %>
-                </div>
-            </div>
-
-            <div class="item">
-                <div id="password-sign-in" class="login-block ui segment">
-                    <h3><%= t('.sign_in_with_password') %></h3>
-                    <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: 'ui form big' }) do |f| %>
-                        <div class="field">
-                            <%= f.label :email, t('users.email') %>
-                            <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-                        </div>
-
-                        <div class="field">
-                            <%= f.label :password, t('users.password') %>
-                            <%= f.password_field :password, autocomplete: "current-password" %>
-                        </div>
-
-                        <div class="field">
-                            <% if devise_mapping.rememberable? -%>
-                                <div class="ui checkbox">
-                                    <%= f.check_box :remember_me %>
-                                    <%= f.label :remember_me, t('users.remember_me') %>
-                                </div>
-                            <% end -%>
-                        </div>
-
-                        <%= f.submit t(:sign_in), class: "ui button big primary",  data: { turbo: false } %>
-                        <%= link_to t('users.index.create_an_account'), new_user_path, class: "ui button big green" %>
-                    <% end %>
-
-                    <br>
-                    <%= render "devise/shared/links" %>
-                </div>
-            </div>
+        <div class="c-login__buttons-wrapper u-flex u-content-sp u-content-center">
+          <%= component 'common/buttons/button_to', title_caption: t(:sign_in), href: "/auth/tara", color: 'blue-secondary', options: { data: { turbo: false } } %>
+          <div class="c-login__icons u-flex u-content-sp u-content-center">
+            <%= render partial: 'svg/id_auth' %>
+          </div>
         </div>
+      </div>
+      <div class="o-card">
+        <h2 class="o-card__title c-login__title"><%= t('.sign_in_with_password') %></h2>
+        <%= form_for resource, as: resource_name, url: session_path(resource_name), html: { class: 'c-login__form' } do |f| %>
+          <div class="c-login__input">
+            <%= component 'common/form/label', form: f, attribute: :email, title: t('users.email') %>
+            <%= component 'common/form/email_field', form: f, attribute: :email, options: { autocomplete: 'email', autofocus: true } %>
+          </div>
+          <div class="c-login__input">
+            <%= component 'common/form/label', form: f, attribute: :password, title: t('users.password') %>
+            <%= component 'common/form/password_field', form: f, attribute: :password, options: { autocomplete: 'password', autofocus: true } %>
+          </div>
+          <div class="c-login__btns-wrapper u-flex u-align-start u-content-sp">
+            <div class="c-login__btns">
+              <%= component 'common/form/form_button', form: f, btn_title: t(:sign_in), options: { data: { turbo: false } } %>
+              <%= component 'common/links/link_button', link_title: t('users.index.create_an_account'), href: new_user_path, color: 'ghost' %>
+            </div>
+
+            <%= component 'common/form/checkboxes/checkbox_with_label', label_title: t('users.remember_me'), form: f, attribute: :remember_me if devise_mapping.rememberable?  %>
+          </div>
+          <div class="c-login__links u-flex u-align-center u-content-sp">
+            <%= link_to t('devise.shared.links.forgot_your_password'),
+                        new_password_path(resource_name),
+                        class: 'c-btn  c-login__remind-link js-modal-toggle-fp',
+                        data: { turbo_frame: 'modal' } if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
+
+            <%= link_to t('devise.shared.links.didnt_receive_confirmation_instructions'),
+                        new_confirmation_path(resource_name),
+                        class: 'c-login__remind-link js-modal-toggle',
+                        data: { turbo_frame: 'modal' } if devise_mapping.confirmable? && controller_name != 'confirmations' %>
+          </div>
+        <% end %>
+      </div>
     </div>
+  </div>
 </div>
+

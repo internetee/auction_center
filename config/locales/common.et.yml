@@ -4,15 +4,15 @@ et:
       open_portal: "Avalik portaal"
       auction_portal: "Oksjonikeskkond"
       registrar_portal_url_html: '<a href= "https://www.internet.ee/registripidaja"><span>Registripidaja portaal</span></a>'
-
+      registrar_portal: "Registripidaja portaal"
       registrant_portal: "Registreerija portaal"
+      notifications: "Teavitused"
 
     footer:
-      copyright: "Eesti Interneti Sihtasutus"
+      copyright: "© 2024 Eesti Interneti Sihtasutus"
       address: "Paldiski mnt 80, 10617 Tallinn"
       registration_code: "Registrikood: 90010019"
 
-    estonian_links:
       help_and_info: "Abi & info"
       domain_regulation: ".ee Domeenireeglid"
       faq: "Korduma kippuvad küsimused"
@@ -30,8 +30,10 @@ et:
       management: "Juhtimine"
       documents: "Dokumendid"
 
+      social_media: "Sotsiaalmeedia"
+
     webpush_modal:
-      webpush_title: Veebiteavitused
+      webpush_title: Luba veebiteavitused
       webpush_descr: .ee oksjonite portaal kasutab veebi teavitusi, et hoida teid kursis, kui teie pakkumine on üle pakutud, ilma et peaksite kogu aeg veebilehte avatuna hoidma.
       webpush_agree: Nõustun
       webpush_decline: "Ei soovi"

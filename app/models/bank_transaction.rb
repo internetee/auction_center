@@ -32,7 +32,8 @@ class BankTransaction < ApplicationRecord
 
     payment_order = PaymentOrder.find_by(invoice_id: invoice.id) ||
                     PaymentOrders::EveryPay.create(invoices: [invoice], user: invoice.user)
-    payment_order.response = { 'transaction_time' => Time.zone.now, 'payment_state' => 'settled' }
+    payment_order.response = { 'transaction_time' => Time.zone.now, 'payment_state' => 'settled',
+                               'initial_amount' => invoice.total.to_f }
 
     payment_order.save
     payment_order.mark_invoice_as_paid

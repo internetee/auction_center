@@ -1,13 +1,12 @@
-class Notifications::MarkAsReadController < ApplicationController
-  def update
-    current_user&.notifications&.map(&:mark_as_read!)
+# frozen_string_literal: true
 
-    respond_to do |format|
-      format.turbo_stream do
-        render turbo_stream: [ 
-          turbo_stream.update('bell-broadcast', partial: 'notifications/bell', locals: { any_unread: false }),
-        ]
-      end
+module Notifications
+  class MarkAsReadController < ApplicationController
+    def update
+      current_user&.notifications&.unread&.each(&:mark_as_read!)
+
+      flash[:notice] = t('notifications.all_marked_as_read')
+      redirect_to notifications_path, status: :see_other
     end
   end
 end

@@ -1,0 +1,12 @@
+@import "container";
+@import "btn";
+
+@mixin box-shadow {
+  background-color: $white-color;
+  box-shadow: 0 0 48px rgba(0, 0, 0, 0.12);
+}
+
+@mixin box-shadow-light {
+  background-color: $white-color;
+  box-shadow: 0 0 48px rgba(0, 0, 0, 0.06);
+}

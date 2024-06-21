@@ -5,23 +5,26 @@ et:
     i_accept_terms_and_conditions: "Nõustun tingimustega"
     price_in_currency: "%{price} €"
     price_is_without_vat: "Pakkumus ei sisalda käibemaksu."
-    price_with_wat: Kokku %{price} (+ %{tax}% käibemaks)
+    price_with_wat: "%Kokku: {price} € (+ %{tax}% käibemaks)"
     already_exists: "Oled sellele oksjonile pakkumuse juba esitanud."
     errors: "seda pakkumust ei saa salvestada"
     total: "Hind käibemaksuga"
     must_be_active: "peab olema aktiivne"
-    must_be_higher_than: "peab olema suurem kui %{minimum}"
+    must_be_higher_than: "Hind peab olema suurem kui %{minimum}"
     reminder: |
       NB: Tegemist on pimeoksjoniga, kus pakkumised ei ole nähtavad.
       Domeeninimele võib olla ka teisi pakkujaid.
       Tee pakkumine vastavalt oma hinnangule domeeninime väärtuse kohta.
     out_of_range: Pakkumine ebaõnnestus! Pakkumine ületab süsteemi poolt lubatud maksimaalset summat!
+    change_bid: Muuda pakkumist
+    delete_title: "Pakkumuse eemaldamine"
+    overview: "Ülevaade"
 
     new:
       title: "Domeeni registreerimise eelisõiguse pakkumus"
-      deposit_enable: Nõutav tagatisraha
-      make_deposit: Tasuge deposiit
-      deposit_description_html: "Oksjonil osalemiseks tuleb tasuda <span style='font-weight: bold; color: red;'>%{deposit} eurot deposiiti (sisaldab käibemaksu)</span>.<br/>Võites oksjoni jääb see teile ettemaksuks. Teistele oksjonil osalejatele kantakse raha nädala jooksul pärast oksjoni lõppu tagasi."
+      deposit_enable: "Nõutav deposiidisumma"
+      make_deposit: "Deposiidi tasumine"
+      deposit_description_html: "Oksjonil osalemiseks tuleb tasuda <span style='font-weight: bold; color: red;'>deposiit summas %{deposit} eurot (deposiit sisaldab käibemaksu)</span>.<br/>Oksjoni võitmise puhul jääb makstud deposiit domeenioksjoni ettemaksuks. Teistele oksjonil osalejatele kantakse deposiit 7 päeva (k.a) jooksul pärast oksjoni lõppu tagasi."
 
     create:
       created: "Pakkumus edukalt esitatud"

@@ -1,0 +1,86 @@
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'leanestIconFont' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-arrow-down:before {
+  content: "\e900";
+}
+.icon-facebook:before {
+  content: "\e901";
+}
+.icon-file:before {
+  content: "\e902";
+}
+.icon-frame:before {
+  content: "\e903";
+}
+.icon-image:before {
+  content: "\e904";
+}
+.icon-leanest-min {
+  display: flex;
+  font-size: 2.5rem;
+}
+.icon-leanest-min .path1:before {
+  content: "\e905";
+  color: rgb(46, 95, 124);
+}
+.icon-leanest-min .path2:before {
+  content: "\e906";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+.icon-leanest-min .path3:before {
+  content: "\e907";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+.icon-leanest-min .path4:before {
+  content: "\e908";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+.icon-linkedin:before {
+  content: "\e909";
+}
+.icon-logo:before {
+  content: "\e90a";
+}
+.icon-marker:before {
+  content: "\e90b";
+}
+.icon-play:before {
+  content: "\e90c";
+}
+.icon-space:before {
+  content: "\e90d";
+}
+.icon-sviiter:before {
+  content: "\e90e";
+}
+.icon-tile:before {
+  content: "\e90f";
+}
+.icon-youtube:before {
+  content: "\e910";
+}
+
+.u-icon-size {
+  font-size: 0;
+  width: rem(100px);
+  max-width: rem(100px);
+  max-height: rem(100px);
+  height: auto;
+}

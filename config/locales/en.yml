@@ -1,6 +1,8 @@
 en:
   unauthorized:
     message: You are not authorized to access this page.
+    manage:
+      user: "You are not authorized to manage profile. You are banned from participating in .ee domain auctions due to multiple overdue invoices."
   new: "New"
   back: "Back"
   update: "Update"
@@ -11,9 +13,11 @@ en:
   all: All
   clear: Clear
 
+  paid: "Paid"
+
   in_local_language: "English"
 
-  procedure_warning:  "Warning: Start of the day procedures takes place between 0:00 and 1:00 am EEST. During that time we close auctioned from previous day and start auctions of the new day. The list of auctions may not be complete during that time. You can order full daily auction list to your email by checking the \"Daily summary to email\" option under your auction user profile"
+  procedure_warning:  "Warning: Start of the day procedures takes place between 0:00 and 1:00 am EEST. During that time we close auctioned from previous day and start auctions of the new day. The list of auctions may not be complete during that time. You can order full daily auction list to your email by checking the \"Send daily summary to email\" option under your auction user profile"
 
   created: "Created successfully."
   updated: "Updated successfully."
@@ -22,7 +26,7 @@ en:
   are_you_sure: "Are you sure?"
   confirm: "Confirm"
 
-  billing: "Billing"
+  billing: "Billing Profiles"
   new_billing_profile: "Create new billing profile, i.e. for a company"
 
   profile: "Profile"
@@ -35,12 +39,15 @@ en:
   'yes': "Yes"
   'no': "No"
 
+  close: Close
+  reg_no: "Registration code"
+
   auctions_name: "Auctions"
   billing_profiles_name: "Billing Profiles"
   settings_name: "Settings"
   users_name: "Users"
   results_name: "Results"
-  finished_auctions: "Finished auctions"
+  finished_auctions: "Ended auctions"
   result_name: "Result"
   versions_name: "Versions"
   offers_name: "Offers"
@@ -50,16 +57,17 @@ en:
   errors_name: "Errors"
   statistics_name: "Statistics"
   paid_deposits_name: "Paid deposits"
+  actions_name: "Actions"
 
   unsubscribe_mailer_text: "I do not wish to receive daily summary about currently auctioned domains any more"
 
-  notification_received: "Notification reveived at %{datetime}"
+  notification_received: "Notification received at %{datetime}"
   notification_unread: Notifcation unread
   notification_read: Notifcation read
-  participant_outbid: "The auction for {domain_name} has new bid"
-  participant_outbid_broadcast: "The auction for %{name} has new bid"
-  participant_win_auction: Domain auction for %{name} is finished. Congratulations your bid was the highes!
-  participant_lost_auction: Domain auction for %{name} is finished. Unfortunately your bid was not enough to win!
+  participant_outbid: "The auction for %{domain_name} has a new bid"
+  participant_outbid_broadcast: "The auction for %{name} has a new bid"
+  participant_win_auction: Domain auction for %{name} has ended. Congratulations, your bid was the highest!
+  participant_lost_auction: Domain auction for %{name} has ended. Unfortunately your bid was not enough to win!
   no_any_notifications: No new notifications
   winner_webpush_notification_title: Congratulations!
   webpush_title_lost: "You lost"
@@ -67,7 +75,7 @@ en:
   user: "User"
   deleted_user: "User was deleted"
   banned: |
-    You are banned from participating in auctions for domain(s): %{domain_names}.
+    You are banned from participating in auctions for the following domain(s): %{domain_names}.
   banned_completely: |
     You are banned from participating in .ee domain auctions due to multiple overdue
     invoices until %{valid_until}.
@@ -98,20 +106,20 @@ en:
     recorded_at: 'Recorded at'
     new_values: 'New values'
 
-  created_at: "Created at"
+  created_at: "User created at"
   updated_at: "Updated at"
 
   is_invalid: "%{attribute} is invalid"
   invalid: "invalid"
   value_is_not_safe: |
-    Please, note, what the only characters allowed is utf-characters of english/estonian alphabet,
-    numbers, forward slashes, apostrophes, dots and hyphens
+    Please note that the only characters allowed are UTF-characters of english/estonian alphabet,
+    numbers, forward slashes, apostrophes, dots and hyphens.
   not_accepted: "Not accepted"
   details: "Details"
   updated_by: "Updated by"
   already_confirmed: |
-    Phone number you've entered is already in use by somebody else.
-    Please, use another phone number
+    The phone number you have entered is already in use.
+    Please use another phone number.
 
   search: "Search"
   search_by_domain_name: "Search by domain name"
@@ -161,6 +169,9 @@ en:
 
   errors:
     format: "%{message}"
+    messages:
+      taken: "%{attribute} is already taken"
+      invalid: "%{attribute} is invalid"
   activerecord:
     errors:
       models:
@@ -192,3 +203,9 @@ en:
       passed: Passed
       failed: Failed
       
+  pages:
+    auction:
+      auction_action_button:
+        edit_and_remove_blind_offer:
+          component:
+            confirm_delete: "Are you sure you want to delete this blind offer?"

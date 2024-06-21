@@ -1295,7 +1295,7 @@ CREATE TABLE public.invoices (
     number_old integer NOT NULL,
     uuid uuid DEFAULT public.gen_random_uuid(),
     vat_rate numeric,
-    paid_amount numeric,
+    paid_amount numeric DEFAULT 0.0,
     updated_by character varying,
     notes character varying,
     paid_with_payment_order_id bigint,
@@ -1315,6 +1315,7 @@ CREATE TABLE public.invoices (
     billing_vat_code character varying,
     billing_alpha_two_country_code character varying DEFAULT ''::character varying NOT NULL,
     e_invoice_sent_at timestamp(6) without time zone,
+    partial_payments boolean DEFAULT false,
     CONSTRAINT invoices_cents_are_non_negative CHECK ((cents >= 0)),
     CONSTRAINT invoices_due_date_is_not_before_issue_date CHECK ((issue_date <= due_date)),
     CONSTRAINT paid_at_is_filled_when_status_is_paid CHECK ((NOT ((status = 'paid'::public.invoice_status) AND (paid_at IS NULL)))),
@@ -3194,6 +3195,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20231116093310'),
 ('20231222074427'),
 ('20231222085647'),
-('20240209111309');
+('20240209111309'),
+('20240603120701'),
+('20240604124707');
 
 

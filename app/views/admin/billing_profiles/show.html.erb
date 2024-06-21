@@ -1,54 +1,44 @@
-<% content_for :hero do %>
-<div class="hero orange">
-    <h1><%= t('.title') %></h1>
-</div>
-<% end %>
+<% content_for :title, "#{t('.title')} #{@billing_profile.name}"  %>
 
-<div class="u-container">
-    <div class="margin-block">
-        <div class="content">
-            <h2>
-                <%= @billing_profile.name %>
-            </h2>
-            <div class="body">
-                <% unless @billing_profile.user %>
-                <p><%= t('billing_profiles.orphaned') %></p>
-                <% end %>
-                <table class="ui table very basic padded">
-                    <tbody>
-                        <tr>
-                            <td><strong><%= t('billing_profiles.vat_code') %></strong></td>
-                            <td><%= @billing_profile.vat_code %></td>
-                        </tr>
+<div class="o-container">
+  <div class="c-table c-table--sortable" data-controller='form--bundle-checkbox'>
+    <%= tag.h2 do %>
+      <%= t('billing_profiles.orphaned') %>
+    <% end unless @billing_profile.user %>
 
-                        <tr>
-                            <td><strong><%= t('billing_profiles.street') %></strong></td>
-                            <td><%= @billing_profile.street %></td>
-                        </tr>
+    <%= component 'common/table', header_collection: [], options: { class: 'js-table-dt dataTable no-footer' } do %>
+        <%= tag.tbody class: 'contents' do %>
+          <tr>
+              <td><strong><%= t('billing_profiles.vat_code') %></strong></td>
+              <td><%= @billing_profile.vat_code %></td>
+          </tr>
 
-                        <tr>
-                            <td><strong><%= t('billing_profiles.city') %></strong></td>
-                            <td><%= @billing_profile.city %></td>
-                        </tr>
+          <tr>
+              <td><strong><%= t('billing_profiles.street') %></strong></td>
+              <td><%= @billing_profile.street %></td>
+          </tr>
 
-                        <tr>
-                            <td><strong><%= t('billing_profiles.postal_code') %></strong></td>
-                            <td><%= @billing_profile.postal_code %></td>
-                        </tr>
+          <tr>
+              <td><strong><%= t('billing_profiles.city') %></strong></td>
+              <td><%= @billing_profile.city %></td>
+          </tr>
 
-                        <tr>
-                            <td><strong><%= t('billing_profiles.country') %></strong></td>
-                            <td><%= @billing_profile.country_code %></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+          <tr>
+              <td><strong><%= t('billing_profiles.postal_code') %></strong></td>
+              <td><%= @billing_profile.postal_code %></td>
+          </tr>
 
-            <div class="buttons">
-                <%- if @billing_profile.user %>
-                <%= link_to t(:user), admin_user_path(@billing_profile.user), class: "ui button primary" %>
-                <% end %>
-            </div>
-        </div>
-    </div>
+          <tr>
+              <td><strong><%= t('billing_profiles.country') %></strong></td>
+              <td><%= @billing_profile.country_code %></td>
+          </tr>
+        <% end %>
+      <% end %>
+
+      <div class="c-table__filters__btns" style='padding: 1rem 0; display: flex; justify-content: end;'>
+        <%- if @billing_profile.user %>
+          <%= link_to t(:user), admin_user_path(@billing_profile.user), class: "c-btn c-btn--blue" %>
+        <% end %>
+      </div>
+  </div>
 </div>

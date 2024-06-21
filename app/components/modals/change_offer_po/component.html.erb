@@ -1,0 +1,87 @@
+<div class="c-modal-overlay js-modal-po" data-modals--offer-modal-target='modal'>
+  <div class="c-modal">
+    <div class="c-modal__scroll">
+      <div class="c-modal__scroll__content">
+        <button class="c-modal__close-btn js-close-modal" data-action='modals--offer-modal#close'>
+          <span class="o-close-icon"></span>
+        </button>
+        <div class="c-modal__header">
+          <div class="c-modal__header__title">
+            <span class="o-edit-icon--green"></span>
+            <span><%= t('offers.change_bid') %></span>
+          </div>
+          <div class="c-modal__header__subject">
+            <span class="c-modal__header__subject__title"><%= @auction.domain_name %></span>
+            <span class="o-po-icon o-io-icon--bg-orange"></span>
+          </div>
+          <div class="c-modal__header__desc">
+            <span><%= t('offers.new.title') %></span>
+          </div>
+        </div>
+
+        <div class="c-modal__main">
+          <div class="c-modal__grid">
+            <div class="c-modal__main__info">
+              <span><%= t('english_offers.show.min_bid') %></span>
+              <h3 class="u-h2 u-m-none"><%= Money.new(Setting.find_by(code: 'auction_minimum_offer').retrieve) %> €</h3>
+            </div>
+            <div class="c-modal__main__info c-modal__main__info--black">
+              <strong><%= t('auctions.you') %></strong>
+              <h3 class="u-h2 u-m-none"><%= current_price.nil? ? 0.0 : current_price %> €</h3>
+            </div>
+          </div>
+
+          <%= form_with **offer_form_properties do |f| %>
+            <%= f.hidden_field :user_id, value: offer.user_id %>
+            <%= f.hidden_field :auction_id, value: offer.auction_id %>
+            <div class="c-modal__grid u-flex-wrap u-mt-24 u-mt-48-l">
+              <div class="c-modal__col">
+                <label><%= t('offers.price') %></label>
+                <span id="offer_<%=offer.auction.id%>_form">
+                  <%= component 'modals/change_offer/number_form_field', offer_value: current_price, offer_disabled: @auction.finished? %>
+                </span>
+                <span class="c-modal__input-desc"><%= minimum_offer %></span>
+              </div>
+
+              <div class="c-modal__col">
+              <label><%= t('offers.total') %></label>
+                <span class="c-modal__calculation" data-autotax-counter-target='result'>
+                  <% if offer.billing_profile.present? %>
+                    <%= t('offers.price_with_wat', price: (@auction.min_bids_step.to_f * offer.billing_profile.vat_rate.to_f).to_f + @auction.min_bids_step.to_f, tax: offer.billing_profile.vat_rate * 100)  %>
+                  <% else %>
+                    <%= t('offers.price_is_without_vat') %>
+                  <% end %>
+                </span>
+              </div>
+            </div>
+            <div class="c-modal__select u-mt-24 ">
+              <%= f.label :billing_profile, t('.bidder') %>
+              <%= component 'common/form/dropdown_input', form: f, **billing_profile_dropdown_properties %>
+            </div>
+            <%= component 'captcha', captcha_required: @captcha_required, show_checkbox_recaptcha: @show_checkbox_recaptcha, action: 'offer' %>
+
+            <%= link_to t('new_billing_profile'), billing_profiles_path, class: 'c-modal__link c-modal__link--first-col', target: '_top' %>
+          <% end %>
+
+        </div>
+        <div class="c-modal__footer">
+          <div class="c-modal__footer__col">
+            <button class="c-btn c-btn--ghost" data-action='modals--offer-modal#close'><%= t('close') %></button>
+          </div>
+
+          <% if @auction.in_progress? %>
+          <div class="c-modal__footer__col">
+            
+            <%= component 'common/action_button', **delete_action_button_properties if @auction.offer_from_user(@current_user).present? %>
+
+            <%= submit_tag t(:submit), **submit_form_button_properties %>
+          </div>
+          <% end %>
+
+        </div>
+
+        <%#= component 'captcha', captcha_required: @captcha_required, show_checkbox_recaptcha: @show_checkbox_recaptcha, action: 'offer' %>
+      </div>
+    </div>
+  </div>
+</div>

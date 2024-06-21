@@ -10,7 +10,7 @@ class PhoneConfirmationsController < ApplicationController
     if @phone_confirmation.confirmed?
       redirect_to user_path(@phone_confirmation.user.uuid), notice: t('.already_confirmed')
     elsif @phone_confirmation.user.not_phone_number_confirmed_unique?
-      redirect_to user_path(@phone_confirmation.user.uuid)
+      redirect_to edit_user_path(@phone_confirmation.user.uuid)
     end
   end
 

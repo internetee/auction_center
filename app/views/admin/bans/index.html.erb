@@ -1,54 +1,23 @@
-<% content_for :hero do %>
-  <div class="hero orange">
-    <h1><%= t('.title') %></h1>
-  </div>
-<% end %>
-<div class="features-grid top narrow grey">
-  <div class="ui search">
-    <div class="ui massive input icon">
-      <%= form_with(url: admin_bans_path, local: true, method: :get) do |f| %>
-        <div class="ui input icon">
-          <%= f.text_field :search_string, placeholder: t('search') %>
-        </div>
-        <%= f.button(class: "ui icon primary button") do %>
-          <i aria-hidden="true" class="arrow right icon"></i>
-        <% end %>
-      <% end %>
-    </div>
-  </div>
+<% content_for :title, t(".title") %>
 
-  <div class="field">
-    <%= link_to 'Clear', request.path, class: 'ui primary button' %>
-  </div>
-</div>
-<div class="ui container">
-  <div class="margin-block">
-    <table class="ui table unstackable fixed" id="bans-table">
-      <thead>
-        <tr>
-          <th scope="col"><%= t('user') %>
-            <%= sort_link_to "", "users.surname" %>
-          </th>
-          <th scope="col">
-            <%= t('bans.valid_from') %>
-            <%= sort_link_to "", "valid_from" %>
-          </th>
-          <th scope="col">
-            <%= t('bans.valid_until') %>
-            <%= sort_link_to "", "valid_until" %>
-          </th>
-          <th scope="col">
-            <%= t('bans.domain_name') %>
-            <%= sort_link_to "", "domain_name" %>
-          </th>
-          <th scope="col">
-            <%= t('results.invoice') %>
-            <%= sort_link_to "", "invoice_id" %>
-          </th>
-          <th scope="col"><%= t('actions') %></th>
-        </tr>
-      </thead>
-      <tbody id="bans-table-body">
+<div class="o-container">
+  <div class="c-table c-table--sortable">
+    <%= form_with(url: admin_bans_path, local: true, method: :get) do |f| %>
+      <div class="c-table__filters" >
+        <div class="c-table__filters__btns" style='display: flex !important; align-items: center !important; justify-content: space-between !important; width: 100%;'>
+          <%= f.search_field :search_string, value: params[:search_string], placeholder: t('search_by_domain_name'), class: 'c-table__search__input js-table-search-dt' %>
+          <%= f.button 'Search', class: "c-btn c-btn--blue" %>
+        </div>
+      </div>
+    <% end %>
+    <% header_collection = [{column: nil, caption: t('user'), options: {}},
+                            { column: nil, caption: t('bans.valid_from'), options: { class: "" } },
+                            { column: nil, caption: t('bans.valid_until'), options: { class: "" } },
+                            { column: nil, caption: t('bans.domain_name'), options: { class: "" } },
+                            { column: nil, caption: t('results.invoice'), options: { class: "" } },
+                            { column: nil, caption: t('actions'), options: { class: "" } }] %>
+    <%= component 'common/table', header_collection:, options: { class: 'js-table-dt dataTable no-footer' } do %>
+      <%= tag.tbody class: 'contents' do %>
         <% @bans.each do |ban| %>
           <tr class="bans-table-row">
             <td class="ban-table-ban-name">
@@ -61,27 +30,13 @@
                 <%= link_to t('results.invoice'), admin_invoice_path(ban.invoice_id) %>
               <% end %>
             </td>
-            <td>
-              <%= link_to t(:delete), admin_ban_path(ban), method: :delete,
-                            data: { confirm: t(:are_you_sure) }, target: '_top',
-                            class: "ui button secondary" %>
-              <%= link_to t(:versions_name),
-                                admin_ban_versions_path(ban), class: "ui button primary" %>
+            <td class="c-table__filters__btns" style='padding: 1rem 0; display: flex; justify-content: end;'>
+              <%= button_to t(:delete), admin_ban_path(ban), method: :delete, class: "c-btn c-btn--red", form: { data: { turbo_confirm: t(".confirm_delete") } } %>
+              <%= link_to t(:versions_name), admin_ban_versions_path(ban), class: "c-btn c-btn--blue", style: 'height: 40%;'%>
             </td>
           </tr>
         <% end %>
-      </tbody>
-    </table>
-    
-    <div style="margin-top:10px; text-align: center;">
-      <% if @pagy.pages > 1 %>
-        <div class="footer">
-          <%== pagy_nav(@pagy) %>
-        </div>
       <% end %>
-    </div>
-
-    <br>
-    <br>
+    <% end %>
   </div>
 </div>
