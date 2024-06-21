@@ -173,8 +173,8 @@ et:
   notification_read: Notifcation read
   participant_outbid: Domeeninimele %{domain_name} on uus pakkumine
   participant_outbid_broadcast: Domeeninimele %{name} on uus pakkumine
-  participant_win_auction_html: 'Domeenioksjon domeeninimele %{name} on lõppenud. Palju õnne, teie pakkumine oli suurim!'
-  participant_lost_auction_html: 'Domeenioksjon domeeninimele %{name} on lõppenud. Kahjuks ei olnud teie pakkumine võiduks piisav!'
+  participant_win_auction: Domeenioksjon domeeninimele %{name} on lõppenud. Palju õnne, Teie pakkumine oli suurim!
+  participant_lost_auction: Domeenioksjon domeeninimele %{name} on lõppenud. Kahjuks ei olnud Teie pakkumine võiduks piisav!
   no_any_notifications: Uued teated puuduvad
   webpush_title_outbidded: Üle pakutud
   webpush_title_lost: Kaotasid
