@@ -31,7 +31,7 @@ en:
     you: Your offer
     blind_auction: Blind auction
     english_auction: English auction
-    all: All
+    all: 'All Auctions'
     type: Type
 
     still_in_progress: "Still in progress"

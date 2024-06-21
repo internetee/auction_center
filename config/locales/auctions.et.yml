@@ -1,9 +1,11 @@
 et:
   auction:
-  # test if this is fixing translation issue OLEG THIS IS #FIXME
+  # OLEG THIS IS #FIXME
   # context: et.auctions.all should be but currently this is et.auction.all
-  # dont know if this fix even works but will see
     all: 'Kõik'
+  offer:
+    change_bid:
+      'Muuda pakkumust'
   auctions:
     domain_name: 'Domeeninimi'
     starts_at: 'Algus'

@@ -1,0 +1,15 @@
+# context: estonian language very top pencil icon + text when modifying bid was missing translation
+et:
+  modals:
+    change_offer:
+      component:
+        bidder: 'Pakkuja'
+  
+# context: under notifications modal, the header for notification was in english on estonian
+# translation due to missing translation
+  english_offers:
+    index:
+      new_bid: 'Uus pakkumine!'
+      
+      you_lose: 'Kaotasid oksjoni'
+  

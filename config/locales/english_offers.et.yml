@@ -5,7 +5,7 @@ et:
     i_accept_terms_and_conditions: "Nõustun tingimustega"
     price_in_currency: "%{price} €"
     price_is_without_vat: "Pakkumus ei sisalda käibemaksu."
-    price_with_wat: Kokku %{price} (+ %{tax}% käibemaks)
+    price_with_wat: '%{price} € (+ %{tax}% käibemaks)'
     price_with_wat_template: Kokku {price} (+ {tax}% käibemaks)
     price_in_currency_template: "{price} €"
     tax_template: "Käibemaks {tax}%"

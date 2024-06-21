@@ -27,7 +27,7 @@ et:
   confirm: "Kinnita"
 
   billing: "Arveldamine"
-  new_billing_profile: "Uus arve aadress"
+  new_billing_profile: "Loo uus arve aadress"
 
   profile: "Kasutajakonto"
   sign_in: "Sisene"
@@ -173,8 +173,8 @@ et:
   notification_read: Notifcation read
   participant_outbid: Domeeninimele %{domain_name} on uus pakkumine
   participant_outbid_broadcast: Domeeninimele %{name} on uus pakkumine
-  participant_win_auction: Domeenioksjon domeeninimele %{name} on lõppenud. Palju õnne teie pakkumine oli parim!
-  participant_lost_auction: Domeenioksjon domeeninimele %{name} on lõppenud. Kahjuks ei olnud teie pakkumine võiduks piisav!
+  participant_win_auction: Domeenioksjon domeeninimele <b>%{name}</b> on lõppenud. Palju õnne teie pakkumine oli parim!
+  participant_lost_auction: Domeenioksjon domeeninimele <b>%{name}</b> on lõppenud. Kahjuks ei olnud teie pakkumine võiduks piisav!
   no_any_notifications: Uued teated puuduvad
   webpush_title_outbidded: Üle pakutud
   webpush_title_lost: Kaotasid
