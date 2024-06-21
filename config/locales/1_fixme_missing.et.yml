@@ -9,7 +9,7 @@ et:
 # translation due to missing translation
   english_offers:
     index:
-      new_bid: 'Uus pakkumine!'
+      new_bid: 'Uus pakkumine'
       
       you_lose: 'Kaotasid oksjoni'
   
