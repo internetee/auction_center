@@ -38,12 +38,12 @@ en:
       create_an_account: "Create an account"
 
     new:
-      title: "Create a user account"
+      title: "Create an user account"
       already_signed_in: "You are already signed in"
       errors: "prohibited this user from being saved"
 
     form:
-      password_requirements: "Password at least %{minimum} characters"
+      password_requirements: "Password has to be at least %{minimum} characters long"
       sign_up: "Sign up"
       contact_data: "Contact data"
       personal_data: "Personal data"
@@ -51,17 +51,17 @@ en:
       you_can_leave_blank: "leave blank if you don't want to change it"
       we_need_your_password: "we need your current password to confirm your changes)"
       currently_pending_confirmation: "Currently pending confirmation for %{email}."
-      daily_summary: "Daily summary"
+      daily_summary: "Send Daily Auction summary to my email"
 
     tara_form:
-      password_requirements: "Password at least %{minimum} characters"
+      password_requirements: "Password has to be at least %{minimum} characters"
       sign_up: "Sign up"
-      contact_data: "Contact data"
+      contact_data: "Register with contact data"
       personal_data: "Personal data"
       new_password: "New password"
       you_can_leave_blank: "leave blank if you don't want to change it"
       we_need_your_password: "we need your current password to confirm your changes)"
-      data_from_identity_document: "Data from identity document"
+      data_from_identity_document: "Register with data from identity document"
       daily_summary: "Daily summary"
 
     update:
@@ -108,4 +108,4 @@ en:
         terms_and_conditions: "Terms and conditions"
         password: "Password"
         password_confirmation: "Password confirmation"
-        identity_code: "Identity code"
+        identity_code: "Personal identification code"

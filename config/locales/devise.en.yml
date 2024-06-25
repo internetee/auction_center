@@ -85,11 +85,11 @@ en:
       updated: "Your account has been updated successfully."
     sessions:
       new:
-        sign_in_with_identity_document: "Sign in with identity document"
+        sign_in_with_identity_document: "Sign in with an identity document"
         identity_document_text: |
-          Sign in using Estonian (incl. e-residents) ID card, mobile ID,
+          Sign in using an Estonian (incl. e-residents) ID card, mobile ID,
           Bank link or other EU citizen's electronic ID supported by EIDAS.
-        sign_in_with_password: "Sign with password"
+        sign_in_with_password: "Sign in with a password"
       signed_in: "Signed in successfully."
       signed_out: "Signed out successfully."
       already_signed_out: "Signed out successfully."
