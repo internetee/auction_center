@@ -144,4 +144,5 @@ Rails.application.routes.draw do
   resources :autobider, param: :uuid, only: [:create, :update, :edit, :new]
 
   mount OkComputer::Engine, at: '/healthcheck', as: :healthcheck
+  mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
 end

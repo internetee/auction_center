@@ -50,7 +50,7 @@ Rails.application.configure do
   config.active_record.verbose_query_logs = true
 
   config.log_formatter = ::Logger::Formatter.new
-  config.action_mailer.delivery_method = :letter_opener
+  config.action_mailer.delivery_method = :letter_opener_web
   config.action_mailer.default_url_options = {
     host: 'localhost:3000',
     protocol: 'http'

@@ -42,6 +42,8 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
+        flash[:notice] = t(:created)
+
         format.html do
           sign_in(User, @user)
           redirect_to user_path(@user.uuid), notice: t(:created)
@@ -52,7 +54,9 @@ class UsersController < ApplicationController
           render :show, status: :created, location: @user
         end
       else
-        format.html { render :new }
+        flash.now[:alert] = @user.errors.full_messages.join(', ')
+
+        format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end

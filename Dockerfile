@@ -8,6 +8,9 @@ RUN yarn install --frozen-lockfile
 
 FROM base
 
+ENV LAUNCHY_DRY_RUN=true
+ENV BROWSER=/dev/null
+
 RUN useradd rails
 RUN mkdir -p /home/rails && chown rails:rails /home/rails
 
