@@ -1,8 +1,6 @@
 class ApplicationController < ActionController::Base
   include Pagy::Backend
 
-  # prepend_before_action :convert_punycode_params
-
   helper_method :turbo_frame_request?
 
   protect_from_forgery with: :exception
@@ -65,12 +63,6 @@ class ApplicationController < ActionController::Base
   def clear_flash
     flash.clear if turbo_frame_request?
   end
-
-  # def convert_punycode_params
-  #   return unless email = request.params.dig(:user, :email)
-
-  #   request.params[:user][:email] = email.split('@').map { |val| SimpleIDN.to_ascii(val) }.join('@')
-  # end
 
   protected
 
