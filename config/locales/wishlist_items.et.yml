@@ -1,8 +1,8 @@
 et:
   wishlist_items:
-    too_many_items: "Soovide nimekirja suuruse piirang on ületatud"
-    in_progress: "Oksjon juba mängus"
-    invalid_domain_zone: "Vigane domeeni tsoon"
+    too_many_items: "Domeenimede soovinimekirja suuruse piirang on ületatud"
+    in_progress: "Oksjon on juba soovide nimekirjas"
+    invalid_domain_zone: "Domeenilaiend peab olema .ee"
 
     editable:
       confirm_delete: "Kas oled kindel, et soovid domeeninime eemaldada oma soovide nimekirjast?"
@@ -10,9 +10,10 @@ et:
     index:
       new_item: "Lisa uus domeeninimi"
       limit_html: "Nimekirja saad lisada kuni <strong>%{limit}</strong> domeeninime"
-      list_title: "Lisa domeeninimi oma soovide nimekirja"
+      list_title: "Lisa domeeninimi oma domeenisoovide nimekirja"
       list_description: |
-       Täpitähed on olulised - domeeninimi päev.ee ei ole sama mis domeeninimi paev.ee.
+       Pane tähele, et täpitähed on olulised - domeeninimi päev.ee
+       ei ole sama mis domeeninimi paev.ee.
 
       my_bid: "Minu pakkumus"
       my_bid_tooltip: "Sellele summale teeb süsteem teie nimel automaatselt pakkumise kohe kui vastav domeen läheb oksjonile. Saate oma pakkumist kuni oksjoni lõpuni vabalt muuta."

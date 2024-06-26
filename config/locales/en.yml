@@ -10,7 +10,7 @@ en:
   submit: "Submit"
   delete: "Delete"
   cancel: Cancel
-  all: All
+  all: 'All auctions'
   clear: Clear
 
   paid: "Paid"

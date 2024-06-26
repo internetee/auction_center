@@ -9,7 +9,7 @@ et:
     issuer: "Arve väljastaja"
     issued_for: "Arve saaja"
     due_date: "Tähtaeg"
-    status: "Olek"
+    status: "Staatus"
     price: "Hind"
     billing_profile: "Arve aadress"
     notes: "Märkmed"
@@ -43,7 +43,7 @@ et:
     mark_as_paid: "Märgi makstuks."
     marked_as_paid: "Arve makstuks märgitud."
     already_paid: "Arve on juba makstud."
-    paid_deposit_title: Deposiidi maksed
+    paid_deposit_title: Deposiidimaksed
     pay_all: "Maksa kõik arved"
     partial_payments_activated: "Lubatud klientidel teha selle arve osalisi makseid"
     allow_partial_payments: "Luba osalisi makseid"
