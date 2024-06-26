@@ -22,31 +22,4 @@ class UsersIntegrationTest < ActionDispatch::IntegrationTest
                                                      password_confirmation: new_password } }
     end
   end
-
-  # def test_user_create_with_punicode
-  #   assert_enqueued_emails 1 do
-  #     post users_path, params: { 
-  #       user: { 
-  #         email: 'example@ää.eu',
-  #         given_names: 'John',
-  #         surname: 'Doe',
-  #         password: 'password123',
-  #         password_confirmation: 'password123',
-  #         terms_and_conditions_accepted_at: Time.now.utc,
-  #         locale: 'en',
-  #         mobile_phone: '+37269900366',
-  #         identity_code: '60001017793',
-  #         country_code: 'EE',
-  #         accepts_terms_and_conditions: true,
-  #         roles: ['participant'],
-  #         phone_number_confirmed: true,
-  #         provider: 'email'}
-  #     }
-  #   end
-
-  #   punicode = SimpleIDN.to_ascii('ää.eu')
-  #   assert User.find_by(email: "example@#{punicode}")
-
-  #   assert_redirected_to new_user_session_path
-  # end
 end
