@@ -23,7 +23,11 @@
           <div class="c-modal__grid">
             <div class="c-modal__main__info">
               <span><%= t('english_offers.show.min_bid') %></span>
-              <h3 class="u-h2 u-m-none"><span id="mini"><%= Money.from_amount(@auction.min_bids_step.to_f, Setting.find_by(code: 'auction_currency').retrieve,  precision: 2) %> €</span></h3>
+              <h3 class="u-h2 u-m-none">
+                <span id="mini">
+                  <%= number_with_precision(Money.from_amount(@auction.min_bids_step.to_f, Setting.find_by(code: 'auction_currency').retrieve),  precision: 2, separator: '.') %> €
+                </span>
+              </h3>
             </div>
             <div class="c-modal__main__info c-modal__main__info--black">
               <strong><%= t('english_offers.show.current_price') %></strong>
