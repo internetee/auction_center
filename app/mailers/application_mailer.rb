@@ -1,6 +1,6 @@
 class ApplicationMailer < ActionMailer::Base
   before_action :add_smtputf8_header
-  before_action :convert_email_to_punycode
+  after_action :convert_email_to_punycode
 
   default from: Rails.application.config.customization['email_from_address']
   layout 'mailer'
