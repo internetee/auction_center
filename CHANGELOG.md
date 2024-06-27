@@ -1,3 +1,10 @@
+27.06.2024
+* prevent offer nil issue in webpush by @OlegPhenomenon in https://github.com/internetee/auction_center/pull/1241
+* Enabled partial payments https://github.com/internetee/auction_center/issues/1216
+* Translation fixes  https://github.com/internetee/auction_center/pull/1254, https://github.com/internetee/auction_center/pull/1264, https://github.com/internetee/auction_center/pull/1273
+* New UI 2023 by @OlegPhenomenon in https://github.com/internetee/auction_center/pull/1102
+* added prepend action to format foreign symbols to punicode by @OlegPhenomenon in https://github.com/internetee/auction_center/pull/1274
+
 11.04.2024
 * Added auction type to auctions api output https://github.com/internetee/auction_center/issues/1238
 
