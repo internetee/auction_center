@@ -34,7 +34,7 @@ module Auth
     end
 
     def cancel
-      redirect_to root_path, notice: t(:sign_in_cancelled)
+      redirect_to root_path, notice: t('sign_in_cancelled')
     end
 
     private

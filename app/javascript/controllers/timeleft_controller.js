@@ -40,8 +40,6 @@ export default class extends Controller {
     let difference = this.timeDifference();
   
     if (difference < 0) {
-      var expiredMsg = $("#timer_message").data("expiredMessage");
-      $("#timer_message").html(expiredMsg);
       this.stopTimer();
       this.buttonTarget.removeAttribute("disabled");
       this.buttonTarget.innerHTML = this.defaultMessageTimerValue;
