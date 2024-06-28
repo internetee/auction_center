@@ -34,4 +34,8 @@ class ApplicationViewComponent < ViewComponent::Base
   def main_app
     Rails.application.class.routes.url_helpers
   end
+
+  def price_format(price)
+    "#{number_to_currency(price, unit: '', separator: '.', delimiter: '', precision: 2)} €"
+  end
 end

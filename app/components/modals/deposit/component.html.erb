@@ -24,28 +24,26 @@
               <span><%= t('english_offers.show.min_bid') %></span>
               <h3 class="u-h2 u-mt-0 u-mb-40-l">
               <%#= @auction.min_bids_step.to_f %>
-                <%= number_with_precision(Money.from_amount(@auction.min_bids_step, Setting.find_by(code: 'auction_currency').retrieve), precision: 2, separator: '.') %> €
+                <%= price_format(Money.from_amount(@auction.min_bids_step, Setting.find_by(code: 'auction_currency').retrieve)) %>
               </h3>
             </div>
             <div class="c-modal__main__info c-modal__main__info--black">
               <strong><%= t('english_offers.show.current_price') %></strong>
               <h3 class="u-h2 u-mt-0 u-mb-40-l">
                 <span id="current_<%= @auction.id %>_price">
-                  <%= number_with_precision(@auction&.currently_winning_offer&.price  || Money.new(0), precision: 2, separator: '.') %> €
+                  <%= price_format(@auction&.currently_winning_offer&.price  || Money.new(0)) %>
                 </span>
               </h3>
             </div>
             <div class="c-modal__main__info c-modal__main__info--white c-modal__header__desc">
               <div class="c-modal__main__info__wrapper u-flex u-align-start u-content-sp u-flex-col">
-                <span class="u-mb-60"><strong><%= t('offers.new.deposit_description_html', deposit: number_with_precision(@auction.deposit, precision: 2, separator: '.')) %></strong></span>
+                <span class="u-mb-60"><strong><%= t('offers.new.deposit_description_html', deposit: price_format(@auction.deposit)) %></strong></span>
                 <button class="c-btn c-btn--ghost c-btn--fs" data-action='modals--offer-modal#close'>Tagasi</button>
               </div>
             </div>
             <div class="c-modal__main__info c-modal__main__info--orange u-align-center u-content-center u-flex-col">
               <div><span><%= t('offers.new.deposit_enable') %></span>
-                <h3 class="u-h2 u-mt-0 u-mb-30"><%= "#{number_with_precision(@auction.deposit, precision: 2, separator: '.')} €" %></h3>
-                  <%#= button_to t('offers.new.make_deposit'), english_offer_deposit_auction_path(uuid: @auction.uuid, current_user: @current_user),
-                                    class: "c-btn c-btn-white c-btn--fs", method: :post, data: { turbo: false } %>
+                <h3 class="u-h2 u-mt-0 u-mb-30"><%= "#{price_format(@auction.deposit)}" %></h3>
 
                   <%= form_with url: english_offer_deposit_auction_path(uuid: @auction.uuid, current_user: @current_user), data: { turbo: false} do |f| %>
                     <%= component 'captcha', captcha_required: @captcha_required, show_checkbox_recaptcha: @show_checkbox_recaptcha, action: 'english_offer' %>

@@ -52,7 +52,7 @@
         <span class="c-account__chekboxtitle"><%= t('users.show.daily_summary') %></span>
       </div>
     
-      <a href="" title="" class="c-acount__link"><%= t('users.terms_and_conditions_link') %></a>
+      <a href="<%= I18n.locale == :et ? 'https://www.internet.ee/domeenid/domeenide-oksjonikeskkonna-kasutajatingimused' : 'https://www.internet.ee/domains/auction-environment-user-agreement'%>" title="" class="c-acount__link" target='_blank'><%= t('users.terms_and_conditions_link') %></a>
       <div class="c-acount__buttons u-flex u-align-center">
         <%= component 'common/links/link_button', link_title: t(:billing), href: billing_profiles_path, color: 'ghost', options: { target: '_top' } %>
         <%= component 'common/buttons/delete_button_with_text', path: user_path(@user.uuid), text: t('users.show.delete') %>

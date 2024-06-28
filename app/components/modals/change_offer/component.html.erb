@@ -25,7 +25,7 @@
               <span><%= t('english_offers.show.min_bid') %></span>
               <h3 class="u-h2 u-m-none">
                 <span id="mini">
-                  <%= number_with_precision(Money.from_amount(@auction.min_bids_step.to_f, Setting.find_by(code: 'auction_currency').retrieve),  precision: 2, separator: '.') %> €
+                  <%= price_format(Money.from_amount(@auction.min_bids_step.to_f, Setting.find_by(code: 'auction_currency').retrieve)) %>
                 </span>
               </h3>
             </div>
@@ -33,7 +33,7 @@
               <strong><%= t('english_offers.show.current_price') %></strong>
               <h3 class="u-h2 u-m-none">
                 <span id="current_<%= @auction.id %>_price">
-                  <%= current_price %> €
+                  <%= price_format(current_price) %>
                 </span>
               </h3>
               <span><%= current_bidder %></span>

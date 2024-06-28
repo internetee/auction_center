@@ -3,6 +3,8 @@ et:
 
   unauthorized:
     message: Teil ei ole õigust selle lehe kasutamiseks!
+    banned:
+      message: "Operatsioon ei ole lubatud kehtiva oksjoni kasutajalepingu rikkumise tõttu"
     manage:
       user: "Teil ei ole õigust oma profiili muuta. Teil on keelatud osaleda .ee domeenioksjonitel korduvalt tasumata arvete tõttu."
   new: "Uus"

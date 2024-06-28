@@ -8,7 +8,7 @@ module ApplicationHelper
 
   def google_analytics
     tracking_id = Rails.configuration.customization.dig(:google_analytics, :tracking_id)
-    GoogleAnalytics.new(tracking_id: tracking_id)
+    GoogleAnalytics.new(tracking_id:)
   end
 
   def component(name, *args, **kwargs, &block)
@@ -29,31 +29,6 @@ module ApplicationHelper
     end
   end
 
-  def banned_banner
-    return unless current_user&.current_bans
-
-    domains, valid_until = current_user&.current_bans
-    message = ban_error_message(domains, valid_until)
-    return unless message
-
-    content_tag(:div, class: 'c-toast js-toast c-toast--error') do
-      content_tag(:div, class: 'c-toast__content') do
-        concat(content_tag(:p, message))
-        if eligible_violations_present?(domains: domains)
-          concat(content_tag(:p, violation_message(domains.size)))
-        end
-      end
-    end
-  end
-
-  def start_of_procedure
-    Rails.configuration.customization[:start_of_procedure]
-  end
-
-  def end_of_procdure
-    Rails.configuration.customization[:end_of_procedure]
-  end
-
   def show_cookie_dialog?
     cookies[:cookie_dialog] != 'accepted'
   end
@@ -63,33 +38,6 @@ module ApplicationHelper
   end
 
   private
-
-  def ban_error_message(domains, valid_until)
-    if current_user&.completely_banned?
-      t('auctions.banned_completely', valid_until: valid_until.to_date,
-                                      ban_number_of_strikes: Setting.find_by(
-                                        code: 'ban_number_of_strikes'
-                                      ).retrieve)
-    else
-      I18n.t('auctions.banned', domain_names: domains.join(', '))
-    end
-  end
-
-  def violation_message(domains_count)
-    link = Setting.find_by(code: 'violations_count_regulations_link').retrieve
-    t('auctions.violation_message_html', violations_count_regulations_link: link,
-                                         violations_count: domains_count,
-                                         ban_number_of_strikes: Setting.find_by(
-                                           code: 'ban_number_of_strikes'
-                                         ).retrieve)
-  end
-
-  def eligible_violations_present?(domains: nil)
-    num_of_strikes = Setting.find_by(code: 'ban_number_of_strikes').retrieve
-    return true if domains && domains.size < num_of_strikes
-
-    false
-  end
 
   def links(links_list)
     links_list.each do |item|
@@ -106,12 +54,10 @@ module ApplicationHelper
   def locale_link_list
     locales = I18n.available_locales.reject { |item| item == I18n.locale }
 
-    items = locales.map do |item|
+    locales.map do |item|
       { name: I18n.t(:in_local_language, locale: item), path: locale_path(locale: item),
         method: :put, data: { "turbo-method": 'put' } }
     end
-
-    items
   end
 
   def user_link_list

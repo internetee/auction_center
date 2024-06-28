@@ -1,5 +1,7 @@
 en:
   unauthorized:
+    banned:
+      message: The operation is not allowed due to active violation of auction user agreement.
     message: You are not authorized to access this page.
     manage:
       user: "You are not authorized to manage profile. You are banned from participating in .ee domain auctions due to multiple overdue invoices."

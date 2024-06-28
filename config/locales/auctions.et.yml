@@ -148,7 +148,7 @@ et:
       Sul on keelatud osaleda järgneva(te)l domeeninime(de) oksjoni(te)l: %{domain_names}.
     banned_completely: |
       Korduvalt tasumata jäetud arvete tõttu on Su õigus osaleda .ee domeenioksjonitel
-      peatatud kuni %{valid_until}. Tulenevalt Kasutajalepingu punktist 7.3.3. saab Teenuse kasutaja oksjonikeskkonna teenuseid kasutada, kui maksmata arveid on vähem kui %{ban_number_of_strikes}.
+      peatatud kuni %{valid_until}. Tulenevalt Kasutajalepingu punktist 8.3.3. saab Teenuse kasutaja oksjonikeskkonna teenuseid kasutada, kui maksmata arveid on vähem kui %{ban_number_of_strikes}.
     violation_message_html: >-
-      Oksjoni reeglite <a href="%{violations_count_regulations_link}">rikkumisi</a>:
-      %{violations_count}. Tulenevalt Kasutajalepingu punktist 7.3.3. saab Teenuse kasutaja oksjonikeskkonna teenuseid kasutada juhul kui maksmata arveid on vähem kui %{ban_number_of_strikes}.
+      Oksjoni reeglite <a href="%{violations_count_regulations_link}" target='_blank'>rikkumisi</a>:
+      %{violations_count}. Tulenevalt Kasutajalepingu punktist 8.3.3. saab Teenuse kasutaja oksjonikeskkonna teenuseid kasutada juhul kui maksmata arveid on vähem kui %{ban_number_of_strikes}.

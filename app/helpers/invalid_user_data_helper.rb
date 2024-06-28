@@ -5,20 +5,6 @@ module InvalidUserDataHelper
     session['user.invalid_user_data'] = user_data_invalid?
   end
 
-  def invalid_data_banner
-    return unless session['user.invalid_user_data']
-
-    if current_user.not_phone_number_confirmed_unique?
-      content_tag(:div, class: 'c-toast js-toast c-toast--error') do
-        content_tag(:div, t('already_confirmed'), class: 'c-toast__content')
-      end
-    else
-      content_tag(:div, class: 'c-toast js-toast c-toast--error') do
-        content_tag(:div, t('users.invalid_user_data'), class: 'c-toast__content')
-      end
-    end
-  end
-
   private
 
   def user_data_invalid?
