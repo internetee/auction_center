@@ -1,3 +1,6 @@
+28.06.2024
+* fixed phone nr confirmation sms request https://github.com/internetee/auction_center/pull/1278
+
 27.06.2024
 * prevent offer nil issue in webpush by @OlegPhenomenon in https://github.com/internetee/auction_center/pull/1241
 * Enabled partial payments https://github.com/internetee/auction_center/issues/1216
