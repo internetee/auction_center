@@ -1,12 +1,13 @@
 # frozen_string_literal: true
 
 class EnglishOffersController < ApplicationController
+  before_action :set_offer, only: %i[show edit update]
+
   include BeforeRender
   include Offerable
   protect_from_forgery with: :null_session
 
   # order is important
-  before_action :set_offer, only: %i[show edit update]
   include EnglishOffers::Offerable
 
   include RecaptchaValidatable
