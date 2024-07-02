@@ -1,3 +1,7 @@
+02.07.2024
+* Use comma as a decimal separator https://github.com/internetee/auction_center/issues/1275
+* force localise feature for sms confimration https://github.com/internetee/auction_center/pull/1280
+
 28.06.2024
 * fixed phone nr confirmation sms request https://github.com/internetee/auction_center/pull/1278
 
