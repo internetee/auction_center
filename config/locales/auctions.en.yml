@@ -136,8 +136,8 @@ en:
       You are banned from participating in .ee domain auctions for the following domain(s): %{domain_names}.
     banned_completely: |
       You are banned from participating in .ee domain auctions due to multiple overdue
-      invoices until %{valid_until}. According to clause 7.3.3 of the .ee Auction Environment User Agreement, a user may access the service if they have fewer than %{ban_number_of_strikes} unpaid invoices on their account.
+      invoices until %{valid_until}. According to clause 8.3.3 of the .ee Auction Environment User Agreement, a user may access the service if they have fewer than %{ban_number_of_strikes} unpaid invoices on their account.
     violation_message_html: >-
-      Number of current <a href="%{violations_count_regulations_link}">violations</a>:
+      Number of current <a href="%{violations_count_regulations_link}" target='_blank'>violations</a>:
       %{violations_count}.
-      According to clause 7.3.3 of the .ee Auction Environment User Agreement, a user may access the service if they have fewer than %{ban_number_of_strikes} unpaid invoices on their account.
+      According to clause 8.3.3 of the .ee Auction Environment User Agreement, a user may access the service if they have fewer than %{ban_number_of_strikes} unpaid invoices on their account.

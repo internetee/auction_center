@@ -30,7 +30,7 @@ module EnglishOffers
     end
 
     def find_or_initialize_autobidder
-      @autobider = current_user&.autobiders&.find_or_initialize_by(domain_name: @auction.domain_name)
+      @autobider = current_user&.autobiders&.find_or_initialize_by(domain_name: @offer.auction.domain_name)
     end
 
     # rubocop:disable Metrics/AbcSize

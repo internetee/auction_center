@@ -6,7 +6,7 @@ export default class extends Controller {
     tax: String,
     template: String,
     defaulttemplate: String,
-    priceElement: { default: 'input[name="offer[price]"]', type: String }
+    priceElement: { default: 'input[name="offer[price]"]', type: String },
   }
 
   connect() {
@@ -22,7 +22,9 @@ export default class extends Controller {
       const taxAmount = value * tax;
       const totalAmount = value + taxAmount;
 
-      result.innerHTML = this.templateValue.replace('{price}', totalAmount.toFixed(2)).replace('{tax}', (tax * 100.0).toFixed(2));
+      let tem = this.templateValue.replace('{price}', totalAmount.toFixed(2)).replace('{tax}', (tax * 100.0).toFixed(2));
+      tem = tem.replace('.', ',').replace('.', ',');
+      result.innerHTML = tem
     } else {
       result.innerHTML = this.defaulttemplateValue;
     }

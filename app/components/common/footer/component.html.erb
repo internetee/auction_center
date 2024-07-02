@@ -44,7 +44,7 @@
               <span style="font-size: 13px;"><a href="https://internet.ee/help-and-info/faq" target="_self"><%= t('common.footer.faq')%></a> </span>
               <span style="font-size: 13px;"><a href="https://internet.ee/help-and-info/statistics" target="_self"><%= t('common.footer.statistics')%></a></span>
               <span style="font-size: 15px;"><br></span>
-              <span style="font-size: 13px;"><a href="https://internet.ee/domain-disputes/domain-disuptes-committee" target="_self"><%= t('common.footer.dispute_committee') %></a></span>
+              <span style="font-size: 13px;"><a href="<%= footer_link(:dispute_committee) %>" target="_self"><%= t('common.footer.dispute_committee') %></a></span>
               <b><span style="font-size: 15px;"><br></span></b>
             </span>
           </div>
@@ -57,11 +57,11 @@
           <div><b><br></b></div>
           <div>
             <b></b>
-            <span style="font-size: 13px;"><a href="https://internet.ee/registrars/accredited-registrars" target="_self"> <%= t('common.footer.list_of_accredited_registrars')%></a></span><br>
+            <span style="font-size: 13px;"><a href="<%= footer_link(:list_of_accredited_registrars) %>" target="_self"> <%= t('common.footer.list_of_accredited_registrars')%></a></span><br>
             <span style="font-size: 13px;">
-              <a href="https://internet.ee/registrars/terms-and-conditions-for-becoming-a-registrar" target="_self"> <%= t('common.footer.terms_and_conditions_for_registrars') %></a>
+              <a href="<%= footer_link(:terms_and_conditions_for_registrars) %>" target="_self"> <%= t('common.footer.terms_and_conditions_for_registrars') %></a>
             </span><br>
-            <span style="font-size: 13px;"><a href="https://internet.ee/registrars/become-a-ee-elite-partner" target="_self"> <%= t('common.footer.partner_programme') %></a></span>
+            <span style="font-size: 13px;"><a href="<%= footer_link(:partner_programme) %>" target="_self"> <%= t('common.footer.partner_programme') %></a></span>
             <b><br></b>
           </div>
         </div>

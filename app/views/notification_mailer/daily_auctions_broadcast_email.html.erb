@@ -10,11 +10,12 @@
             <tr>
                 <td><%= auction.domain_name %></td>
                 <td><%= auction.ends_at %></td>
-                <td><%= link_to(t('.submit_offer'), auction_url(auction.uuid)) %>
             </tr>
         <% end %>
     </tbody>
 </table>
+
+<p><%= t('.common_mailer.more_information', link: I18n.locale == :et ? "https://oksjon.internet.ee" : "https://auction.internet.ee") %></p>
 
 <%= t('common_mailer.footer_html') %>
 <%= link_to t('unsubscribe_mailer_text'), unsubscribe_unsubscribe_url(id: @unsubscribe) %>

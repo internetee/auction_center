@@ -58,7 +58,7 @@
     <main>
       <%= turbo_frame_tag "modal", data: { turbo_temporary: true } %>
       <%= component 'common/hero', title: yield(:title) %>
-      <%= render "common/static_notices" %>
+      <%= component 'common/static_notice', current_user: current_user %>
       <%= yield %>
     </main>
 
