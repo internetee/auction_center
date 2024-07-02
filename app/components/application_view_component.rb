@@ -36,8 +36,6 @@ class ApplicationViewComponent < ViewComponent::Base
   end
 
   def price_format(price)
-    separator = I18n.locale == :en ? '.' : ','
-
-    "#{number_to_currency(price, unit: '', separator:, delimiter: '', precision: 2)} €"
+    "#{number_to_currency(price, unit: '', separator: ',', delimiter: '', precision: 2)} €"
   end
 end

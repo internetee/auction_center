@@ -127,7 +127,6 @@ module Modals
             autotax_counter_template_value: t('english_offers.price_with_wat_template'),
             autotax_counter_tax_value: "#{offer.billing_profile.present? ? offer.billing_profile.vat_rate : 0.0}",
             autotax_counter_defaulttemplate_value: t('offers.price_is_without_vat'),
-            autotax_counter_separator_value: I18n.locale == :en ? '.' : ',',
           }
         }
       end

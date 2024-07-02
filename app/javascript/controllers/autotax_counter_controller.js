@@ -7,7 +7,6 @@ export default class extends Controller {
     template: String,
     defaulttemplate: String,
     priceElement: { default: 'input[name="offer[price]"]', type: String },
-    separator: { default: '.', type: String }
   }
 
   connect() {
@@ -24,11 +23,7 @@ export default class extends Controller {
       const totalAmount = value + taxAmount;
 
       let tem = this.templateValue.replace('{price}', totalAmount.toFixed(2)).replace('{tax}', (tax * 100.0).toFixed(2));
-
-      if (this.separatorValue !== '.') {
-        tem = tem.replace('.', ',').replace('.', ',');
-      }
-      
+      tem = tem.replace('.', ',').replace('.', ',');
       result.innerHTML = tem
     } else {
       result.innerHTML = this.defaulttemplateValue;
