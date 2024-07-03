@@ -56,7 +56,7 @@
     <%= component 'common/header', notifications: @notifications_for_header %>
 
     <main>
-      <%= turbo_frame_tag "modal", data: { turbo_temporary: true } %>
+      <%= turbo_frame_tag "modal" %>
       <%= component 'common/hero', title: yield(:title) %>
       <%= component 'common/static_notice', current_user: current_user %>
       <%= yield %>

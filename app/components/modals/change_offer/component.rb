@@ -35,19 +35,6 @@ module Modals
         offer.auction.finished? ? true : false
       end
 
-      # def current_price(offer, current_user)
-      #   return unless offer
-
-      #   is_user_offer = offer&.billing_profile&.user_id == current_user&.id
-      #   username = is_user_offer ? I18n.t('auctions.you').to_s : offer.username
-      #   content_tag(:span, class: 'current_price',
-      #                      data: { 'user-id': offer.user_id, you: I18n.t('auctions.you') }) do
-      #     content = "#{offer.price} "
-      #     content << content_tag(:span, (username.nil? ? '' : "(#{username})"), class: 'bidder')
-      #     content.html_safe
-      #   end
-      # end
-
       def current_price
         return Money.new(0) unless last_actual_offer
 
@@ -73,7 +60,6 @@ module Modals
           options: {
             min: 0.0,
             step: 0.01,
-            # value: number_with_precision(@autobider.price.to_f, precision: 2) || @auction.min_bids_step.to_f,
             value: number_with_precision(@autobider.price.to_f, precision: 2, delimiter: '', separator: '.') || @auction.min_bids_step.to_f,
             disabled: is_number_field_disabled?,
             data: {
