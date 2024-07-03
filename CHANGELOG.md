@@ -1,3 +1,6 @@
+03.07.2024
+* Fixed contect missing filtering error in auction list view https://github.com/internetee/auction_center/issues/1281
+
 02.07.2024
 * Use comma as a decimal separator https://github.com/internetee/auction_center/issues/1275
 * force localise feature for sms confimration https://github.com/internetee/auction_center/pull/1280
