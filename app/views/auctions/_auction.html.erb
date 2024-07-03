@@ -13,7 +13,7 @@
     <% if auction.english? %>
       <span class="initial-color current_<%= auction.currently_winning_offer&.user_id %>_user"><%= english_auction_presenter.maximum_bids %> €</span>
     <% else %>
-      <%= auction.users_price %> €
+      <%= auction.users_price.zero? ? '' : "#{auction.users_price} €" %>
     <% end %>
   </td>
 
