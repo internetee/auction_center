@@ -1,6 +1,6 @@
 <% content_for :title, "#{t('.title')}: #{@auction.domain_name}" %>
 
-<div class="o-container" data-controller="auction-timezone" data-auction-timezone-end-time-value="<%= auction.ends_at&.iso8601 %>" data-auction-timezone-start-time-value="<%= auction.starts_at.iso8601 %>">
+<div class="o-container" data-controller="auction-timezone" data-auction-timezone-end-time-value="<%= @auction.ends_at&.iso8601 %>" data-auction-timezone-start-time-value="<%= @auction.starts_at.iso8601 %>">
   <div class="c-table c-table--sortable" data-controller='form--bundle-checkbox'>
     <%= component 'common/table', header_collection: [], options: { class: 'js-table-dt dataTable no-footer' } do %>
       <%= tag.tbody id: "auctions-table-body", class: 'contents' do %>
@@ -13,14 +13,14 @@
         <tr>
           <td><strong><%= t('auctions.starts_at') %></strong></td>
           <%= tag.td do %>
-            <span data-auction-timezone-target="starttime"><%= auction.starts_at %></span>
-          <% end @auction.starts_at.present? %>
+            <span data-auction-timezone-target="starttime"><%= @auction.starts_at %></span>
+          <% end if @auction.starts_at.present? %>
         </tr>
         <tr>
             <td><strong><%= t('auctions.ends_at') %></strong></td>
             <%= tag.td do %>
-              <span data-auction-timezone-target="endtime"><%= auction.ends_at %></span>
-            <% end @auction.ends_at.present? %>
+              <span data-auction-timezone-target="endtime"><%= @auction.ends_at %></span>
+            <% end if @auction.ends_at.present? %>
         </tr>
         <%- if @auction.offer_from_user(current_user).present? %>
           <tr>
@@ -45,13 +45,15 @@
       <%= component 'common/table', header_collection:, options: { class: 'js-table-dt' } do %>
         <%= tag.tbody id: "auctions-table-body", class: 'contents' do %>
           <%- if @offers.present? %>
-            <tr class="offers-table-row">
-              <td><%= t('offers.price_in_currency', price: offer.price) %></td>
-              <td><%= offer.user&.display_name || t(:deleted_user) %></td>
-              <td><%= I18n.l(offer.created_at) %></td>
-              <td><%= I18n.l(offer.updated_at) %></td>
-              <td><%= link_to t(:versions_name), admin_offer_versions_path(offer), class: "ui button primary" %></td>
-            </tr>
+            <% @offers.each do |offer| %>
+              <tr class="offers-table-row">
+                <td><%= t('offers.price_in_currency', price: offer.price) %></td>
+                <td><%= offer.user&.display_name || t(:deleted_user) %></td>
+                <td><%= I18n.l(offer.created_at) %></td>
+                <td><%= I18n.l(offer.updated_at) %></td>
+                <td><%= link_to t(:versions_name), admin_offer_versions_path(offer), class: "ui button primary" %></td>
+              </tr>
+            <% end %>
           <%- else %>
             <tr>
               <td colspan="5" style="text-align: center; font-weight: bold; font-size: 1.2rem; padding: 3rem 0 !important;"><%= t(:no_offers) %></td>
