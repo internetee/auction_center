@@ -1,3 +1,11 @@
+<style>
+@media (max-width: 768px) {
+    .mobile_view_confirmation_button {
+        margin-top: -60px;
+    }
+}
+</style>
+
 <% content_for :title, t('.title') %>
 
   <div class="o-container">
@@ -16,7 +24,7 @@
               <%= render 'form', phone_confirmation: @phone_confirmation, url: user_phone_confirmations_path %><br />
             </div>
 
-            <div class="c-account__form">
+            <div class="c-account__form mobile_view_confirmation_button">
               <%= form_with url: send_sms_user_phone_confirmations_path do |f| %>
   
                 <% if @captcha_required %>
@@ -32,9 +40,9 @@
 
                 <div class="c-account__input c-account__input--editable u-mb-20 is-editable">
                   <%if current_user.allow_to_send_sms_again? %>
-                      <button class="ui c-login__button c-btn c-btn--blue", data-timeleft-target='button'><%= I18n.t('phone_confirmations.new.send_code') %></button>
+                      <button class="c-login__btn c-btn c-btn--blue", data-timeleft-target='button'><%= I18n.t('phone_confirmations.new.send_code') %></button>
                   <% else %>
-                    <button class="ui c-login__button c-btn c-btn--blue", data-timeleft-target='button' disabled><%= I18n.t('phone_confirmations.new.send_again') %></button>
+                    <button class="c-login__btn c-btn c-btn--blue", data-timeleft-target='button' disabled><%= I18n.t('phone_confirmations.new.send_again') %></button>
                   <% end %>
                 </div>
 
