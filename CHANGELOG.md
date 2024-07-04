@@ -1,4 +1,5 @@
 04.07.2024
+* Removed 0 bid from blind auctions to avoid leaving false impression https://github.com/internetee/auction_center/issues/1276
 * Fixed the gap between submit and code buttons on phone confirmation https://github.com/internetee/auction_center/issues/1279
 * Fixed auction details view in admin https://github.com/internetee/auction_center/issues/1282
 
