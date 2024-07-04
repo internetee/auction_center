@@ -44,7 +44,7 @@ Rails.application.routes.draw do
   end
 
   namespace :admin, constraints: Constraints::Administrator.new do
-    resources :auctions, concerns: %i[auditable], except: [:show] do
+    resources :auctions, concerns: %i[auditable] do
     collection do
       post 'bulk_starts_at', to: 'auctions#bulk_starts_at', as: 'bulk_starts_at'
       post 'apply_auction_participants', to: 'auctions#apply_auction_participants', as: 'apply_auction_participants'
