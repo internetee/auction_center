@@ -1,5 +1,6 @@
 04.07.2024
 * Fixed the gap between submit and code buttons on phone confirmation https://github.com/internetee/auction_center/issues/1279
+* Fixed auction details view in admin https://github.com/internetee/auction_center/issues/1282
 
 03.07.2024
 * Fixed contect missing filtering error in auction list view https://github.com/internetee/auction_center/issues/1281
