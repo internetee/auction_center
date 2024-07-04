@@ -30,12 +30,17 @@ module EnglishOffers
     end
 
     def find_or_initialize_autobidder
-      @autobider = current_user&.autobiders&.find_or_initialize_by(domain_name: @offer.auction.domain_name)
+      auction = Auction.find_by(uuid: params[:auction_uuid])
+      auction = @offer.auction if auction.nil?
+
+      @autobider = current_user&.autobiders&.find_or_initialize_by(domain_name: auction.domain_name)
     end
 
     # rubocop:disable Metrics/AbcSize
     def prevent_check_for_invalid_bid
-      auction = Auction.with_user_offers(current_user.id).find_by(uuid: @offer.auction.uuid)
+      auction_uuid = params[:auction_uuid].presence || @offer.auction.uuid
+
+      auction = Auction.with_user_offers(current_user.id).find_by(uuid: auction_uuid)
       return unless bid_is_bad?(auction:, update_params:)
 
       flash[:alert] = I18n.t('english_offers.show.bid_failed', price: auction_highest_prrice_message(auction))
