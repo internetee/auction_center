@@ -114,7 +114,6 @@
       <%= component 'common/table', header_collection:, options: { class: 'js-table-dt dataTable no-footer' } do %>
         <!-- "The body of the table also needs to be in the component block, so the component wraps it with the necessary tags." -->
         <%= tag.tbody id: "auctions-table-body", class: 'contents' do %>
-          <%#= render partial: 'auctions', locals: { auctions: @auctions, form: @form_auction_table } %>
           <%= render @auctions, form: @form_auction_table %>
         <% end %>
       <% end %>

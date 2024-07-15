@@ -18,6 +18,7 @@
         </div>
       </div>
     <% end %>
+
     <% header_collection = [{ column: '', caption: t('auctions.domain_name'), options: { class: "" } },
                             { column: '', caption: t('auctions.finished_at'), options: { class: "" } }] %>
     <div style='display: flex; justify-content: space-between; align-items: center; margin-top: 2rem; padding: 10px;'>
@@ -37,35 +38,24 @@
       <% end %>
     <% end %>
 
-    <% result_header_collection = [{ column: '', caption: t('auctions.domain_name'), options: { class: "" } },
-                                   { column: '', caption: t('auctions.finished_at'), options: { class: "" } },
-                                   { column: '', caption: t('results.registration_due_date'), options: { class: "" } },
-                                   { column: '', caption: t('status'), options: { class: "" } },
-                                   { column: '', caption: t('billing_profiles.name'), options: { class: "" } }] %>
+    <% result_header_collection = [{ column: 'auctions.domain_name', caption: t('auctions.domain_name'), options: { class: "sorting" } },
+                                   { column: 'auctions.finished_at', caption: t('auctions.finished_at'), options: { class: "sorting" } },
+                                   { column: 'results.registration_due_date', caption: t('results.registration_due_date'), options: { class: "sorting" } },
+                                   { column: 'status', caption: t('status'), options: { class: "sorting" } },
+                                   { column: 'billing_profile_id', caption: t('billing_profiles.name'), options: { class: "sorting" } }] %>
     <div style='display: flex; justify-content: space-between; align-items: center; margin-top: 2rem; padding: 10px;'>
       <h2><%= t('.results') %></h2>
     </div>
-    <%= component 'common/table', header_collection: result_header_collection, options: { class: 'js-table-dt' } do %>
+
+  <%= turbo_frame_tag "results" do %>
+    <%= component 'common/table', header_collection: result_header_collection, options: { class: 'js-table-dt dataTable no-footer' } do %>
       <%= tag.tbody class: 'contents' do %>
-        <% @results.each do |result| %>
-          <tr class="results-table-row">
-            <td class="monospace">
-              <%= link_to result.auction.domain_name, admin_result_path(result) %>
-            </td>
-            <td><%= I18n.l(result.auction.ends_at) %></td>
-            <td><%= I18n.l(result.registration_due_date) %></td>
-            <td><%= result.status.humanize %></td>
-            <td>
-              <%- unless result.no_bids? %>
-                <%- unless result.offer.nil? %>
-                  <%= result.offer.billing_profile&.name %>
-                <% end %>
-              <% end %>
-            </td>
-            <td></td>
-          </tr>
-        <% end %>
+        <%= render @results %>
       <% end %>
     <% end %>
+
+    <%= component 'common/pagy', pagy: @pagy %>
+    <% end %>
+
   </div>
 </div>

@@ -2,20 +2,10 @@ module Admin
   class ResultsController < BaseController
     # GET /admin/results
     def index
-      sort_column = params[:sort].presence_in(%w[auctions.domain_name
-                                                 auctions.ends_at
-                                                 registration_due_date
-                                                 status
-                                                 users.id]) || 'auctions.ends_at'
-      sort_direction = params[:direction].presence_in(%w[asc desc]) || 'desc'
+      order_string = "#{allowed_sort_columns[sort_column]} #{allowed_sort_directions}"
 
-      @results = Result.includes(:auction, offer: [:billing_profile])
-                       .search(params)
-                       .includes(:user)
-                       .includes(:auction)
-                       .order("#{sort_column} #{sort_direction}")
-
-      @pagy, @results = pagy(@results, items: params[:per_page] ||= 15)
+      @results = result_query.order(Arel.sql(order_string))
+      @pagy, @results = pagy(@results, items: params[:per_page] ||= 15, link_extra: 'data-turbo-action="advance"')
 
       @auctions_needing_results = Auction.without_result.search(params)
     end
@@ -42,6 +32,23 @@ module Admin
     end
 
     private
+
+    def result_query = Result.includes(:auction, offer: [:billing_profile])
+                             .references(:auction, :offer)
+                             .search(params)
+                             .includes(:user)
+
+    def sort_column = params[:sort_by].presence_in(allowed_sort_columns.keys) || 'auctions.ends_at'
+
+    def allowed_sort_directions = params[:sort_direction].presence_in(%w[asc desc]) || 'desc'
+
+    def allowed_sort_columns = {
+      'auctions.domain_name' => 'auctions.domain_name',
+      'auctions.ends_at' => 'auctions.ends_at',
+      'results.registration_due_date' => 'results.registration_due_date',
+      'status' => 'results.status',
+      'billing_profile_id' => 'offers.billing_profile_id'
+    }
 
     def buyer_name
       return @result.offer.billing_profile.name if @result.offer.billing_profile.present?

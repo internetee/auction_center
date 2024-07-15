@@ -1,0 +1,16 @@
+<tr class="results-table-row">
+  <td class="monospace">
+    <%= link_to result.auction.domain_name, admin_result_path(result) %>
+  </td>
+  <td><%= I18n.l(result.auction.ends_at) %></td>
+  <td><%= I18n.l(result.registration_due_date) %></td>
+  <td><%= result.status.humanize %></td>
+  <td>
+    <%- unless result.no_bids? %>
+      <%- unless result.offer.nil? %>
+        <%= result.offer.billing_profile&.name %>
+      <% end %>
+    <% end %>
+  </td>
+  <td></td>
+</tr>
