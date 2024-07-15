@@ -45,6 +45,7 @@
               <span style="font-size: 13px;"><a href="https://internet.ee/help-and-info/statistics" target="_self"><%= t('common.footer.statistics')%></a></span>
               <span style="font-size: 15px;"><br></span>
               <span style="font-size: 13px;"><a href="<%= footer_link(:dispute_committee) %>" target="_self"><%= t('common.footer.dispute_committee') %></a></span>
+              <span style="font-size: 13px;"><a href="<%= Setting.find_by(code: 'terms_and_conditions_link').retrieve %>" target="_self"><%= t('auctions.top_grid.terms_and_conditions_link').capitalize %></a></span>
               <b><span style="font-size: 15px;"><br></span></b>
             </span>
           </div>
