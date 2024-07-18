@@ -2,8 +2,8 @@ module RecaptchaValidatable
   extend ActiveSupport::Concern
 
   included do
-    before_action :set_captcha_required
-    before_action :check_recaptcha, only: %i[create update], unless: -> { Rails.env.development? || Rails.env.test? }
+    # before_action :set_captcha_required
+    # before_action :check_recaptcha, only: %i[create update], unless: -> { Rails.env.development? || Rails.env.test? }
   end
 
   module ClassMethods
