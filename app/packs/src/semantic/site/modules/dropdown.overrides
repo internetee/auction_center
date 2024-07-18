@@ -1,6 +1,0 @@
-/*******************************
-        User Overrides
-*******************************/
-/* Clearable */
-@clearableIconOpacity: 0.8;
-@clearableIconActiveOpacity: 1;
