@@ -89,7 +89,10 @@ Rails.application.configure do
   # require 'syslog/logger'
   # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new 'auction')
   config.logger = ActiveSupport::Logger.new(STDOUT)
-  #
+  # USE JSON logger! (rait)
+  config.logger.formatter = proc do |severity, timestamp, progname, msg|
+      { severity: severity, timestamp: timestamp, progname: progname, message: msg }.to_json + "\n"
+  end
   # if ENV['RAILS_LOG_TO_DOCKER_STDOUT'].present?
   #   $stdout.sync = true
   #   config.rails_semantic_logger.add_file_appender = false
