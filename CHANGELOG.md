@@ -1,3 +1,7 @@
+23.07.2024
+* only 15 records in admin results view https://github.com/internetee/auction_center/issues/1288
+* added sorting and filtering to admin results view https://github.com/internetee/auction_center/issues/1289
+
 04.07.2024
 * Removed 0 bid from blind auctions to avoid leaving false impression https://github.com/internetee/auction_center/issues/1276
 * Fixed the gap between submit and code buttons on phone confirmation https://github.com/internetee/auction_center/issues/1279
