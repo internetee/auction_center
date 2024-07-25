@@ -62,6 +62,12 @@
         </div>
       </div>
     </div>
+
+    <p style='text-align: center;'><%= t("auctions.top_grid.footer_html",
+            terms_and_conditions_link: link_to(t("auctions.top_grid.terms_and_conditions_link"),
+                                              Setting.find_by(code: 'terms_and_conditions_link').retrieve),
+            faq_link: link_to(t("auctions.top_grid.faq_link"), faq_link),
+            reserved_domain_names_link: link_to(t("auctions.top_grid.reserved_domain_names_link"), reserved_domain_names_link)) %></p>
   </div>
 </section>
 <!-- Cards -->

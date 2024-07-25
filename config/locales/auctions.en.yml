@@ -86,7 +86,7 @@ en:
       please_note: |
         NB! Please note that you will receive priority right to register the domain! Upon registration, you will also be charged a domain registration fee based on your chosen registrar's price list.
 
-      footer_html: "Please check out the %{terms_and_conditions_link} of the .ee %{faq_link}. You can find the schedule of the reserved domain names from %{reserved_domain_names_link}!"
+      footer_html: "Please check out the %{terms_and_conditions_link} of the .ee %{faq_link}."
       terms_and_conditions_link: "terms and conditions"
       faq_link: "auctioning process"
       reserved_domain_names_link: "here"
