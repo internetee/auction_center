@@ -1,5 +1,6 @@
 25.07.2024
 * auction regulations link is now on the auction list page https://github.com/internetee/auction_center/issues/1290
+* fixed links in the footer https://github.com/internetee/auction_center/issues/1297
 
 23.07.2024
 * only 15 records in admin results view https://github.com/internetee/auction_center/issues/1288
