@@ -96,7 +96,7 @@ et:
         Domeeni registreerimisel lisandub teie valitud registripidaja hinnakirja alusel
         ka domeeni registreerimise tasu.
 
-      footer_html: "Tutvu ka %{terms_and_conditions_link} ja loe %{faq_link}. Avatud pakkumistega inglise oksjonile tulevate domeenide ajakava leiad %{reserved_domain_names_link}!"
+      footer_html: "Tutvu ka %{terms_and_conditions_link} ja loe %{faq_link}."
       terms_and_conditions_link: "oksjonikeskkonna kasutajatingimustega"
       faq_link: "detailsemalt oksjoniprotsessist"
       reserved_domain_names_link: "siit"
