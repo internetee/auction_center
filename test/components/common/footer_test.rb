@@ -47,11 +47,11 @@ class FooterTest < ViewComponent::TestCase
       assert_selector '.c-footer__row__col.s-footer-col', text: I18n.t('common.footer.estonian_internet')
       assert_selector '.c-footer__row__col.s-footer-col', text: I18n.t('common.footer.contact_us')
       assert_selector '.c-footer__row__col.s-footer-col', text: I18n.t('common.footer.management')
-      assert_selector '.c-footer__row__col.s-footer-col', text: I18n.t('common.footer.registrars_working_group')
+      assert_selector '.c-footer__row__col.s-footer-col', text: I18n.t('common.footer.newsletter')
     
       assert_selector '.c-footer__row__col.s-footer-col a[href="https://www.internet.ee/eif"]'
       assert_selector '.c-footer__row__col.s-footer-col a[href="https://www.internet.ee/eif/tasks-and-management"]'
-      assert_selector '.c-footer__row__col.s-footer-col a[href="https://www.internet.ee/eif/registrars-workgroup"]'
+      assert_selector '.c-footer__row__col.s-footer-col a[href="https://www.internet.ee/eif/newsletter"]'
 
       assert_selector '.c-footer__row__col.s-footer-col', text: I18n.t('common.footer.social_media')
 

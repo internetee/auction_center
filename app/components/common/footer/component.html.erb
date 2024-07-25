@@ -18,7 +18,7 @@
           </div>
           <div class="c-footer__highlight__contact">
             <span>
-              <%= render 'svg/email' %><a href="mailto:<%= Setting.find_by(code: 'contact_organization_email').retrieve %>"><%= Setting.find_by(code: 'contact_organization_email').retrieve %></a>
+              <%= render 'svg/email' %><a href="mailto:<%= Setting.find_by(code: 'contact_organization_email').retrieve %>"><%= Setting.find_by(code: 'contact_organization_email').retrieve %></a><br>
             </span>
             <span>
               <%= render 'svg/phone' %><a href="tel:<%= Setting.find_by(code: 'organization_phone').retrieve %>"><%= Setting.find_by(code: 'organization_phone').retrieve %></a>
@@ -39,14 +39,12 @@
             </span>
           </div>
           <div style="line-height: 23px;"><span style="color: rgb(255, 255, 255);"><b></b>
-              <span style="font-size: 13px;"><a href="https://internet.ee/domains/ee-domain-regulation" target="_self"><%= t('common.footer.domain_regulation')%></a></span>
-              <span style="font-size: 15px;"><br></span>
-              <span style="font-size: 13px;"><a href="https://internet.ee/help-and-info/faq" target="_self"><%= t('common.footer.faq')%></a> </span>
-              <span style="font-size: 13px;"><a href="https://internet.ee/help-and-info/statistics" target="_self"><%= t('common.footer.statistics')%></a></span>
-              <span style="font-size: 15px;"><br></span>
-              <span style="font-size: 13px;"><a href="<%= footer_link(:dispute_committee) %>" target="_self"><%= t('common.footer.dispute_committee') %></a></span>
+              <span style="font-size: 13px;"><a href="<%= footer_link(:domain_regulation) %>" target="_self"><%= t('common.footer.domain_regulation')%></a></span><br>
+              <span style="font-size: 13px;"><a href="<%= footer_link(:faq) %>" target="_self"><%= t('common.footer.faq')%></a> </span><br>
+              <span style="font-size: 13px;"><a href="<%= footer_link(:statistics) %>" target="_self"><%= t('common.footer.statistics')%></a></span><br>
+              <span style="font-size: 13px;"><a href="<%= footer_link(:dispute_committee) %>" target="_self"><%= t('common.footer.dispute_committee') %></a></span><br>
               <span style="font-size: 13px;"><a href="<%= Setting.find_by(code: 'terms_and_conditions_link').retrieve %>" target="_self"><%= t('auctions.top_grid.terms_and_conditions_link').capitalize %></a></span>
-              <b><span style="font-size: 15px;"><br></span></b>
+              <b><span style="font-size: 15px;"><br></span></b><br>
             </span>
           </div>
         </div>
@@ -71,12 +69,12 @@
           <div><b><span style="font-size: 14px;"><%= t('common.footer.estonian_internet') %> <br></span></b></div>
           <div><b><span style="font-size: 14px;"><br></span></b></div>
           <div>
-            <span style="font-size: 14px;"><a href="https://www.internet.ee/eif" target="_self"><%= t('common.footer.contact_us') %></a></span><br>
-            <span style="font-size: 14px;"><a href="https://www.internet.ee/eif/tasks-and-management" target="_self"><%= t('common.footer.management') %></a></span>
+            <span style="font-size: 14px;"><a href="<%= footer_link(:contact_us) %>" target="_self"><%= t('common.footer.contact_us') %></a></span><br>
+            <span style="font-size: 14px;"><a href="<%= footer_link(:management) %>" target="_self"><%= t('common.footer.management') %></a></span>
             <b><span style="font-size: 14px;"><br></span></b>
             <span style="font-size: 14px;">
-              <a href="https://www.internet.ee/eif/registrars-workgroup" target="_self">
-                <span style="color: rgb(251, 170, 25);"><%= t('common.footer.registrars_working_group') %></span>
+              <a href="<%= footer_link(:newsletter) %>" target="_self">
+                <span style="color: rgb(251, 170, 25);"><%= t('common.footer.newsletter') %></span>
               </a>
             </span><b>
             <span style="font-size: 14px;"><br></span></b>
