@@ -31,9 +31,9 @@ gem 'omniauth-tara', github: 'internetee/omniauth-tara'
 gem 'pagy', '~> 6.0'
 gem 'pdfkit'
 gem 'pg', '>= 0.18', '< 2.0'
-gem 'puma', '~> 6.4.2'
 gem 'pg_search'
 gem 'propshaft'
+gem 'puma', '~> 6.4.2'
 gem 'rails', '>= 6.0.3.5'
 gem 'rails-i18n'
 gem 'recaptcha'
@@ -53,16 +53,19 @@ group :development, :test do
   gem 'pry'
 
   # https://github.com/rubocop/rubocop-performance
+  gem 'rubocop'
+  gem 'rubocop-packaging'
   gem 'rubocop-performance', require: false
-  gem "ruby-lsp"
-  gem "rubocop"
-  gem "rubocop-packaging"
-  gem "rubocop-rspec"
-  gem "rubocop-shopify"
+  gem 'rubocop-rspec'
+  gem 'rubocop-shopify'
+  gem 'ruby-lsp'
   # gem "rubocop-thread_safety"
 end
 
 group :development do
+  gem 'attractor'
+  gem 'attractor-javascript'
+  gem 'attractor-ruby'
   gem 'htmlbeautifier'
   gem 'i18n-debug'
   gem 'letter_opener', '~> 1.8'
