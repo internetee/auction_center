@@ -415,8 +415,6 @@ GEM
     simplecov_json_formatter (0.1.4)
     simpleidn (0.2.1)
       unf (~> 0.1.4)
-    skylight (5.3.4)
-      activesupport (>= 5.2.0)
     sorbet-runtime (0.5.11164)
     spy (1.0.5)
     stimulus-rails (1.2.1)
@@ -539,7 +537,6 @@ DEPENDENCIES
   scenic
   simplecov
   simpleidn
-  skylight
   spy
   turbo-rails
   valvat
