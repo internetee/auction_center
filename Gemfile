@@ -62,6 +62,9 @@ group :development, :test do
 end
 
 group :development do
+  gem 'attractor'
+  gem 'attractor-javascript'
+  gem 'attractor-ruby'
   gem 'htmlbeautifier'
   gem 'i18n-debug'
   gem 'letter_opener', '~> 1.8'
