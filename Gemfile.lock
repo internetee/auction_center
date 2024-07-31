@@ -465,8 +465,6 @@ GEM
       rack (~> 2.2, >= 2.2.4)
       rack-protection (= 3.0.6)
       tilt (~> 2.0)
-    skylight (5.3.4)
-      activesupport (>= 5.2.0)
     sorbet-runtime (0.5.11164)
     spy (1.0.5)
     stimulus-rails (1.2.1)
@@ -593,7 +591,6 @@ DEPENDENCIES
   scenic
   simplecov
   simpleidn
-  skylight
   spy
   turbo-rails
   valvat
