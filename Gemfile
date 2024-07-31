@@ -69,7 +69,7 @@ group :development do
   gem 'i18n-debug'
   gem 'letter_opener', '~> 1.8'
   gem 'letter_opener_web', '~> 3.0'
-  gem 'listen', '>= 3.0.5', '< 3.9'
+  gem 'listen', '>= 3.0.5', '< 3.10'
   gem 'ruby-lsp-rails'
   gem 'web-console', '>= 3.3.0'
 end
