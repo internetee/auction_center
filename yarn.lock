@@ -407,10 +407,10 @@ is-number@^7.0.0:
   resolved "https://registry.yarnpkg.com/is-number/-/is-number-7.0.0.tgz#7535345b896734d5f80c4d06c50955527a14f12b"
   integrity sha512-41Cifkg6e8TylSpdtTpeLVMqvSBEVzTttHvERD741+pnZ8ANv0004MRL43QKPDlK9cGvNp6NZWZUBlbGXYxxng==
 
-local-time@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/local-time/-/local-time-2.1.0.tgz#be42f06bf269f9da77cb61ea722aa424dd01d919"
-  integrity sha512-4rB/8EkJIZ8O8Y5q536fSsRbzXOI0cL30l3ZKm4ISPC4D8jYOhRp/MpAaGKAYUvVIqkojT0c7kJk0RlnwtlR2w==
+local-time@^3.0.0:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/local-time/-/local-time-3.0.2.tgz#2767a1f3a9310f445efe3d75ad3bd07f634fa5f0"
+  integrity sha512-22xNlCU10UxS+ecOtT2sLq17sVo0MQf8D2TvGEagS8Mi2gOtCIrY9cMfWH2dlkPLvEUmoWBfi8kzJNRoCSPvlg==
 
 merge2@^1.3.0:
   version "1.4.1"
