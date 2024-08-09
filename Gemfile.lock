@@ -323,7 +323,7 @@ GEM
       validate_url
       webfinger (~> 1.2)
     orm_adapter (0.5.0)
-    pagy (6.0.4)
+    pagy (8.6.3)
     parallel (1.25.1)
     parser (3.3.3.0)
       ast (~> 2.4.1)
@@ -570,7 +570,7 @@ DEPENDENCIES
   okcomputer (~> 1.18.4)
   omniauth-rails_csrf_protection
   omniauth-tara!
-  pagy (~> 6.0)
+  pagy (~> 8.0)
   pdfkit
   pg (>= 0.18, < 2.0)
   pg_search
