@@ -45,11 +45,11 @@ Rails.application.routes.draw do
 
   namespace :admin, constraints: Constraints::Administrator.new do
     resources :auctions, concerns: %i[auditable] do
-    collection do
-      post 'bulk_starts_at', to: 'auctions#bulk_starts_at', as: 'bulk_starts_at'
-      post 'apply_auction_participants', to: 'auctions#apply_auction_participants', as: 'apply_auction_participants'
+      collection do
+        post 'bulk_starts_at', to: 'auctions#bulk_starts_at', as: 'bulk_starts_at'
+        post 'apply_auction_participants', to: 'auctions#apply_auction_participants', as: 'apply_auction_participants'
+      end
     end
-  end
 
     resources :bans, except: %i[new show edit update], concerns: %i[auditable]
     resources :statistics, only: :index
@@ -82,7 +82,7 @@ Rails.application.routes.draw do
   devise_for :users, path: 'sessions',
                      controllers: { confirmations: 'email_confirmations', sessions: 'auth/sessions', passwords: 'passwords' }
 
-  resources :auctions, only: %i[index show], param: :uuid do
+  resources :auctions, only: %i[index], param: :uuid do
     resources :offers, only: %i[new show create edit update destroy], shallow: true, param: :uuid do
       get 'delete'
     end

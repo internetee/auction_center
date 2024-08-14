@@ -18,6 +18,7 @@ en:
     updated: "Billing profile successfully updated!"
     deleted: "Billing profile successfully deleted!"
     vat_validation_error: "VAT code is not registered or not valid according to VIES"
+    vat_validation_rate_limit_error: "VAT code validation rate limit exceeded"
     vat_code_already_exists: "VAT code is already in use"
 
     edit:
