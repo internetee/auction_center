@@ -29,10 +29,13 @@ class OffersController < ApplicationController
           redirect_to root_path, notice: t('offers.already_exists')
         end
       elsif create_predicate
+        Rails.logger.info("User #{current_user.id} created offer #{@offer.id} for auction #{@auction.id}")
         format.html { redirect_to root_path, notice: t('.created') }
         format.json { render :show, status: :created, location: @offer }
       else
-        flash[:alert] = @offer.errors.full_messages.join('; ')
+        error_msg = @offer.errors.full_messages.join('; ')
+        flash[:alert] = error_msg
+        Rails.logger.error("User #{current_user.id} tried to create offer for auction #{@auction.id} but it failed. Errors: #{error_msg}")
         format.html { redirect_to root_path, status: :see_other }
         format.json { render json: @offer.errors, status: :unprocessable_entity }
       end
@@ -63,10 +66,13 @@ class OffersController < ApplicationController
       redirect_to root_path and return if update_not_allowed(@offer.auction)
 
       if update_predicate
+        Rails.logger.info("User #{current_user.id} updated offer #{@offer.id} for auction #{@offer.auction.id}")
         format.html { redirect_to root_path, notice: t(:updated), status: :see_other }
         format.json { render :show, status: :ok, location: @offer }
       else
-        flash[:alert] = @offer.errors.full_messages.join('; ')
+        errors = @offer.errors.full_messages.join('; ')
+        flash[:alert] = errors
+        Rails.logger.error("User #{current_user.id} tried to update offer for auction #{offer.auction.id} but it failed. Errors: #{errors}")
         format.html { redirect_to root_path, status: :see_other }
         format.json { render json: @offer.errors, status: :unprocessable_entity }
       end

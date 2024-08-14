@@ -35,13 +35,15 @@ class EnglishOffersController < ApplicationController
       broadcast_update_auction_offer(@auction)
       send_outbided_notification(auction: @auction, offer: @offer, flash:)
       update_auction_values(@auction, t('english_offers.create.created'))
+      Rails.logger.info("User #{current_user.id} created offer #{@offer.id} for auction #{@auction.id}")
     else
-      flash[:alert] = if @offer.errors.full_messages_for(:cents).present?
-                        @offer.errors.full_messages_for(:cents).join
-                      else
-                        @offer.errors.full_messages.join('; ')
-                      end
-
+      errors = if @offer.errors.full_messages_for(:cents).present?
+                 @offer.errors.full_messages_for(:cents).join
+               else
+                 @offer.errors.full_messages.join('; ')
+               end
+      flash[:alert] = errors
+      Rails.logger.error("User #{current_user.id} tried to create offer for auction #{@auction.id} but it failed. Errors: #{errors}")
       redirect_to root_path and return
     end
   end
@@ -67,13 +69,16 @@ class EnglishOffersController < ApplicationController
       broadcast_update_auction_offer(@auction)
       send_outbided_notification(auction: @auction, offer: @offer, flash:)
       update_auction_values(@auction, t('english_offers.edit.bid_updated'))
+      Rails.logger.info("User #{current_user.id} updated offer #{@offer.id} for auction #{@auction.id}")
     else
-      flash[:alert] = if @offer.errors.full_messages_for(:cents).present?
-                        @offer.errors.full_messages_for(:cents).join
-                      else
-                        @offer.errors.full_messages.join('; ')
-                      end
+      errors = if @offer.errors.full_messages_for(:cents).present?
+                 @offer.errors.full_messages_for(:cents).join
+               else
+                 @offer.errors.full_messages.join('; ')
+               end
 
+      flash[:alert] = errors
+      Rails.logger.error("User #{current_user.id} tried to update offer for auction #{offer.auction.id} but it failed. Errors: #{errors}")
       redirect_to root_path
     end
   end
