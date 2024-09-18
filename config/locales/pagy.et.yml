@@ -1,22 +1,43 @@
+# et:
+#   pagy:
+
+#     per_page: "Tulemusi lehel"
+
+#     item_name:
+#       one: "kirje"
+#       other: "kirjet"
+
+#     nav:
+#       prev: 'Eelmised'
+#       next: 'Järgmised'
+#       gap: "&hellip;"
+
+#     info:
+#       no_items: "%{item_name} ei leitud"
+#       single_page: "Kuvan <b>%{count}</b> %{item_name}"
+#       multiple_pages: "Kuvan %{item_name} <b>%{from}-%{to}</b> / <b>%{count}</b>-st"
+
+#     combo_nav_js: "<label>Lk %{page_input}/%{pages}</label>"
+
+#     items_selector_js: "<label>Kuva %{items_input} %{item_name} lehekülje kohta</label>"
+
 et:
   pagy:
-
-    per_page: "Tulemusi lehel"
-
+    aria_label:
+      nav:
+        one: "Page"
+        other: "Pages"
+      prev: "Previous"
+      next: "Next"
+    prev: "&lt;"
+    next: "&gt;"
+    gap: "&hellip;"
     item_name:
-      one: "kirje"
-      other: "kirjet"
-
-    nav:
-      prev: 'Eelmised'
-      next: 'Järgmised'
-      gap: "&hellip;"
-
+      one: "item"
+      other: "items"
     info:
-      no_items: "%{item_name} ei leitud"
-      single_page: "Kuvan <b>%{count}</b> %{item_name}"
-      multiple_pages: "Kuvan %{item_name} <b>%{from}-%{to}</b> / <b>%{count}</b>-st"
-
-    combo_nav_js: "<label>Lk %{page_input}/%{pages}</label>"
-
-    items_selector_js: "<label>Kuva %{items_input} %{item_name} lehekülje kohta</label>"
+      no_items: "No %{item_name} found"
+      single_page: "Displaying %{count} %{item_name}"
+      multiple_pages: "Displaying %{item_name} %{from}-%{to} of %{count} in total"
+    combo_nav_js: "Page %{page_input} of %{pages}"
+    limit_selector_js: "Show %{limit_input} %{item_name} per page"

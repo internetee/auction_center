@@ -1,3 +1,43 @@
+.dataTables_filter {
+  .pagy.nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: rem(8px);
+
+    a {
+      width: rem(32px);
+      height: rem(32px);
+      border-radius: rem(16px) !important;
+      border: 1px solid $grey-200-color !important;
+      display: flex !important;
+      justify-content: center;
+      align-items: center;
+      padding: 0 !important;
+      font-weight: 500;
+      font-size: rem(14px);
+      line-height: rem(24px);
+      text-decoration: none;
+      color: $black-color !important;
+
+      &[aria-current="page"] {
+        background-color: $primary-green-color !important;
+        border-color: $primary-green-color !important;
+        color: $white-color !important;
+      }
+
+      &[aria-disabled="true"] {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      &:hover:not([aria-disabled="true"]) {
+        background-color: $grey-200-color !important;
+      }
+    }
+  }
+}
+
 .pagy-nav .page.prev,
 .pagy-nav .page.prev a,
 .pagy-nav .page.next,
