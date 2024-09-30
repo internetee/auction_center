@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   helper_method :turbo_frame_request?
 
   protect_from_forgery with: :exception
+
   before_action :set_locale, :clear_flash
   before_action :notifications_for_header
 
