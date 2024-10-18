@@ -50,15 +50,6 @@ group :development, :test do
   gem 'bullet'
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'pry'
-
-  # https://github.com/rubocop/rubocop-performance
-  gem 'rubocop'
-  gem 'rubocop-packaging'
-  gem 'rubocop-performance', require: false
-  gem 'rubocop-rspec'
-  gem 'rubocop-shopify'
-  gem 'ruby-lsp'
-  # gem "rubocop-thread_safety"
 end
 
 group :development do
@@ -72,6 +63,15 @@ group :development do
   gem 'listen', '>= 3.0.5', '< 3.10'
   gem 'ruby-lsp-rails'
   gem 'web-console', '>= 3.3.0'
+
+  # https://github.com/rubocop/rubocop-performance
+  gem 'rubocop'
+  gem 'rubocop-packaging'
+  gem 'rubocop-performance', require: false
+  gem 'rubocop-rspec'
+  gem 'rubocop-shopify'
+  gem 'ruby-lsp'
+  # gem "rubocop-thread_safety"
 end
 
 group :test do
