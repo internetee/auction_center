@@ -46,9 +46,11 @@ class ActiveAuctionsAiSortingJobTest < ActiveJob::TestCase
     {
       'choices' => [{
         'message' => {
-          'content': "[\n  {\n    \"id\": #{@auction1.id},\n    \"ai_score\": 9\n  }," \
-                        "\n  {\n    \"id\": #{@auction2.id},\n    \"ai_score\": 7\n  }," \
-                        "\n  {\n    \"id\": #{@auction3.id},\n    \"ai_score\": 4\n  }\n]"
+          'content': { scores:[
+            { id: @auction1.id, domain_name: @auction1.domain_name, ai_score: 9 },
+            { id: @auction2.id, domain_name: @auction2.domain_name, ai_score: 7 },
+            { id: @auction3.id, domain_name: @auction3.domain_name, ai_score: 4 }
+            ]}.to_json
         }
       }]
     }
