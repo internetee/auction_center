@@ -1,3 +1,8 @@
+18.10.2024
+* Fix for AI sorting https://github.com/internetee/auction_center/pull/1333
+* Localisation and style fixes https://github.com/internetee/auction_center/pull/1323
+* readme update https://github.com/internetee/auction_center/pull/1240
+
 25.07.2024
 * auction regulations link is now on the auction list page https://github.com/internetee/auction_center/issues/1290
 * fixed links in the footer https://github.com/internetee/auction_center/issues/1297
