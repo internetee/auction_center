@@ -9,7 +9,8 @@ OmniAuth.config.logger = Rails.logger
 # Block GET requests to avoid exposing self to CVE-2015-9284
 OmniAuth.config.allowed_request_methods = [:post]
 
-signing_keys = AuctionCenter::Application.config.customization.dig(:tara, :keys).to_json
+# signing_keys = AuctionCenter::Application.config.customization.dig(:tara, :keys).to_json
+signing_keys = AuctionCenter::Application.config.customization.dig(:tara, :tara_keys).to_json
 issuer = AuctionCenter::Application.config.customization.dig(:tara, :issuer)
 host = AuctionCenter::Application.config.customization.dig(:tara, :host)
 identifier = AuctionCenter::Application.config.customization.dig(:tara, :identifier)
@@ -19,22 +20,22 @@ redirect_uri = AuctionCenter::Application.config.customization.dig(:tara, :redir
 Rails.application.config.middleware.use OmniAuth::Builder do
   provider "tara", {
     name: 'tara',
-    scope: ['openid'],
+    scope: %w[openid idcard mid smartid],
     state: Proc.new{ SecureRandom.hex(10) },
     client_signing_alg: :RS256,
     client_jwk_signing_key: signing_keys,
     send_scope_to_token_endpoint: false,
     send_nonce: true,
     issuer: issuer,
-
+    discovery: true,
     client_options: {
       scheme: 'https',
       host: host,
 
-      authorization_endpoint: '/oidc/authorize',
-      token_endpoint: '/oidc/token',
+      authorization_endpoint: '/oauth2/auth',
+      token_endpoint: '/oauth2/token',
       userinfo_endpoint: nil, # Not implemented
-      jwks_uri: '/oidc/jwks',
+      jwks_uri: '/.well-known/jwks.json',
 
       # Auction
       identifier: identifier,
