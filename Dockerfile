@@ -1,4 +1,4 @@
-FROM internetee/ruby:3.2.2-bullseye
+FROM --platform=linux/amd64 ruby:3.2.2-bullseye
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -24,9 +24,9 @@ RUN sed -i -e 's/# et_EE.UTF-8 UTF-8/et_EE.UTF-8 UTF-8/' /etc/locale.gen && \
 
 ENV LANG et_EE.UTF-8
 RUN curl https://www.postgresql.org/media/keys/ACCC4CF8.asc -s | apt-key add -
-RUN sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ buster-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+RUN sh -c 'echo "deb https://apt-archive.postgresql.org/pub/repos/apt bionic-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
 RUN apt-get update > /dev/null && apt-get install -y --no-install-recommends > /dev/null \
-    postgresql-client-13=* \
+    postgresql-client-11=* \
     libpq-dev \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
@@ -35,30 +35,30 @@ RUN apt-get update > /dev/null && apt-get install -y --no-install-recommends > /
 RUN curl -sL https://deb.nodesource.com/setup_18.x | bash -
 
 RUN apt-get install -y --no-install-recommends > /dev/null \
-  nodejs=* \
-  qt5-default=* \
-  libqt5webkit5-dev=* \
-  gstreamer1.0-plugins-base=* \
-  libappindicator3-1=* \
-  gstreamer1.0-tools=* \
-  qtdeclarative5-dev=* \
-  fonts-liberation=* \
-  gstreamer1.0-x=* \
-  libasound2=* \
-  libnspr4=* \
-  libnss3=* \
-  libxss1=* \
-  libxtst6=* \
-  xdg-utils=* \
-  qtdeclarative5-dev=* \
-  fonts-liberation=* \
-  gstreamer1.0-x=* \
-  wkhtmltopdf \
-  libxslt1-dev \
-  libxml2-dev \
-  python-dev \
-  && apt-get clean \
-  && rm -rf /var/lib/apt/lists/*
+    nodejs=* \
+  #   qt5-default=* \
+  #   libqt5webkit5-dev=* \
+    gstreamer1.0-plugins-base=* \
+  #   libappindicator3-1=* \
+    gstreamer1.0-tools=* \
+  #     qtdeclarative5-dev=* \
+    fonts-liberation=* \
+    gstreamer1.0-x=* \
+    libasound2=* \
+    libnspr4=* \
+    libnss3=* \
+    libxss1=* \
+    libxtst6=* \
+    xdg-utils=* \
+    qtdeclarative5-dev=* \
+    fonts-liberation=* \
+    gstreamer1.0-x=* \
+    wkhtmltopdf \
+    libxslt1-dev \
+    libxml2-dev \
+    python-dev \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 RUN npm install -g yarn@latest
 
