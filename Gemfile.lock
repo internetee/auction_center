@@ -295,7 +295,7 @@ GEM
       timeout
     net-smtp (0.4.0.1)
       net-protocol
-    nio4r (2.7.0)
+    nio4r (2.7.4)
     nokogiri (1.16.7-arm64-darwin)
       racc (~> 1.4)
     nokogiri (1.16.7-x86_64-linux)
@@ -344,7 +344,7 @@ GEM
       coderay (~> 1.1)
       method_source (~> 1.0)
     public_suffix (5.0.1)
-    puma (6.4.2)
+    puma (6.4.3)
       nio4r (~> 2.0)
     racc (1.8.1)
     rack (2.2.9)
@@ -578,7 +578,7 @@ DEPENDENCIES
   pg_search
   propshaft
   pry
-  puma (~> 6.4.2)
+  puma (~> 6.4.3)
   rails (>= 6.0.3.5)
   rails-i18n
   recaptcha
