@@ -3,8 +3,6 @@ prepare:
   fetch:
     - "https://raw.githubusercontent.com/internetee/style-guide/master/ruby/.rubocop.yml"
   rubocop:
-    require:
-      - rubocop-rails
 plugins:
   brakeman:
     enabled: true
