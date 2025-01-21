@@ -68,6 +68,7 @@ group :development do
   gem 'rubocop'
   gem 'rubocop-packaging'
   gem 'rubocop-performance', require: false
+  gem 'rubocop-rails', require: false
   gem 'rubocop-rspec'
   gem 'rubocop-shopify'
   gem 'ruby-lsp'
