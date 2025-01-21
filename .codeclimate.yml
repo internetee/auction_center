@@ -1,9 +1,7 @@
 version: "2"
 prepare:
   fetch:
-  - "https://raw.githubusercontent.com/internetee/style-guide/master/.rubocop-ruby.yml"
-  - url: "https://raw.githubusercontent.com/internetee/style-guide/master/.rubocop-rails.yml"
-    path: ".rubocop.yml"
+    - "https://raw.githubusercontent.com/internetee/style-guide/master/ruby/.rubocop.yml"
 plugins:
   brakeman:
     enabled: true
@@ -23,16 +21,14 @@ plugins:
           mass_threshold: 100
   eslint:
     enabled: true
-    channel: eslint-5
   fixme:
     enabled: true
-    checks:
-      TODO:
-        enabled: false
   rubocop:
     enabled: true
     channel: rubocop-1-45
-    config: .rubocop.yml
+    checks:
+      Rubocop/Bundler/OrderedGems:
+        enabled: false
 checks:
   method-lines:
     config:
