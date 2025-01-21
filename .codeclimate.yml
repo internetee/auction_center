@@ -1,8 +1,8 @@
 version: "2"
-# prepare:
-#   fetch:
-#     - "https://raw.githubusercontent.com/internetee/style-guide/master/ruby/.rubocop.yml"
-#   rubocop:
+prepare:
+  fetch:
+    - "https://raw.githubusercontent.com/internetee/style-guide/master/ruby/.rubocop.yml"
+  rubocop:
 plugins:
   brakeman:
     enabled: true
@@ -24,12 +24,12 @@ plugins:
     enabled: true
   fixme:
     enabled: true
-  # rubocop:
-  #   enabled: true
-  #   channel: rubocop-1-57
-  #   checks:
-  #     Rubocop/Bundler/OrderedGems:
-  #       enabled: false
+  rubocop:
+    enabled: true
+    channel: rubocop-1-70
+    checks:
+      Rubocop/Bundler/OrderedGems:
+        enabled: false
 checks:
   method-lines:
     config:
