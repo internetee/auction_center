@@ -1,8 +1,8 @@
 version: "2"
-prepare:
-  fetch:
-    - "https://raw.githubusercontent.com/internetee/style-guide/master/ruby/.rubocop.yml"
-  rubocop:
+# prepare:
+#   fetch:
+#     - "https://raw.githubusercontent.com/internetee/style-guide/master/ruby/.rubocop.yml"
+#   rubocop:
 plugins:
   brakeman:
     enabled: true
