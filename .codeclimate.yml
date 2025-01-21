@@ -26,7 +26,7 @@ plugins:
     enabled: true
   rubocop:
     enabled: true
-    # channel: rubocop-1-45
+    channel: rubocop-1-45
     checks:
       Rubocop/Bundler/OrderedGems:
         enabled: false
