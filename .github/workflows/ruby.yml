@@ -44,6 +44,10 @@ jobs:
           sudo dpkg -i wkhtmltox_0.12.6.1-2.jammy_amd64.deb
         if: github.event_name == 'push'
 
+      - name: Restart rubocop server
+        run: |
+          bundle exec rubocop --start
+
       - name: Set ENV for codeclimate (pull_request)
         run: |
           git fetch --no-tags --prune --depth=1 origin +refs/heads/$GITHUB_HEAD_REF:refs/remotes/origin/$GITHUB_HEAD_REF
