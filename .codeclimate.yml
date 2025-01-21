@@ -31,7 +31,7 @@ plugins:
         enabled: false
   rubocop:
     enabled: true
-    # channel: rubocop-1-56-3
+    channel: rubocop-1-45
     config: .rubocop.yml
 checks:
   method-lines:
