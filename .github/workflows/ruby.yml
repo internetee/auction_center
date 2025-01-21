@@ -61,8 +61,12 @@ jobs:
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         run: |
-          curl -LSs 'https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64' >./cc-test-reporter;
+          rm -rf coverage/
+          rm -f ./cc-test-reporter
+          
+          curl -LSs --fail 'https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64' >./cc-test-reporter;
           chmod +x ./cc-test-reporter
+          ./cc-test-reporter --version
           ./cc-test-reporter before-build
 
       - name: Run Tests
@@ -108,10 +112,11 @@ jobs:
 
     steps:
       - name: Download test coverage reporter
-        run: curl -L $CC_TEST_REPORTER_URL > cc-test-reporter
-
-      - name: Give test coverage reporter executable permissions
-        run: chmod +x cc-test-reporter
+        run: |
+          rm -f cc-test-reporter || true
+          curl -L --fail $CC_TEST_REPORTER_URL > cc-test-reporter
+          chmod +x cc-test-reporter
+          ./cc-test-reporter --version
 
       - uses: actions/download-artifact@v4.1.8
         with:
@@ -120,5 +125,6 @@ jobs:
 
       - name: Aggregate & upload results to Code Climate
         run: |
-          ./cc-test-reporter sum-coverage coverage/codeclimate.*.json
+          rm -f coverage/codeclimate.json || true
+          ./cc-test-reporter sum-coverage coverage/codeclimate.*.json --parts 1
           ./cc-test-reporter upload-coverage
