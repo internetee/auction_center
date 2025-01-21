@@ -2,6 +2,9 @@ version: "2"
 prepare:
   fetch:
     - "https://raw.githubusercontent.com/internetee/style-guide/master/ruby/.rubocop.yml"
+  rubocop:
+    require:
+      - rubocop-rails
 plugins:
   brakeman:
     enabled: true
@@ -25,7 +28,7 @@ plugins:
     enabled: true
   rubocop:
     enabled: true
-    channel: rubocop-1-45
+    channel: rubocop-1-57
     checks:
       Rubocop/Bundler/OrderedGems:
         enabled: false
