@@ -24,12 +24,12 @@ plugins:
     enabled: true
   fixme:
     enabled: true
-  rubocop:
-    enabled: true
-    channel: rubocop-1-57
-    checks:
-      Rubocop/Bundler/OrderedGems:
-        enabled: false
+  # rubocop:
+  #   enabled: true
+  #   channel: rubocop-1-57
+  #   checks:
+  #     Rubocop/Bundler/OrderedGems:
+  #       enabled: false
 checks:
   method-lines:
     config:
