@@ -95,11 +95,12 @@ jobs:
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         run: |
-          rm -rf coverage/
-          rm -f ./cc-test-reporter
+          # rm -rf coverage/
+          # rm -f ./cc-test-reporter
           
           curl -LSs --fail 'https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64' >./cc-test-reporter;
           chmod +x ./cc-test-reporter
+  
           ./cc-test-reporter --version
           ./cc-test-reporter before-build
 
