@@ -37,6 +37,11 @@ module Admin
 
     # GET /admin/auctions/1
     def show
+      Rails.logger.info 'Admin Auctions Controller'
+      Rails.logger.info "Show action called with params: #{params.inspect}"
+      Rails.logger.info "Referrer: #{request.referrer}"
+      Rails.logger.info "User Agent: #{request.user_agent}"
+
       @offers = @auction.offers.order(cents: :desc)
       users = User.search_deposit_participants(params)
       @pagy, @users = pagy(users, items: params[:per_page] ||= 20, link_extra: 'data-turbo-action="advance"')
@@ -80,7 +85,7 @@ module Admin
       auction = Auction.find_by_uuid(params[:auction_uuid])
       users = User.where(id: params[:user_ids])
       users.each do |user|
-        DomainParticipateAuction.create!(user: user, auction: auction)
+        DomainParticipateAuction.create!(user:, auction:)
       end
 
       redirect_to admin_auction_path(auction)
