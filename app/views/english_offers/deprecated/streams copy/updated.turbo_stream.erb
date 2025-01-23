@@ -1,8 +1,0 @@
-<%= turbo_stream.update "offer_#{auction.id}_form",
-html: ApplicationController.render(
-        Modals::ChangeOffer::NumberFormField::Component.new(
-          offer_value: auction.min_bids_step, offer_disabled: auction.finished? ? true : false)
-      )
-                        #  partial: 'english_offers/number_form_field',
-                        #  locals: { offer_value: auction.min_bids_step,
-                        #            offer_disabled: auction.finished? ? true : false } %>
