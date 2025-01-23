@@ -25,6 +25,14 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  rescue_from ActionController::ActionNotFound do |exception|
+    Rails.logger.info 'Something went wrong'
+    Rails.logger.error "Action not found: #{exception.message}"
+    Rails.logger.error "Backtrace: #{exception.backtrace.join("\n")}"
+
+    redirect_to root_path, status: :see_other
+  end
+
   def store_location
     return unless request.referer
 
