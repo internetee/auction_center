@@ -19,7 +19,7 @@ class BillingProfile < ApplicationRecord
   has_many :domain_offer_histories
   has_many :invoices
 
-  scope :with_search_scope, ->(origin) {
+  scope :with_search_scope, lambda { |origin|
     if origin.present?
       joins(:user)
         .includes(:user)
@@ -39,10 +39,12 @@ class BillingProfile < ApplicationRecord
 
   def vat_code_must_be_registered_in_vies
     # Vat code validation only for EU countries
-    vat_rate = Countries.vat_rate_from_alpha2_code(self.country_code)
+    vat_rate = Countries.vat_rate_from_alpha2_code(country_code)
     return if vat_code.blank? || vat_rate == BigDecimal(0)
 
-    errors.add(:vat_code, I18n.t('billing_profiles.vat_validation_error')) unless Valvat.new(self.vat_code).exists?
+    errors.add(:vat_code, I18n.t('billing_profiles.vat_validation_error')) unless Valvat.new(vat_code).exists?
+  rescue Valvat::RateLimitError
+    errors.add(:vat_code, I18n.t('billing_profiles.vat_validation_rate_limit_error'))
   end
 
   def issued_invoices
@@ -67,7 +69,7 @@ class BillingProfile < ApplicationRecord
       # if Time.zone.now.year < 2024
       #   return BigDecimal(OLD_EST_RATE_VAT)
       # else
-      return BigDecimal(Setting.find_by(code: :estonian_vat_rate).retrieve, 2) 
+      return BigDecimal(Setting.find_by(code: :estonian_vat_rate).retrieve, 2)
       # end
     end
 
@@ -77,11 +79,11 @@ class BillingProfile < ApplicationRecord
   end
 
   def self.create_default_for_user(user_id)
-    return if find_by(user_id: user_id)
+    return if find_by(user_id:)
 
     user = User.find(user_id)
 
-    billing_profile = new(user: user, country_code: user.country_code, name: user.display_name)
+    billing_profile = new(user:, country_code: user.country_code, name: user.display_name)
     billing_profile.save!
 
     billing_profile
@@ -116,11 +118,13 @@ class BillingProfile < ApplicationRecord
   private
 
   def update_billing_information_for_invoices
+    return unless name_changed? || street_changed? || city_changed? || postal_code_changed? || country_code_changed?
+
     issued_invoices.update_all(
       billing_name: name,
       billing_address: address,
       billing_vat_code: vat_code,
       billing_alpha_two_country_code: alpha_two_country_code
-    ) if name_changed? || street_changed? || city_changed? || postal_code_changed? || country_code_changed?
+    )
   end
 end

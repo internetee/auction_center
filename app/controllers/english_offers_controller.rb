@@ -56,13 +56,13 @@ class EnglishOffersController < ApplicationController
   # GET /english_offers/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/edit
   def edit
     @auction = @offer.auction
-    redirect_to auction_path(@auction.uuid) and return if update_not_allowed(@auction)
+    redirect_to root_path and return if update_not_allowed(@auction)
   end
 
   # PUT /english_offers/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
   def update
     @auction = Auction.english.with_user_offers(current_user.id).find_by(uuid: @offer.auction.uuid)
-    redirect_to auction_path(@auction.uuid) and return if update_not_allowed(@auction)
+    redirect_to root_path and return if update_not_allowed(@auction)
     inform_invalid_captcha and return unless recaptcha_valid
 
     if update_predicate(@auction)

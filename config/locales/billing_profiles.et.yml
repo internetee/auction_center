@@ -18,6 +18,7 @@ et:
     updated: "Arveldusprofiil edukalt uuendatud!"
     deleted: "Arveldusprofiil edukalt kustutatud!"
     vat_validation_error: "Käibemaksukood ei ole registreeritud või ei ole VIESi kohaselt kehtiv."
+    vat_validation_rate_limit_error: "Käibemaksukoodi valideerimise kiiruse limiit on ületatud."
     vat_code_already_exists: "Käibemaksukood on juba kasutusel."
 
     edit:

@@ -80,7 +80,7 @@ module Admin
       auction = Auction.find_by_uuid(params[:auction_uuid])
       users = User.where(id: params[:user_ids])
       users.each do |user|
-        DomainParticipateAuction.create!(user: user, auction: auction)
+        DomainParticipateAuction.create!(user:, auction:)
       end
 
       redirect_to admin_auction_path(auction)

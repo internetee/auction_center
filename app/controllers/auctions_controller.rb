@@ -8,8 +8,11 @@ class AuctionsController < ApplicationController
   def index
     set_cors_header
     @auctions_list = fetch_auctions_list
-    per_page = params[:per_page] || per_page_count
     @pagy, @auctions = pagy(@auctions_list, items: per_page, link_extra: 'data-turbo-action="advance"')
+  end
+
+  def show
+    redirect_to root_path, status: :moved_permanently
   end
 
   # OPTIONS /auctions
@@ -33,8 +36,12 @@ class AuctionsController < ApplicationController
     params[:sort_by].blank? && params[:sort_direction].blank?
   end
 
+  def per_page
+    params[:per_page] || DEFAULT_PAGE_LIMIT
+  end
+
   def per_page_count
-    count = params[:show_all] == 'true' ? @auctions_list.count : DEFAULT_PAGE_LIMIT
+    count = params[:show_all] == 'true' ? @auctions_list.count : per_page
     count = nil if count.zero?
     count
   end
