@@ -25,8 +25,8 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  rescue_from ActionController::ActionNotFound do |exception|
-    Rails.logger.info 'Something went wrong'
+  def show
+    Rails.logger.info 'Action not found'
     Rails.logger.error "Action not found: #{exception.message}"
     Rails.logger.error "Backtrace: #{exception.backtrace.join("\n")}"
 
