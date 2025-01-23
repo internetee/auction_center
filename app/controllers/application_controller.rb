@@ -25,12 +25,13 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def show
-    Rails.logger.info 'Action not found'
-    Rails.logger.error "Action not found: #{exception.message}"
-    Rails.logger.error "Backtrace: #{exception.backtrace.join("\n")}"
+  def route_not_found
+    Rails.logger.info "Unmatched route caught: #{request.path}"
+    Rails.logger.info "Full URL: #{request.url}"
+    Rails.logger.info "Method: #{request.method}"
+    Rails.logger.info "Headers: #{request.headers.select { |k, _v| k.start_with?('HTTP_') }}"
 
-    redirect_to root_path, status: :see_other
+    redirect_to root_path, status: :moved_permanently
   end
 
   def store_location
