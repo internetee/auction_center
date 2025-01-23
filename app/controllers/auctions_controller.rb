@@ -12,13 +12,6 @@ class AuctionsController < ApplicationController
   end
 
   def show
-    Rails.logger.info 'Auctions Controller'
-    Rails.logger.info "Show action called with params: #{params.inspect}"
-    Rails.logger.info "Referrer: #{request.referrer}"
-    Rails.logger.info "User Agent: #{request.user_agent}"
-
-    @auction = Auction.find_by(uuid: params[:uuid])
-
     redirect_to root_path, status: :moved_permanently
   end
 

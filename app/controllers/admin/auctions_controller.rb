@@ -37,11 +37,6 @@ module Admin
 
     # GET /admin/auctions/1
     def show
-      Rails.logger.info 'Admin Auctions Controller'
-      Rails.logger.info "Show action called with params: #{params.inspect}"
-      Rails.logger.info "Referrer: #{request.referrer}"
-      Rails.logger.info "User Agent: #{request.user_agent}"
-
       @offers = @auction.offers.order(cents: :desc)
       users = User.search_deposit_participants(params)
       @pagy, @users = pagy(users, items: params[:per_page] ||= 20, link_extra: 'data-turbo-action="advance"')

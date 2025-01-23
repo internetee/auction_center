@@ -145,8 +145,4 @@ Rails.application.routes.draw do
 
   mount OkComputer::Engine, at: '/healthcheck', as: :healthcheck
   mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
-
-  get '*unmatched_route', to: 'application#route_not_found', constraints: lambda { |req|
-    req.path.match(/^\/auctions\/[^\/]+$/) && !req.path.match(/\.(json|xml|html)$/)
-  }
 end
