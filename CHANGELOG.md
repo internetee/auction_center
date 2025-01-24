@@ -1,3 +1,6 @@
+23.10.25
+* Fix for action 'show' could not be found for AuctionsController issue https://github.com/internetee/auction_center/issues/1296
+
 18.10.2024
 * Fix for AI sorting https://github.com/internetee/auction_center/pull/1333
 * Localisation and style fixes https://github.com/internetee/auction_center/pull/1323
