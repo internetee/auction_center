@@ -1,4 +1,4 @@
-23.10.25
+23.01.25
 * Fix for action 'show' could not be found for AuctionsController issue https://github.com/internetee/auction_center/issues/1296
 
 18.10.2024
