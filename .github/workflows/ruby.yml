@@ -127,33 +127,33 @@ jobs:
           ./cc-test-reporter format-coverage -t simplecov
           ./cc-test-reporter upload-coverage
 
-  upload_coverage:
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ ubuntu-22.04 ]
-        ruby: [ '3.2.2' ]
-    runs-on: ubuntu-24.04
+  # upload_coverage:
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       os: [ ubuntu-22.04 ]
+  #       ruby: [ '3.2.2' ]
+  #   runs-on: ubuntu-24.04
 
-    env:
-      CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
-      CC_TEST_REPORTER_URL: https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
+  #   env:
+  #     CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+  #     CC_TEST_REPORTER_URL: https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
 
-    needs: test
+  #   needs: test
 
-    steps:
-      - name: Download test coverage reporter
-        run: curl -L $CC_TEST_REPORTER_URL > cc-test-reporter
+  #   steps:
+  #     - name: Download test coverage reporter
+  #       run: curl -L $CC_TEST_REPORTER_URL > cc-test-reporter
 
-      - name: Give test coverage reporter executable permissions
-        run: chmod +x cc-test-reporter
+  #     - name: Give test coverage reporter executable permissions
+  #       run: chmod +x cc-test-reporter
 
-      - uses: actions/download-artifact@v4.1.8
-        with:
-          name: coverage-${{ matrix.ruby }}
-          path: coverage
+  #     - uses: actions/download-artifact@v4.1.8
+  #       with:
+  #         name: coverage-${{ matrix.ruby }}
+  #         path: coverage
 
-      - name: Aggregate & upload results to Code Climate
-        run: |
-          ./cc-test-reporter sum-coverage coverage/codeclimate.*.json
-          ./cc-test-reporter upload-coverage
+  #     - name: Aggregate & upload results to Code Climate
+  #       run: |
+  #         ./cc-test-reporter sum-coverage coverage/codeclimate.*.json
+  #         ./cc-test-reporter upload-coverage
