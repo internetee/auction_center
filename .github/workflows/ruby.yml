@@ -121,6 +121,8 @@ jobs:
 
       - name: Format coverage
         if: always()
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         run: |
           ./cc-test-reporter format-coverage -t simplecov
           ./cc-test-reporter upload-coverage
