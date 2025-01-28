@@ -3,7 +3,7 @@ module HttpRequester
 
   HTTP_METHODS = {
     get: Net::HTTP::Get,
-    post: Net::HTTP::Post,
+    post: Net::HTTP::Post
   }.freeze
 
   HTTP_ERRORS = [
@@ -14,7 +14,7 @@ module HttpRequester
     Net::HTTPBadResponse,
     Net::HTTPHeaderSyntaxError,
     Net::ProtocolError,
-    Timeout::Error,
+    Timeout::Error
   ].freeze
 
   def default_request_response(url:, body:, headers:, type: :post)
@@ -39,7 +39,7 @@ module HttpRequester
   def success_result(response:)
     {
       body: JSON.parse(response.read_body),
-      status: response.code.to_i,
+      status: response.code.to_i
     }
   end
 
@@ -47,7 +47,7 @@ module HttpRequester
     error_code = Rack::Utils::SYMBOL_TO_STATUS_CODE[:service_unavailable]
     {
       body: "Error occured - #{exception.message}",
-      status: error_code,
+      status: error_code
     }
   end
 
@@ -62,10 +62,11 @@ module HttpRequester
   # :nocov:
   def basic_auth_get(url:, username:, password:)
     uri = URI(url)
+    verify_mode = Rails.env.development? || Rails.env.test? ? OpenSSL::SSL::VERIFY_NONE : OpenSSL::SSL::VERIFY_PEER
 
     Net::HTTP.start(uri.host, uri.port,
                     use_ssl: uri.scheme == 'https',
-                    verify_mode: OpenSSL::SSL::VERIFY_NONE) do |http|
+                    verify_mode: verify_mode) do |http|
       request = Net::HTTP::Get.new uri.request_uri
       request.basic_auth username, password
       response = http.request request
@@ -75,4 +76,3 @@ module HttpRequester
   end
   # :nocov:
 end
-

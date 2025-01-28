@@ -1,0 +1,70 @@
+{
+  "ignored_warnings": [
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "22154575021562bcd132103df98e9bf994593bc0c741b9e7f17c12d47222aa26",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/controllers/admin/results_controller.rb",
+      "line": 14,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "Arel.sql(\"#{:BRAKEMAN_SAFE_LITERAL} #{sort_direction}\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Admin::ResultsController",
+        "method": "index"
+      },
+      "user_input": "sort_direction",
+      "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SSL Verification Bypass",
+      "warning_code": 71,
+      "fingerprint": "ac6871aef9413d865621b7b28e29f002af2f895e06d5ab16b530b94e60f86241",
+      "check_name": "SSLVerify",
+      "message": "SSL certificate verification was bypassed",
+      "file": "config/initializers/errbit.rb",
+      "line": 6,
+      "link": "https://brakemanscanner.org/docs/warning_types/ssl_verification_bypass/",
+      "code": "req.verify_mode = OpenSSL::SSL::VERIFY_NONE",
+      "render_path": null,
+      "location": null,
+      "user_input": null,
+      "confidence": "High",
+      "cwe_id": [
+        295
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "b6299ed38c65e0dd1e413c5ecc70312e5621e9c4dffe6c363dcc03f032257adf",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/jobs/active_auctions_ai_sorting_job.rb",
+      "line": 124,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.execute(\"UPDATE auctions\\nSET ai_score = CASE id\\n  #{ai_scores.map do\n \"WHEN #{score[:id]} THEN #{score[:ai_score]}\"\n end.join(\" \")}\\n  END\\nWHERE id IN (#{ai_scores.pluck(:id).join(\",\")})\\n\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "ActiveAuctionsAiSortingJob",
+        "method": "update_auctions_with_ai_scores"
+      },
+      "user_input": "ai_scores.map do\n \"WHEN #{score[:id]} THEN #{score[:ai_score]}\"\n end.join(\" \")",
+      "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    }
+  ],
+  "brakeman_version": "7.0.0"
+}
