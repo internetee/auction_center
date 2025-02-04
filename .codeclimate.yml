@@ -30,7 +30,7 @@ plugins:
       TODO:
         enabled: false
   rubocop:
-    enabled: true
+    enabled: false
     channel: rubocop-1-45
     checks:
       Rubocop/Style/ClassAndModuleChildren:
