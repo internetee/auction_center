@@ -52,10 +52,10 @@ group :development, :test do
   gem 'bundler-audit'
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'pry'
-  # gem 'rubocop'
+  gem 'rubocop', '1.64.1'
   # gem 'rubocop-packaging'
   # gem 'rubocop-performance', require: false
-  # gem 'rubocop-rails', require: false
+  gem 'rubocop-rails', require: false
   # gem 'rubocop-rspec'
   # gem 'rubocop-shopify'
   # gem 'ruby-lsp'
