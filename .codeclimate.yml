@@ -1,0 +1,49 @@
+version: "2"
+prepare:
+  fetch:
+    - "https://raw.githubusercontent.com/internetee/style-guide/master/ruby/.rubocop.yml"
+  rubocop:
+plugins:
+  brakeman:
+    enabled: true
+    checks:
+      mass_assign_permit!:
+        enabled: false
+  bundler-audit:
+    enabled: true
+  duplication:
+    enabled: true
+    config:
+      count_threshold: 3
+      languages:
+        ruby:
+          mass_threshold: 100
+        javascript:
+          mass_threshold: 100
+  eslint:
+    enabled: true
+  fixme:
+    enabled: true
+  rubocop:
+    enabled: true
+    channel: rubocop-1-45
+    checks:
+      Rubocop/Bundler/OrderedGems:
+        enabled: false
+checks:
+  method-lines:
+    config:
+      threshold: 40
+  method-count:
+    config:
+      threshold: 25
+exclude_patterns:
+  - "bin/"
+  - "config/"
+  - "db/"
+  - "lib/"
+  - "vendor/"
+  - "test/"
+  - "karma.conf.js"
+  - "app/packs/"
+  - "CHANGELOG.md"
