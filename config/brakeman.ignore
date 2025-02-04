@@ -1,44 +1,21 @@
 {
   "ignored_warnings": [
     {
-      "warning_type": "SQL Injection",
-      "warning_code": 0,
-      "fingerprint": "22154575021562bcd132103df98e9bf994593bc0c741b9e7f17c12d47222aa26",
-      "check_name": "SQL",
-      "message": "Possible SQL injection",
-      "file": "app/controllers/admin/results_controller.rb",
-      "line": 14,
-      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
-      "code": "Arel.sql(\"#{:BRAKEMAN_SAFE_LITERAL} #{sort_direction}\")",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "Admin::ResultsController",
-        "method": "index"
-      },
-      "user_input": "sort_direction",
-      "confidence": "Medium",
-      "cwe_id": [
-        89
-      ],
-      "note": ""
-    },
-    {
-      "warning_type": "SSL Verification Bypass",
-      "warning_code": 71,
-      "fingerprint": "ac6871aef9413d865621b7b28e29f002af2f895e06d5ab16b530b94e60f86241",
-      "check_name": "SSLVerify",
-      "message": "SSL certificate verification was bypassed",
-      "file": "config/initializers/errbit.rb",
-      "line": 6,
-      "link": "https://brakemanscanner.org/docs/warning_types/ssl_verification_bypass/",
-      "code": "req.verify_mode = OpenSSL::SSL::VERIFY_NONE",
+      "warning_type": "Unmaintained Dependency",
+      "warning_code": 122,
+      "fingerprint": "21ab0fe00fdd5899ffc405cff75aadb91b805ee996a614f7e27b08a287e9062d",
+      "check_name": "EOLRails",
+      "message": "Support for Rails 7.0.8.7 ends on 2025-04-01",
+      "file": "Gemfile.lock",
+      "line": 379,
+      "link": "https://brakemanscanner.org/docs/warning_types/unmaintained_dependency/",
+      "code": null,
       "render_path": null,
       "location": null,
       "user_input": null,
-      "confidence": "High",
+      "confidence": "Weak",
       "cwe_id": [
-        295
+        1104
       ],
       "note": ""
     },

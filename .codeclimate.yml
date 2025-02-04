@@ -30,13 +30,16 @@ plugins:
       TODO:
         enabled: false
   rubocop:
-    enabled: false
-    channel: rubocop-1-45
-    checks:
-      Rubocop/Style/ClassAndModuleChildren:
-        enabled: false
-      Rubocop/Style/Semicolon:
-        enabled: false
+    enabled: true
+    channel: beta
+  # rubocop:
+  #   enabled: false
+  #   channel: rubocop-1-45
+  #   checks:
+  #     Rubocop/Style/ClassAndModuleChildren:
+  #       enabled: false
+  #     Rubocop/Style/Semicolon:
+  #       enabled: false
 checks:
   method-lines:
     config:
