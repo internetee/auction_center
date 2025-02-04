@@ -32,7 +32,8 @@ plugins:
   rubocop:
     enabled: true
     # channel: rubocop-1-56-3
-    config: .rubocop.yml
+    channel: beta
+    # config: .rubocop.yml
 checks:
   method-lines:
     config:
