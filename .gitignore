@@ -60,3 +60,5 @@ app/assets/builds/*
 !/app/assets/builds/.keep
 
 Dockerfile.dev
+
+.idea/

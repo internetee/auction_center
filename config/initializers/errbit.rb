@@ -3,7 +3,7 @@ module Patches
     module SyncSender
       def build_https(uri)
         super.tap do |req|
-          req.verify_mode = OpenSSL::SSL::VERIFY_NONE
+          req.verify_mode = OpenSSL::SSL::VERIFY_PEER
         end
       end
     end
