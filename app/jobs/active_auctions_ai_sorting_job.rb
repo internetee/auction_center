@@ -111,11 +111,22 @@ class ActiveAuctionsAiSortingJob < ApplicationJob
 
   def update_auctions_with_ai_scores(ai_scores)
     ai_scores.each_slice(500) do |batch|
+      # rubocop:disable Rails/SkipsModelValidations
+      # Using update_all for performance reasons as ai_score doesn't require validations
+      # and we need to update large number of records efficiently
       Auction.where(id: batch.pluck(:id))
              .update_all(
-               "ai_score = CASE id #{sanitize_case_statement(batch)} END"
+               sanitize_update_statement(batch)
              )
+      # rubocop:enable Rails/SkipsModelValidations
     end
+  end
+
+  def sanitize_update_statement(batch)
+    # Using sanitize_sql_array to prevent SQL injection
+    ActiveRecord::Base.sanitize_sql_array([
+                                            "ai_score = CASE id #{sanitize_case_statement(batch)} END"
+                                          ])
   end
 
   def sanitize_case_statement(scores)
