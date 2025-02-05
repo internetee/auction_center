@@ -2,14 +2,9 @@ module Admin
   class ResultsController < BaseController
     # GET /admin/results
     def index
-      @allowed_sort_columns = {
-        'created_at' => 'results.created_at',
-        'name' => 'results.name'
-      }
+      order_string = "#{allowed_sort_columns[sort_column]} #{allowed_sort_directions}"
 
-      @allowed_sort_directions = %w[asc desc]
-
-      @results = Result.order(@allowed_sort_columns[sort_column] => sort_direction)
+      @results = result_query.order(Arel.sql(order_string))
       @pagy, @results = pagy(@results, items: params[:per_page] ||= 15, link_extra: 'data-turbo-action="advance"')
 
       @auctions_needing_results = Auction.without_result.search(params)
@@ -38,16 +33,14 @@ module Admin
 
     private
 
-    def sort_column = @allowed_sort_columns.key?(params[:sort]) ? params[:sort] : 'created_at'
-
-    def sort_direction
-      @allowed_sort_directions.include?(params[:direction]&.downcase) ? params[:direction].downcase : 'desc'
-    end
-
     def result_query = Result.includes(:auction, offer: [:billing_profile])
                              .references(:auction, :offer)
                              .search(params)
                              .includes(:user)
+
+    def sort_column = params[:sort_by].presence_in(allowed_sort_columns.keys) || 'auctions.ends_at'
+
+    def allowed_sort_directions = params[:sort_direction].presence_in(%w[asc desc]) || 'desc'
 
     def allowed_sort_columns = {
       'auctions.domain_name' => 'auctions.domain_name',
