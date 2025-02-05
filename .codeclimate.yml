@@ -1,9 +1,9 @@
 version: "2"
-# prepare:
-  # fetch:
-  #   - "https://raw.githubusercontent.com/internetee/style-guide/master/.rubocop-ruby.yml"
-  #   - url: "https://raw.githubusercontent.com/internetee/style-guide/master/.rubocop-rails.yml"
-  #     path: ".rubocop.yml"
+prepare:
+  fetch:
+  - "https://raw.githubusercontent.com/internetee/style-guide/master/.rubocop-ruby.yml"
+  - url: "https://raw.githubusercontent.com/internetee/style-guide/master/.rubocop-rails.yml"
+    path: ".rubocop.yml"
 plugins:
   brakeman:
     enabled: true
@@ -31,15 +31,9 @@ plugins:
         enabled: false
   rubocop:
     enabled: true
+    # channel: rubocop-1-56-3
     channel: beta
-  # rubocop:
-  #   enabled: false
-  #   channel: rubocop-1-45
-  #   checks:
-  #     Rubocop/Style/ClassAndModuleChildren:
-  #       enabled: false
-  #     Rubocop/Style/Semicolon:
-  #       enabled: false
+    # config: .rubocop.yml
 checks:
   method-lines:
     config:
@@ -48,13 +42,12 @@ checks:
     config:
       threshold: 25
 exclude_patterns:
-  - "app/models/"
-  - "app/javascript"
   - "bin/"
   - "config/"
   - "db/"
-  - "test/"
-  - "spec/"
+  - "lib/"
   - "vendor/"
+  - "test/"
+  - "karma.conf.js"
+  - "app/packs/"
   - "CHANGELOG.md"
-  - "config/initializers/errbit.rb"
