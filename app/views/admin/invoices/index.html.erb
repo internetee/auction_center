@@ -46,10 +46,10 @@
           <tr class="invoices-table-row">
             <td><%= link_to invoice.recipient, admin_invoice_path(invoice) %></td>
             <td><%= I18n.l(invoice.due_date) %></td>
-            <td><%= invoice.number %></td>
+            <td><%= invoice&.number || 'N/A' %></td>
             <td><%= invoice.status %></td>
             <td><%= invoice.notes %></td>
-            <td><%= t('offers.price_in_currency', price: invoice.total) %></td>
+            <td><%= t('offers.price_in_currency', price: invoice.total || 0) %></td>
             <td><%= number_to_percentage(invoice.vat_rate * 100, precision: 0) if invoice.paid? %></td>
             <td><%= t('offers.price_in_currency', price: invoice.paid_amount) if invoice.paid? || invoice.partial_payments? %></td>
             <td><%= invoice.paid_with_payment_order&.channel if invoice.paid? || invoice.partial_payments? %></td>

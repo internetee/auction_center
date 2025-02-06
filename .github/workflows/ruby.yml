@@ -2,6 +2,40 @@ name: Github Testing
 on: [push]
 
 jobs:
+  bundle_audit:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.2.2
+          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+      - name: config bundler
+        run:  |
+          bundle config set without 'development staging production'
+          bundle config set deployment '[secure]'
+          bundle env
+          head -n1 $(which bundle)
+      - name: Bundle Audit Check
+        run: bundle exec bundle-audit check --update
+
+  brakeman:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.2.2
+          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+      - name: config bundler
+        run:  |
+          bundle config set without 'development staging production'
+          bundle config set deployment '[secure]'
+          bundle env
+          head -n1 $(which bundle)
+      - name: Run Brakeman
+        run: bundle exec brakeman --quiet --skip-libs --exit-on-warn -i config/brakeman.ignore
+
   test:
     services:
       postgres:
@@ -61,10 +95,10 @@ jobs:
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         run: |
-          curl -LSs 'https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64' >./cc-test-reporter;
+          curl -LSs --fail 'https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64' >./cc-test-reporter;
           chmod +x ./cc-test-reporter
           ./cc-test-reporter before-build
-
+          
       - name: Run Tests
         env:
           PG_DATABASE: postgres
@@ -84,41 +118,11 @@ jobs:
           bundle exec rake data:migrate
           bundle exec rails assets:precompile
           bundle exec rails test test/*
-      - name: Save coverage
-        run: ./cc-test-reporter format-coverage --output coverage/codeclimate.${{ matrix.ruby }}.json
 
-      - uses: actions/upload-artifact@v4.6.0
-        with:
-          name: coverage-${{ matrix.ruby }}
-          path: coverage/codeclimate.${{ matrix.ruby }}.json
-
-  upload_coverage:
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ ubuntu-22.04 ]
-        ruby: [ '3.2.2' ]
-    runs-on: ubuntu-24.04
-
-    env:
-      CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
-      CC_TEST_REPORTER_URL: https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
-
-    needs: test
-
-    steps:
-      - name: Download test coverage reporter
-        run: curl -L $CC_TEST_REPORTER_URL > cc-test-reporter
-
-      - name: Give test coverage reporter executable permissions
-        run: chmod +x cc-test-reporter
-
-      - uses: actions/download-artifact@v4.1.8
-        with:
-          name: coverage-${{ matrix.ruby }}
-          path: coverage
-
-      - name: Aggregate & upload results to Code Climate
+      - name: Format coverage
+        if: always()
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         run: |
-          ./cc-test-reporter sum-coverage coverage/codeclimate.*.json
+          ./cc-test-reporter format-coverage -t simplecov
           ./cc-test-reporter upload-coverage

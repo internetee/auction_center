@@ -110,18 +110,33 @@ class ActiveAuctionsAiSortingJob < ApplicationJob
   end
 
   def update_auctions_with_ai_scores(ai_scores)
-    update_values = ai_scores.map { |score| "WHEN #{score[:id]} THEN #{score[:ai_score]}" }.join(' ')
-    update_ids = ai_scores.pluck(:id).join(',')
+    ai_scores.each_slice(500) do |batch|
+      # rubocop:disable Rails/SkipsModelValidations
+      # Using update_all for performance reasons as ai_score doesn't require validations
+      # and we need to update large number of records efficiently
+      Auction.where(id: batch.pluck(:id))
+             .update_all(
+               sanitize_update_statement(batch)
+             )
+      # rubocop:enable Rails/SkipsModelValidations
+    end
+  end
 
-    sql_query = <<~SQL
-      UPDATE auctions
-      SET ai_score = CASE id
-        #{update_values}
-        END
-      WHERE id IN (#{update_ids})
-    SQL
+  def sanitize_update_statement(batch)
+    # Using sanitize_sql_array to prevent SQL injection
+    ActiveRecord::Base.sanitize_sql_array([
+                                            "ai_score = CASE id #{sanitize_case_statement(batch)} END"
+                                          ])
+  end
 
-    ActiveRecord::Base.connection.execute(sql_query)
+  def sanitize_case_statement(scores)
+    scores.map do |score|
+      ActiveRecord::Base.sanitize_sql_array([
+                                              'WHEN ? THEN ?',
+                                              score[:id],
+                                              score[:ai_score]
+                                            ])
+    end.join(' ')
   end
 
   def system_message
