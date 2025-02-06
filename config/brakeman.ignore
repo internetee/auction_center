@@ -18,29 +18,6 @@
         1104
       ],
       "note": ""
-    },
-    {
-      "warning_type": "SQL Injection",
-      "warning_code": 0,
-      "fingerprint": "ba71521067c8bd704595559c1478a1dcc10d03a0693de4f975941c4c6e8132c7",
-      "check_name": "SQL",
-      "message": "Possible SQL injection",
-      "file": "app/controllers/admin/results_controller.rb",
-      "line": 7,
-      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
-      "code": "Arel.sql(\"#{allowed_sort_columns[sort_column]} #{allowed_sort_directions}\")",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "Admin::ResultsController",
-        "method": "index"
-      },
-      "user_input": "allowed_sort_columns[sort_column]",
-      "confidence": "Medium",
-      "cwe_id": [
-        89
-      ],
-      "note": ""
     }
   ],
   "brakeman_version": "7.0.0"

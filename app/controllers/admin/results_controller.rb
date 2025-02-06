@@ -2,9 +2,7 @@ module Admin
   class ResultsController < BaseController
     # GET /admin/results
     def index
-      order_string = "#{allowed_sort_columns[sort_column]} #{allowed_sort_directions}"
-
-      @results = result_query.order(Arel.sql(order_string))
+      @results = result_query.order(sort_params)
       @pagy, @results = pagy(@results, items: params[:per_page] ||= 15, link_extra: 'data-turbo-action="advance"')
 
       @auctions_needing_results = Auction.without_result.search(params)
@@ -32,6 +30,10 @@ module Admin
     end
 
     private
+
+    def sort_params
+      { allowed_sort_columns[sort_column] => allowed_sort_directions }
+    end
 
     def result_query = Result.includes(:auction, offer: [:billing_profile])
                              .references(:auction, :offer)
