@@ -3,7 +3,7 @@ on: [push]
 
 jobs:
   bundle_audit:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
@@ -20,7 +20,7 @@ jobs:
         run: bundle exec bundle-audit check --update
 
   brakeman:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
