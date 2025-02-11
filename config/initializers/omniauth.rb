@@ -19,11 +19,12 @@ auth_endpoint = AuctionCenter::Application.config.customization.dig(:tara, :auth
 token_endpoint = AuctionCenter::Application.config.customization.dig(:tara, :token_endpoint)
 jwks_uri = AuctionCenter::Application.config.customization.dig(:tara, :jwks_uri)
 discovery = AuctionCenter::Application.config.customization.dig(:tara, :discovery)
+scope = AuctionCenter::Application.config.customization.dig(:tara, :scope)
 
 Rails.application.config.middleware.use OmniAuth::Builder do
   provider "tara", {
     name: 'tara',
-    scope: ['openid'],
+    scope: scope || ['openid'],
     state: Proc.new{ SecureRandom.hex(10) },
     client_signing_alg: :RS256,
     client_jwk_signing_key: signing_keys,
