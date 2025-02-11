@@ -15,6 +15,10 @@ host = AuctionCenter::Application.config.customization.dig(:tara, :host)
 identifier = AuctionCenter::Application.config.customization.dig(:tara, :identifier)
 secret = AuctionCenter::Application.config.customization.dig(:tara, :secret)
 redirect_uri = AuctionCenter::Application.config.customization.dig(:tara, :redirect_uri)
+auth_endpoint = AuctionCenter::Application.config.customization.dig(:tara, :authorization_endpoint)
+token_endpoint = AuctionCenter::Application.config.customization.dig(:tara, :token_endpoint)
+jwks_uri = AuctionCenter::Application.config.customization.dig(:tara, :jwks_uri)
+discovery = AuctionCenter::Application.config.customization.dig(:tara, :discovery)
 
 Rails.application.config.middleware.use OmniAuth::Builder do
   provider "tara", {
@@ -26,15 +30,16 @@ Rails.application.config.middleware.use OmniAuth::Builder do
     send_scope_to_token_endpoint: false,
     send_nonce: true,
     issuer: issuer,
+    discovery: discovery,
 
     client_options: {
       scheme: 'https',
       host: host,
 
-      authorization_endpoint: '/oidc/authorize',
-      token_endpoint: '/oidc/token',
+      authorization_endpoint: auth_endpoint || '/oidc/authorize',
+      token_endpoint: token_endpoint || '/oidc/token',
       userinfo_endpoint: nil, # Not implemented
-      jwks_uri: '/oidc/jwks',
+      jwks_uri: jwks_uri || '/oidc/jwks',
 
       # Auction
       identifier: identifier,
