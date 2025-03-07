@@ -1,8 +1,7 @@
 module Api
   module V1
     module Profiles
-      class PasswordsController < ApplicationController
-        before_action :authenticate_user!
+      class PasswordsController < BaseController
         respond_to :json
 
         skip_before_action :verify_authenticity_token

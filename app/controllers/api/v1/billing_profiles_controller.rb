@@ -1,7 +1,6 @@
 module Api
   module V1
-    class BillingProfilesController < ApplicationController
-      before_action :authenticate_user!
+    class BillingProfilesController < BaseController
       respond_to :json
 
       skip_before_action :verify_authenticity_token

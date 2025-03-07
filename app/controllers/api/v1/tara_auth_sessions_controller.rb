@@ -1,8 +1,8 @@
 module Api
   module V1
-    class TaraAuthSessionsController < ApplicationController
+    class TaraAuthSessionsController < BaseController
       respond_to :json
-
+      skip_before_action :check_for_authentication
       skip_before_action :verify_authenticity_token
 
       def create
