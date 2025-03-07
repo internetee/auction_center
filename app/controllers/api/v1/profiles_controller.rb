@@ -1,7 +1,6 @@
 module Api
   module V1
-    class ProfilesController < ApplicationController
-      before_action :authenticate_user!, only: %i[update]
+    class ProfilesController < BaseController
       respond_to :json
 
       skip_before_action :verify_authenticity_token
