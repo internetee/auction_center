@@ -1,7 +1,6 @@
 module Api
   module V1
-    class AuctionsController < ApplicationController
-      before_action :authenticate_user!
+    class AuctionsController < BaseController
       respond_to :json
 
       skip_before_action :verify_authenticity_token
@@ -13,9 +12,9 @@ module Api
         billing_profiles = BillingProfile.accessible_by(current_ability).where(user_id: current_user.id)
 
         render json: {
-          offer: offer,
-          autobider: autobider,
-          billing_profiles: billing_profiles
+          offer:,
+          autobider:,
+          billing_profiles:
         }, status: :ok
       end
     end

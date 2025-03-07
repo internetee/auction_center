@@ -1,7 +1,6 @@
 module Api
   module V1
-    class InvoicesController < ApplicationController
-      before_action :authenticate_user!
+    class InvoicesController < BaseController
       respond_to :json
 
       skip_before_action :verify_authenticity_token
