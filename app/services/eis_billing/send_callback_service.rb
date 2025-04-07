@@ -8,7 +8,7 @@ module EisBilling
     end
 
     def self.call(reference_number:)
-      new(reference_number: reference_number).call
+      new(reference_number:).call
     end
 
     def call
@@ -22,6 +22,9 @@ module EisBilling
     end
 
     def billing_callback_url
+      Rails.logger.info '------ callback ---- reference_number'
+      Rails.logger.info "------ callback ---- reference_number: #{reference_number}"
+      Rails.logger.info '------ callback ---- reference_number'
       "/api/v1/callback_handler/callback?payment_reference=#{reference_number}"
     end
   end
