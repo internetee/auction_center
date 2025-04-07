@@ -32,6 +32,20 @@ module Api
         }
       end
 
+      def one_off_payment
+        render json: { errors: 'Auction not found' } and return unless @auction
+
+        response = EisBilling::OneoffService.call(invoice_number: @invoice.number.to_s,
+                                                  customer_url: mobile_payments_deposit_callback_url,
+                                                  amount: params[:amount])
+
+        if response.result?
+          render json: { oneoff_redirect_link: response.instance['oneoff_redirect_link'] }
+        else
+          render json: { errors: response.errors }
+        end
+      end
+
       def pay_deposit
         render json: { errors: 'Auction not found' } and return unless @auction
 
