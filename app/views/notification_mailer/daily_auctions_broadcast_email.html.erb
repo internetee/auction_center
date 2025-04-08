@@ -8,7 +8,7 @@
     <tbody>
         <% @auctions.each do |auction| %>
             <tr>
-                <td><%= auction.domain_name %></td>
+                <td><%= link_to auction.domain_name, "#{root_url}/auctions?type=all&domain_name=#{auction.domain_name}" %></td>
                 <td><%= auction.ends_at %></td>
             </tr>
         <% end %>
