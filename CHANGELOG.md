@@ -1,4 +1,7 @@
-23.01.25
+10.04.2025
+* Fixed detailed result page https://github.com/internetee/auction_center/pull/1369
+
+23.01.2025
 * Fix for action 'show' could not be found for AuctionsController issue https://github.com/internetee/auction_center/issues/1296
 
 18.10.2024
