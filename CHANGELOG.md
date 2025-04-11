@@ -1,3 +1,6 @@
+11.04.2025
+* Fixed internal error on invoices view https://github.com/internetee/auction_center/pull/1371
+
 10.04.2025
 * Fixed detailed result page https://github.com/internetee/auction_center/pull/1369
 
