@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 ruby:3.2.2-bullseye
+FROM ruby:3.2.2-bullseye
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 

@@ -1,6 +1,29 @@
 {
   "ignored_warnings": [
     {
+      "warning_type": "HTTP Verb Confusion",
+      "warning_code": 118,
+      "fingerprint": "18f43a662d06cf9cff347e48fb768f135e6e0a8a508e3976eede7dbeb05e8e3d",
+      "check_name": "VerbConfusion",
+      "message": "Potential HTTP verb confusion. `HEAD` is routed like `GET` but `request.get?` will return `false`",
+      "file": "app/controllers/application_controller.rb",
+      "line": 29,
+      "link": "https://brakemanscanner.org/docs/warning_types/http_verb_confusion/",
+      "code": "request.get? ? (request.fullpath) : (request.referer)",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "ApplicationController",
+        "method": "store_location"
+      },
+      "user_input": "request.get?",
+      "confidence": "Weak",
+      "cwe_id": [
+        352
+      ],
+      "note": ""
+    },
+    {
       "warning_type": "Unmaintained Dependency",
       "warning_code": 120,
       "fingerprint": "d84924377155b41e094acae7404ec2e521629d86f97b0ff628e3d1b263f8101c",
@@ -17,7 +40,7 @@
       "cwe_id": [
         1104
       ],
-      "note": ""
+      "note": "Will update as soon as possible"
     }
   ],
   "brakeman_version": "7.0.0"

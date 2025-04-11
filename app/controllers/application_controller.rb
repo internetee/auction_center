@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   helper_method :turbo_frame_request?
 
   protect_from_forgery with: :exception
-  before_action :set_locale, :clear_flash
+  before_action :set_locale, :clear_flash, :store_user_location!, if: :storable_location?
   before_action :notifications_for_header
 
   content_security_policy do |policy|
@@ -26,9 +26,11 @@ class ApplicationController < ActionController::Base
   end
 
   def store_location
-    return unless request.referer
-
-    session[:return_to] = request.referer.split('?').first
+    session[:return_to] = if request.get?
+                            request.fullpath
+                          else
+                            request.referer
+                          end
   end
 
   # If needed, add updated_by to the params hash. Updated by takes format of "123 - User Surname"
@@ -42,7 +44,9 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def after_sign_in_path_for(_resource) = root_path
+  def after_sign_in_path_for(resource_or_scope)
+    stored_location_for(resource_or_scope) || root_path
+  end
 
   def notifications_for_header
     # don't change the name, it's used in the header and can be conflict with notification variable in notifications page
@@ -73,6 +77,7 @@ class ApplicationController < ActionController::Base
   def authenticate_user!
     return if user_signed_in?
 
+    store_location
     sign_out @user
 
     flash[:alert] = t('devise.failure.unauthenticated')
@@ -80,7 +85,15 @@ class ApplicationController < ActionController::Base
     if turbo_frame_request?
       render turbo_stream: turbo_stream.action(:redirect, root_path)
     else
-      redirect_to root_path
+      redirect_to new_user_session_path
     end
+  end
+
+  def storable_location?
+    request.get? && is_navigational_format? && !devise_controller? && !request.xhr?
+  end
+
+  def store_user_location!
+    store_location_for(:user, request.fullpath)
   end
 end
