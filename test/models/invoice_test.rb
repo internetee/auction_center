@@ -282,7 +282,8 @@ class InvoiceTest < ActiveSupport::TestCase
 
   def test_if_price_is_nil_total_should_be_0
     invoice = prefill_invoice
-    invoice.price = nil
+    invoice.cents = nil
+    invoice.vat_rate = nil
     assert_equal 0, invoice.total.to_f
   end
 
