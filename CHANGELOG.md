@@ -1,4 +1,5 @@
 11.04.2025
+* Daily auction list email is now linked to the auctions in the portal https://github.com/internetee/auction_center/issues/1368
 * Fixed internal error on invoices view https://github.com/internetee/auction_center/pull/1371
 
 10.04.2025
