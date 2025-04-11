@@ -9,9 +9,10 @@ module Api
         @autobider = Autobider.find_by(user_id: current_user.id, id: strong_params[:id])
 
         if @autobider.nil?
-          @autobider = Autobider.new(strong_params.merge(user: current_user))
+          @autobider = Autobider.new(strong_params.merge(user: current_user, enable: true))
         else
           @autobider.price = strong_params[:price]
+          @autobider.enable = true
         end
 
         if @autobider.save

@@ -27,7 +27,6 @@ module Auctions
                         locals: { auction:, user:, updated: participants.include?(user) }
       end
 
-
       auction_json = {
         domain_name: auction.domain_name,
         starts_at: auction.starts_at,
@@ -35,6 +34,7 @@ module Auctions
         id: auction.uuid,
         highest_bid: auction.currently_winning_offer&.price.to_f,
         highest_bidder: auction.currently_winning_offer&.username,
+        highest_bidder_uuid: auction.currently_winning_offer&.user&.uuid,
         min_bids_step: auction.min_bids_step,
         auction_type: auction&.platform,
         enable_deposit: auction.enable_deposit,
