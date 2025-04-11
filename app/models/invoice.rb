@@ -176,6 +176,10 @@ class Invoice < ApplicationRecord
   end
 
   def total
+    return Money.new(0, auction_currency) if price.nil?
+
+    vat_rate = assign_vat_rate if vat_rate.nil?
+
     total_amount = price * (1 + vat_rate)
     total_amount -= deposit if result.auction.enable_deposit?
 

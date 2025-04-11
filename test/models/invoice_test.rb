@@ -280,6 +280,13 @@ class InvoiceTest < ActiveSupport::TestCase
     assert_equal @payable_invoice.total.to_f, 12.1
   end
 
+  def test_if_price_is_nil_total_should_be_0
+    invoice = prefill_invoice
+    invoice.cents = nil
+    invoice.vat_rate = nil
+    assert_equal 0, invoice.total.to_f
+  end
+
   def invoices_total(invoices)
     invoices.map(&:total)
             .reduce(:+)
