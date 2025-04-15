@@ -45,7 +45,7 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource_or_scope)
-    stored_location_for(resource_or_scope) || root_path
+    request.env['omniauth.origin'] || stored_location_for(resource_or_scope) || root_path
   end
 
   def notifications_for_header
@@ -77,7 +77,9 @@ class ApplicationController < ActionController::Base
   def authenticate_user!
     return if user_signed_in?
 
-    store_location
+    store_location_for(:user, request.fullpath) if request.get?
+    store_location_for(:user, request.referer) unless request.get?
+
     sign_out @user
 
     flash[:alert] = t('devise.failure.unauthenticated')
@@ -90,7 +92,7 @@ class ApplicationController < ActionController::Base
   end
 
   def storable_location?
-    request.get? && is_navigational_format? && !devise_controller? && !request.xhr?
+    request.get? && is_navigational_format? && !devise_controller? && !request.xhr? && !request.path.starts_with?('/auth/')
   end
 
   def store_user_location!

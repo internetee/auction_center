@@ -7,7 +7,7 @@ end
 
 OmniAuth.config.logger = Rails.logger
 # Block GET requests to avoid exposing self to CVE-2015-9284
-OmniAuth.config.allowed_request_methods = [:post]
+OmniAuth.config.allowed_request_methods = [:get, :post]
 
 # signing_keys = AuctionCenter::Application.config.customization.dig(:tara, :keys).to_json
 # signing_keys = AuctionCenter::Application.config.customization.dig(:tara, :tara_keys).to_json
