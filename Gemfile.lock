@@ -316,7 +316,7 @@ GEM
     noticed (1.6.3)
       http (>= 4.0.0)
       rails (>= 5.2.0)
-    okcomputer (1.18.4)
+    okcomputer (1.19.0)
     omniauth (2.1.1)
       hashie (>= 3.4.6)
       rack (>= 2.2.3)
@@ -585,7 +585,7 @@ DEPENDENCIES
   mimemagic (~> 0.4.3)
   money
   noticed (~> 1.6)
-  okcomputer (~> 1.18.4)
+  okcomputer (~> 1.19.0)
   omniauth-rails_csrf_protection
   omniauth-tara!
   pagy (~> 9.0)
