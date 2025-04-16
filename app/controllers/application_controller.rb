@@ -77,8 +77,8 @@ class ApplicationController < ActionController::Base
   def authenticate_user!
     return if user_signed_in?
 
-    store_location_for(:user, request.fullpath) if request.get?
-    store_location_for(:user, request.referer) unless request.get?
+    store_location_for(:user, request.fullpath) if request.get? || request.head?
+    store_location_for(:user, request.referer) unless request.get? || request.head?
 
     sign_out @user
 
@@ -92,7 +92,10 @@ class ApplicationController < ActionController::Base
   end
 
   def storable_location?
-    request.get? && is_navigational_format? && !devise_controller? && !request.xhr? && !request.path.starts_with?('/auth/')
+    request.get? && is_navigational_format? &&
+      !devise_controller? &&
+      !request.xhr? &&
+      !request.path.starts_with?('/auth/')
   end
 
   def store_user_location!
