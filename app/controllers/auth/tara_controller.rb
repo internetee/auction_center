@@ -6,14 +6,18 @@ module Auth
     end
 
     def callback
+      intended_redirect_path = stored_location_for(:user) || root_path
       session[:omniauth_hash] = user_hash.delete_if { |key, _| key == 'credentials' }
-
       @user = User.from_omniauth(user_hash)
 
-      return unless @user.persisted?
+      unless @user.persisted?
+        render :callback
+        return
+      end
 
       sign_in(User, @user)
-      redirect_to user_path(@user.uuid), notice: t('devise.sessions.signed_in')
+
+      redirect_to intended_redirect_path, notice: t('devise.sessions.signed_in')
     end
 
     def create
@@ -25,7 +29,7 @@ module Auth
         if @user.save
           format.html do
             sign_in(User, @user)
-            redirect_to user_path(@user.uuid), notice: t(:created)
+            redirect_to tara_after_sign_in_path_for(@user), notice: t(:created)
           end
         else
           format.html { render :callback }
@@ -38,6 +42,14 @@ module Auth
     end
 
     private
+
+    def tara_after_sign_in_path_for(resource)
+      # Mimic ApplicationController#after_sign_in_path_for logic
+      origin_path = request.env['omniauth.origin']
+      stored_path = stored_location_for(resource) # resource is typically :user
+
+      origin_path || stored_path || root_path
+    end
 
     def create_params
       params.require(:user)

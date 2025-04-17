@@ -1,5 +1,5 @@
 class AuctionsController < ApplicationController
-  skip_before_action :verify_authenticity_token, only: [:cors_preflight_check]
+  # skip_before_action :verify_authenticity_token, only: [:cors_preflight_check]
   before_action :authorize_user
 
   DEFAULT_PAGE_LIMIT = 15
