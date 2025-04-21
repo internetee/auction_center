@@ -595,7 +595,7 @@ DEPENDENCIES
   propshaft
   pry
   puma (~> 6.6.0)
-  rails (>= 6.0.3.5)
+  rails (~> 7.0.0)
   rails-i18n
   recaptcha
   redis (~> 5.0)
