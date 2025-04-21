@@ -8,7 +8,7 @@ module EisBilling
     end
 
     def self.call(reference_number:)
-      new(reference_number: reference_number).call
+      new(reference_number:).call
     end
 
     def call
