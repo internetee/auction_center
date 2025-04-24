@@ -11,6 +11,15 @@ if ENV['COVERAGE']
     
     # Убедимся, что файлы сохраняются в правильном месте
     SimpleCov.coverage_dir 'coverage'
+    
+    # Выводим сообщение о том, что SimpleCov запущен
+    puts "SimpleCov started with rails profile and output to #{SimpleCov.coverage_dir}"
+  end
+  
+  # При завершении работы программы проверяем, что файлы созданы
+  at_exit do
+    puts "SimpleCov finished. Output files:"
+    puts `ls -la coverage/ 2>/dev/null || echo "No coverage directory found"`
   end
 end
 
