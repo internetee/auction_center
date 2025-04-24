@@ -35,7 +35,11 @@ class ActiveSupport::TestCase
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
   fixtures :all
 
-  parallelize(workers: 4)
+  # Отключаем параллельный запуск тестов при измерении покрытия кода,
+  # так как SimpleCov не может правильно объединить результаты из разных процессов
+  unless ENV['COVERAGE']
+    parallelize(workers: 4)
+  end
 
   # Add more helper methods to be used by all tests here...
   def clear_email_deliveries
