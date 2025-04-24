@@ -3,7 +3,6 @@ if ENV['COVERAGE']
   require 'simplecov-json'
   require 'simplecov-lcov'
   
-  # Настраиваем lcov для совместимости с CodeClimate
   SimpleCov::Formatter::LcovFormatter.config do |c|
     c.report_with_single_file = true
     c.single_report_path = 'coverage/lcov.info'
@@ -11,21 +10,17 @@ if ENV['COVERAGE']
   
   SimpleCov.command_name 'test'
   SimpleCov.start 'rails' do
-    # Форматируем результаты для CodeClimate, включая lcov формат
     SimpleCov.formatters = SimpleCov::Formatter::MultiFormatter.new([
       SimpleCov::Formatter::HTMLFormatter,
       SimpleCov::Formatter::JSONFormatter,
       SimpleCov::Formatter::LcovFormatter
     ])
     
-    # Убедимся, что файлы сохраняются в правильном месте
     SimpleCov.coverage_dir 'coverage'
     
-    # Выводим сообщение о том, что SimpleCov запущен
     puts "SimpleCov started with rails profile and output to #{SimpleCov.coverage_dir}"
   end
   
-  # При завершении работы программы проверяем, что файлы созданы
   at_exit do
     puts "SimpleCov finished. Output files:"
     puts `ls -la coverage/ 2>/dev/null || echo "No coverage directory found"`
@@ -53,13 +48,12 @@ class ActiveSupport::TestCase
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
   fixtures :all
 
-  # Отключаем параллельный запуск тестов при измерении покрытия кода,
-  # так как SimpleCov не может правильно объединить результаты из разных процессов
+  Minitest::Test.i_suck_and_my_tests_are_order_dependent!
+
   unless ENV['COVERAGE']
     parallelize(workers: 4)
   end
 
-  # Add more helper methods to be used by all tests here...
   def clear_email_deliveries
     ActionMailer::Base.deliveries.clear
   end

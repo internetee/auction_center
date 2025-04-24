@@ -1,9 +1,15 @@
 require 'test_helper'
 
 class DomainRegistrationReminderJobTest < ActiveJob::TestCase
+  self.use_transactional_tests = false
+  
   def setup
     super
-
+    
+    # Сброс соединений с базой данных для предотвращения проблем с транзакциями
+    ActiveRecord::Base.connection_pool.disconnect!
+    ActiveRecord::Base.establish_connection
+    
     @result = results(:with_invoice)
     @result.update!(status: 'payment_received')
     clear_email_deliveries
@@ -11,7 +17,14 @@ class DomainRegistrationReminderJobTest < ActiveJob::TestCase
 
   def teardown
     super
-
+    
+    # Очистка базы данных после тестов для предотвращения конфликтов
+    ActiveRecord::Base.connection.execute("ROLLBACK;") rescue nil
+    
+    # Сброс соединений с базой данных
+    ActiveRecord::Base.connection_pool.disconnect!
+    ActiveRecord::Base.establish_connection
+    
     travel_back
     clear_email_deliveries
   end
