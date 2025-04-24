@@ -110,6 +110,8 @@ jobs:
         run: |
           cp config/database.yml.sample config/database.yml
           cp config/customization.yml.sample config/customization.yml
+          gem install prism -v '>= 0.24.0'
+          bundle install
           yarn install --check-files
           bundle exec rake db:setup
           bundle exec rake data:migrate

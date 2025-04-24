@@ -48,6 +48,7 @@ gem 'webpush'
 gem 'csv'
 gem 'mutex_m'
 gem 'nokogiri', '>= 1.18.8'
+gem 'prism', '>= 0.24.0'
 
 group :development, :test do
   gem 'brakeman'

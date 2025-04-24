@@ -365,6 +365,7 @@ GEM
       prettyprint
     prettier_print (1.2.1)
     prettyprint (0.2.0)
+    prism (1.4.0)
     propshaft (0.7.0)
       actionpack (>= 7.0.0)
       activesupport (>= 7.0.0)
@@ -629,6 +630,7 @@ DEPENDENCIES
   pdfkit
   pg (>= 0.18, < 2.0)
   pg_search
+  prism (>= 0.24.0)
   propshaft
   pry
   puma (~> 6.6.0)
