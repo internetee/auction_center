@@ -1,12 +1,21 @@
 if ENV['COVERAGE']
   require 'simplecov'
   require 'simplecov-json'
+  require 'simplecov-lcov'
+  
+  # Настраиваем lcov для совместимости с CodeClimate
+  SimpleCov::Formatter::LcovFormatter.config do |c|
+    c.report_with_single_file = true
+    c.single_report_path = 'coverage/lcov.info'
+  end
+  
   SimpleCov.command_name 'test'
   SimpleCov.start 'rails' do
-    # Форматируем результаты для CodeClimate
+    # Форматируем результаты для CodeClimate, включая lcov формат
     SimpleCov.formatters = SimpleCov::Formatter::MultiFormatter.new([
       SimpleCov::Formatter::HTMLFormatter,
-      SimpleCov::Formatter::JSONFormatter
+      SimpleCov::Formatter::JSONFormatter,
+      SimpleCov::Formatter::LcovFormatter
     ])
     
     # Убедимся, что файлы сохраняются в правильном месте

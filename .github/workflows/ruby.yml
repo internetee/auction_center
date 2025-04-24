@@ -126,7 +126,10 @@ jobs:
           echo "Listing current directory: $(ls -la)"
           echo "Listing coverage directory:"
           ls -la coverage/ || echo "Coverage directory does not exist"
-          if [ -f "coverage/.resultset.json" ]; then
+          if [ -f "coverage/lcov.info" ]; then
+            echo "Found lcov.info, formatting coverage"
+            ./cc-test-reporter format-coverage -t lcov -o coverage/codeclimate.json coverage/lcov.info
+          elif [ -f "coverage/.resultset.json" ]; then
             echo "Found .resultset.json, formatting coverage"
             ./cc-test-reporter format-coverage -t simplecov -o coverage/codeclimate.json coverage/.resultset.json
           elif [ -f "coverage/coverage.json" ]; then

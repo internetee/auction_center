@@ -85,6 +85,7 @@ group :test do
   # gem 'selenium-webdriver'
   gem 'simplecov', require: false
   gem 'simplecov-json', require: false
+  gem 'simplecov-lcov', require: false
   gem 'spy'
   gem 'webmock'
 end

@@ -507,6 +507,7 @@ GEM
     simplecov-json (0.2.3)
       json
       simplecov
+    simplecov-lcov (0.8.0)
     simplecov_json_formatter (0.1.4)
     simpleidn (0.2.1)
       unf (~> 0.1.4)
@@ -649,6 +650,7 @@ DEPENDENCIES
   scenic
   simplecov
   simplecov-json
+  simplecov-lcov
   simpleidn
   spy
   turbo-rails
