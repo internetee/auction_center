@@ -25,7 +25,10 @@ class AuctionDataTest < ActiveSupport::TestCase
       mock.expect(:average_offers, [])
 
       report = StatisticsReport::AuctionData.new(start_date: @start_date, end_date: @end_date)
-      report.gather_data
+      result = report.gather_data
+      
+      assert_equal({}, result)
+      assert_mock(mock)
     end
   end
 end

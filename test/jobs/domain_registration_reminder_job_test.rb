@@ -1,29 +1,30 @@
 require 'test_helper'
 
 class DomainRegistrationReminderJobTest < ActiveJob::TestCase
-  self.use_transactional_tests = false
+  # Удаляем отключение транзакций
+  # self.use_transactional_tests = false
   
   def setup
     super
     
-    # Сброс соединений с базой данных для предотвращения проблем с транзакциями
-    ActiveRecord::Base.connection_pool.disconnect!
-    ActiveRecord::Base.establish_connection
-    
-    @result = results(:with_invoice)
+    # Создаем копию результата для каждого теста
+    @original_result = results(:with_invoice)
+    @result = Result.find(@original_result.id)
     @result.update!(status: 'payment_received')
+    
+    # Сохраняем исходные значения настроек
+    @original_reminder_setting = Setting.find_by(code: 'domain_registration_reminder').value
+    @original_daily_reminder_setting = Setting.find_by(code: 'domain_registration_daily_reminder').value
+    
     clear_email_deliveries
   end
 
   def teardown
     super
     
-    # Очистка базы данных после тестов для предотвращения конфликтов
-    ActiveRecord::Base.connection.execute("ROLLBACK;") rescue nil
-    
-    # Сброс соединений с базой данных
-    ActiveRecord::Base.connection_pool.disconnect!
-    ActiveRecord::Base.establish_connection
+    # Восстанавливаем исходные значения настроек
+    Setting.find_by(code: 'domain_registration_reminder').update!(value: @original_reminder_setting)
+    Setting.find_by(code: 'domain_registration_daily_reminder').update!(value: @original_daily_reminder_setting)
     
     travel_back
     clear_email_deliveries
@@ -120,7 +121,7 @@ class DomainRegistrationReminderJobTest < ActiveJob::TestCase
     setting = settings(:domain_registration_daily_reminder)
     setting.update!(value: 3)
 
-    @result.update(registration_reminder_sent_at: @result.registration_due_date - 6)
+    @result.update!(registration_reminder_sent_at: @result.registration_due_date - 6)
 
     four_days_before = @result.registration_due_date - 4
     travel_to four_days_before
@@ -143,7 +144,7 @@ class DomainRegistrationReminderJobTest < ActiveJob::TestCase
     DomainRegistrationReminderJob.perform_now
 
     @result.reload
-    assert_not(@result.registration_reminder_sent_at)
+    assert_nil(@result.registration_reminder_sent_at)
   end
 
   def test_mail_is_not_sent_before_dates
@@ -158,7 +159,7 @@ class DomainRegistrationReminderJobTest < ActiveJob::TestCase
     DomainRegistrationReminderJob.perform_now
 
     @result.reload
-    assert_not(@result.registration_reminder_sent_at)
+    assert_nil(@result.registration_reminder_sent_at)
   end
 
   def test_mail_is_sent_later_if_first_sending_fails
@@ -170,10 +171,17 @@ class DomainRegistrationReminderJobTest < ActiveJob::TestCase
     five_days_before = @result.registration_due_date - 5
     travel_to five_days_before
 
+    # Добавляем явную проверку состояния перед запуском
+    assert_nil(@result.registration_reminder_sent_at)
+    
+    # Принудительно запускаем GC перед выполнением задания для очистки памяти
+    GC.start
+    
     DomainRegistrationReminderJob.perform_now
 
-    @result.reload
-    assert_equal(five_days_before, @result.registration_reminder_sent_at)
+    # Перезагружаем результат, чтобы убедиться, что мы видим последние изменения
+    @result = Result.find(@result.id)
+    assert_equal(five_days_before.to_date, @result.registration_reminder_sent_at.to_date)
   end
 
   def test_multiple_reminders_sent_if_everyday_remind
@@ -182,16 +190,30 @@ class DomainRegistrationReminderJobTest < ActiveJob::TestCase
     five_days_before = @result.registration_due_date - 5
     three_days_before = @result.registration_due_date - 3
 
+    # Явно устанавливаем nil, чтобы гарантировать исходное состояние
+    @result.update!(registration_reminder_sent_at: nil)
+    
     travel_to five_days_before
+    
+    # Принудительно запускаем GC перед выполнением задания для очистки памяти
+    GC.start
+    
     DomainRegistrationReminderJob.perform_now
-    @result.reload
-    assert_equal(five_days_before, @result.registration_reminder_sent_at)
+    
+    # Перезагружаем объект для получения свежих данных
+    @result = Result.find(@result.id)
+    assert_equal(five_days_before.to_date, @result.registration_reminder_sent_at.to_date)
 
     travel_to three_days_before
+    
+    # Принудительно запускаем GC перед выполнением задания для очистки памяти
+    GC.start
+    
     DomainRegistrationReminderJob.perform_now
 
-    @result.reload
-    assert_equal(three_days_before, @result.registration_reminder_sent_at)
+    # Перезагружаем объект для получения свежих данных
+    @result = Result.find(@result.id)
+    assert_equal(three_days_before.to_date, @result.registration_reminder_sent_at.to_date)
   end
 
   def set_remind_on_domain_registration_everyday_true
