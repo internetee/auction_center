@@ -114,7 +114,6 @@ jobs:
           bundle install
           yarn install --check-files
           bundle exec rake db:setup
-          bundle exec rake data:migrate
           bundle exec rails assets:precompile
           bundle exec rails test
 
