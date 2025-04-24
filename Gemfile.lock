@@ -156,6 +156,7 @@ GEM
     crass (1.0.6)
     cssbundling-rails (1.2.0)
       railties (>= 6.0.0)
+    csv (3.3.4)
     cuprite (0.14.3)
       capybara (~> 3.0)
       ferrum (~> 0.13.0)
@@ -197,10 +198,10 @@ GEM
       concurrent-ruby (~> 1.1)
       webrick (~> 1.7)
       websocket-driver (>= 0.6, < 0.8)
-    ffi (1.17.0)
-    ffi (1.17.0-aarch64-linux-gnu)
-    ffi (1.17.0-arm64-darwin)
-    ffi (1.17.0-x86_64-linux-gnu)
+    ffi (1.17.2)
+    ffi (1.17.2-aarch64-linux-gnu)
+    ffi (1.17.2-arm64-darwin)
+    ffi (1.17.2-x86_64-linux-gnu)
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
       rake
@@ -304,6 +305,7 @@ GEM
     multipart-post (2.4.1)
     mustermann (3.0.3)
       ruby2_keywords (~> 0.0.1)
+    mutex_m (0.3.0)
     net-http (0.4.1)
       uri
     net-imap (0.5.6)
@@ -592,6 +594,7 @@ DEPENDENCIES
   capybara (>= 2.15)
   chartkick
   cssbundling-rails
+  csv
   cuprite
   data_migrate
   delayed_job (~> 4.1.0)
@@ -613,6 +616,7 @@ DEPENDENCIES
   lograge
   mimemagic (~> 0.4.3)
   money
+  mutex_m
   noticed (~> 1.6)
   okcomputer (~> 1.19.0)
   omniauth-rails_csrf_protection

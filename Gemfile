@@ -45,6 +45,8 @@ gem 'turbo-rails'
 gem 'valvat'
 gem 'view_component'
 gem 'webpush'
+gem 'csv'
+gem 'mutex_m'
 
 group :development, :test do
   gem 'brakeman'
