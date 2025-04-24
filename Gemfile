@@ -83,6 +83,7 @@ group :test do
   gem 'cuprite'
   # gem 'selenium-webdriver'
   gem 'simplecov', require: false
+  gem 'simplecov-json', require: false
   gem 'spy'
   gem 'webmock'
 end

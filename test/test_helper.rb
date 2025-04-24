@@ -1,7 +1,17 @@
 if ENV['COVERAGE']
   require 'simplecov'
+  require 'simplecov-json'
   SimpleCov.command_name 'test'
-  SimpleCov.start 'rails'
+  SimpleCov.start 'rails' do
+    # Форматируем результаты для CodeClimate
+    SimpleCov.formatters = SimpleCov::Formatter::MultiFormatter.new([
+      SimpleCov::Formatter::HTMLFormatter,
+      SimpleCov::Formatter::JSONFormatter
+    ])
+    
+    # Убедимся, что файлы сохраняются в правильном месте
+    SimpleCov.coverage_dir 'coverage'
+  end
 end
 
 ENV['RAILS_ENV'] ||= 'test'
