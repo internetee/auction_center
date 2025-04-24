@@ -1,6 +1,8 @@
 require 'test_helper'
 
 class ResultTest < ActiveSupport::TestCase
+  include ActiveJob::TestHelper
+
   def setup
     super
 
@@ -85,7 +87,9 @@ class ResultTest < ActiveSupport::TestCase
 
     clazz.stub :authorized, mock do
       Invoice.create_from_result(@invoiceable_result.id)
-      @invoiceable_result.send_email_to_winner
+      perform_enqueued_jobs do
+        @invoiceable_result.send_email_to_winner
+      end
 
       assert_not(ActionMailer::Base.deliveries.empty?)
       email = ActionMailer::Base.deliveries.last

@@ -47,6 +47,7 @@ gem 'view_component'
 gem 'webpush'
 gem 'csv'
 gem 'mutex_m'
+gem 'nokogiri', '>= 1.18.8'
 
 group :development, :test do
   gem 'brakeman'

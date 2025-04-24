@@ -1,6 +1,8 @@
 require 'test_helper'
 
 class ResultStatusReporterTest < ActiveSupport::TestCase
+  include ActiveJob::TestHelper
+
   def setup
     super
 
@@ -47,7 +49,9 @@ class ResultStatusReporterTest < ActiveSupport::TestCase
              'status' => 'payment_received', 'registration_code' => 'some code' }
 
     with_successful_request(instance, body) do
-      instance.call
+      perform_enqueued_jobs do
+        instance.call
+      end
       assert_equal(@awaiting_payment.last_remote_status, 'payment_received')
       assert_equal(@awaiting_payment.registration_code, 'some code')
       assert_equal(@awaiting_payment.last_response, body)
