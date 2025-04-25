@@ -365,7 +365,6 @@ GEM
       prettyprint
     prettier_print (1.2.1)
     prettyprint (0.2.0)
-    prism (1.4.0)
     propshaft (0.7.0)
       actionpack (>= 7.0.0)
       activesupport (>= 7.0.0)
@@ -507,7 +506,6 @@ GEM
     simplecov-json (0.2.3)
       json
       simplecov
-    simplecov-lcov (0.8.0)
     simplecov_json_formatter (0.1.4)
     simpleidn (0.2.1)
       unf (~> 0.1.4)
@@ -601,7 +599,7 @@ DEPENDENCIES
   cssbundling-rails
   csv
   cuprite
-  data_migrate (~> 9.2.0)
+  data_migrate
   delayed_job (~> 4.1.0)
   delayed_job_active_record
   devise (~> 4.9.3)
@@ -631,7 +629,6 @@ DEPENDENCIES
   pdfkit
   pg (>= 0.18, < 2.0)
   pg_search
-  prism (>= 0.24.0)
   propshaft
   pry
   puma (~> 6.6.0)
@@ -650,7 +647,6 @@ DEPENDENCIES
   scenic
   simplecov
   simplecov-json
-  simplecov-lcov
   simpleidn
   spy
   turbo-rails

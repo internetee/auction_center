@@ -9,7 +9,7 @@ gem 'bootsnap', '>= 1.1.0', require: false
 gem 'cancancan'
 gem 'chartkick'
 gem 'cssbundling-rails'
-gem 'data_migrate', '~> 9.2.0'
+gem 'data_migrate'
 gem 'delayed_job', '~> 4.1.0'
 gem 'delayed_job_active_record'
 gem 'devise', '~> 4.9.3'
@@ -48,7 +48,6 @@ gem 'webpush'
 gem 'csv'
 gem 'mutex_m'
 gem 'nokogiri', '>= 1.18.8'
-gem 'prism', '>= 0.24.0'
 
 group :development, :test do
   gem 'brakeman'
@@ -85,7 +84,6 @@ group :test do
   # gem 'selenium-webdriver'
   gem 'simplecov', require: false
   gem 'simplecov-json', require: false
-  gem 'simplecov-lcov', require: false
   gem 'spy'
   gem 'webmock'
 end
