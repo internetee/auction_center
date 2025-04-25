@@ -9,6 +9,11 @@ class AuctionsController < ApplicationController
     set_cors_header
     @auctions_list = fetch_auctions_list
     @pagy, @auctions = pagy(@auctions_list, items: per_page, link_extra: 'data-turbo-action="advance"')
+
+    respond_to do |format|
+      format.html
+      format.json
+    end
   end
 
   def show
