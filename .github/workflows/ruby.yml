@@ -92,7 +92,7 @@ jobs:
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         run: |
-          curl -LSs --fail 'https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64' >./cc-test-reporter;
+          curl -LSs --fail 'https://codeclimate.com/downloads/test-reporter/test-reporter-0.11.1-linux-amd64' >./cc-test-reporter;
           chmod +x ./cc-test-reporter
           ./cc-test-reporter before-build
           
@@ -130,11 +130,13 @@ jobs:
           find . -name "*.json"
           echo "Looking specifically for SimpleCov result files:"
           find . -name ".resultset.json" -o -name "coverage.json"
+          echo "Checking SimpleCov result format:"
+          cat coverage/.resultset.json | head -n 20
 
       - name: Format coverage
         if: always()
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         run: |
-          ./cc-test-reporter format-coverage -t simplecov -o coverage/codeclimate.json
+          ./cc-test-reporter format-coverage -t simplecov -o coverage/codeclimate.json coverage/.resultset.json
           ./cc-test-reporter upload-coverage
