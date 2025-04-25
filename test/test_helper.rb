@@ -30,6 +30,9 @@ Rails.application.load_tasks
 
 class ActiveSupport::TestCase
   include ComponentHelpers
+ #  use_transactional_fixtures
+  self.use_transactional_tests = true
+  
 
   WebMock.allow_net_connect!
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
