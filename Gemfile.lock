@@ -160,7 +160,7 @@ GEM
     cuprite (0.14.3)
       capybara (~> 3.0)
       ferrum (~> 0.13.0)
-    data_migrate (9.2.0)
+    data_migrate (11.3.0)
       activerecord (>= 6.1)
       railties (>= 6.1)
     date (3.4.1)
@@ -599,7 +599,7 @@ DEPENDENCIES
   cssbundling-rails
   csv
   cuprite
-  data_migrate
+  data_migrate (~> 11.3.0)
   delayed_job (~> 4.1.0)
   delayed_job_active_record
   devise (~> 4.9.3)

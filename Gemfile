@@ -9,7 +9,7 @@ gem 'bootsnap', '>= 1.1.0', require: false
 gem 'cancancan'
 gem 'chartkick'
 gem 'cssbundling-rails'
-gem 'data_migrate'
+gem 'data_migrate', '~> 11.3.0'
 gem 'delayed_job', '~> 4.1.0'
 gem 'delayed_job_active_record'
 gem 'devise', '~> 4.9.3'
