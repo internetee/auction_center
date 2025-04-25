@@ -25,6 +25,10 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  rescue_from ActionController::UnknownFormat do |_exception|
+    head :not_acceptable
+  end
+
   def store_location
     session[:return_to] = if request.get?
                             request.fullpath

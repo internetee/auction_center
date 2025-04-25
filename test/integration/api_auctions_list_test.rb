@@ -56,7 +56,7 @@ class ApiAuctionsListTest < ActionDispatch::IntegrationTest
   end
 
   def test_cannot_get_a_list_of_current_auctions_as_xml
-    get(auctions_path, headers: { 'Accept': 'application/xml' }, as: :xml)
+    get(auctions_path, headers: { 'Accept': 'application/xml' })
     assert_response :not_acceptable  # 406 Not Acceptable
   end
 end
