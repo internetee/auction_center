@@ -116,10 +116,16 @@ jobs:
           bundle exec rails assets:precompile
           bundle exec rails test test/*
 
+      - name: Debug coverage files
+        if: always()
+        run: |
+          ls -la coverage/
+          find . -name ".resultset.json" -o -name "coverage.json"
+
       - name: Format coverage
         if: always()
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         run: |
-          ./cc-test-reporter format-coverage -t simplecov
+          ./cc-test-reporter format-coverage -t simplecov -o coverage/codeclimate.json coverage/.resultset.json
           ./cc-test-reporter upload-coverage
