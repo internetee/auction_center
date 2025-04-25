@@ -108,6 +108,7 @@ jobs:
           DISABLE_SPRING: 1
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         run: |
+          mkdir -p coverage
           cp config/database.yml.sample config/database.yml
           cp config/customization.yml.sample config/customization.yml
           yarn install --check-files
@@ -115,11 +116,19 @@ jobs:
           bundle exec rake data:migrate
           bundle exec rails assets:precompile
           bundle exec rails test test/*
+          echo "COVERAGE=$COVERAGE" # Debug: print to confirm env var is set
 
       - name: Debug coverage files
         if: always()
         run: |
-          ls -la coverage/
+          echo "Current directory: $(pwd)"
+          echo "Directory contents:"
+          ls -la
+          echo "Looking for coverage directory:"
+          find . -type d -name "coverage" | xargs ls -la
+          echo "Looking for all JSON files:"
+          find . -name "*.json"
+          echo "Looking specifically for SimpleCov result files:"
           find . -name ".resultset.json" -o -name "coverage.json"
 
       - name: Format coverage
@@ -127,5 +136,5 @@ jobs:
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         run: |
-          ./cc-test-reporter format-coverage -t simplecov -o coverage/codeclimate.json coverage/.resultset.json
+          ./cc-test-reporter format-coverage -t simplecov -o coverage/codeclimate.json
           ./cc-test-reporter upload-coverage
