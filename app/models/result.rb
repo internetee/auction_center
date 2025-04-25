@@ -50,7 +50,7 @@ class Result < ApplicationRecord
     without_current_reminders
       .before_registration_date
       .where(status: Result.statuses[:payment_received])
-      .where('registration_due_date = ? OR registration_due_date <= ?'\
+      .where('registration_due_date = ? OR registration_due_date <= ? '\
              'OR (registration_due_date <= ? AND registration_reminder_sent_at IS NULL)',
              Time.zone.today + Setting.find_by(code: 'domain_registration_reminder').retrieve,
              Time.zone.today + Setting.find_by(code: 'domain_registration_daily_reminder').retrieve,
