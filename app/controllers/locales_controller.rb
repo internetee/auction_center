@@ -8,8 +8,7 @@ class LocalesController < ApplicationController
       cookies[:locale] = permitted_locale
     end
 
-    # redirect_back(fallback_location: root_path)
-    redirect_to request.referer || root_path
+    redirect_back fallback_location: root_path
   end
 
   def permitted_locale
@@ -17,6 +16,6 @@ class LocalesController < ApplicationController
   end
 
   def validate_locale
-    return if AuctionCenter::Application.config.i18n.available_locales.include?(permitted_locale)
+    nil if AuctionCenter::Application.config.i18n.available_locales.include?(permitted_locale)
   end
 end
