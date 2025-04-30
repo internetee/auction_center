@@ -308,7 +308,7 @@ GEM
     mutex_m (0.3.0)
     net-http (0.4.1)
       uri
-    net-imap (0.5.6)
+    net-imap (0.5.8)
       date
       net-protocol
     net-pop (0.1.2)
@@ -620,6 +620,7 @@ DEPENDENCIES
   mimemagic (~> 0.4.3)
   money
   mutex_m
+  net-imap (>= 0.5.7)
   nokogiri (>= 1.18.8)
   noticed (~> 1.6)
   okcomputer (~> 1.19.0)
