@@ -8,7 +8,7 @@ class AuctionsController < ApplicationController
   def index
     set_cors_header
     @auctions_list = fetch_auctions_list
-    @pagy, @auctions = pagy(@auctions_list, items: per_page, link_extra: 'data-turbo-action="advance"')
+    @pagy, @auctions = pagy(@auctions_list, limit: per_page_count, link_extra: 'data-turbo-action="advance"')
   end
 
   def show
