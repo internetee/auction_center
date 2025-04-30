@@ -168,22 +168,18 @@ jobs:
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         run: |
-          # Создадим скрипт для преобразования формата SimpleCov
           cat > convert_simplecov.rb << 'EOF'
           require 'json'
           
-          # Чтение файла результатов SimpleCov
           file_path = ARGV[0] || 'coverage/.resultset.json'
           output_path = ARGV[1] || 'coverage/.resultset.json.converted'
           
           begin
             data = JSON.parse(File.read(file_path))
             
-            # Преобразование для каждого результата теста
             data.each do |test_name, test_data|
               if test_data["coverage"].is_a?(Hash)
                 test_data["coverage"].each do |file_path, coverage|
-                  # Если coverage является объектом, преобразуем его в массив
                   if coverage.is_a?(Hash) && coverage.has_key?("lines")
                     test_data["coverage"][file_path] = coverage["lines"]
                   end
@@ -191,7 +187,6 @@ jobs:
               end
             end
             
-            # Запись преобразованного файла
             File.write(output_path, JSON.pretty_generate(data))
             puts "Successfully converted SimpleCov format to: #{output_path}"
           rescue => e
@@ -200,9 +195,7 @@ jobs:
           end
           EOF
           
-          # Запуск скрипта преобразования
           bundle exec ruby convert_simplecov.rb coverage/.resultset.json coverage/.resultset.json.converted
           
-          # Использование преобразованного файла
           ./cc-test-reporter format-coverage -t simplecov -o coverage/codeclimate.json coverage/.resultset.json.converted --debug
           ./cc-test-reporter upload-coverage --debug
