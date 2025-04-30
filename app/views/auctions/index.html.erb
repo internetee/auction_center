@@ -64,7 +64,11 @@
   </div>
 
   <div class="u-text-center u-mt-40">
-    <%= component 'common/links/link_button', link_title: t('auctions.all_list'), href: auctions_path(show_all: 'true'), color: 'ghost' %>
+    <% if params[:show_all] == 'true' %>
+      <%= component 'common/links/link_button', link_title: t('auctions.pagination_list'), href: auctions_path, color: 'ghost' %>
+    <% else %>
+      <%= component 'common/links/link_button', link_title: t('auctions.all_list'), href: auctions_path(show_all: 'true'), color: 'ghost' %>
+    <% end %>
   </div>
 </div>
 <!-- Table -- Sortable  -->
