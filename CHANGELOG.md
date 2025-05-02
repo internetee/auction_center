@@ -1,3 +1,6 @@
+02.05.2025
+* Fixed redirect back to index view on electronic authentication https://github.com/internetee/auction_center/issues/1377
+
 11.04.2025
 * Daily auction list email is now linked to the auctions in the portal https://github.com/internetee/auction_center/issues/1368
 * Fixed internal error on invoices view https://github.com/internetee/auction_center/pull/1371
