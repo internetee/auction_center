@@ -187,10 +187,13 @@ class Invoice < ApplicationRecord
   end
 
   def due_amount
-    total - Money.from_amount(paid_amount || 0, auction_currency)
+    paid_amount_money = paid_amount.nil? ? Money.new(0, auction_currency) : Money.from_amount(paid_amount, auction_currency)
+    total - paid_amount_money
   end
 
   def vat
+    return Money.new(0, auction_currency) if price.nil? || vat_rate.nil?
+
     price * vat_rate
   end
 
