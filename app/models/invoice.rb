@@ -181,7 +181,7 @@ class Invoice < ApplicationRecord
     vat_rate = assign_vat_rate if vat_rate.nil?
 
     total_amount = price * (1 + vat_rate)
-    total_amount -= deposit if result.auction.enable_deposit?
+    total_amount -= deposit if deposit && result.auction.enable_deposit?
 
     total_amount.round(2)
   end
