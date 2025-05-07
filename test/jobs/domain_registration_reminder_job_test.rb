@@ -169,16 +169,25 @@ class DomainRegistrationReminderJobTest < ActiveJob::TestCase
     five_days_before = @result.registration_due_date - 5
     three_days_before = @result.registration_due_date - 3
 
-    travel_to five_days_before
-    DomainRegistrationReminderJob.perform_now
-    @result.reload
-    assert_equal(five_days_before, @result.registration_reminder_sent_at)
+    # First part in a transaction
+    ActiveRecord::Base.transaction do
+      travel_to five_days_before
+      DomainRegistrationReminderJob.perform_now
+      
+      # Get a fresh copy of the result
+      @result = Result.find(@result.id)
+      assert_equal(five_days_before, @result.registration_reminder_sent_at)
+    end
 
-    travel_to three_days_before
-    DomainRegistrationReminderJob.perform_now
+    # Second part in a separate transaction
+    ActiveRecord::Base.transaction do
+      travel_to three_days_before
+      DomainRegistrationReminderJob.perform_now
 
-    @result.reload
-    assert_equal(three_days_before, @result.registration_reminder_sent_at)
+      # Get a fresh copy of the result
+      @result = Result.find(@result.id)
+      assert_equal(three_days_before, @result.registration_reminder_sent_at)
+    end
   end
 
   def set_remind_on_domain_registration_everyday_true

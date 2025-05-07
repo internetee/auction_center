@@ -55,7 +55,7 @@ Rails.application.configure do
   # config.action_view.raise_on_missing_translations = true
 
   # Performs jobs in the same thread
-  config.active_job.queue_adapter = :inline
+  config.active_job.queue_adapter = :test
 
   config.action_cable.allowed_request_origins = [/ws:\/\/*/, /wss:\/\/*/, /http:\/\/*/, /https:\/\/*/]
 

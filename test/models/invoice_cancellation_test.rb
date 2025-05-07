@@ -1,6 +1,8 @@
 require 'test_helper'
 
 class InvoiceCancellationTest < ActiveSupport::TestCase
+  include ActiveJob::TestHelper
+
   def setup
     super
 
@@ -86,7 +88,9 @@ class InvoiceCancellationTest < ActiveSupport::TestCase
       .to_return(status: 200, body: message.to_json, headers: {})
 
     invoice_cancellation = InvoiceCancellation.new(@overdue_invoice)
-    assert(invoice_cancellation.cancel)
+    perform_enqueued_jobs do
+      assert(invoice_cancellation.cancel)
+    end
 
     assert_not(ActionMailer::Base.deliveries.empty?)
     last_email = ActionMailer::Base.deliveries.last

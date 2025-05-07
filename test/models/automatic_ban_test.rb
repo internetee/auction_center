@@ -1,6 +1,8 @@
 require 'test_helper'
 
 class AutomaticBanTest < ActiveSupport::TestCase
+  include ActiveJob::TestHelper
+
   def setup
     super
 
@@ -51,7 +53,9 @@ class AutomaticBanTest < ActiveSupport::TestCase
     clazz = EisBilling::BaseController.new
 
     clazz.stub :authorized, mock do
-      ban.create
+      perform_enqueued_jobs do
+        ban.create
+      end
       mail = ActionMailer::Base.deliveries.last
       mail_html = Nokogiri::HTML(mail.body.decoded)
 
@@ -171,7 +175,9 @@ class AutomaticBanTest < ActiveSupport::TestCase
     invoice, domain_name = create_bannable_offence(@user)
     clear_email_deliveries
 
-    AutomaticBan.new(invoice: invoice, user: @user, domain_name: domain_name).create
+    perform_enqueued_jobs do
+      AutomaticBan.new(invoice: invoice, user: @user, domain_name: domain_name).create
+    end
 
     assert_not(ActionMailer::Base.deliveries.empty?)
     last_email = ActionMailer::Base.deliveries.last
@@ -187,7 +193,9 @@ class AutomaticBanTest < ActiveSupport::TestCase
     invoice, domain_name = create_bannable_offence(@user)
     clear_email_deliveries
 
-    AutomaticBan.new(invoice: invoice, user: @user, domain_name: domain_name).create
+    perform_enqueued_jobs do
+      AutomaticBan.new(invoice: invoice, user: @user, domain_name: domain_name).create
+    end
 
     assert_not(ActionMailer::Base.deliveries.empty?)
     last_email = ActionMailer::Base.deliveries.last

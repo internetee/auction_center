@@ -1,4 +1,4 @@
-FROM ruby:3.2.2-bullseye
+FROM internetee/ruby:3.4.1-node18-no-chrome
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -56,7 +56,7 @@ RUN apt-get install -y --no-install-recommends > /dev/null \
     wkhtmltopdf \
     libxslt1-dev \
     libxml2-dev \
-    python-dev \
+    python3-dev \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 

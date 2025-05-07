@@ -8,7 +8,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.2.2
+          ruby-version: 3.4.1
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
       - name: config bundler
         run:  |
@@ -25,7 +25,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.2.2
+          ruby-version: 3.4.1
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
       - name: config bundler
         run:  |
@@ -49,8 +49,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-22.04]
-        ruby: [ '3.2.2' ]
+        os: [ubuntu-24.04]
+        ruby: [ '3.4.1' ]
     runs-on: ${{ matrix.os }}
     continue-on-error: ${{ endsWith(matrix.ruby, 'head') || matrix.ruby == 'debug' }}
     steps:
@@ -72,10 +72,7 @@ jobs:
           head -n1 $(which bundle)
 
       - name: Install wkhtmltopdf (push)
-        run: |
-          sudo apt-get install -y xfonts-base xfonts-75dpi
-          wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6.1-2/wkhtmltox_0.12.6.1-2.jammy_amd64.deb
-          sudo dpkg -i wkhtmltox_0.12.6.1-2.jammy_amd64.deb
+        run: sudo apt-get update && sudo apt-get install -y wkhtmltopdf
         if: github.event_name == 'push'
 
       - name: Set ENV for codeclimate (pull_request)
@@ -95,7 +92,7 @@ jobs:
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         run: |
-          curl -LSs --fail 'https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64' >./cc-test-reporter;
+          curl -LSs --fail 'https://codeclimate.com/downloads/test-reporter/test-reporter-0.11.1-linux-amd64' >./cc-test-reporter;
           chmod +x ./cc-test-reporter
           ./cc-test-reporter before-build
           
@@ -111,6 +108,7 @@ jobs:
           DISABLE_SPRING: 1
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         run: |
+          mkdir -p coverage
           cp config/database.yml.sample config/database.yml
           cp config/customization.yml.sample config/customization.yml
           yarn install --check-files
@@ -118,11 +116,86 @@ jobs:
           bundle exec rake data:migrate
           bundle exec rails assets:precompile
           bundle exec rails test test/*
+          echo "COVERAGE=$COVERAGE" # Debug: print to confirm env var is set
+
+      - name: Debug coverage files
+        if: always()
+        run: |
+          echo "Current directory: $(pwd)"
+          echo "Directory contents:"
+          ls -la
+          echo "Looking for coverage directory:"
+          find . -type d -name "coverage" | xargs ls -la
+          echo "Looking for all JSON files:"
+          find . -name "*.json"
+          echo "Looking specifically for SimpleCov result files:"
+          find . -name ".resultset.json" -o -name "coverage.json"
+          echo "Checking SimpleCov result format:"
+          cat > check_format.rb << 'EOF'
+          require 'json'
+          begin
+            file_path = 'coverage/.resultset.json'
+            if File.exist?(file_path)
+              data = JSON.parse(File.read(file_path))
+              puts "File structure overview:"
+              data.each do |test_name, test_data|
+                puts "Test name: #{test_name}"
+                puts "Keys in test_data: #{test_data.keys.join(', ')}"
+                if test_data.has_key?("coverage")
+                  puts "Coverage is a #{test_data['coverage'].class.name}"
+                  if test_data["coverage"].is_a?(Hash)
+                    sample_file = test_data["coverage"].keys.first
+                    puts "Sample file: #{sample_file}"
+                    puts "Coverage for sample file is a #{test_data['coverage'][sample_file].class.name}"
+                    if test_data['coverage'][sample_file].is_a?(Hash)
+                      puts "Keys in coverage object: #{test_data['coverage'][sample_file].keys.join(', ')}"
+                    end
+                  end
+                end
+              end
+            else
+              puts "File not found: #{file_path}"
+            end
+          rescue => e
+            puts "Error analyzing SimpleCov format: #{e.message}"
+          end
+          EOF
+          
+          bundle exec ruby check_format.rb
 
       - name: Format coverage
         if: always()
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         run: |
-          ./cc-test-reporter format-coverage -t simplecov
-          ./cc-test-reporter upload-coverage
+          cat > convert_simplecov.rb << 'EOF'
+          require 'json'
+          
+          file_path = ARGV[0] || 'coverage/.resultset.json'
+          output_path = ARGV[1] || 'coverage/.resultset.json.converted'
+          
+          begin
+            data = JSON.parse(File.read(file_path))
+            
+            data.each do |test_name, test_data|
+              if test_data["coverage"].is_a?(Hash)
+                test_data["coverage"].each do |file_path, coverage|
+                  if coverage.is_a?(Hash) && coverage.has_key?("lines")
+                    test_data["coverage"][file_path] = coverage["lines"]
+                  end
+                end
+              end
+            end
+            
+            File.write(output_path, JSON.pretty_generate(data))
+            puts "Successfully converted SimpleCov format to: #{output_path}"
+          rescue => e
+            puts "Error converting SimpleCov format: #{e.message}"
+            exit 1
+          end
+          EOF
+          
+          bundle exec ruby convert_simplecov.rb coverage/.resultset.json coverage/.resultset.json.converted
+          
+          ./cc-test-reporter format-coverage -t simplecov -o coverage/codeclimate.json coverage/.resultset.json.converted --debug
+          ./cc-test-reporter upload-coverage --debug

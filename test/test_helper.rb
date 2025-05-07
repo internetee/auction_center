@@ -1,7 +1,17 @@
 if ENV['COVERAGE']
   require 'simplecov'
+  require 'simplecov-json'
+
   SimpleCov.command_name 'test'
-  SimpleCov.start 'rails'
+  
+  SimpleCov.start 'rails' do
+    SimpleCov.formatters = SimpleCov::Formatter::MultiFormatter.new([
+      SimpleCov::Formatter::HTMLFormatter,
+      SimpleCov::Formatter::JSONFormatter
+    ])
+    
+    SimpleCov.coverage_dir 'coverage'
+  end
 end
 
 ENV['RAILS_ENV'] ||= 'test'
@@ -20,14 +30,14 @@ Rails.application.load_tasks
 
 class ActiveSupport::TestCase
   include ComponentHelpers
+  self.use_transactional_tests = true
+  
 
   WebMock.allow_net_connect!
-  # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
   fixtures :all
+  
+  parallelize(workers: 4) unless ENV['COVERAGE']
 
-  parallelize(workers: 4)
-
-  # Add more helper methods to be used by all tests here...
   def clear_email_deliveries
     ActionMailer::Base.deliveries.clear
   end
