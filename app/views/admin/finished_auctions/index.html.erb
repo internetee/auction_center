@@ -50,8 +50,7 @@
               </td>
               <td>
                 <% if auction.offers.present? %>
-                  <% last_offer = auction.offers.order(updated_at: :asc).last %>
-                  <%= link_to last_offer.user.display_name, admin_user_path(last_offer.user) %>
+                  <%= link_to auction.currently_winning_offer.user.display_name, admin_user_path(auction.currently_winning_offer.user) %>
                 <% else %>
                   Nobody
                 <% end %>
