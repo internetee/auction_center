@@ -1,3 +1,6 @@
+07.05.2025
+* Ruby update to 3.4.1 and Rails to 7.2.0 https://github.com/internetee/auction_center/pull/1375
+
 02.05.2025
 * Fixed redirect back to index view on electronic authentication https://github.com/internetee/auction_center/issues/1377
 
