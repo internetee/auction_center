@@ -50,6 +50,7 @@ gem 'view_component'
 gem 'webpush'
 gem 'mutex_m'
 gem 'nokogiri', '>= 1.18.8'
+gem 'rack', '~> 2.2.14'
 
 group :development, :test do
   gem 'brakeman'

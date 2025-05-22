@@ -385,7 +385,7 @@ GEM
     puma (6.6.0)
       nio4r (~> 2.0)
     racc (1.8.1)
-    rack (2.2.13)
+    rack (2.2.16)
     rack-livereload (0.5.2)
       rack (< 3)
     rack-oauth2 (1.21.3)
@@ -640,6 +640,7 @@ DEPENDENCIES
   propshaft
   pry
   puma (~> 6.6.0)
+  rack (~> 2.2.14)
   rails (~> 7.2.0)
   rails-i18n
   recaptcha
