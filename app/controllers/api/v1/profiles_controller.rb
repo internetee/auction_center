@@ -4,6 +4,7 @@ module Api
       respond_to :json
 
       skip_before_action :verify_authenticity_token
+      skip_before_action :check_for_authentication, only: %i[create]
 
       def update
         if current_user.update(params_for_update)
