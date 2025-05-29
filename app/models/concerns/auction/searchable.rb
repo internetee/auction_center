@@ -133,7 +133,7 @@ module Auction::Searchable
     end
 
     def with_max_offer_cents_for_english_auction(user = nil)
-      Queries::Auction::WithMaxOfferCentsForEnglishAuction.call(user: user)
+      Queries::Auction::WithMaxOfferCentsForEnglishAuction.call(user:)
     end
 
     def sorted_by_winning_offer_username
