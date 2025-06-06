@@ -35,8 +35,12 @@ module Pages
 
         def form_filter_data_attrs
           {
-            form__filter_target: 'label', action: "click->form--filter#click"
+            form__filter_target: 'label', action: 'click->form--filter#click'
           }
+        end
+
+        def render?
+          AuctionCenter::Application.config.customization[:auction_filter_available]
         end
       end
     end

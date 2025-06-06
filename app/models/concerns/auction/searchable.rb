@@ -47,7 +47,7 @@ module Auction::Searchable
     end)
 
     scope :with_type, (lambda do |type|
-      if type.present? && type.in?([BLIND, ENGLISH])
+      if type.present? && type.in?([BLIND, ENGLISH]) && auction_filter_available?
         return where(platform: [type, nil]) if type == BLIND
 
         where(platform: type)
@@ -83,6 +83,10 @@ module Auction::Searchable
   # rubocop:disable Metrics/MethodLength
   # rubocop:disable Metrics/AbcSize
   class_methods do
+    def auction_filter_available?
+      AuctionCenter::Application.config.customization[:auction_filter_available]
+    end
+
     def search(params = {}, current_user = nil)
       sort_column = params[:sort_by].presence_in(PARAM_LIST) || 'domain_name'
       sort_admin_column = params[:sort_by].presence_in(FILTERING_COLUMNS) || 'id'
@@ -133,7 +137,7 @@ module Auction::Searchable
     end
 
     def with_max_offer_cents_for_english_auction(user = nil)
-      Queries::Auction::WithMaxOfferCentsForEnglishAuction.call(user: user)
+      Queries::Auction::WithMaxOfferCentsForEnglishAuction.call(user:)
     end
 
     def sorted_by_winning_offer_username

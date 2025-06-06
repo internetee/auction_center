@@ -24,7 +24,7 @@
         <%= component 'common/links/link_button', link_title: t(:finished_auctions), href: histories_path, color: 'ghost' %>
       <% else %>
         <%= component 'common/links/link_button', link_title: t(:auctions_name), href: auctions_path, color: 'ghost' %>
-      <% end %>
+      <% end if ended_auctions_link_available? %>
 
       <% if @current_user %>
         <div style="margin-left: auto;">
