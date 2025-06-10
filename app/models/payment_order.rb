@@ -1,5 +1,5 @@
 class PaymentOrder < ApplicationRecord
-  enum status: { issued: 'issued',
+  enum :status, { issued: 'issued',
                  paid: 'paid',
                  cancelled: 'cancelled' }
 

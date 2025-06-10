@@ -1,7 +1,7 @@
 class Result < ApplicationRecord
   include PgSearch::Model
 
-  enum status: { no_bids: 'no_bids',
+  enum :status, { no_bids: 'no_bids',
                  awaiting_payment: 'awaiting_payment',
                  payment_received: 'payment_received',
                  payment_not_received: 'payment_not_received',
