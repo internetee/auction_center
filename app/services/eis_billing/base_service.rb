@@ -1,3 +1,5 @@
+require 'ostruct'
+
 module EisBilling
   module BaseService
     def struct_response(response)

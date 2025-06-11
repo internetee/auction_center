@@ -8,7 +8,7 @@ gem 'amazing_print'
 gem 'bootsnap', '>= 1.1.0', require: false
 gem 'cancancan'
 gem 'chartkick'
-gem 'cssbundling-rails'
+gem 'cssbundling-rails', '~> 1.4.3'
 gem 'csv'
 gem 'data_migrate', '~> 11.3.0'
 gem 'delayed_job', '~> 4.1.0'

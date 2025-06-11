@@ -629,7 +629,7 @@ DEPENDENCIES
   cancancan
   capybara (>= 2.15)
   chartkick
-  cssbundling-rails
+  cssbundling-rails (~> 1.4.3)
   csv
   cuprite
   data_migrate (~> 11.3.0)
