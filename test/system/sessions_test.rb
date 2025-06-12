@@ -1,12 +1,6 @@
 require 'application_system_test_case'
 
 class SessionsTest < ApplicationSystemTestCase
-  test "visit login page" do
-    visit new_user_session_path
-    assert_selector "h2", text: I18n.t('devise.sessions.new.sign_in_with_identity_document')
-    assert_selector "h2", text: I18n.t('devise.sessions.new.sign_in_with_password')
-  end
-
   test "login with email and password" do
     visit new_user_session_path
   

@@ -8,7 +8,7 @@ gem 'amazing_print'
 gem 'bootsnap', '>= 1.1.0', require: false
 gem 'cancancan'
 gem 'chartkick'
-gem 'cssbundling-rails'
+gem 'cssbundling-rails', '~> 1.4.3'
 gem 'csv'
 gem 'data_migrate', '~> 11.3.0'
 gem 'delayed_job', '~> 4.1.0'
@@ -37,7 +37,7 @@ gem 'pg', '>= 0.18', '< 2.0'
 gem 'pg_search'
 gem 'propshaft'
 gem 'puma', '~> 6.6.0'
-gem 'rails', '~> 7.2.0'
+gem 'rails', '~> 8.0.2'
 gem 'rails-i18n'
 gem 'recaptcha'
 gem 'redis', '~> 5.0'
@@ -49,7 +49,6 @@ gem 'valvat'
 gem 'view_component'
 gem 'webpush'
 gem 'mutex_m'
-gem 'nokogiri', '>= 1.18.8'
 gem 'rack', '~> 2.2.14'
 
 group :development, :test do
@@ -84,9 +83,10 @@ group :development do
 end
 
 group :test do
-  gem 'capybara', '>= 2.15'
-  gem 'cuprite'
+  gem 'capybara', '>= 3.4.0'
+  # gem 'cuprite'
   # gem 'selenium-webdriver'
+  gem 'selenium-webdriver'
   gem 'simplecov', require: false
   gem 'simplecov-json', require: false
   gem 'spy'

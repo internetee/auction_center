@@ -1,12 +1,12 @@
 class Result < ApplicationRecord
   include PgSearch::Model
 
-  enum status: { no_bids: 'no_bids',
-                 awaiting_payment: 'awaiting_payment',
-                 payment_received: 'payment_received',
-                 payment_not_received: 'payment_not_received',
-                 domain_registered: 'domain_registered',
-                 domain_not_registered: 'domain_not_registered' }
+  enum :status, { no_bids: 'no_bids',
+                  awaiting_payment: 'awaiting_payment',
+                  payment_received: 'payment_received',
+                  payment_not_received: 'payment_not_received',
+                  domain_registered: 'domain_registered',
+                  domain_not_registered: 'domain_not_registered' }
 
   belongs_to :auction, optional: false, inverse_of: :result
   belongs_to :user, optional: true

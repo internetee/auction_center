@@ -15,7 +15,7 @@ class NotificationIconTest < ViewComponent::TestCase
 
     assert_selector "span.o-trophy-icon"
     assert_selector "h5.c-notification__header__title" do
-      assert_text(/^You won! ?/)
+      assert_text(/^\s*You won!\s*$/)
       assert_selector "span.o-new"
     end
   end

@@ -20,7 +20,7 @@
     "vanilla-cookieconsent": "^2.9.2"
   },
   "scripts": {
-    "build": "node esbuild.config.js",
+    "build": "esbuild app/javascript/*.* --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets",
     "build:css": "sass ./app/assets/stylesheets/application.sass.scss:./app/assets/builds/application.css --no-source-map --load-path=node_modules"
   },
   "devDependencies": {

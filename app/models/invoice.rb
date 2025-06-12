@@ -10,7 +10,7 @@ class Invoice < ApplicationRecord
   OLD_EST_RATE_VAT = '0.2'.freeze
 
   alias_attribute :country_code, :alpha_two_country_code
-  enum status: { issued: 'issued', paid: 'paid', cancelled: 'cancelled' }
+  enum :status, { issued: 'issued', paid: 'paid', cancelled: 'cancelled' }
 
   belongs_to :result, optional: false
   belongs_to :user, optional: true

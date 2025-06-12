@@ -1,7 +1,7 @@
 class PaymentOrder < ApplicationRecord
-  enum status: { issued: 'issued',
-                 paid: 'paid',
-                 cancelled: 'cancelled' }
+  enum :status, { issued: 'issued',
+                  paid: 'paid',
+                  cancelled: 'cancelled' }
 
   validates :user_id, presence: true, on: :create
   validate :invoice_cannot_be_already_paid, on: :create
