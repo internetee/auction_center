@@ -279,7 +279,10 @@ class InvoiceCreatorTest < ActiveSupport::TestCase
     assert auction.offers.empty?
 
     billing_profile = user.billing_profiles.first
-    billing_profile.update!(country_code: 'EE', alpha_two_country_code: 'EE', vat_code: 'IE6388047V') && billing_profile.reload
+    
+    Valvat.stub :new, ->(_) { OpenStruct.new(exists?: true) } do
+      billing_profile.update!(country_code: 'EE', alpha_two_country_code: 'EE', vat_code: 'IE6388047V') && billing_profile.reload
+    end
   
     Offer.create!(
       auction: auction,
