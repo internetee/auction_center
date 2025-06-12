@@ -4,9 +4,7 @@ class DomainParticipateAuction < ApplicationRecord
 
   validates :user_id, uniqueness: { scope: :auction_id }
 
-  enum :status, { paid: 'paid',
-                  prepayment: 'prepayment',
-                  returned: 'returned' }
+  enum :status, %w[paid prepayment returned]
 
   scope :search_by_auction_name_and_user_email, lambda { |origin|
     if origin.present?
