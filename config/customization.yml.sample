@@ -25,6 +25,9 @@ default: &default
   mobile_secret_key: ''
   mobile_secret_word: ''
 
+  mobile_api:
+    enabled: false
+
   mailer:
     # Host to which links from emails should redirect to
     host: 'https://auction.example.test'

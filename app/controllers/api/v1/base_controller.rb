@@ -1,6 +1,7 @@
 module Api
   module V1
     class BaseController < ApplicationController
+      before_action :api_turn_off
       before_action :check_for_authentication
       respond_to :json
 
@@ -25,6 +26,12 @@ module Api
       end
 
       private
+
+      def api_turn_off
+        return if Feature.mobile_api_enabled?
+
+        render json: { errors: 'API is turned off' }, status: 403
+      end
 
       def decode_token(token)
         JWT.decode(token, AuctionCenter::Application.config.customization[:jwt_secret], true, { algorithm: 'HS256' })
