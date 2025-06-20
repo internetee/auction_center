@@ -27,6 +27,7 @@ default: &default
 
   mobile_api:
     enabled: false
+    minimum_version: '1.0.0'
 
   mailer:
     # Host to which links from emails should redirect to
