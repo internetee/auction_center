@@ -79,8 +79,10 @@ group :development do
   gem 'rubocop-shopify'
   gem 'ruby-lsp'
   # gem "rubocop-thread_safety"
+
   gem 'foreman'
   gem "hotwire-spark"
+
 end
 
 group :test do
@@ -92,3 +94,6 @@ group :test do
   gem 'spy'
   gem 'webmock'
 end
+
+gem 'devise-jwt'
+gem 'jsonapi-serializer'

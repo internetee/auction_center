@@ -31,10 +31,13 @@ class Auction < ApplicationRecord # rubocop:disable Metrics
   delegate :size, to: :offers, prefix: true
 
   def update_list_broadcast
+    return if blind?
+
     Auctions::UpdateListBroadcastService.call({ auction: self })
   end
 
   def update_offer_broadcast
+    return if blind?
     Auctions::UpdateOfferBroadcastService.call({ auction: self })
   end
 
