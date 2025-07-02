@@ -287,6 +287,25 @@ class InvoiceTest < ActiveSupport::TestCase
     assert_equal 0, invoice.total.to_f
   end
 
+  def test_total_should_change_if_vat_rate_is_changed
+    invoice = prefill_invoice
+    invoice.cents = 1000
+    invoice.vat_rate = 0.22
+
+    assert_equal 12.2, invoice.total.to_f
+
+    invoice.vat_rate = 0.24
+
+    assert_equal 12.4, invoice.total.to_f
+  end
+
+  def test_total_should_be_recalculated_if_vat_rate_is_nil
+    invoice = prefill_invoice
+    invoice.vat_rate = nil
+    invoice.country_code = 'LV'
+    assert_equal 12.1, invoice.total.to_f
+  end
+
   def invoices_total(invoices)
     invoices.map(&:total)
             .reduce(:+)
