@@ -158,6 +158,35 @@ class InvoiceTest < ActiveSupport::TestCase
     assert_equal(time, @payable_invoice.paid_at)
   end
 
+  def test_mark_as_paid_at_after_billing_profile_changed
+    time = Time.parse('2010-07-06 10:30 +0000').in_time_zone
+    billing_profile = @payable_invoice.billing_profile
+
+    assert_equal @payable_invoice.total.to_f, 10.0
+
+    billing_profile.update(vat_code: nil, alpha_two_country_code: 'EE') && @payable_invoice.reload && billing_profile.reload
+
+    @payable_invoice.mark_as_paid_at(time)
+    @payable_invoice.reload
+    assert_equal(12.2, @payable_invoice.total.to_f)
+    assert(@payable_invoice.paid?)
+  end
+
+  def test_mark_as_paid_after_estonian_vat_rate_setting_changed
+    time = Time.parse('2010-07-06 10:30 +0000').in_time_zone
+    billing_profile = @payable_invoice.billing_profile
+
+    assert_equal @payable_invoice.total.to_f, 10.0
+
+    billing_profile.update(vat_code: nil, alpha_two_country_code: 'EE') && @payable_invoice.reload && billing_profile.reload
+    Setting.find_by(code: :estonian_vat_rate).update(value: 0.24)
+
+    @payable_invoice.mark_as_paid_at(time)
+    @payable_invoice.reload
+    assert_equal(12.2, @payable_invoice.total.to_f)
+    assert(@payable_invoice.paid?)
+  end
+
   def test_mark_as_paid_at_with_payment_order
     time = Time.parse('2010-07-06 10:30 +0000')
     payment_order = payment_orders(:paid)
@@ -285,6 +314,25 @@ class InvoiceTest < ActiveSupport::TestCase
     invoice.cents = nil
     invoice.vat_rate = nil
     assert_equal 0, invoice.total.to_f
+  end
+
+  def test_total_should_change_if_vat_rate_is_changed
+    invoice = prefill_invoice
+    invoice.cents = 1000
+    invoice.vat_rate = 0.22
+
+    assert_equal 12.2, invoice.total.to_f
+
+    invoice.vat_rate = 0.24
+
+    assert_equal 12.4, invoice.total.to_f
+  end
+
+  def test_total_should_be_recalculated_if_vat_rate_is_nil
+    invoice = prefill_invoice
+    invoice.vat_rate = nil
+    invoice.country_code = 'LV'
+    assert_equal 12.1, invoice.total.to_f
   end
 
   def invoices_total(invoices)
