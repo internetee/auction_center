@@ -158,6 +158,35 @@ class InvoiceTest < ActiveSupport::TestCase
     assert_equal(time, @payable_invoice.paid_at)
   end
 
+  def test_mark_as_paid_at_after_billing_profile_changed
+    time = Time.parse('2010-07-06 10:30 +0000').in_time_zone
+    billing_profile = @payable_invoice.billing_profile
+
+    assert_equal @payable_invoice.total.to_f, 10.0
+
+    billing_profile.update(vat_code: nil, alpha_two_country_code: 'EE') && @payable_invoice.reload && billing_profile.reload
+
+    @payable_invoice.mark_as_paid_at(time)
+    @payable_invoice.reload
+    assert_equal(12.2, @payable_invoice.total.to_f)
+    assert(@payable_invoice.paid?)
+  end
+
+  def test_mark_as_paid_after_estonian_vat_rate_setting_changed
+    time = Time.parse('2010-07-06 10:30 +0000').in_time_zone
+    billing_profile = @payable_invoice.billing_profile
+
+    assert_equal @payable_invoice.total.to_f, 10.0
+
+    billing_profile.update(vat_code: nil, alpha_two_country_code: 'EE') && @payable_invoice.reload && billing_profile.reload
+    Setting.find_by(code: :estonian_vat_rate).update(value: 0.24)
+
+    @payable_invoice.mark_as_paid_at(time)
+    @payable_invoice.reload
+    assert_equal(12.2, @payable_invoice.total.to_f)
+    assert(@payable_invoice.paid?)
+  end
+
   def test_mark_as_paid_at_with_payment_order
     time = Time.parse('2010-07-06 10:30 +0000')
     payment_order = payment_orders(:paid)
