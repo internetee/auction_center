@@ -19,7 +19,7 @@ module Offer::Searchable
       # Get highest offer for each auction
       joins(:auction)
         .select('DISTINCT ON (auctions.id) offers.*, auctions.domain_name, auctions.platform, auctions.ends_at')
-        .where(user_id: user_id)
+        .where(user_id:)
         .order('auctions.id, offers.cents DESC')
         .search(params)
     end
