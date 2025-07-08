@@ -8,8 +8,9 @@ class Offers::OfferPartialTest < ActionView::TestCase
   test "offer partial does not include total column" do
     render partial: 'offers/offer', locals: { offer: @offer }
     
-    # Check that "Total with VAT" column is not present in the rendered HTML
-    assert_select "td", text: /#{@offer.total}/, count: 0
+    # Check that "Total with VAT" text is not present in the rendered HTML
+    assert_no_match /Total with VAT/i, @rendered
+    assert_no_match /#{I18n.t('offers.total')}/i, @rendered
   end
 
   test "offer partial includes required columns" do
