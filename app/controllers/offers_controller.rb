@@ -44,11 +44,7 @@ class OffersController < ApplicationController
 
   # GET /offers
   def index
-    # Get highest offer for each auction
-    offers = current_user.offers.joins(:auction)
-                         .select('DISTINCT ON (auctions.id) offers.*, auctions.domain_name, auctions.platform, auctions.ends_at')
-                         .order('auctions.id, offers.cents DESC')
-                         .search(params)
+    offers = Offer.highest_per_auction_for_user(current_user.id, params)
     @pagy, @offers = pagy(offers, items: params[:per_page] ||= 15)
   end
 
