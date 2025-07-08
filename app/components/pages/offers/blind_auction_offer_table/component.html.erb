@@ -4,7 +4,6 @@
           <td><h3><%= @offer.auction.domain_name  %></h3></td>
           <td><span data-auction-timezone-target="endtime"><%= @offer.auction.ends_at %></span></td>
           <td><%= t('offers.price_in_currency', price: @offer.price) %></td>
-          <td><%= t('offers.price_in_currency', price: @offer.total) %></td>
         </tr>
       <% end %>
     <% end %>
