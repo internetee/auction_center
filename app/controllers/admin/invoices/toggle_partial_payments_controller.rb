@@ -14,6 +14,10 @@ module Admin
         else
           redirect_to admin_invoice_path(@invoice), alert: t(:something_went_wrong), status: :see_other
         end
+      rescue StandardError => e
+        Rails.logger.error "Error toggling partial payments: #{e.message}"
+        puts "Error toggling partial payments: #{e.message}"
+        redirect_to admin_invoice_path(@invoice), alert: t(:something_went_wrong), status: :see_other
       end
 
       def set_invoice
