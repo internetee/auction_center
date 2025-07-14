@@ -7,6 +7,9 @@ module Admin
       sign_in @user
 
       @invoice = invoices(:payable)
+
+      stub_request(:patch, 'http://eis_billing_system:3000/api/v1/invoice/update_invoice_data')
+        .to_return(status: 200, body: @message.to_json, headers: {})
     end
 
     test "should toggle partial payments" do
