@@ -1,8 +1,9 @@
 module Admin
   class Invoices::TogglePartialPaymentsController < BaseController
     before_action :set_invoice
-    before_action :authorize_user
-    before_action :authorize_for_update
+
+    # order is important! before set invoice, otherwise @invoice wont be set
+    include ::Invoices::UpdateAuthorizable
 
     def update
       if @invoice.toggle(:partial_payments).save
@@ -18,14 +19,6 @@ module Admin
 
     def set_invoice 
       @invoice = Invoice.find(params[:invoice_id])
-    end
-
-    def authorize_user
-      authorize! :read, Invoice
-    end
-
-    def authorize_for_update
-      authorize! :update, @invoice
     end
   end
 end

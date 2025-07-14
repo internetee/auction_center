@@ -3,8 +3,9 @@ module Admin
     rescue_from Errors::InvoiceAlreadyPaid, with: :invoice_already_paid
 
     before_action :set_invoice
-    before_action :authorize_user
-    before_action :authorize_for_update
+    
+    # order is important! before set invoice, otherwise @invoice wont be set
+    include ::Invoices::UpdateAuthorizable
 
     def edit; end
 
@@ -28,14 +29,6 @@ module Admin
     def invoice_already_paid
       flash[:alert] = t('invoices.already_paid')
       redirect_to admin_invoice_path(@invoice), status: :see_other
-    end
-
-    def authorize_user
-      authorize! :read, Invoice
-    end
-
-    def authorize_for_update
-      authorize! :update, @invoice
     end
 
     def invoice_params
