@@ -3,7 +3,7 @@ et:
     header:
       open_portal: "Avalik portaal"
       auction_portal: "Oksjonikeskkond"
-      registrar_portal_url_html: '<a href= "https://registrar.internet.ee/et/login"><span>Registripidaja portaal</span></a>'
+      registrar_portal_url_html: '<a href= "https://www.internet.ee/registripidaja"><span>Registripidaja portaal</span></a>'
       registrar_portal_url: "https://registrar.internet.ee/et/login"
       registrar_portal: "Registripidaja portaal"
       registrant_portal: "Registreerija portaal"
