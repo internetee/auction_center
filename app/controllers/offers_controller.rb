@@ -44,7 +44,7 @@ class OffersController < ApplicationController
 
   # GET /offers
   def index
-    offers = Offer.highest_per_auction_for_user(current_user.id, params)
+    offers = Offer.highest_per_auction_for_user(current_user.id).search(params)
     @pagy, @offers = pagy(offers, items: params[:per_page] ||= 15)
   end
 

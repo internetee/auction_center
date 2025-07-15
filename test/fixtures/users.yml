@@ -63,3 +63,18 @@ signed_in_with_omniauth:
   uid: 'EE51007050665'
   provider: 'tara'
   reference_no: '1234567890'
+
+no_offers_user:
+  email: 'nooffers@auction.test'
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
+  alpha_two_country_code: 'EE'
+  identity_code: '51007050999'
+  given_names: 'No'
+  surname: 'Offers'
+  confirmed_at: <%= Time.parse("2010-07-05 00:18:00 UTC") %>
+  created_at: <%= Time.parse("2010-07-05 00:18:00 UTC") %>
+  mobile_phone: '+37255000003'
+  roles: ['participant']
+  terms_and_conditions_accepted_at: <%= Time.parse("2010-07-05 00:18:00 UTC") %>
+  uuid: '99999999-9999-4999-9999-999999999999'
+  locale: 'en'
