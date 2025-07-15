@@ -9,7 +9,6 @@ class Pages::Offers::OffersTable::ComponentTest < ViewComponent::TestCase
     component = Pages::Offers::OffersTable::Component.new(offers: @offers)
     render_inline(component)
     
-    # Check that "Total with VAT" column is not present in the rendered HTML
     assert_no_match /Total with VAT/i, rendered_content
     assert_no_match /#{I18n.t('offers.total')}/i, rendered_content
   end
@@ -18,7 +17,6 @@ class Pages::Offers::OffersTable::ComponentTest < ViewComponent::TestCase
     component = Pages::Offers::OffersTable::Component.new(offers: @offers)
     render_inline(component)
     
-    # Check that all required columns are present in the rendered HTML
     assert_match /#{I18n.t('auctions.domain_name')}/, rendered_content
     assert_match /#{I18n.t('auctions.type')}/, rendered_content
     assert_match /#{I18n.t('offers.show.your_last_offer')}/, rendered_content
@@ -31,7 +29,6 @@ class Pages::Offers::OffersTable::ComponentTest < ViewComponent::TestCase
     component = Pages::Offers::OffersTable::Component.new(offers: @offers)
     render_inline(component)
     
-    # Check that table and thead are present in the rendered HTML
     assert_match /<table/, rendered_content
     assert_match /<thead/, rendered_content
   end
