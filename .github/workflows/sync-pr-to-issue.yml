@@ -68,34 +68,57 @@ jobs:
             });
           }
 
-    - name: Ensure issue is added to the project
+    - name: Ensure issue is in the project and get itemId
       id: add-to-project
       uses: actions/github-script@v7
       with:
         github-token: ${{ secrets.PROJECTS_TOKEN }}
         result-encoding: string
         script: |
-          const mutation = `
-            mutation {
-              addProjectV2ItemById(input: {
-                projectId: "PVT_kwDOAHYFo84AnPvS",
-                contentId: "${{ steps.issue.outputs.node_id }}"
-              }) {
-                item {
-                  id
+          const projectId = "PVT_kwDOAHYFo84AnPvS";
+          const issueNodeId = "${{ steps.issue.outputs.node_id }}";
+
+          // Try to add the issue to the project
+          try {
+            const mutation = `
+              mutation {
+                addProjectV2ItemById(input: {
+                  projectId: "${projectId}",
+                  contentId: "${issueNodeId}"
+                }) {
+                  item {
+                    id
+                  }
                 }
               }
-            }
-          `;
-          try {
+            `;
             const result = await github.graphql(mutation);
             return result.addProjectV2ItemById.item.id;
           } catch (error) {
-            console.log("Issue likely already in project, continuing...");
-            return null;
+            console.log("Issue likely already in project. Attempting to retrieve item ID...");
+            const query = `
+              query {
+                node(id: "${issueNodeId}") {
+                  ... on Issue {
+                    projectItems(first: 10) {
+                      nodes {
+                        id
+                        project {
+                          id
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            `;
+            const response = await github.graphql(query);
+            const item = response.node.projectItems.nodes.find(i => i.project.id === projectId);
+            if (!item) throw new Error("Project item not found.");
+            return item.id;
           }
 
-    - name: Set status to "In Progress" (on PR open/edit)
+    - name: Set status to "In Progress"
       if: github.event.action != 'closed'
       uses: actions/github-script@v7
       with:
@@ -105,7 +128,7 @@ jobs:
             mutation {
               updateProjectV2ItemFieldValue(input: {
                 projectId: "PVT_kwDOAHYFo84AnPvS",
-                itemId: "${{ steps.issue.outputs.node_id }}",
+                itemId: "${{ steps.add-to-project.outputs.result }}",
                 fieldId: "PVTSSF_lADOAHYFo84AnPvSzgfAydE",
                 value: { singleSelectOptionId: "47fc9ee4" }
               }) {
@@ -115,7 +138,7 @@ jobs:
           `;
           await github.graphql(mutation);
 
-    - name: Set status to "Done" (on PR merged)
+    - name: Set status to "Done" if PR merged
       if: github.event.pull_request.merged == true
       uses: actions/github-script@v7
       with:
@@ -125,7 +148,7 @@ jobs:
             mutation {
               updateProjectV2ItemFieldValue(input: {
                 projectId: "PVT_kwDOAHYFo84AnPvS",
-                itemId: "${{ steps.issue.outputs.node_id }}",
+                itemId: "${{ steps.add-to-project.outputs.result }}",
                 fieldId: "PVTSSF_lADOAHYFo84AnPvSzgfAydE",
                 value: { singleSelectOptionId: "98236657" }
               }) {
