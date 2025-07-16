@@ -1,0 +1,120 @@
+name: Sync PR to Issue and Projects v2
+
+on:
+  pull_request:
+    types: [opened, reopened, edited, assigned, closed]
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: read
+
+    steps:
+    - name: Extract linked issue number from PR body
+      id: extract
+      run: |
+        ISSUE=$(echo "${{ github.event.pull_request.body }}" | grep -oE '#[0-9]+' | head -n1 | tr -d '#')
+        echo "issue_number=$ISSUE" >> $GITHUB_OUTPUT
+
+    - name: Get issue details (node_id and current assignees)
+      id: issue
+      if: steps.extract.outputs.issue_number != ''
+      uses: actions/github-script@v7
+      with:
+        result-encoding: json
+        script: |
+          const issue_number = Number('${{ steps.extract.outputs.issue_number }}');
+          const issue = await github.rest.issues.get({
+            ...context.repo,
+            issue_number
+          });
+          return {
+            node_id: issue.data.node_id,
+            assignees: issue.data.assignees.map(a => a.login)
+          };
+
+    - name: Add PR assignees to issue
+      if: steps.extract.outputs.issue_number != ''
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const prAssignees = context.payload.pull_request.assignees.map(a => a.login);
+          const issue_number = Number('${{ steps.extract.outputs.issue_number }}');
+          if (prAssignees.length > 0) {
+            await github.rest.issues.update({
+              ...context.repo,
+              issue_number,
+              assignees: prAssignees
+            });
+          }
+
+    - name: Ensure issue is added to the project
+      if: steps.extract.outputs.issue_number != ''
+      id: add-to-project
+      uses: actions/github-script@v7
+      with:
+        result-encoding: string
+        script: |
+          const mutation = `
+            mutation {
+              addProjectV2ItemById(input: {
+                projectId: "PVT_kwDOAHYFo84AnPvS",
+                contentId: "${{ steps.issue.outputs.node_id }}"
+              }) {
+                item {
+                  id
+                }
+              }
+            }
+          `;
+          try {
+            const result = await github.graphql(mutation);
+            return result.addProjectV2ItemById.item.id;
+          } catch (error) {
+            return null; // Already added
+          }
+
+    - name: Set status to "In Progress" (on PR open/edit)
+      if: |
+        steps.extract.outputs.issue_number != '' &&
+        github.event.action != 'closed'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const mutation = `
+            mutation {
+              updateProjectV2ItemFieldValue(input: {
+                projectId: "PVT_kwDOAHYFo84AnPvS",
+                itemId: "${{ steps.issue.outputs.node_id }}",
+                fieldId: "PVTSSF_lADOAHYFo84AnPvSzgfAydE",
+                value: { singleSelectOptionId: "47fc9ee4" }
+              }) {
+                projectV2Item { id }
+              }
+            }
+          `;
+          await github.graphql(mutation);
+
+    - name: Set status to "Done" (on PR merged)
+      if: |
+        steps.extract.outputs.issue_number != '' &&
+        github.event.pull_request.merged == true
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const mutation = `
+            mutation {
+              updateProjectV2ItemFieldValue(input: {
+                projectId: "PVT_kwDOAHYFo84AnPvS",
+                itemId: "${{ steps.issue.outputs.node_id }}",
+                fieldId: "PVTSSF_lADOAHYFo84AnPvSzgfAydE",
+                value: { singleSelectOptionId: "98236657" }
+              }) {
+                projectV2Item { id }
+              }
+            }
+          `;
+          await github.graphql(mutation);
