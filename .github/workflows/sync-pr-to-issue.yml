@@ -3,6 +3,7 @@ name: Sync PR to Issue and Projects v2
 on:
   pull_request:
     types: [opened, edited, reopened, assigned, closed]
+  workflow_dispatch:
 
 jobs:
   sync:
@@ -10,10 +11,10 @@ jobs:
 
     steps:
     - name: Install GitHub CLI
-      uses: actions/setup-gh@v3
-
-    - name: Authenticate GitHub CLI
-      run: gh auth login --with-token <<< "${{ secrets.PROJECTS_TOKEN }}"
+      run: |
+        sudo apt update
+        sudo apt install -y gh
+        echo "${{ secrets.PROJECTS_TOKEN }}" | gh auth login --with-token
 
     - name: Extract linked issue number
       id: extract
@@ -45,7 +46,7 @@ jobs:
         PROJECT_ID="PVT_kwDOAHYFo84AnPvS"
         NODE_ID="${{ steps.issue.outputs.node_id }}"
 
-        echo "Attempting to add issue to project..."
+        echo "Trying to add issue to project..."
         ADD=$(gh api graphql -f query='
           mutation($project: ID!, $content: ID!) {
             addProjectV2ItemById(input: {
