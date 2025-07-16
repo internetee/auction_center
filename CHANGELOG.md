@@ -1,3 +1,6 @@
+16.07.2025
+* fixed links to registrar portal https://github.com/internetee/auction_center/issues/1403
+
 03.07.2025
 * Fixed invoice total calculation https://github.com/internetee/auction_center/pull/1394
 * Fixed invoice vat calculation on payments https://github.com/internetee/auction_center/issues/1395
