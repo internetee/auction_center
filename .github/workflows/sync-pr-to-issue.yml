@@ -21,8 +21,8 @@ jobs:
         echo "issue_number=$ISSUE" >> $GITHUB_OUTPUT
 
     - name: Debug extracted issue number
-      run: echo "Issue number found: ${{ steps.extract.outputs.issue_number }}"
-      shell: bash
+      run: |
+        echo "Issue number found: ${{ steps.extract.outputs.issue_number }}"
 
     - name: Fail early if no issue number was found
       if: steps.extract.outputs.issue_number == ''
