@@ -1,4 +1,4 @@
-name: Sync PR with Issue and Projects v2
+name: Sync PR to Issue and Projects v2
 
 on:
   pull_request:
@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Set up GitHub CLI
+    - name: Install GitHub CLI
       uses: actions/setup-gh@v3
 
     - name: Authenticate GitHub CLI
@@ -36,18 +36,18 @@ jobs:
         ISSUE_NUMBER=${{ steps.extract.outputs.issue_number }}
         RESPONSE=$(gh api repos/${{ github.repository }}/issues/$ISSUE_NUMBER)
         NODE_ID=$(echo "$RESPONSE" | jq -r .node_id)
-        echo "node_id=$NODE_ID" >> $GITHUB_OUTPUT
         echo "Extracted node_id: $NODE_ID"
+        echo "node_id=$NODE_ID" >> $GITHUB_OUTPUT
 
-    - name: Get or create project item ID
+    - name: Ensure issue is in the project and get itemId
       id: project_item
       run: |
         PROJECT_ID="PVT_kwDOAHYFo84AnPvS"
-        ISSUE_NODE_ID=${{ steps.issue.outputs.node_id }}
+        NODE_ID="${{ steps.issue.outputs.node_id }}"
 
-        echo "Trying to add issue to project..."
+        echo "Attempting to add issue to project..."
         ADD=$(gh api graphql -f query='
-          mutation($project:ID!, $content:ID!) {
+          mutation($project: ID!, $content: ID!) {
             addProjectV2ItemById(input: {
               projectId: $project,
               contentId: $content
@@ -56,14 +56,14 @@ jobs:
                 id
               }
             }
-          }' -f project=$PROJECT_ID -f content=$ISSUE_NODE_ID || true)
+          }' -f project=$PROJECT_ID -f content=$NODE_ID || true)
 
-        ITEM_ID=$(echo "$ADD" | jq -r '.data.addProjectV2ItemById.item.id')
+        ITEM_ID=$(echo "$ADD" | jq -r '.data.addProjectV2ItemById.item.id // empty')
 
-        if [ "$ITEM_ID" == "null" ] || [ -z "$ITEM_ID" ]; then
-          echo "Already in project. Querying for existing item..."
+        if [ -z "$ITEM_ID" ]; then
+          echo "Already in project. Finding item ID..."
           FIND=$(gh api graphql -f query='
-            query($id:ID!) {
+            query($id: ID!) {
               node(id: $id) {
                 ... on Issue {
                   projectItems(first: 10) {
@@ -76,18 +76,18 @@ jobs:
                   }
                 }
               }
-            }' -f id=$ISSUE_NODE_ID)
+            }' -f id=$NODE_ID)
 
           ITEM_ID=$(echo "$FIND" | jq -r '.data.node.projectItems.nodes[] | select(.project.id == "'$PROJECT_ID'") | .id')
         fi
 
         if [ -z "$ITEM_ID" ]; then
-          echo "❌ Failed to get project item ID"
+          echo "❌ Could not determine project item ID"
           exit 1
         fi
 
+        echo "✅ Project item ID: $ITEM_ID"
         echo "item_id=$ITEM_ID" >> $GITHUB_OUTPUT
-        echo "Project item ID: $ITEM_ID"
 
     - name: Set status to In Progress
       if: github.event.action != 'closed'
@@ -109,7 +109,7 @@ jobs:
           -f field="PVTSSF_lADOAHYFo84AnPvSzgfAydE" \
           -f option="47fc9ee4"
 
-    - name: Set status to Done if PR is merged
+    - name: Set status to Done if PR merged
       if: github.event.pull_request.merged == true
       run: |
         echo "Setting status to Done..."
