@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'ostruct'
 
 class LHVConnectTransactionsIntegrationTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
