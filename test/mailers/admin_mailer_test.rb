@@ -1,5 +1,6 @@
 require 'test_helper'
 require 'support/mock_summary_report'
+require 'ostruct'
 
 class AdminMailerTest < ActionMailer::TestCase
   def setup

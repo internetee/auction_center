@@ -50,9 +50,6 @@ gem 'turbo-rails'
 gem 'valvat'
 gem 'view_component'
 gem 'webpush'
-gem 'mutex_m'
-gem 'nokogiri', '>= 1.18.8'
-gem 'rack', '~> 2.2.14'
 
 group :development, :test do
   gem 'brakeman'
@@ -72,7 +69,6 @@ group :development do
   gem 'listen', '>= 3.0.5', '< 3.10'
   gem 'ruby-lsp-rails'
   gem 'web-console', '>= 3.3.0'
-  gem 'foreman'
 
   # https://github.com/rubocop/rubocop-performance
   gem 'rubocop'
