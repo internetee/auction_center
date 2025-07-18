@@ -497,7 +497,7 @@ class OfferTest < ActiveSupport::TestCase
   end
 
   def test_highest_per_auction_for_user_returns_empty_relation_if_no_offers
-    user = users(:no_offers_user)
+    user = users(:signed_in_with_omniauth)
     result = Offer.highest_per_auction_for_user(user.id)
     assert result.is_a?(ActiveRecord::Relation)
     assert result.empty?
