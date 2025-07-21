@@ -88,7 +88,7 @@ et:
   created_at: "Kasutaja loodud"
   updated_at: "Muudetud"
 
-  is_invalid: "vale"
+  is_invalid: "on vigane"
   invalid: "vale"
   value_is_not_safe: |
     Nime ja aadressi andmetes on lubatud kasutada vaid inglise ja eesti tähestiku tähti, numbreid,
