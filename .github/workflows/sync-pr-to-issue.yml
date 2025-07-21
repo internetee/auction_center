@@ -13,7 +13,7 @@ jobs:
     - name: Install GitHub CLI
       run: |
         sudo apt update
-        sudo apt install -y gh
+        sudo apt install -y gh jq
         echo "${{ secrets.PROJECTS_TOKEN }}" | gh auth login --with-token
 
     - name: Extract linked issue number
@@ -114,38 +114,34 @@ jobs:
       if: github.event.action != 'closed'
       run: |
         echo "Setting status to In Progress..."
-        gh api graphql -f query='
-          mutation($project:ID!, $item:ID!, $field:ID!, $option:ID!) {
+        gh api graphql -f query="$(cat <<EOF
+          mutation {
             updateProjectV2ItemFieldValue(input: {
-              projectId: $project,
-              itemId: $item,
-              fieldId: $field,
-              value: { singleSelectOptionId: $option }
+              projectId: "PVT_kwDOAHYFo84AnPvS",
+              itemId: "${{ steps.project_item.outputs.item_id }}",
+              fieldId: "PVTSSF_lADOAHYFo84AnPvSzgfAydE",
+              value: { singleSelectOptionId: "47fc9ee4" }
             }) {
               projectV2Item { id }
             }
-          }' \
-          -f project=@PVT_kwDOAHYFo84AnPvS \
-          -f item=@${{ steps.project_item.outputs.item_id }} \
-          -f field=@PVTSSF_lADOAHYFo84AnPvSzgfAydE \
-          -f option=@47fc9ee4
+          }
+        EOF
+        )"
 
     - name: Set status to Done if PR merged
       if: github.event.pull_request.merged == true
       run: |
         echo "Setting status to Done..."
-        gh api graphql -f query='
-          mutation($project:ID!, $item:ID!, $field:ID!, $option:ID!) {
+        gh api graphql -f query="$(cat <<EOF
+          mutation {
             updateProjectV2ItemFieldValue(input: {
-              projectId: $project,
-              itemId: $item,
-              fieldId: $field,
-              value: { singleSelectOptionId: $option }
+              projectId: "PVT_kwDOAHYFo84AnPvS",
+              itemId: "${{ steps.project_item.outputs.item_id }}",
+              fieldId: "PVTSSF_lADOAHYFo84AnPvSzgfAydE",
+              value: { singleSelectOptionId: "98236657" }
             }) {
               projectV2Item { id }
             }
-          }' \
-          -f project=@PVT_kwDOAHYFo84AnPvS \
-          -f item=@${{ steps.project_item.outputs.item_id }} \
-          -f field=@PVTSSF_lADOAHYFo84AnPvSzgfAydE \
-          -f option=@98236657
+          }
+        EOF
+        )"
