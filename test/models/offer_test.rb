@@ -379,4 +379,127 @@ class OfferTest < ActiveSupport::TestCase
 
     assert_equal ends_at, @valid_auction.ends_at
   end
+
+  def test_highest_per_auction_for_user_returns_only_highest_offer_per_auction
+    auction1 = Auction.create!(
+      domain_name: 'test-auction-1.test',
+      starts_at: Time.current,
+      ends_at: Time.current + 1.day,
+      uuid: SecureRandom.uuid
+    )
+    
+    auction2 = Auction.create!(
+      domain_name: 'test-auction-2.test',
+      starts_at: Time.current,
+      ends_at: Time.current + 1.day,
+      uuid: SecureRandom.uuid
+    )
+    
+    offer1_low = Offer.create!(
+      auction: auction1,
+      user: @user,
+      cents: 1000,
+      billing_profile: @user.billing_profiles.first
+    )
+    
+    offer1_high = Offer.create!(
+      auction: auction1,
+      user: @user,
+      cents: 2000,
+      billing_profile: @user.billing_profiles.first
+    )
+    
+    offer2 = Offer.create!(
+      auction: auction2,
+      user: @user,
+      cents: 1500,
+      billing_profile: @user.billing_profiles.first
+    )
+    
+    result = Offer.highest_per_auction_for_user(@user.id)
+    
+    created_offers = result.select { |offer| [offer1_low.id, offer1_high.id, offer2.id].include?(offer.id) }
+    
+    assert_equal 2, created_offers.length
+    
+    auction1_offer = created_offers.find { |offer| offer.auction_id == auction1.id }
+    assert_equal offer1_high.id, auction1_offer.id
+    assert_equal 2000, auction1_offer.cents
+    
+    auction2_offer = created_offers.find { |offer| offer.auction_id == auction2.id }
+    assert_equal offer2.id, auction2_offer.id
+    assert_equal 1500, auction2_offer.cents
+  end
+
+  def test_highest_per_auction_for_user_includes_auction_attributes
+    auction = auctions(:valid_without_offers)
+    
+    offer = Offer.create!(
+      auction: auction,
+      user: @user,
+      cents: 1000,
+      billing_profile: @user.billing_profiles.first
+    )
+    
+    result = Offer.highest_per_auction_for_user(@user.id)
+    
+    result_offer = result.find { |r| r.id == offer.id }
+    assert_not_nil result_offer
+    
+    assert_equal auction.domain_name, result_offer.domain_name
+    assert_equal auction.platform, result_offer.platform
+    assert_equal auction.ends_at, result_offer.ends_at
+  end
+
+  def test_highest_per_auction_for_user_filters_by_user_id
+    auction = auctions(:valid_without_offers)
+    
+    offer_user1 = Offer.create!(
+      auction: auction,
+      user: @user,
+      cents: 1000,
+      billing_profile: @user.billing_profiles.first
+    )
+    
+    offer_user2 = Offer.create!(
+      auction: auction,
+      user: @second_user,
+      cents: 2000,
+      billing_profile: @second_user.billing_profiles.first
+    )
+    
+    result_user1 = Offer.highest_per_auction_for_user(@user.id)
+    user1_offer = result_user1.find { |r| r.id == offer_user1.id }
+    assert_not_nil user1_offer
+    assert_equal @user.id, user1_offer.user_id
+    
+    result_user2 = Offer.highest_per_auction_for_user(@second_user.id)
+    user2_offer = result_user2.find { |r| r.id == offer_user2.id }
+    assert_not_nil user2_offer
+    assert_equal @second_user.id, user2_offer.user_id
+  end
+
+  def test_highest_per_auction_for_user_with_search_params
+    auction = auctions(:valid_without_offers)
+    
+    offer = Offer.create!(
+      auction: auction,
+      user: @user,
+      cents: 1000,
+      billing_profile: @user.billing_profiles.first
+    )
+    
+    result = Offer.highest_per_auction_for_user(@user.id).search({ sort_by: 'cents', sort_direction: 'desc' })
+    
+    result_offer = result.find { |r| r.id == offer.id }
+    assert_not_nil result_offer
+    assert_equal offer.id, result_offer.id
+  end
+
+  def test_highest_per_auction_for_user_returns_empty_relation_if_no_offers
+    user = users(:signed_in_with_omniauth)
+    result = Offer.highest_per_auction_for_user(user.id)
+    assert result.is_a?(ActiveRecord::Relation)
+    assert result.empty?
+  end
 end

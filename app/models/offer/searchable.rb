@@ -14,5 +14,12 @@ module Offer::Searchable
 
       includes(:auction).order("#{sort_by} #{sort_direction}")
     end
+
+    def highest_per_auction_for_user(user_id)
+      joins(:auction)
+        .select('DISTINCT ON (auctions.id) offers.*, auctions.domain_name, auctions.platform, auctions.ends_at')
+        .where(user_id: user_id)
+        .order('auctions.id, offers.cents DESC')
+    end
   end
 end
