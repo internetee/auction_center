@@ -40,6 +40,26 @@ jobs:
         echo "Extracted node_id: $NODE_ID"
         echo "node_id=$NODE_ID" >> $GITHUB_OUTPUT
 
+    - name: Sync assignees from PR to issue
+      run: |
+        ISSUE_NUMBER=${{ steps.extract.outputs.issue_number }}
+        PR_NUMBER=${{ github.event.pull_request.number }}
+        
+        echo "Syncing assignees from PR #$PR_NUMBER to issue #$ISSUE_NUMBER..."
+
+        ASSIGNEES=$(gh api repos/${{ github.repository }}/pulls/$PR_NUMBER | jq -r '.assignees[].login' | tr '\n' ',' | sed 's/,$//')
+
+        if [ -z "$ASSIGNEES" ]; then
+          echo "No assignees found on the PR."
+        else
+          echo "Assigning: $ASSIGNEES"
+          gh api repos/${{ github.repository }}/issues/$ISSUE_NUMBER \
+            -X PATCH \
+            -F "assignees[]=$ASSIGNEES"
+        fi
+      env:
+        GH_TOKEN: ${{ secrets.PROJECTS_TOKEN }}
+
     - name: Ensure issue is in the project and get itemId
       id: project_item
       run: |
@@ -105,10 +125,10 @@ jobs:
               projectV2Item { id }
             }
           }' \
-          -f project="PVT_kwDOAHYFo84AnPvS" \
-          -f item="${{ steps.project_item.outputs.item_id }}" \
-          -f field="PVTSSF_lADOAHYFo84AnPvSzgfAydE" \
-          -f option="47fc9ee4"
+          -f project=@PVT_kwDOAHYFo84AnPvS \
+          -f item=@${{ steps.project_item.outputs.item_id }} \
+          -f field=@PVTSSF_lADOAHYFo84AnPvSzgfAydE \
+          -f option=@47fc9ee4
 
     - name: Set status to Done if PR merged
       if: github.event.pull_request.merged == true
@@ -125,7 +145,7 @@ jobs:
               projectV2Item { id }
             }
           }' \
-          -f project="PVT_kwDOAHYFo84AnPvS" \
-          -f item="${{ steps.project_item.outputs.item_id }}" \
-          -f field="PVTSSF_lADOAHYFo84AnPvSzgfAydE" \
-          -f option="98236657"
+          -f project=@PVT_kwDOAHYFo84AnPvS \
+          -f item=@${{ steps.project_item.outputs.item_id }} \
+          -f field=@PVTSSF_lADOAHYFo84AnPvSzgfAydE \
+          -f option=@98236657
