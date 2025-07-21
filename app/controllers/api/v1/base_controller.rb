@@ -5,6 +5,8 @@ module Api
       before_action :check_for_authentication
       respond_to :json
 
+      before_action :set_locale
+
       def check_for_authentication
         if token = extract_token_from_header
           begin
@@ -42,6 +44,12 @@ module Api
         return nil unless header
 
         header.split(' ').last if header.start_with?('Bearer ')
+      end
+
+      def set_locale
+        return unless user_signed_in?
+
+        I18n.locale = current_user.locale || I18n.default_locale
       end
     end
   end
