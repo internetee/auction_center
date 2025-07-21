@@ -1,4 +1,4 @@
-name: Sync PR to Issue and Projects v2
+name: Sync PR to Issue and Projects v2 (No GH CLI)
 
 on:
   pull_request:
@@ -8,140 +8,132 @@ on:
 jobs:
   sync:
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: read
+      issues: write
     steps:
-    - name: Install GitHub CLI
-      run: |
-        sudo apt update
-        sudo apt install -y gh jq
-        echo "${{ secrets.PROJECTS_TOKEN }}" | gh auth login --with-token
-
-    - name: Extract linked issue number
+    - name: Extract linked issue number from PR body
       id: extract
       run: |
-        echo "PR body:"
-        echo "${{ github.event.pull_request.body }}"
         ISSUE=$(echo "${{ github.event.pull_request.body }}" | grep -oE '#[0-9]+' | head -n1 | tr -d '#')
-        echo "Extracted issue: $ISSUE"
         echo "issue_number=$ISSUE" >> $GITHUB_OUTPUT
 
-    - name: Fail early if no issue number was found
+    - name: Stop if no issue number found
       if: steps.extract.outputs.issue_number == ''
       run: |
-        echo "❌ No issue number found. Make sure PR body includes e.g. 'Fixes #123'"
+        echo "❌ No issue number found in PR body"
         exit 1
 
-    - name: Get issue node_id
-      id: issue
-      run: |
-        ISSUE_NUMBER=${{ steps.extract.outputs.issue_number }}
-        RESPONSE=$(gh api repos/${{ github.repository }}/issues/$ISSUE_NUMBER)
-        NODE_ID=$(echo "$RESPONSE" | jq -r .node_id)
-        echo "Extracted node_id: $NODE_ID"
-        echo "node_id=$NODE_ID" >> $GITHUB_OUTPUT
+    - name: Get issue node ID
+      id: issue_node
+      uses: actions/github-script@v7
+      with:
+        github-token: ${{ secrets.PROJECTS_TOKEN }}
+        script: |
+          const issue = await github.rest.issues.get({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: parseInt('${{ steps.extract.outputs.issue_number }}'),
+          });
+          core.setOutput("node_id", issue.data.node_id);
 
-    - name: Sync assignees from PR to issue
-      run: |
-        ISSUE_NUMBER=${{ steps.extract.outputs.issue_number }}
-        PR_NUMBER=${{ github.event.pull_request.number }}
-        
-        echo "Syncing assignees from PR #$PR_NUMBER to issue #$ISSUE_NUMBER..."
+    - name: Sync assignee from PR to issue
+      uses: actions/github-script@v7
+      with:
+        github-token: ${{ secrets.PROJECTS_TOKEN }}
+        script: |
+          const prAssignees = context.payload.pull_request.assignees.map(a => a.login);
+          if (prAssignees.length === 0) {
+            console.log("No assignees to sync.");
+            return;
+          }
+          await github.rest.issues.addAssignees({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: parseInt('${{ steps.extract.outputs.issue_number }}'),
+            assignees: prAssignees,
+          });
 
-        ASSIGNEES=$(gh api repos/${{ github.repository }}/pulls/$PR_NUMBER | jq -r '.assignees[].login' | tr '\n' ',' | sed 's/,$//')
-
-        if [ -z "$ASSIGNEES" ]; then
-          echo "No assignees found on the PR."
-        else
-          echo "Assigning: $ASSIGNEES"
-          gh api repos/${{ github.repository }}/issues/$ISSUE_NUMBER \
-            -X PATCH \
-            -F "assignees[]=$ASSIGNEES"
-        fi
-      env:
-        GH_TOKEN: ${{ secrets.PROJECTS_TOKEN }}
-
-    - name: Ensure issue is in the project and get itemId
+    - name: Add issue to project if not present
       id: project_item
-      run: |
-        PROJECT_ID="PVT_kwDOAHYFo84AnPvS"
-        NODE_ID="${{ steps.issue.outputs.node_id }}"
+      uses: actions/github-script@v7
+      with:
+        github-token: ${{ secrets.PROJECTS_TOKEN }}
+        script: |
+          const projectId = "PVT_kwDOAHYFo84AnPvS";
+          const contentId = "${{ steps.issue_node.outputs.node_id }}";
 
-        echo "Trying to add issue to project..."
-        ADD=$(gh api graphql -f query='
-          mutation($project: ID!, $content: ID!) {
-            addProjectV2ItemById(input: {
-              projectId: $project,
-              contentId: $content
-            }) {
-              item {
-                id
+          try {
+            const result = await github.graphql(`
+              mutation {
+                addProjectV2ItemById(input: {
+                  projectId: "${projectId}",
+                  contentId: "${contentId}"
+                }) {
+                  item {
+                    id
+                  }
+                }
               }
-            }
-          }' -f project=$PROJECT_ID -f content=$NODE_ID || true)
-
-        ITEM_ID=$(echo "$ADD" | jq -r '.data.addProjectV2ItemById.item.id // empty')
-
-        if [ -z "$ITEM_ID" ]; then
-          echo "Already in project. Finding item ID..."
-          FIND=$(gh api graphql -f query='
-            query($id: ID!) {
-              node(id: $id) {
-                ... on Issue {
-                  projectItems(first: 10) {
-                    nodes {
-                      id
-                      project {
+            `);
+            core.setOutput("item_id", result.addProjectV2ItemById.item.id);
+          } catch (e) {
+            console.log("Probably already in project. Looking up item ID...");
+            const result = await github.graphql(`
+              query {
+                node(id: "${contentId}") {
+                  ... on Issue {
+                    projectItems(first: 10) {
+                      nodes {
                         id
+                        project { id }
                       }
                     }
                   }
                 }
               }
-            }' -f id=$NODE_ID)
-
-          ITEM_ID=$(echo "$FIND" | jq -r '.data.node.projectItems.nodes[] | select(.project.id == "'$PROJECT_ID'") | .id')
-        fi
-
-        if [ -z "$ITEM_ID" ]; then
-          echo "❌ Could not determine project item ID"
-          exit 1
-        fi
-
-        echo "✅ Project item ID: $ITEM_ID"
-        echo "item_id=$ITEM_ID" >> $GITHUB_OUTPUT
+            `);
+            const item = result.node.projectItems.nodes.find(p => p.project.id === projectId);
+            if (!item) {
+              throw new Error("❌ Could not find project item");
+            }
+            core.setOutput("item_id", item.id);
+          }
 
     - name: Set status to In Progress
       if: github.event.action != 'closed'
-      run: |
-        echo "Setting status to In Progress..."
-        gh api graphql -f query="$(cat <<EOF
-          mutation {
-            updateProjectV2ItemFieldValue(input: {
-              projectId: "PVT_kwDOAHYFo84AnPvS",
-              itemId: "${{ steps.project_item.outputs.item_id }}",
-              fieldId: "PVTSSF_lADOAHYFo84AnPvSzgfAydE",
-              value: { singleSelectOptionId: "47fc9ee4" }
-            }) {
-              projectV2Item { id }
+      uses: actions/github-script@v7
+      with:
+        github-token: ${{ secrets.PROJECTS_TOKEN }}
+        script: |
+          await github.graphql(`
+            mutation {
+              updateProjectV2ItemFieldValue(input: {
+                projectId: "PVT_kwDOAHYFo84AnPvS",
+                itemId: "${{ steps.project_item.outputs.item_id }}",
+                fieldId: "PVTSSF_lADOAHYFo84AnPvSzgfAydE",
+                value: { singleSelectOptionId: "47fc9ee4" }
+              }) {
+                projectV2Item { id }
+              }
             }
-          }
-        EOF
-        )"
+          `);
 
     - name: Set status to Done if PR merged
       if: github.event.pull_request.merged == true
-      run: |
-        echo "Setting status to Done..."
-        gh api graphql -f query="$(cat <<EOF
-          mutation {
-            updateProjectV2ItemFieldValue(input: {
-              projectId: "PVT_kwDOAHYFo84AnPvS",
-              itemId: "${{ steps.project_item.outputs.item_id }}",
-              fieldId: "PVTSSF_lADOAHYFo84AnPvSzgfAydE",
-              value: { singleSelectOptionId: "98236657" }
-            }) {
-              projectV2Item { id }
+      uses: actions/github-script@v7
+      with:
+        github-token: ${{ secrets.PROJECTS_TOKEN }}
+        script: |
+          await github.graphql(`
+            mutation {
+              updateProjectV2ItemFieldValue(input: {
+                projectId: "PVT_kwDOAHYFo84AnPvS",
+                itemId: "${{ steps.project_item.outputs.item_id }}",
+                fieldId: "PVTSSF_lADOAHYFo84AnPvSzgfAydE",
+                value: { singleSelectOptionId: "98236657" }
+              }) {
+                projectV2Item { id }
+              }
             }
-          }
-        EOF
-        )"
+          `);
