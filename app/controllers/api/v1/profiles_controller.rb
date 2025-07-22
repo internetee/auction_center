@@ -17,7 +17,7 @@ module Api
 
       def create
         user = initialize_user(params_for_create)
-        set_locale(user)
+        set_locale_for user
 
         if user.save
           sign_in(User, user)
@@ -30,7 +30,7 @@ module Api
 
       private
 
-      def initialize_user(user)
+      def initialize_user(params_for_create)
         User.new(params_for_create)
       end
 
@@ -40,7 +40,7 @@ module Api
                                      :locale, :daily_summary, :identity_code)
       end
       
-      def set_locale(user)
+      def set_locale_for(user)
         I18n.locale = user.locale || I18n.default_locale
       end
 
