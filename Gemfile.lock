@@ -184,14 +184,16 @@ GEM
     event_stream_parser (1.0.0)
     faker (3.2.0)
       i18n (>= 1.8.11, < 2)
-    faraday (2.9.0)
-      faraday-net_http (>= 2.0, < 3.2)
+    faraday (2.13.3)
+      faraday-net_http (>= 2.0, < 3.5)
+      json
+      logger
     faraday-follow_redirects (0.3.0)
       faraday (>= 1, < 3)
-    faraday-multipart (1.0.4)
-      multipart-post (~> 2)
-    faraday-net_http (3.1.0)
-      net-http
+    faraday-multipart (1.1.1)
+      multipart-post (~> 2.0)
+    faraday-net_http (3.4.1)
+      net-http (>= 0.5.0)
     fattr (2.4.0)
     ferrum (0.13)
       addressable (~> 2.5)
@@ -311,7 +313,7 @@ GEM
     mustermann (3.0.3)
       ruby2_keywords (~> 0.0.1)
     mutex_m (0.3.0)
-    net-http (0.4.1)
+    net-http (0.6.0)
       uri
     net-imap (0.5.8)
       date
@@ -489,7 +491,7 @@ GEM
       rails (>= 6.0)
       ruby-lsp (>= 0.6.2, < 0.8.0)
       sorbet-runtime (>= 0.5.9897)
-    ruby-openai (7.3.1)
+    ruby-openai (8.1.0)
       event_stream_parser (>= 0.3.0, < 2.0.0)
       faraday (>= 1)
       faraday-multipart (>= 1)
@@ -652,7 +654,7 @@ DEPENDENCIES
   rubocop-shopify
   ruby-lsp
   ruby-lsp-rails
-  ruby-openai (~> 7.3)
+  ruby-openai (~> 8.0)
   scenic
   simplecov
   simplecov-json
