@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'ostruct'
 
 class ResultCreationJobTest < ActiveJob::TestCase
   def setup
