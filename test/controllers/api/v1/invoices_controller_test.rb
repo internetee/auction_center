@@ -27,7 +27,7 @@ class Api::V1::InvoicesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should get one off payment' do
-    get api_v1_invoices_one_off_payment_url(id: @user.invoices.first.id),
+    get api_v1_one_off_payment_path(id: @user.invoices.first.uuid),
         headers: { 'HTTP_AUTHORIZATION' => "Bearer #{@token}" },
         as: :json
 
