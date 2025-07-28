@@ -4,6 +4,7 @@ module Api
       respond_to :json
 
       skip_before_action :verify_authenticity_token
+      before_action :set_auction, only: [:create]
 
       def index
         offers = Offer.includes(:auction)
@@ -18,47 +19,62 @@ module Api
         )
       end
 
-      # rubocop:disable Metrics/AbcSize
-      # rubocop:disable Metrics/MethodLength
       def create
-        auction = Auction.find_by(uuid: params[:bid][:auction_id])
-        return if auction.nil?
+        @offer = initialize_or_assign_price_to_offer
 
-        billing_profile = current_user.billing_profiles.find_by(id: params[:bid][:billing_profile_id])
+        if @offer.save
+          process_english_auction if @auction.english?
+          render json: { status: 'ok' }, status: :ok
+        else
+          Rails.logger.info "Offer errors (details): #{ @offer.errors.details }"
+          render json: { status: 'error', errors: @offer.errors.full_messages }, status: :unprocessable_entity
+        end
+      end
 
-        offer = auction.offer_from_user(current_user.id)
+      private
+
+      def set_auction
+        @auction = Auction.find_by(uuid: offer_params[:auction_id])
+        return if @auction.present?
+
+        render json: { status: 'not_found', errors: "Auction with #{offer_params[:auction_id]} uuid not found" }, status: :not_found
+      end
+
+      def process_english_auction
+        call_broadcast
+        @auction.update_minimum_bid_step(offer_params[:price].to_f)
+        AutobiderService.autobid(@auction)
+        @auction.update_ends_at(@offer)
+      end
+
+      def call_broadcast
+        Auctions::UpdateListBroadcastService.call({ auction: @auction })
+      end
+
+      def initialize_or_assign_price_to_offer
+        offer = @auction.offer_from_user(current_user.id)
 
         if offer.nil?
           offer = Offer.new(
-            auction:,
+            auction: @auction,
             user: current_user,
-            cents: Money.from_amount(params[:bid][:price]).cents,
+            cents: Money.from_amount(offer_params[:price]).cents,
             billing_profile:,
-            username: auction.english? ? Username::GenerateUsernameService.new.call : nil
+            username: @auction.english? ? Username::GenerateUsernameService.new.call : nil
           )
         else
-          offer.cents = Money.from_amount(params[:bid][:price]).cents
+          offer.cents = Money.from_amount(offer_params[:price]).cents
         end
 
-        if offer.save
-          if auction.english?
-            Auctions::UpdateListBroadcastService.call({ auction: })
+        offer
+      end
 
-            auction.update_minimum_bid_step(params[:bid][:price].to_f)
+      def billing_profile
+        current_user.billing_profiles.find_by(id: offer_params[:billing_profile_id])
+      end
 
-            AutobiderService.autobid(auction)
-            auction.update_ends_at(offer)
-          end
-
-          render json: { status: 'ok' }, status: :ok
-        else
-
-          Rails.logger.info('----')
-          Rails.logger.info(offer.errors.inspect)
-          Rails.logger.info('----')
-
-          render json: { status: 'error' }, status: :unprocessable_entity
-        end
+      def offer_params
+        params.require(:bid).permit(:auction_id, :price, :billing_profile_id)
       end
     end
   end

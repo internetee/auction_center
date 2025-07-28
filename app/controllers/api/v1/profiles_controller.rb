@@ -20,7 +20,7 @@ module Api
         set_locale_for user
 
         if user.save
-          sign_in(User, user)
+          # sign_in(User, user)
           render json: user, status: :created
         else
           Rails.logger.info user.errors.inspect
