@@ -15,9 +15,6 @@ module Api
         else
           render json: { status: 'error', message: @autobider.errors.full_messages.join(', ') }, status: :unprocessable_entity
         end
-      rescue StandardError => e
-        Rails.logger.error "Error: #{e.message}"
-        render json: { status: 'error', message: e.message }, status: :unprocessable_entity
       end
 
       private

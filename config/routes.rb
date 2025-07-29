@@ -20,8 +20,11 @@ Rails.application.routes.draw do
         end
       end
       resources :invoices, only: :index
-      post 'pay_deposit', to: 'invoices#pay_deposit'
-      post 'one_off_payment', to: 'invoices#one_off_payment'
+
+      scope module: :invoices do
+        resource :pay_deposits, only: :create
+        resource :oneoff_payments, only: :create
+      end
 
       resources :billing_profiles, only: %i[index update create destroy]
     end

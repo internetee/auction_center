@@ -8,6 +8,7 @@ class Api::V1::BillingProfilesControllerTest < ActionDispatch::IntegrationTest
     @user = users(:participant)
     @jwt_secret = Rails.application.config.customization[:jwt_secret] || 'jwt_secret'
     @token = JWT.encode({ sub: @user.id }, @jwt_secret, 'HS256')
+    stub_billing_api_calls
   end
 
   test 'should create billing profile' do
@@ -49,5 +50,10 @@ class Api::V1::BillingProfilesControllerTest < ActionDispatch::IntegrationTest
     assert_response :unprocessable_entity
     json = JSON.parse(response.body)
     assert_equal 'Vat code is already taken', json['errors']['vat_code'][0]
+  end
+
+  def stub_billing_api_calls
+    stub_request(:patch, 'http://eis_billing_system:3000/api/v1/invoice/update_invoice_data')
+      .to_return(status: 200, body: { invoice_number: '1234567890', transaction_amount: 100 }.to_json, headers: {})
   end
 end
