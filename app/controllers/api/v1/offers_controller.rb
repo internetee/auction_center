@@ -37,7 +37,7 @@ module Api
         @auction = Auction.find_by(uuid: offer_params[:auction_id])
         return if @auction.present?
 
-        render json: { status: 'not_found', errors: "Auction with #{offer_params[:auction_id]} uuid not found" }, status: :not_found
+        render_error("Auction with #{offer_params[:auction_id]} uuid not found")
       end
 
       def process_english_auction

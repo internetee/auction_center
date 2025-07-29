@@ -10,7 +10,7 @@ module Api
         message = Rails.configuration.customization[:mobile_secret_word]
 
         unless valid_hmac?(received_hmac, message)
-          render json: { error: 'Invalid HMAC' }, status: :unauthorized
+          render_error('Invalid HMAC')
           return
         end
 

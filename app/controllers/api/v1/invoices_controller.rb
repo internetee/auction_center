@@ -4,8 +4,6 @@ module Api
       respond_to :json
 
       skip_before_action :verify_authenticity_token
-      before_action :set_auction, only: [:pay_deposit]
-      before_action :set_invoice, only: [:one_off_payment]
 
       # rubocop:disable Metrics/AbcSize
       def index
@@ -33,43 +31,7 @@ module Api
         }
       end
 
-      def one_off_payment
-        render json: { errors: 'Invoice not found' } and return unless @invoice
-
-        response = EisBilling::OneoffService.call(invoice_number: @invoice.number.to_s,
-                                                  customer_url: mobile_payments_deposit_callback_url,
-                                                  amount: @invoice.amount)
-
-        if response.result?
-          render json: { oneoff_redirect_link: response.instance['oneoff_redirect_link'] }
-        else
-          render json: { errors: response.errors }
-        end
-      end
-
-      def pay_deposit
-        render json: { errors: 'Auction not found' } and return unless @auction
-
-        description = "auction_deposit #{@auction.domain_name}, user_uuid #{current_user.uuid}, " \
-          "user_email #{current_user.email}"
-        response = EisBilling::PayDepositService.call(amount: @auction.deposit,
-                                                      customer_url: mobile_payments_deposit_callback_url, description:)
-        if response.result?
-          render json: { oneoff_redirect_link: response.instance['oneoff_redirect_link'] }
-        else
-          render json: { errors: response.errors }
-        end
-      end
-
       private
-
-      def set_invoice
-        @invoice = Invoice.find_by(uuid: params[:id])
-      end
-
-      def set_auction
-        @auction = Auction.find_by(uuid: params[:id])
-      end
 
       def invoices_list_by_status(status)
         Invoice.accessible_by(current_ability)
