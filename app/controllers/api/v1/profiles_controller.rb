@@ -35,7 +35,7 @@ module Api
       end
 
       def params_for_create
-        params.require(:user).permit(:email, :password, :password_confirmation, :country_code,
+        params.require(:user).permit(:email, :password, :password_confirmation, :country_code, :alpha_two_country_code,
                                      :given_names, :surname, :mobile_phone, :accepts_terms_and_conditions,
                                      :locale, :daily_summary, :identity_code)
       end
