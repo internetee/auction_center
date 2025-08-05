@@ -141,13 +141,9 @@ jobs:
           
           bundle exec ruby check_format.rb
 
-      - name: Install Qlty CLI
-        run: |
-          curl -fsSL https://get.qlty.sh | bash -s -- -b /usr/local/bin
-          qlty --version  
-
       - name: Upload coverage to Qlty
         if: always()
-        env:
-          QLTY_TOKEN: ${{ secrets.QLTY_TOKEN }}
-        run: qlty coverage upload coverage/.resultset.json
+        uses: qlty-sh/cli-action@v1
+        with:
+          token: ${{ secrets.QLTY_TOKEN }}
+          command: coverage upload coverage/.resultset.json
