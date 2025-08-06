@@ -141,9 +141,10 @@ jobs:
           
           bundle exec ruby check_format.rb
 
-      - name: Upload coverage to Qlty
+      - name: Upload coverage artifact
         if: always()
-        uses: qlty-sh/cli-action@v1
+        uses: actions/upload-artifact@v4
         with:
-          token: ${{ secrets.QLTY_TOKEN }}
-          command: coverage upload coverage/.resultset.json
+          name: coverage
+          path: coverage/
+          retention-days: 14
