@@ -92,9 +92,9 @@ package_file = "Gemfile"
 package_filters = ["rubocop"]
 
 [[plugin.fetch]]
-url = "https://raw.githubusercontent.com/internetee/style-guide/master/.rubocop-ruby.yml"
+url = "https://raw.githubusercontent.com/internetee/style-guide/master/.rubocop-ruby-modern.yml"
 path = ".rubocop-ruby.yml"
 
 [[plugin.fetch]]
-url = "https://raw.githubusercontent.com/internetee/style-guide/master/.rubocop-rails.yml"
+url = "https://raw.githubusercontent.com/internetee/style-guide/master/.rubocop-rails-modern.yml"
 path = ".rubocop.yml"
