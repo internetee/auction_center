@@ -1,3 +1,14 @@
+16.07.2025
+* fixed links to registrar portal https://github.com/internetee/auction_center/issues/1403
+
+03.07.2025
+* Fixed invoice total calculation https://github.com/internetee/auction_center/pull/1394
+* Fixed invoice vat calculation on payments https://github.com/internetee/auction_center/issues/1395
+* Hid english auction related features https://github.com/internetee/auction_center/issues/1390
+
+13.05.2025
+* Finished auctions list best bid instead of last bid in admin https://github.com/internetee/auction_center/issues/1363
+
 07.05.2025
 * Ruby update to 3.4.1 and Rails to 7.2.0 https://github.com/internetee/auction_center/pull/1375
 

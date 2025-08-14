@@ -87,4 +87,8 @@ module ApplicationHelper
       RemoteViewPartial.find_by(name: 'footer', locale: I18n.locale)
     end
   end
+
+  def ended_auctions_link_available?
+    AuctionCenter::Application.config.customization[:ended_auctions_link_available]
+  end
 end
