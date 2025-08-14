@@ -302,7 +302,7 @@ GEM
       nokogiri (~> 1)
       rake
     mini_mime (1.1.5)
-    mini_portile2 (2.8.8)
+    mini_portile2 (2.8.9)
     minitest (5.25.4)
     money (6.16.0)
       i18n (>= 0.6.4, <= 2)
@@ -323,14 +323,14 @@ GEM
     net-smtp (0.5.0)
       net-protocol
     nio4r (2.7.4)
-    nokogiri (1.18.8)
+    nokogiri (1.18.9)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
-    nokogiri (1.18.8-aarch64-linux-gnu)
+    nokogiri (1.18.9-aarch64-linux-gnu)
       racc (~> 1.4)
-    nokogiri (1.18.8-arm64-darwin)
+    nokogiri (1.18.9-arm64-darwin)
       racc (~> 1.4)
-    nokogiri (1.18.8-x86_64-linux-gnu)
+    nokogiri (1.18.9-x86_64-linux-gnu)
       racc (~> 1.4)
     noticed (1.6.3)
       http (>= 4.0.0)
@@ -530,7 +530,7 @@ GEM
       httpclient (>= 2.4)
     syntax_tree (6.2.0)
       prettier_print (>= 1.2.0)
-    thor (1.2.2)
+    thor (1.4.0)
     tilt (2.6.0)
     timeout (0.4.3)
     turbo-rails (1.4.0)
@@ -628,7 +628,7 @@ DEPENDENCIES
   money
   mutex_m
   net-imap (>= 0.5.7)
-  nokogiri (>= 1.18.8)
+  nokogiri (>= 1.18.9)
   noticed (~> 1.6)
   okcomputer (~> 1.19.0)
   omniauth-rails_csrf_protection
