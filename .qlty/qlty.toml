@@ -93,8 +93,8 @@ package_filters = ["rubocop"]
 
 [[plugin.fetch]]
 url = "https://raw.githubusercontent.com/internetee/style-guide/master/.rubocop-ruby-modern.yml"
-path = ".rubocop-ruby.yml"
+path = ".rubocop-ruby-modern.yml"
 
 [[plugin.fetch]]
 url = "https://raw.githubusercontent.com/internetee/style-guide/master/.rubocop-rails-modern.yml"
-path = ".rubocop.yml"
+path = ".rubocop-rails-modern.yml"
