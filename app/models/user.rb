@@ -128,6 +128,10 @@ class User < ApplicationRecord
     provider == TARA_PROVIDER && uid.present?
   end
 
+  def tara_user_with_unconfirmed_email?
+    signed_in_with_identity_document? && confirmed_at.blank?
+  end
+
   def requires_phone_number_confirmation?
     if Setting.find_by(code: 'require_phone_confirmation').retrieve
       return false if signed_in_with_identity_document?
@@ -230,5 +234,26 @@ class User < ApplicationRecord
     return true if mobile_phone_confirmed_sms_send_at.blank?
 
     mobile_phone_confirmed_sms_send_at < PhoneConfirmation::TIME_LIMIT.ago
+  end
+
+  # Override Devise confirmable to allow TARA users to sign in without email confirmation
+  def active_for_authentication?
+    # TARA users can authenticate even without confirmed email
+    if signed_in_with_identity_document?
+      true
+    else
+      # Regular users must confirm email
+      super
+    end
+  end
+
+  # Override Devise message for TARA users
+  def inactive_message
+    if signed_in_with_identity_document? && !confirmed?
+      # Return a custom message or the default one
+      super
+    else
+      super
+    end
   end
 end

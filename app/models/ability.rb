@@ -30,6 +30,8 @@ class Ability
       restrictions_from_bans
     elsif user.not_phone_number_confirmed_unique?
       phone_not_unique_restrictions
+    elsif user.tara_user_with_unconfirmed_email?
+      email_not_confirmed_tara_restrictions
     else
       no_restrictions_on_offers_and_users
     end
@@ -53,6 +55,19 @@ class Ability
     can :read, User, id: user.id
 
     can :read, Offer, user_id: user.id
+  end
+
+  def email_not_confirmed_tara_restrictions
+    # Allow TARA users with unconfirmed email to access and update their profile
+    can %i[read update], User, id: user.id
+    
+    # Read-only access to their own offers and results
+    can :read, Offer, user_id: user.id
+    can :read, Result, user_id: user.id
+    
+    # Prevent creating new offers or participating in auctions
+    cannot :create, Offer
+    cannot :pay_deposit, Auction
   end
 
   def no_restrictions_on_offers_and_users

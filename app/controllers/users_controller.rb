@@ -145,6 +145,11 @@ class UsersController < ApplicationController
   end
 
   def authorize_user
-    authorize! :manage, @user
+    # For edit and update actions, only require update permission
+    if %w[edit update].include?(action_name)
+      authorize! :update, @user
+    else
+      authorize! :manage, @user
+    end
   end
 end

@@ -14,6 +14,8 @@ This is a Ruby on Rails 7.2 application for managing TLD domain auctions. The sy
 
 ### Testing
 - `bin/rails test` - Run all tests (uses Minitest)
+- `bin/rails test test/models/user_test.rb` - Run a single test file
+- `bin/rails test test/models/user_test.rb:45` - Run test at specific line
 - `COVERAGE=true bin/rails test` - Run tests with coverage
 - `bin/rails test:system` - Run system tests
 
@@ -27,6 +29,7 @@ This is a Ruby on Rails 7.2 application for managing TLD domain auctions. The sy
 - `bin/rails db:migrate` - Run database migrations
 - `bin/rails data:migrate` - Run data migrations (uses data_migrate gem)
 - `bin/rails db:setup` - Create, migrate, and seed database
+- `bin/rails console` - Interactive console for debugging
 
 ### Background Jobs
 - `bin/delayed_job start` - Start background job worker (Delayed Job)
