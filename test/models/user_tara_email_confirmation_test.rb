@@ -2,18 +2,8 @@ require 'test_helper'
 
 class UserTaraEmailConfirmationTest < ActiveSupport::TestCase
   def setup
-    @tara_user = User.new(
-      email: 'test@example.com',
-      provider: User::TARA_PROVIDER,
-      uid: 'EE12345678901',
-      identity_code: '12345678901',
-      country_code: 'EE',
-      given_names: 'Test',
-      surname: 'User',
-      password: Devise.friendly_token[0..20]
-    )
-    @tara_user.skip_confirmation_notification!
-    @tara_user.save!
+    @tara_user = users(:signed_in_with_omniauth)
+    @tara_user.update!(confirmed_at: nil)  # Make email unconfirmed for testing
   end
 
   def test_tara_user_with_unconfirmed_email_returns_true_when_not_confirmed
@@ -26,20 +16,12 @@ class UserTaraEmailConfirmationTest < ActiveSupport::TestCase
   end
 
   def test_regular_user_with_unconfirmed_email_returns_false
-    regular_user = User.new(
-      email: 'regular@example.com',
+    regular_user = users(:participant)
+    regular_user.update!(
       provider: nil,
       uid: nil,
-      identity_code: '98765432101',
-      country_code: 'EE',
-      given_names: 'Regular',
-      surname: 'User',
-      mobile_phone: '+3725555555',
-      password: 'password123',
-      password_confirmation: 'password123'
+      confirmed_at: nil
     )
-    regular_user.skip_confirmation_notification!
-    regular_user.save!
 
     assert_not regular_user.tara_user_with_unconfirmed_email?
   end
@@ -80,20 +62,13 @@ class UserTaraEmailConfirmationTest < ActiveSupport::TestCase
   end
 
   def test_regular_user_cannot_authenticate_without_email_confirmation
-    regular_user = User.new(
-      email: 'regular@example.com',
+    regular_user = users(:second_place_participant)
+    regular_user.update!(
       provider: nil,
       uid: nil,
-      identity_code: '98765432101',
-      country_code: 'EE',
-      given_names: 'Regular',
-      surname: 'User',
-      mobile_phone: '+3725555555',
-      password: 'password123',
-      password_confirmation: 'password123'
+      confirmed_at: nil,
+      mobile_phone: '+37255000099'
     )
-    regular_user.skip_confirmation_notification!
-    regular_user.save!
 
     # Regular users must confirm email to authenticate
     assert_not regular_user.active_for_authentication?

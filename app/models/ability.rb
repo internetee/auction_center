@@ -58,14 +58,12 @@ class Ability
   end
 
   def email_not_confirmed_tara_restrictions
-    # Allow TARA users with unconfirmed email to access and update their profile
     can %i[read update], User, id: user.id
+    can :read, Auction
     
-    # Read-only access to their own offers and results
     can :read, Offer, user_id: user.id
     can :read, Result, user_id: user.id
     
-    # Prevent creating new offers or participating in auctions
     cannot :create, Offer
     cannot :pay_deposit, Auction
   end

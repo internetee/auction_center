@@ -236,24 +236,7 @@ class User < ApplicationRecord
     mobile_phone_confirmed_sms_send_at < PhoneConfirmation::TIME_LIMIT.ago
   end
 
-  # Override Devise confirmable to allow TARA users to sign in without email confirmation
   def active_for_authentication?
-    # TARA users can authenticate even without confirmed email
-    if signed_in_with_identity_document?
-      true
-    else
-      # Regular users must confirm email
-      super
-    end
-  end
-
-  # Override Devise message for TARA users
-  def inactive_message
-    if signed_in_with_identity_document? && !confirmed?
-      # Return a custom message or the default one
-      super
-    else
-      super
-    end
+    signed_in_with_identity_document? || super
   end
 end
