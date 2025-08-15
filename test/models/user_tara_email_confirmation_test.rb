@@ -29,14 +29,11 @@ class UserTaraEmailConfirmationTest < ActiveSupport::TestCase
   def test_ability_for_tara_user_with_unconfirmed_email
     ability = Ability.new(@tara_user)
     
-    # Should be able to read and update their own profile
     assert ability.can?(:read, @tara_user)
     assert ability.can?(:update, @tara_user)
     
-    # Should NOT be able to create offers
     assert ability.cannot?(:create, Offer)
     
-    # Should NOT be able to pay deposit for auctions
     auction = auctions(:valid_with_offers)
     assert ability.cannot?(:pay_deposit, auction)
   end
@@ -45,19 +42,15 @@ class UserTaraEmailConfirmationTest < ActiveSupport::TestCase
     @tara_user.confirm
     ability = Ability.new(@tara_user)
     
-    # Should be able to manage their own profile
     assert ability.can?(:manage, @tara_user)
     
-    # Should be able to manage their own offers
     assert ability.can?(:manage, Offer.new(user: @tara_user))
     
-    # Should be able to pay deposit for auctions (if not banned)
     auction = auctions(:valid_with_offers)
     assert ability.can?(:pay_deposit, auction)
   end
 
   def test_tara_user_can_authenticate_without_email_confirmation
-    # TARA users should be able to authenticate even without confirmed email
     assert @tara_user.active_for_authentication?
   end
 
@@ -70,7 +63,6 @@ class UserTaraEmailConfirmationTest < ActiveSupport::TestCase
       mobile_phone: '+37255000099'
     )
 
-    # Regular users must confirm email to authenticate
     assert_not regular_user.active_for_authentication?
   end
 end
