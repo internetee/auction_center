@@ -30,10 +30,39 @@ class AuctionsController < ApplicationController
   private
 
   def fetch_auctions_list
-    if should_sort_auctions?
-      Auction.active.ai_score_order.search(params, current_user).with_user_offers(current_user&.id)
+    if should_sort_auctions? && current_user
+      wishlist_domains = current_user.wishlist_items.pluck(:domain_name)
+      
+      Auction.active
+             .search(params, current_user)
+             .with_user_offers(current_user.id)
+             .order(Arel.sql(build_priority_order_sql(wishlist_domains)))
+    elsif should_sort_auctions?
+      Auction.active.ai_score_order.search(params, current_user).with_user_offers(nil)
     else
       Auction.active.search(params, current_user).with_user_offers(current_user&.id)
+    end
+  end
+
+  def build_priority_order_sql(wishlist_domains)
+    if wishlist_domains.any?
+      sanitized_domains = wishlist_domains.map { |d| ActiveRecord::Base.connection.quote(d) }.join(',')
+      <<~SQL.squish
+        CASE 
+          WHEN users_offer_id IS NOT NULL THEN 0
+          WHEN auctions.domain_name IN (#{sanitized_domains}) THEN 1
+          ELSE 2 
+        END,
+        CASE WHEN ai_score > 0 THEN ai_score ELSE RANDOM() END DESC
+      SQL
+    else
+      <<~SQL.squish
+        CASE 
+          WHEN users_offer_id IS NOT NULL THEN 0
+          ELSE 1 
+        END,
+        CASE WHEN ai_score > 0 THEN ai_score ELSE RANDOM() END DESC
+      SQL
     end
   end
 
