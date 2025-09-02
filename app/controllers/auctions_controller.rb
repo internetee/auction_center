@@ -1,5 +1,4 @@
 class AuctionsController < ApplicationController
-  include AuctionSortable
   # skip_before_action :verify_authenticity_token, only: [:cors_preflight_check]
   before_action :authorize_user
 
@@ -8,7 +7,7 @@ class AuctionsController < ApplicationController
   # GET /auctions
   def index
     set_cors_header
-
+    
     @auctions_list = fetch_auctions_list
     @pagy, @auctions = pagy(
       @auctions_list,
@@ -34,6 +33,10 @@ class AuctionsController < ApplicationController
   end
 
   private
+
+  def fetch_auctions_list
+    Auction.active.search(params, current_user)
+  end
 
   def per_page_count
     count = params[:show_all] == 'true' ? @auctions_list.count : per_page

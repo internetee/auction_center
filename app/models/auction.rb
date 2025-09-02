@@ -1,6 +1,7 @@
 class Auction < ApplicationRecord # rubocop:disable Metrics
   include Presentable
   include Searchable
+  include UserSortable
   include PgSearch::Model
 
   BLIND = '0'.freeze
