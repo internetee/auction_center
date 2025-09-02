@@ -34,9 +34,7 @@ class AuctionsController < ApplicationController
 
   private
 
-  def fetch_auctions_list
-    Auction.active.search(params, current_user)
-  end
+  def fetch_auctions_list = Auction.active.search(params, current_user)
 
   def per_page_count
     count = params[:show_all] == 'true' ? @auctions_list.count : per_page
@@ -44,9 +42,7 @@ class AuctionsController < ApplicationController
     count
   end
 
-  def per_page
-    params[:per_page] || DEFAULT_PAGE_LIMIT
-  end
+  def per_page = params[:per_page] || DEFAULT_PAGE_LIMIT
 
   def set_cors_header
     response.headers['Access-Control-Allow-Origin'] = request.headers['Origin']

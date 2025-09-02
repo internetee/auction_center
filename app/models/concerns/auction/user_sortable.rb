@@ -2,13 +2,7 @@ module Auction::UserSortable
   extend ActiveSupport::Concern
 
   class_methods do
-    def sorted_for_user(user)
-      if user
-        with_user_priority_sorting(user)
-      else
-        self
-      end
-    end
+    def sorted_for_user(user) = user ? with_user_priority_sorting(user) : self
 
     private
 
