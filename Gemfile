@@ -50,6 +50,8 @@ gem 'turbo-rails'
 gem 'valvat'
 gem 'view_component'
 gem 'webpush'
+gem 'activerecord', '~> 7.2.2.2'
+gem 'activestorage', '~> 7.2.2.2'
 
 group :development, :test do
   gem 'brakeman'
