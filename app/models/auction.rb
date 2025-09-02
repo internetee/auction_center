@@ -222,6 +222,18 @@ class Auction < ApplicationRecord # rubocop:disable Metrics
     end
   end
 
+  def users_offer_cents
+    attributes['users_offer_cents']
+  end
+
+  def users_offer_id
+    attributes['users_offer_id']
+  end
+
+  def users_offer_uuid
+    attributes['users_offer_uuid']
+  end
+
   def users_price
     Money.new(users_offer_cents, Setting.find_by(code: 'auction_currency').retrieve)
   end
