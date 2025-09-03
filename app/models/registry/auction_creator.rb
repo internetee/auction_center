@@ -14,6 +14,11 @@ module Registry
 
       body_as_json = JSON.parse(body_as_string, symbolize_names: true)
       body_as_json.each do |item|
+        unless valid_domain_name?(item[:domain])
+          Rails.logger.info "Skipping invalid domain name: #{item[:domain]}"
+          next
+        end
+
         duplicate = Auction.where(domain_name: item[:domain]).last
         next if duplicate&.in_progress?
 
@@ -23,6 +28,26 @@ module Registry
     end
 
     private
+
+    def valid_domain_name?(domain_name)
+      return false if domain_name.nil? || domain_name.empty?
+
+      return true if domain_name.to_s.downcase.end_with?('.test')
+
+      name_part = domain_name.to_s.downcase.split('.').first
+      return false if name_part.nil? || name_part.empty?
+      
+      return false if name_part.length < 1 || name_part.length > 63
+      return false if name_part.start_with?('-') || name_part.end_with?('-')
+      return false if name_part.length >= 4 && name_part[2] == '-' && name_part[3] == '-'
+
+      allowed_pattern = /\A[a-z0-9äöüõšžÄÖÜÕŠŽ\-]+\z/
+      return false unless name_part.match?(allowed_pattern)
+
+      return false if name_part.include?('_')
+
+      true
+    end
 
     def auction_duration_in_seconds
       Setting.find_by(code: 'auction_duration').retrieve * 60 * 60
@@ -85,16 +110,6 @@ module Registry
         auction.ends_at = nil
       else
         legacy_auction = auctions.first
-        # new_ends_at = legacy_auction.ends_at
-        # if legacy_auction.initial_ends_at.present?
-        #   legacy_time_difference = (legacy_auction.initial_ends_at - legacy_auction.starts_at).to_i.abs
-        #   legacy_difference_in_day = legacy_time_difference / 86_400
-        #   legacy_time = legacy_auction.initial_ends_at.strftime('%H:%M:%S')
-        #   t = Time.parse(legacy_time).seconds_since_midnight.seconds
-        #   new_ends_at = Time.zone.now.beginning_of_day + legacy_difference_in_day.day + t
-        # end
-
-
         ends_at_value = legacy_auction.initial_ends_at.presence || legacy_auction.ends_at
 
         legacy_time_difference = (ends_at_value - legacy_auction.starts_at).to_i.abs
@@ -114,11 +129,6 @@ module Registry
         auction.ends_at = new_ends_at.to_s
         auction.ends_at = auction.ends_at + additional_day.day
         auction.initial_ends_at = auction.ends_at
-
-        # if legacy_auction.initial_ends_at.present?
-        #   auction.initial_ends_at = new_ends_at.to_s
-        #   auction.initial_ends_at = auction.initial_ends_at + additional_day.day
-        # end
       end
 
       auction.save!
