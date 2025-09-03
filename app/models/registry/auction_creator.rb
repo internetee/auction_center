@@ -1,5 +1,7 @@
 module Registry
   class AuctionCreator < Base
+    ALLOWED_PATTERN = /\A[a-z0-9äöüõšžÄÖÜÕŠŽ\-]+\z/.freeze
+
     def initialize; end
 
     def request
@@ -32,6 +34,7 @@ module Registry
     def valid_domain_name?(domain_name)
       return false if domain_name.nil? || domain_name.empty?
 
+      # For test domains
       return true if domain_name.to_s.downcase.end_with?('.test')
 
       name_part = domain_name.to_s.downcase.split('.').first
@@ -41,8 +44,7 @@ module Registry
       return false if name_part.start_with?('-') || name_part.end_with?('-')
       return false if name_part.length >= 4 && name_part[2] == '-' && name_part[3] == '-'
 
-      allowed_pattern = /\A[a-z0-9äöüõšžÄÖÜÕŠŽ\-]+\z/
-      return false unless name_part.match?(allowed_pattern)
+      return false unless name_part.match?(ALLOWED_PATTERN)
 
       return false if name_part.include?('_')
 
