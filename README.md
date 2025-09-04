@@ -1,6 +1,6 @@
 # Auction center
-[![Code Climate](https://codeclimate.com/github/internetee/auction_center/badges/gpa.svg)](https://codeclimate.com/github/internetee/auction_center)
-[![Test Coverage](https://codeclimate.com/github/internetee/auction_center/badges/coverage.svg)](https://codeclimate.com/github/internetee/auction_center/coverage)
+[![Maintainability](https://qlty.sh/gh/internetee/projects/auction_center/maintainability.svg)](https://qlty.sh/gh/internetee/projects/auction_center)
+[![Code Coverage](https://qlty.sh/gh/internetee/projects/auction_center/coverage.svg)](https://qlty.sh/gh/internetee/projects/auction_center)
 
 Software for managing TLD domain auctions
 
