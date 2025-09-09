@@ -4,9 +4,20 @@
   ],
   "packageRules": [
     {
-      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+      "matchUpdateTypes": ["patch", "pin", "digest"],
       "automerge": true,
-      "automergeType": "pr"
+      "automergeType": "pr",
+      "addLabels": ["patch"]
+    },
+    {
+      "matchUpdateTypes": ["minor"],
+      "automerge": false,
+      "addLabels": ["minor"]
+    },
+    {
+      "matchUpdateTypes": ["major"],
+      "automerge": false,
+      "addLabels": ["major"]
     },
     {
       "matchDepTypes": ["ruby", "bundler", "Gemfile", "Gemfile.lock"],
