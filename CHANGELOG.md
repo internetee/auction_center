@@ -1,3 +1,6 @@
+10.09.2025
+* Improved auction sorting with pinned entry logic https://github.com/internetee/auction_center/issues/1421
+
 16.07.2025
 * fixed links to registrar portal https://github.com/internetee/auction_center/issues/1403
 
