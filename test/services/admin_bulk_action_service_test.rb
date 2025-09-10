@@ -298,8 +298,6 @@ class AdminBulkActionServiceTest < ActionDispatch::IntegrationTest
 
     assert_equal Autobider.where(domain_name: @english_auction_nil.domain_name).count, 10
     max_autobider = Autobider.where(domain_name: @english_auction_nil.domain_name).order(:cents).last
-    puts max_autobider.cents
-    puts @english_auction_nil.offers.count
     assert_equal max_autobider.user, @english_auction_nil.currently_winning_offer.user
   end
 

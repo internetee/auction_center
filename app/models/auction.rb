@@ -1,6 +1,7 @@
 class Auction < ApplicationRecord # rubocop:disable Metrics
   include Presentable
   include Searchable
+  include UserSortable
   include PgSearch::Model
 
   BLIND = '0'.freeze
@@ -219,6 +220,18 @@ class Auction < ApplicationRecord # rubocop:disable Metrics
     result_statuses.reduce(0) do |sum, status|
       statuses_to_drop_count.include?(status) ? 1 : sum + 1
     end
+  end
+
+  def users_offer_cents
+    attributes['users_offer_cents']
+  end
+
+  def users_offer_id
+    attributes['users_offer_id']
+  end
+
+  def users_offer_uuid
+    attributes['users_offer_uuid']
   end
 
   def users_price

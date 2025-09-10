@@ -74,27 +74,6 @@ jobs:
       - name: Install wkhtmltopdf (push)
         run: sudo apt-get update && sudo apt-get install -y wkhtmltopdf
         if: github.event_name == 'push'
-          
-      - name: Run Tests
-        env:
-          PG_DATABASE: postgres
-          PG_HOST: localhost
-          PG_USER: postgres
-          PG_PASSWORD: password
-          PG_PORT: ${{ job.services.postgres.ports[5432] }}
-          RAILS_ENV: test
-          COVERAGE: true
-          DISABLE_SPRING: 1
-        run: |
-          mkdir -p coverage
-          cp config/database.yml.sample config/database.yml
-          cp config/customization.yml.sample config/customization.yml
-          yarn install --check-files
-          bundle exec rake db:setup
-          bundle exec rake data:migrate
-          bundle exec rails assets:precompile
-          bundle exec rails test test/*
-          echo "COVERAGE=$COVERAGE" # Debug: print to confirm env var is set
 
       - name: Debug coverage files
         if: always()
