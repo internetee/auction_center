@@ -5,7 +5,7 @@ jobs:
   bundle_audit:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.4.1
@@ -22,7 +22,7 @@ jobs:
   brakeman:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.4.1
@@ -55,7 +55,7 @@ jobs:
     continue-on-error: ${{ endsWith(matrix.ruby, 'head') || matrix.ruby == 'debug' }}
     steps:
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby }}
@@ -74,27 +74,6 @@ jobs:
       - name: Install wkhtmltopdf (push)
         run: sudo apt-get update && sudo apt-get install -y wkhtmltopdf
         if: github.event_name == 'push'
-
-      - name: Set ENV for codeclimate (pull_request)
-        run: |
-          git fetch --no-tags --prune --depth=1 origin +refs/heads/$GITHUB_HEAD_REF:refs/remotes/origin/$GITHUB_HEAD_REF
-          echo "GIT_BRANCH=$GITHUB_HEAD_REF" >> $GITHUB_ENV
-          echo "GIT_COMMIT_SHA=$(git rev-parse origin/$GITHUB_HEAD_REF)" >> $GITHUB_ENV
-        if: github.event_name == 'pull_request'
-
-      - name: Set ENV for codeclimate (push)
-        run: |
-          echo "GIT_BRANCH=$GITHUB_REF" >> $GITHUB_ENV
-          echo "GIT_COMMIT_SHA=$GITHUB_SHA" >> $GITHUB_ENV
-        if: github.event_name == 'push'
-
-      - name: Prepare CodeClimate
-        env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
-        run: |
-          curl -LSs --fail 'https://codeclimate.com/downloads/test-reporter/test-reporter-0.11.1-linux-amd64' >./cc-test-reporter;
-          chmod +x ./cc-test-reporter
-          ./cc-test-reporter before-build
           
       - name: Run Tests
         env:
@@ -106,7 +85,6 @@ jobs:
           RAILS_ENV: test
           COVERAGE: true
           DISABLE_SPRING: 1
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         run: |
           mkdir -p coverage
           cp config/database.yml.sample config/database.yml
@@ -163,39 +141,10 @@ jobs:
           
           bundle exec ruby check_format.rb
 
-      - name: Format coverage
+      - name: Upload coverage artifact
         if: always()
-        env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
-        run: |
-          cat > convert_simplecov.rb << 'EOF'
-          require 'json'
-          
-          file_path = ARGV[0] || 'coverage/.resultset.json'
-          output_path = ARGV[1] || 'coverage/.resultset.json.converted'
-          
-          begin
-            data = JSON.parse(File.read(file_path))
-            
-            data.each do |test_name, test_data|
-              if test_data["coverage"].is_a?(Hash)
-                test_data["coverage"].each do |file_path, coverage|
-                  if coverage.is_a?(Hash) && coverage.has_key?("lines")
-                    test_data["coverage"][file_path] = coverage["lines"]
-                  end
-                end
-              end
-            end
-            
-            File.write(output_path, JSON.pretty_generate(data))
-            puts "Successfully converted SimpleCov format to: #{output_path}"
-          rescue => e
-            puts "Error converting SimpleCov format: #{e.message}"
-            exit 1
-          end
-          EOF
-          
-          bundle exec ruby convert_simplecov.rb coverage/.resultset.json coverage/.resultset.json.converted
-          
-          ./cc-test-reporter format-coverage -t simplecov -o coverage/codeclimate.json coverage/.resultset.json.converted --debug
-          ./cc-test-reporter upload-coverage --debug
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: coverage/
+          retention-days: 14
