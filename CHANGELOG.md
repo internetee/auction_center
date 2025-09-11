@@ -1,3 +1,6 @@
+11.09.2025
+* Improvements and fixes to my bids view https://github.com/internetee/auction_center/issues/1397
+
 10.09.2025
 * Improved auction sorting with pinned entry logic https://github.com/internetee/auction_center/issues/1421
 
