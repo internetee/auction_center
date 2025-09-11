@@ -32,7 +32,7 @@ en:
         Once the auction time has ended, we will send an email to
         the auction winner.
       participants: Bidder
-      your_last_offer: Last bid
+      your_last_offer: My bid
       offers_time: Time
       participants_title: Bidders
       deposit_title: Deposit Payments
