@@ -8,7 +8,7 @@ et:
         eelisõigus. %{days_count} pöörduda .ee akrediteeritud registripidaja poole
         domeeni %{domain_name} registreerimiseks.
       second_para_html: |
-        Pöörduge .ee <a href="https://www.internet.ee/registripidajad/akrediteeritud-registripidajad">
+        Pöörduge .ee <a href="https://www.internet.ee/registripidaja/akrediteeritud-registripidajad">
         akrediteeritud registripidaja</a> poole domeeni %{domain_name} registreerimiseks
         esimesel võimalusel! Viimasele hetkele jätmise korral ei pruugi teenusepakkujal olla
         võimalik domeeni registreerida.
