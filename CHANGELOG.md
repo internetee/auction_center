@@ -1,3 +1,6 @@
+12.09.2025
+* Fixed "total with vat" value in the offers and auction details view https://github.com/internetee/auction_center/issues/1396
+
 11.09.2025
 * Improvements and fixes to my bids view https://github.com/internetee/auction_center/issues/1397
 
