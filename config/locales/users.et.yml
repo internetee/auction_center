@@ -23,6 +23,12 @@ et:
       Palun kinnita eposti aadressi muutus klõpsates uuele aadressile saadetud ekirjas olevale
       kinnituse lingile.
     invalid_user_data: "Tuvastasime teie kasutajakonto või arve profiili väärtustes lubamatuid märke. Palun parandage oma andmed!"
+    
+    email_confirmation_required:
+      title: "E-posti kinnitamine on vajalik"
+      message: "Sisenesid EID-ga, kuid sinu e-posti aadress ei ole veel kinnitatud. Saad oma e-posti aadressi uuendada või saata uuesti kinnituskirja. Kuni e-post on kinnitamata, on sul piiratud ligipääs platvormile."
+      resend_email: "Saada kinnitusmeil uuesti"
+      action_blocked: "Enne selle tegevuse sooritamist pead kinnitama oma e-posti aadressi. Palun kontrolli oma e-posti või uuenda oma e-posti aadressi profiilis."
 
     edit:
       title: "Muuda kasutajaprofiili"

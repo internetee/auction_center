@@ -128,6 +128,10 @@ class User < ApplicationRecord
     provider == TARA_PROVIDER && uid.present?
   end
 
+  def tara_user_with_unconfirmed_email?
+    signed_in_with_identity_document? && confirmed_at.blank?
+  end
+
   def requires_phone_number_confirmation?
     if Setting.find_by(code: 'require_phone_confirmation').retrieve
       return false if signed_in_with_identity_document?
@@ -230,5 +234,9 @@ class User < ApplicationRecord
     return true if mobile_phone_confirmed_sms_send_at.blank?
 
     mobile_phone_confirmed_sms_send_at < PhoneConfirmation::TIME_LIMIT.ago
+  end
+
+  def active_for_authentication?
+    signed_in_with_identity_document? || super
   end
 end
