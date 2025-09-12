@@ -45,6 +45,7 @@ en:
     paid_deposit_title: "Paid deposits"
     pay_all: Pay all invoices
     partial_payments_activated: "Allowed clients to make partial payments for this invoice"
+    partial_payments_deactivated: "Disallowed clients to make partial payments for this invoice"
     allow_partial_payments: "Allow partial payments"
     disallow_partial_payments: "Disallow partial payments"
     amount_must_be_positive: "Amount must be greater than 0"

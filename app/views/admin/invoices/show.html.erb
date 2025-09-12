@@ -1,56 +1,77 @@
 <% content_for :title, t('.title', invoice_number: @invoice&.number) %>
 
 <div class="o-container">
-  <div class="c-table__filters" >
-    <%= link_to t(:versions_name), admin_invoice_versions_path(@invoice), class: "ui button primary" %>
-    <%= link_to t('invoices.download'), download_admin_invoice_path(@invoice),
-                { class: 'ui button secondary', download: true } %>
-    <% unless @invoice.overdue? || @invoice.paid? %>
-      <%= link_to t('invoices.mark_as_paid'), edit_admin_invoice_path(@invoice), class: "ui button secondary" %>
-      <% action = @invoice.partial_payments? ? "disallow" : "allow" %>
-      <%= button_to t("invoices.#{action}_partial_payments"), toggle_partial_payments_admin_invoice_path(@invoice), class: "ui button secondary", form: { data: { 'turbo-confirm': 'Are you sure?' } } %>
-    <% end %>
-  </div>
   <div class="c-block">
-    <div class="o-grid o-grid--two-col">
-      <div>
-        <div class="header"><%= t('invoices.status') %></div>
-        <%= I18n.t("activerecord.enums.invoice.statuses.#{@invoice.status}") %>
-        <div class="header"><%= t('invoices.issued_for') %></div>
-        <%= @invoice.recipient %><br>
-        <%= @invoice.address %>
-        <div class="header"><%= t(:updated_by) %></div>
-        <%= @invoice.updated_by %>
-        <% if @invoice.notes %>
-          <div class="item">
-            <div class="header"><%= t('invoices.notes') %></div>
-            <%= @invoice.notes %>
-          </div>
-        <% end %>
-      </div>
-      <div>
-        <div class="header"><%= t('invoices.issuer') %></div>
-        <%= Setting.find_by(code: 'invoice_issuer').retrieve %>
-        <div class="header"><%= t('invoices.issue_date') %></div>
-        <%= @invoice.issue_date %>
-        <div class="header"><%= t('invoices.due_date') %></div>
-        <%= @invoice.due_date %>
-        <% if @invoice.paid_with_payment_order %>
-          <div class="item">
-            <div class="header"><%= t('invoices.paid_through') %></div>
-            <%= @invoice.paid_with_payment_order&.channel %>
-          </div>
-        <% end %>
-      </div>
+    <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap;">
+      <%= link_to t(:versions_name), admin_invoice_versions_path(@invoice), class: "c-btn c-btn--ghost c-acount__button c-acount__button--icon" %>
+      <%= link_to t('invoices.download'), download_admin_invoice_path(@invoice), { class: 'c-btn c-btn--ghost c-acount__button c-acount__button--icon', download: true } %>
+
+      <% unless @invoice.overdue? || @invoice.paid? %>
+        <%= link_to t('invoices.mark_as_paid'), edit_admin_invoice_mark_as_paid_path(@invoice), class: "c-btn c-btn--ghost c-acount__button c-acount__button--icon", data: { turbo_frame: 'modal' } %>
+
+        <% action = @invoice.partial_payments? ? "disallow" : "allow" %>
+        <%= button_to t("invoices.#{action}_partial_payments"), admin_invoice_toggle_partial_payment_path(@invoice), class: "c-btn c-btn--ghost c-acount__button c-acount__button--icon", form: { data: { 'turbo-confirm': 'Are you sure?' } }, method: :patch %>
+      <% end %>
     </div>
   </div>
-  <div class="c-table c-table--sortable">
-    <h2><%= t('invoices.items') %></h2>
+
+  <div class="c-block">
+    <h2 class="c-block__title u-h3"><%= t('invoices.info_block') %></h2>
+    <table class="table--black" style="width:100%">
+      <tbody>
+        <tr>
+          <td><%= t('invoices.status') %></td>
+          <td><%= I18n.t("activerecord.enums.invoice.statuses.#{@invoice.status}") %></td>
+        </tr>
+        <tr>
+          <td><%= t('invoices.issued_for') %></td>
+          <td><%= @invoice.recipient %><br><%= @invoice.address %></td>
+        </tr>
+        <tr>
+          <td><%= t(:updated_by) %></td>
+          <td><%= @invoice.updated_by %></td>
+        </tr>
+        <% if @invoice.notes %>
+          <tr>
+            <td><%= t('invoices.notes') %></td>
+            <td><%= @invoice.notes %></td>
+          </tr>
+        <% end %>
+        <% if @invoice.paid_at %>
+          <tr>
+            <td><%= t('invoices.paid_at') %></td>
+            <td><%= @invoice.paid_at %></td>
+          </tr>
+        <% end %>
+        <tr>
+          <td><%= t('invoices.issuer') %></td>
+          <td><%= Setting.find_by(code: 'invoice_issuer').retrieve %></td>
+        </tr>
+        <tr>
+          <td><%= t('invoices.issue_date') %></td>
+          <td><%= @invoice.issue_date %></td>
+        </tr>
+        <tr>
+          <td><%= t('invoices.due_date') %></td>
+          <td><%= @invoice.due_date %></td>
+        </tr>
+        <% if @invoice.paid_with_payment_order %>
+          <tr>
+            <td><%= t('invoices.paid_through') %></td>
+            <td><%= @invoice.paid_with_payment_order&.channel %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="c-block">
+    <h2 class="c-block__title u-h3"><%= t('invoices.items') %></h2>
     <% header_collection = [{column: nil, caption: '#', options: {}},
                         { column: nil, caption: t('invoices.item'), options: { class: "" } },
                         { column: nil, caption: '', options: { class: "" } },
                         { column: nil, caption: t('invoices.price'), options: { class: "" } },] %>
-    <%= component 'common/table', header_collection:, options: { class: 'js-table-dt dataTable no-footer' } do %>
+    <%= component 'common/table', header_collection:, options: { class: 'table' } do %>
       <%= tag.tbody class: 'contents' do %>
         <% @invoice.items.each_with_index do |item, index| %>
           <tr>
@@ -75,7 +96,7 @@
         <tr>
           <th scope="col"></th>
           <th scope="col"><%= t('invoices.total') %></th>
-          <td></td>
+          <th></th>
           <th scope="col"><%= t('offers.price_in_currency', price: @invoice.total + (@invoice.enable_deposit? ? @invoice.deposit : 0.0)) %></th>
         </tr>
         <% if @invoice.paid? || @invoice.partial_payments? %>
@@ -108,13 +129,16 @@
         <% end %>
       </tfoot>
     <% end %>
-    <h2><%= t('payment_orders.title') %></h2>
+  </div>
+
+  <div class="c-block">
+    <h2 class="c-block__title u-h3"><%= t('payment_orders.title') %></h2>
     <% header_collection = [{column: nil, caption: '#', options: {}},
                         { column: nil, caption: t('payment_orders.channel'), options: { class: "" } },
                         { column: nil, caption: t('payment_orders.status'), options: { class: "" } },
                         { column: nil, caption: t('payment_orders.initiated'), options: { class: "" } },
                         { column: nil, caption: t('payment_orders.response'), options: { class: "" } },] %>
-    <%= component 'common/table', header_collection:, options: { class: 'js-table-dt dataTable no-footer' } do %>
+    <%= component 'common/table', header_collection:, options: { class: 'table--black' } do %>
       <%= tag.tbody class: 'contents' do %>
         <% @payment_orders.each do |payment_order| %>
           <tr>
