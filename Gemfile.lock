@@ -510,7 +510,7 @@ GEM
       rbs (>= 3, < 5)
     ruby-lsp-rails (0.4.8)
       ruby-lsp (>= 0.26.0, < 0.27.0)
-    ruby-openai (7.4.0)
+    ruby-openai (8.3.0)
       event_stream_parser (>= 0.3.0, < 2.0.0)
       faraday (>= 1)
       faraday-multipart (>= 1)
@@ -666,7 +666,7 @@ DEPENDENCIES
   rubocop-shopify
   ruby-lsp
   ruby-lsp-rails
-  ruby-openai (~> 7.3)
+  ruby-openai (~> 8.0)
   scenic
   simplecov
   simplecov-json
