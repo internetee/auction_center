@@ -10,9 +10,9 @@ on:
 jobs:
   snyk-pr:
     runs-on: ubuntu-latest
-    if: github.actor == 'snyk-bot'  # ainult Snyk PR-de jaoks
+    if: github.actor == 'snyk-bot'  # only for Snyk PRs
     permissions:
-      contents: write  # vajalik Gemfile.lock commitimiseks
+      contents: write  # needed for Gemfile.lock commit
     services:
       postgres:
         image: postgres:17
@@ -31,7 +31,7 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.4.1  # kasutage sama versiooni mis teie projektis
+          ruby-version: 3.4.1  # use the same version as in the project
           bundler-cache: true
 
       - name: Configure Bundler for development
@@ -54,7 +54,7 @@ jobs:
 
       - name: Run tests to ensure everything works
         run: bundle exec rails test
-        continue-on-error: true  # kui testid ebaõnnestuvad, jätkab ikkagi
+        continue-on-error: true  # if tests fail, continue anyway
         env:
           RAILS_ENV: test
           DATABASE_URL: postgres://postgres:password@localhost:5432/auction_center_test
@@ -92,5 +92,5 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: '✅ **Gemfile.lock uuendatud!**\n\nSnyk turvauuendused on edukalt rakendatud ja Gemfile.lock on sünkroniseeritud. Kõik testid on läbitud.'
+              body: ' **Gemfile.lock updated!**\n\nSnyk security updates have been applied and Gemfile.lock is synchronized. All tests have passed.'
             })
