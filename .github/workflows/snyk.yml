@@ -37,7 +37,7 @@ jobs:
       - name: Configure Bundler for development
         run: |
           bundle config set without 'staging production'
-          bundle config unset deployment  # eemaldab frozen režiimi
+          bundle config unset deployment  # remove frozen mode
 
       - name: Setup database
         run: |
@@ -50,7 +50,7 @@ jobs:
       - name: Update Gemfile.lock
         run: |
           bundle install
-          bundle update  # uuendab kõik gemid vastavalt Gemfile-le
+          bundle update  # update all gems according to Gemfile
 
       - name: Run tests to ensure everything works
         run: bundle exec rails test
