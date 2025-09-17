@@ -5,6 +5,7 @@ module Offerable
     before_action :authenticate_user!
     before_action :find_auction, only: %i[new create]
     before_action :check_for_ban, only: :create
+    before_action :check_for_email_confirmation, only: %i[new create]
     before_action :authorize_phone_confirmation
   end
 
@@ -16,6 +17,18 @@ module Offerable
     return unless is_ban
 
     redirect_to root_path, flash: { alert: I18n.t("#{params[:controller]}.create.ban") } and return
+  end
+
+  def check_for_email_confirmation
+    return unless current_user.tara_user_with_unconfirmed_email?
+
+    flash[:alert] = I18n.t('users.email_confirmation_required.action_blocked')
+    
+    if turbo_frame_request?
+      render turbo_stream: turbo_stream.action(:redirect, user_path(current_user.uuid))
+    else
+      redirect_to user_path(current_user.uuid), status: :see_other
+    end
   end
 
   def inform_invalid_captcha

@@ -62,3 +62,4 @@ app/assets/builds/*
 Dockerfile.dev
 
 .idea/
+CLAUDE.md
