@@ -47,7 +47,7 @@ module Auction::Searchable
     end)
 
     scope :with_type, (lambda do |type|
-      if type.present? && type.in?([BLIND, ENGLISH])
+      if type.present? && type.in?([BLIND, ENGLISH]) && auction_filter_available?
         return where(platform: [type, nil]) if type == BLIND
 
         where(platform: type)
@@ -83,11 +83,16 @@ module Auction::Searchable
   # rubocop:disable Metrics/MethodLength
   # rubocop:disable Metrics/AbcSize
   class_methods do
+    def auction_filter_available?
+      AuctionCenter::Application.config.customization[:auction_filter_available]
+    end
+
     def search(params = {}, current_user = nil)
       sort_column = params[:sort_by].presence_in(PARAM_LIST) || 'domain_name'
       sort_admin_column = params[:sort_by].presence_in(FILTERING_COLUMNS) || 'id'
       sort_direction = params[:sort_direction].presence_in(DIRECTION) || 'desc'
       is_from_admin = params[:admin] == 'true'
+      should_apply_user_sorting = params[:sort_by].blank? && params[:sort_direction].blank? && !is_from_admin && current_user
 
       query =
         with_highest_offers
@@ -98,7 +103,11 @@ module Auction::Searchable
         .with_starts_at_nil(params[:starts_at_nil])
         .with_offers(params[:auction_offer_type], params[:type])
 
-      if params[:sort_by] == 'users_price'
+      query = query.with_user_offers(current_user.id) if current_user && !is_from_admin
+
+      if should_apply_user_sorting
+        query.sorted_for_user(current_user)
+      elsif params[:sort_by] == 'users_price'
         query.with_max_offer_cents_for_english_auction(current_user)
              .order("offers_subquery.max_offer_cents #{sort_direction} NULLS LAST")
       elsif params[:sort_by] == 'username'
@@ -133,7 +142,7 @@ module Auction::Searchable
     end
 
     def with_max_offer_cents_for_english_auction(user = nil)
-      Queries::Auction::WithMaxOfferCentsForEnglishAuction.call(user: user)
+      Queries::Auction::WithMaxOfferCentsForEnglishAuction.call(user:)
     end
 
     def sorted_by_winning_offer_username

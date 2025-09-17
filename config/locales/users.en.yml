@@ -23,6 +23,12 @@ en:
       Confirmation link was sent to new email address. Please confirm the address for the change to
       take an effect!
     invalid_user_data: "We have detected some invalid characters in your user account data or billing profile. Please review and fix your profile data!"
+    
+    email_confirmation_required:
+      title: "Email confirmation required"
+      message: "You signed in with EID but your email address has not been confirmed yet. You can update your email address or resend the confirmation email. Until your email is confirmed, you will have limited access to the platform."
+      resend_email: "Resend confirmation email"
+      action_blocked: "You need to confirm your email address before you can perform this action. Please check your email or update your email address in your profile."
 
     edit:
       title: "Edit your user profile"

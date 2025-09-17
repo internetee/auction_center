@@ -1,3 +1,23 @@
+17.09.2025
+* eid users can now login without email verification https://github.com/internetee/auction_center/issues/1420
+
+12.09.2025
+* Fixed "total with vat" value in the offers and auction details view https://github.com/internetee/auction_center/issues/1396
+
+11.09.2025
+* Improvements and fixes to my bids view https://github.com/internetee/auction_center/issues/1397
+
+10.09.2025
+* Improved auction sorting with pinned entry logic https://github.com/internetee/auction_center/issues/1421
+
+16.07.2025
+* fixed links to registrar portal https://github.com/internetee/auction_center/issues/1403
+
+03.07.2025
+* Fixed invoice total calculation https://github.com/internetee/auction_center/pull/1394
+* Fixed invoice vat calculation on payments https://github.com/internetee/auction_center/issues/1395
+* Hid english auction related features https://github.com/internetee/auction_center/issues/1390
+
 13.05.2025
 * Finished auctions list best bid instead of last bid in admin https://github.com/internetee/auction_center/issues/1363
 

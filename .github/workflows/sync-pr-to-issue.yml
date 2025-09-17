@@ -1,0 +1,198 @@
+name: Sync PR to Issue and Projects v2 (No GH CLI)
+
+on:
+  pull_request:
+    types: [opened, edited, reopened, assigned, closed]
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    steps:
+    - name: Extract linked issue number from PR body
+      id: extract
+      run: |
+        ISSUE=$(echo "${{ github.event.pull_request.body }}" | grep -oE '#[0-9]+' | head -n1 | tr -d '#')
+        echo "issue_number=$ISSUE" >> $GITHUB_OUTPUT
+
+    - name: Stop if no issue number found
+      if: steps.extract.outputs.issue_number == ''
+      run: |
+        echo "❌ No issue number found in PR body"
+        exit 1
+
+    - name: Get issue node ID
+      id: issue_node
+      uses: actions/github-script@v7
+      with:
+        github-token: ${{ secrets.PROJECTS_TOKEN }}
+        script: |
+          const issue = await github.rest.issues.get({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: parseInt('${{ steps.extract.outputs.issue_number }}'),
+          });
+          core.setOutput("node_id", issue.data.node_id);
+
+    - name: Sync assignee from PR to issue
+      uses: actions/github-script@v7
+      with:
+        github-token: ${{ secrets.PROJECTS_TOKEN }}
+        script: |
+          const prAssignees = context.payload.pull_request.assignees.map(a => a.login);
+          if (prAssignees.length === 0) {
+            console.log("No assignees to sync.");
+            return;
+          }
+          await github.rest.issues.addAssignees({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: parseInt('${{ steps.extract.outputs.issue_number }}'),
+            assignees: prAssignees,
+          });
+
+    - name: Add issue to project if not present
+      id: project_item
+      uses: actions/github-script@v7
+      with:
+        github-token: ${{ secrets.PROJECTS_TOKEN }}
+        script: |
+          const projectId = "PVT_kwDOAHYFo84AnPvS";
+          const contentId = "${{ steps.issue_node.outputs.node_id }}";
+
+          try {
+            const result = await github.graphql(`
+              mutation {
+                addProjectV2ItemById(input: {
+                  projectId: "${projectId}",
+                  contentId: "${contentId}"
+                }) {
+                  item {
+                    id
+                  }
+                }
+              }
+            `);
+            core.setOutput("item_id", result.addProjectV2ItemById.item.id);
+          } catch (e) {
+            console.log("Probably already in project. Looking up item ID...");
+            const result = await github.graphql(`
+              query {
+                node(id: "${contentId}") {
+                  ... on Issue {
+                    projectItems(first: 10) {
+                      nodes {
+                        id
+                        project { id }
+                      }
+                    }
+                  }
+                }
+              }
+            `);
+            const item = result.node.projectItems.nodes.find(p => p.project.id === projectId);
+            if (!item) {
+              throw new Error("❌ Could not find project item");
+            }
+            core.setOutput("item_id", item.id);
+          }
+
+    - name: Get status field options
+      id: status_options
+      uses: actions/github-script@v7
+      with:
+        github-token: ${{ secrets.PROJECTS_TOKEN }}
+        script: |
+          const result = await github.graphql(`
+            query {
+              node(id: "PVT_kwDOAHYFo84AnPvS") {
+                ... on ProjectV2 {
+                  field(name: "Status") {
+                    ... on ProjectV2SingleSelectField {
+                      options {
+                        id
+                        name
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          `);
+          
+          const options = result.node.field.options;
+          console.log("Available status options:", options);
+          
+          // Find the correct option IDs
+          const inProgressOption = options.find(opt => 
+            opt.name.toLowerCase().includes('progress') || 
+            opt.name.toLowerCase().includes('in progress') ||
+            opt.name.toLowerCase().includes('active')
+          );
+          
+          const doneOption = options.find(opt => 
+            opt.name.toLowerCase().includes('done') || 
+            opt.name.toLowerCase().includes('completed') ||
+            opt.name.toLowerCase().includes('closed')
+          );
+          
+          if (inProgressOption) {
+            core.setOutput("in_progress_id", inProgressOption.id);
+            console.log("Found 'In Progress' option ID:", inProgressOption.id);
+          } else {
+            console.log("⚠️ Could not find 'In Progress' option. Available options:", options.map(o => o.name));
+          }
+          
+          if (doneOption) {
+            core.setOutput("done_id", doneOption.id);
+            console.log("Found 'Done' option ID:", doneOption.id);
+          } else {
+            console.log("⚠️ Could not find 'Done' option. Available options:", options.map(o => o.name));
+          }
+
+    - name: Set status to In Progress
+      if: github.event.action != 'closed' && steps.status_options.outputs.in_progress_id != ''
+      uses: actions/github-script@v7
+      with:
+        github-token: ${{ secrets.PROJECTS_TOKEN }}
+        script: |
+          const inProgressId = "${{ steps.status_options.outputs.in_progress_id }}";
+          console.log("Setting status to In Progress with ID:", inProgressId);
+          
+          await github.graphql(`
+            mutation {
+              updateProjectV2ItemFieldValue(input: {
+                projectId: "PVT_kwDOAHYFo84AnPvS",
+                itemId: "${{ steps.project_item.outputs.item_id }}",
+                fieldId: "PVTSSF_lADOAHYFo84AnPvSzgfAydE",
+                value: { singleSelectOptionId: "${inProgressId}" }
+              }) {
+                projectV2Item { id }
+              }
+            }
+          `);
+
+    - name: Set status to Done if PR merged
+      if: github.event.pull_request.merged == true && steps.status_options.outputs.done_id != ''
+      uses: actions/github-script@v7
+      with:
+        github-token: ${{ secrets.PROJECTS_TOKEN }}
+        script: |
+          const doneId = "${{ steps.status_options.outputs.done_id }}";
+          console.log("Setting status to Done with ID:", doneId);
+          
+          await github.graphql(`
+            mutation {
+              updateProjectV2ItemFieldValue(input: {
+                projectId: "PVT_kwDOAHYFo84AnPvS",
+                itemId: "${{ steps.project_item.outputs.item_id }}",
+                fieldId: "PVTSSF_lADOAHYFo84AnPvSzgfAydE",
+                value: { singleSelectOptionId: "${doneId}" }
+              }) {
+                projectV2Item { id }
+              }
+            }
+          `);

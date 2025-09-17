@@ -25,8 +25,9 @@ gem 'jwt'
 gem 'lograge'
 gem 'mimemagic', '~> 0.4.3'
 gem 'money'
+gem 'mutex_m'
 gem 'net-imap', '>= 0.5.7'
-gem 'nokogiri', '>= 1.18.8'
+gem 'nokogiri', '>= 1.18.9'
 gem 'noticed', '~> 1.6'
 gem 'okcomputer', '~> 1.19.0'
 gem 'omniauth-rails_csrf_protection'
@@ -38,6 +39,7 @@ gem 'pg_search'
 gem 'propshaft'
 gem 'puma', '~> 6.6.0'
 gem 'rails', '~> 8.0.2'
+gem 'rack', '~> 2.2.14'
 gem 'rails-i18n'
 gem 'recaptcha'
 gem 'redis', '~> 5.0'
@@ -48,8 +50,6 @@ gem 'turbo-rails'
 gem 'valvat'
 gem 'view_component'
 gem 'webpush'
-gem 'mutex_m'
-gem 'rack', '~> 2.2.14'
 
 group :development, :test do
   gem 'brakeman'
@@ -69,6 +69,7 @@ group :development do
   gem 'listen', '>= 3.0.5', '< 3.10'
   gem 'ruby-lsp-rails'
   gem 'web-console', '>= 3.3.0'
+  gem 'foreman'
 
   # https://github.com/rubocop/rubocop-performance
   gem 'rubocop'
@@ -78,7 +79,6 @@ group :development do
   gem 'rubocop-shopify'
   gem 'ruby-lsp'
   # gem "rubocop-thread_safety"
-  gem 'foreman'
   gem "hotwire-spark"
 end
 
