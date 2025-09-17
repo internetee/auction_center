@@ -1,3 +1,6 @@
+17.09.2025
+* eid users can now login without email verification https://github.com/internetee/auction_center/issues/1420
+
 12.09.2025
 * Fixed "total with vat" value in the offers and auction details view https://github.com/internetee/auction_center/issues/1396
 
