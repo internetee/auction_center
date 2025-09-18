@@ -1,3 +1,6 @@
+18.09.2025
+* Update to Rails 8.0.2 https://github.com/internetee/auction_center/pull/1392
+
 17.09.2025
 * eid users can now login without email verification https://github.com/internetee/auction_center/issues/1420
 
