@@ -23,7 +23,7 @@ class Auction < ApplicationRecord # rubocop:disable Metrics
   has_many :domain_offer_histories
   has_one :result, required: false, dependent: :destroy
 
-  enum platform: %i[blind english]
+  enum :platform, %i[blind english]
 
   after_update_commit :update_list_broadcast, unless: :skip_broadcast
   after_update_commit :update_offer_broadcast, unless: :skip_broadcast
