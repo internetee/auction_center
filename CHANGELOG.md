@@ -1,3 +1,6 @@
+19.09.2025
+* Removed package-lock.json to fix yarn conflicts https://github.com/internetee/auction_center/pull/1442
+
 18.09.2025
 * Update to Rails 8.0.2 https://github.com/internetee/auction_center/pull/1392
 
