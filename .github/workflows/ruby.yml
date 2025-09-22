@@ -44,7 +44,7 @@ jobs:
         env:
           POSTGRES_PASSWORD: password
           POSTGRES_USERNAME: postgres
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5       
 
     strategy:
       fail-fast: false
@@ -62,7 +62,7 @@ jobs:
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
 
       - name: Hack sources.list
-        run: sudo sed -i 's|http://azure.archive.ubuntu.com/ubuntu/|http://mirror.arizona.edu/ubuntu/|g' /etc/apt/sources.list
+        run: sudo sed -i 's|http://azure.archive.ubuntu.com/ubuntu/|http://mirror.arizona.edu/ubuntu/|g' /etc/apt/sources.list                                                                                          
 
       - name: config bundler
         run:  |
@@ -103,9 +103,9 @@ jobs:
                   if test_data["coverage"].is_a?(Hash)
                     sample_file = test_data["coverage"].keys.first
                     puts "Sample file: #{sample_file}"
-                    puts "Coverage for sample file is a #{test_data['coverage'][sample_file].class.name}"
+                    puts "Coverage for sample file is a #{test_data['coverage'][sample_file].class.name}"   
                     if test_data['coverage'][sample_file].is_a?(Hash)
-                      puts "Keys in coverage object: #{test_data['coverage'][sample_file].keys.join(', ')}"
+                      puts "Keys in coverage object: #{test_data['coverage'][sample_file].keys.join(', ')}" 
                     end
                   end
                 end
@@ -117,7 +117,7 @@ jobs:
             puts "Error analyzing SimpleCov format: #{e.message}"
           end
           EOF
-          
+
           bundle exec ruby check_format.rb
 
       - name: Upload coverage artifact
