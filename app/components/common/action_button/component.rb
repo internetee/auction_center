@@ -4,7 +4,7 @@ module Common
       attr_reader :type, :href, :color, :options
 
       def initialize(type:, href:, color: 'ghost', options: {})
-        super
+        super()
 
         @type = type
         @href = href

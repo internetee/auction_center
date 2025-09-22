@@ -4,7 +4,7 @@ module Modals
       attr_reader :offer
 
       def initialize(offer:)
-        super
+        super()
 
         @offer = offer
       end

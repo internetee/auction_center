@@ -5,7 +5,7 @@ module Pages
         attr_reader :offers
 
         def initialize(offers:)
-          super
+          super()
 
           @offers = offers
         end

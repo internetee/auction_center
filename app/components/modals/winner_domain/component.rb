@@ -4,7 +4,7 @@ module Modals
       attr_reader :result
 
       def initialize(result:)
-        super
+        super()
 
         @result = result
       end

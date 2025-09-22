@@ -5,7 +5,7 @@ module Common
         attr_reader :form, :attribute, :enum, :first_options, :second_options
 
         def initialize(form:, attribute:, enum:, first_options: {}, second_options: {})
-          super
+          super()
 
           @form = form
           @attribute = attribute

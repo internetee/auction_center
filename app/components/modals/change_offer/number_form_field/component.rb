@@ -5,7 +5,7 @@ module Modals
         attr_reader :offer_value, :offer_disabled
 
         def initialize(offer_value:, offer_disabled:)
-          super
+          super()
 
           @offer_value = offer_value
           @offer_disabled = offer_disabled

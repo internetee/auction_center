@@ -6,7 +6,7 @@ module Common
         attr_reader :form, :attribute, :options
 
         def initialize(form:, attribute:, options:)
-          super
+          super()
 
           @form = form
           @attribute = attribute

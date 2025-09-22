@@ -5,7 +5,7 @@ module Common
         attr_reader :btn_title, :form, :color, :options
 
         def initialize(btn_title:, form:, color: 'green', options: {})
-          super
+          super()
 
           @btn_title = btn_title
           @form = form

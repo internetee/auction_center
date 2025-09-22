@@ -4,7 +4,7 @@ module Modals
       attr_reader :auction, :current_user, :captcha_required
 
       def initialize(auction:, current_user:, captcha_required:, show_checkbox_recaptcha:)
-        super
+        super()
 
         @auction = auction
         @current_user = current_user

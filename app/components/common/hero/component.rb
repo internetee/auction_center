@@ -5,7 +5,7 @@ module Common
       attr_reader :title
 
       def initialize(title:)
-        super
+        super()
 
         @title = title
       end

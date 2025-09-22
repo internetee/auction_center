@@ -5,7 +5,7 @@ module Pages
         attr_reader :paid_invoices, :deposit_paid
 
         def initialize(paid_invoices:, deposit_paid:)
-          super
+          super()
 
           @paid_invoices = paid_invoices
           @deposit_paid = deposit_paid

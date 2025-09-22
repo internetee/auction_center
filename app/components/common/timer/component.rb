@@ -4,7 +4,7 @@ module Common
       attr_reader :auction
 
       def initialize(auction:)
-        super
+        super()
 
         @auction = auction
       end

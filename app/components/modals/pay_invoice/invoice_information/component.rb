@@ -5,7 +5,7 @@ module Modals
         attr_reader :invoice
 
         def initialize(invoice:)
-          super
+          super()
   
           @invoice = invoice
         end
