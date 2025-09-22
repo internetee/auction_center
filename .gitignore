@@ -41,6 +41,7 @@
 /public/packs-test
 yarn-debug.log*
 .yarn-integrity
+package-lock.json
 
 /test/fixtures/files/seb_key.pem
 /test/fixtures/files/seb_pub.pem
@@ -62,3 +63,4 @@ app/assets/builds/*
 Dockerfile.dev
 
 .idea/
+CLAUDE.md

@@ -1,3 +1,24 @@
+22.09.2025
+* Fix Auction Filter component https://github.com/internetee/auction_center/issues/1445
+
+19.09.2025
+* Removed package-lock.json to fix yarn conflicts https://github.com/internetee/auction_center/pull/1442
+
+18.09.2025
+* Update to Rails 8.0.2 https://github.com/internetee/auction_center/pull/1392
+
+17.09.2025
+* eid users can now login without email verification https://github.com/internetee/auction_center/issues/1420
+
+12.09.2025
+* Fixed "total with vat" value in the offers and auction details view https://github.com/internetee/auction_center/issues/1396
+
+11.09.2025
+* Improvements and fixes to my bids view https://github.com/internetee/auction_center/issues/1397
+
+10.09.2025
+* Improved auction sorting with pinned entry logic https://github.com/internetee/auction_center/issues/1421
+
 16.07.2025
 * fixed links to registrar portal https://github.com/internetee/auction_center/issues/1403
 

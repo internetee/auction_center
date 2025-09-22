@@ -5,7 +5,7 @@ module Common
         attr_reader :form, :title, :attribute, :data_attributes, :style, :checkbox_id, :checked
 
         def initialize(form:, title:, attribute:, data_attributes:, options: {})
-          super
+          super()
 
           @form = form
           @title = title

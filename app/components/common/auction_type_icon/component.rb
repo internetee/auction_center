@@ -6,7 +6,7 @@ module Common
       def initialize(auction:)
         @auction = auction
 
-        super
+        super()
       end
 
       def english?

@@ -7,8 +7,13 @@ class AuctionsController < ApplicationController
   # GET /auctions
   def index
     set_cors_header
+    
     @auctions_list = fetch_auctions_list
-    @pagy, @auctions = pagy(@auctions_list, limit: per_page_count, link_extra: 'data-turbo-action="advance"')
+    @pagy, @auctions = pagy(
+      @auctions_list,
+      limit: per_page_count,
+      link_extra: 'data-turbo-action="advance"'
+    )
 
     respond_to do |format|
       format.html
@@ -29,27 +34,15 @@ class AuctionsController < ApplicationController
 
   private
 
-  def fetch_auctions_list
-    if should_sort_auctions?
-      Auction.active.ai_score_order.search(params, current_user).with_user_offers(current_user&.id)
-    else
-      Auction.active.search(params, current_user).with_user_offers(current_user&.id)
-    end
-  end
-
-  def should_sort_auctions?
-    params[:sort_by].blank? && params[:sort_direction].blank?
-  end
-
-  def per_page
-    params[:per_page] || DEFAULT_PAGE_LIMIT
-  end
+  def fetch_auctions_list = Auction.active.search(params, current_user)
 
   def per_page_count
     count = params[:show_all] == 'true' ? @auctions_list.count : per_page
     count = nil if count.zero?
     count
   end
+
+  def per_page = params[:per_page] || DEFAULT_PAGE_LIMIT
 
   def set_cors_header
     response.headers['Access-Control-Allow-Origin'] = request.headers['Origin']

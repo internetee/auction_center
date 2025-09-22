@@ -6,7 +6,7 @@ module Common
           attr_reader :form, :attribute, :minimum_password_length, :user
 
           def initialize(form:, attribute:, minimum_password_length:, user:)
-            super
+            super()
 
             @form = form
             @attribute = attribute

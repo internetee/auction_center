@@ -8,7 +8,7 @@ module Common
       def initialize(pagy:)
         @pagy = pagy
 
-        super
+        super()
       end
     end
   end

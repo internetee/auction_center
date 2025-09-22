@@ -74,7 +74,7 @@ RUN mkdir -p /opt/webapps/app/tmp/pids
 WORKDIR /opt/webapps/app
 
 COPY Rakefile Gemfile Gemfile.lock ./
-RUN gem install bundler && bundle install --jobs 20 --retry 5
+RUN gem install bundler && bundle install --jobs 1 --retry 5
 COPY package.json yarn.lock ./
 RUN yarn install --check-files
 

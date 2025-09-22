@@ -5,7 +5,7 @@ module Common
         attr_reader :path, :text
 
         def initialize(path:, text:)
-          super
+          super()
 
           @path = path
           @text = text

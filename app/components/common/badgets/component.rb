@@ -4,7 +4,7 @@ module Common
       attr_reader :status
 
       def initialize(status:)
-        super
+        super()
 
         @status = status
       end

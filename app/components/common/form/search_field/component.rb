@@ -5,7 +5,7 @@ module Common
         attr_reader :form, :attribute, :value, :placeholder
 
         def initialize(form:, attribute:, value:, placeholder:)
-          super
+          super()
 
           @form = form
           @attribute = attribute
