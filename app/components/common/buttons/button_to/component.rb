@@ -5,7 +5,7 @@ module Common
         attr_reader :title_caption, :href, :color, :options
 
         def initialize(href:, title_caption: nil, color: 'blue-secondary', options: {})
-          super
+          super()
 
           @title_caption = title_caption
           @href = href

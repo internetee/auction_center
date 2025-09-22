@@ -5,7 +5,7 @@ module Common
         attr_reader :notifications
 
         def initialize(notifications:)
-          super
+          super()
 
           @notifications = notifications
         end

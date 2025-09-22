@@ -5,7 +5,7 @@ module Common
         attr_reader :link_title, :href, :color, :css_class_as_login, :options
 
         def initialize(link_title: nil, href:, css_class_as_login: false, color: 'green', options: {})
-          super
+          super()
 
           @link_title = link_title
           @href = href

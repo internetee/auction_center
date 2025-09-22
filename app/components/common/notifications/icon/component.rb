@@ -8,7 +8,7 @@ module Common
           @notification_type = notification.type
           @readed = readed
 
-          super
+          super()
         end
       end
     end

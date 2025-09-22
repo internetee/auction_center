@@ -5,7 +5,7 @@ module Pages
         attr_reader :user, :auction, :updated
 
         def initialize(user:, auction:, updated: false)
-          super
+          super()
 
           @user = user
           @auction = auction

@@ -6,7 +6,7 @@ module Modals
       attr_reader :resource, :resource_name
 
       def initialize(resource:, resource_name:)
-        super
+        super()
 
         @resource = resource
         @resource_name = resource_name

@@ -7,7 +7,7 @@ module Common
         @header_collection = header_collection
         @options = options
 
-        super
+        super()
       end
 
       def table_header_generator

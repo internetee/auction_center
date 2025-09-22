@@ -7,7 +7,7 @@ module Pages
 
         def initialize(issued_invoices:, cancelled_payable_invoices:, cancelled_expired_invoices:,
                        unpaid_invoices_count:)
-          super
+          super()
 
           @issued_invoices = issued_invoices
           @cancelled_payable_invoices = cancelled_payable_invoices
