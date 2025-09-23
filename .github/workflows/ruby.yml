@@ -1,5 +1,5 @@
 name: Github Testing
-on: [push]
+on: [push, pull_request]
 
 jobs:
   bundle_audit:
@@ -75,54 +75,28 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y wkhtmltopdf
         if: github.event_name == 'push'
 
-      - name: Debug coverage files
-        if: always()
+      - name: Run Tests
+        env:
+          PG_DATABASE: postgres
+          PG_HOST: localhost
+          PG_USER: postgres
+          PG_PASSWORD: password
+          PG_PORT: ${{ job.services.postgres.ports[5432] }}
+          RAILS_ENV: test
+          COVERAGE: true
+          DISABLE_SPRING: 1
         run: |
-          echo "Current directory: $(pwd)"
-          echo "Directory contents:"
-          ls -la
-          echo "Looking for coverage directory:"
-          find . -type d -name "coverage" | xargs ls -la
-          echo "Looking for all JSON files:"
-          find . -name "*.json"
-          echo "Looking specifically for SimpleCov result files:"
-          find . -name ".resultset.json" -o -name "coverage.json"
-          echo "Checking SimpleCov result format:"
-          cat > check_format.rb << 'EOF'
-          require 'json'
-          begin
-            file_path = 'coverage/.resultset.json'
-            if File.exist?(file_path)
-              data = JSON.parse(File.read(file_path))
-              puts "File structure overview:"
-              data.each do |test_name, test_data|
-                puts "Test name: #{test_name}"
-                puts "Keys in test_data: #{test_data.keys.join(', ')}"
-                if test_data.has_key?("coverage")
-                  puts "Coverage is a #{test_data['coverage'].class.name}"
-                  if test_data["coverage"].is_a?(Hash)
-                    sample_file = test_data["coverage"].keys.first
-                    puts "Sample file: #{sample_file}"
-                    puts "Coverage for sample file is a #{test_data['coverage'][sample_file].class.name}"   
-                    if test_data['coverage'][sample_file].is_a?(Hash)
-                      puts "Keys in coverage object: #{test_data['coverage'][sample_file].keys.join(', ')}" 
-                    end
-                  end
-                end
-              end
-            else
-              puts "File not found: #{file_path}"
-            end
-          rescue => e
-            puts "Error analyzing SimpleCov format: #{e.message}"
-          end
-          EOF
+          bundle exec rails db:create
+          bundle exec rails db:schema:load
+          bundle exec rails test
 
-          bundle exec ruby check_format.rb
+      - uses: qltysh/qlty-action/coverage@v2
+        if: github.event_name == 'push'
+        with:
+          token: ${{ secrets.QLTY_TOKEN }}
+          files: coverage/.resultset.json
 
-      - name: Upload coverage artifact
-        if: always()
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
           name: coverage
           path: coverage/
