@@ -75,6 +75,11 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y wkhtmltopdf
         if: github.event_name == 'push'
 
+      - name: Setup configuration files
+        run: |
+          cp config/customization.yml.sample config/customization.yml
+          cp config/database.yml.sample config/database.yml
+
       - name: Run Tests
         env:
           PG_DATABASE: postgres
