@@ -6,6 +6,6 @@
       <%= recaptcha_tags site_key: recaptcha2_site_key %>
     </div>
   <% else %>
-    <%= recaptcha_v3(action: @action, site_key: recaptcha3_site_key, turbolinks: true) %>
+    <%= helpers.recaptcha_v3(action: @action, site_key: recaptcha3_site_key, turbolinks: true) %>
   <% end %>
 <% end %>
