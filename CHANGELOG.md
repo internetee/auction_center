@@ -1,3 +1,6 @@
+23.09.2025
+* Fixed broken registrar link in auction deadline reminder https://github.com/internetee/auction_center/issues/1439
+
 22.09.2025
 * Fix Auction Filter component https://github.com/internetee/auction_center/issues/1445
 * Automated Patch Update Merging https://github.com/internetee/auction_center/pull/1438
