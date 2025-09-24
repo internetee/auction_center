@@ -8,7 +8,7 @@ en:
         the %{domain_name} domain auction. %{days_count} to contact an accredited
         .ee registrar to register the %{domain_name} domain.
       second_para_html: |
-        Contact an <a href="https://www.internet.ee/registrars/accredited-registrars">
+        Contact an <a href="https://www.internet.ee/registrar-portal/accredited-registrars">
         accredited .ee registrar</a> to register the %{domain_name} domain as
         soon as possible! If you leave it to the last minute, your service provider
         may not be able to register the domain.
