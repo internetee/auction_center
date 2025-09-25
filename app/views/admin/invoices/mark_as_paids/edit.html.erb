@@ -1,0 +1,40 @@
+
+<%= turbo_frame_tag "modal" do %>
+
+<div data-controller='modals--offer-modal' data-modals--offer-modal-open-class='is-open'>
+<div class="c-modal-overlay js-modal-po" data-modals--offer-modal-target='modal'>
+  <div class="c-modal">
+    <div class="c-modal__scroll">
+      <div class="c-modal__scroll__content">
+        <button class="c-modal__close-btn js-close-modal" data-action='modals--offer-modal#close'>
+          <span class="o-close-icon"></span>
+        </button>
+        <div class="c-modal__header">
+          <div class="c-modal__header__title">
+            <span class="o-edit-icon--green"></span>
+            <span><%= t('invoices.mark_as_paid') %></span>
+          </div>
+          <div class="c-modal__header__subject">
+            <span class="c-modal__header__subject__title"><%= @invoice.number %></span>
+            <span class="o-io-icon o-io-icon--bg-blue"></span>
+          </div>
+        </div>
+
+        <div>
+          <%= form_with model: @invoice, url: admin_invoice_mark_as_paid_path(@invoice), method: :patch, data: { turbo: false } do |f| %>
+            <div class="c-modal__grid u-flex-wrap u-mt-24 u-mt-48-l">
+                <%= f.text_area :notes %>
+                <%= f.date_field :paid_at %>
+                <%= f.submit t('invoices.mark_as_paid') %>
+            </div>
+          <% end %>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+
+
+<% end %>
