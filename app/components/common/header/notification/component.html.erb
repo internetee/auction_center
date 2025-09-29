@@ -20,7 +20,7 @@
                   </div>
                   <div class="c-notice__main"><%= n.to_notification.message %></div>
                     <div class="c-notice__footer">
-                        <div class="c-notification__header__date"><%= I18n.t('.notification_received', datetime: I18n.l(n.created_at)) %></div>
+                        <div class="c-notification__header__date"><%= I18n.t('.notification_received', datetime: n.created_at.strftime('%d/%m/%Y %H:%M')) %></div>
                     </div>
               </div>
           <% end %>

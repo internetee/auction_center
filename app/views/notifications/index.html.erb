@@ -16,7 +16,7 @@
             <div class="c-notification__heading">
               <%= component 'common/notifications/icon', notification: notification, readed: false %>
             </div>
-            <div class="c-notification__header__date"><%= I18n.t('.notification_received', datetime: I18n.l(notification.created_at)) %></div>
+            <div class="c-notification__header__date"><%= I18n.t('.notification_received', datetime: notification.created_at.strftime('%d/%m/%Y %H:%M')) %></div>
           </header>
           <main class="c-notification__main">
             <%= notification.to_notification.message %>
@@ -37,9 +37,9 @@
         <article class="c-notification c-notification--read">
           <header class="c-notification__header">
 
-              <%= component 'common/notifications/icon', notification: notification, readed: true %>
+            <%= component 'common/notifications/icon', notification: notification, readed: true %>
 
-            <div class="c-notification__header__date"><%= I18n.t('.notification_received', datetime: I18n.l(notification.created_at)) %></div>
+            <div class="c-notification__header__date"><%= I18n.t('.notification_received', datetime: notification.created_at.strftime('%d/%m/%Y %H:%M')) %></div>
           </header>
           <main class="c-notification__main">
             <%= notification.to_notification.message %>
