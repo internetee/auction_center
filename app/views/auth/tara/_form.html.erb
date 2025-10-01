@@ -1,58 +1,51 @@
-<%= form_with(model: user, url: url, local: true, id: 'user_form', class: 'ui form big') do |f| %>
+<%= form_with(model: user, url: url, local: true, id: 'user_form') do |f| %>
     <%= f.hidden_field :provider, value: user.provider %>
     <%= f.hidden_field :uid, value: user.uid %>
     <%= f.hidden_field :locale, value: I18n.locale %>
-    <div class="ui two column doubling stackable grid">
-        <div class="column">
-            <h3 class="p3"><%= t('.data_from_identity_document') %></h3>
-            <div class="field">
-                <%= f.label :identity_code, t('users.identity_code') %>
-                <div class="ui disabled input">
-                    <%= f.text_field :identity_code, readonly: true, value: user.identity_code %>
+    <div class="o-grid o-grid--two-col o-grid--sep">
+        <div class="o-card">
+            <h2 class="o-card__title c-account__title u-mb-30"><%= t('.data_from_identity_document') %></h2>
+            <div class="c-account__input-wrapper u-flex u-align-start">
+                <div class="c-account__input c-account__input--readonly u-mb-20">
+                    <%= component 'common/form/label', form: f, attribute: :identity_code, title: t('users.identity_code') %>
+                    <%= tag.span user.identity_code %>
                 </div>
-            </div>
-            <div class="field">
-                <%= f.label :country, t('users.country_code') %>
-                <div class="ui disabled input">
-                    <%= f.text_field :country_code, value: user.country_code || Setting.find_by(code: 'default_country').retrieve,
-                                     readonly: true %>
+                <div class="c-account__input c-account__input--readonly u-mb-20">
+                    <%= component 'common/form/label', form: f, attribute: :country, title: t('users.country_code') %>
+                    <%= tag.span user.country_code || Setting.find_by(code: 'default_country').retrieve %>
                 </div>
-            </div>
-            <div class="field">
-                <%= f.label :given_names, t('users.given_names') %>
-                <div class="ui disabled input">
-                    <%= f.text_field :given_names, readonly: true, value: user.given_names %>
+                <div class="c-account__input c-account__input--readonly u-mb-20">
+                    <%= component 'common/form/label', form: f, attribute: :given_names, title: t('users.given_names') %>
+                    <%= tag.span user.given_names %>
                 </div>
-            </div>
-            <div class="field">
-                <%= f.label :surname, t('users.surname') %>
-                <div class="ui disabled input">
-                    <%= f.text_field :surname, readonly: true, value: user.surname %>
+                <div class="c-account__input c-account__input--readonly u-mb-20">
+                    <%= component 'common/form/label', form: f, attribute: :surname, title: t('users.surname') %>
+                    <%= tag.span user.surname %>
                 </div>
             </div>
         </div>
 
-        <div class="column">
-            <h3 class="p3"><%= t('.contact_data') %></h3>
+        <div class="o-card">
+            <h2 class="o-card__title c-account__title u-mb-30"><%= t('.contact_data') %></h2>
 
-            <div class="field">
-                <%= f.hidden_field :locale, value: I18n.locale %>
-                <%= f.label :email, t('users.email') %>
-                <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+            <div class="c-account__input c-account__input--editable u-mb-20 is-editable">
+                <%= component 'common/form/label', form: f, attribute: :email, title: t('users.email') %>
+                <%= component 'common/form/email_field', form: f, attribute: :email, options: { autocomplete: 'email', autofocus: true } %>
             </div>
-            <div class="field">
-                <div class="ui checkbox">
+            <div class="c-account__checkbox u-flex u-align-center u-mb-30">
+                <label class="o-checkbox">
                     <%= f.check_box :accepts_terms_and_conditions, { value: false }, "true", "false" %>
-                    <%= f.label :accepts_terms_and_conditions do %>
-                        <%= t('users.i_accept_terms_and_conditions_html',
-                              link: link_to(t('users.terms_and_conditions_link'), Setting.find_by(code: 'terms_and_conditions_link').retrieve)) %>
-                    <% end %>
-                </div>
+                    <div class="o-checkbox__slider round"></div>
+                </label>
+                <%= f.label :accepts_terms_and_conditions, class: "c-account__chekboxtitle" do %>
+                    <%= t('users.i_accept_terms_and_conditions_html',
+                          link: link_to(t('users.terms_and_conditions_link'), Setting.find_by(code: 'terms_and_conditions_link').retrieve)) %>
+                <% end %>
             </div>
         </div>
 
-        <div class="column sixteen wide">
-            <%= f.submit t('.sign_up'), class: "ui button big primary", id: "user_form_commit", data: { turbo: false } %>
+        <div class="o-card o-card--no-shadow">
+            <%= component 'common/form/form_button', form: f, btn_title: t('.sign_up'), options: { id: "user_form_commit", data: { turbo: false } } %>
         </div>
     </div>
 <% end %>
