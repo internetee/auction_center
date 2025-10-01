@@ -4,22 +4,9 @@
     </div>
 <% end %>
 
-<div class="u-container">
-    <div class="u-container margin-block">
-        <div class="u-container margin-block">
-            <% if @user.errors.any? %>
-                <div class="ui message">
-                    <div class="header">
-                        <%= t(:errors_name) %>
-                    </div>
-                    <ul id="errors">
-                        <% @user.errors.full_messages.each do |message| %>
-                            <li><%= message %></li>
-                        <% end %>
-                    </ul>
-                </div>
-            <% end %>
-
+<div class="o-container">
+    <div class="c-block c-account c-account--createnew">
+        <div class="c-account__form">
             <%= render 'form', user: @user, url: tara_create_path %>
         </div>
     </div>
