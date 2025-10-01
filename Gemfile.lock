@@ -196,6 +196,7 @@ GEM
     faraday-net_http (3.4.1)
       net-http (>= 0.5.0)
     fattr (2.4.0)
+    ffi (1.17.2)
     ffi (1.17.2-aarch64-linux-gnu)
     ffi (1.17.2-aarch64-linux-musl)
     ffi (1.17.2-arm-linux-gnu)
@@ -308,6 +309,7 @@ GEM
       nokogiri (~> 1)
       rake
     mini_mime (1.1.5)
+    mini_portile2 (2.8.9)
     minitest (5.25.5)
     money (6.19.0)
       i18n (>= 0.6.4, <= 2)
@@ -328,6 +330,9 @@ GEM
     net-smtp (0.5.1)
       net-protocol
     nio4r (2.7.4)
+    nokogiri (1.18.10)
+      mini_portile2 (~> 2.8.2)
+      racc (~> 1.4)
     nokogiri (1.18.10-aarch64-linux-gnu)
       racc (~> 1.4)
     nokogiri (1.18.10-aarch64-linux-musl)
@@ -404,7 +409,7 @@ GEM
     puma (6.6.1)
       nio4r (~> 2.0)
     racc (1.8.1)
-    rack (2.2.17)
+    rack (2.2.18)
     rack-livereload (0.5.2)
       rack (< 3)
     rack-oauth2 (2.2.1)
@@ -615,6 +620,7 @@ PLATFORMS
   arm-linux-gnu
   arm-linux-musl
   arm64-darwin
+  ruby
   x86_64-darwin
   x86_64-linux-gnu
   x86_64-linux-musl
@@ -670,7 +676,7 @@ DEPENDENCIES
   propshaft
   pry
   puma (~> 6.6.0)
-  rack (~> 2.2.14)
+  rack (~> 2.2.18)
   rails (~> 8.0.2)
   rails-i18n
   recaptcha
