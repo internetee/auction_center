@@ -69,7 +69,7 @@
         <tr>
           <td scope="col"></td>
           <td scope="col"><%= t('invoices.vat_amount') %></td>
-          <td> <%= number_to_percentage(@invoice.vat_rate * 100, precision: 0) %></td>
+          <td> <%= number_to_percentage((@invoice.vat_rate || 0) * 100, precision: 0) %></td>
           <td scope="col"><%= t('offers.price_in_currency', price: @invoice.vat) %></td>
         </tr>
         <tr>
