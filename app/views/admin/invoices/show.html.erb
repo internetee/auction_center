@@ -58,7 +58,7 @@
             <td>
               <%= I18n.t('invoice_items.name',
                         domain_name: item.invoice.result.auction.domain_name,
-                        auction_end: item.invoice.result.auction.ends_at.to_date) %>
+                        auction_end: item.invoice.result.auction.ends_at.strftime('%d/%m/%Y')) %>
             </td>
             <td></td>
             <td><%= item.price %></td>

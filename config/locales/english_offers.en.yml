@@ -2,7 +2,7 @@ en:
   english_offers:
     auction: "Auction"
     price: "Price"
-    total: "Hind käibemaksuga"
+    total: "Total with VAT"
     i_accept_terms_and_conditions: "I accept terms and conditions"
     price_in_currency: "%{price} €"
     price_is_without_vat: "The offer does not include VAT."
