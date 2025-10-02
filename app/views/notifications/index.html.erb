@@ -8,47 +8,56 @@
 
   <h2><%= t('notifications.unreaded_notifications') %> <sup>(<%= @unread_notifications&.count %>)</sup></h2>
   <%= turbo_frame_tag :unread_notifications do %>
-    <div clas`s="c-notifications">
-      <% @unread_notifications.each do |notification| %>
-
-        <article class="c-notification">
-          <header class="c-notification__header">
-            <div class="c-notification__heading">
-              <%= component 'common/notifications/icon', notification: notification, readed: false %>
-            </div>
-            <div class="c-notification__header__date"><%= I18n.t('.notification_received', datetime: notification.created_at.strftime('%d/%m/%Y %H:%M')) %></div>
-          </header>
-          <main class="c-notification__main">
-            <%= notification.to_notification.message %>
-          </main>
-        </article>
-      <% end if @unread_notifications.present? %>
-    </div>
-
-    <%= component 'common/pagy', pagy: @unread_pagy %>
+    <% if @unread_notifications.present? %>
+      <div class="c-notifications">
+        <% @unread_notifications.each do |notification| %>
+          <article class="c-notification">
+            <header class="c-notification__header">
+              <div class="c-notification__heading">
+                <%= component 'common/notifications/icon', notification: notification, readed: false %>
+              </div>
+              <div class="c-notification__header__date"><%= I18n.t('.notification_received', datetime: notification.created_at.strftime('%d/%m/%Y %H:%M')) %></div>
+            </header>
+            <main class="c-notification__main">
+              <%= notification.to_notification.message %>
+            </main>
+          </article>
+        <% end %>
+      </div>
+      <%= component 'common/pagy', pagy: @unread_pagy %>
+    <% else %>
+      <div class="c-notifications">
+        <p class="c-notification__empty"><%= t('notifications.no_unread_notifications') %></p>
+      </div>
+    <% end %>
   <% end %>
 <!-- Notifications -->
 
 <!-- Readed Notifications -->
   <h2><%= t('notifications.readed_notifications') %> <sup>(<%= @read_notifications&.count %>)</sup></h2>
   <%= turbo_frame_tag :read_notifications do %>
-    <div class="c-notifications c-notifications--ajax">
-      <% @read_notifications&.each do |notification| %>
-        <article class="c-notification c-notification--read">
-          <header class="c-notification__header">
+    <% if @read_notifications.present? %>
+      <div class="c-notifications c-notifications--ajax">
+        <% @read_notifications.each do |notification| %>
+          <article class="c-notification c-notification--read">
+            <header class="c-notification__header">
 
-            <%= component 'common/notifications/icon', notification: notification, readed: true %>
+              <%= component 'common/notifications/icon', notification: notification, readed: true %>
 
-            <div class="c-notification__header__date"><%= I18n.t('.notification_received', datetime: notification.created_at.strftime('%d/%m/%Y %H:%M')) %></div>
-          </header>
-          <main class="c-notification__main">
-            <%= notification.to_notification.message %>
-          </main>
-        </article>
-      <% end %>
-    </div>
-
-    <%= component 'common/pagy', pagy: @read_pagy %>
+              <div class="c-notification__header__date"><%= I18n.t('.notification_received', datetime: notification.created_at.strftime('%d/%m/%Y %H:%M')) %></div>
+            </header>
+            <main class="c-notification__main">
+              <%= notification.to_notification.message %>
+            </main>
+          </article>
+        <% end %>
+      </div>
+      <%= component 'common/pagy', pagy: @read_pagy %>
+    <% else %>
+      <div class="c-notifications">
+        <p class="c-notification__empty"><%= t('notifications.no_read_notifications') %></p>
+      </div>
+    <% end %>
   <% end %>
 <!-- Notifications -->
 </div>

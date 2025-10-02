@@ -84,3 +84,6 @@ application.register("daily-summary", DailySummaryController);
 
 import SlashedZeroController from "./slashed_zero_controller";
 application.register("slashed-zero", SlashedZeroController);
+
+import OfferPriceValidatorController from "./offer_price_validator_controller";
+application.register("offer-price-validator", OfferPriceValidatorController);

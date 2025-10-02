@@ -119,16 +119,21 @@ module Modals
 
       def billing_profile_dropdown_properties
         {
-          attribute: :billing_profile_id, 
-          enum: billing_profiles = BillingProfile.where(user_id: offer.user_id).collect do |b| 
-            [b.name, b.id, {'data-vat-rate' => b.vat_rate}] 
+          attribute: :billing_profile_id,
+          enum: billing_profiles = BillingProfile.where(user_id: offer.user_id).collect do |b|
+            [b.name, b.id, {'data-vat-rate' => b.vat_rate}]
           end,
           first_options: { },
-          second_options: { 
+          second_options: {
             class: billing_profiles.size == 1 ? "disabled" : "",
-            data: { action: 'change->autotax-counter#updateTax' } 
+            data: { action: 'change->autotax-counter#updateTax' }
           }
         }
+      end
+
+      def minimum_bid_value
+        # For English auction, minimum bid is the current min_bids_step
+        @auction.min_bids_step.to_f
       end
     end
   end
