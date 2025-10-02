@@ -23,16 +23,26 @@ module Modals
       end
 
       def offer_disabled?
-        offer.auction.finished? ? true : false
+        offer.auction.finished? || false
       end
 
       def current_price
-        auction.current_price_from_user(current_user) if auction.offer_from_user(current_user).present?
+        if auction.offer_from_user(current_user).present?
+          auction.current_price_from_user(current_user)
+        else
+          # we devide to 100 because we store price in cents
+          Setting.find_by(code: 'auction_minimum_offer').retrieve / 100
+        end
       end
 
       def minimum_offer
         I18n.t('.offers.form.minimum_offer', minimum: Money.new(Setting.find_by(code: 'auction_minimum_offer').retrieve,
-                                                    Setting.find_by(code: 'auction_currency').retrieve))
+                                                                Setting.find_by(code: 'auction_currency').retrieve))
+      end
+
+      def minimum_offer_value
+        # Convert cents to euros
+        Setting.find_by(code: 'auction_minimum_offer').retrieve / 100.0
       end
 
       def offer_form_properties
@@ -82,12 +92,12 @@ module Modals
 
       def submit_form_button_properties
         {
-          class: "c-btn c-btn--green",
+          class: 'c-btn c-btn--green',
           id: 'bid_action',
           form: 'english_offer_form',
           style: 'cursor: pointer;',
-          data: { 
-            turbo: false 
+          data: {
+            turbo: false
           }
         }
       end

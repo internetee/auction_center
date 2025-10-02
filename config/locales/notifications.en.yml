@@ -5,5 +5,8 @@ en:
     unreaded_notifications: 'Unread notifications'
     readed_notifications: 'Read notifications'
     all_marked_as_read: 'All notifications marked as read'
+    no_notifications: 'No notifications yet'
+    no_unread_notifications: 'No unread notifications'
+    no_read_notifications: 'No read notifications'
     index:
       title: "Notifications"

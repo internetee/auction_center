@@ -1,4 +1,4 @@
-<div class="c-modal-overlay js-modal" data-modals--offer-modal-target='modal'>
+<div class="c-modal-overlay js-modal" data-modals--offer-modal-target='modal' data-controller="offer-price-validator" data-offer-price-validator-minimum-price-value="<%= minimum_bid_value %>">
   <div class="c-modal">
     <div class="c-modal__scroll">
       <div class="c-modal__scroll__content">
@@ -104,7 +104,7 @@
             <button class="c-btn c-btn--ghost" data-action='modals--offer-modal#close'><%= t('close') %></button>
           </div>
           <div class="c-modal__footer__col">
-            <%= submit_tag t(:submit), class: "c-btn c-btn--green", id: 'bid_action', form: 'english_offer_form', data: { turbo: false } %>
+            <%= submit_tag t(:submit), class: "c-btn c-btn--green", id: 'bid_action', form: 'english_offer_form', data: { turbo: false, 'offer-price-validator-target': 'submitButton' } %>
           </div>
         </div>
 
