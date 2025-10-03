@@ -1,3 +1,6 @@
+03.10.2025
+* Fixed ident unique contraint for user/password based accounts https://github.com/internetee/auction_center/issues/1455
+
 23.09.2025
 * Fixed broken registrar link in auction deadline reminder https://github.com/internetee/auction_center/issues/1439
 
