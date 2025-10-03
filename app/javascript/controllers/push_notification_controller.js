@@ -35,37 +35,40 @@ export default class extends Controller {
     }
   }
 
-  setupPushNotifications() {
-    // Check if the browser supports service workers
-    if ("serviceWorker" in navigator) {
-      // Register the service worker script (service_worker.js)
-      navigator.serviceWorker.register('/service-worker.js', { scope: '/' })
-        .then((serviceWorkerRegistration) => {
-          // Check if a subscription to push notifications already exists
-          serviceWorkerRegistration.pushManager
-            .getSubscription()
-            .then((existingSubscription) => {
-              if (!existingSubscription) {
-                // If no subscription exists, subscribe to push notifications
-                serviceWorkerRegistration.pushManager
-                  .subscribe({
-                    userVisibleOnly: true,
-                    applicationServerKey: this.urlBase64ToUint8Array(this.vapidPublicValue),
-                  })
-                  .then((subscription) => {
-                    // Save the subscription on the server
-                    this.saveSubscription(subscription);
-                  });
-              }
-            });
+  setupPushNotifications(registration) {
+    // Wait for the service worker to be ready
+    navigator.serviceWorker.ready
+      .then((serviceWorkerRegistration) => {
+        // Check if a subscription to push notifications already exists
+        serviceWorkerRegistration.pushManager
+          .getSubscription()
+          .then((existingSubscription) => {
+            if (!existingSubscription) {
+              // If no subscription exists, subscribe to push notifications
+              serviceWorkerRegistration.pushManager
+                .subscribe({
+                  userVisibleOnly: true,
+                  applicationServerKey: this.urlBase64ToUint8Array(this.vapidPublicValue),
+                })
+                .then((subscription) => {
+                  // Save the subscription on the server
+                  this.saveSubscription(subscription);
+                })
+                .catch((error) => {
+                  console.error("Error subscribing to push notifications:", error);
+                });
+            }
+          });
 
-          localStorage.setItem('block-webpush-modal', 'true');
-          document.querySelector('.webpush-modal').style.display = 'none';
-        })
-        .catch((error) => {
-          console.error("Error during registration Service Worker:", error);
-        });
-    }
+        localStorage.setItem('block-webpush-modal', 'true');
+        const modal = document.querySelector('.webpush-modal');
+        if (modal) {
+          modal.style.display = 'none';
+        }
+      })
+      .catch((error) => {
+        console.error("Error waiting for Service Worker to be ready:", error);
+      });
   }
 
   registerServiceWorker() {
