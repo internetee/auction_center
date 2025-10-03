@@ -81,3 +81,6 @@ application.register("auction-timezone", AuctionTimezoneController);
 
 import DailySummaryController from "./daily_summary_controller";
 application.register("daily-summary", DailySummaryController);
+
+import OfferPriceValidatorController from "./offer_price_validator_controller";
+application.register("offer-price-validator", OfferPriceValidatorController);
