@@ -107,6 +107,16 @@ export default class extends Controller {
         })
         .catch(error => {
           console.error('Service Worker registration or subscription failed:', error);
+
+          // Hide modal even if Service Worker registration failed (for development)
+          localStorage.setItem('block-webpush-modal', 'true');
+          const modal = document.querySelector('.webpush-modal');
+          if (modal) {
+            modal.style.display = 'none';
+          }
+
+          // Show user-friendly message
+          alert('Push notifications are not available in this environment. This is expected in local development with self-signed SSL certificates.');
         });
     } else {
       console.warn('Service Workers are not supported in this browser.');
