@@ -164,6 +164,8 @@
 
     @include mq(laptop) {
       display: table;
+      table-layout: fixed;
+      width: 100%;
     }
 
     thead {
@@ -219,15 +221,68 @@
       height: auto !important;
 
       @include mq(laptop) {
-        height: rem(50px) !important;
+        height: auto !important;
+        min-height: rem(50px);
         padding: rem(8px 16px) !important;
 
         border-right: 1px solid $grey-200-color;
         border-bottom: 1px solid $grey-200-color;
 
+        word-wrap: break-word;
+        word-break: break-word;
+        white-space: normal;
+
         &:last-child {
           border-right: 0;
         }
+      }
+    }
+
+    // Domain name column
+    td:nth-child(1), th:nth-child(1) {
+      @include mq(laptop) {
+        width: 35% !important;
+        max-width: 35% !important;
+      }
+    }
+
+    // Auction type column
+    td:nth-child(2), th:nth-child(2) {
+      @include mq(laptop) {
+        width: 10% !important;
+        max-width: 10% !important;
+      }
+    }
+
+    // Ends at column
+    td:nth-child(3), th:nth-child(3) {
+      @include mq(laptop) {
+        width: 15% !important;
+        max-width: 15% !important;
+      }
+    }
+
+    // Current price column
+    td:nth-child(4), th:nth-child(4) {
+      @include mq(laptop) {
+        width: 10% !important;
+        max-width: 10% !important;
+      }
+    }
+
+    // Offer owner column
+    td:nth-child(5), th:nth-child(5) {
+      @include mq(laptop) {
+        width: 15% !important;
+        max-width: 15% !important;
+      }
+    }
+
+    // Actions column
+    td:nth-child(6), th:nth-child(6) {
+      @include mq(laptop) {
+        width: 15% !important;
+        max-width: 15% !important;
       }
     }
 
@@ -237,10 +292,6 @@
 
     td:nth-child(3), td:nth-child(4), td:nth-child(5), td:nth-child(6) {
       width: 100%;
-
-      @include mq(laptop) {
-        width: auto;
-      }
     }
 
     td:nth-child(6) {
