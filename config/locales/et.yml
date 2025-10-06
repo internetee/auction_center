@@ -94,6 +94,7 @@ et:
     Nime ja aadressi andmetes on lubatud kasutada vaid inglise ja eesti tähestiku tähti, numbreid,
     punkti, ülakoma ning kald- ja sidekriipsu
   not_accepted: "Tagasi lükatud"
+  not_confirmed: "Kinnitamata"
   details: "Detailid"
   already_confirmed: "Mobiiltelefoninumber on juba kasutuses. Palun sisestage teine number"
 
