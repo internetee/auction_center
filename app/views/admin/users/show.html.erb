@@ -11,12 +11,34 @@
           <td><%= (@user.email) %></td>
         </tr>
         <tr>
+          <td><strong><%= t('users.email_confirmed') %></strong></td>
+          <td>
+            <% if @user.confirmed_at %>
+              <i class="ui icon check circle outline"></i>
+              <%= I18n.l(@user.confirmed_at) %>
+            <% else %>
+              <%= t(:not_confirmed) %>
+            <% end %>
+          </td>
+        </tr>
+        <tr>
           <td><strong><%= t('users.mobile_phone') %></strong></td>
           <td>
             <% if @user.phone_number_confirmed? && @phone_confirmation_toggle %>
               <i class="ui icon check circle outline"></i>
             <% end %>
             <%= (@user.mobile_phone) %>
+          </td>
+        </tr>
+        <tr>
+          <td><strong><%= t('users.mobile_phone_confirmed') %></strong></td>
+          <td>
+            <% if @user.mobile_phone_confirmed_at %>
+              <i class="ui icon check circle outline"></i>
+              <%= I18n.l(@user.mobile_phone_confirmed_at) %>
+            <% else %>
+              <%= t(:not_confirmed) %>
+            <% end %>
           </td>
         </tr>
         <tr>
