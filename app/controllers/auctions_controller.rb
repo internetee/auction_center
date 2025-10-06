@@ -7,7 +7,7 @@ class AuctionsController < ApplicationController
   # GET /auctions
   def index
     set_cors_header
-    
+
     @auctions_list = fetch_auctions_list
     @pagy, @auctions = pagy(
       @auctions_list,
