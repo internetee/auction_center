@@ -3,7 +3,7 @@
   
   <% english_auction_presenter = EnglishBidsPresenter.new(auction) %>
 
-  <td><h3><%= auction.domain_name %></h3></td>
+  <td><h3 data-controller="slashed-zero"><%= auction.domain_name %></h3></td>
   
   <td><%= component 'common/auction_type_icon', auction: auction %></td>
 
@@ -11,9 +11,9 @@
 
   <td>
     <% if auction.english? %>
-      <span class="initial-color current_<%= auction.currently_winning_offer&.user_id %>_user"><%= english_auction_presenter.maximum_bids %> €</span>
+      <span class="initial-color current_<%= auction.currently_winning_offer&.user_id %>_user" data-controller="slashed-zero"><%= english_auction_presenter.maximum_bids %> €</span>
     <% else %>
-      <%= auction.users_price.zero? ? '' : "#{auction.users_price} €" %>
+      <span data-controller="slashed-zero"><%= auction.users_price.zero? ? '' : "#{auction.users_price} €" %></span>
     <% end %>
   </td>
 
