@@ -81,3 +81,6 @@ application.register("auction-timezone", AuctionTimezoneController);
 
 import DailySummaryController from "./daily_summary_controller";
 application.register("daily-summary", DailySummaryController);
+
+import SlashedZeroController from "./slashed_zero_controller";
+application.register("slashed-zero", SlashedZeroController);
