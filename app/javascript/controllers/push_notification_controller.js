@@ -149,17 +149,21 @@ export default class extends Controller {
           .querySelector('meta[name="csrf-token"]')
           .getAttribute("content"),
       },
-      body: JSON.stringify({ endpoint, p256dh, auth }),
+      body: JSON.stringify({
+        subscription: { endpoint, p256dh, auth }
+      }),
     })
       .then((response) => {
         if (response.ok) {
           console.log("Subscription successfully saved on the server.");
         } else {
           console.error("Error saving subscription on the server.");
+          throw new Error(`Server responded with status: ${response.status}`);
         }
       })
       .catch((error) => {
         console.error("Error sending subscription to the server:", error);
+        alert('Failed to save push notification subscription. Please try again later.');
       });
   }
 
