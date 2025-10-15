@@ -64,4 +64,3 @@ Dockerfile.dev
 
 .idea/
 CLAUDE.md
-yarn.lock
