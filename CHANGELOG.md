@@ -1,3 +1,6 @@
+15.10.2025
+* Added confirmation status to admin https://github.com/internetee/auction_center/issues/1454
+
 03.10.2025
 * Fixed ident unique contraint for user/password based accounts https://github.com/internetee/auction_center/issues/1455
 
