@@ -15,19 +15,58 @@ export default class extends Controller {
       if (element) {
         element.style.display = 'none';
       }
+      return;
     }
 
-    // Check if the browser supports notifications
+    // Check if notification permission was already denied
+    if ("Notification" in window && Notification.permission === "denied") {
+      const element = document.querySelector('.webpush-modal');
+      if (element) {
+        element.style.display = 'none';
+      }
+      return;
+    }
+
+    // Check if notification permission was already granted and subscription exists
+    if ("Notification" in window && Notification.permission === "granted") {
+      this.checkExistingSubscription();
+    }
+
+    // Modal will be shown automatically, permission will be requested only when user clicks "Accept"
+  }
+
+  checkExistingSubscription() {
+    if ('serviceWorker' in navigator && 'PushManager' in window) {
+      navigator.serviceWorker.ready.then(registration => {
+        registration.pushManager.getSubscription().then(subscription => {
+          if (subscription) {
+            // Already subscribed, hide modal
+            const element = document.querySelector('.webpush-modal');
+            if (element) {
+              element.style.display = 'none';
+            }
+          }
+        });
+      });
+    }
+  }
+
+  setupPushNotifications() {
+    // First request permission from the user
     if ("Notification" in window) {
-      // Request permission from the user to send notifications
       Notification.requestPermission().then((permission) => {
         if (permission === "granted") {
-          // If permission is granted, register the service worker
-          this.registerServiceWorker();
+          // Permission granted, now register service worker
+          this.registerAndSubscribe();
         } else if (permission === "denied") {
           console.warn("User rejected to allow notifications.");
+          localStorage.setItem('block-webpush-modal', 'true');
+          const modal = document.querySelector('.webpush-modal');
+          if (modal) {
+            modal.style.display = 'none';
+          }
         } else {
-          console.warn("User still didn't give an answer about notifications.");
+          console.warn("User dismissed the permission dialog.");
         }
       });
     } else {
@@ -35,48 +74,49 @@ export default class extends Controller {
     }
   }
 
-  setupPushNotifications() {
-    // Check if the browser supports service workers
-    if ("serviceWorker" in navigator) {
-      // Register the service worker script (service_worker.js)
-      navigator.serviceWorker.register('/service-worker.js', { scope: '/' })
-        .then((serviceWorkerRegistration) => {
-          // Check if a subscription to push notifications already exists
-          serviceWorkerRegistration.pushManager
-            .getSubscription()
-            .then((existingSubscription) => {
-              if (!existingSubscription) {
-                // If no subscription exists, subscribe to push notifications
-                serviceWorkerRegistration.pushManager
-                  .subscribe({
-                    userVisibleOnly: true,
-                    applicationServerKey: this.urlBase64ToUint8Array(this.vapidPublicValue),
-                  })
-                  .then((subscription) => {
-                    // Save the subscription on the server
-                    this.saveSubscription(subscription);
-                  });
-              }
-            });
-
-          localStorage.setItem('block-webpush-modal', 'true');
-          document.querySelector('.webpush-modal').style.display = 'none';
-        })
-        .catch((error) => {
-          console.error("Error during registration Service Worker:", error);
-        });
-    }
-  }
-
-  registerServiceWorker() {
+  registerAndSubscribe() {
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/service-worker.js', { scope: '/' })
         .then(registration => {
           console.log('Service Worker registered successfully:', registration);
-          this.setupPushNotifications(registration);
+          // Wait for the service worker to be ready
+          return navigator.serviceWorker.ready;
+        })
+        .then((serviceWorkerRegistration) => {
+          // Check if a subscription to push notifications already exists
+          return serviceWorkerRegistration.pushManager.getSubscription()
+            .then((existingSubscription) => {
+              if (!existingSubscription) {
+                // If no subscription exists, subscribe to push notifications
+                return serviceWorkerRegistration.pushManager.subscribe({
+                  userVisibleOnly: true,
+                  applicationServerKey: this.urlBase64ToUint8Array(this.vapidPublicValue),
+                });
+              }
+              return existingSubscription;
+            });
+        })
+        .then((subscription) => {
+          // Save the subscription on the server
+          this.saveSubscription(subscription);
+          localStorage.setItem('block-webpush-modal', 'true');
+          const modal = document.querySelector('.webpush-modal');
+          if (modal) {
+            modal.style.display = 'none';
+          }
         })
         .catch(error => {
-          console.error('Service Worker registration failed:', error);
+          console.error('Service Worker registration or subscription failed:', error);
+
+          // Hide modal even if Service Worker registration failed (for development)
+          localStorage.setItem('block-webpush-modal', 'true');
+          const modal = document.querySelector('.webpush-modal');
+          if (modal) {
+            modal.style.display = 'none';
+          }
+
+          // Show user-friendly message
+          alert('Push notifications are not available in this environment. This is expected in local development with self-signed SSL certificates.');
         });
     } else {
       console.warn('Service Workers are not supported in this browser.');
@@ -109,17 +149,21 @@ export default class extends Controller {
           .querySelector('meta[name="csrf-token"]')
           .getAttribute("content"),
       },
-      body: JSON.stringify({ endpoint, p256dh, auth }),
+      body: JSON.stringify({
+        subscription: { endpoint, p256dh, auth }
+      }),
     })
       .then((response) => {
         if (response.ok) {
           console.log("Subscription successfully saved on the server.");
         } else {
           console.error("Error saving subscription on the server.");
+          throw new Error(`Server responded with status: ${response.status}`);
         }
       })
       .catch((error) => {
         console.error("Error sending subscription to the server:", error);
+        alert('Failed to save push notification subscription. Please try again later.');
       });
   }
 
