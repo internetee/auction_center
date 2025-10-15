@@ -117,6 +117,7 @@ en:
     Please note that the only characters allowed are UTF-characters of english/estonian alphabet,
     numbers, forward slashes, apostrophes, dots and hyphens.
   not_accepted: "Not accepted"
+  not_confirmed: "Not confirmed"
   details: "Details"
   updated_by: "Updated by"
   already_confirmed: |
