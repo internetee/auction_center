@@ -36,7 +36,7 @@
     <!-- 
     These parameters are passed to the Common::Table::Component. These parameters are used to generate headers in the table component. The name "column_name" indicates the name of the column. This is necessary for sorting, so the name of this column should correspond to the name of the column in the database table. If you want to make it so that the data is not sorted by the column, then you should add a nil value. "Caption" is the table header, and "options" are additional parameters that are passed into the tags. 
     -->
-    <% header_collection = [{ column: 'domain_name', caption: t('auctions.domain_name'), options: { class: "sorting" } },
+    <% header_collection = [{ column: 'domain_name', caption: t('auctions.domain_name'), options: { class: "sorting", style: "width: 25% !important;" } },
                             { column: 'platform', caption: t('auctions.auction_type'), options: { class: "sorting" } },
                             { column: 'ends_at', caption: t('auctions.ends_at'), options: { class: "sorting" } },
                             { column: 'users_price', caption: t('auctions.current_price'), options: { class: "sorting" } },
