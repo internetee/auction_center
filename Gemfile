@@ -60,9 +60,11 @@ group :development, :test do
 end
 
 group :development do
-  gem 'attractor'
-  gem 'attractor-javascript'
-  gem 'attractor-ruby'
+  # Attractor gems removed due to sinatra CVE-2025-61921
+  # Requires sinatra >= 4.2.0 which needs rack >= 3.0 (incompatible with current Rails setup)
+  # gem 'attractor'
+  # gem 'attractor-javascript'
+  # gem 'attractor-ruby'
   gem 'htmlbeautifier'
   gem 'i18n-debug'
   gem 'letter_opener', '~> 1.8'
