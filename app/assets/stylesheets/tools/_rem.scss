@@ -61,10 +61,10 @@ $rem-px-only: false !default;
   }
 }
 
-@mixin rem-properties($properties, $values...) {
+@mixin rem($properties, $values...) {
   @if type-of($properties) == "map" {
     @each $property in map-keys($properties) {
-      @include rem-properties($property, map-get($properties, $property));
+      @include rem($property, map-get($properties, $property));
     }
   } @else {
     @each $property in $properties {
