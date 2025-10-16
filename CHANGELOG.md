@@ -1,3 +1,6 @@
+16.10.2025
+* Add fixed column widths and text wrapping to auction table https://github.com/internetee/auction_center/pull/1466
+
 15.10.2025
 * Added confirmation status to admin https://github.com/internetee/auction_center/issues/1454
 
