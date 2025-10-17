@@ -1,3 +1,6 @@
+17.10.2025
+* Fix temporary error on eid account creation https://github.com/internetee/auction_center/pull/1472
+
 16.10.2025
 * Add fixed column widths and text wrapping to auction table https://github.com/internetee/auction_center/pull/1466
 
