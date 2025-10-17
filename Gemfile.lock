@@ -667,7 +667,7 @@ DEPENDENCIES
   propshaft
   pry
   puma (~> 6.6.0)
-  rack (~> 2.2.18)
+  rack (~> 2.2.19)
   rails (~> 8.0.2)
   rails-i18n
   recaptcha
