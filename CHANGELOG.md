@@ -1,6 +1,7 @@
 17.10.2025
 * Fix temporary error on eid account creation https://github.com/internetee/auction_center/pull/1472
 * Fix sorting in the offers view https://github.com/internetee/auction_center/issues/1476
+* Font improvements to better differentiate o and 0 characters in domain names https://github.com/internetee/auction_center/issues/1467
 
 16.10.2025
 * Add fixed column widths and text wrapping to auction table https://github.com/internetee/auction_center/pull/1466
