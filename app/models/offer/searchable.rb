@@ -9,10 +9,10 @@ module Offer::Searchable
 
   class_methods do
     def search(params = {})
-      sort_by = params[:sort_by] || 'created_at'
+      sort_by = params[:sort_by] || 'offers.created_at'
       sort_direction = params[:sort_direction] || 'desc'
 
-      includes(:auction).order("#{sort_by} #{sort_direction}")
+      reorder("#{sort_by} #{sort_direction}")
     end
 
     def highest_per_auction_for_user(user_id)
