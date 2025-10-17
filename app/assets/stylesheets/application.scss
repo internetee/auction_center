@@ -1,5 +1,5 @@
-// Entry point for your Sass build
-@use "toastify-js/src/toastify.css";
+// Sassy
+@import "toastify-js/src/toastify";
 @import "datatables/datatables";
 @import "generics/normalize";
 @import "settings/settings";
