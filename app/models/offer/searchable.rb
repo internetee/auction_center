@@ -16,10 +16,16 @@ module Offer::Searchable
     end
 
     def highest_per_auction_for_user(user_id)
-      joins(:auction)
-        .select('DISTINCT ON (auctions.id) offers.*, auctions.domain_name, auctions.platform, auctions.ends_at')
+      # Use a subquery to get highest offers per auction, then order by created_at
+      subquery = joins(:auction)
+        .select('DISTINCT ON (auctions.id) offers.id')
         .where(user_id: user_id)
         .order('auctions.id, offers.cents DESC')
+
+      where(id: subquery)
+        .joins(:auction)
+        .select('offers.*, auctions.domain_name, auctions.platform, auctions.ends_at')
+        .order('offers.created_at DESC')
     end
   end
 end

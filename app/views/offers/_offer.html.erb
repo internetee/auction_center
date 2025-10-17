@@ -9,6 +9,7 @@
   </h3></td>
   <td><%= component 'common/auction_type_icon', auction: offer.auction %></td>
   <td><b><%= t('english_offers.index.your_last_offer') %>:</b> <%= t('offers.price_in_currency', price: offer.price) %></td>
+  <td><%= offer.created_at.strftime('%d/%m/%Y %H:%M') %></td>
   <td><%= offer.auction.finished? ? t('auctions.finished') : tag.span(offer.auction.ends_at.strftime('%d/%m/%Y %H:%M'), data: { auction_timezone_target: 'endtime'}) %></td>
   
   <td>
