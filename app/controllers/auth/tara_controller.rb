@@ -22,7 +22,7 @@ module Auth
 
     def create
       @user = User.new(create_params)
-      check_for_tampering
+      # check_for_tampering
       create_password
 
       respond_to do |format|
