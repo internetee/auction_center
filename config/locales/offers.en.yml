@@ -2,6 +2,7 @@ en:
   offers:
     auction: "Auction"
     price: "Price"
+    created_at: "Date"
     i_accept_terms_and_conditions: "I accept terms and conditions"
     price_in_currency: "%{price} €"
     price_is_without_vat: "The offer does not include VAT."
