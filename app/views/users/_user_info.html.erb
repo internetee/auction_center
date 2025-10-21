@@ -3,13 +3,21 @@
     <div class="alert alert-warning" role="alert" style="background-color: #fff3cd; border: 1px solid #ffc107; color: #856404; padding: 12px; margin-bottom: 20px; border-radius: 4px;">
       <h4 style="margin-top: 0;"><%= t('users.email_confirmation_required.title') %></h4>
       <p style="margin-bottom: 10px;"><%= t('users.email_confirmation_required.message') %></p>
-      <div style="display: flex; gap: 10px;">
-        <%= link_to t('users.email_confirmation_required.resend_email'), 
-                    user_confirmation_path, 
+      <div style="display: flex; gap: 10px; align-items: center;">
+        <%= button_to t('users.email_confirmation_required.resend_email'),
+                    email_confirmation_users_path,
                     method: :post,
-                    data: { turbo_method: :post },
+                    data: {
+                      turbo_frame: '_top',
+                      turbo_submits_with: t('common.sending')
+                    },
                     class: "btn btn-warning",
                     style: "background-color: #ffc107; color: #212529; padding: 8px 16px; text-decoration: none; border-radius: 4px;" %>
+        <% if @user.confirmation_sent_at.present? %>
+          <small style="color: #856404;">
+            <%= t('users.last_sent') %>: <%= time_ago_in_words(@user.confirmation_sent_at) %> <%= t('common.ago') %>
+          </small>
+        <% end %>
       </div>
     </div>
   <% end %>

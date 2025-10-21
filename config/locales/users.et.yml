@@ -32,6 +32,10 @@ et:
       resend_email: "Saada kinnitusmeil uuesti"
       action_blocked: "Enne selle tegevuse sooritamist pead kinnitama oma e-posti aadressi. Palun kontrolli oma e-posti või uuenda oma e-posti aadressi profiilis."
 
+    email_confirmation_sent: "Kinnituskiri on saadetud. Palun kontrolli oma postkasti."
+    email_confirmation_rate_limited: "Palun oota %{wait_time} enne uue kinnituskirja taotlemist."
+    last_sent: "Viimati saadetud"
+
     edit:
       title: "Muuda kasutajaprofiili"
       contact_data: "Kontaktandmed"

@@ -42,4 +42,7 @@ en:
       webpush_decline: "No, thanks"
 
     pdf:
-      payment_information: "We accept payments only in the Estonian Internet Foundation’s .ee auction center at %{link}"
+      payment_information: "We accept payments only in the Estonian Internet Foundation's .ee auction center at %{link}"
+
+    sending: "Sending..."
+    ago: "ago"
