@@ -2,6 +2,8 @@
 
 module Users
   class EmailConfirmationController < ApplicationController
+    before_action :authenticate_user!
+
     RESEND_INTERVAL = 2.minutes
 
     before_action :rate_limited!, only: :create, if: :rate_limited?
