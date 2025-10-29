@@ -617,7 +617,7 @@ DEPENDENCIES
   cssbundling-rails (~> 1.4.3)
   csv
   dartsass-rails
-  data_migrate (~> 11.3.0)
+  data_migrate (~> 11.3.1)
   delayed_job (~> 4.1.0)
   delayed_job_active_record
   devise (~> 4.9.3)
