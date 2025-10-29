@@ -5,6 +5,10 @@ module Auth
       notify_airbrake(e)
     end
 
+    before_action do
+      I18n.locale = @user&.locale || cookies[:locale] || I18n.default_locale
+    end
+
     def callback
       intended_redirect_path = stored_location_for(:user) || root_path
       session[:omniauth_hash] = user_hash.delete_if { |key, _| key == 'credentials' }
