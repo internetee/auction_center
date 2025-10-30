@@ -32,6 +32,10 @@ en:
       resend_email: "Resend confirmation email"
       action_blocked: "You need to confirm your email address before you can perform this action. Please check your email or update your email address in your profile."
 
+    email_confirmation_sent: "Confirmation email has been sent. Please check your inbox."
+    email_confirmation_rate_limited: "Please wait %{wait_time} before requesting another confirmation email."
+    last_sent: "Last sent"
+
     edit:
       title: "Edit your user profile"
       contact_data: "Contact data"

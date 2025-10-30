@@ -138,6 +138,9 @@ Rails.application.routes.draw do
         post :send_sms, to: 'send_sms#create', on: :collection
       end
     end
+    scope module: :users do
+      post :email_confirmation, to: 'email_confirmation#create', on: :collection
+    end
   end
 
   resources :wishlist_items, param: :uuid, only: %i[index edit create destroy update]

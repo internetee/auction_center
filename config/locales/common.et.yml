@@ -42,3 +42,6 @@ et:
 
     pdf:
       payment_information: "Arvet saab maksta vaid Eesti Interneti Sihtasutuse .ee domeenioksjoni keskkonnas %{link}"
+
+    sending: "Saadan..."
+    ago: "tagasi"
