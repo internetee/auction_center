@@ -51,6 +51,8 @@ gem 'turbo-rails'
 gem 'valvat'
 gem 'view_component'
 gem 'webpush'
+gem 'yabeda-rails'
+gem 'yabeda-prometheus'
 
 group :development, :test do
   gem 'brakeman'
