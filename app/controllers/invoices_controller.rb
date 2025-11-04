@@ -13,10 +13,11 @@ class InvoicesController < ApplicationController
       if update_predicate
         format.turbo_stream do
           render turbo_stream: [
-            turbo_stream.update('invoice_information', 
-              Modals::PayInvoice::InvoiceInformation::Component.new(invoice: @invoice)),
-              turbo_stream.toast(t(:updated), position: "right", background: 'linear-gradient(to right, #11998e, #38ef7d)')
-        ]
+            turbo_stream.update('invoice_information',
+                                Modals::PayInvoice::InvoiceInformation::Component.new(invoice: @invoice)),
+            turbo_stream.toast(t(:updated), position: 'right',
+                                            background: 'linear-gradient(to right, #11998e, #38ef7d)')
+          ]
         end
 
         format.html { redirect_to invoices_path, notice: t(:updated) }
@@ -24,12 +25,13 @@ class InvoicesController < ApplicationController
       else
         error_str = if @invoice.errors.empty?
                       @invoice.payable? ? t(:something_went_wrong) : t('invoices.invoice_already_paid')
-                    else  
+                    else
                       @invoice.errors.full_messages.join('; ')
                     end
 
         format.turbo_stream do
-          render turbo_stream: turbo_stream.toast(error_str, position: "right", background: 'linear-gradient(to right, #93291E, #ED213A)')
+          render turbo_stream: turbo_stream.toast(error_str, position: 'right',
+                                                             background: 'linear-gradient(to right, #93291E, #ED213A)')
         end
 
         format.html { redirect_to invoices_path, status: :see_other, alert: error_str }
@@ -98,10 +100,10 @@ class InvoicesController < ApplicationController
   end
 
   def oneoff
+    amount = params[:amount]&.to_f || @invoice.due_amount.to_f
     response = EisBilling::OneoffService.call(invoice_number: @invoice.number.to_s,
                                               customer_url: linkpay_callback_url,
-                                              amount: params[:amount])
-
+                                              amount:)
 
     if response.result?
       redirect_to response.instance['oneoff_redirect_link'], allow_other_host: true, format: :html
