@@ -13,11 +13,11 @@ module Metrics
       # Set expiration on key creation
       redis.expire(key, TTL_SECONDS) unless redis.ttl(key) > 0
 
-      # Update Yabeda gauge
-      current_count = redis.scard(key)
-      Yabeda.auction.unique_bidders_daily.set({date: date.to_s}, current_count)
-
-      Rails.logger.info("Unique bidder tracked: user_id=#{user_id}, date=#{date}, count=#{current_count}, new=#{was_new_bidder}")
+      # Increment Prometheus counter only if this is a NEW unique bidder for this day
+      if was_new_bidder
+        Yabeda.auction.unique_bidders_total.increment({})
+        Rails.logger.info("New unique bidder tracked: user_id=#{user_id}, date=#{date}")
+      end
 
       was_new_bidder
     end
