@@ -64,5 +64,7 @@ module AuctionCenter
     config.action_mailer.default_url_options = {
       host: config.customization.dig(:mailer, :host)
     }
+
+    # config.middleware.use RequestMetricsMiddleware
   end
 end
