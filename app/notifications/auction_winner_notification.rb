@@ -12,12 +12,12 @@ class AuctionWinnerNotification < Noticed::Base
   def webpush_format
     {
       title: I18n.t('.winner_webpush_notification_title'),
-      body: I18n.t('.participant_win_auction', name: params[:auction].domain_name),
+      body: I18n.t('.participant_win_auction', name: params[:auction]&.domain_name),
       icon: 'https://example.com/icon.png'
     }
   end
 
   def message
-    I18n.t('.participant_win_auction', name: params[:auction].domain_name)
+    I18n.t('.participant_win_auction', name: params[:auction]&.domain_name)
   end
 end
