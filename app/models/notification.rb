@@ -1,5 +1,8 @@
 class Notification < ApplicationRecord
   include Noticed::Deliverable
+
+  self.inheritance_column = :_type_disabled
+
   belongs_to :recipient, polymorphic: true
 
   scope :unread, -> { where(read_at: nil) }
@@ -19,6 +22,18 @@ class Notification < ApplicationRecord
 
   def unread?
     read_at.nil?
+  end
+
+  # Noticed 2.x compatibility: return the notification class instance
+  def to_notification
+    return self unless type.present?
+
+    # Get the notification class (e.g., "AuctionWinnerNotification")
+    notification_class = type.safe_constantize
+    return self unless notification_class
+
+    # Return instance with params from the notification record
+    notification_class.new(params: params || {})
   end
 
   # after_create_commit :broadcast_to_bell
