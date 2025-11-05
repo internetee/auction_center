@@ -13,14 +13,14 @@
       <div class="c-notices is-hidden js-notices" data-toggle-target="element">
         <div class="js-notices-list">
 
-          <% @notifications.each do |n| %>
+          <% @notifications.each do |notification| %>
               <div class="c-notice">
                   <div class="c-notice__header">
-                      <%= component 'common/notifications/icon', notification: n, readed: false %>
+                      <%= component 'common/notifications/icon', notification: notification, readed: false %>
                   </div>
-                  <div class="c-notice__main"><%= n.to_notification.message %></div>
+                  <div class="c-notice__main"><%= notification.to_notification.message %></div>
                     <div class="c-notice__footer">
-                        <div class="c-notification__header__date"><%= I18n.t('.notification_received', datetime: n.created_at.strftime('%d/%m/%Y %H:%M')) %></div>
+                        <div class="c-notification__header__date"><%= I18n.t('.notification_received', datetime: notification.created_at.strftime('%d/%m/%Y %H:%M')) %></div>
                     </div>
               </div>
           <% end %>

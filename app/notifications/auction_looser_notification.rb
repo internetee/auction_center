@@ -10,8 +10,6 @@ class AuctionLooserNotification < Noticed::Base
   param :auction
 
   def webpush_format
-    auction = params[:auction]
-
     {
       title: I18n.t('.webpush_title_lost'),
       body: I18n.t('.participant_lost_auction', name: params[:auction]&.domain_name),
