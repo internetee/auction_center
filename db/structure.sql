@@ -3173,6 +3173,7 @@ ALTER TABLE ONLY public.invoices
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251105100000'),
 ('20251104081848'),
 ('20251104081847'),
 ('20251003083614'),
