@@ -32,8 +32,30 @@ class Notification < ApplicationRecord
     notification_class = type.safe_constantize
     return self unless notification_class
 
-    # Return instance with params from the notification record
-    notification_class.new(params: params || {})
+    # Sanitize params by removing ActiveJob reserved keys
+    sanitized_params = sanitize_params(params || {})
+
+    # Return instance with sanitized params from the notification record
+    notification_class.new(params: sanitized_params)
+  end
+
+  private
+
+  def sanitize_params(params_hash)
+    return params_hash unless params_hash.is_a?(Hash)
+
+    sanitized = params_hash.except('_aj_globalid', '_aj_serialized', :_aj_globalid, :_aj_serialized)
+
+    sanitized.transform_values do |value|
+      case value
+      when Hash
+        sanitize_params(value)
+      when Array
+        value.map { |item| item.is_a?(Hash) ? sanitize_params(item) : item }
+      else
+        value
+      end
+    end
   end
 
   # after_create_commit :broadcast_to_bell
