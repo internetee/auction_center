@@ -12,6 +12,12 @@ Yabeda.configure do
       tags: [:sql_type],
       buckets: [0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1, 5]
   end
+
+  group :eis_billing do
+    counter :payment_failures_total,
+      comment: 'Total payment failures from EIS Billing provider',
+      tags: [:service, :error_type, :exception_class]
+  end
 end
 
 ActiveSupport::Notifications.subscribe('sql.active_record') do |*args|
