@@ -60,7 +60,7 @@
         <% end %>
       <% end %>
 
-      <%= turbo_frame_tag "results" do %>
+      <%= turbo_frame_tag "results", autoscroll: true, data: { autoscroll_block: "start", autoscroll_behavior: "smooth" } do %>
         <div class="column" style="margin-top:10px; text-align: center;">
           <% if @pagy.pages > 1 %>
             <div class="footer">

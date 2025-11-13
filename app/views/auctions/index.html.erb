@@ -44,7 +44,7 @@
                             { column: nil, caption: t('auctions.offer_actions'), options: { class: 'u-text-left u-text-center-l' } }] %>
 
     <!-- In the Stimulus controller, I use the Turbo class with frame parameters named 'results' for table sorting. This means that rendering the table with the new sort order should occur within the scope of the turbo_frame_tag with the name "results". For it to work correctly, it's necessary to wrap the table content within this turbo_frame_tag with "results" name. The name "results" is assigned as a value for the orderable Stimulus controller in the table component. -->
-    <%= turbo_frame_tag "results" do %>
+    <%= turbo_frame_tag "results", autoscroll: true, data: { autoscroll_block: "start", autoscroll_behavior: "smooth" } do %>
 
       <!-- Options attributes are used as table attributes -->
       <%= component 'common/table', header_collection:, options: { class: 'js-table-dt dataTable no-footer' } do %>
