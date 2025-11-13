@@ -1,4 +1,4 @@
-<div class="c-modal-overlay js-modal-po" data-modals--offer-modal-target='modal'>
+<div class="c-modal-overlay js-modal-po" data-modals--offer-modal-target='modal' data-controller="offer-price-validator" data-offer-price-validator-minimum-price-value="<%= minimum_offer_value %>">
   <div class="c-modal">
     <div class="c-modal__scroll">
       <div class="c-modal__scroll__content">
@@ -74,7 +74,7 @@
             
             <%= component 'common/action_button', **delete_action_button_properties if @auction.offer_from_user(@current_user).present? %>
 
-            <%= submit_tag t(:submit), **submit_form_button_properties %>
+            <%= submit_tag t(:submit), **submit_form_button_properties.merge(data: submit_form_button_properties[:data].merge('offer-price-validator-target': 'submitButton')) %>
           </div>
           <% end %>
 

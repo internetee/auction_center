@@ -16,14 +16,14 @@
       <span data-controller="slashed-zero"><%= auction.users_price.zero? ? '' : "#{auction.users_price} €" %></span>
     <% end %>
   </td>
-
+  
   <% if auction.english? %>
     <td class="initial-color current_<%= auction.currently_winning_offer&.user_id %>_user">
       <%= english_auction_presenter.bidder_name(auction.currently_winning_offer, user) %>
     </td>
   <% else %>
     <td><%= tag.strong t('auctions.you') if auction.users_offer_uuid %></td>
-  <% end %>
+  <% end if false %> <!-- Temprorary turn off because we not provide english auction at the moment! -->
 
   <td class="u-text-left u-text-center-l">
     <% if user %>
