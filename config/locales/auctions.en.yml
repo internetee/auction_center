@@ -10,6 +10,8 @@ en:
     auction_type: "Auction type"
     english: "English"
     blind: "Blind"
+    english_auction_tooltip: "English Auction"
+    blind_auction_tooltip: "Blind Auction"
     offers: "Offers"
     turns_count: "Turns count"
     offer_actions: "Offer actions"

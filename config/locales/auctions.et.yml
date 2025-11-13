@@ -17,6 +17,8 @@ et:
     auction_type: "Oksjoni tüüp"
     english: "Inglise"
     blind: "Pime"
+    english_auction_tooltip: "Inglise oksjon"
+    blind_auction_tooltip: "Pimeoksjon"
     offers: "Pakkumused"
     offer_actions: "Pakkumistegevused"
     your_current_price: "Sinu pakkumus"
