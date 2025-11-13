@@ -7,6 +7,7 @@ et:
     all_marked_as_read: 'Kõik teavitused märgitud loetuks'
     no_notifications: 'Teavitusi pole veel'
     no_unread_notifications: 'Lugemata teavitusi pole'
+    all_caught_up: 'Kõik on loetud! 🎉'
     no_read_notifications: 'Loetud teavitusi pole'
     index:
       title: "Teavitused"
