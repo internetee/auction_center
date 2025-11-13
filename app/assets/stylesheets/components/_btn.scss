@@ -90,3 +90,10 @@ table {
     margin: 2.5rem 0 1.5rem 0;
   }
 }
+
+.c-btn--disabled,
+.c-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}

@@ -37,10 +37,10 @@
   <div class="c-table c-table--sortable">
     <div class="c-table__filters c-table__filters__search--whishlist">
       <div class="c-table__filters__search ">
-        <%= form_with model: @wishlist_item, url: wishlist_items_path do |f| %>
+        <%= form_with model: @wishlist_item, url: wishlist_items_path, data: { controller: "wishlist" } do |f| %>
           <%= f.hidden_field :user_id, value: @wishlist_item.user_id %>
-          <%= component 'common/form/text_field', form: f, attribute: :domain_name, options: { placeholder: t('auctions.domain_name'), data: { action: 'input->wishlist#domainCheck'} } %>
-          <%= component 'common/form/form_button', form: f, btn_title: t(:submit), options: { data: { turbo: false }, id: "wishlist_item_form_commit" } %>
+          <%= component 'common/form/text_field', form: f, attribute: :domain_name, options: { placeholder: t('auctions.domain_name'), data: { action: 'input->wishlist#domainCheck', wishlist_target: 'input' } } %>
+          <%= component 'common/form/form_button', form: f, btn_title: t(:submit), options: { data: { turbo: false, wishlist_target: 'submit' }, id: "wishlist_item_form_commit", disabled: true } %>
         <% end %>
       </div>
     </div>

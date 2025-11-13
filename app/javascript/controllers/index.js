@@ -87,3 +87,6 @@ application.register("slashed-zero", SlashedZeroController);
 
 import OfferPriceValidatorController from "./offer_price_validator_controller";
 application.register("offer-price-validator", OfferPriceValidatorController);
+
+import WishlistController from "./wishlist_controller";
+application.register("wishlist", WishlistController);
