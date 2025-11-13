@@ -2,7 +2,7 @@ class AutobiderController < ApplicationController
   before_action :authenticate_user!
   before_action :set_auction, only: %i[new edit update create]
   before_action :allow_any_action_with_autobider
-  
+
   include RecaptchaValidatable
   recaptcha_action 'autobidder'
 
@@ -25,8 +25,9 @@ class AutobiderController < ApplicationController
 
     render turbo_stream: [
       turbo_stream.replace('flash', partial: 'common/flash', locals: { flash: }),
-      turbo_stream.update('autobider-status', html: @autobider.enable ? I18n.t('english_offers.form.yep') : I18n.t('english_offers.form.nope'))
-      ]
+      turbo_stream.update('autobider-status',
+                          html: @autobider.enable ? I18n.t('english_offers.form.yep') : I18n.t('english_offers.form.nope'))
+    ]
   end
 
   def edit
