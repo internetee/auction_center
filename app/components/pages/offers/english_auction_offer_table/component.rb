@@ -12,7 +12,7 @@ module Pages
 
         def overview_table_headers
           [{ column: nil, caption: t('auctions.domain_name'), options: { class: '' } },
-           { column: nil, caption: t('auctions.ends_at'), options: { class: '' } },
+           { column: nil, caption: t('auctions.ended_at'), options: { class: '' } },
            { column: nil, caption: t('offers.price'), options: { class: '' } }]
         end
 
