@@ -15,3 +15,13 @@ en:
       domain_already_registered: "Code already used."
       paid: "Paid"
       description: "When the invoice is paid, the registration code will appear here"
+
+  activerecord:
+    attributes:
+      result:
+        status/no_bids: "No bids"
+        status/awaiting_payment: "Awaiting payment"
+        status/payment_received: "Payment received"
+        status/payment_not_received: "Payment not received"
+        status/domain_registered: "Domain registered"
+        status/domain_not_registered: "Domain not registered"
