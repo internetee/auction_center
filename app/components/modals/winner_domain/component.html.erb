@@ -15,7 +15,7 @@
                         <span class="o-po-icon o-io-icon--bg-orange"></span>
                     </div>
                     <div class="c-modal__header__desc">
-                        <span><%= t('results.status') %></span> <span class="c-badge c-badge--yellow"><%= @result.status.humanize %></span>
+                        <span><%= t('results.status') %></span> <span class="c-badge c-badge--yellow"><%= Result.human_attribute_name("status/#{@result.status}") %></span>
                     </div>
                 </div>
                 <div class="c-modal__main">

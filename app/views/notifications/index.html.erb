@@ -2,9 +2,11 @@
 
 <!-- Unreaded Notifications -->
 <div class="o-container">
-  <div style='display: flex; justify-content: end;'>
-    <%= component 'common/buttons/button_to', title_caption: t('notifications.read_all'), href: mark_as_read_notifications_path, color: 'orange', options: { method: :patch } %>
-  </div>
+  <% if @unread_notifications.present? %>
+    <div style='display: flex; justify-content: end; margin-bottom: 20px;'>
+      <%= component 'common/buttons/button_to', title_caption: t('notifications.read_all'), href: mark_as_read_notifications_path, color: 'orange', options: { method: :patch } %>
+    </div>
+  <% end %>
 
   <h2><%= t('notifications.unreaded_notifications') %> <sup>(<%= @unread_notifications&.count %>)</sup></h2>
   <%= turbo_frame_tag :unread_notifications do %>
@@ -27,7 +29,17 @@
       <%= component 'common/pagy', pagy: @unread_pagy %>
     <% else %>
       <div class="c-notifications">
-        <p class="c-notification__empty"><%= t('notifications.no_unread_notifications') %></p>
+        <div class="c-notification__empty-state">
+          <svg class="c-notification__empty-icon" xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            <path d="M9 8V6a3 3 0 0 1 6 0v2"></path>
+            <line x1="6" y1="8" x2="18" y2="16"></line>
+            <line x1="18" y1="8" x2="6" y2="16"></line>
+          </svg>
+          <p class="c-notification__empty-title"><%= t('notifications.no_unread_notifications') %></p>
+          <p class="c-notification__empty-description"><%= t('notifications.all_caught_up') %></p>
+        </div>
       </div>
     <% end %>
   <% end %>
@@ -55,7 +67,14 @@
       <%= component 'common/pagy', pagy: @read_pagy %>
     <% else %>
       <div class="c-notifications">
-        <p class="c-notification__empty"><%= t('notifications.no_read_notifications') %></p>
+        <div class="c-notification__empty-state c-notification__empty-state--read">
+          <svg class="c-notification__empty-icon c-notification__empty-icon--read" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            <circle cx="12" cy="12" r="1" fill="currentColor"></circle>
+          </svg>
+          <p class="c-notification__empty-title"><%= t('notifications.no_read_notifications') %></p>
+        </div>
       </div>
     <% end %>
   <% end %>

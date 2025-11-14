@@ -3,6 +3,7 @@ en:
     domain_name: 'Domain name'
     starts_at: 'Starts at'
     ends_at: 'Ends at'
+    ended_at: 'Ended at'
     finished_at: "Finished at"
     finished: "This auction has ended"
     winning_bid: 'Winning bid'
@@ -10,6 +11,8 @@ en:
     auction_type: "Auction type"
     english: "English"
     blind: "Blind"
+    english_auction_tooltip: "English Auction"
+    blind_auction_tooltip: "Blind Auction"
     offers: "Offers"
     turns_count: "Turns count"
     offer_actions: "Offer actions"

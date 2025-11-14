@@ -10,6 +10,7 @@ et:
     domain_name: 'Domeeninimi'
     starts_at: 'Algus'
     ends_at: 'Oksjoni lõpp'
+    ended_at: 'Oksjon lõppes'
     finished_at: "Oksjoni lõppkuupäev"
     finished: "Oksjon on lõppenud"
     winning_bid: "Võidupakkumus"
@@ -17,6 +18,8 @@ et:
     auction_type: "Oksjoni tüüp"
     english: "Inglise"
     blind: "Pime"
+    english_auction_tooltip: "Inglise oksjon"
+    blind_auction_tooltip: "Pimeoksjon"
     offers: "Pakkumused"
     offer_actions: "Pakkumistegevused"
     your_current_price: "Sinu pakkumus"

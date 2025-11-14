@@ -80,8 +80,10 @@ class ApplicationController < ActionController::Base
   protected
 
   def authenticate_user!
+    Rails.logger.debug "=== authenticate_user! called, user_signed_in?: #{user_signed_in?}"
     return if user_signed_in?
 
+    Rails.logger.debug "=== User NOT signed in, redirecting..."
     store_location_for(:user, request.fullpath) if request.get? || request.head?
     store_location_for(:user, request.referer) unless request.get? || request.head?
 
@@ -90,9 +92,9 @@ class ApplicationController < ActionController::Base
     flash[:alert] = t('devise.failure.unauthenticated')
 
     if turbo_frame_request?
-      render turbo_stream: turbo_stream.action(:redirect, root_path)
+      render turbo_stream: turbo_stream.action(:redirect, root_path) and return false
     else
-      redirect_to new_user_session_path
+      redirect_to new_user_session_path and return false
     end
   end
 

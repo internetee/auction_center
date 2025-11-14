@@ -7,6 +7,7 @@ en:
     all_marked_as_read: 'All notifications marked as read'
     no_notifications: 'No notifications yet'
     no_unread_notifications: 'No unread notifications'
+    all_caught_up: 'You are all caught up! 🎉'
     no_read_notifications: 'No read notifications'
     index:
       title: "Notifications"

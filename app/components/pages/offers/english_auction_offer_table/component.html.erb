@@ -24,12 +24,12 @@
         <%= component 'common/table', header_collection: bidder_table_headers, options: { class: '' } do %>
           <%= tag.tbody do %>
             <% @offer.auction.offers.order(updated_at: :desc).each do |offer| %>
-              <tr class="offers-table-row">
+              <tr class="offers-table-row" data-controller="auction-timezone" data-auction-timezone-end-time-value="<%= offer.updated_at.iso8601 %>">
                 <td style="<%= offer&.billing_profile&.user_id == current_user.id ? 'color: green;' : '' %>">
                   <%= offer&.billing_profile&.user_id == current_user.id ? "#{offer.username} (You)" : offer.username %>
                 </td>
                 <td><%= t('offers.price_in_currency', price: offer.price) %></td>
-                <td><%= I18n.l(offer.updated_at) %></td>
+                <td><span data-auction-timezone-target="endtime"><%= offer.updated_at %></span></td>
               </tr>
             <% end %>
           <% end %>

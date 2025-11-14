@@ -15,3 +15,13 @@ et:
       domain_already_registered: "Koodi on juba kasutatud."
       paid: "Makstud"
       description: "Kui arve on tasutud, ilmub siia registreerimiskood"
+
+  activerecord:
+    attributes:
+      result:
+        status/no_bids: "Pakkumisi ei esitatud"
+        status/awaiting_payment: "Ootan makset"
+        status/payment_received: "Makse saadud"
+        status/payment_not_received: "Makset ei saadud"
+        status/domain_registered: "Domeen registreeritud"
+        status/domain_not_registered: "Domeeni ei registreeritud"

@@ -10,7 +10,7 @@ en:
       notifications: "Notifications"
 
     footer:
-      copyright: "© 2024 Estonian Internet Foundation"
+      copyright: "© %{year} Estonian Internet Foundation"
       address: "Paldiski mnt 80, 10617 Tallinn, Estonia"
       registration_code: "Registration code: 90010019"
 

@@ -56,7 +56,7 @@ module Common
       end
 
       def next_direction(column)
-        return unless currently_sorted?(column)
+        return 'asc' unless currently_sorted?(column)
 
         params[:sort_direction] == 'asc' ? 'desc' : 'asc'
       end

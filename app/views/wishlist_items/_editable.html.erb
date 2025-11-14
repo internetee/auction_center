@@ -2,10 +2,9 @@
   <table class="c-wishlist__table">
     <thead>
       <tr>
-        <th>#</th>
-        <th>Domeeninimi</th>
-        <th class="u-text-left u-text-center-l" style='width: 200px !important;'>Minu pakkumus</th>
-        <th class="u-text-left u-text-center-l">Toimingud</th>
+        <th style="width: 10%;">#</th>
+        <th style="width: 40%;"><%= t('auctions.domain_name') %></th>
+        <th class="u-text-left u-text-center-l" style="width: 50%;"><%= t('wishlist_items.index.my_bid') %></th>
       </tr>
     </thead>
     <tbody>
@@ -16,7 +15,7 @@
             <td><h3><%= item.domain_name %></h3></td>
             <td data-turbo="true">
               <%= form_for wishlist_item, url: wishlist_item_path(uuid: wishlist_item.uuid), method: :patch do |f| %>
-                <div style='display: flex; gap: 0 10px; align-items: center; margin-right: 5px; width: 200px;'>
+                <div style='display: flex; gap: 0 10px; align-items: center;'>
                   <%= component 'common/form/number_field', form: f, attribute: :price, options: { min: 5, step: "0.01", placeholder: item.price } %>
 
                   <%# TODO: NEED TO MOVE TO COMPONENT %>
@@ -26,14 +25,16 @@
                       <path fill="#E3FEE0" d="M8 8h16v16H8z"/><path stroke="#48A23F" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 15.818 14.125 19 21 12"/>
                     </svg>
                   <% end %>
-                  
+
+                  <%= link_to '#', data: { turbo_frame: 'wishlist_table' }, style: "background: none; border: none; padding: 0; margin: 0; text-align: left; color: inherit; font: inherit; cursor: pointer; text-decoration: none;" do %>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none">
+                    <circle cx="16" cy="16" r="15.5" fill="#FFEEE1" stroke="#FF6E00"/>
+                    <path stroke="#FF6E00" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m12 12 8 8M12 20l8-8"/>
+                  </svg>
+                <% end %>
+
                 </div>
               <% end %>
-            </td>
-            <td class="u-text-left u-text-center-l">
-              <div class="c-btn-group c-btn-group--ghost">
-                <%= component 'common/action_button', type: 'close', href: '#', options: { data: { turbo_frame: 'wishlist_table' }, style: 'border: none;' } %>
-              </div>
             </td>
           </tr>
         <% else %>
@@ -41,10 +42,8 @@
             <td><%= index + 1 %></td>
             <td><%= item.domain_name %></td>
             <td data-turbo="true">
-              <%= item.price %> €
-            </td>
-            <td class="u-text-left u-text-center-l">
-              <div class="c-btn-group c-btn-group--ghost">
+              <div style='display: flex; gap: 0 10px; align-items: center;'>
+                <span><%= item.price %> €</span>
                 <%= component 'common/action_button', type: 'edit', href: edit_wishlist_item_path(item.uuid), options: { data: { turbo_frame: 'wishlist_table' } } %>
                 <%= component 'common/action_button', type: 'delete', href: wishlist_item_path(item.uuid),
                   options: { method: :delete, form: { data: { turbo_confirm: t(".confirm_delete") } }, target: '_top' } %>
@@ -59,7 +58,6 @@
           <td><%= index + 1 %></td>
           <td></td>
           <td></td>
-          <td class="u-text-left u-text-center-l"></td>
         </tr>
       <% end %>
     </tbody>
