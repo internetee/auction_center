@@ -125,6 +125,13 @@
     }
 }
 
+.c-account__input--readonly-field {
+    border: 1px solid #d1d5db !important;
+    background-color: #f9fafb;
+    color: #6b7280;
+    cursor: not-allowed;
+}
+
 .c-account__checkbox {
     gap: 16px;
 
