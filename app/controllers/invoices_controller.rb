@@ -4,6 +4,8 @@ class InvoicesController < ApplicationController
   before_action :set_invoice, except: %i[index pay_all_bills pay_deposit]
   before_action :validate_amount, only: :oneoff
 
+  ITEMS_PER_PAGE = 10
+
   # GET /invoices/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/edit
   def edit; end
 
@@ -13,10 +15,11 @@ class InvoicesController < ApplicationController
       if update_predicate
         format.turbo_stream do
           render turbo_stream: [
-            turbo_stream.update('invoice_information', 
-              Modals::PayInvoice::InvoiceInformation::Component.new(invoice: @invoice)),
-              turbo_stream.toast(t(:updated), position: "right", background: 'linear-gradient(to right, #11998e, #38ef7d)')
-        ]
+            turbo_stream.update('invoice_information',
+                                Modals::PayInvoice::InvoiceInformation::Component.new(invoice: @invoice)),
+            turbo_stream.toast(t(:updated), position: 'right',
+                                            background: 'linear-gradient(to right, #11998e, #38ef7d)')
+          ]
         end
 
         format.html { redirect_to invoices_path, notice: t(:updated) }
@@ -24,12 +27,13 @@ class InvoicesController < ApplicationController
       else
         error_str = if @invoice.errors.empty?
                       @invoice.payable? ? t(:something_went_wrong) : t('invoices.invoice_already_paid')
-                    else  
+                    else
                       @invoice.errors.full_messages.join('; ')
                     end
 
         format.turbo_stream do
-          render turbo_stream: turbo_stream.toast(error_str, position: "right", background: 'linear-gradient(to right, #93291E, #ED213A)')
+          render turbo_stream: turbo_stream.toast(error_str, position: 'right',
+                                                             background: 'linear-gradient(to right, #93291E, #ED213A)')
         end
 
         format.html { redirect_to invoices_path, status: :see_other, alert: error_str }
@@ -43,14 +47,45 @@ class InvoicesController < ApplicationController
 
   # rubocop:disable Metrics/AbcSize
   def index
-    @issued_invoices = invoices_list_by_status(Invoice.statuses[:issued])
-    @cancelled_payable_invoices = invoices_list_by_status(Invoice.statuses[:cancelled]).with_ban
-    @cancelled_expired_invoices = invoices_list_by_status(Invoice.statuses[:cancelled]).without_ban
+    @pagy_issued, @issued_invoices = pagy(
+      invoices_list_by_status(Invoice.statuses[:issued]),
+      limit: ITEMS_PER_PAGE,
+      page_param: :issued_page,
+      link_extra: 'data-turbo-action="advance"'
+    )
+    Rails.logger.debug '=== PAGY DEBUG ==='
+    Rails.logger.debug "Issued invoices count: #{@issued_invoices.size}"
+    Rails.logger.debug "Pagy pages: #{@pagy_issued.pages}"
+    Rails.logger.debug "Pagy count: #{@pagy_issued.count}"
+    Rails.logger.debug "Pagy page: #{@pagy_issued.page}"
 
-    # @unpaid_invoices_count = @issued_invoices.count + @cancelled_payable_invoices.count
+    @pagy_cancelled_payable, @cancelled_payable_invoices = pagy(
+      invoices_list_by_status(Invoice.statuses[:cancelled]).with_ban,
+      limit: ITEMS_PER_PAGE,
+      page_param: :cancelled_payable_page,
+      link_extra: 'data-turbo-action="advance"'
+    )
 
-    @paid_invoices = invoices_list_by_status(Invoice.statuses[:paid])
-    @deposit_paid = current_user.domain_participate_auctions.order(created_at: :desc)
+    @pagy_cancelled_expired, @cancelled_expired_invoices = pagy(
+      invoices_list_by_status(Invoice.statuses[:cancelled]).without_ban,
+      limit: ITEMS_PER_PAGE,
+      page_param: :cancelled_expired_page,
+      link_extra: 'data-turbo-action="advance"'
+    )
+
+    @pagy_paid, @paid_invoices = pagy(
+      invoices_list_by_status(Invoice.statuses[:paid]),
+      limit: ITEMS_PER_PAGE,
+      page_param: :paid_page,
+      link_extra: 'data-turbo-action="advance"'
+    )
+
+    @pagy_deposit, @deposit_paid = pagy(
+      current_user.domain_participate_auctions.order(created_at: :desc),
+      limit: ITEMS_PER_PAGE,
+      page_param: :deposit_page,
+      link_extra: 'data-turbo-action="advance"'
+    )
 
     return unless params[:state] == 'payment'
 
@@ -101,7 +136,6 @@ class InvoicesController < ApplicationController
     response = EisBilling::OneoffService.call(invoice_number: @invoice.number.to_s,
                                               customer_url: linkpay_callback_url,
                                               amount: params[:amount])
-
 
     if response.result?
       redirect_to response.instance['oneoff_redirect_link'], allow_other_host: true, format: :html
