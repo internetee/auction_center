@@ -6,93 +6,33 @@ class InvoicesController < ApplicationController
 
   ITEMS_PER_PAGE = 10
 
-  # GET /invoices/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/edit
   def edit; end
 
-  # PUT /invoices/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
   def update
     respond_to do |format|
       if update_predicate
-        format.turbo_stream do
-          render turbo_stream: [
-            turbo_stream.update('invoice_information',
-                                Modals::PayInvoice::InvoiceInformation::Component.new(invoice: @invoice)),
-            turbo_stream.toast(t(:updated), position: 'right',
-                                            background: 'linear-gradient(to right, #11998e, #38ef7d)')
-          ]
-        end
-
+        format.turbo_stream
         format.html { redirect_to invoices_path, notice: t(:updated) }
         format.json { render :show, status: :ok, location: @invoice }
       else
-        error_str = if @invoice.errors.empty?
-                      @invoice.payable? ? t(:something_went_wrong) : t('invoices.invoice_already_paid')
-                    else
-                      @invoice.errors.full_messages.join('; ')
-                    end
-
-        format.turbo_stream do
-          render turbo_stream: turbo_stream.toast(error_str, position: 'right',
-                                                             background: 'linear-gradient(to right, #93291E, #ED213A)')
-        end
-
-        format.html { redirect_to invoices_path, status: :see_other, alert: error_str }
+        @error_message = build_error_message
+        format.turbo_stream
+        format.html { redirect_to invoices_path, status: :see_other, alert: @error_message }
         format.json { render json: @invoice.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # GET /invoices/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
   def show; end
 
-  # rubocop:disable Metrics/AbcSize
   def index
-    @pagy_issued, @issued_invoices = pagy(
-      invoices_list_by_status(Invoice.statuses[:issued]),
-      limit: ITEMS_PER_PAGE,
-      page_param: :issued_page,
-      link_extra: 'data-turbo-action="advance"'
-    )
-    Rails.logger.debug '=== PAGY DEBUG ==='
-    Rails.logger.debug "Issued invoices count: #{@issued_invoices.size}"
-    Rails.logger.debug "Pagy pages: #{@pagy_issued.pages}"
-    Rails.logger.debug "Pagy count: #{@pagy_issued.count}"
-    Rails.logger.debug "Pagy page: #{@pagy_issued.page}"
-
-    @pagy_cancelled_payable, @cancelled_payable_invoices = pagy(
-      invoices_list_by_status(Invoice.statuses[:cancelled]).with_ban,
-      limit: ITEMS_PER_PAGE,
-      page_param: :cancelled_payable_page,
-      link_extra: 'data-turbo-action="advance"'
-    )
-
-    @pagy_cancelled_expired, @cancelled_expired_invoices = pagy(
-      invoices_list_by_status(Invoice.statuses[:cancelled]).without_ban,
-      limit: ITEMS_PER_PAGE,
-      page_param: :cancelled_expired_page,
-      link_extra: 'data-turbo-action="advance"'
-    )
-
-    @pagy_paid, @paid_invoices = pagy(
-      invoices_list_by_status(Invoice.statuses[:paid]),
-      limit: ITEMS_PER_PAGE,
-      page_param: :paid_page,
-      link_extra: 'data-turbo-action="advance"'
-    )
-
-    @pagy_deposit, @deposit_paid = pagy(
-      current_user.domain_participate_auctions.order(created_at: :desc),
-      limit: ITEMS_PER_PAGE,
-      page_param: :deposit_page,
-      link_extra: 'data-turbo-action="advance"'
-    )
+    @invoices_data = load_paginated_invoices
 
     return unless params[:state] == 'payment'
 
     flash[:notice] = I18n.t('invoices.index.payment_success')
   end
 
-  # GET /invoices/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/download
   def download
     pdf = PDFKit.new(render_to_string('common/pdf', layout: false))
     raw_pdf = pdf.to_pdf
@@ -156,6 +96,49 @@ class InvoicesController < ApplicationController
   end
 
   private
+
+  def build_error_message
+    if @invoice.errors.empty?
+      @invoice.payable? ? t(:something_went_wrong) : t('invoices.invoice_already_paid')
+    else
+      @invoice.errors.full_messages.join('; ')
+    end
+  end
+
+  def load_paginated_invoices
+    {
+      issued: paginate_collection(
+        invoices_list_by_status(Invoice.statuses[:issued]),
+        :issued_page
+      ),
+      cancelled_payable: paginate_collection(
+        invoices_list_by_status(Invoice.statuses[:cancelled]).with_ban,
+        :cancelled_payable_page
+      ),
+      cancelled_expired: paginate_collection(
+        invoices_list_by_status(Invoice.statuses[:cancelled]).without_ban,
+        :cancelled_expired_page
+      ),
+      paid: paginate_collection(
+        invoices_list_by_status(Invoice.statuses[:paid]),
+        :paid_page
+      ),
+      deposit: paginate_collection(
+        current_user.domain_participate_auctions.order(created_at: :desc),
+        :deposit_page
+      )
+    }
+  end
+
+  def paginate_collection(collection, page_param)
+    pagy_obj, records = pagy(
+      collection,
+      limit: ITEMS_PER_PAGE,
+      page_param: page_param,
+      link_extra: 'data-turbo-action="advance"'
+    )
+    { pagy: pagy_obj, records: records }
+  end
 
   def invoices_list_by_status(status)
     Invoice.accessible_by(current_ability)
