@@ -18,13 +18,17 @@ jobs:
         ISSUE=$(echo "${{ github.event.pull_request.body }}" | grep -oE '#[0-9]+' | head -n1 | tr -d '#')
         echo "issue_number=$ISSUE" >> $GITHUB_OUTPUT
 
-    - name: Stop if no issue number found
-      if: steps.extract.outputs.issue_number == ''
+    - name: Check if issue number found
       run: |
-        echo "❌ No issue number found in PR body"
-        exit 1
+        if [ -z "${{ steps.extract.outputs.issue_number }}" ]; then
+          echo "⚠️ No issue number found in PR body - skipping synchronization steps"
+          echo "ℹ️ This is normal for quick fixes and minor changes without issue tickets"
+        else
+          echo "✅ Found issue #${{ steps.extract.outputs.issue_number }} - will synchronize with PR"
+        fi
 
     - name: Get issue node ID
+      if: steps.extract.outputs.issue_number != ''
       id: issue_node
       uses: actions/github-script@v8
       with:
@@ -38,6 +42,7 @@ jobs:
           core.setOutput("node_id", issue.data.node_id);
 
     - name: Sync assignee from PR to issue
+      if: steps.extract.outputs.issue_number != ''
       uses: actions/github-script@v8
       with:
         github-token: ${{ secrets.PROJECTS_TOKEN }}
@@ -55,6 +60,7 @@ jobs:
           });
 
     - name: Add issue to project if not present
+      if: steps.extract.outputs.issue_number != ''
       id: project_item
       uses: actions/github-script@v8
       with:
@@ -101,6 +107,7 @@ jobs:
           }
 
     - name: Get status field options
+      if: steps.extract.outputs.issue_number != ''
       id: status_options
       uses: actions/github-script@v8
       with:
@@ -154,7 +161,7 @@ jobs:
           }
 
     - name: Set status to In Progress
-      if: github.event.action != 'closed' && steps.status_options.outputs.in_progress_id != ''
+      if: steps.extract.outputs.issue_number != '' && github.event.action != 'closed' && steps.status_options.outputs.in_progress_id != ''
       uses: actions/github-script@v8
       with:
         github-token: ${{ secrets.PROJECTS_TOKEN }}
@@ -176,7 +183,7 @@ jobs:
           `);
 
     - name: Set status to Done if PR merged
-      if: github.event.pull_request.merged == true && steps.status_options.outputs.done_id != ''
+      if: steps.extract.outputs.issue_number != '' && github.event.pull_request.merged == true && steps.status_options.outputs.done_id != ''
       uses: actions/github-script@v8
       with:
         github-token: ${{ secrets.PROJECTS_TOKEN }}
