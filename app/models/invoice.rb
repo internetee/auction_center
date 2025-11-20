@@ -29,6 +29,7 @@ class Invoice < ApplicationRecord
   validate :user_id_must_be_the_same_as_on_billing_profile_or_nil
 
   before_create :set_invoice_number
+  after_create :track_invoice_created
 
   before_update :update_billing_info
   before_update :recalculate_vat_rate
@@ -233,6 +234,7 @@ class Invoice < ApplicationRecord
       paid!
     end
 
+    Yabeda.invoice_business.invoices_paid_total.increment(payment_channel: "manual")
     ResultStatusUpdateJob.perform_now
   end
 
@@ -249,6 +251,9 @@ class Invoice < ApplicationRecord
         result.mark_as_payment_received(time) unless cancelled?
         clear_linked_ban
         paid!
+
+        channel = payment_order.type.demodulize
+        Yabeda.invoice_business.invoices_paid_total.increment(payment_channel: channel)
       else
         save!
       end
@@ -319,6 +324,10 @@ class Invoice < ApplicationRecord
 
   def finally_paid?
     due_amount <= 0
+  end
+
+  def track_invoice_created
+    Yabeda.invoice_business.invoices_created_total.increment(status: status)
   end
 end
 # rubocop:enable Metrics/ClassLength

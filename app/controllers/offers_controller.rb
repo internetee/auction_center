@@ -25,14 +25,25 @@ class OffersController < ApplicationController
 
     respond_to do |format|
       if existing_offer
+        Yabeda.auction_business.offers_failed_total.increment(
+          reason: "duplicate_offer",
+          platform: @auction.platform
+        )
         format.html do
           redirect_to root_path, notice: t('offers.already_exists')
         end
       elsif create_predicate
+        Yabeda.auction_business.offers_created_total.increment(
+          platform: @auction.platform
+        )
         Rails.logger.info("User #{current_user.id} created offer #{@offer.id} for auction #{@auction.id}")
         format.html { redirect_to root_path, notice: t('.created') }
         format.json { render :show, status: :created, location: @offer }
       else
+        Yabeda.auction_business.offers_failed_total.increment(
+          reason: "validation_error",
+          platform: @auction.platform
+        )
         error_msg = @offer.errors.full_messages.join('; ')
         flash[:alert] = error_msg
         Rails.logger.error("User #{current_user.id} tried to create offer for auction #{@auction.id} but it failed. Errors: #{error_msg}")

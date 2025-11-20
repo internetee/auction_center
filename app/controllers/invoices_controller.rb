@@ -92,6 +92,10 @@ class InvoicesController < ApplicationController
     if response.result?
       redirect_to response.instance['oneoff_redirect_link'], allow_other_host: true, format: :html
     else
+      Yabeda.invoice_business.payment_flow_failures_total.increment(
+        flow: "pay_deposit",
+        error_type: response.errors['code'] || "unknown"
+      )
       flash.alert = response.errors['message']
       redirect_to invoices_path
     end
