@@ -17,11 +17,15 @@ class PhoneConfirmationsController < ApplicationController
   def create
     user_uuid = @phone_confirmation.user.uuid
 
+    Yabeda.phone_business.phone_confirmation_attempts_total.increment({})
+
     respond_to do |format|
       if create_predicate
+        Yabeda.phone_business.phone_confirmation_success_total.increment({})
         format.html { redirect_to user_path(user_uuid), notice: t('.confirmed') }
         format.json { redirect_to user_path(user_uuid), status: :created, location: @user }
       else
+        Yabeda.phone_business.phone_confirmation_invalid_code_total.increment({})
         format.html do
           redirect_to new_user_phone_confirmation_path(user_uuid),
                       notice: t('phone_confirmations.invalid_code')

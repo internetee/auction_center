@@ -23,6 +23,7 @@ class Offer < ApplicationRecord
 
   after_create :update_auction_ends_at
   after_update :update_auction_ends_at
+  after_create :track_unique_bidder_metric
 
   def update_auction_ends_at
     return if auction.platform == 'blind' || auction.platform.nil?
@@ -112,5 +113,16 @@ class Offer < ApplicationRecord
     end
 
     price * (DEFAULT_PRICE_VALUE + (Invoice.find_by(result: result)&.vat_rate || default_vat))
+  end
+
+  private
+
+  def track_unique_bidder_metric
+    return if user_id.nil?
+
+    Metrics::UniqueUserBidderTracker.track(user_id)
+  rescue => e
+    Rails.logger.error("Failed to track unique bidder metric: #{e.message}")
+    Sentry.capture_exception(e) if defined?(Sentry)
   end
 end

@@ -3,6 +3,7 @@ require 'identity_code'
 class User < ApplicationRecord
   include Bannable
   include ReferenceNo
+  include UserMetrics
 
   PARTICIPANT_ROLE = 'participant'.freeze
   ADMINISTATOR_ROLE = 'administrator'.freeze
