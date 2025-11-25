@@ -20,13 +20,14 @@ module Api
       end
 
       def create
+        BillingProfile.create_default_for_user(current_user.id)
         @offer = initialize_or_assign_price_to_offer
 
         if @offer.save
           process_english_auction if @auction.english?
           render json: { status: 'ok' }, status: :ok
         else
-          Rails.logger.info "Offer errors (details): #{ @offer.errors.details }"
+          Rails.logger.info "Offer errors (details): #{@offer.errors.details}"
           render json: { status: 'error', errors: @offer.errors.full_messages }, status: :unprocessable_entity
         end
       end
@@ -70,7 +71,11 @@ module Api
       end
 
       def billing_profile
-        current_user.billing_profiles.find_by(id: offer_params[:billing_profile_id])
+        if offer_params[:billing_profile_id].present?
+          current_user.billing_profiles.find_by(id: offer_params[:billing_profile_id])
+        else
+          current_user.billing_profiles.first
+        end
       end
 
       def offer_params
