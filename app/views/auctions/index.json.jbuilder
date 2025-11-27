@@ -11,4 +11,11 @@ json.array! @auctions_list do |auction|
   json.auction_type auction&.platform
   json.enable_deposit auction.enable_deposit
   json.requirement_deposit_in_cents auction.requirement_deposit_in_cents
+  json.user_deposit_paid do
+    if current_user
+      auction.domain_participate_auctions.exists?(user_id: current_user.id, status: 'paid')
+    else
+      false
+    end
+  end
 end

@@ -1,0 +1,6 @@
+en:
+  mobile_payments:
+    payment_successful: "Payment Successful"
+    payment_processed: "Your payment has been processed successfully."
+    close_window_instruction: "You can now close this window and return to the application."
+    close_window: "Close Window"
