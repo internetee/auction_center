@@ -31,6 +31,17 @@ module Api
         end
       end
 
+      def destroy
+        @billing_profile = current_user.billing_profiles.find(params[:id])
+
+        if @billing_profile.deletable?
+          @billing_profile.destroy!
+          render json: { message: 'Billing profile deleted successfully' }, status: :ok
+        else
+          render json: { errors: @billing_profile.errors.full_messages }, status: :unprocessable_entity
+        end
+      end
+
       private
 
       def billing_profile_params
