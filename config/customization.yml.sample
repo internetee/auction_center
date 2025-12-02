@@ -21,6 +21,13 @@ default: &default
   mobile_sms_sent_time_limit_in_minutes: 1
   auction_filter_available: false
   ended_auctions_link_available: false
+  jwt_secret: ''
+  mobile_secret_key: ''
+  mobile_secret_word: ''
+
+  mobile_api:
+    enabled: false
+    minimum_version: '1.0.0'
 
   mailer:
     # Host to which links from emails should redirect to
@@ -88,11 +95,18 @@ default: &default
     password: 'messente_password'
 
   tara:
+    scope: >
+      openid
+      idcard
+      mid
+      smartid
+    discovery: true
     host: 'tara-test.ria.ee'
     issuer: 'https://tara-test.ria.ee'
     identifier: 'identifier'
     secret: 'secret'
     redirect_uri: 'redirect_url'
+    tara_keys: '{"kty":"RSA","n":"iVKwG5cTHFx60wYLndRLlzlvH9m2XsVaWh0LQFcvQBCcUMXjCYQRJ22sLjAz6fvig83dWcoKQVanZfzNGAqG_I54LIVT6oUZxFgCA1cyFKELaCqnpzQa3m7CBOklQUV7Z6Dtj1bMJiMIaEv8lzhtKmqkC6o2xjTWIbVCBublwF0DH5SsVdeX-kC4aJtYCbhsuYuzrn4VpR33NuvLxOBPHDVCMYImxlYU337uf6DjmdZMV96ODqP7E9iMS3GWk_MJEzrgLU7_7JiO3OWtkBUNspZ7pgNdIc6OQ5ZASfWsUufS44kt1fNmPqowklHCRNqcnFOx0lc7ya_VlCdXV6Qfew","e":"AQAB"}'
     keys:
       kty: 'RSA'
       kid: 'public:xWbbVoYq9EwMqphp'

@@ -1,0 +1,6 @@
+et:
+  mobile_payments:
+    payment_successful: "Makse õnnestus"
+    payment_processed: "Teie makse on edukalt töödeldud."
+    close_window_instruction: "Võite nüüd selle akna sulgeda ja naasta rakendusse."
+    close_window: "Sulge aken"

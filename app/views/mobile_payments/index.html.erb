@@ -1,0 +1,24 @@
+<div class="o-container">
+  <div class="u-flex u-content-center" style="padding: 3rem 0;">
+    <div class="o-card u-text-center" style="max-width: 480px; width: 100%;">
+      <div style="margin-bottom: 1.5rem;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="#48A23F" viewBox="0 0 16 16">
+          <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+        </svg>
+      </div>
+
+      <h2 class="u-h2" style="margin-bottom: 1rem;"><%= t('mobile_payments.payment_successful') %></h2>
+      <p class="u-t-sm" style="color: #555555; margin-bottom: 1.5rem;"><%= t('mobile_payments.payment_processed') %></p>
+
+      <div class="c-badge c-badge--green" style="display: inline-flex; padding: 0.75rem 1rem; margin-bottom: 1.5rem;">
+        <small><%= t('mobile_payments.close_window_instruction') %></small>
+      </div>
+
+      <div>
+        <button type="button" class="c-btn c-btn--blue" onclick="window.close()">
+          <%= t('mobile_payments.close_window') %>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

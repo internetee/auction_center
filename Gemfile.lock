@@ -89,8 +89,8 @@ GEM
       securerandom (>= 0.3)
       tzinfo (~> 2.0, >= 2.0.5)
       uri (>= 0.13.1)
-    addressable (2.8.7)
-      public_suffix (>= 2.0.2, < 7.0)
+    addressable (2.8.8)
+      public_suffix (>= 2.0.2, < 8.0)
     aes_key_wrap (1.1.0)
     airbrake (13.0.5)
       airbrake-ruby (~> 6.0)
@@ -101,7 +101,7 @@ GEM
     attr_required (1.0.2)
     base64 (0.3.0)
     bcrypt (3.1.20)
-    benchmark (0.4.1)
+    benchmark (0.5.0)
     bigdecimal (3.3.1)
     bindata (2.5.1)
     bindex (0.8.1)
@@ -129,7 +129,7 @@ GEM
       logger (~> 1.5)
     coderay (1.1.3)
     concurrent-ruby (1.3.5)
-    connection_pool (2.5.4)
+    connection_pool (2.5.5)
     crack (1.0.0)
       bigdecimal
       rexml
@@ -155,9 +155,21 @@ GEM
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
+    devise-jwt (0.11.0)
+      devise (~> 4.0)
+      warden-jwt_auth (~> 0.8)
     docile (1.4.1)
     domain_name (0.6.20240107)
     drb (2.2.3)
+    dry-auto_inject (1.0.1)
+      dry-core (~> 1.0)
+      zeitwerk (~> 2.6)
+    dry-configurable (1.1.0)
+      dry-core (~> 1.0, < 2)
+      zeitwerk (~> 2.6)
+    dry-core (1.0.1)
+      concurrent-ruby (~> 1.0)
+      zeitwerk (~> 2.6)
     email_validator (2.2.4)
       activemodel
     erb (5.0.2)
@@ -181,6 +193,8 @@ GEM
     ffi (1.17.2-arm-linux-gnu)
     ffi (1.17.2-arm-linux-musl)
     ffi (1.17.2-arm64-darwin)
+    ffi (1.17.2-x86-linux-gnu)
+    ffi (1.17.2-x86-linux-musl)
     ffi (1.17.2-x86_64-darwin)
     ffi (1.17.2-x86_64-linux-gnu)
     ffi (1.17.2-x86_64-linux-musl)
@@ -203,6 +217,12 @@ GEM
       bigdecimal
       rake (>= 13)
     google-protobuf (4.33.0-arm64-darwin)
+      bigdecimal
+      rake (>= 13)
+    google-protobuf (4.33.0-x86-linux-gnu)
+      bigdecimal
+      rake (>= 13)
+    google-protobuf (4.33.0-x86-linux-musl)
       bigdecimal
       rake (>= 13)
     google-protobuf (4.33.0-x86_64-darwin)
@@ -256,6 +276,8 @@ GEM
       bindata
       faraday (~> 2.0)
       faraday-follow_redirects
+    jsonapi-serializer (2.2.0)
+      activesupport (>= 4.2)
     jwt (2.10.2)
       base64
     language_server-protocol (3.17.0.5)
@@ -299,7 +321,7 @@ GEM
       rake
     mini_mime (1.1.5)
     mini_portile2 (2.8.9)
-    minitest (5.26.0)
+    minitest (5.26.2)
     money (6.19.0)
       i18n (>= 0.6.4, <= 2)
     msgpack (1.8.0)
@@ -371,6 +393,7 @@ GEM
     pg (1.6.2)
     pg (1.6.2-aarch64-linux)
     pg (1.6.2-aarch64-linux-musl)
+    pg (1.6.2-aarch64-mingw-ucrt)
     pg (1.6.2-arm64-darwin)
     pg (1.6.2-x86_64-darwin)
     pg (1.6.2-x86_64-linux)
@@ -392,7 +415,7 @@ GEM
     psych (5.2.6)
       date
       stringio
-    public_suffix (6.0.2)
+    public_suffix (7.0.0)
     puma (7.1.0)
       nio4r (~> 2.0)
     racc (1.8.1)
@@ -515,9 +538,15 @@ GEM
     sass-embedded (1.93.2)
       google-protobuf (~> 4.31)
       rake (>= 13)
+    sass-embedded (1.93.2-aarch64-linux-android)
+      google-protobuf (~> 4.31)
     sass-embedded (1.93.2-aarch64-linux-gnu)
       google-protobuf (~> 4.31)
     sass-embedded (1.93.2-aarch64-linux-musl)
+      google-protobuf (~> 4.31)
+    sass-embedded (1.93.2-aarch64-mingw-ucrt)
+      google-protobuf (~> 4.31)
+    sass-embedded (1.93.2-arm-linux-androideabi)
       google-protobuf (~> 4.31)
     sass-embedded (1.93.2-arm-linux-gnueabihf)
       google-protobuf (~> 4.31)
@@ -525,7 +554,15 @@ GEM
       google-protobuf (~> 4.31)
     sass-embedded (1.93.2-arm64-darwin)
       google-protobuf (~> 4.31)
+    sass-embedded (1.93.2-riscv64-linux-android)
+      google-protobuf (~> 4.31)
+    sass-embedded (1.93.2-riscv64-linux-gnu)
+      google-protobuf (~> 4.31)
+    sass-embedded (1.93.2-riscv64-linux-musl)
+      google-protobuf (~> 4.31)
     sass-embedded (1.93.2-x86_64-darwin)
+      google-protobuf (~> 4.31)
+    sass-embedded (1.93.2-x86_64-linux-android)
       google-protobuf (~> 4.31)
     sass-embedded (1.93.2-x86_64-linux-gnu)
       google-protobuf (~> 4.31)
@@ -571,7 +608,7 @@ GEM
     unicode-display_width (3.2.0)
       unicode-emoji (~> 4.1)
     unicode-emoji (4.1.0)
-    uri (1.0.4)
+    uri (1.1.1)
     useragent (0.16.11)
     validate_url (1.0.15)
       activemodel (>= 3.0.0)
@@ -583,6 +620,11 @@ GEM
       concurrent-ruby (~> 1)
     warden (1.2.9)
       rack (>= 2.0.9)
+    warden-jwt_auth (0.8.0)
+      dry-auto_inject (>= 0.8, < 2)
+      dry-configurable (>= 0.13, < 2)
+      jwt (~> 2.1)
+      warden (~> 1.2)
     web-console (4.2.1)
       actionview (>= 6.0.0)
       activemodel (>= 6.0.0)
@@ -610,19 +652,32 @@ GEM
 
 PLATFORMS
   aarch64-linux
+  aarch64-linux-android
   aarch64-linux-gnu
   aarch64-linux-musl
+  aarch64-mingw-ucrt
+  arm-linux-androideabi
   arm-linux-gnu
+  arm-linux-gnueabihf
   arm-linux-musl
+  arm-linux-musleabihf
   arm64-darwin
+  riscv64-linux-android
+  riscv64-linux-gnu
+  riscv64-linux-musl
   ruby
+  x86-linux-gnu
+  x86-linux-musl
   x86_64-darwin
+  x86_64-linux
+  x86_64-linux-android
   x86_64-linux-gnu
   x86_64-linux-musl
 
 DEPENDENCIES
   airbrake
   amazing_print
+  bindex
   bootsnap (>= 1.1.0)
   brakeman
   bundler-audit
@@ -637,6 +692,7 @@ DEPENDENCIES
   delayed_job (~> 4.1.0)
   delayed_job_active_record
   devise (~> 4.9.3)
+  devise-jwt
   directo!
   faker
   faraday (>= 2.14.0)
@@ -648,6 +704,7 @@ DEPENDENCIES
   i18n-debug
   jbuilder (~> 2.11)
   jsbundling-rails
+  jsonapi-serializer
   jwt
   letter_opener (~> 1.8)
   letter_opener_web (~> 3.0)

@@ -49,6 +49,10 @@ module PaymentOrders
 
     # Perform necessary checks and mark the invoice as paid
     def mark_invoice_as_paid
+      Rails.logger.info('============= settled_payment?')
+      Rails.logger.info(settled_payment?)
+      Rails.logger.info('=============')
+
       return unless settled_payment?
 
       response.with_indifferent_access
@@ -65,6 +69,9 @@ module PaymentOrders
     # Check if the intermediary reports payment as settled and we can expect money on
     # our accounts
     def settled_payment?
+      Rails.logger.info('============= IN SETTLED PAYMENT? payment_state')
+      Rails.logger.info(response)
+      Rails.logger.info('=============')
       SUCCESSFUL_PAYMENT.include?(response['payment_state'])
     end
 
@@ -91,13 +98,13 @@ module PaymentOrders
         api_username: USER,
         account_id: ACCOUNT_ID,
         timestamp: Time.now.to_i.to_s,
-        callback_url: callback_url,
+        callback_url:,
         customer_url: return_url,
         amount: invoices_total&.format(symbol: nil, thousands_separator: false, decimal_mark: '.'),
         order_reference: SecureRandom.hex(15),
         transaction_type: 'charge',
         locale: language,
-        hmac_fields: '',
+        hmac_fields: ''
       }.with_indifferent_access
     end
   end

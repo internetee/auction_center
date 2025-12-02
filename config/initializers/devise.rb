@@ -29,6 +29,13 @@ Devise.setup do |config|
 
 config.navigational_formats = ['*/*', :html, :turbo_stream]
 
+config.jwt do |jwt|
+  jwt.secret = AuctionCenter::Application.config.customization[:jwt_secret]
+  jwt.dispatch_requests = [ ['POST', %r{^/sessions/sign_in$}], ['POST', %r{^/api/v1/tara_auth_session}] ]
+  jwt.revocation_requests = [ ['DELETE', %r{^/sessions/sign_out$}] ]
+  jwt.expiration_time = 30.minutes.to_i
+end
+
 config.warden do |manager|
   manager.failure_app = TurboFailureApp
 #   manager.intercept_401 = false
@@ -204,7 +211,7 @@ end
   # ==> Configuration for :timeoutable
   # The time you want to timeout the user session without activity. After this
   # time the user will be asked for credentials again. Default is 30 minutes.
-  config.timeout_in = 20.minutes
+  config.timeout_in = 5.minutes
 
   # ==> Configuration for :lockable
   # Defines which strategy will be used to lock an account.

@@ -5,7 +5,7 @@ module EisBilling
 
       unless is_deposit
         invoice = ::Invoice.find_by(number: params[:order_reference])
-        define_payment_option(invoice: invoice)
+        define_payment_option(invoice:)
       end
 
       respond_to do |format|
@@ -31,7 +31,7 @@ module EisBilling
 
     def define_payment_option(invoice:)
       if params[:invoice_number_collection].nil?
-        payment_process(invoice: invoice) unless invoice.nil?
+        payment_process(invoice:) unless invoice.nil?
       else
         pay_mulitply(params[:invoice_number_collection])
       end
@@ -42,7 +42,7 @@ module EisBilling
 
       data.each do |d|
         invoice = ::Invoice.find_by(number: d[:number])
-        payment_process(invoice: invoice)
+        payment_process(invoice:)
       end
     end
 

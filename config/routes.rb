@@ -6,6 +6,30 @@ Rails.application.routes.draw do
   end
   # mount ActionCable.server => '/cable'
 
+  namespace :api do
+    namespace :v1 do
+      get 'healthcare', to: 'api_healthcare#index'
+      resource :stream_name, only: :show
+      resources :offers, only: [:create, :index]
+      resource :autobiders, only: :create
+      resource :tara_auth_session, only: :create
+      resource :auctions, only: :show
+      resource :profiles, only: %i[update create] do
+        scope module: :profiles do
+          resource :passwords, only: :update
+        end
+      end
+      resources :invoices, only: :index
+
+      scope module: :invoices do
+        resource :pay_deposits, only: :create
+        resource :oneoff_payments, only: :create
+      end
+
+      resources :billing_profiles, only: %i[index update create destroy]
+    end
+  end
+
   get 'unsubscribe/unsubscribe'
   patch 'unsubscribe/update'
   root to: 'auctions#index'
@@ -77,6 +101,7 @@ Rails.application.routes.draw do
     match '/auth/tara/cancel', via: %i[get post delete], to: 'auth/tara#cancel',
                                as: :tara_cancel
     match '/auth/tara/create', via: [:post], to: 'auth/tara#create', as: :tara_create
+    match '/api/v1/tara_auth_sessions', via: [:post], to: 'api/v1/tara_auth_sessions#create'
   end
 
   devise_for :users, path: 'sessions',
@@ -116,10 +141,6 @@ Rails.application.routes.draw do
 
     resources :payment_orders, only: %i[new show create], shallow: true, param: :uuid do
       member do
-        # get 'return'
-        # put 'return'
-        # post 'return'
-
         post 'callback'
       end
     end
@@ -127,6 +148,10 @@ Rails.application.routes.draw do
 
   match '/linkpay_callback', via: %i[get], to: 'linkpay#callback', as: :linkpay_callback
   match '/linkpay_deposit_callback', via: %i[get], to: 'linkpay#deposit_callback', as: :deposit_callback
+
+  match '/mobile_payments_callback', via: %i[get], to: 'mobile_payments#callback', as: :mobile_payments_callback
+  match '/mobile_payments_deposit_callback', via: %i[get], to: 'mobile_payments#deposit_callback', as: :mobile_payments_deposit_callback
+  get '/mobile_payments', to: 'mobile_payments#index', as: :mobile_payments
 
   resource :locale, only: :update
   resources :offers, only: :index
