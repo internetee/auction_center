@@ -40,10 +40,10 @@ jobs:
           docker build --platform linux/amd64 -f Dockerfile.production \
             -t ${{ env.APP_NAME }}:${TAG} .
             
-      - name: 📤 Login to ECR
-        uses: aws-actions/amazon-ecr-login@v2
-        with:
-          region: ${{ env.AWS_REGION }} 
+      - name: 🔑 ECR Login using AWS CLI
+        run: |
+          aws ecr get-login-password --region ${{ env.AWS_REGION }} | \
+          docker login --username AWS --password-stdin ${{ env.ECR_URL }}
 
       - name: ⬆️ Push Docker image to ECR
         run: |
