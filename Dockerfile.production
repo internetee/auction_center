@@ -1,0 +1,130 @@
+# syntax = docker/dockerfile:1
+
+# Make sure RUBY_VERSION matches the Ruby version in .ruby-version and Gemfile
+ARG RUBY_VERSION=3.4.1
+FROM registry.docker.com/library/ruby:$RUBY_VERSION-bullseye AS base
+
+# Rails app lives here
+WORKDIR /opt/webapps/app
+
+# Set production environment
+ENV RAILS_ENV="production" \
+    BUNDLE_DEPLOYMENT="1" \
+    BUNDLE_PATH="/usr/local/bundle" \
+    BUNDLE_WITHOUT="development" \
+    LANG=et_EE.UTF-8 \
+    RAILS_SERVE_STATIC_FILES="true" \
+    RAILS_LOG_TO_STDOUT="true"
+
+# Throw-away build stage to reduce size of final image
+FROM base AS build
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+# Install packages needed to build gems and node modules
+RUN apt-get update -qq && \
+    apt-get install --no-install-recommends -y \
+    build-essential \
+    imagemagick \
+    curl \
+    wget \
+    gnupg2 \
+    git \
+    apt-utils \
+    libpq-dev \
+    libvips \
+    node-gyp \
+    pkg-config \
+    python-is-python3 \
+    libxslt1-dev \
+    libxml2-dev \
+    wkhtmltopdf \
+    locales \
+    postgresql-client
+
+# Configure locales
+RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
+    sed -i -e 's/# et_EE.UTF-8 UTF-8/et_EE.UTF-8 UTF-8/' /etc/locale.gen && \
+    dpkg-reconfigure --frontend=noninteractive locales && \
+    update-locale LANG=et_EE.UTF-8
+
+# Install JavaScript dependencies
+ARG NODE_VERSION=18.16.0
+ARG YARN_VERSION=1.22.19
+ENV PATH=/usr/local/node/bin:$PATH
+RUN curl -sL https://github.com/nodenv/node-build/archive/master.tar.gz | tar xz -C /tmp/ && \
+    /tmp/node-build-master/bin/node-build "${NODE_VERSION}" /usr/local/node && \
+    npm install -g yarn@$YARN_VERSION && \
+    npm install -g n && \
+    n stable && \
+    rm -rf /tmp/node-build-master
+
+# Install application gems
+COPY Gemfile Gemfile.lock ./
+RUN bundle install && \
+    rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git && \
+    bundle exec bootsnap precompile --gemfile
+
+# Install node modules
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile --check-files
+
+# Copy application code
+COPY . .
+
+# Create necessary directories for K8s
+RUN mkdir -p /opt/webapps/app/tmp/pids /opt/webapps/app/tmp/k8s /opt/webapps/app/log
+
+# Make entrypoint script executable
+RUN chmod +x /opt/webapps/app/bin/docker-entrypoint
+
+# Precompile bootsnap code for faster boot times
+RUN bundle exec bootsnap precompile app/ lib/
+
+# Precompile assets with a real random secret key
+RUN SECRET_KEY_BASE=$(openssl rand -hex 64) bundle exec rails assets:precompile
+
+# Final stage for app image
+FROM base
+
+# Install packages needed for deployment (minimal set for production)
+RUN apt-get update -qq && \
+    apt-get install --no-install-recommends -y \
+    curl \
+    libvips \
+    postgresql-client \
+    wkhtmltopdf \
+    imagemagick \
+    locales \
+    libxslt1-dev \
+    libxml2-dev && \
+    sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
+    sed -i -e 's/# et_EE.UTF-8 UTF-8/et_EE.UTF-8 UTF-8/' /etc/locale.gen && \
+    dpkg-reconfigure --frontend=noninteractive locales && \
+    update-locale LANG=et_EE.UTF-8 && \
+    rm -rf /var/lib/apt/lists /var/cache/apt/archives
+
+# Copy built artifacts: gems, application
+COPY --from=build /usr/local/bundle /usr/local/bundle
+COPY --from=build /opt/webapps/app /opt/webapps/app
+
+# K8s specific configurations
+RUN mkdir -p /opt/webapps/app/tmp/pids /opt/webapps/app/tmp/k8s /opt/webapps/app/storage
+
+# Ensure entrypoint script is executable in final image
+RUN chmod +x /opt/webapps/app/bin/docker-entrypoint
+
+# Run and own only the runtime files as a non-root user for security
+RUN useradd rails --create-home --shell /bin/bash && \
+    chown -R rails:rails /opt/webapps/app/log /opt/webapps/app/tmp /opt/webapps/app/storage
+USER rails:rails
+
+# Create a health check endpoint file for Kubernetes probes
+RUN touch /opt/webapps/app/tmp/k8s/ready
+
+# Entrypoint prepares the database.
+ENTRYPOINT ["/opt/webapps/app/bin/docker-entrypoint"]
+
+# Start the server by default, this can be overwritten at runtime
+EXPOSE 3000
+CMD ["./bin/rails", "server"]
