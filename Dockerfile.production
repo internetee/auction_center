@@ -81,6 +81,9 @@ RUN chmod +x /opt/webapps/app/bin/docker-entrypoint
 # Precompile bootsnap code for faster boot times
 RUN bundle exec bootsnap precompile app/ lib/
 
+RUN cp config/customization.yml.sample config/customization.yml
+RUN bundle exec bootsnap precompile app/ lib/
+
 # Precompile assets with a real random secret key
 RUN SECRET_KEY_BASE=$(openssl rand -hex 64) bundle exec rails assets:precompile
 
