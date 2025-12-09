@@ -15,7 +15,7 @@ env:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    environment: staging
+    # environment: staging
 
     steps:
       - name: ⬇️ Checkout application code
