@@ -6,6 +6,10 @@ on:
     branches:
       - master
 
+permissions:
+  id-token: write
+  contents: read
+
 env:
   APP_NAME: auction-center
   ECR_URL: 034362061030.dkr.ecr.eu-north-1.amazonaws.com
