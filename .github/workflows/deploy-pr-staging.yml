@@ -42,6 +42,8 @@ jobs:
             
       - name: 📤 Login to ECR
         uses: aws-actions/amazon-ecr-login@v2
+        with:
+          region: ${{ env.AWS_REGION }} 
 
       - name: ⬆️ Push Docker image to ECR
         run: |
