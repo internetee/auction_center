@@ -37,7 +37,7 @@ jobs:
           TAG="pr-${{ github.event.pull_request.number }}"
           echo "IMAGE_TAG=$TAG" >> $GITHUB_OUTPUT
           
-          docker build --platform linux/amd64 -f Dockerifle.production \
+          docker build --platform linux/amd64 -f Dockerfile.production \
             -t ${{ env.APP_NAME }}:${TAG} .
             
       - name: 📤 Login to ECR
