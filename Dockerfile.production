@@ -82,6 +82,7 @@ RUN chmod +x /opt/webapps/app/bin/docker-entrypoint
 RUN bundle exec bootsnap precompile app/ lib/
 
 RUN cp config/customization.yml.sample config/customization.yml
+RUN cp config/database.yml.sample config/database.yml
 RUN bundle exec bootsnap precompile app/ lib/
 
 # Precompile assets with a real random secret key
