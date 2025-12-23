@@ -52,36 +52,27 @@ jobs:
           docker tag ${{ env.APP_NAME }}:${TAG} ${ECR_IMAGE}
           docker push ${ECR_IMAGE}
       
-      - name: ⬇️ Checkout IaC repository (Helm charts)
-        uses: actions/checkout@v4
+      - name: 🔐 Mint GitHub App installation token (for IaC repo)
+        id: app-token
+        uses: actions/create-github-app-token@v2
         with:
-          repository: 'internetee/Ry_AWS_IaC' 
-          ref: 'main'
-          path: './iac'
-          token: ${{ secrets.GITHUB_TOKEN }}
+          app-id: ${{ vars.GH_APP_ID }}
+          private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
+          owner: internetee
+          repositories: Ry_AWS_IaC
 
-      - name: ☸️ Install and Configure Kubectl/Helm
-        uses: azure/setup-kubectl@v3
-        
-      - name: 🔑 Configure Kubeconfig (EKS authentication)
-        run: |
-          aws eks update-kubeconfig \
-            --name eis-dev \
-            --region ${{ env.AWS_REGION }} \
-            --role-arn ${{ env.EKS_ASSUME_ROLE_ARN }} 
-      
-      - name: 🚀 Helm Deploy to EKS
-        run: |
-          TAG=${{ steps.docker_build.outputs.IMAGE_TAG }}
-          cd ./iac/infrastructure/kubernetes/Helm 
-          
-          helm upgrade --install ${{ env.APP_NAME }} ./apps/${{ env.APP_NAME }} \
-            --namespace ${{ env.APP_NAME }} \
-            --set image.tag=${TAG} \
-            --values ../helm_values/staging/${{ env.APP_NAME }}/values.yaml \
-            --create-namespace
+      - name: 🚀 Trigger IaC deploy (repository_dispatch)
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          repository: internetee/Ry_AWS_IaC
+          event-type: deploy-auction-staging
+          client-payload: |
+            {
+              "image_tag": "${{ steps.docker_build.outputs.IMAGE_TAG }}"
+            }
             
-      - name: 💬 Post Staging URL to PR
+      - name: 💬 Post deploy trigger info to PR
         uses: actions/github-script@v7
         with:
           script: |
@@ -89,5 +80,5 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: '✅ **Deployment Successful** to Staging! \n\nApp: ${{ env.APP_NAME }} \nImage Tag: ${{ steps.docker_build.outputs.IMAGE_TAG }} \nStaging URL: https://${{ env.APP_NAME }}.cloud.tld.ee'
+              body: '🟦 **Image pushed to ECR** and **deploy triggered** in IaC repo.\n\nApp: ${{ env.APP_NAME }}\nImage Tag: ${{ steps.docker_build.outputs.IMAGE_TAG }}\nIaC workflow: internetee/Ry_AWS_IaC (event: deploy-auction-staging)'
             })
