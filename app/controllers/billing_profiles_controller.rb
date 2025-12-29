@@ -87,7 +87,7 @@ class BillingProfilesController < ApplicationController
         format.html { redirect_to billing_profiles_path, notice: t(:updated) }
         format.json { render :show, status: :ok, location: @billing_profile }
       else
-        flash[:alert] = @billing_profile.errors.full_messages.to_sentence
+        flash.now[:alert] = @billing_profile.errors.full_messages.to_sentence
 
         format.turbo_stream do
           render turbo_stream: [
