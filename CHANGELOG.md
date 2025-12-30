@@ -1,3 +1,6 @@
+30.12.2025
+* Allow comma in billing profile street field https://github.com/internetee/auction_center/issues/1502
+
 17.10.2025
 * Fix temporary error on eid account creation https://github.com/internetee/auction_center/pull/1472
 * Fix sorting in the offers view https://github.com/internetee/auction_center/issues/1476
