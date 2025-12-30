@@ -115,7 +115,7 @@ en:
   invalid: "invalid"
   value_is_not_safe: |
     Please note that the only characters allowed are UTF-characters of english/estonian alphabet,
-    numbers, forward slashes, apostrophes, dots and hyphens.
+    numbers, forward slashes, apostrophes, dots, hyphens and commas.
   not_accepted: "Not accepted"
   not_confirmed: "Not confirmed"
   details: "Details"
