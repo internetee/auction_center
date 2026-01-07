@@ -66,10 +66,12 @@ jobs:
         with:
           token: ${{ steps.app-token.outputs.token }}
           repository: internetee/Ry_AWS_IaC
-          event-type: deploy-auction-staging
+          event-type: deploy-service-staging # Общий тип события для всех сервисов
           client-payload: |
             {
-              "image_tag": "${{ steps.docker_build.outputs.IMAGE_TAG }}"
+              "app_name": "${{ env.APP_NAME }}",
+              "image_tag": "${{ steps.docker_build.outputs.IMAGE_TAG }}",
+              "namespace": "${{ env.APP_NAME }}"
             }
 
       - name: ☸️ Install and Configure Kubectl/Helm
