@@ -74,26 +74,26 @@ jobs:
               "namespace": "${{ env.APP_NAME }}"
             }
 
-      - name: ☸️ Install and Configure Kubectl/Helm
-        uses: azure/setup-kubectl@v3
+      # - name: ☸️ Install and Configure Kubectl/Helm
+      #   uses: azure/setup-kubectl@v3
         
-      - name: 🔑 Configure Kubeconfig (EKS authentication)
-        run: |
-          aws eks update-kubeconfig \
-            --name eis-dev \
-            --region ${{ env.AWS_REGION }} \
-            --role-arn ${{ env.EKS_ASSUME_ROLE_ARN }} 
+      # - name: 🔑 Configure Kubeconfig (EKS authentication)
+      #   run: |
+      #     aws eks update-kubeconfig \
+      #       --name eis-dev \
+      #       --region ${{ env.AWS_REGION }} \
+      #       --role-arn ${{ env.EKS_ASSUME_ROLE_ARN }} 
       
-      - name: 🚀 Helm Deploy to EKS
-        run: |
-          TAG=${{ steps.docker_build.outputs.IMAGE_TAG }}
-          cd ./iac/infrastructure/kubernetes/Helm 
+      # - name: 🚀 Helm Deploy to EKS
+      #   run: |
+      #     TAG=${{ steps.docker_build.outputs.IMAGE_TAG }}
+      #     cd ./iac/infrastructure/kubernetes/Helm 
           
-          helm upgrade --install ${{ env.APP_NAME }} ./apps/${{ env.APP_NAME }} \
-            --namespace ${{ env.APP_NAME }} \
-            --set image.tag=${TAG} \
-            --values ../helm_values/staging/${{ env.APP_NAME }}/values.yaml \
-            --create-namespace
+      #     helm upgrade --install ${{ env.APP_NAME }} ./apps/${{ env.APP_NAME }} \
+      #       --namespace ${{ env.APP_NAME }} \
+      #       --set image.tag=${TAG} \
+      #       --values ../helm_values/staging/${{ env.APP_NAME }}/values.yaml \
+      #       --create-namespace
             
       - name: 💬 Post deploy trigger info to PR
         uses: actions/github-script@v7
