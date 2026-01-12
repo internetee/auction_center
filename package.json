@@ -11,7 +11,7 @@
     "autoprefixer": "^10.4.13",
     "chokidar": "4.0.3",
     "el-transition": "^0.0.7",
-    "esbuild": "^0.25.0",
+    "esbuild": "^0.27.0",
     "esbuild-rails": "^1.0.4",
     "local-time": "^3.0.0",
     "postcss": "^8.4.31",
