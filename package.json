@@ -6,7 +6,7 @@
     "@hotwired/turbo-rails": "^7.2.4",
     "@rails/actioncable": "^7.0.4-3",
     "@rails/activestorage": "^7.0.4-1",
-    "@rails/request.js": "^0.0.12",
+    "@rails/request.js": "^0.0.13",
     "@rails/ujs": "^7.0.4",
     "autoprefixer": "^10.4.13",
     "chokidar": "5.0.0",
