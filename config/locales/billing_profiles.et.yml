@@ -2,6 +2,7 @@ et:
   billing_profiles:
     user: "Kasutaja"
     name: "Nimi"
+    billing_profile_name: "Arveldusprofiili nimi"
     vat_code: "Käibemaksukohustuslase number"
     legal_entity: "Juriidiline isik"
     address: "Aadress"
@@ -20,18 +21,28 @@ et:
     vat_validation_error: "Käibemaksukood ei ole registreeritud või ei ole VIESi kohaselt kehtiv."
     vat_validation_rate_limit_error: "Käibemaksukoodi valideerimise kiiruse limiit on ületatud."
     vat_code_already_exists: "Käibemaksukood on juba kasutusel."
+    vat_validation_service_unavailable_error: "Käibemaksukoodi valideerimine ei ole saadaval"
+    vat_validation_member_state_unavailable_error: "Käibemaksukoodi valideerimine ebaõnnestus. Kontrollige numbrit ja veenduge, et see algab õige riigikoodiga"
 
     edit:
       title: "Muuda arve aadressi"
 
+    form:
+      profile_info: "Profiili andmed"
+      address_info: "Aadressi andmed"
+      select_user: "-- Vali kasutaja --"
+
     index:
       title: "Arve aadressid"
+      new_billing_profile: "Uus arveldusprofiil"
+      search: "Otsi"
 
     new:
       title: "Loo arve aadress"
 
     show:
       title: "Arve aadress"
+      confirm_delete: "Kas olete kindel, et soovite selle arveldusprofiili kustutada?"
 
   activerecord:
     attributes:
