@@ -9,6 +9,8 @@ en:
     issuer: "Issuer"
     issued_for: "Issued to"
     due_date: "Due date"
+    invoice_details: "Invoice Details"
+    parties: "Parties"
     status: "Status"
     price: "Price"
     billing_profile: "Billing Profile"
@@ -41,6 +43,7 @@ en:
     cancelled_expired: "Cancelled invoices"
     mark_as_paid: "Mark as paid"
     marked_as_paid: "The invoice has been marked as paid."
+    billing_profile_updated: "Billing profile successfully updated"
     already_paid: "The invoice is already paid."
     paid_deposit_title: "Paid deposits"
     pay_all: Pay all invoices
