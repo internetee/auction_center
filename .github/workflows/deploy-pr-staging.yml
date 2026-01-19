@@ -73,7 +73,7 @@ jobs:
           event-type: deploy-service-staging
           client-payload: |
             {
-              "app_name": "auction",
+              "app_name": "auction-center",
               "image_tag": "${{ steps.docker_build.outputs.IMAGE_TAG }}",
               "namespace": "auction",
               "pr_number": "${{ inputs.pr_number }}"
@@ -91,6 +91,6 @@ jobs:
                 issue_number: parseInt(prNumber),
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                body: `🟦 **Deploy Triggered!** 🚀\n\nApp: **auction**\nLink: [${url}](${url})\n\n*(Link will be available in 2-3 minutes)*`
+                body: `🟦 **Deploy Triggered!** 🚀\n\nApp: **auction-center**\nLink: [${url}](${url})\n\n*(Link will be available in 2-3 minutes)*`
               })
             }
