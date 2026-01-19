@@ -15,7 +15,7 @@ permissions:
   # issues: write
 
 env:
-  APP_NAME: auction-center
+  APP_NAME: auction
   ECR_URL: 034362061030.dkr.ecr.eu-north-1.amazonaws.com
   AWS_REGION: eu-north-1
   EKS_ASSUME_ROLE_ARN: arn:aws:iam::605134427993:role/terraform 
@@ -73,9 +73,10 @@ jobs:
           event-type: deploy-service-staging
           client-payload: |
             {
-              "app_name": "${{ env.APP_NAME }}",
+              "app_name": "auction",
               "image_tag": "${{ steps.docker_build.outputs.IMAGE_TAG }}",
-              "namespace": "${{ env.APP_NAME }}"
+              "namespace": "auction",
+              "pr_number": "${{ inputs.pr_number }}"
             }
             
       - name: 💬 Post deploy trigger info to PR
@@ -83,14 +84,13 @@ jobs:
         with:
           script: |
             const prNumber = context.issue.number || ${{ github.event.inputs.pr_number }};
+            const url = `https://auction-pr-${prNumber}.cloud.tld.ee`; 
             
             if (prNumber) {
               github.rest.issues.createComment({
                 issue_number: parseInt(prNumber),
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                body: '🟦 **Image pushed to ECR** and **deploy triggered** in IaC repo.\n\nApp: ${{ env.APP_NAME }}\nImage Tag: ${{ steps.docker_build.outputs.IMAGE_TAG }}\nIaC workflow: internetee/Ry_AWS_IaC (event: deploy-service-staging)'
+                body: `🟦 **Deploy Triggered!** 🚀\n\nApp: **auction**\nLink: [${url}](${url})\n\n*(Link will be available in 2-3 minutes)*`
               })
-            } else {
-              core.info("No PR number found, skipping comment.");
             }
