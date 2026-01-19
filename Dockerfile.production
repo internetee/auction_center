@@ -49,14 +49,12 @@ RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
     update-locale LANG=et_EE.UTF-8
 
 # Install JavaScript dependencies
-ARG NODE_VERSION=18.16.0
+ARG NODE_VERSION=22.13.0
 ARG YARN_VERSION=1.22.19
 ENV PATH=/usr/local/node/bin:$PATH
 RUN curl -sL https://github.com/nodenv/node-build/archive/master.tar.gz | tar xz -C /tmp/ && \
     /tmp/node-build-master/bin/node-build "${NODE_VERSION}" /usr/local/node && \
     npm install -g yarn@$YARN_VERSION && \
-    npm install -g n && \
-    n stable && \
     rm -rf /tmp/node-build-master
 
 # Install application gems
