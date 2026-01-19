@@ -15,7 +15,7 @@ permissions:
   # issues: write
 
 env:
-  APP_NAME: auction
+  APP_NAME: auction-center
   ECR_URL: 034362061030.dkr.ecr.eu-north-1.amazonaws.com
   AWS_REGION: eu-north-1
   EKS_ASSUME_ROLE_ARN: arn:aws:iam::605134427993:role/terraform 
