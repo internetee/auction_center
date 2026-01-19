@@ -73,7 +73,7 @@ jobs:
           event-type: deploy-service-staging
           client-payload: |
             {
-              "app_name": "auction-center",
+              "app_name": "auction",
               "image_tag": "${{ steps.docker_build.outputs.IMAGE_TAG }}",
               "namespace": "auction",
               "pr_number": "${{ inputs.pr_number }}"
