@@ -1,16 +1,18 @@
 name: PR Deploy to Staging (Kubernetes)
 
 on:
-  pull_request:
-    types: [opened, synchronize] 
-    branches:
-      - master
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'Number of PR to deploy (only digits, e.g., 2889)'
+        required: true
+        type: string
 
 permissions:
   id-token: write
   contents: read
   pull-requests: write
-  issues: write
+  # issues: write
 
 env:
   APP_NAME: auction-center
@@ -36,7 +38,7 @@ jobs:
       - name: 🛠️ Build and Tag Docker image
         id: docker_build
         run: |
-          TAG="pr-${{ github.event.pull_request.number }}"
+          TAG="pr-${{ inputs.pr_number }}"
           echo "IMAGE_TAG=$TAG" >> $GITHUB_OUTPUT
           
           docker build --platform linux/amd64 -f Dockerfile.production \
@@ -68,19 +70,27 @@ jobs:
         with:
           token: ${{ steps.app-token.outputs.token }}
           repository: internetee/Ry_AWS_IaC
-          event-type: deploy-auction-staging
+          event-type: deploy-service-staging
           client-payload: |
             {
-              "image_tag": "${{ steps.docker_build.outputs.IMAGE_TAG }}"
+              "app_name": "${{ env.APP_NAME }}",
+              "image_tag": "${{ steps.docker_build.outputs.IMAGE_TAG }}",
+              "namespace": "${{ env.APP_NAME }}"
             }
             
       - name: 💬 Post deploy trigger info to PR
         uses: actions/github-script@v7
         with:
           script: |
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: '🟦 **Image pushed to ECR** and **deploy triggered** in IaC repo.\n\nApp: ${{ env.APP_NAME }}\nImage Tag: ${{ steps.docker_build.outputs.IMAGE_TAG }}\nIaC workflow: internetee/Ry_AWS_IaC (event: deploy-auction-staging)'
-            })
+            const prNumber = context.issue.number || ${{ github.event.inputs.pr_number }};
+            
+            if (prNumber) {
+              github.rest.issues.createComment({
+                issue_number: parseInt(prNumber),
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: '🟦 **Image pushed to ECR** and **deploy triggered** in IaC repo.\n\nApp: ${{ env.APP_NAME }}\nImage Tag: ${{ steps.docker_build.outputs.IMAGE_TAG }}\nIaC workflow: internetee/Ry_AWS_IaC (event: deploy-service-staging)'
+              })
+            } else {
+              core.info("No PR number found, skipping comment.");
+            }
