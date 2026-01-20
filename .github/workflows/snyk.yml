@@ -31,7 +31,7 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.4.1  # use the same version as in the project
+          ruby-version: 3.4.8  # use the same version as in the project
           bundler-cache: true
 
       - name: Configure Bundler for development
