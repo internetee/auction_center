@@ -91,7 +91,7 @@ FROM base
 
 # Install packages needed for deployment (minimal set for production)
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y \
+    apt-get install --no-install-recommends -y --fix-missing \
     curl \
     libvips \
     postgresql-client \
