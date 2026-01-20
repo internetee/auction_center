@@ -1,4 +1,4 @@
-name: 🗑️ Manual Destroy Staging
+name: 02 Manual Destroy Staging
 
 on:
   workflow_dispatch:
