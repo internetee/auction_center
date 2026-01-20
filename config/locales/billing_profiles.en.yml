@@ -2,6 +2,7 @@ en:
   billing_profiles:
     user: "User"
     name: "Name"
+    billing_profile_name: "Billing Profile Name"
     vat_code: "VAT code"
     legal_entity: "Legal entity"
     address: "Address"
@@ -20,18 +21,29 @@ en:
     vat_validation_error: "VAT code is not registered or not valid according to VIES"
     vat_validation_rate_limit_error: "VAT code validation rate limit exceeded"
     vat_code_already_exists: "VAT code is already in use"
+    vat_validation_service_unavailable_error: "VAT number validation unavailable"
+    vat_validation_member_state_unavailable_error: "VAT number validation failed. Check the number and make sure it starts with correct country code"
+
 
     edit:
       title: "Edit billing profile"
 
+    form:
+      profile_info: "Profile Information"
+      address_info: "Address Information"
+      select_user: "-- Select User --"
+
     index:
       title: "Billing Profiles"
+      new_billing_profile: "New Billing Profile"
+      search: "Search"
 
     new:
       title: "Create a billing profile"
 
     show:
       title: "Billing profile"
+      confirm_delete: "Are you sure you want to delete this billing profile?"
 
   activerecord:
     errors:
