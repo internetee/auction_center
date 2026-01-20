@@ -27,7 +27,7 @@ jobs:
 
     steps:
       - name: ⬇️ Checkout application code
-        uses: actions/checkout@v4 
+        uses: actions/checkout@v6 
 
       - name: 🔑 Configure AWS Credentials (for ECR and EKS)
         uses: aws-actions/configure-aws-credentials@v4
