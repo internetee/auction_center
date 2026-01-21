@@ -30,7 +30,7 @@ jobs:
         uses: actions/checkout@v4 
 
       - name: 🔑 Configure AWS Credentials (for ECR and EKS)
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v5
         with:
           role-to-assume: ${{ secrets.GH_ACTIONS_DEPLOY_ROLE_ARN }} 
           aws-region: ${{ env.AWS_REGION }}
