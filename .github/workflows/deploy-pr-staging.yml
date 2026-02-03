@@ -76,21 +76,7 @@ jobs:
               "app_name": "auction",
               "image_tag": "${{ steps.docker_build.outputs.IMAGE_TAG }}",
               "namespace": "auction",
-              "pr_number": "${{ inputs.pr_number }}"
+              "pr_number": "${{ inputs.pr_number }}",
+              "source_repo": "internetee/auction_center"
             }
             
-      - name: 💬 Post deploy trigger info to PR
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const prNumber = context.issue.number || ${{ github.event.inputs.pr_number }};
-            const url = `https://auction-pr-${prNumber}.cloud.tld.ee`; 
-            
-            if (prNumber) {
-              github.rest.issues.createComment({
-                issue_number: parseInt(prNumber),
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                body: `🟦 **Deploy Triggered!** 🚀\n\nApp: **auction-center**\nLink: [${url}](${url})\n\n*(Link will be available in 2-3 minutes)*`
-              })
-            }
