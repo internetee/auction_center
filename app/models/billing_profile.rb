@@ -43,6 +43,11 @@ class BillingProfile < ApplicationRecord
     return if vat_code.blank? || vat_rate == BigDecimal(0)
 
     errors.add(:vat_code, I18n.t('billing_profiles.vat_validation_error')) unless Valvat.new(vat_code).exists?
+  rescue Valvat::ServiceUnavailable
+    errors.add(:vat_code, I18n.t('billing_profiles.vat_validation_service_unavailable_error'))
+  rescue Valvat::MemberStateUnavailable
+    errors.add(:vat_code, I18n.t('billing_profiles.vat_validation_member_state_unavailable_error'))
+    true
   rescue Valvat::RateLimitError
     errors.add(:vat_code, I18n.t('billing_profiles.vat_validation_rate_limit_error'))
   end
