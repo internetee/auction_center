@@ -23,7 +23,7 @@
             <div class="item">
                 <div id="password-sign-in" class="login-block ui segment">
                     <h3><%= t('.sign_in_with_password') %></h3>
-                    <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: 'ui form big' }) do |f| %>
+                    <%= form_for(resource, as: resource_name, url: user_session_path(resource_name), html: { class: 'ui form big' }) do |f| %>
                         <div class="field">
                             <%= f.label :email, t('users.email') %>
                             <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
