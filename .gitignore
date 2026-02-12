@@ -70,3 +70,5 @@ CLAUDE.md
 !/app/assets/builds/.keep
 .cursorindexingignore
 .specstory
+doc/metrics_and_monitoring_ru.md
+doc/prometheus_grafana_setup_ru.md

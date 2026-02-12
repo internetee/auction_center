@@ -8,6 +8,7 @@ class Auction < ApplicationRecord # rubocop:disable Metrics
   ENGLISH = '1'.freeze
 
   after_create :find_auction_turns
+  after_commit :update_active_auctions_metric
   validates :domain_name, presence: true
 
   attr_accessor :skip_broadcast, :skip_validation
@@ -240,5 +241,17 @@ class Auction < ApplicationRecord # rubocop:disable Metrics
 
   def maximum_bids
     Money.new(offers.maximum(:cents), Setting.find_by(code: 'auction_currency').retrieve)
+  end
+
+  private
+
+  def update_active_auctions_metric
+    %w[blind english].each do |platform_name|
+      count = Auction.where(platform: platform_name)
+                     .where("starts_at <= ? AND ends_at >= ?", Time.current, Time.current)
+                     .count
+
+      Yabeda.auction_business.active_auctions_total.set({ platform: platform_name }, count)
+    end
   end
 end
