@@ -1,16 +1,18 @@
-FROM internetee/ruby:3.2.2
+FROM internetee/ruby:3.4.1-node18-no-chrome
 ARG RAILS_ENV
 ARG SECRET_KEY_BASE
 ARG APP_DBHOST
 
-ENV RAILS_ENV "$RAILS_ENV"
-ENV SECRET_KEY_BASE "$SECRET_KEY_BASE"
-ENV APP_DBHOST "$APP_DBHOST"
+ENV RAILS_ENV="$RAILS_ENV"
+ENV SECRET_KEY_BASE="$SECRET_KEY_BASE"
+ENV APP_DBHOST="$APP_DBHOST"
 
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4EB27DB2A3B88B8B
-RUN apt-get update
-RUN curl -sL https://deb.nodesource.com/setup_18.x | bash -
-RUN apt-get install -y nodejs
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+  build-essential \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
 
 RUN npm install -g yarn@latest
 WORKDIR /opt/webapps/app
