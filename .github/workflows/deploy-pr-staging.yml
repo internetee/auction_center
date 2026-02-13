@@ -3,17 +3,24 @@ name: 01 PR Deploy to Staging (Kubernetes)
 on:
   workflow_dispatch:
     inputs:
-      pr_number:
-        description: 'Number of PR to deploy (only digits, e.g., 2889)'
+      deploy_target:
+        description: 'What to deploy'
         required: true
+        type: choice
+        options:
+          - pr
+          - master
+        default: pr
+      pr_number:
+        description: 'Number of PR to deploy (only digits, e.g., 2889). Required only for PR deploy.'
+        required: false
         type: string
 
 permissions:
   id-token: write
   contents: read
   pull-requests: write
-  # issues: write
-
+  
 env:
   APP_NAME: auction-center
   ECR_URL: 034362061030.dkr.ecr.eu-north-1.amazonaws.com
@@ -23,11 +30,19 @@ env:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    # environment: staging
 
     steps:
+      - name: ✅ Validate inputs
+        run: |
+          if [[ "${{ inputs.deploy_target }}" == "pr" && -z "${{ inputs.pr_number }}" ]]; then
+            echo "::error::PR number is required when deploy target is 'pr'"
+            exit 1
+          fi
+
       - name: ⬇️ Checkout application code
-        uses: actions/checkout@v4 
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.deploy_target == 'master' && 'master' || format('refs/pull/{0}/merge', inputs.pr_number) }}
 
       - name: 🔑 Configure AWS Credentials (for ECR and EKS)
         uses: aws-actions/configure-aws-credentials@v4
@@ -38,12 +53,18 @@ jobs:
       - name: 🛠️ Build and Tag Docker image
         id: docker_build
         run: |
-          TAG="pr-${{ inputs.pr_number }}"
+          if [[ "${{ inputs.deploy_target }}" == "master" ]]; then
+            SHORT_SHA=$(git rev-parse --short HEAD)
+            TAG="master-${SHORT_SHA}"
+          else
+            TAG="pr-${{ inputs.pr_number }}"
+          fi
+
           echo "IMAGE_TAG=$TAG" >> $GITHUB_OUTPUT
-          
-          docker build --platform linux/amd64 -f Dockerfile.production \
+
+          docker build --no-cache --platform linux/amd64 -f Dockerfile.staging \
             -t ${{ env.APP_NAME }}:${TAG} .
-            
+
       - name: 🔑 ECR Login using AWS CLI
         run: |
           aws ecr get-login-password --region ${{ env.AWS_REGION }} | \
@@ -76,7 +97,7 @@ jobs:
               "app_name": "auction",
               "image_tag": "${{ steps.docker_build.outputs.IMAGE_TAG }}",
               "namespace": "auction",
-              "pr_number": "${{ inputs.pr_number }}",
+              "pr_number": "${{ inputs.deploy_target == 'master' && '0' || inputs.pr_number }}",
               "source_repo": "internetee/auction_center"
             }
             
