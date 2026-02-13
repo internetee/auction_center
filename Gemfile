@@ -16,7 +16,7 @@ gem 'delayed_job_active_record'
 gem 'devise', '~> 4.9.3'
 gem 'directo', github: 'internetee/directo', branch: 'master'
 gem 'faker'
-gem 'faraday', '>= 2.14.0'
+gem 'faraday', '>= 2.14.1'
 gem 'freezolite', require: false
 gem 'hotwire-rails', '~> 0.1.3'
 gem 'jbuilder', '~> 2.11'
