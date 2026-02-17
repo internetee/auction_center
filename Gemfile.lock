@@ -396,7 +396,7 @@ GEM
     puma (7.1.0)
       nio4r (~> 2.0)
     racc (1.8.1)
-    rack (3.2.3)
+    rack (3.2.5)
     rack-oauth2 (2.2.1)
       activesupport
       attr_required
@@ -669,7 +669,7 @@ DEPENDENCIES
   propshaft
   pry
   puma (~> 7.1.0)
-  rack (~> 3.2.0)
+  rack (~> 3.2.5)
   rails (~> 8.0.3)
   rails-i18n
   recaptcha
