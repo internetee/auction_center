@@ -4,16 +4,48 @@ et:
       salutation: "Lugupeetud .ee oksjonil osaleja"
       subject: "%{domain_name} oksjonil osalemise keeld"
       introduction: |
-        juhime teie tähelepanu asjaolule, et domeenioksjonilt soetatud domeeni %{domain_name} registreerimise
-        eelisõiguse arve on tähtajaks tasumata. Sel põhjusel ei saa te domeeni %{domain_name} oksjonitel edaspidi osaleda.
+        Anname teada, et teie domeenioksjonilt soetatud domeeni
+        %{domain_name} registreerimise eelisõiguse arve on tähtajaks
+        tasumata. Tulenevalt <a href="https://www.internet.ee/domeenid/domeenide-oksjonikeskkonna-kasutajatingimused">Oksjonikeskkonna kasutajatingimustest</a> ei
+        saa te edaspidi domeeni %{domain_name} oksjonitel osaleda.
       number_of_strikes: |
-        See on %{number}. tasumata arve. Tulenevalt Kasutajalepingu punktist 7.3.3. saab Teenuse
-        kasutaja oksjonikeskkonna teenuseid kasutada, kui maksmata arveid on vähem kui kolm.
+        See on %{number}. tasumata arve. Kasutajalepingu punktis 8.3.3. alusel
+        saate oksjonikeskkonna teenuseid kasutada vaid juhul, kui
+        maksmata arveid on vähem kui kolm.
+        <br><br>
+        Piirangute tühistamiseks on teil võimalus arve tasuda. Selle
+        tulemusena taastub teie õigus osaleda ka domeeni %{domain_name}
+        oksjonitel ning väheneb aktiivsete rikkumiste arv.
       linkpay_html: |
-        Saad arve koheselt tasuda selle <a href=%{linkpay_url}>lingi</a> abil.
+        Tasumata arve on võimalik tasuda selle <a href=%{linkpay_url}>lingi</a> abil.
       footer_html: |
-        <p>Täiendavate küsimuste korral võtke palun ühendust Eesti Interneti Sihtasutusega aadressil
-        info@internet.ee või +372 727 1000.</p>
+        <p>Täiendavate küsimuste korral võtke meiega palun ühendust
+        info@internet.ee</p>
+
+        <p>Lugupidamisega</br>
+        Eesti Interneti SA</br>
+        <a href="https://internet.ee">https://internet.ee</a></p>
+
+    final_ban_mail:
+      salutation: "Lugupeetud .ee oksjonil osaleja"
+      subject: ".ee oksjonitel osalemise keeld"
+      introduction: |
+        Anname teada, et teie .ee domeenioksjonilt soetatud domeeni %{domain_name}
+        registreerimise eelisõiguse arve on tähtajaks tasumata.
+      number_of_strikes: |
+        Tegemist on %{number}. tasumata arvega. Tulenevalt <a href="https://www.internet.ee/domeenid/domeenide-oksjonikeskkonna-kasutajatingimused">Oksjonikeskkonna kasutajalepingu</a> punktist 8.3.3.
+        saate Oksjonikeskkonna teenuseid kasutada vaid juhul, kui teil on maksmata arveid vähem kui kolm.
+        Seetõttu ei saa te .ee domeenioksjonitel osaleda kuni %{ban_end_date} või kuni piirangu aluseks
+        oleva(te) ettemaksuarve(te) tasumiseni.
+        <br><br>
+        Piirangu tühistamiseks on teil võimalus arved tasuda. Selle tulemusena väheneb teie aktiivsete
+        rikkumiste arv. Kui see langeb alla kolme, taastub ka teie õigus osaleda domeeni %{domain_name}
+        oksjonitel.
+      linkpay_html: |
+        Tasumata arve eest saate maksta selle <a href=%{linkpay_url}>lingi</a> abil.
+      footer_html: |
+        <p>Täiendavate küsimuste korral võtke meiega palun ühendust
+        info@internet.ee </p>
 
         <p>Lugupidamisega</br>
         Eesti Interneti SA</br>

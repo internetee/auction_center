@@ -7,17 +7,25 @@ en:
         Congratulations! Your bid in the domain registration priority
         auction for the %{domain_name} domain was successful.
       details_html: |
-        In order to acquire the priority for the %{domain_name} domain, a prepayment invoice must be paid within 7 days in  %{link}. If needed you can change the invoice recipient data of the prepayment invoice in the portal.
+        In order to acquire the priority for the %{domain_name} domain, 
+        a prepayment invoice must be paid within 7 days in the <a href="https://auction.internet.ee/">.ee Auction portal</a>.
+        If needed, you can also change the recipient data of the prepayment invoice in the portal.
       linkpay_html: |
         You can pay for this invoice using following <a href=%{linkpay_url}>link</a>.
       auction_link: ".ee auction portal"
       details_second_para_html: |
-        You will find the registration code in your user account once you have paid the invoice on time. The code will allow you to register the %{domain_name} domain name within %{registration_limit} days. To register the %{domain_name} domain, contact an a href="https://www.internet.ee/registrars/accredited-registrars">accredited .ee registrar</a> as soon as possible! If you leave it to the last minute, your service provider may not be able to register the domain.
+        You will find the registration code in your user account once you have paid the invoice on time. The code will allow you to register the %{domain_name} domain name within %{registration_limit} days. To register the %{domain_name} domain, contact an <a href="https://www.internet.ee/registrar-portal/accredited-registrars">accredited .ee registrar</a> as soon as possible! If you leave it to the last minute, your service provider may not be able to register the domain.
       details_third_para: |
         The prepayment invoice must be paid within 7 days. If you fail to pay, you will
-        lose the right to the auctioned priority and priority for the %{domain_name} domain
+        lose the right to the auctioned priority and the %{domain_name} domain
         will be returned to auction. You will not be able to participate in the same auction again.
 
+        If you pay the invoice after the payment deadline, i.e. after 7
+        days have passed, the restrictions applies due to non-payment ot 
+        this invoice will be cancelled. In this case, you will have the 
+        opportunity to participate in the auction of the domain name again.
+
+        Learn more from our Auction portal <a href="https://www.internet.ee/domains/auction-environment-user-agreement">terms of use</a>. 
     registration_code_email:
       subject: "%{domain_name} registration code available"
       salutation: "Dear %{display_name},"
