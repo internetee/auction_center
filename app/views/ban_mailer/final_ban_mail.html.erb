@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="<%= I18n.locale %>">
     <head>
         <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
+        <title><%= t('.subject', domain_name: @domain_name) %></title>
     </head>
     <body>
         <p><%= t('.salutation') %></p>
