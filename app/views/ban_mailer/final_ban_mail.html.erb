@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
+    </head>
+    <body>
+        <p><%= t('.salutation') %></p>
+
+        <p><%= t('.introduction', domain_name: @domain_name) %></p>
+        <p id='number-of-strikes'><%= t('.number_of_strikes', ban_end_date: @ban_end_date, domain_name: @domain_name, number: @past_due_invoices).html_safe %></p>
+        <p><%= t('.linkpay_html', linkpay_url: @ban.invoice.payment_link) %></p>
+        <%= t('.footer_html') %>
+    </body>
+</html>
+

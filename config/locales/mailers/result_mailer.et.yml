@@ -1,28 +1,39 @@
 et:
   result_mailer:
     winner_email:
-      subject: "Pakkumine domeenile %{domain_name} oli edukas"
+      subject: "Teie pakkumine domeenile %{domain_name} oli edukas"
       salutation: "Lugupeetud, %{display_name}"
       introduction: |
-        Palju õnne! Pakkumine domeeni eelisõiguse oksjonil domeenile
-        %{domain_name} oli edukas.
+        Anname teada, et teie pakkumine domeeni
+        %{domain_name} registreerimise eelisõigusele oli edukas.
       details_html: |
-        %{domain_name} registreerimise eelisõiguse omandamiseks tuleb 7 päeva jooksul tasuda %{link}. ettemaksuarve. Vajadusel saate keskkonnas muuta arve saaja andmeid. 
+        %{domain_name} registreerimise eelisõiguse saamiseks tuleb teil tasuda ettemaksuarve %{link}. 7 päeva jooksul. Soovi korral saate Oksjonikeskkonnas enne tasumist muuta ka arve saaja andmeid. 
       linkpay_html: |
         Saad arve koheselt tasuda selle <a href=%{linkpay_url}>lingi</a> abil.
       auction_link: ".ee oksjonikeskkonnas"
       details_second_para_html: |
         Arve õigeaegsel tasumisel leiate oma kasutajakonto alt vastava reserveerimiskoodi,
-        millega saate %{registration_limit}. päeva jooksul enampakkumisel võidetud %{domain_name}
-        domeeninime registreerida. Domeeni %{domain_name} registreerimiseks pöörduge
-        <a href="https://www.internet.ee/registripidajad/akrediteeritud-registripidajad">
-        .ee akrediteeritud registripidaja</a> poole esimesel võimalusel! Viimasele hetkele
-        jätmise korral ei pruugi teenusepakkujal olla võimalik domeeni registreerida.
+        millega saate %{registration_limit}. päeva jooksul domeeni %{domain_name}
+        registreerida 
+        <a href="https://www.internet.ee/registripidaja/akrediteeritud-registripidajad">
+        .ee akrediteeritud registripidaja</a> juures. Soovitame registripidajaga ühendust võtta esimesel võimalusel - toimingu viimasele päevale
+        jätmisel ei pruugi teenusepakkujal olla võimalik domeeni registreerida.
 
       details_third_para: |
-        Ettemaksuarve tuleb tasuda 7 päeva jooksul. Tasumata jätmisel te enampakkumisel
-        olnud eelisõigust endale ei saa ja domeeni %{domain_name} eelisõigus läheb
-        tagasi oksjonile. Teie samal oksjonil uuesti osaleda ei saa.
+        Ettemaksuarve tähtajaks tasumata jätmisel ei saa te domeeni 
+        %{domain_name} registreerida ning see läheb tagasi oksjonile.
+        Tulenevalt <a href="https://www.internet.ee/domeenid/domeenide-oksjonikeskkonna-kasutajatingimused">Oksjonikeskkonna kasutajatingimustest</a>
+        ei saa teie samal oksjonil uuesti osaleda.
+
+        Juhul, kui tasute arve maksetähtaja ületamisel ehk pärast 7 päeva
+        möödumist, tühistatakse selle arve maksmata jätmise tõttu 
+        rakendatud piirangud. Sellisel juhul saate võimaluse osaleda
+        vastava domeeninime oksjonil uuesti.
+
+        Lisaküsimuste korral võtke meiega palun ühendust info@internet.ee
+        või +372 727 1000.
+
+        Lugupidamisega,
 
     registration_code_email:
       subject: "%{domain_name} registreerimise kood on nüüd kättesaadav"

@@ -60,8 +60,16 @@ class AutomaticBanTest < ActiveSupport::TestCase
       mail_html = Nokogiri::HTML(mail.body.decoded)
 
       text_content = mail_html.css('p#number-of-strikes').text
-      assert_equal text_content, I18n.t('ban_mailer.ban_mail.number_of_strikes',
-                                        number: I18n.locale == :en ? @user.bans.count.ordinalize : @user.bans.count)
+      domain_name = ban.domain_name
+      expected_text = Nokogiri::HTML::DocumentFragment.parse(
+        I18n.t(
+          'ban_mailer.ban_mail.number_of_strikes',
+          number: I18n.locale == :en ? @user.bans.count.ordinalize : @user.bans.count,
+          domain_name: domain_name
+        )
+      ).text
+
+      assert_equal expected_text, text_content
     end
   end
 
