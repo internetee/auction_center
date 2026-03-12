@@ -18,6 +18,7 @@ en:
       show:
         title: User
         ban_this_user: "Ban this user"
+        ban_for_domain: "Ban for specific domain"
         daily_summary: "Daily summary subscription"
 
       form:
