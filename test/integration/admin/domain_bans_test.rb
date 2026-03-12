@@ -65,20 +65,6 @@ class Admin::DomainBansIntegrationTest < ActionDispatch::IntegrationTest
     assert_redirected_to admin_user_path(@user.id)
   end
 
-  def test_rejects_ban_with_invalid_domain_format
-    assert_no_difference('Ban.count') do
-      post admin_bans_domain_bans_path, params: {
-        ban: {
-          user_id: @user.id,
-          domain_name: 'not a domain',
-          valid_until: Time.zone.today + 30.days
-        }
-      }
-    end
-
-    assert_redirected_to admin_user_path(@user.id)
-  end
-
   def test_rejects_ban_with_past_valid_until
     assert_no_difference('Ban.count') do
       post admin_bans_domain_bans_path, params: {

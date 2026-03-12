@@ -24,29 +24,6 @@ class BanTest < ActiveSupport::TestCase
     assert_equal([@ban].to_set, Ban.valid.to_set)
   end
 
-  def test_domain_name_format_validation
-    ban = Ban.new(user: @user, valid_from: Time.zone.now, valid_until: Time.zone.now + 1.day)
-
-    ban.domain_name = nil
-    assert ban.valid?, 'Ban should be valid without domain_name'
-
-    ban.domain_name = ''
-    assert ban.valid?, 'Ban should be valid with blank domain_name'
-
-    ban.domain_name = 'example.ee'
-    assert ban.valid?, 'Ban should be valid with correct domain format'
-
-    ban.domain_name = 'my-domain.test'
-    assert ban.valid?, 'Ban should be valid with hyphenated domain'
-
-    ban.domain_name = 'not a domain'
-    assert_not ban.valid?, 'Ban should be invalid with spaces in domain'
-    assert_includes ban.errors[:domain_name], I18n.t('activerecord.errors.models.ban.attributes.domain_name.invalid_domain_format')
-
-    ban.domain_name = 'http://example.ee'
-    assert_not ban.valid?, 'Ban should be invalid with protocol prefix'
-  end
-
   def test_no_duplicate_active_ban_for_same_domain
     Ban.create!(user: @user, domain_name: 'unique.ee',
                 valid_from: Time.zone.now, valid_until: Time.zone.now + 30.days)

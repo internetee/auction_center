@@ -663,7 +663,7 @@ DEPENDENCIES
   money
   mutex_m
   net-imap (>= 0.5.7)
-  nokogiri (>= 1.18.9)
+  nokogiri (>= 1.19.1)
   noticed (~> 1.6.3)
   okcomputer (~> 1.19.0)
   omniauth-rails_csrf_protection
@@ -675,7 +675,7 @@ DEPENDENCIES
   propshaft
   pry
   puma (~> 7.1.0)
-  rack (~> 3.2.0)
+  rack (~> 3.2, >= 3.2.5)
   rails (~> 8.1.0)
   rails-i18n
   recaptcha

@@ -3,9 +3,6 @@ class Ban < ApplicationRecord
   belongs_to :invoice, optional: true
 
   validates :valid_until, presence: true
-  validates :domain_name, format: { with: /\A[a-z0-9\-]+\.[a-z]{2,}\z/i,
-                                     message: :invalid_domain_format },
-                          allow_blank: true
   validate :valid_until_later_valid_from
   validate :no_active_ban_for_same_domain, on: :create
 

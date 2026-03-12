@@ -9,5 +9,4 @@ en:
         ban:
           attributes:
             domain_name:
-              invalid_domain_format: "is not a valid domain name (e.g. example.ee)"
               already_banned: "already has an active ban for this user"

@@ -9,5 +9,4 @@ et:
         ban:
           attributes:
             domain_name:
-              invalid_domain_format: "ei ole kehtiv domeeninimi (nt example.ee)"
               already_banned: "sellel kasutajal on juba aktiivne keeld selle domeeni jaoks"
