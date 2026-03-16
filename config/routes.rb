@@ -55,9 +55,13 @@ Rails.application.routes.draw do
     resources :statistics, only: :index
     resources :billing_profiles, only: %i[index show], concerns: %i[auditable]
     resources :invoices, except: %i[new create destroy], concerns: %i[auditable] do
+      scope module: :invoices do
+        resource :mark_as_paid, only: %i[edit update]
+        resource :toggle_partial_payment, only: %i[update]
+      end
+
       member do
         get 'download'
-        post 'toggle_partial_payments'
       end
     end
     resources :jobs, only: %i[index create]
