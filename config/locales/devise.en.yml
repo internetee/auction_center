@@ -90,6 +90,10 @@ en:
           Sign in using an Estonian (incl. e-residents) ID card, mobile ID,
           Bank link or other EU citizen's electronic ID supported by EIDAS.
         sign_in_with_password: "Sign in with a password"
+      user:
+        signed_in: "Signed in successfully."
+        signed_out: "Signed out successfully."
+        already_signed_out: "Signed out successfully."
       signed_in: "Signed in successfully."
       signed_out: "Signed out successfully."
       already_signed_out: "Signed out successfully."
