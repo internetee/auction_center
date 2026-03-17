@@ -1,5 +1,5 @@
 name: Github Testing
-on: [push]
+on: [push, pull_request]
 
 jobs:
   bundle_audit:
@@ -75,6 +75,21 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y wkhtmltopdf
         if: github.event_name == 'push'
 
+      - name: Setup database
+        run: |
+          bundle exec rails db:create
+          bundle exec rails db:schema:load
+        env:
+          RAILS_ENV: test
+          DATABASE_URL: postgres://postgres:password@localhost:5432/auction_center_test
+
+      - name: Run tests with coverage
+        run: bundle exec rails test
+        env:
+          RAILS_ENV: test
+          COVERAGE: true
+          DATABASE_URL: postgres://postgres:password@localhost:5432/auction_center_test
+
       - name: Debug coverage files
         if: always()
         run: |
@@ -119,6 +134,28 @@ jobs:
           EOF
 
           bundle exec ruby check_format.rb
+
+      - name: Install qlty CLI
+        if: always()
+        run: |
+          curl -LSs https://qlty.sh | bash
+          echo "${HOME}/.qlty/bin" >> $GITHUB_PATH
+
+      - name: Upload coverage to Qlty
+        if: always()
+        env:
+          QLTY_COVERAGE_TOKEN: ${{ secrets.QLTY_COVERAGE_TOKEN }}
+        run: |
+          if [ -z "$QLTY_COVERAGE_TOKEN" ]; then
+            echo "Missing secret QLTY_COVERAGE_TOKEN" >&2
+            exit 1
+          fi
+          if [ -f "coverage/.resultset.json" ]; then
+            qlty coverage publish --format=simplecov coverage/.resultset.json
+          else
+            echo "No SimpleCov output found at coverage/.resultset.json" >&2
+            exit 1
+          fi
 
       - name: Upload coverage artifact
         if: always()
