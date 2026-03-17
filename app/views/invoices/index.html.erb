@@ -2,7 +2,17 @@
 
 <!-- Table -->
 <div class="o-container">
-  <%= component 'pages/invoices/outstanding_invoices', issued_invoices: @issued_invoices, cancelled_payable_invoices: @cancelled_payable_invoices,
-      cancelled_expired_invoices: @cancelled_expired_invoices, unpaid_invoices_count: @unpaid_invoices_count %>
-  <%= component 'pages/invoices/paid_invoices', paid_invoices: @paid_invoices, deposit_paid: @deposit_paid %>
+  <%= component 'pages/invoices/outstanding_invoices',
+      issued_invoices: @invoices_data[:issued][:records],
+      cancelled_payable_invoices: @invoices_data[:cancelled_payable][:records],
+      cancelled_expired_invoices: @invoices_data[:cancelled_expired][:records],
+      unpaid_invoices_count: @unpaid_invoices_count,
+      pagy_issued: @invoices_data[:issued][:pagy],
+      pagy_cancelled_payable: @invoices_data[:cancelled_payable][:pagy],
+      pagy_cancelled_expired: @invoices_data[:cancelled_expired][:pagy] %>
+  <%= component 'pages/invoices/paid_invoices',
+      paid_invoices: @invoices_data[:paid][:records],
+      deposit_paid: @invoices_data[:deposit][:records],
+      pagy_paid: @invoices_data[:paid][:pagy],
+      pagy_deposit: @invoices_data[:deposit][:pagy] %>
 </div>
