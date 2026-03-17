@@ -49,6 +49,7 @@ jobs:
             else
               echo "auto_merge=false" >> $GITHUB_OUTPUT
             fi
+          fi
         shell: bash
 
       - name: Wait for CI checks
