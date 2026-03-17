@@ -75,6 +75,10 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y wkhtmltopdf
         if: github.event_name == 'push'
 
+      - name: Prepare config files
+        run: |
+          cp config/customization.yml.sample config/customization.yml
+
       - name: Setup database
         run: |
           bundle exec rails db:create
@@ -147,14 +151,16 @@ jobs:
           QLTY_COVERAGE_TOKEN: ${{ secrets.QLTY_COVERAGE_TOKEN }}
         run: |
           if [ -z "$QLTY_COVERAGE_TOKEN" ]; then
-            echo "Missing secret QLTY_COVERAGE_TOKEN" >&2
-            exit 1
+            echo "Missing secret QLTY_COVERAGE_TOKEN; skipping Qlty upload."
+            exit 0
           fi
           if [ -f "coverage/.resultset.json" ]; then
             qlty coverage publish --format=simplecov coverage/.resultset.json
+          elif [ -f "coverage/coverage.json" ]; then
+            qlty coverage publish --format=simplecov coverage/coverage.json
           else
-            echo "No SimpleCov output found at coverage/.resultset.json" >&2
-            exit 1
+            echo "No SimpleCov output found (expected coverage/.resultset.json or coverage/coverage.json); skipping Qlty upload."
+            exit 0
           fi
 
       - name: Upload coverage artifact
