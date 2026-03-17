@@ -31,7 +31,7 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.4.1  # use the same version as in the project
+          ruby-version: 3.4.9  # use the same version as in the project
           bundler-cache: true
 
       - name: Configure Bundler for development
@@ -87,6 +87,7 @@ jobs:
         if: steps.check_changes.outputs.changed == 'true'
         uses: actions/github-script@v8
         with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             github.rest.issues.createComment({
               issue_number: context.issue.number,

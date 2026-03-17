@@ -45,6 +45,8 @@ class BillingProfile < ApplicationRecord
     errors.add(:vat_code, I18n.t('billing_profiles.vat_validation_error')) unless Valvat.new(vat_code).exists?
   rescue Valvat::RateLimitError
     errors.add(:vat_code, I18n.t('billing_profiles.vat_validation_rate_limit_error'))
+  rescue Valvat::MemberStateUnavailable, Valvat::ServiceUnavailable
+    errors.add(:vat_code, I18n.t('billing_profiles.vat_validation_service_unavailable'))
   end
 
   def issued_invoices

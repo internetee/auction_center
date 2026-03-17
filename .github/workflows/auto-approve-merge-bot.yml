@@ -3,7 +3,7 @@ name: Auto approve & merge Dependabot and Renovate PRs
 on:
   pull_request:
     types: [opened, edited, synchronize, reopened, labeled]
-    branches: [main]
+    branches: [master]
 
 permissions:
   contents: write
@@ -43,9 +43,12 @@ jobs:
               echo "auto_merge=false" >> $GITHUB_OUTPUT
             fi
           elif [ "${{ github.actor }}" == "renovate[bot]" ]; then
-            echo "auto_merge=true" >> $GITHUB_OUTPUT
-          else
-            echo "auto_merge=false" >> $GITHUB_OUTPUT
+            patch_label=$(echo "${{ github.event.pull_request.labels.*.name }}" | grep -w patch || true)
+            if [ -n "$patch_label" ]; then
+              echo "auto_merge=true" >> $GITHUB_OUTPUT
+            else
+              echo "auto_merge=false" >> $GITHUB_OUTPUT
+            fi
           fi
         shell: bash
 
