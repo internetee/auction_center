@@ -1,6 +1,8 @@
 require 'constraints/administrator'
 
 Rails.application.routes.draw do
+  mount Yabeda::Prometheus::Exporter, at: "/metrics" if Rails.env.development? || Rails.env.staging?
+
   namespace :admin do
     get 'finished_auctions/index'
   end

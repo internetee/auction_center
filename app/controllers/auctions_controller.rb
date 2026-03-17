@@ -15,6 +15,8 @@ class AuctionsController < ApplicationController
       link_extra: 'data-turbo-action="advance"'
     )
 
+    increment_home_page_total_views
+
     respond_to do |format|
       format.html
       format.json
@@ -33,6 +35,10 @@ class AuctionsController < ApplicationController
   end
 
   private
+
+  def increment_home_page_total_views
+    Yabeda.auction.home_page_total_views.increment
+  end
 
   def fetch_auctions_list = Auction.active.search(params, current_user)
 

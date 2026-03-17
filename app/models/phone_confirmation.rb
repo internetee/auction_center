@@ -18,6 +18,12 @@ class PhoneConfirmation
     locale = locale_for_sms(user)
 
     send_sms_with_locale(locale, padded_number)
+    Yabeda.phone_business.phone_confirmation_sms_sent_total.increment({})
+  rescue => e
+    Yabeda.phone_business.phone_confirmation_sms_failures_total.increment(
+      exception_class: e.class.name
+    )
+    raise
   end
 
   def code

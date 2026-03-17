@@ -6,9 +6,13 @@ class EmailConfirmationsController < Devise::ConfirmationsController
     yield resource if block_given?
 
     if successfully_sent?(resource)
+      Yabeda.user_business.email_confirmation_resent_total.increment({})
       flash[:notice] = t('devise.confirmations.send_instructions')
       respond_with({}, location: after_resending_confirmation_instructions_path_for(resource_name))
     else
+      Yabeda.user_business.email_confirmation_failures_total.increment(
+        reason: resource.errors.full_messages.join(", ").presence || "unknown"
+      )
       flash[:alert] = resource.errors.full_messages.join(', ')
       redirect_to root_path, status: :see_other
     end
