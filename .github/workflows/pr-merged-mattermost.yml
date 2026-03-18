@@ -11,10 +11,16 @@ permissions:
 
 jobs:
   notify:
-    if: github.event.pull_request.merged == true && 
-       (github.event.pull_request.merged_by.login == 'renovate[bot]' || 
-        github.event.pull_request.merged_by.login == 'dependabot[bot]' || 
-        github.event.pull_request.merged_by.login == 'snyk-bot')
+    if: github.event.pull_request.merged == true &&
+       (
+         github.event.pull_request.user.login == 'renovate[bot]' ||
+         github.event.pull_request.user.login == 'dependabot[bot]' ||
+         github.event.pull_request.user.login == 'snyk-bot'
+       ) &&
+       (
+         github.event.pull_request.merged_by.login == 'github-actions[bot]' ||
+         github.event.pull_request.merged_by.login == 'renovate[bot]'
+       )
     runs-on: ubuntu-latest
     steps:
       - name: Send Mattermost notification
@@ -23,7 +29,7 @@ jobs:
           MATTERMOST_CHANNEL_ID: ${{ secrets.MATTERMOST_CHANNEL_ID }}
           MATTERMOST_BASE_URL: ${{ secrets.MATTERMOST_BASE_URL }}
           REPO: ${{ github.repository }}
-          ACTOR: ${{ github.actor }}
+          ACTOR: ${{ github.event.pull_request.merged_by.login }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
           PR_TITLE: ${{ github.event.pull_request.title }}
           PR_URL: ${{ github.event.pull_request.html_url }}
