@@ -11,7 +11,10 @@ permissions:
 
 jobs:
   notify:
-    if: github.event.pull_request.merged == true && (github.event.pull_request.user.login == 'renovate[bot]' || github.event.pull_request.user.login == 'dependabot[bot]' || github.event.pull_request.user.login == 'snyk-bot')
+    if: github.event.pull_request.merged == true && 
+       (github.event.pull_request.merged_by.login == 'renovate[bot]' || 
+        github.event.pull_request.merged_by.login == 'dependabot[bot]' || 
+        github.event.pull_request.merged_by.login == 'snyk-bot')
     runs-on: ubuntu-latest
     steps:
       - name: Send Mattermost notification
