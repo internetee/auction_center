@@ -18,6 +18,7 @@ et:
       show:
         title: "Kasutaja"
         ban_this_user: "Keela see kasutaja"
+        ban_for_domain: "Keela konkreetse domeeni jaoks"
         daily_summary: "Saada igapäevane oksjoninimekiri meilile"
 
       form:

@@ -3,3 +3,10 @@ et:
     valid_until: "Valid until"
     valid_from: "Valid from"
     domain_name: "Domain name"
+  activerecord:
+    errors:
+      models:
+        ban:
+          attributes:
+            domain_name:
+              already_banned: "sellel kasutajal on juba aktiivne keeld selle domeeni jaoks"

@@ -52,6 +52,9 @@ Rails.application.routes.draw do
     end
 
     resources :bans, except: %i[new show edit update], concerns: %i[auditable]
+    namespace :bans do
+      resources :domain_bans, only: :create
+    end
     resources :statistics, only: :index
     resources :billing_profiles, only: %i[index show], concerns: %i[auditable]
     resources :invoices, except: %i[new create destroy], concerns: %i[auditable] do
