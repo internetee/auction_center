@@ -1,3 +1,5 @@
 ---
 ignore:
-  - CVE-2024-21510 
+  - CVE-2024-21510
+  - CVE-2026-32700 # devise - requires major upgrade to 5.0.3+ (breaking: secret key lookup change)
+  - CVE-2026-33306 # bcrypt - JRuby-only issue (cost=31), not applicable to MRI Ruby

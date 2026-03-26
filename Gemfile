@@ -13,7 +13,7 @@ gem 'csv'
 gem 'data_migrate', '~> 11.3.1'
 gem 'delayed_job', '~> 4.1.0'
 gem 'delayed_job_active_record'
-gem 'devise', '~> 4.9.3'
+gem 'devise', '~> 4.9.3' # TODO: upgrade to 5.0.3+ for CVE-2026-32700 (breaking: secret key lookup change)
 gem 'directo', github: 'internetee/directo', branch: 'master'
 gem 'faker'
 gem 'faraday', '>= 2.14.1'
