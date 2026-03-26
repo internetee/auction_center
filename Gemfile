@@ -13,7 +13,7 @@ gem 'csv'
 gem 'data_migrate', '~> 11.3.1'
 gem 'delayed_job', '~> 4.1.0'
 gem 'delayed_job_active_record'
-gem 'devise', '~> 4.9.3'
+gem 'devise', '>= 5.0.3'
 gem 'directo', github: 'internetee/directo', branch: 'master'
 gem 'faker'
 gem 'faraday', '>= 2.14.1'
@@ -89,6 +89,7 @@ group :test do
   gem 'capybara', '>= 3.4.0'
   # gem 'cuprite'
   # gem 'selenium-webdriver'
+  gem 'minitest-mock', require: false
   gem 'selenium-webdriver'
   gem 'simplecov', require: false
   gem 'simplecov-json', require: false
