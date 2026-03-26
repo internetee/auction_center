@@ -42,7 +42,6 @@ et:
 
   close: "Sulge"
   reg_no: "Registrikood"
-  business_registration_code: "Äriregistri kood"
 
   auctions_name: "Oksjonid"
   billing_profiles_name: "Arve aadressid"
