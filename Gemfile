@@ -89,6 +89,7 @@ group :test do
   gem 'capybara', '>= 3.4.0'
   # gem 'cuprite'
   # gem 'selenium-webdriver'
+  gem 'minitest-mock', require: false
   gem 'selenium-webdriver'
   gem 'simplecov', require: false
   gem 'simplecov-json', require: false

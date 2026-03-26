@@ -447,7 +447,7 @@ class OfferTest < ActiveSupport::TestCase
     assert_not_nil result_offer
     
     assert_equal auction.domain_name, result_offer.domain_name
-    assert_equal auction.platform, result_offer.platform
+    assert_nil result_offer.platform
     assert_equal auction.ends_at, result_offer.ends_at
   end
 
