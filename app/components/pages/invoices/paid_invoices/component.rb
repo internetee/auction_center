@@ -2,13 +2,15 @@ module Pages
   module Invoices
     module PaidInvoices
       class Component < ApplicationViewComponent
-        attr_reader :paid_invoices, :deposit_paid
+        attr_reader :paid_invoices, :deposit_paid, :pagy_paid, :pagy_deposit
 
-        def initialize(paid_invoices:, deposit_paid:)
+        def initialize(paid_invoices:, deposit_paid:, pagy_paid:, pagy_deposit:)
           super()
 
           @paid_invoices = paid_invoices
           @deposit_paid = deposit_paid
+          @pagy_paid = pagy_paid
+          @pagy_deposit = pagy_deposit
         end
 
         def paid_invoices_headers
