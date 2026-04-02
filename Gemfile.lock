@@ -18,7 +18,7 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    action_text-trix (2.1.17)
+    action_text-trix (2.1.18)
       railties
     actioncable (8.1.2.1)
       actionpack (= 8.1.2.1)
@@ -104,7 +104,7 @@ GEM
     attr_required (1.0.2)
     base64 (0.3.0)
     bcrypt (3.1.22)
-    bigdecimal (4.0.1)
+    bigdecimal (4.1.0)
     bindata (2.5.1)
     bindex (0.8.1)
     bootsnap (1.18.6)
