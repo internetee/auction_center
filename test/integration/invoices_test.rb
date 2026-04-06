@@ -1,4 +1,4 @@
-require 'application_system_test_case'
+require 'test_helper'
 
 class InvoicesIntegrationTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
@@ -82,5 +82,137 @@ class InvoicesIntegrationTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to invoice_path(@invoice.uuid)
     assert_equal body[:error], flash[:alert]
+  end
+
+  def test_oneoff_redirects_to_oneoff_link_when_service_succeeds
+    response_double = Struct.new(:result?, :instance, :errors).new(true, { 'oneoff_redirect_link' => 'http://oneoff.redirect' }, {})
+
+    EisBilling::OneoffService.stub(:call, response_double) do
+      post oneoff_invoice_path(@invoice.uuid), params: { amount: '1.0' }
+    end
+
+    assert_redirected_to 'http://oneoff.redirect'
+  end
+
+  def test_oneoff_sets_flash_and_redirects_to_invoices_when_service_fails
+    response_double = Struct.new(:result?, :instance, :errors).new(false, {}, { 'message' => 'oneoff failed' })
+
+    EisBilling::OneoffService.stub(:call, response_double) do
+      post oneoff_invoice_path(@invoice.uuid), params: { amount: '1.0' }
+    end
+
+    assert_redirected_to invoices_path
+    assert_equal 'oneoff failed', flash[:alert]
+  end
+
+  def test_oneoff_redirects_back_when_amount_is_not_positive
+    EisBilling::OneoffService.stub(:call, ->(*) { raise 'should not be called' }) do
+      post oneoff_invoice_path(@invoice.uuid), params: { amount: '0' }
+    end
+
+    assert_redirected_to invoice_path(@invoice.uuid)
+    assert_equal I18n.t('invoices.amount_must_be_positive'), flash[:alert]
+  end
+
+  def test_oneoff_redirects_back_when_amount_is_too_big
+    EisBilling::OneoffService.stub(:call, ->(*) { raise 'should not be called' }) do
+      post oneoff_invoice_path(@invoice.uuid), params: { amount: '999999' }
+    end
+
+    assert_redirected_to invoice_path(@invoice.uuid)
+    assert_equal I18n.t('invoices.amount_is_too_big'), flash[:alert]
+  end
+
+  def test_update_redirects_to_invoices_when_payable_and_update_succeeds
+    response_double = Struct.new(:result?).new(true)
+
+    EisBilling::UpdateInvoiceDataService.stub(:call, response_double) do
+      patch invoice_path(@invoice.uuid), params: { invoice: { billing_profile_id: @invoice.billing_profile_id } }
+    end
+
+    assert_redirected_to invoices_path
+  end
+
+  def test_update_redirects_with_alert_when_invoice_is_already_paid
+    @invoice.update_columns(status: 'paid', paid_at: Time.current)
+
+    patch invoice_path(@invoice.uuid), params: { invoice: { billing_profile_id: @invoice.billing_profile_id } }
+
+    assert_response :see_other
+    assert_redirected_to invoices_path
+    assert_equal I18n.t('invoices.invoice_already_paid'), flash[:alert]
+  end
+
+  def test_update_returns_turbo_stream_toast_when_invoice_is_already_paid
+    @invoice.update_columns(status: 'paid', paid_at: Time.current)
+
+    patch invoice_path(@invoice.uuid),
+          params: { invoice: { billing_profile_id: @invoice.billing_profile_id } },
+          headers: { 'Accept' => 'text/vnd.turbo-stream.html' }
+
+    assert_response :ok
+    assert_match(/turbo-stream/, response.headers['Content-Type'])
+  end
+
+  def test_download_serves_pdf_without_wkhtmltopdf
+    kit_double = Object.new
+    kit_double.define_singleton_method(:to_pdf) { '%PDF-1.4 dummy' }
+
+    PDFKit.stub(:new, kit_double) do
+      get download_invoice_path(@invoice.uuid)
+    end
+
+    assert_response :ok
+    assert_includes response.headers['Content-Disposition'].to_s, 'attachment'
+    assert_includes response.headers['Content-Disposition'].to_s, '.pdf'
+    assert response.body.start_with?('%PDF-1.4')
+  end
+
+  def test_show_returns_internal_server_error_for_other_users_invoice
+    sign_in @user_two
+
+    get invoice_path(@invoice.uuid)
+    assert_response :internal_server_error
+  end
+
+  def test_oneoff_returns_internal_server_error_for_other_users_invoice
+    sign_in @user_two
+
+    post oneoff_invoice_path(@invoice.uuid), params: { amount: '1.0' }
+    assert_response :internal_server_error
+  end
+
+  def test_update_redirects_to_invoices_for_other_users_invoice
+    sign_in @user_two
+
+    patch invoice_path(@invoice.uuid), params: { invoice: { billing_profile_id: @invoice.billing_profile_id } }
+    assert_includes [302, 500], response.status
+    assert_redirected_to invoices_path if response.redirect?
+  end
+
+  def test_index_shows_only_current_users_invoices
+    other_user = users(:signed_in_with_omniauth)
+
+    EisBilling::GetInvoiceNumber.stub(:call, Struct.new(:result?, :instance, :errors).new(true, { 'invoice_number' => 94_444 }, {})) do
+      Invoice.create!(
+        result: results(:with_invoice),
+        user: other_user,
+        billing_profile: billing_profiles(:omniauth_company),
+        cents: 1000,
+        recipient: 'Other User Invoice',
+        street: 'Street',
+        city: 'City',
+        postal_code: '00000',
+        alpha_two_country_code: 'GB',
+        status: 'issued',
+        issue_date: Time.zone.today,
+        due_date: Time.zone.today + 7.days
+      )
+    end
+
+    get invoices_path
+    assert_response :ok
+    assert_includes response.body, @invoice.result.auction.domain_name
+    refute_includes response.body, 'Other User Invoice'
   end
 end

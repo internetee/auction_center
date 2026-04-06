@@ -119,7 +119,7 @@ class InvoiceCreatorTest < ActiveSupport::TestCase
     ResultCreationJob.perform_now
     auction.reload
 
-    result = Result.last
+    result = Result.find_by!(auction_id: auction.id)
     assert_equal result.auction.domain_name, auction.domain_name
     assert_equal result.invoice.cents, offer_bid_value
   end
@@ -156,7 +156,7 @@ class InvoiceCreatorTest < ActiveSupport::TestCase
     ResultCreationJob.perform_now
     auction.reload
 
-    result = Result.last
+    result = Result.find_by!(auction_id: auction.id)
     assert_equal result.auction.domain_name, auction.domain_name
     assert_equal result.invoice.cents, result.auction.offers.last.cents
     assert_equal result.invoice.status, 'issued'
@@ -192,7 +192,7 @@ class InvoiceCreatorTest < ActiveSupport::TestCase
     ResultCreationJob.perform_now
     auction.reload
 
-    result = Result.last
+    result = Result.find_by!(auction_id: auction.id)
     assert_equal result.auction.domain_name, auction.domain_name
     assert result.invoice.total.zero?
     assert_equal result.invoice.status, 'paid'
@@ -224,7 +224,7 @@ class InvoiceCreatorTest < ActiveSupport::TestCase
     ResultCreationJob.perform_now
     auction.reload
 
-    result = Result.last
+    result = Result.find_by!(auction_id: auction.id)
     assert_equal result.auction.domain_name, auction.domain_name
     assert_equal result.invoice.status, 'issued'
 
@@ -257,7 +257,7 @@ class InvoiceCreatorTest < ActiveSupport::TestCase
     ResultCreationJob.perform_now
     auction.reload
 
-    result = Result.last
+    result = Result.find_by!(auction_id: auction.id)
     assert_equal result.auction.domain_name, auction.domain_name
     assert_equal result.invoice.status, 'issued'
 
@@ -297,7 +297,7 @@ class InvoiceCreatorTest < ActiveSupport::TestCase
     ResultCreationJob.perform_now
     auction.reload
 
-    result = Result.last
+    result = Result.find_by!(auction_id: auction.id)
     assert_equal result.auction.domain_name, auction.domain_name
     assert_equal result.invoice.status, 'issued'
 

@@ -1,178 +1,131 @@
-# require 'test_helper'
+require 'test_helper'
 
-# # https://www.lhv.ee/images/docs/Bank_Link_Technical_Specification-EN.pdf
-# # All Estonian banks share the same specification
+class PaymentOrderEstonianBankLinkTest < ActiveSupport::TestCase
+  def setup
+    super
 
-# class PaymentOrderEstonianBankLinkTest < ActiveSupport::TestCase
-#   def setup
-#     super
+    travel_to Time.zone.parse('2010-07-05 10:30:00 +0000')
+    @user = users(:participant)
+    @invoice = invoices(:orphaned)
 
-#     travel_to Time.parse('2010-07-05 10:30 +0000').in_time_zone
-#     @payable_invoice = invoices(:payable)
-#     @orphaned_invoice = invoices(:orphaned)
-#     @user = users(:participant)
+    @bank_link = PaymentOrders::EstonianBankLink.create!(user: @user, status: :issued)
+    @bank_link.return_url = 'https://example.test/return'
+    @bank_link.invoices << @invoice
+  end
 
-#     @new_bank_link = PaymentOrders::SEB.new(invoices: [@orphaned_invoice])
-#     @new_bank_link.return_url = 'return.url'
+  def teardown
+    super
+    travel_back
+  end
 
-#     create_completed_bank_link
-#     create_cancelled_bank_link
-#   end
+  def with_currency
+    original_find_by = Setting.method(:find_by)
 
-#   def teardown
-#     super
+    Setting.stub(:find_by, ->(args = {}) {
+      if args.is_a?(Hash) && args[:code] == 'auction_currency'
+        settings(:auction_currency)
+      else
+        original_find_by.call(args)
+      end
+    }) do
+      yield
+    end
+  end
 
-#     travel_back
-#   end
+  def test_form_fields_includes_expected_keys_and_uses_mac_and_language
+    @bank_link.stub(:seller_account, 'seller') do
+      @bank_link.stub(:calc_mac, 'MAC') do
+        with_currency do
+          @user.update!(locale: 'et')
+          fields = @bank_link.form_fields
 
-#   def test_form_fields
-#     @orphaned_invoice.cents = Money.from_amount(1000.00, Setting.find_by(code: 'auction_currency').retrieve).cents
-#     assert_equal Money.from_amount(1200.00, Setting.find_by(code: 'auction_currency').retrieve), @orphaned_invoice.total
+          assert_equal PaymentOrders::EstonianBankLink::NEW_TRANSACTION_SERVICE_NUMBER, fields['VK_SERVICE']
+          assert_equal PaymentOrders::EstonianBankLink::BANK_LINK_VERSION, fields['VK_VERSION']
+          assert_equal 'seller', fields['VK_SND_ID']
+          assert_equal @bank_link.id.to_s, fields['VK_STAMP']
+          assert_equal 'MAC', fields['VK_MAC']
+          assert_equal 'UTF-8', fields['VK_ENCODING']
+          assert_equal PaymentOrders::EstonianBankLink::LANGUAGE_CODE_ET, fields['VK_LANG']
+          assert_equal @bank_link.return_url, fields['VK_RETURN']
+          assert_equal @bank_link.return_url, fields['VK_CANCEL']
+        end
+      end
+    end
+  end
 
-#     expected_fields = {
-#       'VK_SERVICE': '1012',
-#       'VK_VERSION': '008',
-#       'VK_SND_ID': 'testvpos',
-#       'VK_STAMP': '1',
-#       'VK_AMOUNT': '1200.00',
-#       'VK_CURR': 'EUR',
-#       'VK_REF': '',
-#       'VK_MSG': 'Invoice no. 1',
-#       'VK_RETURN': 'return.url',
-#       'VK_CANCEL': 'return.url',
-#       'VK_DATETIME': '2010-07-05T10:30:00+0000',
-#       'VK_MAC': 'zdQUhEzozyt6IVgB5+8oTxm1lj2xswIKYI/htHRVZ/TLfi4fa3boBi1Jk4SpY3dPaDMsxHqlnhwv913VVgvpwJZW0YEN1o4pPztvLvZDlNgu+XZyi8c5SluYSeB9CijbFGQz0oOLZ4rHlfYf5S5ALA/x1/NVdtJURwUrFnWBlYs=',
-#       'VK_ENCODING': 'UTF-8',
-#       'VK_LANG': 'ENG',
-#     }.with_indifferent_access
+  def test_form_fields_truncates_message_to_94_characters
+    long_title = 'This is way longer than 94 characters ' * 5
 
-#     @orphaned_invoice.stub(:number, 1) do
-#       @new_bank_link.id = 1
-#       form_fields = @new_bank_link.form_fields
+    @invoice.stub(:title, long_title) do
+      @bank_link.stub(:seller_account, 'seller') do
+        @bank_link.stub(:calc_mac, 'MAC') do
+          with_currency do
+            fields = @bank_link.form_fields
+            assert fields['VK_MSG'].length <= 94
+          end
+        end
+      end
+    end
+  end
 
-#       expected_fields.each do |k, v|
-#         assert_equal(v, form_fields[k])
-#       end
-#     end
-#   end
+  def test_mark_invoice_as_paid_marks_payment_order_paid_when_success_notice_is_valid
+    @bank_link.response = {
+      'VK_SERVICE' => PaymentOrders::EstonianBankLink::SUCCESSFUL_PAYMENT_SERVICE_NUMBER,
+      'VK_AMOUNT' => @invoice.total.to_d.to_s('F'),
+      'VK_CURR' => settings(:auction_currency).retrieve,
+      'VK_T_DATETIME' => '2018-04-01T00:30:00+0300',
+      'VK_MAC' => 'ignored-in-test'
+    }
 
-#   def test_channel
-#     assert_equal('SEB', @new_bank_link.channel)
-#   end
+    @invoice.stub(:mark_as_paid_at_with_payment_order, true) do
+      @bank_link.stub(:verify_mac, true) do
+        with_currency do
+          assert @bank_link.mark_invoice_as_paid
+          assert @bank_link.paid?
+        end
+      end
+    end
+  end
 
-#   def test_form_fields_with_estonian_locale
-#     I18n.with_locale(:et) do
-#       I18n.stub(:t, 'Invoice no. 1') do
-#         test_form_fields
-#       end
-#     end
-#   end
+  def test_mark_invoice_as_paid_marks_payment_order_cancelled_when_cancel_notice_is_valid
+    @bank_link.response = {
+      'VK_SERVICE' => PaymentOrders::EstonianBankLink::CANCELLED_PAYMENT_SERVICE_NUMBER,
+      'VK_MAC' => 'ignored-in-test'
+    }
 
-#   def test_user_locale_is_mapped_to_vk_lang
-#     @new_bank_link.user = @user
-#     @orphaned_invoice.cents = Money.from_amount(1234.56, Setting.find_by(code: 'auction_currency').retrieve).cents
-#     assert_equal Money.from_amount(1481.47, Setting.find_by(code: 'auction_currency').retrieve), @orphaned_invoice.total
-#     @user.update!(locale: :et)
+    @bank_link.stub(:verify_mac, true) do
+      @bank_link.stub(:valid_success_notice?, false) do
+      assert_not @bank_link.mark_invoice_as_paid
+      assert @bank_link.cancelled?
+      end
+    end
+  end
 
-#     expected_fields = {
-#       'VK_SERVICE': '1012',
-#       'VK_VERSION': '008',
-#       'VK_SND_ID': 'testvpos',
-#       'VK_STAMP': '1',
-#       'VK_AMOUNT': '1481.47',
-#       'VK_CURR': 'EUR',
-#       'VK_REF': '',
-#       'VK_MSG': 'Invoice no. 1',
-#       'VK_RETURN': 'return.url',
-#       'VK_CANCEL': 'return.url',
-#       'VK_DATETIME': '2010-07-05T10:30:00+0000',
-#       'VK_MAC': 'E+R5WbTfdziFVR2bcgsH/Mapdz5JRv8P2rKhgdoSUQbjmnQ/vssXF/ZEVjU5fUXy+FI6w6Y33bJK6GHRUPhjbsKPChCPCGofe4gGjmFYyA5ODtQEpD29tcNii6K5gLsytmRI0k6/igXTMZOErY0K9zgJbxAPENh//iocxAjCjHs=',
-#       'VK_ENCODING': 'UTF-8',
-#       'VK_LANG': 'EST',
-#     }.with_indifferent_access
+  def test_valid_successful_transaction_is_false_when_amount_is_invalid
+    @bank_link.response = {
+      'VK_SERVICE' => PaymentOrders::EstonianBankLink::SUCCESSFUL_PAYMENT_SERVICE_NUMBER,
+      'VK_AMOUNT' => '999.99',
+      'VK_CURR' => settings(:auction_currency).retrieve,
+      'VK_MAC' => 'ignored-in-test'
+    }
 
-#     @orphaned_invoice.stub(:number, 1) do
-#       @new_bank_link.id = 1
-#       form_fields = @new_bank_link.form_fields
+    @bank_link.stub(:verify_mac, true) do
+      with_currency do
+        assert_not @bank_link.send(:valid_successful_transaction?)
+      end
+    end
+  end
 
-#       expected_fields.each do |k, v|
-#         assert_equal(v, form_fields[k])
-#       end
-#     end
-#   end
+  def test_valid_success_notice_is_false_when_mac_is_invalid
+    @bank_link.response = { 'VK_MAC' => 'bad-mac' }
 
-#   def test_completed_bank_link
-#     assert(@completed_bank_link.valid_response?)
-#     assert(@completed_bank_link.mark_invoice_as_paid)
+    @bank_link.stub(:verify_mac, false) do
+      assert_not @bank_link.send(:valid_success_notice?)
+    end
+  end
 
-#     assert(@completed_bank_link.invoices.all? { |invoice| invoice.status == Invoice.statuses[:paid] })
-#     assert(@completed_bank_link.invoices.all? { |invoice| invoice.paid_at.present? })
-#   end
-
-#   def test_cancelled_bank_link
-#     assert(@cancelled_bank_link.valid_response?)
-#     assert_not(@cancelled_bank_link.mark_invoice_as_paid)
-#     assert_equal(PaymentOrder.statuses[:cancelled], @cancelled_bank_link.status)
-
-#     assert(@cancelled_bank_link.invoices.all? { |invoice| invoice.status == Invoice.statuses[:issued] })
-#     assert_not(@cancelled_bank_link.invoices.all? { |invoice| invoice.paid_at.present? })
-#   end
-
-#   def test_config_namespace
-#     assert_equal('swedbank', PaymentOrders::Swedbank.config_namespace_name)
-#     assert_equal('seb', PaymentOrders::SEB.config_namespace_name)
-#     assert_equal('lhv', PaymentOrders::LHV.config_namespace_name)
-#   end
-
-#   def test_too_long_payment_description_gets_truncated
-#     long_string = 'This is way longer than 94 characters This is way longer than 94 characters This is way longer than 94 characters This is way longer than 94 characters'
-
-#     @orphaned_invoice.stub(:title, long_string) do
-#       assert_equal 94, @new_bank_link.form_fields['VK_MSG'].length
-#     end
-#   end
-
-#   def create_cancelled_bank_link
-#     params = {
-#       'VK_SERVICE': '1911',
-#       'VK_VERSION': '008',
-#       'VK_SND_ID': 'testvpos',
-#       'VK_REC_ID': 'seb',
-#       'VK_STAMP': 1,
-#       'VK_REF': '',
-#       'VK_MSG': 'Order nr 1',
-#       'VK_MAC': 'PElE2mYXXN50q2UBvTuYU1rN0BmOQcbafPummDnWfNdm9qbaGQkGyOn0XaaFGlrdEcldXaHBbZKUS0HegIgjdDfl2NOk+wkLNNH0Iu38KzZaxHoW9ga7vqiyKHC8dcxkHiO9HsOnz77Sy/KpWCq6cz48bi3fcMgo+MUzBMauWoQ=',
-#       'VK_ENCODING': 'UTF-8',
-#       'VK_LANG': 'ENG',
-#     }
-
-#     @cancelled_bank_link = PaymentOrders::SEB.new(invoices: [@orphaned_invoice], response: params,
-#                                                   user: @user)
-#   end
-
-#   def create_completed_bank_link
-#     params = {
-#       'VK_SERVICE': '1111',
-#       'VK_VERSION': '008',
-#       'VK_SND_ID': 'testvpos',
-#       'VK_REC_ID': 'seb',
-#       'VK_STAMP': 1,
-#       'VK_T_NO': '1',
-#       'VK_AMOUNT': '12.00',
-#       'VK_CURR': 'EUR',
-#       'VK_REC_ACC': '1234',
-#       'VK_REC_NAME': 'Eesti Internet',
-#       'VK_SND_ACC': '1234',
-#       'VK_SND_NAME': 'John Doe',
-#       'VK_REF': '',
-#       'VK_MSG': 'Order nr 1',
-#       'VK_T_DATETIME': '2018-04-01T00:30:00+0300',
-#       'VK_MAC': 'CZZvcptkxfuOxRR88JmT4N+Lw6Hs4xiQfhBWzVYldAcRTQbcB/lPf9MbJzBE4e1/HuslQgkdCFt5g1xW2lJwrVDBQTtP6DAHfvxU3kkw7dbk0IcwhI4whUl68/QCwlXEQTAVDv1AFnGVxXZ40vbm/aLKafBYgrirB5SUe8+g9FE=',
-#       'VK_ENCODING': 'UTF-8',
-#       'VK_LANG': 'ENG',
-#     }
-
-#     @completed_bank_link = PaymentOrders::SEB.new(invoices: [@orphaned_invoice], response: params,
-#                                                   user: @user)
-#   end
-# end
+  def test_valid_response_returns_false_for_unknown_service
+    @bank_link.response = { 'VK_SERVICE' => '0000' }
+    assert_not @bank_link.valid_response?
+  end
+end

@@ -1,76 +1,40 @@
 require 'test_helper'
 
 class EmailTest < ActiveSupport::TestCase
-  def test_port_check_success_if_stubbed
-    host = 'smtp.gmail.com'
-    port = '456'
-
-    mock = Minitest::Mock.new
-    mock.expect(:port_open?, true, [host, port])
-
-    ApplicationHealthCheck::Email.stub(:new, mock) do
-      checker = ApplicationHealthCheck::Email.new
-      assert_equal(true, checker.port_open?(host, port))
-    end
-  end
-
-  def test_checker_success_if_stubbed
-    host = 'smtp.gmail.com'
-    port = '456'
-    message = 'Mail is up and running'
-    Rails.application.config.action_mailer.smtp_settings[:address] = host
-    Rails.application.config.action_mailer.smtp_settings[:port] = port
-
-    mock = Minitest::Mock.new
-    mock.expect(:message, message)
-    mock.expect(:check, true)
-    mock.expect(:port_open?, true)
-
-    ApplicationHealthCheck::Email.stub(:new, mock) do
-      checker = ApplicationHealthCheck::Email.new
-      checker.check
-      assert_equal(message, checker.message)
-    end
-  end
-
-  def test_checker_fails_if_host_unreachable
-    host = 'smtp.gmail.com'
-    port = '456'
-    message = 'Mail is offline'
-    Rails.application.config.action_mailer.smtp_settings[:address] = host
-    Rails.application.config.action_mailer.smtp_settings[:port] = port
-
-    mock = Minitest::Mock.new
-    mock.expect(:message, message)
-    mock.expect(:check, true)
-    mock.expect(:port_open?, false)
-
-    ApplicationHealthCheck::Email.stub(:new, mock) do
-      checker = ApplicationHealthCheck::Email.new
-      checker.check
-      assert_equal(message, checker.message)
-    end
-  end
-
-  def test_checker_offline_if_not_stubbed
-    Rails.application.config.action_mailer.smtp_settings[:address] = 'smtp.gmail.com'
-    Rails.application.config.action_mailer.smtp_settings[:port] = '456'
+  def test_check_fails_when_host_or_port_not_set
+    Rails.application.config.action_mailer.smtp_settings[:address] = nil
+    Rails.application.config.action_mailer.smtp_settings[:port] = nil
 
     checker = ApplicationHealthCheck::Email.new
     checker.check
 
-    assert(checker.message.present?)
-    assert_equal('Mail is offline', checker.message)
+    assert_not checker.success?
+    assert_equal 'Mail server host or port not set', checker.message
   end
 
-  def test_checker_fail
-    Rails.application.config.action_mailer.smtp_settings[:address] = ''
-    Rails.application.config.action_mailer.smtp_settings[:port] = ''
+  def test_check_succeeds_when_port_is_open
+    Rails.application.config.action_mailer.smtp_settings[:address] = 'smtp.example.test'
+    Rails.application.config.action_mailer.smtp_settings[:port] = 25
 
     checker = ApplicationHealthCheck::Email.new
-    checker.check
+    checker.stub(:port_open?, true) do
+      checker.check
+    end
 
-    assert(checker.message.present?)
-    assert_equal('Mail server host or port not set', checker.message)
+    assert checker.success?
+    assert_equal 'Mail is up and running', checker.message
+  end
+
+  def test_check_fails_when_port_is_closed
+    Rails.application.config.action_mailer.smtp_settings[:address] = 'smtp.example.test'
+    Rails.application.config.action_mailer.smtp_settings[:port] = 25
+
+    checker = ApplicationHealthCheck::Email.new
+    checker.stub(:port_open?, false) do
+      checker.check
+    end
+
+    assert_not checker.success?
+    assert_equal 'Mail is offline', checker.message
   end
 end

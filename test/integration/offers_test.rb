@@ -1,6 +1,6 @@
-require 'application_system_test_case'
+require 'test_helper'
 
-class OffersIntegrationTest < ActionDispatch::IntegrationTest
+class OffersAuctionFlowTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   def setup
@@ -180,5 +180,91 @@ class OffersIntegrationTest < ActionDispatch::IntegrationTest
 
     @auction.reload
     assert @auction.offers.empty?
+  end
+
+  def test_second_create_redirects_when_offer_already_exists
+    params = {
+      offer: {
+        auction_id: @auction.id,
+        user_id: @user.id,
+        price: 6.0,
+        billing_profile_id: @user.billing_profiles.first.id
+      }
+    }
+
+    post auction_offers_path(auction_uuid: @auction.uuid), params: params
+    assert_equal 1, @auction.reload.offers.count
+
+    post auction_offers_path(auction_uuid: @auction.uuid), params: params
+    assert_redirected_to root_path
+    assert_equal I18n.t('offers.already_exists'), flash[:notice]
+    assert_equal 1, @auction.reload.offers.count
+  end
+
+  def test_show_offer
+    offer = offers(:minimum_offer)
+    sign_in users(:second_place_participant)
+
+    get offer_path(uuid: offer.uuid)
+    assert_response :success
+  end
+
+  def test_delete_confirmation_page
+    offer = offers(:minimum_offer)
+    sign_in users(:second_place_participant)
+
+    get "/offers/#{offer.uuid}/delete"
+    assert_response :success
+  end
+
+  def test_update_redirects_when_auction_not_in_progress
+    offer = offers(:expired_offer)
+    sign_out @user
+    sign_in users(:participant)
+
+    get edit_offer_path(uuid: offer.uuid)
+    assert_redirected_to root_path
+
+    patch offer_path(uuid: offer.uuid), params: { offer: { price: 99.0 } }
+    assert_redirected_to root_path
+  end
+
+  def test_destroy_blind_offer_when_modifiable
+    offer = Offer.create!(
+      auction: @auction,
+      user: @user,
+      cents: 600,
+      billing_profile: @user.billing_profiles.first
+    )
+    assert offer.auction.in_progress?
+
+    assert_difference('Offer.count', -1) do
+      delete offer_path(uuid: offer.uuid)
+    end
+    assert_redirected_to auctions_path
+  end
+
+  def test_destroy_blind_offer_when_not_modifiable_redirects
+    offer = offers(:expired_offer)
+    assert_not offer.auction.in_progress?
+
+    assert_no_difference('Offer.count') do
+      delete offer_path(uuid: offer.uuid)
+    end
+    assert_redirected_to offer_path(uuid: offer.uuid)
+  end
+
+  def test_destroy_responds_with_no_content_for_json
+    offer = Offer.create!(
+      auction: @auction,
+      user: @user,
+      cents: 700,
+      billing_profile: @user.billing_profiles.first
+    )
+
+    assert_difference('Offer.count', -1) do
+      delete offer_path(uuid: offer.uuid), as: :json
+    end
+    assert_response :no_content
   end
 end
