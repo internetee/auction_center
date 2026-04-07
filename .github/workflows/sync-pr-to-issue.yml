@@ -14,9 +14,11 @@ jobs:
     steps:
     - name: Extract linked issue number from PR body
       id: extract
+      env:
+        PR_BODY: ${{ github.event.pull_request.body }}
       run: |
-        ISSUE=$(echo "${{ github.event.pull_request.body }}" | grep -oE '#[0-9]+' | head -n1 | tr -d '#')
-        echo "issue_number=$ISSUE" >> $GITHUB_OUTPUT
+        ISSUE="$(printf '%s' "$PR_BODY" | grep -oE '#[0-9]+' | head -n1 | tr -d '#')"
+        echo "issue_number=$ISSUE" >> "$GITHUB_OUTPUT"
 
     - name: Check if issue number found
       run: |
