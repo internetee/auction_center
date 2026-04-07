@@ -1,0 +1,95 @@
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+
+jobs:
+  add_to_project:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add issue to internetee Project 4 and set Status=Todo
+        uses: actions/github-script@v7
+        env:
+          PROJECTS_TOKEN: ${{ secrets.PROJECTS_TOKEN }}
+        with:
+          github-token: ${{ env.PROJECTS_TOKEN }}
+          script: |
+            const org = "internetee";
+            const projectNumber = 4;
+            const statusFieldName = "Status";
+            const todoOptionName = "Todo";
+
+            const issueNodeId = context.payload.issue.node_id;
+
+            // 1) Find Project V2 ID
+            const projectQuery = `
+              query($org: String!, $number: Int!) {
+                organization(login: $org) {
+                  projectV2(number: $number) {
+                    id
+                    fields(first: 50) {
+                      nodes {
+                        ... on ProjectV2SingleSelectField {
+                          id
+                          name
+                          options {
+                            id
+                            name
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            `;
+
+            const projectRes = await github.graphql(projectQuery, { org, number: projectNumber });
+            const project = projectRes.organization?.projectV2;
+            if (!project) throw new Error(`Project not found: ${org} #${projectNumber}`);
+
+            const statusField = (project.fields.nodes || []).find(f => f?.name === statusFieldName);
+            if (!statusField) throw new Error(`Field not found: ${statusFieldName}`);
+
+            const todoOption = (statusField.options || []).find(o => o?.name === todoOptionName);
+            if (!todoOption) throw new Error(`Option not found: ${todoOptionName} in field ${statusFieldName}`);
+
+            // 2) Add issue to project
+            const addItemMutation = `
+              mutation($projectId: ID!, $contentId: ID!) {
+                addProjectV2ItemById(input: { projectId: $projectId, contentId: $contentId }) {
+                  item {
+                    id
+                  }
+                }
+              }
+            `;
+
+            const addRes = await github.graphql(addItemMutation, { projectId: project.id, contentId: issueNodeId });
+            const itemId = addRes.addProjectV2ItemById?.item?.id;
+            if (!itemId) throw new Error("Failed to add item to project (no item id returned)");
+
+            // 3) Set Status field to Todo
+            const setStatusMutation = `
+              mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $optionId: String!) {
+                updateProjectV2ItemFieldValue(input: {
+                  projectId: $projectId
+                  itemId: $itemId
+                  fieldId: $fieldId
+                  value: { singleSelectOptionId: $optionId }
+                }) {
+                  projectV2Item { id }
+                }
+              }
+            `;
+
+            await github.graphql(setStatusMutation, {
+              projectId: project.id,
+              itemId,
+              fieldId: statusField.id,
+              optionId: todoOption.id
+            });
+
+            core.info(`Added issue to ${org} Project ${projectNumber} and set ${statusFieldName}=${todoOptionName}`);
