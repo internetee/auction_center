@@ -1,6 +1,8 @@
 require 'test_helper'
 
 class OffersAuctionFlowTest < ActionDispatch::IntegrationTest
+  OFFER_COUNT = 'Offer.count'
+
   include Devise::Test::IntegrationHelpers
 
   def setup
@@ -238,7 +240,7 @@ class OffersAuctionFlowTest < ActionDispatch::IntegrationTest
     )
     assert offer.auction.in_progress?
 
-    assert_difference('Offer.count', -1) do
+    assert_difference(OFFER_COUNT, -1) do
       delete offer_path(uuid: offer.uuid)
     end
     assert_redirected_to auctions_path
@@ -248,7 +250,7 @@ class OffersAuctionFlowTest < ActionDispatch::IntegrationTest
     offer = offers(:expired_offer)
     assert_not offer.auction.in_progress?
 
-    assert_no_difference('Offer.count') do
+    assert_no_difference(OFFER_COUNT) do
       delete offer_path(uuid: offer.uuid)
     end
     assert_redirected_to offer_path(uuid: offer.uuid)
@@ -262,7 +264,7 @@ class OffersAuctionFlowTest < ActionDispatch::IntegrationTest
       billing_profile: @user.billing_profiles.first
     )
 
-    assert_difference('Offer.count', -1) do
+    assert_difference(OFFER_COUNT, -1) do
       delete offer_path(uuid: offer.uuid), as: :json
     end
     assert_response :no_content

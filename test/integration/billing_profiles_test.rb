@@ -1,6 +1,8 @@
 require 'test_helper'
 
 class BillingProfilesTest < ActionDispatch::IntegrationTest
+  TURBO_STREAM_MIME = 'text/vnd.turbo-stream.html'
+
   include Devise::Test::IntegrationHelpers
 
   def setup
@@ -40,7 +42,7 @@ class BillingProfilesTest < ActionDispatch::IntegrationTest
                country_code: 'GB'
              }
            },
-           headers: { 'Accept' => 'text/vnd.turbo-stream.html' }
+           headers: { 'Accept' => TURBO_STREAM_MIME }
     end
 
     assert_response :success
@@ -56,7 +58,7 @@ class BillingProfilesTest < ActionDispatch::IntegrationTest
                name: ''
              }
            },
-           headers: { 'Accept' => 'text/vnd.turbo-stream.html' }
+           headers: { 'Accept' => TURBO_STREAM_MIME }
     end
 
     assert_response :success
@@ -98,7 +100,7 @@ class BillingProfilesTest < ActionDispatch::IntegrationTest
                 name: ''
               }
             },
-            headers: { 'Accept' => 'text/vnd.turbo-stream.html' }
+            headers: { 'Accept' => TURBO_STREAM_MIME }
     end
 
     assert_response :success
@@ -108,7 +110,7 @@ class BillingProfilesTest < ActionDispatch::IntegrationTest
   def test_destroy_success_deletes_record
     assert_difference -> { BillingProfile.count }, -1 do
       delete billing_profile_path(@billing_profile_for_destroy_success.uuid),
-             headers: { 'Accept' => 'text/vnd.turbo-stream.html' }
+             headers: { 'Accept' => TURBO_STREAM_MIME }
     end
 
     assert_response :success
@@ -118,7 +120,7 @@ class BillingProfilesTest < ActionDispatch::IntegrationTest
   def test_destroy_failure_renders_turbo_stream
     assert_no_difference -> { BillingProfile.count } do
       delete billing_profile_path(@billing_profile_for_destroy_failure.uuid),
-             headers: { 'Accept' => 'text/vnd.turbo-stream.html' }
+             headers: { 'Accept' => TURBO_STREAM_MIME }
     end
 
     assert_response :success

@@ -2,6 +2,8 @@ require 'test_helper'
 
 module Auth
   class TaraControllerTest < ActionController::TestCase
+    OMNIAUTH_AUTH_KEY = 'omniauth.auth'
+
     tests Auth::TaraController
     include Devise::Test::ControllerHelpers
 
@@ -11,11 +13,11 @@ module Auth
     end
 
     def with_omniauth_hash(hash)
-      previous = @request.env['omniauth.auth']
-      @request.env['omniauth.auth'] = hash
+      previous = @request.env[OMNIAUTH_AUTH_KEY]
+      @request.env[OMNIAUTH_AUTH_KEY] = hash
       yield
     ensure
-      @request.env['omniauth.auth'] = previous
+      @request.env[OMNIAUTH_AUTH_KEY] = previous
     end
 
     def test_callback_redirects_and_signs_in_when_user_is_persisted

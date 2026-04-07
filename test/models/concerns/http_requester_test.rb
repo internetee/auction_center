@@ -1,13 +1,15 @@
 require 'test_helper'
 
 class HttpRequesterTest < ActiveSupport::TestCase
+  OK_JSON = '{"ok":true}'
+
   class Dummy
     include HttpRequester
   end
 
   def test_success_result_parses_json_and_status
     response = Object.new
-    response.define_singleton_method(:read_body) { '{"ok":true}' }
+    response.define_singleton_method(:read_body) { OK_JSON }
     response.define_singleton_method(:code) { '200' }
 
     result = Dummy.new.success_result(response: response)
@@ -22,7 +24,7 @@ class HttpRequesterTest < ActiveSupport::TestCase
     t = self
 
     response = Object.new
-    response.define_singleton_method(:read_body) { '{"ok":true}' }
+    response.define_singleton_method(:read_body) { OK_JSON }
     response.define_singleton_method(:code) { '200' }
 
     http_double = Object.new
@@ -45,7 +47,7 @@ class HttpRequesterTest < ActiveSupport::TestCase
     t = self
 
     response = Object.new
-    response.define_singleton_method(:read_body) { '{"ok":true}' }
+    response.define_singleton_method(:read_body) { OK_JSON }
     response.define_singleton_method(:code) { '200' }
 
     http_double = Object.new

@@ -2,6 +2,7 @@ require 'test_helper'
 
 class InvoicesIntegrationTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
+  ONEOFF_REDIRECT_URL = 'http://oneoff.redirect'
 
   def setup
     @user = users(:participant)
@@ -16,7 +17,7 @@ class InvoicesIntegrationTest < ActionDispatch::IntegrationTest
 
   def test_pay_deposit
     message = {
-      oneoff_redirect_link: 'http://oneoff.redirect',
+      oneoff_redirect_link: ONEOFF_REDIRECT_URL,
     }
     stub_request(:post, 'http://eis_billing_system:3000/api/v1/invoice_generator/deposit_prepayment')
       .to_return(status: 200, body: message.to_json, headers: {})
@@ -24,7 +25,7 @@ class InvoicesIntegrationTest < ActionDispatch::IntegrationTest
     post english_offer_deposit_auction_path(uuid: @auction.uuid), params: nil,
                                                                   headers: {}
 
-    assert_redirected_to 'http://oneoff.redirect'
+    assert_redirected_to ONEOFF_REDIRECT_URL
   end
 
   def test_banned_user_cannot_pay_deposit
@@ -85,13 +86,13 @@ class InvoicesIntegrationTest < ActionDispatch::IntegrationTest
   end
 
   def test_oneoff_redirects_to_oneoff_link_when_service_succeeds
-    response_double = Struct.new(:result?, :instance, :errors).new(true, { 'oneoff_redirect_link' => 'http://oneoff.redirect' }, {})
+    response_double = Struct.new(:result?, :instance, :errors).new(true, { 'oneoff_redirect_link' => ONEOFF_REDIRECT_URL }, {})
 
     EisBilling::OneoffService.stub(:call, response_double) do
       post oneoff_invoice_path(@invoice.uuid), params: { amount: '1.0' }
     end
 
-    assert_redirected_to 'http://oneoff.redirect'
+    assert_redirected_to ONEOFF_REDIRECT_URL
   end
 
   def test_oneoff_sets_flash_and_redirects_to_invoices_when_service_fails
@@ -106,7 +107,7 @@ class InvoicesIntegrationTest < ActionDispatch::IntegrationTest
   end
 
   def test_oneoff_redirects_back_when_amount_is_not_positive
-    EisBilling::OneoffService.stub(:call, ->(*) { raise 'should not be called' }) do
+    EisBilling::OneoffService.stub(:call, ->(*) { raise StandardError, 'should not be called' }) do
       post oneoff_invoice_path(@invoice.uuid), params: { amount: '0' }
     end
 
@@ -115,7 +116,7 @@ class InvoicesIntegrationTest < ActionDispatch::IntegrationTest
   end
 
   def test_oneoff_redirects_back_when_amount_is_too_big
-    EisBilling::OneoffService.stub(:call, ->(*) { raise 'should not be called' }) do
+    EisBilling::OneoffService.stub(:call, ->(*) { raise StandardError, 'should not be called' }) do
       post oneoff_invoice_path(@invoice.uuid), params: { amount: '999999' }
     end
 

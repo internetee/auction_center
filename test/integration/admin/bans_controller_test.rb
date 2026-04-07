@@ -1,6 +1,8 @@
 require 'test_helper'
 
 class AdminBansControllerTest < ActionDispatch::IntegrationTest
+  BAN_COUNT = 'Ban.count'
+
   include Devise::Test::IntegrationHelpers
 
   def setup
@@ -21,7 +23,7 @@ class AdminBansControllerTest < ActionDispatch::IntegrationTest
   def test_create_creates_ban_for_admin
     sign_in @admin
 
-    assert_difference('Ban.count', 1) do
+    assert_difference(BAN_COUNT, 1) do
       post admin_bans_path, params: { ban: { user_id: @participant.id, valid_until: 2.days.from_now.to_date } }
     end
 
@@ -31,7 +33,7 @@ class AdminBansControllerTest < ActionDispatch::IntegrationTest
   def test_create_redirects_to_user_when_validation_fails
     sign_in @admin
 
-    assert_no_difference('Ban.count') do
+    assert_no_difference(BAN_COUNT) do
       post admin_bans_path, params: { ban: { user_id: @participant.id, valid_until: nil } }
     end
 
@@ -41,7 +43,7 @@ class AdminBansControllerTest < ActionDispatch::IntegrationTest
   def test_create_returns_internal_server_error_for_valid_json_request
     sign_in @admin
 
-    assert_difference('Ban.count', 1) do
+    assert_difference(BAN_COUNT, 1) do
       post admin_bans_path,
            params: { ban: { user_id: @participant.id, valid_until: 2.days.from_now.to_date } },
            as: :json
@@ -53,7 +55,7 @@ class AdminBansControllerTest < ActionDispatch::IntegrationTest
   def test_destroy_deletes_ban_for_admin
     sign_in @admin
 
-    assert_difference('Ban.count', -1) do
+    assert_difference(BAN_COUNT, -1) do
       delete admin_ban_path(@ban.id)
     end
 
@@ -63,7 +65,7 @@ class AdminBansControllerTest < ActionDispatch::IntegrationTest
   def test_destroy_returns_no_content_for_json
     sign_in @admin
 
-    assert_difference('Ban.count', -1) do
+    assert_difference(BAN_COUNT, -1) do
       delete admin_ban_path(@ban.id), as: :json
     end
 

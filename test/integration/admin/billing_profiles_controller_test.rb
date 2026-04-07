@@ -9,18 +9,6 @@ class AdminBillingProfilesControllerTest < ActionDispatch::IntegrationTest
     @billing_profile = billing_profiles(:company)
   end
 
-  private
-
-  def sign_in_admin
-    sign_in @admin
-  end
-
-  def sign_in_participant
-    sign_in @participant
-  end
-
-  public
-
   def test_index_renders_for_admin
     sign_in_admin
 
@@ -53,5 +41,15 @@ class AdminBillingProfilesControllerTest < ActionDispatch::IntegrationTest
     get admin_billing_profile_path(@billing_profile.id)
 
     assert_response :not_found
+  end
+
+  private
+
+  def sign_in_admin
+    sign_in @admin
+  end
+
+  def sign_in_participant
+    sign_in @participant
   end
 end

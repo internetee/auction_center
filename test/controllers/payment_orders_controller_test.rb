@@ -3,6 +3,7 @@ require 'test_helper'
 class PaymentOrdersControllerTest < ActionController::TestCase
   tests PaymentOrdersController
   include Devise::Test::ControllerHelpers
+  EVERY_PAY_TYPE = 'PaymentOrders::EveryPay'
 
   def setup
     super
@@ -40,7 +41,7 @@ class PaymentOrdersControllerTest < ActionController::TestCase
         user_id: @user.id,
         invoice_id: @invoice.id,
         invoice_ids: @invoice.id.to_s,
-        type: 'PaymentOrders::EveryPay'
+        type: EVERY_PAY_TYPE
       }
     }
 
@@ -63,7 +64,7 @@ class PaymentOrdersControllerTest < ActionController::TestCase
         user_id: @user.id,
         invoice_id: @invoice.id,
         invoice_ids: @invoice.id.to_s,
-        type: 'PaymentOrders::EveryPay'
+        type: EVERY_PAY_TYPE
       },
       format: :json
     }
@@ -119,7 +120,7 @@ class PaymentOrdersControllerTest < ActionController::TestCase
         user_id: @user.id,
         invoice_id: @invoice.id,
         invoice_ids: [@invoice.id, second_invoice.id].join(','),
-        type: 'PaymentOrders::EveryPay'
+        type: EVERY_PAY_TYPE
       }
     }
 
@@ -160,7 +161,7 @@ class PaymentOrdersControllerTest < ActionController::TestCase
         user_id: @user.id,
         invoice_id: @invoice.id,
         invoice_ids: [@invoice.id, paid_invoice.id].join(','),
-        type: 'PaymentOrders::EveryPay'
+        type: EVERY_PAY_TYPE
       },
       format: :json
     }

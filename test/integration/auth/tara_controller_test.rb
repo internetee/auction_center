@@ -1,6 +1,8 @@
 require 'test_helper'
 
 class AuthTaraControllerTest < ActionDispatch::IntegrationTest
+  OMNIAUTH_AUTH_KEY = 'omniauth.auth'
+
   include Devise::Test::IntegrationHelpers
 
   def setup
@@ -8,11 +10,11 @@ class AuthTaraControllerTest < ActionDispatch::IntegrationTest
   end
 
   def with_omniauth_hash(hash)
-    previous = Rails.application.env_config['omniauth.auth']
-    Rails.application.env_config['omniauth.auth'] = hash
+    previous = Rails.application.env_config[OMNIAUTH_AUTH_KEY]
+    Rails.application.env_config[OMNIAUTH_AUTH_KEY] = hash
     yield
   ensure
-    Rails.application.env_config['omniauth.auth'] = previous
+    Rails.application.env_config[OMNIAUTH_AUTH_KEY] = previous
   end
 
   def test_cancel_redirects_to_root

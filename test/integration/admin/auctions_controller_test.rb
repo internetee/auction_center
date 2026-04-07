@@ -1,6 +1,8 @@
 require 'test_helper'
 
 class AdminAuctionsControllerTest < ActionDispatch::IntegrationTest
+  AUCTION_COUNT = 'Auction.count'
+
   include Devise::Test::IntegrationHelpers
   include ActiveSupport::Testing::TimeHelpers
 
@@ -32,7 +34,7 @@ class AdminAuctionsControllerTest < ActionDispatch::IntegrationTest
     auction = auctions(:english_nil_starts)
 
     sign_in @administrator
-    assert_difference('Auction.count', -1) do
+    assert_difference(AUCTION_COUNT, -1) do
       delete admin_auction_path(auction.id)
     end
 
@@ -44,7 +46,7 @@ class AdminAuctionsControllerTest < ActionDispatch::IntegrationTest
     auction = auctions(:expired)
 
     sign_in @administrator
-    assert_no_difference('Auction.count') do
+    assert_no_difference(AUCTION_COUNT) do
       delete admin_auction_path(auction.id)
     end
 
@@ -56,7 +58,7 @@ class AdminAuctionsControllerTest < ActionDispatch::IntegrationTest
     sign_in @administrator
 
     travel_to Time.parse('2010-07-05 10:30 +0000').in_time_zone do
-      assert_difference('Auction.count', 1) do
+      assert_difference(AUCTION_COUNT, 1) do
         post admin_auctions_path, params: {
           auction: {
             domain_name: 'integration-create-coverage.test',
@@ -117,7 +119,7 @@ class AdminAuctionsControllerTest < ActionDispatch::IntegrationTest
 
   def test_create_failure_returns_unprocessable_entity_as_json
     sign_in @administrator
-    assert_no_difference('Auction.count') do
+    assert_no_difference(AUCTION_COUNT) do
       post admin_auctions_path,
            params: { auction: { domain_name: '' } },
            as: :json

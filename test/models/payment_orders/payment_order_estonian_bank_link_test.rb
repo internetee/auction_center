@@ -1,6 +1,8 @@
 require 'test_helper'
 
 class PaymentOrderEstonianBankLinkTest < ActiveSupport::TestCase
+  IGNORED_IN_TEST = 'ignored-in-test'
+
   def setup
     super
 
@@ -74,7 +76,7 @@ class PaymentOrderEstonianBankLinkTest < ActiveSupport::TestCase
       'VK_AMOUNT' => @invoice.total.to_d.to_s('F'),
       'VK_CURR' => settings(:auction_currency).retrieve,
       'VK_T_DATETIME' => '2018-04-01T00:30:00+0300',
-      'VK_MAC' => 'ignored-in-test'
+      'VK_MAC' => IGNORED_IN_TEST
     }
 
     @invoice.stub(:mark_as_paid_at_with_payment_order, true) do
@@ -90,7 +92,7 @@ class PaymentOrderEstonianBankLinkTest < ActiveSupport::TestCase
   def test_mark_invoice_as_paid_marks_payment_order_cancelled_when_cancel_notice_is_valid
     @bank_link.response = {
       'VK_SERVICE' => PaymentOrders::EstonianBankLink::CANCELLED_PAYMENT_SERVICE_NUMBER,
-      'VK_MAC' => 'ignored-in-test'
+      'VK_MAC' => IGNORED_IN_TEST
     }
 
     @bank_link.stub(:verify_mac, true) do
@@ -106,7 +108,7 @@ class PaymentOrderEstonianBankLinkTest < ActiveSupport::TestCase
       'VK_SERVICE' => PaymentOrders::EstonianBankLink::SUCCESSFUL_PAYMENT_SERVICE_NUMBER,
       'VK_AMOUNT' => '999.99',
       'VK_CURR' => settings(:auction_currency).retrieve,
-      'VK_MAC' => 'ignored-in-test'
+      'VK_MAC' => IGNORED_IN_TEST
     }
 
     @bank_link.stub(:verify_mac, true) do

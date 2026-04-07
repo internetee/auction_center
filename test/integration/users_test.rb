@@ -1,6 +1,8 @@
 require 'test_helper'
 
 class UsersIntegrationTest < ActionDispatch::IntegrationTest
+  USER_COUNT = 'User.count'
+
   include Devise::Test::IntegrationHelpers
   include ActionMailer::TestHelper
 
@@ -44,7 +46,7 @@ class UsersIntegrationTest < ActionDispatch::IntegrationTest
   def test_create_rejects_invalid_user
     sign_out @user
 
-    assert_no_difference('User.count') do
+    assert_no_difference(USER_COUNT) do
       post users_path, params: {
         user: {
           email: 'invalid-signup@auction.test',
@@ -99,7 +101,7 @@ class UsersIntegrationTest < ActionDispatch::IntegrationTest
   def test_destroy_when_not_deletable_redirects_with_notice
     assert @user.invoices.issued.exists?
 
-    assert_no_difference('User.count') do
+    assert_no_difference(USER_COUNT) do
       delete user_path(@user.uuid)
     end
     assert_redirected_to user_path(@user.uuid)
@@ -113,7 +115,7 @@ class UsersIntegrationTest < ActionDispatch::IntegrationTest
     sign_in deletable
     assert deletable.invoices.issued.blank?
 
-    assert_difference('User.count', -1) do
+    assert_difference(USER_COUNT, -1) do
       delete user_path(deletable.uuid)
     end
     assert_redirected_to root_path

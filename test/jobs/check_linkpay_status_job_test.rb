@@ -19,7 +19,7 @@ class CheckLinkpayStatusJobTest < ActiveJob::TestCase
     payment_order.define_singleton_method(:response) { { 'payment_reference' => 'PAYREF-4' } }
 
     PaymentOrder.stub(:find, payment_order) do
-      EisBilling::SendCallbackService.stub(:call, ->(*) { raise 'should not be called' }) do
+      EisBilling::SendCallbackService.stub(:call, ->(*) { raise StandardError, 'should not be called' }) do
         CheckLinkpayStatusJob.perform_now(123)
       end
     end
@@ -32,7 +32,7 @@ class CheckLinkpayStatusJobTest < ActiveJob::TestCase
     payment_order.define_singleton_method(:response) { nil }
 
     PaymentOrder.stub(:find, payment_order) do
-      EisBilling::SendCallbackService.stub(:call, ->(*) { raise 'should not be called' }) do
+      EisBilling::SendCallbackService.stub(:call, ->(*) { raise StandardError, 'should not be called' }) do
         CheckLinkpayStatusJob.perform_now(123)
       end
     end

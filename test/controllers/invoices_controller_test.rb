@@ -104,15 +104,15 @@ class InvoicesControllerTest < ActionController::TestCase
     cancelled_expired = @controller.instance_variable_get(:@cancelled_expired_invoices)
     paid = @controller.instance_variable_get(:@paid_invoices)
 
-    assert_includes issued.pluck(:id), @issued_invoice.id
-    assert_includes paid.pluck(:id), @paid_invoice.id
+    assert_includes issued.ids, @issued_invoice.id
+    assert_includes paid.ids, @paid_invoice.id
 
-    assert_equal [@cancelled_with_ban.id], cancelled_payable.pluck(:id)
-    assert_equal [@cancelled_without_ban.id], cancelled_expired.pluck(:id)
+    assert_equal [@cancelled_with_ban.id], cancelled_payable.ids
+    assert_equal [@cancelled_without_ban.id], cancelled_expired.ids
 
-    refute_includes issued.pluck(:id), @other_user_invoice.id
-    refute_includes paid.pluck(:id), @other_user_invoice.id
-    refute_includes cancelled_payable.pluck(:id), @other_user_invoice.id
-    refute_includes cancelled_expired.pluck(:id), @other_user_invoice.id
+    refute_includes issued.ids, @other_user_invoice.id
+    refute_includes paid.ids, @other_user_invoice.id
+    refute_includes cancelled_payable.ids, @other_user_invoice.id
+    refute_includes cancelled_expired.ids, @other_user_invoice.id
   end
 end
