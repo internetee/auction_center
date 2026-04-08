@@ -53,11 +53,12 @@ Rails.application.routes.draw do
 
     resources :bans, except: %i[new show edit update], concerns: %i[auditable]
     resources :statistics, only: :index
-    resources :billing_profiles, only: %i[index show], concerns: %i[auditable]
+    resources :billing_profiles, concerns: %i[auditable]
     resources :invoices, except: %i[new create destroy], concerns: %i[auditable] do
       member do
         get 'download'
         post 'toggle_partial_payments'
+        patch 'update_billing_profile'
       end
     end
     resources :jobs, only: %i[index create]
