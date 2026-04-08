@@ -433,6 +433,8 @@ class OfferTest < ActiveSupport::TestCase
 
   def test_highest_per_auction_for_user_includes_auction_attributes
     auction = auctions(:valid_without_offers)
+    auction.update!(platform: :english, starting_price: 5.0, min_bids_step: 5.0, slipping_end: 5)
+    auction.reload
     
     offer = Offer.create!(
       auction: auction,
@@ -447,7 +449,7 @@ class OfferTest < ActiveSupport::TestCase
     assert_not_nil result_offer
     
     assert_equal auction.domain_name, result_offer.domain_name
-    assert_nil result_offer.platform
+    assert_equal auction.platform_before_type_cast, result_offer.platform
     assert_equal auction.ends_at, result_offer.ends_at
   end
 
