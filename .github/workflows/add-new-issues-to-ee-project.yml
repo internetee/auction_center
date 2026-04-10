@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Add issue to internetee Project 4 and set Status=Todo
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         env:
           PROJECTS_TOKEN: ${{ secrets.PROJECTS_TOKEN }}
         with:
