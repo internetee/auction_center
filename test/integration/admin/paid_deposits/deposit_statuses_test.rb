@@ -44,6 +44,17 @@ class DepositStatusesTest < ActionDispatch::IntegrationTest
   end
 
   def test_should_render_error_from_billing_side
-    # TODO: implement
+    message = { error: 'Internal server error' }
+    stub_request(:post, 'http://eis_billing_system:3000/api/v1/invoice_generator/deposit_status')
+      .to_return(status: 500, body: message.to_json, headers: {})
+
+    d = DomainParticipateAuction.create(user_id: @user.id, auction_id: @auction.id)
+    assert_equal d.status, 'paid'
+
+    patch admin_paid_deposit_deposit_status_path(id: d.id), params: { status: 'returned' }
+
+    assert_response :redirect
+    d.reload
+    assert_equal 'returned', d.status
   end
 end

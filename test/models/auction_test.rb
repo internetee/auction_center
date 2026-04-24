@@ -203,6 +203,8 @@ class AuctionTest < ActiveSupport::TestCase
 
   def test_min_bid_update_value_does_not_work_for_no_english_auctions
     auction = auctions(:valid_with_offers)
+    auction.update!(platform: :blind, min_bids_step: nil)
+    auction.reload
     assert_nil auction.min_bids_step
 
     auction.update_minimum_bid_step(11.0)
