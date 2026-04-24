@@ -162,7 +162,7 @@ GEM
     drb (2.2.3)
     email_validator (2.2.4)
       activemodel
-    erb (6.0.2)
+    erb (6.0.4)
     erubi (1.13.1)
     event_stream_parser (1.0.0)
     faker (3.5.2)
