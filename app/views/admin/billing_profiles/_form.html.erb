@@ -1,0 +1,60 @@
+<%= form_with model: billing_profile, url: url, id: 'billing_profile_form' do |f| %>
+  <div style='display: flex; align-items: center; gap: 0 20px; margin-bottom: 20px;'>
+    <%= f.label :name, t('billing_profiles.name'), style: 'width: 150px;' %>
+    <%= f.text_field :name, class: "form-control", autofocus: true, autocomplete: "off" %>
+  </div>
+
+  <div style='display: flex; align-items: center; gap: 0 20px; margin-bottom: 20px;'>
+    <%= f.label :vat_code, t('billing_profiles.vat_code'), style: 'width: 150px;' %>
+    <%= f.text_field :vat_code, class: "form-control", autocomplete: "off" %>
+  </div>
+
+  <div style='display: flex; align-items: center; gap: 0 20px; margin-bottom: 20px;'>
+    <%= f.label :street, t('billing_profiles.street'), style: 'width: 150px;' %>
+    <%= f.text_field :street, class: "form-control", autocomplete: "off" %>
+  </div>
+
+  <div style='display: flex; align-items: center; gap: 0 20px; margin-bottom: 20px;'>
+    <%= f.label :city, t('billing_profiles.city'), style: 'width: 150px;' %>
+    <%= f.text_field :city, class: "form-control", autocomplete: "off" %>
+  </div>
+
+  <div style='display: flex; align-items: center; gap: 0 20px; margin-bottom: 20px;'>
+    <%= f.label :postal_code, t('billing_profiles.postal_code'), style: 'width: 150px;' %>
+    <%= f.text_field :postal_code, class: "form-control", autocomplete: "off" %>
+  </div>
+
+  <div style='display: flex; align-items: center; gap: 0 20px; margin-bottom: 20px;'>
+    <%= f.label :country_code, t('billing_profiles.country'), style: 'width: 150px;' %>
+    <%= f.select :country_code,
+            options_for_select(
+                Countries.for_selection,
+                billing_profile.country_code || Setting.find_by(code: 'default_country').retrieve
+            ),
+            {},
+            class: "ui dropdown" %>
+  </div>
+
+  <div style='display: flex; align-items: center; gap: 0 20px; margin-bottom: 20px;'>
+    <%= f.label :user_id, t('billing_profiles.user'), style: 'width: 150px;' %>
+    <% if billing_profile.new_record? %>
+      <%= f.select :user_id,
+              options_from_collection_for_select(User.order(:surname), :id, :display_name, billing_profile.user_id),
+              { include_blank: t('.select_user') },
+              class: "ui dropdown" %>
+    <% elsif billing_profile.user.present? %>
+      <%= link_to billing_profile.user.display_name, admin_user_path(billing_profile.user) %>
+    <% else %>
+      <span><%= t('billing_profiles.orphaned') %></span>
+    <% end %>
+  </div>
+
+  <br>
+  <div style='padding: 1rem 0; display: flex; justify-content: end; gap: 10px;'>
+    <%= f.button t(:submit), class: "c-btn c-btn--blue", data: { turbo: false } %>
+  </div>
+
+  <div class="c-table__filters__btns" style='padding: 1rem 0; display: flex; justify-content: start;'>
+    <%= link_to t(:back), admin_billing_profiles_path, class: "c-btn c-btn--green" %>
+  </div>
+<% end %>
