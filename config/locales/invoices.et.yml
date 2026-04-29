@@ -46,6 +46,7 @@ et:
     paid_deposit_title: Deposiidimaksed
     pay_all: "Maksa kõik arved"
     partial_payments_activated: "Lubatud klientidel teha selle arve osalisi makseid"
+    partial_payments_deactivated: "Keelatud klientidel teha selle arve osalisi makseid"
     allow_partial_payments: "Luba osalisi makseid"
     disallow_partial_payments: "Keela osalised maksed"
     amount_must_be_positive: "Summa peab olema suurem kui 0"
