@@ -30,7 +30,7 @@ jobs:
     - name: Get issue node ID
       if: steps.extract.outputs.issue_number != ''
       id: issue_node
-      uses: actions/github-script@v8
+      uses: actions/github-script@v9
       with:
         github-token: ${{ secrets.PROJECTS_TOKEN }}
         script: |
@@ -43,7 +43,7 @@ jobs:
 
     - name: Sync assignee from PR to issue
       if: steps.extract.outputs.issue_number != ''
-      uses: actions/github-script@v8
+      uses: actions/github-script@v9
       with:
         github-token: ${{ secrets.PROJECTS_TOKEN }}
         script: |
@@ -62,7 +62,7 @@ jobs:
     - name: Add issue to project if not present
       if: steps.extract.outputs.issue_number != ''
       id: project_item
-      uses: actions/github-script@v8
+      uses: actions/github-script@v9
       with:
         github-token: ${{ secrets.PROJECTS_TOKEN }}
         script: |
@@ -109,7 +109,7 @@ jobs:
     - name: Get status field options
       if: steps.extract.outputs.issue_number != ''
       id: status_options
-      uses: actions/github-script@v8
+      uses: actions/github-script@v9
       with:
         github-token: ${{ secrets.PROJECTS_TOKEN }}
         script: |
@@ -162,7 +162,7 @@ jobs:
 
     - name: Set status to In Progress
       if: steps.extract.outputs.issue_number != '' && github.event.action != 'closed' && steps.status_options.outputs.in_progress_id != ''
-      uses: actions/github-script@v8
+      uses: actions/github-script@v9
       with:
         github-token: ${{ secrets.PROJECTS_TOKEN }}
         script: |
@@ -184,7 +184,7 @@ jobs:
 
     - name: Set status to Done if PR merged
       if: steps.extract.outputs.issue_number != '' && github.event.pull_request.merged == true && steps.status_options.outputs.done_id != ''
-      uses: actions/github-script@v8
+      uses: actions/github-script@v9
       with:
         github-token: ${{ secrets.PROJECTS_TOKEN }}
         script: |
