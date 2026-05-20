@@ -3,6 +3,8 @@ require 'test_helper'
 module Auth
   class TaraControllerTest < ActionController::TestCase
     OMNIAUTH_AUTH_KEY = 'omniauth.auth'
+    OMNIAUTH_TOKEN = 'secret-token'
+    INVALID_USER_DATA_SESSION_KEY = 'user.invalid_user_data'
 
     tests Auth::TaraController
     include Devise::Test::ControllerHelpers
@@ -24,7 +26,7 @@ module Auth
       omniauth_hash = {
         'uid' => 'EE51007050120',
         'info' => { 'email' => @user.email },
-        'credentials' => { 'token' => 'secret-token' }
+        'credentials' => { 'token' => OMNIAUTH_TOKEN }
       }
 
       with_omniauth_hash(omniauth_hash) do
@@ -43,7 +45,7 @@ module Auth
       omniauth_hash = {
         'uid' => 'EE51007050120',
         'info' => { 'email' => 'new@example.test' },
-        'credentials' => { 'token' => 'secret-token' }
+        'credentials' => { 'token' => OMNIAUTH_TOKEN }
       }
 
       with_omniauth_hash(omniauth_hash) do
@@ -61,7 +63,7 @@ module Auth
       omniauth_hash = {
         'uid' => 'EE51007050120',
         'info' => { 'email' => @user.email },
-        'credentials' => { 'token' => 'secret-token' }
+        'credentials' => { 'token' => OMNIAUTH_TOKEN }
       }
 
       with_omniauth_hash(omniauth_hash) do
@@ -70,11 +72,11 @@ module Auth
         end
       end
 
-      assert session.key?('user.invalid_user_data'),
+      assert session.key?(INVALID_USER_DATA_SESSION_KEY),
              'TARA callback must set the invalid_user_data flag, otherwise the ' \
              'static notice will silently skip rendering for eID-authenticated ' \
              'users (parity with Auth::SessionsController#create).'
-      assert_equal false, session['user.invalid_user_data']
+      assert_equal false, session[INVALID_USER_DATA_SESSION_KEY]
     end
 
     def test_callback_flags_invalid_user_data_when_user_has_unsafe_characters
@@ -84,7 +86,7 @@ module Auth
       omniauth_hash = {
         'uid' => 'EE51007050120',
         'info' => { 'email' => bad_user.email },
-        'credentials' => { 'token' => 'secret-token' }
+        'credentials' => { 'token' => OMNIAUTH_TOKEN }
       }
 
       with_omniauth_hash(omniauth_hash) do
@@ -93,7 +95,7 @@ module Auth
         end
       end
 
-      assert_equal true, session['user.invalid_user_data']
+      assert_equal true, session[INVALID_USER_DATA_SESSION_KEY]
     end
   end
 end
