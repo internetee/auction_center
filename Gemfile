@@ -21,7 +21,7 @@ gem 'freezolite', require: false
 gem 'hotwire-rails', '~> 0.1.3'
 gem 'jbuilder', '~> 2.11'
 gem 'jsbundling-rails'
-gem 'jwt'
+gem 'jwt', '>= 3.2.0'
 gem 'lograge'
 gem 'mimemagic', '~> 0.4.3'
 gem 'money'
