@@ -37,6 +37,7 @@ class EnglishOffersController < ApplicationController
       update_auction_values(@auction, t('english_offers.create.created'))
       Rails.logger.info("User #{current_user.id} created offer #{@offer.id} for auction #{@auction.id}")
       Recommendation::RefreshSingleUserAuctionScoresJob.enqueue_debounced(current_user.id)
+      Recommendation::ClassifyDomainHeuristicallyJob.perform_later(@auction.domain_name)
       Recommendation::EventTracker.call(
         user: current_user,
         auction: @auction,
@@ -80,6 +81,7 @@ class EnglishOffersController < ApplicationController
       update_auction_values(@auction, t('english_offers.edit.bid_updated'))
       Rails.logger.info("User #{current_user.id} updated offer #{@offer.id} for auction #{@auction.id}")
       Recommendation::RefreshSingleUserAuctionScoresJob.enqueue_debounced(current_user.id)
+      Recommendation::ClassifyDomainHeuristicallyJob.perform_later(@auction.domain_name)
       Recommendation::EventTracker.call(
         user: current_user,
         auction: @auction,

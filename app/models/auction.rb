@@ -8,6 +8,7 @@ class Auction < ApplicationRecord # rubocop:disable Metrics
   ENGLISH = '1'.freeze
 
   after_create :find_auction_turns
+  after_create :enqueue_domain_classification
   validates :domain_name, presence: true
 
   attr_accessor :skip_broadcast, :skip_validation
@@ -207,6 +208,12 @@ class Auction < ApplicationRecord # rubocop:disable Metrics
 
   def find_auction_turns
     update(turns_count: calculate_turns_count)
+  end
+
+  def enqueue_domain_classification
+    return if domain_name.blank?
+
+    Recommendation::ClassifyDomainHeuristicallyJob.perform_later(domain_name)
   end
 
   def calculate_turns_count
