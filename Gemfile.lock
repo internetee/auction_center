@@ -314,6 +314,8 @@ GEM
     msgpack (1.8.0)
     multipart-post (2.4.1)
     mutex_m (0.3.0)
+    neighbor (0.6.0)
+      activerecord (>= 7.1)
     net-http (0.9.1)
       uri (>= 0.11.1)
     net-imap (0.6.4)
@@ -664,6 +666,7 @@ DEPENDENCIES
   minitest-mock
   money
   mutex_m
+  neighbor (~> 0.5)
   net-imap (>= 0.5.7)
   nokogiri (>= 1.18.9)
   noticed (~> 1.6.3)

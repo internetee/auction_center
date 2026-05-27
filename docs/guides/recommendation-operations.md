@@ -10,7 +10,7 @@ for pipeline internals, see
 
 | Item | Where | Notes |
 |---|---|---|
-| pgvector extension enabled | AWS RDS Postgres 17 | `CREATE EXTENSION IF NOT EXISTS vector;` as `rds_superuser` once per environment. The Rails migration tries this automatically; if the app role lacks `CREATE`, run it manually then run `rails db:migrate`. |
+| pgvector extension enabled | AWS RDS Postgres 17 (prod) / pgvector/pgvector:pg13 (dev) | `CREATE EXTENSION IF NOT EXISTS vector;` as `rds_superuser` once per environment. The Rails migration tries this automatically; if the app role lacks `CREATE`, run it manually then run `rails db:migrate`. For local dev, ensure `docker-images/docker-compose.dev.v2.yml` uses `pgvector/pgvector:pg13` (NOT plain `postgres:13.x`). Set `SKIP_PGVECTOR_MIGRATION=true` as a temporary escape hatch if needed; embedding similarity will be inactive until rerun. |
 | `Feature.open_ai_integration_enabled?` | App settings | Must be true for LLM enrichment and embeddings. The recommendation profile UI, heuristic classifier, and scorer work without it. |
 | `openai_model` Setting | DB seed | Currently `gpt-5`. `OpenaiStructuredOutputSupport` will fall back to a safe default if a non-supporting model is configured. |
 | OpenAI API key | Rails credentials / env | Existing integration used by both `LlmDomainClassifier` and `DomainEmbedder`. |
@@ -92,6 +92,15 @@ To roll back entirely:
 `SHOW rds.extensions;` to confirm `vector` is present. It is on
 Postgres 15+ by default. If absent, contact AWS support — but Postgres
 17 always has it.
+
+**"could not open extension control file vector.control"** — The
+PostgreSQL image does not ship pgvector. This happens with plain
+`postgres:13`. Switch the Docker image to `pgvector/pgvector:pg13`
+(or `:pg17` if you upgrade Postgres), restart the container, and
+re-run the migration. The data volume is compatible — same major
+version. If you cannot upgrade right now and need to ship something,
+`SKIP_PGVECTOR_MIGRATION=true rails db:migrate` lets you proceed
+without the embedding column; rerun the migration later.
 
 **"permission denied to create extension"** — App user lacks
 `rds_superuser`. Run the `CREATE EXTENSION` manually as the master
