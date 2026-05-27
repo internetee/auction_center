@@ -30,6 +30,15 @@ class OffersController < ApplicationController
         end
       elsif create_predicate
         Rails.logger.info("User #{current_user.id} created offer #{@offer.id} for auction #{@auction.id}")
+        Recommendation::RefreshSingleUserAuctionScoresJob.perform_later(current_user.id)
+        Recommendation::EventTracker.call(
+          user: current_user,
+          auction: @auction,
+          event_type: 'bid_create',
+          source: 'offers#create',
+          properties: { offer_id: @offer.id, cents: @offer.cents },
+          request:
+        )
         format.html { redirect_to root_path, notice: t('.created') }
         format.json { render :show, status: :created, location: @offer }
       else
@@ -67,6 +76,15 @@ class OffersController < ApplicationController
 
       if update_predicate
         Rails.logger.info("User #{current_user.id} updated offer #{@offer.id} for auction #{@offer.auction.id}")
+        Recommendation::RefreshSingleUserAuctionScoresJob.perform_later(current_user.id)
+        Recommendation::EventTracker.call(
+          user: current_user,
+          auction: @offer.auction,
+          event_type: 'bid_update',
+          source: 'offers#update',
+          properties: { offer_id: @offer.id, cents: @offer.cents },
+          request:
+        )
         format.html { redirect_to root_path, notice: t(:updated), status: :see_other }
         format.json { render :show, status: :ok, location: @offer }
       else

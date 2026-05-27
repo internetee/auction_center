@@ -1,0 +1,47 @@
+en:
+  recommendation_profiles:
+    edit:
+      title: "Auction interests"
+      why_it_helps_title: "Why this helps"
+      why_it_helps_body: "Choose what kinds of domain names interest you. We combine these interests with your wishlist, bids, and domain tags to rank more relevant auctions higher for you."
+      submit: "Save interests"
+    update:
+      updated: "Your auction interests were updated."
+      skipped: "You can add your auction interests later."
+    dismiss:
+      dismissed: "We will remind you later."
+    form:
+      title: "Auction interests"
+      subtitle: "Optional. Choose the kinds of domain names that interest you. We will use these categories together with your bids and wishlist."
+      interest_categories: "Interest categories"
+      other_interests: "Other interests"
+      other_interests_placeholder: "Type an interest and press Enter"
+      other_interests_hint: "Use this for interests that are not in the predefined list."
+    prompt:
+      title: "Personalization"
+      subject: "Tell us what domains interest you"
+      description: "Add a few preferences and we will raise more relevant auctions in your list. This step is optional."
+      fill_now: "Set interests"
+      remind_later: "Remind me later"
+    profile:
+      summary_title: "Auction interests"
+      empty_state: "No interests saved yet."
+      edit_action: "Edit interests"
+    summary:
+      categories: "Interests"
+    categories:
+      brandable: "Brandable names"
+      shop_brand: "Shop or store names"
+      saas: "SaaS and software"
+      b2b_service: "B2B services"
+      local_service: "Local or service businesses"
+      media_content: "Media and content"
+      finance: "Finance and fintech"
+      legal: "Legal and professional services"
+      health: "Health and wellness"
+      education: "Education and courses"
+      travel: "Travel and tourism"
+      automotive: "Automotive"
+      real_estate: "Real estate"
+      numeric: "Numeric domains"
+      other: "Other"

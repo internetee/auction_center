@@ -93,6 +93,75 @@ class AuctionsControllerTest < ActionDispatch::IntegrationTest
     assert_equal sorted_domains, auction_domains
   end
 
+  def test_recommendation_scores_are_used_before_global_ai_score_for_logged_in_users
+    sign_in @participant
+
+    UserAuctionScore.create!(
+      user: @participant,
+      auction: @english_auction,
+      score: 0.95,
+      calculated_at: Time.current
+    )
+    UserAuctionScore.create!(
+      user: @participant,
+      auction: @auction_without_offers,
+      score: 0.10,
+      calculated_at: Time.current
+    )
+
+    get auctions_path
+
+    assert_response :success
+
+    auction_domains = css_select('tbody#bids tr.contents td:first-child').map { |e| e.text.strip }
+
+    with_offers_index = auction_domains.index(@auction_with_offers.domain_name)
+    english_index = auction_domains.index(@english_auction.domain_name)
+    without_offers_index = auction_domains.index(@auction_without_offers.domain_name)
+
+    assert with_offers_index < english_index, "User's own auction should still come first"
+    assert english_index < without_offers_index, "Higher recommendation score should outrank lower score"
+  end
+
+  def test_interest_categories_prioritize_matching_classified_auctions
+    sign_in @participant
+    @participant.create_recommendation_profile!(interest_keywords: ['saas'])
+
+    @english_auction.update!(classification_tags: ['saas'], primary_category: 'saas')
+    @auction_without_offers.update!(classification_tags: ['shop_brand'], primary_category: 'shop_brand')
+
+    get auctions_path
+
+    assert_response :success
+
+    auction_domains = css_select('tbody#bids tr.contents td:first-child').map { |e| e.text.strip }
+
+    with_offers_index = auction_domains.index(@auction_with_offers.domain_name)
+    english_index = auction_domains.index(@english_auction.domain_name)
+    without_offers_index = auction_domains.index(@auction_without_offers.domain_name)
+
+    assert with_offers_index < english_index, "User's own auction should still come first"
+    assert english_index < without_offers_index, "Classified category match should outrank non-matching auction"
+  end
+
+  def test_custom_other_interests_prioritize_domain_name_matches
+    sign_in @participant
+    @participant.create_recommendation_profile!(interest_keywords: ['other', 'custom:english'])
+
+    get auctions_path
+
+    assert_response :success
+
+    auction_domains = css_select('tbody#bids tr.contents td:first-child').map { |e| e.text.strip }
+
+    with_offers_index = auction_domains.index(@auction_with_offers.domain_name)
+    english_index = auction_domains.index(@english_auction.domain_name)
+    without_offers_index = auction_domains.index(@auction_without_offers.domain_name)
+
+    assert with_offers_index < english_index, "User's own auction should still come first"
+    assert english_index < without_offers_index, "Custom other interests should boost matching domain names"
+  end
+
   def test_sorting_with_pagination_keeps_user_auctions_prioritized
     sign_in @participant
     

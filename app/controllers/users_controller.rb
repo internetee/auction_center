@@ -16,6 +16,7 @@ class UsersController < ApplicationController
   def new
     redirect_to user_path(current_user.uuid), notice: t('.already_signed_in') if current_user
     @user = User.new
+    @user.build_recommendation_profile
   end
 
   # GET /profile/edit
@@ -42,6 +43,17 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
+        if @user.recommendation_profile&.filled?
+          @user.recommendation_profile.mark_completed!
+          Recommendation::RefreshSingleUserAuctionScoresJob.perform_later(@user.id)
+          Recommendation::EventTracker.call(
+            user: @user,
+            event_type: 'recommendation_profile_completed',
+            source: 'users#create',
+            request:
+          )
+        end
+
         flash[:notice] = t(:created)
 
         format.html do
@@ -54,6 +66,7 @@ class UsersController < ApplicationController
           render :show, status: :created, location: @user
         end
       else
+        @user.build_recommendation_profile if @user.recommendation_profile.nil?
         flash.now[:alert] = @user.errors.full_messages.join(', ')
 
         format.html { render :new, status: :unprocessable_entity }
@@ -116,9 +129,19 @@ class UsersController < ApplicationController
 
   def create_params
     params.require(:user)
-          .permit(:email, :password, :password_confirmation, :country_code,
-                  :given_names, :surname, :mobile_phone, :accepts_terms_and_conditions,
-                  :locale, :daily_summary, :identity_code)
+          .permit(
+            :email, :password, :password_confirmation, :country_code,
+            :given_names, :surname, :mobile_phone, :accepts_terms_and_conditions,
+            :locale, :daily_summary, :identity_code,
+            recommendation_profile_attributes: [
+              :preferred_length_min,
+              :preferred_length_max,
+              :allow_numbers,
+              :allow_hyphens,
+              { interest_categories: [] },
+              { custom_interests: [] }
+            ]
+          )
   end
 
   def params_for_update

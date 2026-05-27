@@ -14,6 +14,9 @@ class AuctionsController < ApplicationController
       limit: per_page_count,
       link_extra: 'data-turbo-action="advance"'
     )
+    @show_recommendation_prompt = current_user&.recommendation_profile_promptable?
+
+    track_recommendation_impressions
 
     respond_to do |format|
       format.html
@@ -59,5 +62,17 @@ class AuctionsController < ApplicationController
 
   def authorize_user
     authorize! :read, Auction
+  end
+
+  def track_recommendation_impressions
+    return unless current_user
+    return unless request.format.html?
+
+    Recommendation::EventTracker.track_impressions(
+      user: current_user,
+      auctions: @auctions,
+      source: 'auctions#index',
+      request:
+    )
   end
 end

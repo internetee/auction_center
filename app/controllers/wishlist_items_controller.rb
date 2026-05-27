@@ -24,6 +24,16 @@ class WishlistItemsController < ApplicationController
 
     respond_to do |format|
       if create_predicate
+        Recommendation::RefreshSingleUserAuctionScoresJob.perform_later(current_user.id)
+        Recommendation::EventTracker.call(
+          user: current_user,
+          auction: Auction.find_by(domain_name: @wishlist_item.domain_name),
+          event_type: 'wishlist_add',
+          source: 'wishlist_items#create',
+          properties: { domain_name: @wishlist_item.domain_name },
+          request:
+        )
+
         format.html { redirect_to wishlist_items_path, notice: t(:created) }
         format.json { render json: @wishlist_item, status: :created }
       else
@@ -38,6 +48,16 @@ class WishlistItemsController < ApplicationController
 
     respond_to do |format|
       if @wishlist_item.destroy
+        Recommendation::RefreshSingleUserAuctionScoresJob.perform_later(current_user.id)
+        Recommendation::EventTracker.call(
+          user: current_user,
+          auction: Auction.find_by(domain_name: @wishlist_item.domain_name),
+          event_type: 'wishlist_remove',
+          source: 'wishlist_items#destroy',
+          properties: { domain_name: @wishlist_item.domain_name },
+          request:
+        )
+
         format.turbo_stream do
           render turbo_stream: [
             turbo_stream.replace('flash', partial: 'common/flash', locals: { flash: }),
@@ -56,6 +76,7 @@ class WishlistItemsController < ApplicationController
 
   def update
     if @wishlist_item.update(strong_params)
+      Recommendation::RefreshSingleUserAuctionScoresJob.perform_later(current_user.id)
       flash[:notice] = t(:updated)
       render turbo_stream: [
         turbo_stream.replace('flash', partial: 'common/flash', locals: { flash: }),

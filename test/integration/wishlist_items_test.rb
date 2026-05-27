@@ -2,6 +2,7 @@ require 'application_system_test_case'
 
 class WishlistItemsIntegrationTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
+  include ActiveJob::TestHelper
 
   def setup
     @user = users(:participant)
@@ -12,6 +13,7 @@ class WishlistItemsIntegrationTest < ActionDispatch::IntegrationTest
     sign_in @user
 
     travel_to Time.parse('2010-07-05 10:30 +0000').in_time_zone
+    clear_enqueued_jobs
   end
 
   def test_should_be_returned_ok_code
@@ -32,7 +34,9 @@ class WishlistItemsIntegrationTest < ActionDispatch::IntegrationTest
     }
 
     assert_difference -> { WishlistItem.count } do
-      post wishlist_items_path, params: params, headers: {}
+      assert_enqueued_with(job: Recommendation::RefreshSingleUserAuctionScoresJob, args: [@user.id]) do
+        post wishlist_items_path, params: params, headers: {}
+      end
     end
   end
 

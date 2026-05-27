@@ -21,6 +21,8 @@ class Auction < ApplicationRecord # rubocop:disable Metrics
   has_many :offers, dependent: :delete_all
   has_many :domain_participate_auctions, dependent: :delete_all
   has_many :domain_offer_histories
+  has_many :recommendation_events, dependent: :nullify
+  has_many :user_auction_scores, dependent: :delete_all
   has_one :result, required: false, dependent: :destroy
 
   enum :platform, %i[blind english]
@@ -30,6 +32,8 @@ class Auction < ApplicationRecord # rubocop:disable Metrics
 
   delegate :count, to: :offers, prefix: true
   delegate :size, to: :offers, prefix: true
+
+  def classified? = classified_at.present?
 
   def update_list_broadcast
     Auctions::UpdateListBroadcastService.call({ auction: self })
