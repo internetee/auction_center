@@ -9,7 +9,7 @@ class RecommendationProfilesController < ApplicationController
 
     if !@recommendation_profile.filled?
       @recommendation_profile.dismiss_prompt!
-      Recommendation::RefreshSingleUserAuctionScoresJob.perform_later(current_user.id)
+      Recommendation::RefreshSingleUserAuctionScoresJob.enqueue_debounced(current_user.id)
       Recommendation::EventTracker.call(
         user: current_user,
         event_type: 'recommendation_prompt_dismissed',
@@ -23,7 +23,7 @@ class RecommendationProfilesController < ApplicationController
 
     if @recommendation_profile.save
       @recommendation_profile.mark_completed!
-      Recommendation::RefreshSingleUserAuctionScoresJob.perform_later(current_user.id)
+      Recommendation::RefreshSingleUserAuctionScoresJob.enqueue_debounced(current_user.id)
       Recommendation::EventTracker.call(
         user: current_user,
         event_type: 'recommendation_profile_completed',

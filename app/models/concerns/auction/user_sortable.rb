@@ -71,21 +71,28 @@ module Auction::UserSortable
       SQL
     end
 
+    MAX_CUSTOM_INTERESTS_IN_SQL = 10
+
     def interest_match_sql(interest_categories, custom_interests)
       match_clauses = []
 
-      if interest_categories.present?
-        quoted_categories = interest_categories.map { |item| ActiveRecord::Base.connection.quote(item) }.join(',')
+      whitelisted_categories = Array(interest_categories) & Recommendation::InterestCatalog.categories
+      if whitelisted_categories.any?
+        quoted_categories = whitelisted_categories
+          .map { |item| ActiveRecord::Base.connection.quote(item) }
+          .join(',')
         match_clauses << "auctions.classification_tags && ARRAY[#{quoted_categories}]::varchar[]"
       end
 
-      custom_interest_clauses = custom_interests.filter_map do |interest|
-        normalized_interest = interest.to_s.strip.downcase
-        next if normalized_interest.blank?
+      custom_interest_clauses = Array(custom_interests)
+        .first(MAX_CUSTOM_INTERESTS_IN_SQL)
+        .filter_map do |interest|
+          normalized_interest = interest.to_s.strip.downcase
+          next if normalized_interest.length < 2
 
-        pattern = "%#{ActiveRecord::Base.sanitize_sql_like(normalized_interest)}%"
-        "LOWER(auctions.domain_name) LIKE #{ActiveRecord::Base.connection.quote(pattern)}"
-      end
+          pattern = "%#{ActiveRecord::Base.sanitize_sql_like(normalized_interest)}%"
+          "LOWER(auctions.domain_name) LIKE #{ActiveRecord::Base.connection.quote(pattern)}"
+        end
 
       match_clauses.concat(custom_interest_clauses)
 

@@ -24,7 +24,7 @@ class WishlistItemsController < ApplicationController
 
     respond_to do |format|
       if create_predicate
-        Recommendation::RefreshSingleUserAuctionScoresJob.perform_later(current_user.id)
+        Recommendation::RefreshSingleUserAuctionScoresJob.enqueue_debounced(current_user.id)
         Recommendation::EventTracker.call(
           user: current_user,
           auction: Auction.find_by(domain_name: @wishlist_item.domain_name),
@@ -48,7 +48,7 @@ class WishlistItemsController < ApplicationController
 
     respond_to do |format|
       if @wishlist_item.destroy
-        Recommendation::RefreshSingleUserAuctionScoresJob.perform_later(current_user.id)
+        Recommendation::RefreshSingleUserAuctionScoresJob.enqueue_debounced(current_user.id)
         Recommendation::EventTracker.call(
           user: current_user,
           auction: Auction.find_by(domain_name: @wishlist_item.domain_name),
@@ -76,7 +76,7 @@ class WishlistItemsController < ApplicationController
 
   def update
     if @wishlist_item.update(strong_params)
-      Recommendation::RefreshSingleUserAuctionScoresJob.perform_later(current_user.id)
+      Recommendation::RefreshSingleUserAuctionScoresJob.enqueue_debounced(current_user.id)
       flash[:notice] = t(:updated)
       render turbo_stream: [
         turbo_stream.replace('flash', partial: 'common/flash', locals: { flash: }),
