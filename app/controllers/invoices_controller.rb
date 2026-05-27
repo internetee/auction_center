@@ -140,7 +140,9 @@ class InvoicesController < ApplicationController
   end
 
   def set_invoice
-    @invoice = Invoice.accessible_by(current_ability).find_by!(uuid: params[:uuid])
+    @invoice = Invoice.accessible_by(current_ability)
+                      .where(user_id: current_user.id)
+                      .find_by!(uuid: params[:uuid])
   end
 
   def authorize_user

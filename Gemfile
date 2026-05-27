@@ -50,6 +50,7 @@ gem 'dartsass-rails'
 gem 'turbo-rails'
 gem 'valvat'
 gem 'view_component'
+gem 'voog_footer', github: 'internetee/voog_footer'
 gem 'webpush'
 
 group :development, :test do

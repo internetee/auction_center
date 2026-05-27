@@ -15,6 +15,13 @@ GIT
       omniauth (>= 1.9, < 3)
       openid_connect (~> 2.2)
 
+GIT
+  remote: https://github.com/internetee/voog_footer.git
+  revision: ddbaeef72f380d8798a4df69cc93039a343b66fd
+  specs:
+    voog_footer (0.1.0)
+      nokogiri (~> 1.10)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -519,9 +526,6 @@ GEM
       faraday-multipart (>= 1)
     ruby-progressbar (1.13.0)
     rubyzip (3.1.0)
-    sass-embedded (1.93.2)
-      google-protobuf (~> 4.31)
-      rake (>= 13)
     sass-embedded (1.93.2-aarch64-linux-gnu)
       google-protobuf (~> 4.31)
     sass-embedded (1.93.2-aarch64-linux-musl)
@@ -699,6 +703,7 @@ DEPENDENCIES
   turbo-rails
   valvat
   view_component
+  voog_footer!
   web-console (>= 3.3.0)
   webmock
   webpush

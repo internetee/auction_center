@@ -148,4 +148,6 @@ Rails.application.routes.draw do
 
   mount OkComputer::Engine, at: '/healthcheck', as: :healthcheck
   mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
+
+  get 'health' => 'rails/health#show', as: :rails_health_check
 end
