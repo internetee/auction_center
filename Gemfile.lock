@@ -268,7 +268,7 @@ GEM
       bindata
       faraday (~> 2.0)
       faraday-follow_redirects
-    jwt (2.10.2)
+    jwt (2.10.3)
       base64
     language_server-protocol (3.17.0.5)
     launchy (3.1.1)
@@ -659,7 +659,7 @@ DEPENDENCIES
   i18n-debug
   jbuilder (~> 2.11)
   jsbundling-rails
-  jwt
+  jwt (~> 2.10.3)
   letter_opener (~> 1.8)
   letter_opener_web (~> 3.0)
   listen (>= 3.0.5, < 3.11)
