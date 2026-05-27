@@ -1,3 +1,6 @@
+27.05.2026
+* Profile data review warning fix https://github.com/internetee/auction_center/issues/1580
+
 30.12.2025
 * Allow comma in billing profile street field https://github.com/internetee/auction_center/issues/1502
 * Fixed false error message bug on billing profile update https://github.com/internetee/auction_center/issues/1503
