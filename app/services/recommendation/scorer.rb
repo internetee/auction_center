@@ -1,9 +1,15 @@
 module Recommendation
   class Scorer
+    SCORING_HORIZON = 30.days
+
     class << self
       BASELINE_MODEL_NAME = 'baseline_rules_v1'.freeze
 
-      def top_auctions_for(user:, scope: Auction.active, limit: nil)
+      def default_scope
+        Auction.active.where('ends_at <= ?', SCORING_HORIZON.from_now)
+      end
+
+      def top_auctions_for(user:, scope: default_scope, limit: nil)
         query = scope
           .joins(:user_auction_scores)
           .where(user_auction_scores: { user_id: user.id })
@@ -12,12 +18,12 @@ module Recommendation
         limit ? query.limit(limit) : query
       end
 
-      def refresh_for(user:, scope: Auction.active, calculated_at: Time.current)
+      def refresh_for(user:, scope: default_scope, calculated_at: Time.current)
         new(user:, scope:, calculated_at:).refresh!
       end
     end
 
-    def initialize(user:, scope: Auction.active, calculated_at: Time.current)
+    def initialize(user:, scope: self.class.default_scope, calculated_at: Time.current)
       @user = user
       @scope = scope
       @calculated_at = calculated_at

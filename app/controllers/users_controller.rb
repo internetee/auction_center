@@ -45,7 +45,7 @@ class UsersController < ApplicationController
       if @user.save
         if @user.recommendation_profile&.filled?
           @user.recommendation_profile.mark_completed!
-          Recommendation::RefreshSingleUserAuctionScoresJob.perform_later(@user.id)
+          Recommendation::RefreshSingleUserAuctionScoresJob.enqueue_debounced(@user.id)
           Recommendation::EventTracker.call(
             user: @user,
             event_type: 'recommendation_profile_completed',
