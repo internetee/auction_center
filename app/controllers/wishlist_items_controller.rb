@@ -25,6 +25,7 @@ class WishlistItemsController < ApplicationController
     respond_to do |format|
       if create_predicate
         Recommendation::RefreshSingleUserAuctionScoresJob.enqueue_debounced(current_user.id)
+        Recommendation::ClassifyDomainHeuristicallyJob.perform_later(@wishlist_item.domain_name)
         Recommendation::EventTracker.call(
           user: current_user,
           auction: Auction.find_by(domain_name: @wishlist_item.domain_name),

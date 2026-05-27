@@ -31,6 +31,7 @@ class OffersController < ApplicationController
       elsif create_predicate
         Rails.logger.info("User #{current_user.id} created offer #{@offer.id} for auction #{@auction.id}")
         Recommendation::RefreshSingleUserAuctionScoresJob.enqueue_debounced(current_user.id)
+        Recommendation::ClassifyDomainHeuristicallyJob.perform_later(@auction.domain_name)
         Recommendation::EventTracker.call(
           user: current_user,
           auction: @auction,
@@ -77,6 +78,7 @@ class OffersController < ApplicationController
       if update_predicate
         Rails.logger.info("User #{current_user.id} updated offer #{@offer.id} for auction #{@offer.auction.id}")
         Recommendation::RefreshSingleUserAuctionScoresJob.enqueue_debounced(current_user.id)
+        Recommendation::ClassifyDomainHeuristicallyJob.perform_later(@offer.auction.domain_name)
         Recommendation::EventTracker.call(
           user: current_user,
           auction: @offer.auction,
