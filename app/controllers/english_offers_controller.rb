@@ -20,6 +20,7 @@ class EnglishOffersController < ApplicationController
 
     BillingProfile.create_default_for_user(current_user.id)
     @offer = Offer.new(auction_id: @auction.id, user_id: current_user.id)
+    track_detail_view
   end
 
   # POST /auctions/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/offers
@@ -122,5 +123,17 @@ class EnglishOffersController < ApplicationController
   def update_params
     update_params = params.require(:offer).permit(:price, :billing_profile_id)
     merge_updated_by(update_params)
+  end
+
+  def track_detail_view
+    return unless current_user && @auction
+
+    Recommendation::EventTracker.call(
+      user: current_user,
+      auction: @auction,
+      event_type: 'auction_detail_view',
+      source: 'english_offers#new',
+      request:
+    )
   end
 end
