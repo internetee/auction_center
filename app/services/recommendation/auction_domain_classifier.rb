@@ -1,4 +1,12 @@
 module Recommendation
+  # DEPRECATED: superseded by Recommendation::LlmDomainClassifier (v2).
+  # Writes legacy auctions.classification_* columns and is kept only so
+  # the existing Auction::UserSortable fallback path stays warm during
+  # the v2 rollout. New code paths should use LlmDomainClassifier and
+  # domain_classifications instead.
+  #
+  # Remove this class once auctions.classification_* columns are dropped
+  # (planned for the release after v2 has been stable in production).
   class AuctionDomainClassifier
     DEFAULT_TEMPERATURE = 0.2
 

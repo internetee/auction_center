@@ -1,4 +1,10 @@
 module Recommendation
+  # DEPRECATED: superseded by Recommendation::ClassifyUnclassifiedDomainsJob (v2).
+  # Kept registered so existing scheduling and the admin Job UI keep
+  # working during the rollout. Both jobs are idempotent and consult
+  # different scopes (auctions.classified_at vs
+  # domain_classifications.classified_at), so running both is safe.
+  # Drop this class after auctions.classification_* columns are removed.
   class ClassifyAuctionDomainsJob < ApplicationJob
     retry_on StandardError, wait: 5.seconds, attempts: 3
 
