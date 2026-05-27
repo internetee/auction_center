@@ -14,14 +14,14 @@
   <td>
     <h3 data-controller="slashed-zero"><%= auction.domain_name %></h3>
     <% if domain_classification&.description.present? %>
-      <p class="c-auction__domain-description u-t-xs u-text-muted" style="margin: 4px 0 0; color: #6b6b6b; font-size: 0.85em; max-width: 28rem;">
+      <p class="c-auction__domain-description">
         <%= domain_classification.description %>
       </p>
     <% end %>
     <% if domain_classification&.keywords.present? %>
-      <div class="c-auction__domain-keywords" style="margin-top: 4px; display: flex; gap: 4px; flex-wrap: wrap;">
+      <div class="c-auction__domain-keywords">
         <% domain_classification.keywords.first(4).each do |keyword| %>
-          <span class="c-badge c-badge--blue" style="font-size: 0.7em; padding: 2px 6px;"><%= keyword %></span>
+          <span class="c-badge c-badge--blue c-auction__domain-keyword"><%= keyword %></span>
         <% end %>
       </div>
     <% end %>

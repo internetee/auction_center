@@ -1,0 +1,25 @@
+// Recommendation system v2 — auction card enrichment.
+//
+// Rendered by app/views/auctions/_auction.html.erb when the matching
+// domain_classifications row has description / keywords populated.
+// Degrades silently when no classification is available.
+
+.c-auction__domain-description {
+  margin: 4px 0 0;
+  color: #6b6b6b;
+  font-size: 0.85em;
+  line-height: 1.35;
+  max-width: 28rem;
+}
+
+.c-auction__domain-keywords {
+  margin-top: 4px;
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.c-auction__domain-keyword {
+  font-size: 0.7em;
+  padding: 2px 6px;
+}
