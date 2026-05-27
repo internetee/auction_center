@@ -70,3 +70,5 @@ CLAUDE.md
 !/app/assets/builds/.keep
 .cursorindexingignore
 .specstory
+# Local Claude Code workspace artifacts
+.claude/
