@@ -184,17 +184,19 @@ See [domain-classification-pipeline.md](../technical/domain-classification-pipel
 
 | Phase | What | Status |
 |---|---|---|
-| 0 | Snapshot + docs scaffold | in progress |
-| 1 | Performance foundation (batch impressions, debounce score refresh) | pending |
-| 2 | `domain_classifications` table + heuristic Tier 0 | pending |
-| 3a | DomainClassifier orchestrator (heuristic only) | pending |
-| 3b | LLM batch enrichment job (cron) | pending |
-| 4 | Triggers + backfill rake | pending |
-| 5 | pgvector + embeddings batch job | pending |
-| 6 | Rich-feature Scorer + embedding similarity + time decay | pending |
-| 7 | Detail view tracking + view affinity | pending |
-| 8 | Show domain description in auction card | pending |
-| 9 | Polish + finalize | pending |
+| 0 | Snapshot + docs scaffold | done |
+| 1 | Performance foundation (batch impressions, debounce score refresh) | done |
+| 2 | `domain_classifications` table + heuristic Tier 0 | done |
+| 3a | DomainClassifier orchestrator (heuristic only) | done |
+| 3b | LLM batch enrichment job (cron) | done |
+| 4 | Triggers + backfill rake | done |
+| 5 | pgvector + embeddings batch job | done |
+| 6 | Rich-feature Scorer + embedding similarity + time decay | done |
+| 7 | Detail view tracking + view affinity | done |
+| 8 | Show domain description in auction card | done |
+| 9 | Polish + finalize | done |
+
+Operator runbook: see [guides/recommendation-operations.md](../guides/recommendation-operations.md).
 
 ## Open questions / future work
 

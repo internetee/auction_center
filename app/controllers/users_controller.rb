@@ -52,6 +52,11 @@ class UsersController < ApplicationController
             source: 'users#create',
             request:
           )
+        elsif @user.recommendation_profile.present?
+          # User signed up without filling the profile. Suppress the modal
+          # on the next /auctions render so they're not nagged immediately —
+          # they'll see it again after PROMPT_REMINDER_INTERVAL.
+          @user.recommendation_profile.dismiss_prompt!
         end
 
         flash[:notice] = t(:created)

@@ -1,3 +1,12 @@
+27.05.2026
+* Recommendation system v2: per-user auction sorting backed by
+  domain_classifications, time-decayed bid/wishlist/view affinity,
+  optional pgvector embeddings for similarity matching, and nightly
+  LLM enrichment as a k8s CronJob (rake recommendation:classify_unclassified,
+  rake recommendation:embed_unembedded). See docs/architecture/recommendation-system.md.
+* Batch impressions on /auctions index via insert_all (one query
+  regardless of page size), debounced score recompute on user actions.
+
 30.12.2025
 * Allow comma in billing profile street field https://github.com/internetee/auction_center/issues/1502
 * Fixed false error message bug on billing profile update https://github.com/internetee/auction_center/issues/1503
