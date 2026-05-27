@@ -198,14 +198,36 @@ module Recommendation
       end
     end
 
+    # Audience match (b2b/b2c) is captured for every classified domain
+    # but RecommendationProfile does not yet expose a user-side
+    # audience_preference column. Until it does, derive a soft signal:
+    # if the user's bid history skews toward one audience, boost
+    # candidates with the same audience. Falls back to 0.
     def audience_match_bonus(audience)
       return 0 if audience.blank?
-
-      user_audience = profile&.audience_preference if profile.respond_to?(:audience_preference)
-      return 0 if user_audience.blank?
-      return AUDIENCE_MATCH if audience == user_audience
+      return 0 if dominant_user_audience.blank?
+      return AUDIENCE_MATCH if dominant_user_audience == audience
 
       0
+    end
+
+    def dominant_user_audience
+      return @dominant_user_audience if defined?(@dominant_user_audience)
+
+      counts = Hash.new(0)
+      (bid_domain_signals + wishlist_domain_signals).each do |signal|
+        dc = bid_wishlist_classification_cache[signal[:domain_name]]
+        counts[dc.audience] += 1 if dc&.audience.present?
+      end
+
+      @dominant_user_audience = counts.max_by { |_, n| n }&.first
+    end
+
+    def bid_wishlist_classification_cache
+      @bid_wishlist_classification_cache ||= begin
+        names = (bid_domain_signals + wishlist_domain_signals).map { |s| s[:domain_name] }.uniq
+        DomainClassification.where(domain_name: names).index_by(&:domain_name)
+      end
     end
 
     # ---------- Behavioural affinity -------------------------------------
@@ -357,16 +379,24 @@ module Recommendation
     def compute_result_signal
       return {} unless defined?(Result) && Result.table_exists?
 
-      signals = Hash.new(0.0)
       results = lookup_user_results
-      return signals if results.blank?
+      return {} if results.blank?
+
+      classifications = preload_result_classifications(results)
+      signals = Hash.new(0.0)
 
       results.each do |result|
+        domain = result.respond_to?(:domain_name) ? result.domain_name.to_s.downcase : nil
+        next if domain.blank?
+
+        dc = classifications[domain]
+        next if dc.nil?
+
         won = result.respond_to?(:winner_user_id) && result.winner_user_id == @user.id
         decay = decay_weight(age_in_days(result.updated_at))
         bonus = won ? RESULT_WON_PENALTY : RESULT_LOST_BONUS
 
-        Array(result_tags(result)).each { |tag| signals[tag.to_s] += bonus * decay }
+        Array(dc.tags).each { |tag| signals[tag.to_s] += bonus * decay }
       end
 
       signals
@@ -382,11 +412,13 @@ module Recommendation
       []
     end
 
-    def result_tags(result)
-      domain = result.respond_to?(:domain_name) ? result.domain_name : nil
-      return [] if domain.blank?
+    def preload_result_classifications(results)
+      domain_names = results.filter_map do |r|
+        r.domain_name.to_s.downcase if r.respond_to?(:domain_name) && r.domain_name.present?
+      end.uniq
+      return {} if domain_names.empty?
 
-      DomainClassification.where(domain_name: domain.downcase).limit(1).pluck(:tags).flatten
+      DomainClassification.where(domain_name: domain_names).index_by(&:domain_name)
     end
 
     # ---------- Embedding multiplier ------------------------------------
