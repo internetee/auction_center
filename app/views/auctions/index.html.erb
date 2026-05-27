@@ -54,7 +54,12 @@
 
         <%= tag.tbody id: "bids", class: 'contents' do %>
           <% @auctions.uniq.each do |auction| %>
-            <%= render partial: 'auction', locals: { auction: auction, user: current_user, updated: false } %>
+            <%= render partial: 'auction', locals: {
+              auction: auction,
+              user: current_user,
+              updated: false,
+              domain_classification: (@domain_classifications || {})[auction.domain_name.to_s.downcase]
+            } %>
           <% end %>
         <% end %>
       <% end %>
