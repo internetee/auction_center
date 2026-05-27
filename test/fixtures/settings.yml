@@ -274,7 +274,7 @@ openai_model:
   code: 'openai_model'
   description: |
     OpenAI API model
-  value: 'gpt-3.5-turbo'
+  value: 'gpt-5'
   value_format: string
 
 openai_domains_evaluation_prompt:

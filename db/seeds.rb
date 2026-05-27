@@ -490,7 +490,7 @@ directo_default_payment_terms_setting.save
 openai_model_description = <<~TEXT.squish
   OpenAI API model
 TEXT
-openai_model_value = 'gpt-3.5-turbo'
+openai_model_value = 'gpt-5'
 openai_model_setting = Setting.new(code: :openai_model,
                                    value: openai_model_value,
                                    description: openai_model_description,

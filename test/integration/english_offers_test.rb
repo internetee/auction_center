@@ -18,6 +18,7 @@ class EnglishOffersIntegrationTest < ActionDispatch::IntegrationTest
       .to_return(status: 200, body: "{\"reference_number\":\"#{rand(111..999)}\"}", headers: {})
 
     travel_to Time.parse('2010-07-05 11:30 +0000').in_time_zone
+    clear_enqueued_jobs
   end
 
   def test_user_can_create_a_bid
@@ -34,9 +35,11 @@ class EnglishOffersIntegrationTest < ActionDispatch::IntegrationTest
       }
     }
 
-    post auction_english_offers_path(auction_uuid: @auction.uuid),
-         params: params,
-         headers: { "HTTP_REFERER" => root_path }
+    assert_enqueued_with(job: Recommendation::RefreshSingleUserAuctionScoresJob, args: [@user.id]) do
+      post auction_english_offers_path(auction_uuid: @auction.uuid),
+           params: params,
+           headers: { "HTTP_REFERER" => root_path }
+    end
 
     assert @auction.offers.present?
     assert_equal @auction.offers.first.cents, 500
@@ -87,9 +90,11 @@ class EnglishOffersIntegrationTest < ActionDispatch::IntegrationTest
       }
     }
 
-    patch english_offer_path(uuid: @auction.offers.first.uuid),
-          params: params,
-          headers: { "HTTP_REFERER" => root_path }
+    assert_enqueued_with(job: Recommendation::RefreshSingleUserAuctionScoresJob, args: [@user.id]) do
+      patch english_offer_path(uuid: @auction.offers.first.uuid),
+            params: params,
+            headers: { "HTTP_REFERER" => root_path }
+    end
 
     @auction.reload
 

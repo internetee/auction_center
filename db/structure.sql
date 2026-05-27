@@ -889,6 +889,11 @@ CREATE TABLE public.auctions (
     enable_deposit boolean DEFAULT false NOT NULL,
     requirement_deposit_in_cents integer,
     ai_score integer DEFAULT 0,
+    classification_tags character varying[] DEFAULT '{}'::character varying[] NOT NULL,
+    primary_category character varying,
+    classification_source character varying,
+    classification_model character varying,
+    classified_at timestamp(6) without time zone,
     CONSTRAINT starts_at_earlier_than_ends_at CHECK ((starts_at < ends_at))
 );
 
@@ -1471,6 +1476,90 @@ ALTER SEQUENCE public.payment_orders_id_seq OWNED BY public.payment_orders.id;
 
 
 --
+-- Name: recommendation_events; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.recommendation_events (
+    id bigint NOT NULL,
+    user_id bigint,
+    auction_id bigint,
+    uuid uuid DEFAULT gen_random_uuid(),
+    event_type character varying NOT NULL,
+    source character varying,
+    session_id character varying,
+    request_id character varying,
+    occurred_at timestamp(6) without time zone NOT NULL,
+    properties jsonb DEFAULT '{}'::jsonb NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: recommendation_events_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.recommendation_events_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: recommendation_events_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.recommendation_events_id_seq OWNED BY public.recommendation_events.id;
+
+
+--
+-- Name: recommendation_profiles; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.recommendation_profiles (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    uuid uuid DEFAULT gen_random_uuid(),
+    preferred_tlds character varying[] DEFAULT '{}'::character varying[] NOT NULL,
+    interest_keywords character varying[] DEFAULT '{}'::character varying[] NOT NULL,
+    preferred_platforms character varying[] DEFAULT '{}'::character varying[] NOT NULL,
+    preferred_length_min integer,
+    preferred_length_max integer,
+    budget_min_cents integer,
+    budget_max_cents integer,
+    allow_numbers boolean,
+    allow_hyphens boolean,
+    completed_at timestamp(6) without time zone,
+    prompt_dismissed_at timestamp(6) without time zone,
+    last_prompted_at timestamp(6) without time zone,
+    prompt_shown_count integer DEFAULT 0 NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: recommendation_profiles_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.recommendation_profiles_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: recommendation_profiles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.recommendation_profiles_id_seq OWNED BY public.recommendation_profiles.id;
+
+
+--
 -- Name: remote_view_partials; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1597,6 +1686,43 @@ CREATE MATERIALIZED VIEW public.statistics_report_invoices AS
     invoices.status
    FROM public.invoices
   WITH NO DATA;
+
+
+--
+-- Name: user_auction_scores; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.user_auction_scores (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    auction_id bigint NOT NULL,
+    uuid uuid DEFAULT gen_random_uuid(),
+    score numeric(10,6) NOT NULL,
+    model_name character varying,
+    features_version character varying,
+    calculated_at timestamp(6) without time zone NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: user_auction_scores_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.user_auction_scores_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: user_auction_scores_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.user_auction_scores_id_seq OWNED BY public.user_auction_scores.id;
 
 
 --
@@ -1923,6 +2049,20 @@ ALTER TABLE ONLY public.payment_orders ALTER COLUMN id SET DEFAULT nextval('publ
 
 
 --
+-- Name: recommendation_events id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.recommendation_events ALTER COLUMN id SET DEFAULT nextval('public.recommendation_events_id_seq'::regclass);
+
+
+--
+-- Name: recommendation_profiles id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.recommendation_profiles ALTER COLUMN id SET DEFAULT nextval('public.recommendation_profiles_id_seq'::regclass);
+
+
+--
 -- Name: remote_view_partials id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1941,6 +2081,13 @@ ALTER TABLE ONLY public.results ALTER COLUMN id SET DEFAULT nextval('public.resu
 --
 
 ALTER TABLE ONLY public.settings ALTER COLUMN id SET DEFAULT nextval('public.settings_id_seq'::regclass);
+
+
+--
+-- Name: user_auction_scores id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_auction_scores ALTER COLUMN id SET DEFAULT nextval('public.user_auction_scores_id_seq'::regclass);
 
 
 --
@@ -2253,6 +2400,22 @@ ALTER TABLE ONLY public.payment_orders
 
 
 --
+-- Name: recommendation_events recommendation_events_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.recommendation_events
+    ADD CONSTRAINT recommendation_events_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: recommendation_profiles recommendation_profiles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.recommendation_profiles
+    ADD CONSTRAINT recommendation_profiles_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: remote_view_partials remote_view_partials_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2282,6 +2445,14 @@ ALTER TABLE ONLY public.settings
 
 ALTER TABLE ONLY public.auctions
     ADD CONSTRAINT unique_domain_name_per_auction_duration EXCLUDE USING gist (domain_name WITH =, tsrange(starts_at, ends_at, '[]'::text) WITH &&);
+
+
+--
+-- Name: user_auction_scores user_auction_scores_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_auction_scores
+    ADD CONSTRAINT user_auction_scores_pkey PRIMARY KEY (id);
 
 
 --
@@ -2484,10 +2655,31 @@ CREATE INDEX delayed_jobs_priority ON public.delayed_jobs USING btree (priority,
 
 
 --
+-- Name: idx_rec_events_user_type_time; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_rec_events_user_type_time ON public.recommendation_events USING btree (user_id, event_type, occurred_at);
+
+
+--
+-- Name: index_auctions_on_classification_tags; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_auctions_on_classification_tags ON public.auctions USING gin (classification_tags);
+
+
+--
 -- Name: index_auctions_on_domain_name; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_auctions_on_domain_name ON public.auctions USING btree (domain_name);
+
+
+--
+-- Name: index_auctions_on_primary_category; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_auctions_on_primary_category ON public.auctions USING btree (primary_category);
 
 
 --
@@ -2715,6 +2907,83 @@ CREATE UNIQUE INDEX index_payment_orders_on_uuid ON public.payment_orders USING 
 
 
 --
+-- Name: index_recommendation_events_on_auction_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_recommendation_events_on_auction_id ON public.recommendation_events USING btree (auction_id);
+
+
+--
+-- Name: index_recommendation_events_on_event_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_recommendation_events_on_event_type ON public.recommendation_events USING btree (event_type);
+
+
+--
+-- Name: index_recommendation_events_on_occurred_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_recommendation_events_on_occurred_at ON public.recommendation_events USING btree (occurred_at);
+
+
+--
+-- Name: index_recommendation_events_on_properties; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_recommendation_events_on_properties ON public.recommendation_events USING gin (properties);
+
+
+--
+-- Name: index_recommendation_events_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_recommendation_events_on_user_id ON public.recommendation_events USING btree (user_id);
+
+
+--
+-- Name: index_recommendation_events_on_uuid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_recommendation_events_on_uuid ON public.recommendation_events USING btree (uuid);
+
+
+--
+-- Name: index_recommendation_profiles_on_interest_keywords; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_recommendation_profiles_on_interest_keywords ON public.recommendation_profiles USING gin (interest_keywords);
+
+
+--
+-- Name: index_recommendation_profiles_on_preferred_platforms; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_recommendation_profiles_on_preferred_platforms ON public.recommendation_profiles USING gin (preferred_platforms);
+
+
+--
+-- Name: index_recommendation_profiles_on_preferred_tlds; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_recommendation_profiles_on_preferred_tlds ON public.recommendation_profiles USING gin (preferred_tlds);
+
+
+--
+-- Name: index_recommendation_profiles_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_recommendation_profiles_on_user_id ON public.recommendation_profiles USING btree (user_id);
+
+
+--
+-- Name: index_recommendation_profiles_on_uuid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_recommendation_profiles_on_uuid ON public.recommendation_profiles USING btree (uuid);
+
+
+--
 -- Name: index_results_on_auction_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2775,6 +3044,41 @@ CREATE UNIQUE INDEX index_statistics_report_invoices_on_id ON public.statistics_
 --
 
 CREATE UNIQUE INDEX index_statistics_report_results_on_id ON public.statistics_report_results USING btree (id);
+
+
+--
+-- Name: index_user_auction_scores_on_auction_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_user_auction_scores_on_auction_id ON public.user_auction_scores USING btree (auction_id);
+
+
+--
+-- Name: index_user_auction_scores_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_user_auction_scores_on_user_id ON public.user_auction_scores USING btree (user_id);
+
+
+--
+-- Name: index_user_auction_scores_on_user_id_and_auction_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_user_auction_scores_on_user_id_and_auction_id ON public.user_auction_scores USING btree (user_id, auction_id);
+
+
+--
+-- Name: index_user_auction_scores_on_user_id_and_score; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_user_auction_scores_on_user_id_and_score ON public.user_auction_scores USING btree (user_id, score);
+
+
+--
+-- Name: index_user_auction_scores_on_uuid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_user_auction_scores_on_uuid ON public.user_auction_scores USING btree (uuid);
 
 
 --
@@ -2925,11 +3229,27 @@ CREATE TRIGGER process_wishlist_item_audit AFTER INSERT OR DELETE OR UPDATE ON p
 
 
 --
+-- Name: recommendation_events fk_rails_04596f3101; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.recommendation_events
+    ADD CONSTRAINT fk_rails_04596f3101 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
 -- Name: bans fk_rails_070022cd76; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.bans
     ADD CONSTRAINT fk_rails_070022cd76 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: recommendation_events fk_rails_1663165237; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.recommendation_events
+    ADD CONSTRAINT fk_rails_1663165237 FOREIGN KEY (auction_id) REFERENCES public.auctions(id);
 
 
 --
@@ -3005,6 +3325,14 @@ ALTER TABLE ONLY public.results
 
 
 --
+-- Name: recommendation_profiles fk_rails_a650b1795d; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.recommendation_profiles
+    ADD CONSTRAINT fk_rails_a650b1795d FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
 -- Name: offers fk_rails_bb5f3f4ecb; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3026,6 +3354,22 @@ ALTER TABLE ONLY public.invoices
 
 ALTER TABLE ONLY public.offers
     ADD CONSTRAINT fk_rails_e6095d6211 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: user_auction_scores fk_rails_ea35c8f56c; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_auction_scores
+    ADD CONSTRAINT fk_rails_ea35c8f56c FOREIGN KEY (auction_id) REFERENCES public.auctions(id);
+
+
+--
+-- Name: user_auction_scores fk_rails_f45bfd4b1b; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_auction_scores
+    ADD CONSTRAINT fk_rails_f45bfd4b1b FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
 --
@@ -3051,6 +3395,10 @@ ALTER TABLE ONLY public.invoices
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260525115000'),
+('20260525095700'),
+('20260525095600'),
+('20260525095500'),
 ('20251105120000'),
 ('20251105100000'),
 ('20251104081848'),

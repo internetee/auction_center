@@ -145,6 +145,10 @@ Rails.application.routes.draw do
 
   resources :wishlist_items, param: :uuid, only: %i[index edit create destroy update]
   resources :autobider, param: :uuid, only: [:create, :update, :edit, :new]
+  resource :recommendation_profile, only: %i[edit update]
+  patch 'recommendation_profile/dismiss', to: 'recommendation_profiles#dismiss',
+                                          as: :dismiss_recommendation_profile
+  resources :recommendation_events, only: :create
 
   mount OkComputer::Engine, at: '/healthcheck', as: :healthcheck
   mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?

@@ -1,0 +1,47 @@
+et:
+  recommendation_profiles:
+    edit:
+      title: "Oksjoni huvid"
+      why_it_helps_title: "Miks see kasulik on"
+      why_it_helps_body: "Vali, millist tüüpi domeeninimed sind huvitavad. Kombineerime need huvid sinu wishlisti, pakkumiste ja domeeni siltidega, et tõsta sobivamad oksjonid nimekirjas kõrgemale."
+      submit: "Salvesta huvid"
+    update:
+      updated: "Sinu oksjoni huvid on uuendatud."
+      skipped: "Saad oma oksjoni huvid hiljem lisada."
+    dismiss:
+      dismissed: "Tuletame seda hiljem meelde."
+    form:
+      title: "Oksjoni huvid"
+      subtitle: "Valikuline. Vali, millised domeeninimede tüübid sind huvitavad. Kasutame neid kategooriaid koos pakkumiste ja wishlistiga."
+      interest_categories: "Huvi kategooriad"
+      other_interests: "Muud huvid"
+      other_interests_placeholder: "Sisesta huvi ja vajuta Enter"
+      other_interests_hint: "Kasuta seda huvide jaoks, mida eeldefineeritud nimekirjas ei ole."
+    prompt:
+      title: "Personaliseerimine"
+      subject: "Anna teada, millised domeenid sind huvitavad"
+      description: "Lisa mõned eelistused ja tõstame sulle sobivamad oksjonid nimekirjas kõrgemale. See samm on valikuline."
+      fill_now: "Määra huvid"
+      remind_later: "Tuleta hiljem meelde"
+    profile:
+      summary_title: "Oksjoni huvid"
+      empty_state: "Huvid pole veel salvestatud."
+      edit_action: "Muuda huve"
+    summary:
+      categories: "Huvid"
+    categories:
+      brandable: "Bränditavad nimed"
+      shop_brand: "Poe- või kaubamärgi nimed"
+      saas: "SaaS ja tarkvara"
+      b2b_service: "B2B teenused"
+      local_service: "Kohalikud ja teenusettevõtted"
+      media_content: "Meedia ja sisu"
+      finance: "Finants ja fintech"
+      legal: "Õigus- ja professionaalsed teenused"
+      health: "Tervis ja heaolu"
+      education: "Haridus ja kursused"
+      travel: "Reisimine ja turism"
+      automotive: "Autondus"
+      real_estate: "Kinnisvara"
+      numeric: "Numbrilised domeenid"
+      other: "Muu"

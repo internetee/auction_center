@@ -1,0 +1,38 @@
+<div data-controller='modals--offer-modal' data-modals--offer-modal-open-class='is-open'>
+  <div class="c-modal-overlay js-modal-recommendations" data-modals--offer-modal-target='modal'>
+    <div class="c-modal c-modal--bill c-modal--sm">
+      <div class="c-modal__scroll">
+        <div class="c-modal__scroll__content">
+          <div class="c-modal__header">
+            <div class="c-modal__header__title">
+              <span><%= t('recommendation_profiles.prompt.title') %></span>
+            </div>
+            <div class="c-modal__header__subject">
+              <span class="c-modal__header__subject__title"><%= t('recommendation_profiles.prompt.subject') %></span>
+            </div>
+            <div class="c-modal__header__desc">
+              <span><%= t('recommendation_profiles.prompt.description') %></span>
+            </div>
+          </div>
+
+          <div class="c-modal__main">
+            <div class="c-modal__footer">
+              <div class="c-modal__footer__col">
+                <%= component 'common/links/link_button',
+                              link_title: t('recommendation_profiles.prompt.fill_now'),
+                              href: edit_recommendation_profile_path(return_to: request.fullpath),
+                              color: 'green' %>
+
+                <%= button_to t('recommendation_profiles.prompt.remind_later'),
+                              dismiss_recommendation_profile_path,
+                              method: :patch,
+                              class: 'c-btn c-btn--ghost',
+                              params: { return_to: request.fullpath } %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -436,6 +436,20 @@ class UserTest < ActiveSupport::TestCase
 
   end
 
+  def test_user_can_accept_nested_recommendation_profile_attributes
+    user = boilerplate_user
+    user.mobile_phone = '+372500100300'
+    user.country_code = 'EE'
+    user.recommendation_profile_attributes = {
+      interest_categories: %w[saas],
+      custom_interests: ['marketplace']
+    }
+
+    assert user.save
+    assert_equal(%w[saas other], user.recommendation_profile.interest_categories.sort)
+    assert_equal(['marketplace'], user.recommendation_profile.custom_interests)
+  end
+
   def boilerplate_user
     stub_request(:any, "https://eis_billing_system:3000/api/v1/invoice_generator/reference_number_generator")
       .to_return(status: 200, body: "{\"reference_number\":\"#{rand(100000..999999)}\"}", headers: {})

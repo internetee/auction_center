@@ -47,8 +47,13 @@ class User < ApplicationRecord
   has_many :autobiders, dependent: :destroy
   has_many :domain_participate_auctions
   has_many :notifications, as: :recipient, dependent: :destroy
+  has_many :recommendation_events, dependent: :destroy
+  has_many :user_auction_scores, dependent: :destroy
 
   has_one :webpush_subscription
+  has_one :recommendation_profile, dependent: :destroy
+
+  accepts_nested_attributes_for :recommendation_profile, reject_if: :recommendation_profile_attributes_blank?
 
   scope :subscribed_to_daily_summary, -> { where(daily_summary: true) }
   scope :with_confirmed_phone, -> { where.not(mobile_phone_confirmed_at: nil) }
@@ -238,5 +243,17 @@ class User < ApplicationRecord
 
   def active_for_authentication?
     signed_in_with_identity_document? || super
+  end
+
+  def recommendation_profile_promptable?
+    recommendation_profile&.promptable? != false
+  end
+
+  private
+
+  def recommendation_profile_attributes_blank?(attributes)
+    attributes.except('_destroy').values.all? do |value|
+      value.is_a?(Array) ? value.reject(&:blank?).empty? : value.blank?
+    end
   end
 end

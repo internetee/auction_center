@@ -76,5 +76,10 @@
     <%= component 'common/form/checkboxes/checkbox_with_label', label_title: t('.daily_summary'), form: f, attribute: :daily_summary  %>
 
   </div>
+
+  <%= f.fields_for :recommendation_profile do |recommendation_form| %>
+    <%= render 'recommendation_profiles/fields', form: recommendation_form %>
+  <% end %>
+
   <button class="c-btn c-btn--green c-account__btn"><%= t('users.form.sign_up') %></button>
 </div>

@@ -36,6 +36,15 @@ class EnglishOffersController < ApplicationController
       send_outbided_notification(auction: @auction, offer: @offer, flash:)
       update_auction_values(@auction, t('english_offers.create.created'))
       Rails.logger.info("User #{current_user.id} created offer #{@offer.id} for auction #{@auction.id}")
+      Recommendation::RefreshSingleUserAuctionScoresJob.perform_later(current_user.id)
+      Recommendation::EventTracker.call(
+        user: current_user,
+        auction: @auction,
+        event_type: 'bid_create',
+        source: 'english_offers#create',
+        properties: { offer_id: @offer.id, cents: @offer.cents },
+        request:
+      )
     else
       errors = if @offer.errors.full_messages_for(:cents).present?
                  @offer.errors.full_messages_for(:cents).join
@@ -70,6 +79,15 @@ class EnglishOffersController < ApplicationController
       send_outbided_notification(auction: @auction, offer: @offer, flash:)
       update_auction_values(@auction, t('english_offers.edit.bid_updated'))
       Rails.logger.info("User #{current_user.id} updated offer #{@offer.id} for auction #{@auction.id}")
+      Recommendation::RefreshSingleUserAuctionScoresJob.perform_later(current_user.id)
+      Recommendation::EventTracker.call(
+        user: current_user,
+        auction: @auction,
+        event_type: 'bid_update',
+        source: 'english_offers#update',
+        properties: { offer_id: @offer.id, cents: @offer.cents },
+        request:
+      )
     else
       errors = if @offer.errors.full_messages_for(:cents).present?
                  @offer.errors.full_messages_for(:cents).join

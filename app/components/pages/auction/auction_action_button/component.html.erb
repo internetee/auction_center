@@ -6,7 +6,17 @@
   <% else %>
     <%# if need to create new offer for english auction %>
     <%= component 'common/links/link_button', link_title: deposit_value[:link_title], href: new_auction_english_offer_path(auction_uuid: auction.uuid),
-                  color: deposit_value[:color], options: { data: { turbo_frame: 'modal' } } %>
+                  color: deposit_value[:color],
+                  options: {
+                    data: {
+                      turbo_frame: 'modal',
+                      controller: 'recommendation-tracker',
+                      action: 'click->recommendation-tracker#track',
+                      recommendation_tracker_auction_uuid_value: auction.uuid,
+                      recommendation_tracker_source_value: 'auction_action_new_english_offer',
+                      recommendation_tracker_event_type_value: 'auction_click'
+                    }
+                  } %>
   <% end %>
 
 <% else %>
@@ -17,7 +27,17 @@
   <% else %>
     <%# if need to create new offer for blind auction %>
     <%= component 'common/links/link_button', link_title: t('auctions.bid'), href: new_auction_offer_path(auction_uuid: auction.uuid),
-                  color: 'green', options: { data: { turbo_frame: 'modal' } } %>
+                  color: 'green',
+                  options: {
+                    data: {
+                      turbo_frame: 'modal',
+                      controller: 'recommendation-tracker',
+                      action: 'click->recommendation-tracker#track',
+                      recommendation_tracker_auction_uuid_value: auction.uuid,
+                      recommendation_tracker_source_value: 'auction_action_new_blind_offer',
+                      recommendation_tracker_event_type_value: 'auction_click'
+                    }
+                  } %>
   <% end %>
 
 <% end %>

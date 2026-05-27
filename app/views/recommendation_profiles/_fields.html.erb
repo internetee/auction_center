@@ -1,0 +1,51 @@
+<div class="o-card">
+  <h2 class="o-card__title c-account__title"><%= t('recommendation_profiles.form.title') %></h2>
+  <p class="c-account__subtitle"><%= t('recommendation_profiles.form.subtitle') %></p>
+
+  <div class="c-account__input u-mb-20" data-controller="form--custom-interest-tags">
+    <label><%= t('recommendation_profiles.form.interest_categories') %></label>
+    <%= hidden_field_tag "#{form.object_name}[interest_categories][]", '' %>
+    <div class="u-flex u-flex-col" style="gap: 12px; padding-left: 16px;">
+      <% Recommendation::InterestCatalog.categories.each_slice(2) do |row| %>
+        <div class="u-flex u-align-center" style="gap: 16px; flex-wrap: wrap;">
+          <% row.each do |category| %>
+            <label class="o-checkbox-container c-login__checkbox-container">
+              <span class="o-checkbox-text"><%= t("recommendation_profiles.categories.#{category}") %></span>
+              <%= check_box_tag "#{form.object_name}[interest_categories][]",
+                                category,
+                                form.object.interest_categories.include?(category),
+                                class: 'o-checkbox-sample',
+                                data: (category == RecommendationProfile::OTHER_CATEGORY ? {
+                                  form__custom_interest_tags_target: 'otherToggle',
+                                  action: 'change->form--custom-interest-tags#toggle'
+                                } : {}) %>
+              <span class="o-checkmark-sample"></span>
+            </label>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="u-mt-20" data-form--custom-interest-tags-target="field" style="padding-left: 16px;">
+      <label><%= t('recommendation_profiles.form.other_interests') %></label>
+      <input type="text"
+             data-form--custom-interest-tags-target="input"
+             data-hidden-input-name="<%= "#{form.object_name}[custom_interests][]" %>"
+             data-action="keydown->form--custom-interest-tags#add"
+             placeholder="<%= t('recommendation_profiles.form.other_interests_placeholder') %>">
+
+      <p class="c-account__subtitle"><%= t('recommendation_profiles.form.other_interests_hint') %></p>
+
+      <div data-form--custom-interest-tags-target="list" style="margin-top: 12px;">
+        <% form.object.custom_interests.each do |interest| %>
+          <span class="c-badge c-badge--blue" data-custom-interest-value="<%= interest %>" style="display:inline-flex; align-items:center; gap:8px; margin:4px 8px 4px 0;">
+            <span><%= interest %></span>
+            <button type="button" data-action="form--custom-interest-tags#remove" style="border:none; background:transparent; cursor:pointer; padding:0; line-height:1;">x</button>
+            <%= hidden_field_tag "#{form.object_name}[custom_interests][]", interest %>
+          </span>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+</div>

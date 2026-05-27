@@ -7,6 +7,7 @@
 <% end %>
 
 <%= component 'pages/auction/cards' %>
+<%= render 'recommendation_profiles/prompt_modal' if @show_recommendation_prompt %>
 
 <div class="o-container">
   <div class="c-table c-table--sortable" data-controller="english-offers" 
