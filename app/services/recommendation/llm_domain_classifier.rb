@@ -12,7 +12,6 @@ module Recommendation
     BATCH_LIMIT = 50
 
     AUDIENCE_VALUES = %w[b2b b2c mixed unclear].freeze
-    DESCRIPTION_LOCALES = %w[en et].freeze
 
     class << self
       def call(...)
@@ -91,8 +90,6 @@ module Recommendation
           domain_name:         { type: 'string' },
           primary_category:    { type: 'string', enum: Recommendation::InterestCatalog.categories },
           tags:                { type: 'array', items: { type: 'string', enum: Recommendation::InterestCatalog.categories } },
-          description:         { type: 'string' },
-          description_locale:  { type: 'string', enum: DESCRIPTION_LOCALES },
           keywords:            { type: 'array', items: { type: 'string' } },
           audience:            { type: 'string', enum: AUDIENCE_VALUES },
           languages:           { type: 'array', items: { type: 'string' } },
@@ -101,8 +98,8 @@ module Recommendation
           confidence:          { type: 'number' }
         },
         required: %w[
-          domain_name primary_category tags description description_locale
-          keywords audience languages suggested_use_cases brandability_score confidence
+          domain_name primary_category tags keywords audience languages
+          suggested_use_cases brandability_score confidence
         ],
         additionalProperties: false
       }
@@ -127,11 +124,6 @@ module Recommendation
         - primary_category and tags MUST come from this fixed vocabulary:
           #{Recommendation::InterestCatalog.categories.join(', ')}.
         - tags: 1 to 4 entries; primary_category must be one of them.
-        - description: 1-2 sentences, neutral, marketing-style, no fluff,
-          no claims about ownership, no inventing facts. If domain meaning
-          is unclear, say so plainly.
-        - description_locale: 'et' if the domain is clearly Estonian
-          (Estonian word/root), otherwise 'en'.
         - keywords: 2-6 lowercase semantic tokens extracted or inferred
           from the domain. No stopwords.
         - audience: 'b2b' for business buyers, 'b2c' for consumers,
@@ -164,8 +156,6 @@ module Recommendation
         domain_name: domain_name,
         primary_category: primary,
         tags: tags,
-        description: entry['description'].to_s.strip.presence,
-        description_locale: sanitize_locale(entry['description_locale']),
         keywords: Array(entry['keywords']).map { |k| k.to_s.strip.downcase }.reject(&:blank?).uniq,
         audience: AUDIENCE_VALUES.include?(entry['audience']) ? entry['audience'] : nil,
         languages: Array(entry['languages']).map { |l| l.to_s.strip.downcase }.reject(&:blank?).uniq,
@@ -189,10 +179,6 @@ module Recommendation
     def sanitize_category(value)
       cleaned = value.to_s.strip.downcase
       Recommendation::InterestCatalog.categories.include?(cleaned) ? cleaned : nil
-    end
-
-    def sanitize_locale(value)
-      DESCRIPTION_LOCALES.include?(value) ? value : 'en'
     end
 
     def clamp_unit(value)

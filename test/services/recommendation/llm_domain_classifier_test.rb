@@ -19,8 +19,6 @@ module Recommendation
       cloud = result.find { |r| r[:domain_name] == 'cloudstack.ee' }
       assert_equal 'saas', cloud[:primary_category]
       assert_equal %w[saas b2b_service], cloud[:tags]
-      assert_equal 'Cloud platform domain.', cloud[:description]
-      assert_equal 'en', cloud[:description_locale]
       assert_equal 'b2b', cloud[:audience]
       assert_includes cloud[:keywords], 'cloud'
       assert_equal DomainClassification::OPENAI_SOURCE, cloud[:classification_source]
@@ -85,8 +83,6 @@ module Recommendation
                 domain_name: domain_name,
                 primary_category: 'not_a_real_category',
                 tags: %w[saas absolutely_made_up],
-                description: 'desc',
-                description_locale: 'en',
                 keywords: %w[cloud],
                 audience: 'b2b',
                 languages: %w[en],
@@ -105,8 +101,6 @@ module Recommendation
         domain_name: name,
         primary_category: 'saas',
         tags: %w[saas b2b_service],
-        description: 'Cloud platform domain.',
-        description_locale: 'en',
         keywords: %w[cloud platform],
         audience: 'b2b',
         languages: %w[en],

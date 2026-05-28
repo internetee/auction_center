@@ -86,8 +86,13 @@ untouched. This is deferred until there's a concrete user-visible
 ranking problem the current signals can't solve.
 
 **What we kept:** the `domain_classifications` table including
-`description`, `keywords`, `audience` and other rich fields that
-feed the scorer directly without needing vectors.
+`keywords`, `audience`, `tags`, `suggested_use_cases` and other
+rich fields that feed the scorer directly without needing vectors.
+
+Update (post-merge review): the `description` field was also dropped
+to save OpenAI tokens — `keywords` alone covers the UX need (badge
+display in auction card) without paying for a description we won't
+read in code paths.
 
 ### D4. Cron jobs scheduled outside the app
 

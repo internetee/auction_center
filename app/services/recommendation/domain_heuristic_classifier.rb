@@ -35,8 +35,6 @@ module Recommendation
         languages: derive_languages,
         audience: nil,
         suggested_use_cases: [],
-        description: nil,
-        description_locale: nil,
         has_digits: @structure[:has_digits],
         has_hyphens: @structure[:has_hyphens],
         token_count: @structure[:token_count],
