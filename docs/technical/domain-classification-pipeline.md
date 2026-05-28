@@ -11,12 +11,10 @@ app/services/recommendation/
   domain_heuristic_classifier.rb    # dictionary + subword tokenizer
   domain_dictionary.rb              # ESTONIAN_ROOTS + ENGLISH_ROOTS hashes
   llm_domain_classifier.rb          # Tier 2 — only called from cron job
-  domain_embedder.rb                # OpenAI text-embedding-3-small wrapper
 
 app/jobs/recommendation/
   classify_domain_heuristically_job.rb     # instant, triggered on events
   classify_unclassified_domains_job.rb     # cron, batched LLM
-  embed_unembedded_domains_job.rb          # cron, batched embeddings
   backfill_domain_classifications_job.rb   # one-shot
 
 lib/tasks/recommendation.rake              # entry points for k8s CronJobs
@@ -126,56 +124,20 @@ DomainClassification
 
 `raw_llm_response` (jsonb) keeps the parsed response. If schema changes later, we can re-parse from `raw_llm_response` without re-billing OpenAI.
 
-## Embedding pipeline
+## Embedding pipeline — dropped from v2
 
-### Trigger
+Vector embeddings were planned as `text-embedding-3-small` + pgvector
+HNSW index for cosine similarity, with a per-auction multiplier on top
+of the base score. This was removed before merge because pgvector would
+have required either bumping the shared dev Postgres image
+(`postgres:13.4` → `pgvector/pgvector:pg13`) for the whole team or
+adding extension provisioning to the shared RDS — both reach beyond
+auction_center's scope.
 
-`rake recommendation:embed_unembedded` (k8s CronJob, daily 03:30).
-
-Selects rows where:
-
-```ruby
-DomainClassification
-  .where(embedding: nil)
-  .where.not(description: nil)
-  .limit(MAX_DOMAINS_PER_RUN)
-```
-
-### Input
-
-Concatenation of `domain_name + description + keywords` produces semantic context for the embedder.
-
-### Model
-
-`text-embedding-3-small` (1536 dim, $0.02/1M tokens).
-
-### Storage
-
-`vector(1536)` column in `domain_classifications`. HNSW index with cosine ops:
-
-```sql
-CREATE INDEX ON domain_classifications USING hnsw (embedding vector_cosine_ops);
-```
-
-### Usage in Scorer
-
-User centroid embedding:
-
-```ruby
-user_centroid = weighted_average(
-  bid_embeddings.map { |emb, days_old| [emb, exp(-days_old / 60)] } +
-  wishlist_embeddings.map { ... } +
-  view_embeddings.map { ... }
-)
-```
-
-Per-auction multiplier:
-
-```ruby
-similarity = cosine(user_centroid, auction.embedding)  # -1..1
-multiplier = 1 + max(0, similarity)                     # 1..2
-final_score *= multiplier
-```
+If we want vector similarity later, the recommended path is a sidecar
+pgvector pod isolated to auction_center (separate StatefulSet, separate
+ActiveRecord connection), leaving the main databases untouched. See
+ADR-001 for the rationale.
 
 ## Triggers (instant heuristic only)
 
@@ -214,8 +176,7 @@ Existing `auctions.classification_tags / primary_category / classification_sourc
 | `DomainClassifier` (orchestrator) | upserts row with `source='heuristic'`; skips fresh rows |
 | `LlmDomainClassifier` | mocked OpenAI; verifies prompt and parsing |
 | `ClassifyUnclassifiedDomainsJob` | scope selection, batching, no LLM call when scope empty |
-| `DomainEmbedder` | mocked OpenAI; vector shape |
-| `Scorer` (extended) | tag + keyword + audience + embedding paths verified |
+| `Scorer` (extended) | tag + keyword + audience + behavioural affinity paths verified |
 
 ## Operations
 
@@ -224,4 +185,3 @@ Existing `auctions.classification_tags / primary_category / classification_sourc
 | Daily LLM cost | OpenAI dashboard + log lines from `LlmDomainClassifier` |
 | Failed classifications | `Rails.logger.warn` from `ClassifyUnclassifiedDomainsJob` |
 | Backlog of unclassified | `DomainClassification.where(classification_source: ['heuristic', nil]).count` |
-| Embedding backlog | `DomainClassification.where(embedding: nil).where.not(description: nil).count` |

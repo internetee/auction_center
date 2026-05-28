@@ -6,7 +6,6 @@ class Job
                          SharedFooterFetcherJob DirectoInvoiceForwardJob ActiveAuctionsAiSortingJob
                          Recommendation::ClassifyAuctionDomainsJob
                          Recommendation::ClassifyUnclassifiedDomainsJob
-                         Recommendation::EmbedUnembeddedDomainsJob
                          Recommendation::RefreshUserAuctionScoresJob].freeze
 
   include ActiveModel::Model

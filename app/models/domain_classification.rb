@@ -8,9 +8,6 @@ class DomainClassification < ApplicationRecord
 
   LOW_CONFIDENCE_THRESHOLD = 0.6
   LLM_REFRESH_INTERVAL = 6.months
-  EMBEDDING_DIMENSIONS = 1536
-
-  has_neighbors :embedding if respond_to?(:has_neighbors) && column_names.include?('embedding')
 
   validates :domain_name, presence: true, uniqueness: { case_sensitive: false }
   validates :classification_source, inclusion: { in: SOURCES }, allow_nil: true
@@ -32,13 +29,6 @@ class DomainClassification < ApplicationRecord
       .or(where('classification_source = ? AND classified_at < ?', OPENAI_SOURCE, LLM_REFRESH_INTERVAL.ago))
   }
   scope :classified, -> { where.not(classified_at: nil) }
-  scope :needs_embedding, lambda {
-    if column_names.include?('embedding')
-      where(embedding: nil).where.not(description: nil)
-    else
-      none
-    end
-  }
 
   def heuristic? = classification_source == HEURISTIC_SOURCE
   def from_llm? = classification_source == OPENAI_SOURCE
