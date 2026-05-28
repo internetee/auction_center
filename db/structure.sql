@@ -1192,8 +1192,6 @@ CREATE TABLE public.domain_classifications (
     uuid uuid DEFAULT gen_random_uuid() NOT NULL,
     primary_category character varying,
     tags character varying[] DEFAULT '{}'::character varying[] NOT NULL,
-    description text,
-    description_locale character varying DEFAULT 'en'::character varying,
     keywords character varying[] DEFAULT '{}'::character varying[] NOT NULL,
     audience character varying,
     languages character varying[] DEFAULT '{}'::character varying[] NOT NULL,
@@ -1209,7 +1207,10 @@ CREATE TABLE public.domain_classifications (
     classified_at timestamp(6) without time zone,
     raw_llm_response jsonb DEFAULT '{}'::jsonb NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    embedding double precision[],
+    embedding_model character varying,
+    embedded_at timestamp(6) without time zone
 );
 
 
@@ -2867,6 +2868,13 @@ CREATE UNIQUE INDEX index_domain_classifications_on_domain_name ON public.domain
 
 
 --
+-- Name: index_domain_classifications_on_embedded_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_domain_classifications_on_embedded_at ON public.domain_classifications USING btree (embedded_at);
+
+
+--
 -- Name: index_domain_classifications_on_keywords; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3516,6 +3524,8 @@ ALTER TABLE ONLY public.invoices
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260527090300'),
+('20260527090200'),
 ('20260527090100'),
 ('20260527090000'),
 ('20260525115000'),
