@@ -49,8 +49,8 @@ module Recommendation
     # structural and provenance metadata in that case.
     def preserve_llm_fields!(record, attributes)
       %i[
-        description description_locale keywords audience languages
-        suggested_use_cases primary_category tags brandability_score
+        keywords audience languages suggested_use_cases
+        primary_category tags brandability_score
         confidence classification_source classification_model classified_at
       ].each { |field| attributes.delete(field) if record.send(field).present? }
     end

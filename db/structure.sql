@@ -1183,6 +1183,56 @@ ALTER SEQUENCE public.directo_customers_id_seq OWNED BY public.directo_customers
 
 
 --
+-- Name: domain_classifications; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.domain_classifications (
+    id bigint NOT NULL,
+    domain_name character varying NOT NULL,
+    uuid uuid DEFAULT gen_random_uuid() NOT NULL,
+    primary_category character varying,
+    tags character varying[] DEFAULT '{}'::character varying[] NOT NULL,
+    description text,
+    description_locale character varying DEFAULT 'en'::character varying,
+    keywords character varying[] DEFAULT '{}'::character varying[] NOT NULL,
+    audience character varying,
+    languages character varying[] DEFAULT '{}'::character varying[] NOT NULL,
+    suggested_use_cases character varying[] DEFAULT '{}'::character varying[] NOT NULL,
+    has_digits boolean DEFAULT false NOT NULL,
+    has_hyphens boolean DEFAULT false NOT NULL,
+    token_count integer,
+    dictionary_word boolean DEFAULT false NOT NULL,
+    brandability_score numeric(4,3),
+    classification_source character varying,
+    classification_model character varying,
+    confidence numeric(4,3),
+    classified_at timestamp(6) without time zone,
+    raw_llm_response jsonb DEFAULT '{}'::jsonb NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: domain_classifications_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.domain_classifications_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: domain_classifications_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.domain_classifications_id_seq OWNED BY public.domain_classifications.id;
+
+
+--
 -- Name: domain_participate_auctions; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1993,6 +2043,13 @@ ALTER TABLE ONLY public.directo_customers ALTER COLUMN id SET DEFAULT nextval('p
 
 
 --
+-- Name: domain_classifications id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.domain_classifications ALTER COLUMN id SET DEFAULT nextval('public.domain_classifications_id_seq'::regclass);
+
+
+--
 -- Name: domain_participate_auctions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2341,6 +2398,14 @@ ALTER TABLE ONLY public.delayed_jobs
 
 ALTER TABLE ONLY public.directo_customers
     ADD CONSTRAINT directo_customers_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: domain_classifications domain_classifications_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.domain_classifications
+    ADD CONSTRAINT domain_classifications_pkey PRIMARY KEY (id);
 
 
 --
@@ -2771,6 +2836,62 @@ CREATE UNIQUE INDEX index_directo_customers_on_customer_code ON public.directo_c
 --
 
 CREATE UNIQUE INDEX index_directo_customers_on_vat_number ON public.directo_customers USING btree (vat_number);
+
+
+--
+-- Name: index_domain_classifications_on_audience; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_domain_classifications_on_audience ON public.domain_classifications USING btree (audience);
+
+
+--
+-- Name: index_domain_classifications_on_classification_source; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_domain_classifications_on_classification_source ON public.domain_classifications USING btree (classification_source);
+
+
+--
+-- Name: index_domain_classifications_on_classified_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_domain_classifications_on_classified_at ON public.domain_classifications USING btree (classified_at);
+
+
+--
+-- Name: index_domain_classifications_on_domain_name; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_domain_classifications_on_domain_name ON public.domain_classifications USING btree (domain_name);
+
+
+--
+-- Name: index_domain_classifications_on_keywords; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_domain_classifications_on_keywords ON public.domain_classifications USING gin (keywords);
+
+
+--
+-- Name: index_domain_classifications_on_primary_category; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_domain_classifications_on_primary_category ON public.domain_classifications USING btree (primary_category);
+
+
+--
+-- Name: index_domain_classifications_on_tags; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_domain_classifications_on_tags ON public.domain_classifications USING gin (tags);
+
+
+--
+-- Name: index_domain_classifications_on_uuid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_domain_classifications_on_uuid ON public.domain_classifications USING btree (uuid);
 
 
 --
@@ -3395,6 +3516,8 @@ ALTER TABLE ONLY public.invoices
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260527090100'),
+('20260527090000'),
 ('20260525115000'),
 ('20260525095700'),
 ('20260525095600'),

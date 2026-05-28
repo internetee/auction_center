@@ -13,11 +13,6 @@
 
   <td>
     <h3 data-controller="slashed-zero"><%= auction.domain_name %></h3>
-    <% if domain_classification&.description.present? %>
-      <p class="c-auction__domain-description">
-        <%= domain_classification.description %>
-      </p>
-    <% end %>
     <% if domain_classification&.keywords.present? %>
       <div class="c-auction__domain-keywords">
         <% domain_classification.keywords.first(4).each do |keyword| %>

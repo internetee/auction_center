@@ -41,7 +41,7 @@ is safe: nothing duplicates, fresh rows are skipped.
 4. (Optional, recommended) Manually run
    `rake recommendation:classify_unclassified` once to perform the
    first LLM enrichment immediately rather than waiting for cron.
-5. Verify `/auctions` renders descriptions on cards with classified
+5. Verify `/auctions` renders keyword badges on cards with classified
    domains.
 
 ## Monitoring
@@ -85,12 +85,12 @@ To roll back entirely:
 
 ## Troubleshooting
 
-**Description shows in wrong language** — `description_locale` is
-chosen by the LLM at classification time. If you want a different
-locale, re-run classification with `force: true` after updating the
-system prompt, or seed manual rows with `classification_source='manual'`.
-
 **Score never updates after action** — Check whether
 `RefreshSingleUserAuctionScoresJob` is reaching the worker (delayed
 job table). The debounce window is 30 seconds; updates are not
 real-time. Re-enqueue manually via the admin Job UI if needed.
+
+**Keywords wrong / missing on a card** — Heuristic-only domains have
+generic keywords. They get richer keywords from the nightly LLM run.
+Force a re-classification by deleting the row and letting the next
+trigger recreate it: `DomainClassification.find_by(domain_name: 'x.ee').destroy`.

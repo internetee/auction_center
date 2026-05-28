@@ -35,8 +35,7 @@ module Recommendation
         domain_name: 'rich.ee',
         primary_category: 'saas',
         tags: %w[saas b2b_service],
-        description: 'Description by LLM',
-        description_locale: 'en',
+        keywords: %w[cloud platform],
         audience: 'b2b',
         languages: %w[en],
         suggested_use_cases: %w[agency],
@@ -50,7 +49,8 @@ module Recommendation
       Recommendation::DomainClassifier.call('rich.ee', force: true)
       record.reload
 
-      assert_equal 'Description by LLM', record.description
+      assert_equal %w[cloud platform], record.keywords
+      assert_equal 'b2b', record.audience
       assert_equal DomainClassification::OPENAI_SOURCE, record.classification_source
       assert_equal 'saas', record.primary_category
     end

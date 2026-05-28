@@ -47,8 +47,8 @@ domain_classifications row created with source='heuristic'
 [ Nightly k8s CronJob: rake recommendation:classify_unclassified ]
    |
    v
-LLM batch (50 domains / call) enriches rows with description, audience,
-keywords, suggested_use_cases, brandability_score
+LLM batch (50 domains / call) enriches rows with keywords, audience,
+suggested_use_cases, brandability_score, languages
 source='openai'
    |
    v
@@ -76,8 +76,7 @@ Single source of truth for what a domain *means*. One row per `domain_name`.
 |---|---|
 | `domain_name` (unique) | the key |
 | `primary_category`, `tags[]` | hard categorical signals |
-| `description`, `description_locale` | human-readable, used in UI |
-| `keywords[]` | extracted semantic tokens |
+| `keywords[]` | extracted semantic tokens, shown in UI as badges |
 | `audience` (b2b/b2c/mixed) | targeting signal |
 | `languages[]` | et / en / mixed |
 | `suggested_use_cases[]` | shop / blog / service / agency / marketplace |
@@ -111,7 +110,7 @@ Tier 2 — LLM batch (cron daily, ~$0.30/month at our volume)
   - Recommendation::LlmDomainClassifier
   - OpenAI structured output (json_schema)
   - 50 domains per API call
-  - Enriches description, audience, use_cases, brandability_score, languages
+  - Enriches keywords, audience, suggested_use_cases, brandability_score, languages
   - Re-runs every 6 months for source='openai' rows
 
 Tier 1 — (future, optional) embedding-based local classifier
@@ -184,7 +183,7 @@ See [domain-classification-pipeline.md](../technical/domain-classification-pipel
 | 5 | ~~pgvector + embeddings batch job~~ | **dropped** — see ADR-001 |
 | 6 | Rich-feature Scorer + embedding similarity + time decay | done |
 | 7 | Detail view tracking + view affinity | done |
-| 8 | Show domain description in auction card | done |
+| 8 | Show domain keywords as badges in auction card | done |
 | 9 | Polish + finalize | done |
 
 Operator runbook: see [guides/recommendation-operations.md](../guides/recommendation-operations.md).
