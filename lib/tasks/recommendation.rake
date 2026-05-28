@@ -4,6 +4,11 @@ namespace :recommendation do
     Recommendation::ClassifyUnclassifiedDomainsJob.perform_now
   end
 
+  desc 'Cron entry point: embed classified-but-unembedded domains via OpenAI (batched)'
+  task embed_unembedded: :environment do
+    Recommendation::EmbedUnembeddedDomainsJob.perform_now
+  end
+
   desc 'One-shot: classify all historical domains via heuristic (LLM picks up later)'
   task backfill: :environment do
     if defined?(Recommendation::BackfillDomainClassificationsJob)

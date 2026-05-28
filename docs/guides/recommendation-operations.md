@@ -25,6 +25,7 @@ All recurring work runs as k8s `CronJob` resources defined in
 | schedule | command | purpose |
 |---|---|---|
 | `0 3 * * *` | `bundle exec rake recommendation:classify_unclassified` | Tier 2 LLM enrichment of heuristic / low-conf / stale rows |
+| `30 3 * * *` | `bundle exec rake recommendation:embed_unembedded` | OpenAI embeddings for classified rows without an embedding (stored as float[]) |
 | one-shot | `bundle exec rake recommendation:backfill` | Initial heuristic classification of all historical domains |
 
 Each task is wrapped by an idempotent ActiveJob. Re-running mid-day
@@ -41,7 +42,9 @@ is safe: nothing duplicates, fresh rows are skipped.
 4. (Optional, recommended) Manually run
    `rake recommendation:classify_unclassified` once to perform the
    first LLM enrichment immediately rather than waiting for cron.
-5. Verify `/auctions` renders keyword badges on cards with classified
+5. (Optional) Manually run `rake recommendation:embed_unembedded` for
+   the first embedding sweep.
+6. Verify `/auctions` renders keyword badges on cards with classified
    domains.
 
 ## Monitoring
@@ -49,7 +52,8 @@ is safe: nothing duplicates, fresh rows are skipped.
 | signal | check |
 |---|---|
 | LLM enrichment progress | `DomainClassification.needs_llm_enrichment.count` should trend toward zero. Tail logs for `ClassifyUnclassifiedDomainsJob processed N domains`. |
-| Daily OpenAI cost | OpenAI dashboard. At steady state expect ~$0.01/day for classification. |
+| Embedding backlog | `DomainClassification.needs_embedding.count` ditto. |
+| Daily OpenAI cost | OpenAI dashboard. ~$0.01/day for classification + ~$0.0001/day for embeddings. |
 | Score freshness | `UserAuctionScore.maximum(:calculated_at)` should be within minutes for active users. |
 | Tracking failures | `Rails.logger.warn` lines from `EventTracker`. |
 

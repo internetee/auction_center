@@ -60,39 +60,40 @@ is ~$0.30/month, with ~$1 one-time backfill.
 because classification is computed once per domain and cached; the bandwidth
 cost of shipping a 10MB model to every browser exceeds the savings.
 
-### D3. No vector embeddings in v2 (reversal of earlier draft)
+### D3. Embeddings as Postgres `double precision[]`, no pgvector
 
-Earlier drafts planned `text-embedding-3-small` embeddings stored in a
-`vector(1536)` column with HNSW indexing for similarity-based ranking.
-This was reversed before merge.
+`text-embedding-3-small` (1536 dim) vectors stored as a plain Postgres
+array of doubles. Cosine similarity is computed in Ruby at scoring time.
 
-**Why we backed out:**
+**Why not pgvector:**
 - The shared dev Postgres image (`postgres:13.4` in
   `docker-images/docker-compose.yml`) is used by every service on the
   team (registry, registrar_center, billing, eeid, etc.). Switching it
   to `pgvector/pgvector:pg13` would have been a patch-version bump on
   shared infrastructure for the sake of one app.
 - Production RDS does support pgvector natively, but rolling it out
-  consistently across dev/staging/test/prod adds operational risk for
-  marginal recommendation quality.
-- Tag + keyword + behavioural affinity + time decay carries the bulk
-  of recommendation quality. The embedding multiplier was a 1.0..2.0
-  bonus on top — useful but not load-bearing.
+  consistently across dev/staging/test/prod adds operational risk.
+- At 100-200 active auctions, brute-force cosine over a few hundred
+  1536-dim vectors takes ~50ms in Ruby. HNSW index would not be
+  meaningfully faster at this scale.
 
-**Future path** if embeddings become valuable: a sidecar pgvector pod
-isolated to auction_center (separate StatefulSet in k8s, separate
-ActiveRecord connection in `database.yml`). Main databases stay
-untouched. This is deferred until there's a concrete user-visible
-ranking problem the current signals can't solve.
+**Why not an external vector service (Pinecone, Qdrant, Upstash):**
+- New external dependency, new auth, new failure mode for a marginal
+  win at our scale.
+- The `double precision[]` format is portable — if we ever do need to
+  migrate to pgvector or an external service, the data already lives
+  in a structure we can dump and reload trivially.
 
-**What we kept:** the `domain_classifications` table including
-`keywords`, `audience`, `tags`, `suggested_use_cases` and other
-rich fields that feed the scorer directly without needing vectors.
+**What changes when we outgrow brute force (~5k+ vectors):**
+- Stand up a sidecar pgvector pod isolated to auction_center (separate
+  StatefulSet, separate ActiveRecord connection) — main databases
+  stay untouched.
+- Or move to an external vector API.
+- The migration is a one-time script reading the column we already have.
 
-Update (post-merge review): the `description` field was also dropped
-to save OpenAI tokens — `keywords` alone covers the UX need (badge
-display in auction card) without paying for a description we won't
-read in code paths.
+Description was also dropped to save OpenAI tokens — embedding input
+is now `<domain_name>. <keywords>` only. Keywords carry the user-
+visible content (badge display in auction card).
 
 ### D4. Cron jobs scheduled outside the app
 
@@ -116,7 +117,15 @@ floating-point noise floor.
 clock skew across regions. Decay is mathematically equivalent and simpler to
 reason about.
 
-### D6. ~~Embedding multiplier~~ — removed, see D3.
+### D6. Embedding multiplier, not additive
+
+Final score = base_score * (1 + max(0, cosine_similarity)). User centroid is
+the time-decayed weighted average of embeddings from bids, wishlist, and views.
+
+**Why:** Multiplicative form lets embedding act as a "boost knob" — it can't
+introduce a high score in isolation (no behavioural data → no centroid → 1.0),
+but it can lift a domain that other signals already mildly favour. Additive
+form risks dominating the rule-based base when cosine is small.
 
 ### D7. Heuristic-only at runtime, LLM-only via cron
 
@@ -145,9 +154,9 @@ predictable to operate.
   Tier 0 produces useful tags immediately while Tier 2 enriches overnight.
 - More tables to operate. Mitigated by the operator runbook in
   `docs/guides/recommendation-operations.md`.
-- No vector similarity matching in v2. Mitigated by keyword overlap and
-  behavioural-tag affinity, which subsume the most common similarity use
-  cases at our domain volume.
+- Cosine similarity in Ruby instead of a vector index. Acceptable for
+  the current scale; documented breakpoint (~5k vectors) for moving to
+  a real vector index.
 
 **Migration path**
 1. Deploy. Migrations create `domain_classifications` and add classification

@@ -29,6 +29,13 @@ class DomainClassification < ApplicationRecord
       .or(where('classification_source = ? AND classified_at < ?', OPENAI_SOURCE, LLM_REFRESH_INTERVAL.ago))
   }
   scope :classified, -> { where.not(classified_at: nil) }
+  scope :needs_embedding, lambda {
+    if column_names.include?('embedding')
+      classified.where(embedding: nil)
+    else
+      none
+    end
+  }
 
   def heuristic? = classification_source == HEURISTIC_SOURCE
   def from_llm? = classification_source == OPENAI_SOURCE
