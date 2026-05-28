@@ -10,10 +10,12 @@ for pipeline internals, see
 
 | Item | Where | Notes |
 |---|---|---|
-| pgvector extension enabled | AWS RDS Postgres 17 (prod) / pgvector/pgvector:pg13 (dev) | `CREATE EXTENSION IF NOT EXISTS vector;` as `rds_superuser` once per environment. The Rails migration tries this automatically; if the app role lacks `CREATE`, run it manually then run `rails db:migrate`. For local dev, ensure `docker-images/docker-compose.dev.v2.yml` uses `pgvector/pgvector:pg13` (NOT plain `postgres:13.x`). Set `SKIP_PGVECTOR_MIGRATION=true` as a temporary escape hatch if needed; embedding similarity will be inactive until rerun. |
-| `Feature.open_ai_integration_enabled?` | App settings | Must be true for LLM enrichment and embeddings. The recommendation profile UI, heuristic classifier, and scorer work without it. |
+| `Feature.open_ai_integration_enabled?` | App settings | Must be true for LLM enrichment. The recommendation profile UI, heuristic classifier, and scorer work without it. |
 | `openai_model` Setting | DB seed | Currently `gpt-5`. `OpenaiStructuredOutputSupport` will fall back to a safe default if a non-supporting model is configured. |
-| OpenAI API key | Rails credentials / env | Existing integration used by both `LlmDomainClassifier` and `DomainEmbedder`. |
+| OpenAI API key | Rails credentials / env | Existing integration used by `LlmDomainClassifier`. |
+
+**No special database setup required.** No extensions, no shared-image changes,
+no schema changes outside auction_center's own database.
 
 ## Kubernetes cron schedule
 
@@ -23,7 +25,6 @@ All recurring work runs as k8s `CronJob` resources defined in
 | schedule | command | purpose |
 |---|---|---|
 | `0 3 * * *` | `bundle exec rake recommendation:classify_unclassified` | Tier 2 LLM enrichment of heuristic / low-conf / stale rows |
-| `30 3 * * *` | `bundle exec rake recommendation:embed_unembedded` | Generate OpenAI embeddings for classified-but-unembedded rows |
 | one-shot | `bundle exec rake recommendation:backfill` | Initial heuristic classification of all historical domains |
 
 Each task is wrapped by an idempotent ActiveJob. Re-running mid-day
@@ -32,18 +33,15 @@ is safe: nothing duplicates, fresh rows are skipped.
 ## First-time rollout checklist
 
 1. Deploy the branch.
-2. Run migrations (`rails db:migrate`). If pgvector enable_extension
-   fails for permission reasons, run `CREATE EXTENSION vector` as
-   `rds_superuser`, then re-run `db:migrate`.
+2. Run migrations (`rails db:migrate`). All migrations are plain
+   schema changes — no extensions, no shared-DB modifications.
 3. Run `rake recommendation:backfill`. Watch the log line
    `BackfillDomainClassificationsJob created N classifications` to
    confirm scope.
 4. (Optional, recommended) Manually run
    `rake recommendation:classify_unclassified` once to perform the
    first LLM enrichment immediately rather than waiting for cron.
-5. (Optional) Manually run `rake recommendation:embed_unembedded` for
-   the first embedding sweep.
-6. Verify `/auctions` renders descriptions on cards with classified
+5. Verify `/auctions` renders descriptions on cards with classified
    domains.
 
 ## Monitoring
@@ -51,8 +49,7 @@ is safe: nothing duplicates, fresh rows are skipped.
 | signal | check |
 |---|---|
 | LLM enrichment progress | `DomainClassification.needs_llm_enrichment.count` should trend toward zero. Tail logs for `ClassifyUnclassifiedDomainsJob processed N domains`. |
-| Embedding backlog | `DomainClassification.needs_embedding.count` ditto. |
-| Daily OpenAI cost | OpenAI dashboard. At steady state expect ~$0.01/day for classification and ~$0.0001/day for embeddings. |
+| Daily OpenAI cost | OpenAI dashboard. At steady state expect ~$0.01/day for classification. |
 | Score freshness | `UserAuctionScore.maximum(:calculated_at)` should be within minutes for active users. |
 | Tracking failures | `Rails.logger.warn` lines from `EventTracker`. |
 
@@ -74,38 +71,19 @@ them requires a deploy — no DB migration needed.
 
 To pause the system without removing it:
 
-1. Set `Feature.open_ai_integration_enabled?` to false. LLM and
-   embedding jobs become no-ops; heuristic-only continues.
+1. Set `Feature.open_ai_integration_enabled?` to false. LLM enrichment
+   becomes a no-op; heuristic-only continues.
 2. Drop the k8s CronJobs.
 3. The legacy sort still works because `Auction::UserSortable` falls
    back through `user_auction_scores` → interest match → ai_score → random.
 
 To roll back entirely:
 
-1. `rails db:rollback STEP=2` removes pgvector columns and the
-   classifications table.
+1. `rails db:rollback STEP=2` removes the domain_classifications
+   table and the no-op pgvector placeholder.
 2. Revert Phase 6 commit; scorer reverts to v1 baseline.
 
 ## Troubleshooting
-
-**"extension vector is not allowlisted"** — On RDS, run
-`SHOW rds.extensions;` to confirm `vector` is present. It is on
-Postgres 15+ by default. If absent, contact AWS support — but Postgres
-17 always has it.
-
-**"could not open extension control file vector.control"** — The
-PostgreSQL image does not ship pgvector. This happens with plain
-`postgres:13`. Switch the Docker image to `pgvector/pgvector:pg13`
-(or `:pg17` if you upgrade Postgres), restart the container, and
-re-run the migration. The data volume is compatible — same major
-version. If you cannot upgrade right now and need to ship something,
-`SKIP_PGVECTOR_MIGRATION=true rails db:migrate` lets you proceed
-without the embedding column; rerun the migration later.
-
-**"permission denied to create extension"** — App user lacks
-`rds_superuser`. Run the `CREATE EXTENSION` manually as the master
-user once per environment, then mark the migration as up with
-`rails db:migrate:up VERSION=20260527090100`.
 
 **Description shows in wrong language** — `description_locale` is
 chosen by the LLM at classification time. If you want a different

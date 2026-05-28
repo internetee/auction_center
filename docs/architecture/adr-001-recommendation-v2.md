@@ -60,16 +60,34 @@ is ~$0.30/month, with ~$1 one-time backfill.
 because classification is computed once per domain and cached; the bandwidth
 cost of shipping a 10MB model to every browser exceeds the savings.
 
-### D3. AWS RDS-native pgvector, no Dockerfile changes
+### D3. No vector embeddings in v2 (reversal of earlier draft)
 
-`vector` extension is in the RDS Postgres 17 allowlist. Migration calls
-`enable_extension 'vector'`. If the app role lacks `CREATE EXTENSION`, an
-operator runs the SQL once manually as `rds_superuser`. No changes required to
-`Dockerfile`, `Dockerfile.staging`, `Dockerfile.test` (these are app-runtime
-images — pgvector belongs on the DB host).
+Earlier drafts planned `text-embedding-3-small` embeddings stored in a
+`vector(1536)` column with HNSW indexing for similarity-based ranking.
+This was reversed before merge.
 
-**Why:** Lowest-friction route. Considered: separate Postgres image with
-pre-baked pgvector. Rejected because RDS doesn't allow custom Postgres images.
+**Why we backed out:**
+- The shared dev Postgres image (`postgres:13.4` in
+  `docker-images/docker-compose.yml`) is used by every service on the
+  team (registry, registrar_center, billing, eeid, etc.). Switching it
+  to `pgvector/pgvector:pg13` would have been a patch-version bump on
+  shared infrastructure for the sake of one app.
+- Production RDS does support pgvector natively, but rolling it out
+  consistently across dev/staging/test/prod adds operational risk for
+  marginal recommendation quality.
+- Tag + keyword + behavioural affinity + time decay carries the bulk
+  of recommendation quality. The embedding multiplier was a 1.0..2.0
+  bonus on top — useful but not load-bearing.
+
+**Future path** if embeddings become valuable: a sidecar pgvector pod
+isolated to auction_center (separate StatefulSet in k8s, separate
+ActiveRecord connection in `database.yml`). Main databases stay
+untouched. This is deferred until there's a concrete user-visible
+ranking problem the current signals can't solve.
+
+**What we kept:** the `domain_classifications` table including
+`description`, `keywords`, `audience` and other rich fields that
+feed the scorer directly without needing vectors.
 
 ### D4. Cron jobs scheduled outside the app
 
@@ -93,15 +111,7 @@ floating-point noise floor.
 clock skew across regions. Decay is mathematically equivalent and simpler to
 reason about.
 
-### D6. Embedding multiplier, not additive
-
-Final score = base_score * (1 + max(0, cosine_similarity)). User centroid is
-the time-decayed weighted average of embeddings from bids, wishlist, and views.
-
-**Why:** Multiplicative form lets embedding act as a "boost knob" — it can't
-introduce a high score in isolation (no behavioural data → no centroid → 1.0),
-but it can lift a domain that other signals already mildly favour. Additive
-form risks dominating the rule-based base when cosine is small.
+### D6. ~~Embedding multiplier~~ — removed, see D3.
 
 ### D7. Heuristic-only at runtime, LLM-only via cron
 
@@ -120,23 +130,26 @@ predictable to operate.
 - No user-visible latency tied to OpenAI.
 - Wishlist and historical bids on non-auction domains now contribute to
   recommendations.
-- Embedding-based similarity available for future "domains like this" features.
 - Time decay means stale interests fade automatically; recent activity weighs
   more.
+- Zero infrastructure changes outside auction_center. Shared dev Postgres
+  image, RDS extensions, Terraform — all untouched.
 
 **Negative**
 - Two writes per domain (heuristic, then LLM enrichment). Acceptable because
   Tier 0 produces useful tags immediately while Tier 2 enriches overnight.
 - More tables to operate. Mitigated by the operator runbook in
   `docs/guides/recommendation-operations.md`.
-- pgvector requires one-time manual setup if the app DB role lacks the
-  `CREATE EXTENSION` grant.
+- No vector similarity matching in v2. Mitigated by keyword overlap and
+  behavioural-tag affinity, which subsume the most common similarity use
+  cases at our domain volume.
 
 **Migration path**
-1. Deploy. Migration enables pgvector and creates `domain_classifications`.
+1. Deploy. Migrations create `domain_classifications` and add classification
+   fields to auctions. No extensions, no shared infra.
 2. Run `rake recommendation:backfill` once.
 3. Run `rake recommendation:classify_unclassified` manually for first LLM pass.
-4. Schedule the two cron jobs in k8s.
+4. Schedule one cron job in k8s (`recommendation:classify_unclassified` daily).
 5. Optionally drop `auctions.classification_*` columns after a release of
    stable v2 operation.
 

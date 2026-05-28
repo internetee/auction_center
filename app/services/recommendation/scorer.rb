@@ -11,11 +11,12 @@ module Recommendation
   # - Bid history (Offer, EnglishOffer's Offer parent, DomainOfferHistory)
   # - Auction outcomes (Result) — lost auctions boost similar domains
   # - Detail-page views (RecommendationEvent auction_detail_view)
-  # - Embedding-cosine similarity to user centroid (Phase 5+)
   #
-  # Rich features (keywords, audience, embedding) come from
-  # domain_classifications joined by domain_name. Legacy
-  # auctions.classification_tags remains a fallback during migration.
+  # Rich features (keywords, audience) come from domain_classifications
+  # joined by domain_name. Legacy auctions.classification_tags remains
+  # a fallback during migration. Vector similarity (pgvector) was
+  # considered and dropped from v2 to avoid shared-infra changes —
+  # see docs/architecture/adr-001-recommendation-v2.md.
   class Scorer
     SCORING_HORIZON = 30.days
     SIGNAL_LOOKBACK = 1.year
@@ -134,7 +135,6 @@ module Recommendation
       score += hyphen_score(domain_name)
       score += ai_prior_score(auction)
 
-      score *= embedding_multiplier(auction)
       score.round(6)
     end
 
@@ -166,13 +166,6 @@ module Recommendation
 
     def audience_for(auction)
       classification_for(auction)&.audience
-    end
-
-    def embedding_for(auction)
-      dc = classification_for(auction)
-      return nil unless dc&.respond_to?(:embedding)
-
-      dc.embedding
     end
 
     # ---------- Matchers --------------------------------------------------
@@ -419,88 +412,6 @@ module Recommendation
       return {} if domain_names.empty?
 
       DomainClassification.where(domain_name: domain_names).index_by(&:domain_name)
-    end
-
-    # ---------- Embedding multiplier ------------------------------------
-
-    def embedding_multiplier(auction)
-      return 1.0 unless DomainClassification.column_names.include?('embedding')
-      return 1.0 if user_embedding_centroid.nil?
-
-      auction_embedding = embedding_for(auction)
-      return 1.0 if auction_embedding.nil?
-
-      similarity = cosine_similarity(user_embedding_centroid, auction_embedding)
-      return 1.0 if similarity.nil?
-
-      1.0 + [similarity, 0.0].max
-    end
-
-    def user_embedding_centroid
-      return @user_embedding_centroid if defined?(@user_embedding_centroid)
-
-      @user_embedding_centroid = compute_user_centroid
-    end
-
-    def compute_user_centroid
-      return nil unless DomainClassification.column_names.include?('embedding')
-
-      signals = bid_domain_signals + wishlist_domain_signals + view_domain_signals
-      return nil if signals.empty?
-
-      domain_names = signals.map { |s| s[:domain_name] }.uniq
-      embeddings = DomainClassification
-                     .where(domain_name: domain_names)
-                     .where.not(embedding: nil)
-                     .index_by(&:domain_name)
-      return nil if embeddings.empty?
-
-      sum = Array.new(DomainClassification::EMBEDDING_DIMENSIONS, 0.0)
-      total_weight = 0.0
-
-      signals.each do |signal|
-        dc = embeddings[signal[:domain_name]]
-        next unless dc&.embedding
-
-        weight = decay_weight(signal[:age_days])
-        vector = embedding_as_array(dc.embedding)
-        next if vector.nil? || vector.size != sum.size
-
-        vector.each_with_index { |v, i| sum[i] += v * weight }
-        total_weight += weight
-      end
-
-      return nil if total_weight.zero?
-
-      sum.map { |v| v / total_weight }
-    end
-
-    def cosine_similarity(a, b)
-      vec_b = embedding_as_array(b)
-      return nil if a.nil? || vec_b.nil? || a.size != vec_b.size
-
-      dot = 0.0
-      norm_a = 0.0
-      norm_b = 0.0
-      a.each_with_index do |val, i|
-        dot += val * vec_b[i]
-        norm_a += val * val
-        norm_b += vec_b[i] * vec_b[i]
-      end
-
-      denom = Math.sqrt(norm_a) * Math.sqrt(norm_b)
-      return nil if denom.zero?
-
-      dot / denom
-    end
-
-    def embedding_as_array(embedding)
-      return embedding if embedding.is_a?(Array)
-      return embedding.to_a if embedding.respond_to?(:to_a)
-
-      nil
-    rescue StandardError
-      nil
     end
 
     # ---------- Structural ----------------------------------------------

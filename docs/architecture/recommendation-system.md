@@ -22,6 +22,12 @@ Sort is **per-user**. Same `/auctions` request returns N different orderings for
 - No global feed cache (sort is per-user)
 - No client-side ranking for v2 (server is the source of truth)
 - No real-time LLM calls during user requests (LLM is batch-only, cron-driven)
+- **No vector embeddings in v2** — pgvector was evaluated and dropped to avoid
+  shared-infrastructure churn (RDS extensions, Docker image bumps for the
+  team-shared Postgres). Tag + keyword + behavioural affinity carries most of
+  the recommendation value. Embeddings can be added later as a sidecar
+  vector database (separate Postgres pod, not the shared one) without
+  schema migrations to the main database.
 
 ## High-level data flow
 
@@ -46,16 +52,9 @@ keywords, suggested_use_cases, brandability_score
 source='openai'
    |
    v
-[ Nightly k8s CronJob: rake recommendation:embed_unembedded ]
-   |
-   v
-OpenAI text-embedding-3-small (100 domains / call)
-embedding vector(1536) stored
-   |
-   v
 Scorer per user-event:
-  bid affinity, wishlist affinity, view affinity,
-  embedding-cosine multiplier, time decay
+  bid affinity, wishlist affinity, view affinity, time decay,
+  tag/keyword overlap, structural bonuses
    |
    v
 user_auction_scores (upsert, unique on user_id + auction_id)
@@ -85,7 +84,6 @@ Single source of truth for what a domain *means*. One row per `domain_name`.
 | `has_digits`, `has_hyphens`, `token_count`, `dictionary_word`, `brandability_score` | structural cache |
 | `classification_source` | heuristic / openai / manual / imported |
 | `confidence` (0..1) | gate for "stale, needs LLM re-run" |
-| `embedding` (vector(1536)) | OpenAI text-embedding-3-small, HNSW indexed |
 | `raw_llm_response` (jsonb) | audit trail, allows re-parsing without re-billing |
 
 ### `recommendation_events` (existing)
@@ -125,7 +123,6 @@ Tier 1 — (future, optional) embedding-based local classifier
 | schedule | task | purpose |
 |---|---|---|
 | `0 3 * * *` (03:00 daily) | `rake recommendation:classify_unclassified` | Tier 2 enrichment for heuristic-only/low-confidence/stale rows |
-| `30 3 * * *` (03:30 daily) | `rake recommendation:embed_unembedded` | OpenAI embeddings for classified-but-unembedded rows |
 | one-shot | `rake recommendation:backfill` | Initial classification of all historical domains |
 
 K8s manifests live in `Ry_AWS_IaC/infrastructure/kubernetes` — outside this repo.
@@ -138,24 +135,19 @@ Final score per (user, auction) is a weighted sum + multiplier:
 score = 0
   + 120                                    if wishlist hit
   + matching_tags        * 35              category overlap
-  + matching_keywords    * 15              NEW — keyword overlap
-  + audience_match       * 10              NEW
-  + bid_feature_aggregate (decay-weighted) NEW — uses domain_classifications
-  + wishlist_feature_aggregate (decay)     CHANGED — uses domain_classifications
-  + view_feature_aggregate (decay)         NEW
+  + matching_keywords    * 15              keyword overlap
+  + audience_match       * 10              dominant-audience inference
+  + bid_feature_aggregate (decay-weighted) uses domain_classifications
+  + wishlist_feature_aggregate (decay)     uses domain_classifications
+  + view_feature_aggregate (decay)         from auction_detail_view events
   + similar_to_saved_domain * 15
   + preferred_length_match * 10
   + digit_score                            -20 .. +8
   + hyphen_score                           -12 .. +5
   + ai_prior_score                         existing legacy
-  + domain_offer_history_signal            NEW
-  + result_signal                          NEW (won: weak negative; lost: strong positive)
-
-multiplier = 1 + cosine_similarity(auction.embedding, user_centroid_embedding)
-score = score * multiplier
+  + domain_offer_history_signal            historical bids
+  + result_signal                          won: weak negative; lost: strong positive
 ```
-
-User centroid embedding = weighted average of embeddings from user's bids + wishlist + recent views (time-decayed).
 
 Time decay: `weight *= exp(-days_old / 60)` (half-life 60 days).
 
@@ -163,19 +155,18 @@ Time decay: `weight *= exp(-days_old / 60)` (half-life 60 days).
 
 | Dependency | Source | Status |
 |---|---|---|
-| pgvector extension | AWS RDS Postgres 17.4 (native support since 15.2) | needs one-time `CREATE EXTENSION vector` per environment |
 | OpenAI API | existing integration via `Feature.open_ai_integration_enabled?` | reused |
 | K8s CronJobs | maintained in `Ry_AWS_IaC` | scheduled by infra team |
+
+**No infrastructure changes are required for v2.** No new extensions on RDS,
+no Docker image bumps, no schema changes outside the auction_center database.
 
 ## Cost estimate
 
 - **Backfill** (one-time): ~5000 historical unique domains
-  - LLM classify: ~100 batches × ~3000 tokens = ~$0.50-1
-  - Embeddings: 5000 × ~50 tokens = ~$0.005
-  - Total: **~$1**
+  - LLM classify: ~100 batches × ~3000 tokens = **~$0.50-1**
 - **Steady state** (per day):
   - LLM classify: 5-20 new domains/day, batched = 0-1 OpenAI call = **~$0.01/day**
-  - Embeddings: 1 call/day = **~$0.0001/day**
   - Total: **~$0.30/month**
 
 ## Implementation phases
@@ -190,7 +181,7 @@ See [domain-classification-pipeline.md](../technical/domain-classification-pipel
 | 3a | DomainClassifier orchestrator (heuristic only) | done |
 | 3b | LLM batch enrichment job (cron) | done |
 | 4 | Triggers + backfill rake | done |
-| 5 | pgvector + embeddings batch job | done |
+| 5 | ~~pgvector + embeddings batch job~~ | **dropped** — see ADR-001 |
 | 6 | Rich-feature Scorer + embedding similarity + time decay | done |
 | 7 | Detail view tracking + view affinity | done |
 | 8 | Show domain description in auction card | done |

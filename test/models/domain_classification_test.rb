@@ -55,6 +55,4 @@ class DomainClassificationTest < ActiveSupport::TestCase
     assert_includes DomainClassification.needs_llm_enrichment.to_a, stale
   end
 
-  # needs_embedding scope is covered in Phase 5 test suite once the
-  # embedding column is added by the pgvector migration.
 end
