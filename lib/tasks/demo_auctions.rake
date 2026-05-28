@@ -89,10 +89,15 @@ namespace :demo do
     ]
   }.freeze
 
+  # `+ 1.second` was tight enough that Rails 8.1 boot could land us
+  # in the past by the time validation ran. 5 minutes is generous
+  # enough to survive a slow boot or a paused debugger.
+  AUCTION_START_BUFFER = 5.minutes
+
   desc 'Create temporary blind .ee auctions for recommendation testing (~140 domains)'
   task create_blind_auctions: :environment do
-    starts_at = Time.zone.now + 1.second
-    ends_at = Time.zone.now + 1.month
+    starts_at = Time.zone.now + AUCTION_START_BUFFER
+    ends_at = starts_at + 1.month
 
     domains = DEMO_DOMAINS.values.flatten.uniq
 
@@ -120,12 +125,12 @@ namespace :demo do
 
   desc 'Create varied auctions ending at different times (next hour, day, week, month)'
   task create_varied_auctions: :environment do
-    now = Time.zone.now
+    starts_at = Time.zone.now + AUCTION_START_BUFFER
     horizons = {
-      next_hour: { ends_in: 1.hour, sample_size: 5 },
-      next_day: { ends_in: 1.day, sample_size: 10 },
-      next_week: { ends_in: 1.week, sample_size: 20 },
-      next_month: { ends_in: 1.month, sample_size: 40 }
+      next_hour: { ends_at_offset: 1.hour, sample_size: 5 },
+      next_day: { ends_at_offset: 1.day, sample_size: 10 },
+      next_week: { ends_at_offset: 1.week, sample_size: 20 },
+      next_month: { ends_at_offset: 1.month, sample_size: 40 }
     }
 
     all_domains = DEMO_DOMAINS.values.flatten.uniq.shuffle
@@ -139,12 +144,12 @@ namespace :demo do
 
       batch.each do |domain_name|
         bucket_domain = "varied-#{domain_name}"
-        next if Auction.where(domain_name: bucket_domain).where('ends_at > ?', now).exists?
+        next if Auction.where(domain_name: bucket_domain).where('ends_at > ?', Time.zone.now).exists?
 
         Auction.create!(
           domain_name: bucket_domain,
-          starts_at: now + 1.second,
-          ends_at: now + opts[:ends_in]
+          starts_at: starts_at,
+          ends_at: starts_at + opts[:ends_at_offset]
         )
         created += 1
       end
