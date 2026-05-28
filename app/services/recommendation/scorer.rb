@@ -14,9 +14,13 @@ module Recommendation
   #
   # Rich features (keywords, audience) come from domain_classifications
   # joined by domain_name. Legacy auctions.classification_tags remains
-  # a fallback during migration. Vector similarity (pgvector) was
-  # considered and dropped from v2 to avoid shared-infra changes —
-  # see docs/architecture/adr-001-recommendation-v2.md.
+  # a fallback during migration.
+  #
+  # Embeddings (OpenAI text-embedding-3-small, 1536 dims) are stored
+  # as plain Postgres double precision[] — no pgvector — and provide a
+  # multiplicative boost (1.0..2.0) when both user has behavioural
+  # history and the candidate auction is embedded. See ADR-001 for
+  # the rationale.
   class Scorer
     SCORING_HORIZON = 30.days
     SIGNAL_LOOKBACK = 1.year
@@ -135,6 +139,7 @@ module Recommendation
       score += hyphen_score(domain_name)
       score += ai_prior_score(auction)
 
+      score *= embedding_multiplier(auction)
       score.round(6)
     end
 
@@ -412,6 +417,93 @@ module Recommendation
       return {} if domain_names.empty?
 
       DomainClassification.where(domain_name: domain_names).index_by(&:domain_name)
+    end
+
+    # ---------- Embedding multiplier ------------------------------------
+    #
+    # OpenAI embeddings are stored as Postgres double precision[] arrays
+    # (no pgvector). Cosine similarity is computed in Ruby — at 100-200
+    # auctions per scoring pass this is sub-100ms, well within budget.
+    #
+    # multiplier = 1 + max(0, cosine_similarity(user_centroid, auction))
+    # Range: [1.0, 2.0]. Becomes a no-op (1.0) when:
+    #   - embedding column not yet migrated
+    #   - user has no behavioural history
+    #   - auction has no embedding yet
+
+    def embedding_multiplier(auction)
+      return 1.0 unless DomainClassification.column_names.include?('embedding')
+
+      auction_embedding = embedding_for(auction)
+      return 1.0 if auction_embedding.nil?
+      return 1.0 if user_embedding_centroid.nil?
+
+      similarity = cosine_similarity(user_embedding_centroid, auction_embedding)
+      return 1.0 if similarity.nil?
+
+      1.0 + [similarity, 0.0].max
+    end
+
+    def embedding_for(auction)
+      dc = classification_for(auction)
+      Array(dc&.embedding).presence
+    end
+
+    def user_embedding_centroid
+      return @user_embedding_centroid if defined?(@user_embedding_centroid)
+
+      @user_embedding_centroid = compute_user_centroid
+    end
+
+    def compute_user_centroid
+      signals = bid_domain_signals + wishlist_domain_signals + view_domain_signals
+      return nil if signals.empty?
+
+      domain_names = signals.map { |s| s[:domain_name] }.uniq
+      embeddings = DomainClassification
+                     .where(domain_name: domain_names)
+                     .where.not(embedding: nil)
+                     .index_by(&:domain_name)
+      return nil if embeddings.empty?
+
+      sum = nil
+      total_weight = 0.0
+
+      signals.each do |signal|
+        dc = embeddings[signal[:domain_name]]
+        vec = Array(dc&.embedding)
+        next if vec.empty?
+
+        sum ||= Array.new(vec.size, 0.0)
+        next if vec.size != sum.size
+
+        weight = decay_weight(signal[:age_days])
+        vec.each_with_index { |v, i| sum[i] += v.to_f * weight }
+        total_weight += weight
+      end
+
+      return nil if sum.nil? || total_weight.zero?
+
+      sum.map { |v| v / total_weight }
+    end
+
+    def cosine_similarity(vec_a, vec_b)
+      return nil if vec_a.nil? || vec_b.nil? || vec_a.size != vec_b.size
+
+      dot = 0.0
+      norm_a = 0.0
+      norm_b = 0.0
+      vec_a.each_with_index do |a, i|
+        b = vec_b[i].to_f
+        dot += a * b
+        norm_a += a * a
+        norm_b += b * b
+      end
+
+      denom = Math.sqrt(norm_a) * Math.sqrt(norm_b)
+      return nil if denom.zero?
+
+      dot / denom
     end
 
     # ---------- Structural ----------------------------------------------

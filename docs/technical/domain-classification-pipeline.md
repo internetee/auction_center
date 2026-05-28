@@ -11,10 +11,12 @@ app/services/recommendation/
   domain_heuristic_classifier.rb    # dictionary + subword tokenizer
   domain_dictionary.rb              # ESTONIAN_ROOTS + ENGLISH_ROOTS hashes
   llm_domain_classifier.rb          # Tier 2 — only called from cron job
+  domain_embedder.rb                # OpenAI text-embedding-3-small wrapper
 
 app/jobs/recommendation/
   classify_domain_heuristically_job.rb     # instant, triggered on events
   classify_unclassified_domains_job.rb     # cron, batched LLM
+  embed_unembedded_domains_job.rb          # cron, batched embeddings
   backfill_domain_classifications_job.rb   # one-shot
 
 lib/tasks/recommendation.rake              # entry points for k8s CronJobs
@@ -124,20 +126,58 @@ DomainClassification
 
 `raw_llm_response` (jsonb) keeps the parsed response. If schema changes later, we can re-parse from `raw_llm_response` without re-billing OpenAI.
 
-## Embedding pipeline — dropped from v2
+## Embedding pipeline
 
-Vector embeddings were planned as `text-embedding-3-small` + pgvector
-HNSW index for cosine similarity, with a per-auction multiplier on top
-of the base score. This was removed before merge because pgvector would
-have required either bumping the shared dev Postgres image
-(`postgres:13.4` → `pgvector/pgvector:pg13`) for the whole team or
-adding extension provisioning to the shared RDS — both reach beyond
-auction_center's scope.
+### Trigger
 
-If we want vector similarity later, the recommended path is a sidecar
-pgvector pod isolated to auction_center (separate StatefulSet, separate
-ActiveRecord connection), leaving the main databases untouched. See
-ADR-001 for the rationale.
+`rake recommendation:embed_unembedded` (k8s CronJob, daily 03:30).
+
+Selects rows where:
+
+```ruby
+DomainClassification
+  .classified
+  .where(embedding: nil)
+  .limit(MAX_DOMAINS_PER_RUN)
+```
+
+### Input
+
+`<domain_name>. <comma-separated keywords>` — kept short since we no
+longer have descriptions. Tokens-per-domain ≈ 5-15.
+
+### Model
+
+`text-embedding-3-small` (1536 dim, $0.02/1M tokens).
+
+### Storage
+
+Plain Postgres `double precision[]` column — **not** pgvector. The
+column is added by migration 20260527090300. No HNSW index; cosine
+similarity is computed in Ruby at scoring time. At 100-200 active
+auctions × 1536 dims this is ~50ms — well below the 30-second
+RefreshSingleUserAuctionScoresJob debounce window.
+
+### Usage in Scorer
+
+User centroid is the time-decayed weighted average of embeddings from
+the user's bids, wishlist, and recent views. The multiplier is
+
+```
+multiplier = 1 + max(0, cosine_similarity(user_centroid, auction.embedding))
+final_score = base_score * multiplier
+```
+
+Range: 1.0 (no boost) .. 2.0 (perfect alignment). No-op (1.0) when
+either side is missing data.
+
+### Why no pgvector / external service
+
+See ADR-001. Bottom line: at our scale, brute force in Ruby is faster
+than the operational cost of new infrastructure. If we cross 5k+
+embedded rows the plan is to move the column to a sidecar pgvector pod
+isolated to auction_center, leaving the main databases untouched. The
+`double precision[]` format is portable to that future state.
 
 ## Triggers (instant heuristic only)
 
@@ -176,7 +216,9 @@ Existing `auctions.classification_tags / primary_category / classification_sourc
 | `DomainClassifier` (orchestrator) | upserts row with `source='heuristic'`; skips fresh rows |
 | `LlmDomainClassifier` | mocked OpenAI; verifies prompt and parsing |
 | `ClassifyUnclassifiedDomainsJob` | scope selection, batching, no LLM call when scope empty |
-| `Scorer` (extended) | tag + keyword + audience + behavioural affinity paths verified |
+| `DomainEmbedder` | mocked OpenAI; vector shape, AR-row handling, empty input, error response |
+| `EmbedUnembeddedDomainsJob` | scope selection, feature-flag gating, missing column safety |
+| `Scorer` (extended) | tag + keyword + audience + behavioural affinity + embedding multiplier paths verified |
 
 ## Operations
 
@@ -185,3 +227,4 @@ Existing `auctions.classification_tags / primary_category / classification_sourc
 | Daily LLM cost | OpenAI dashboard + log lines from `LlmDomainClassifier` |
 | Failed classifications | `Rails.logger.warn` from `ClassifyUnclassifiedDomainsJob` |
 | Backlog of unclassified | `DomainClassification.where(classification_source: ['heuristic', nil]).count` |
+| Embedding backlog | `DomainClassification.needs_embedding.count` |
