@@ -57,8 +57,7 @@
             <%= render partial: 'auction', locals: {
               auction: auction,
               user: current_user,
-              updated: false,
-              domain_classification: (@domain_classifications || {})[auction.domain_name.to_s.downcase]
+              updated: false
             } %>
           <% end %>
         <% end %>

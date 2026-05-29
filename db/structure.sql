@@ -1749,7 +1749,7 @@ CREATE TABLE public.user_auction_scores (
     auction_id bigint NOT NULL,
     uuid uuid DEFAULT gen_random_uuid(),
     score numeric(10,6) NOT NULL,
-    model_name character varying,
+    scorer_name character varying,
     features_version character varying,
     calculated_at timestamp(6) without time zone NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
@@ -3524,6 +3524,7 @@ ALTER TABLE ONLY public.invoices
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260528100000'),
 ('20260527090300'),
 ('20260527090200'),
 ('20260527090100'),

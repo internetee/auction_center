@@ -1,38 +1,39 @@
 class CreateDomainClassifications < ActiveRecord::Migration[7.0]
+  # Per-domain semantic classification. Single source of truth for what a
+  # domain *means*, decoupled from any specific auction. See ADR-001.
+  #
+  # Embeddings are stored as a plain Postgres array of doubles — no
+  # pgvector — so this migration runs on the shared dev image and on
+  # production RDS without extension setup. Cosine similarity is
+  # computed in Ruby at scoring time.
   def change
     create_table :domain_classifications do |t|
       t.string :domain_name, null: false
       t.uuid :uuid, default: 'gen_random_uuid()', null: false
 
-      # Categorical signals
       t.string :primary_category
       t.string :tags, array: true, default: [], null: false
-
-      # Description / readable enrichment
-      t.text :description
-      t.string :description_locale, default: 'en'
-
-      # Semantic tokens
       t.string :keywords, array: true, default: [], null: false
 
-      # Audience / language / use-case hints
       t.string :audience
       t.string :languages, array: true, default: [], null: false
       t.string :suggested_use_cases, array: true, default: [], null: false
 
-      # Cached structural features
       t.boolean :has_digits, default: false, null: false
       t.boolean :has_hyphens, default: false, null: false
       t.integer :token_count
       t.boolean :dictionary_word, default: false, null: false
       t.decimal :brandability_score, precision: 4, scale: 3
 
-      # Provenance
       t.string :classification_source           # 'heuristic' | 'openai' | 'manual' | 'imported'
       t.string :classification_model
       t.decimal :confidence, precision: 4, scale: 3
       t.datetime :classified_at
       t.jsonb :raw_llm_response, default: {}, null: false
+
+      t.column :embedding, :"double precision[]"
+      t.string :embedding_model
+      t.datetime :embedded_at
 
       t.timestamps
     end
@@ -45,5 +46,6 @@ class CreateDomainClassifications < ActiveRecord::Migration[7.0]
     add_index :domain_classifications, :audience
     add_index :domain_classifications, :classified_at
     add_index :domain_classifications, :classification_source
+    add_index :domain_classifications, :embedded_at
   end
 end
