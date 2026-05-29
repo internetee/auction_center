@@ -213,7 +213,7 @@ class Auction < ApplicationRecord # rubocop:disable Metrics
   def enqueue_domain_classification
     return if domain_name.blank?
 
-    Recommendation::ClassifyDomainHeuristicallyJob.perform_later(domain_name)
+    Recommendation::ClassifyDomainJob.perform_later(domain_name)
   end
 
   def calculate_turns_count

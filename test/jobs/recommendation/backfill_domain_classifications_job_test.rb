@@ -16,8 +16,10 @@ module Recommendation
       )
       WishlistItem.create!(user: users(:participant), domain_name: 'backfill-wishlist.ee', cents: 1_000)
 
-      assert_difference -> { DomainClassification.count }, ->(count) { count >= 2 } do
-        Recommendation::BackfillDomainClassificationsJob.new.perform
+      with_feature_flag(true) do
+        stub_llm do
+          Recommendation::BackfillDomainClassificationsJob.new.perform
+        end
       end
 
       assert DomainClassification.exists?(domain_name: 'backfill-auction.ee')
@@ -39,36 +41,64 @@ module Recommendation
         classified_at: 1.hour.ago
       )
 
-      assert_no_difference -> { DomainClassification.where(domain_name: 'skip-me.ee').count } do
-        Recommendation::BackfillDomainClassificationsJob.new.perform
+      with_feature_flag(true) do
+        stub_llm do
+          assert_no_difference -> { DomainClassification.where(domain_name: 'skip-me.ee').count } do
+            Recommendation::BackfillDomainClassificationsJob.new.perform
+          end
+        end
       end
     end
 
-    def test_continues_after_individual_failures
+    def test_no_op_when_openai_disabled
       Auction.create!(
-        domain_name: 'good.ee',
+        domain_name: 'no-llm.ee',
         starts_at: 1.hour.ago,
         ends_at: 1.day.from_now,
         skip_validation: true
       )
 
-      # Simulate a failure in classifier for one specific input
-      original = Recommendation::DomainClassifier.method(:call)
-      Recommendation::DomainClassifier.define_singleton_method(:call) do |name, **opts|
-        raise StandardError, 'simulated' if name.to_s.include?('good')
-
-        original.call(name, **opts)
-      end
-
-      assert_nothing_raised do
-        Recommendation::BackfillDomainClassificationsJob.new.perform
-      end
-    ensure
-      if original
-        Recommendation::DomainClassifier.define_singleton_method(:call) do |name, **opts|
-          original.call(name, **opts)
+      with_feature_flag(false) do
+        assert_no_difference -> { DomainClassification.count } do
+          Recommendation::BackfillDomainClassificationsJob.new.perform
         end
       end
+    end
+
+    private
+
+    def stub_llm
+      original = Recommendation::LlmDomainClassifier.method(:call)
+      Recommendation::LlmDomainClassifier.define_singleton_method(:call) do |domain_names:, **|
+        Array(domain_names).map do |d|
+          {
+            domain_name: d.to_s.strip.downcase,
+            primary_category: 'other',
+            tags: ['other'],
+            keywords: [],
+            audience: nil,
+            languages: [],
+            suggested_use_cases: [],
+            brandability_score: nil,
+            confidence: 0.9,
+            classification_source: DomainClassification::OPENAI_SOURCE,
+            classification_model: 'gpt-5',
+            classified_at: Time.current,
+            raw_llm_response: {}
+          }
+        end
+      end
+      yield
+    ensure
+      Recommendation::LlmDomainClassifier.define_singleton_method(:call, original)
+    end
+
+    def with_feature_flag(enabled)
+      original = Feature.method(:open_ai_integration_enabled?)
+      Feature.define_singleton_method(:open_ai_integration_enabled?) { enabled }
+      yield
+    ensure
+      Feature.define_singleton_method(:open_ai_integration_enabled?, original)
     end
   end
 end

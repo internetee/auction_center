@@ -64,7 +64,7 @@ module Recommendation
         classification_tags: ['numeric'],
         skip_validation: true
       )
-      old_offer = Offer.create!(user: bidder, auction: old_auction, cents: 100, billing_profile_id: 0)
+      old_offer = create_history_offer(bidder, old_auction)
       old_offer.update_columns(updated_at: 10.years.ago)
 
       target_with_numeric = create_active_auction(
@@ -109,6 +109,20 @@ module Recommendation
         ai_score: ai_score,
         skip_validation: true
       )
+    end
+
+    # Bid history on a past/ended auction. Offer validations (active auction,
+    # minimum price) don't apply to backfilled history, so persist without
+    # validation. A real billing_profile satisfies the FK.
+    def create_history_offer(user, auction, cents: 100)
+      offer = Offer.new(
+        user: user,
+        auction: auction,
+        cents: cents,
+        billing_profile: billing_profiles(:private_person)
+      )
+      offer.save(validate: false)
+      offer
     end
   end
 end

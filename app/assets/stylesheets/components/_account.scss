@@ -157,6 +157,8 @@
 
 .c-acount__buttons {
     gap: 5px;
+    // Separate the Billing / Delete row from the "Edit interests" button above it.
+    margin-top: 24px;
 
     @include mq(mobile) {
         gap: 10px;

@@ -36,7 +36,12 @@ module Recommendation
     end
 
     def test_perform_refreshes_when_scores_are_stale
-      auction = auctions(:valid_without_offers)
+      auction = Auction.create!(
+        domain_name: "stale-refresh-#{SecureRandom.hex(4)}.ee",
+        starts_at: 1.hour.ago,
+        ends_at: 1.day.from_now,
+        skip_validation: true
+      )
       UserAuctionScore.create!(
         user: @user,
         auction: auction,
@@ -48,7 +53,7 @@ module Recommendation
         Recommendation::RefreshSingleUserAuctionScoresJob.new.perform(@user.id)
       end
 
-      reloaded = UserAuctionScore.where(user: @user).order(:calculated_at).last
+      reloaded = UserAuctionScore.find_by!(user: @user, auction: auction)
       assert reloaded.calculated_at > 1.minute.ago, 'stale scores must be refreshed'
     end
 

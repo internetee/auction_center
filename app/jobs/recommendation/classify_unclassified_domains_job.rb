@@ -1,9 +1,13 @@
 module Recommendation
   # Runs once per day via a k8s CronJob (rake recommendation:classify_unclassified).
-  # Picks domain_classifications rows that need LLM enrichment, batches them,
-  # and upserts the enriched attributes.
   #
-  # NEVER called from user-facing request paths.
+  # Safety-net + maintenance pass for the LLM classifier:
+  #  - discovers active-auction / wishlist domains that have NO classification
+  #    row yet (e.g. ClassifyDomainJob never ran because OpenAI was disabled
+  #    when the domain appeared, or the job failed), and
+  #  - re-classifies existing rows that are low-confidence or stale (>6mo).
+  #
+  # Batches everything through the LLM. NEVER called from request paths.
   class ClassifyUnclassifiedDomainsJob < ApplicationJob
     MAX_DOMAINS_PER_RUN = 200
     BATCH_SIZE = Recommendation::LlmDomainClassifier::BATCH_LIMIT
@@ -13,7 +17,7 @@ module Recommendation
     def perform
       return unless Feature.open_ai_integration_enabled?
 
-      domains = scope.limit(MAX_DOMAINS_PER_RUN).pluck(:domain_name)
+      domains = pending_domains
       return if domains.empty?
 
       processed = 0
@@ -26,19 +30,35 @@ module Recommendation
       processed
     end
 
+    # Existing rows that need re-classification (low confidence / stale LLM).
     def self.scope
       DomainClassification.needs_llm_enrichment.order(Arel.sql('COALESCE(classified_at, to_timestamp(0)) ASC'))
     end
 
-    def self.needs_to_run?
-      Feature.open_ai_integration_enabled? && scope.exists?
+    # Active-auction / wishlist domains with no classification row at all.
+    def self.missing_domains
+      known = DomainClassification.pluck(:domain_name).to_set
+      candidates = (Auction.active.distinct.pluck(:domain_name) +
+                    WishlistItem.distinct.pluck(:domain_name))
+                   .map { |d| d.to_s.strip.downcase }
+                   .reject(&:blank?)
+                   .uniq
+      candidates.reject { |d| known.include?(d) }
     end
 
-    def scope
-      self.class.scope
+    def self.needs_to_run?
+      return false unless Feature.open_ai_integration_enabled?
+
+      scope.exists? || missing_domains.any?
     end
 
     private
+
+    def pending_domains
+      (self.class.missing_domains + self.class.scope.pluck(:domain_name))
+        .uniq
+        .first(MAX_DOMAINS_PER_RUN)
+    end
 
     def upsert(attributes_list)
       return 0 if attributes_list.blank?

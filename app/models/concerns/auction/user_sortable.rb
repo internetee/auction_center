@@ -23,7 +23,7 @@ module Auction::UserSortable
     end
 
     def with_recommendation_scores(user_id)
-      join_sql = ActiveRecord::Base.sanitize_sql_array([
+      scores_join = ActiveRecord::Base.sanitize_sql_array([
         <<~SQL.squish,
           LEFT JOIN user_auction_scores
             ON user_auction_scores.auction_id = auctions.id
@@ -32,7 +32,15 @@ module Auction::UserSortable
         user_id
       ])
 
-      joins(join_sql)
+      # Join domain_classifications by domain_name so the interest-match
+      # tier can read live category tags (auctions.classification_* is no
+      # longer written — classification lives on domain_classifications).
+      classifications_join = <<~SQL.squish
+        LEFT JOIN domain_classifications
+          ON LOWER(domain_classifications.domain_name) = LOWER(auctions.domain_name)
+      SQL
+
+      joins(scores_join).joins(classifications_join)
     end
 
     def build_five_tier_priority_sql(wishlist_domains, interest_categories, custom_interests)
@@ -81,7 +89,7 @@ module Auction::UserSortable
         quoted_categories = whitelisted_categories
           .map { |item| ActiveRecord::Base.connection.quote(item) }
           .join(',')
-        match_clauses << "auctions.classification_tags && ARRAY[#{quoted_categories}]::varchar[]"
+        match_clauses << "domain_classifications.tags && ARRAY[#{quoted_categories}]::varchar[]"
       end
 
       custom_interest_clauses = Array(custom_interests)

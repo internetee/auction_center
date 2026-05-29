@@ -22,11 +22,11 @@ module Recommendation
       # User behavioural history points strongly toward a 1.0-direction vector.
       history_auction = Auction.create!(
         domain_name: 'history-domain.ee',
-        starts_at: 1.day.ago,
-        ends_at: 2.days.ago,
+        starts_at: 2.days.ago,
+        ends_at: 1.day.ago,
         skip_validation: true
       )
-      Offer.create!(user: @user, auction: history_auction, cents: 100, billing_profile_id: 0)
+      create_history_offer(history_auction)
       DomainClassification.create!(
         domain_name: 'history-domain.ee',
         primary_category: 'saas',
@@ -108,6 +108,20 @@ module Recommendation
         primary_category: 'saas',
         skip_validation: true
       )
+    end
+
+    # Bid history on a past/ended auction. Offer validations (active auction,
+    # minimum price) don't apply to backfilled history, so persist without
+    # validation. A real billing_profile satisfies the FK.
+    def create_history_offer(auction, cents: 100)
+      offer = Offer.new(
+        user: @user,
+        auction: auction,
+        cents: cents,
+        billing_profile: billing_profiles(:private_person)
+      )
+      offer.save(validate: false)
+      offer
     end
   end
 end

@@ -19,10 +19,6 @@ class CreateDomainClassifications < ActiveRecord::Migration[7.0]
       t.string :languages, array: true, default: [], null: false
       t.string :suggested_use_cases, array: true, default: [], null: false
 
-      t.boolean :has_digits, default: false, null: false
-      t.boolean :has_hyphens, default: false, null: false
-      t.integer :token_count
-      t.boolean :dictionary_word, default: false, null: false
       t.decimal :brandability_score, precision: 4, scale: 3
 
       t.string :classification_source           # 'heuristic' | 'openai' | 'manual' | 'imported'
