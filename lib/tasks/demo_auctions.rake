@@ -1,10 +1,10 @@
 namespace :demo do
   # Domain seed list grouped by intended category. After `rake demo:create_blind_auctions`
-  # the Auction.after_create callback enqueues ClassifyDomainHeuristicallyJob for
-  # every domain. The heuristic Tier 0 classifier will tag most of these
-  # immediately from the dictionary. The nightly LLM cron then enriches keywords,
-  # audience, languages and use cases. Use the variety here to verify that
-  # different InterestCatalog categories surface correctly in /auctions sort.
+  # the Auction.after_create callback enqueues ClassifyDomainJob for every domain,
+  # which calls the LLM (requires Feature.open_ai_integration_enabled?) to map the
+  # domain onto an InterestCatalog category code. The nightly cron re-classifies
+  # anything missed. Use the variety here to verify that different InterestCatalog
+  # categories surface correctly in /auctions sort.
   DEMO_DOMAINS = {
     # Estonian common nouns — dictionary should hit on first pass.
     local_service: %w[

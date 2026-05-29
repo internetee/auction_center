@@ -446,7 +446,7 @@ class UserTest < ActiveSupport::TestCase
     }
 
     assert user.save
-    assert_equal(%w[saas other], user.recommendation_profile.interest_categories.sort)
+    assert_equal(%w[other saas], user.recommendation_profile.interest_categories.sort)
     assert_equal(['marketplace'], user.recommendation_profile.custom_interests)
   end
 
