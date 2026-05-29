@@ -22,7 +22,6 @@ module Recommendation
   # history and the candidate auction is embedded. See ADR-001 for
   # the rationale.
   class Scorer
-    SIGNAL_LOOKBACK = 1.year
     HALF_LIFE_DAYS = 60.0
 
     WISHLIST_HIT = 120

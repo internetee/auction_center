@@ -72,3 +72,7 @@ CLAUDE.md
 .specstory
 # Local Claude Code workspace artifacts
 .claude/
+
+# AI / working docs — kept locally, not committed to the shared repo
+/docs/
+/style-guide/
