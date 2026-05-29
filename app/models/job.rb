@@ -4,10 +4,8 @@ class Job
                          DomainRegistrationReminderJob UnpaidInvoiceReminderJob
                          DailySummaryJob DailyBroadcastAuctionsJob DailyViewRefreshJob
                          SharedFooterFetcherJob DirectoInvoiceForwardJob ActiveAuctionsAiSortingJob
-                         Recommendation::ClassifyAuctionDomainsJob
                          Recommendation::ClassifyUnclassifiedDomainsJob
-                         Recommendation::EmbedUnembeddedDomainsJob
-                         Recommendation::RefreshUserAuctionScoresJob].freeze
+                         Recommendation::EmbedUnembeddedDomainsJob].freeze
 
   include ActiveModel::Model
 

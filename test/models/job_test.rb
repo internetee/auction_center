@@ -14,16 +14,16 @@ class JobTest < ActiveSupport::TestCase
   end
 
   def test_namespaced_job_is_allowed
-    job = Job.new('Recommendation::ClassifyAuctionDomainsJob')
+    job = Job.new('Recommendation::ClassifyUnclassifiedDomainsJob')
 
     assert job.valid?
-    assert_equal Recommendation::ClassifyAuctionDomainsJob, job.job_class
+    assert_equal Recommendation::ClassifyUnclassifiedDomainsJob, job.job_class
   end
 
-  def test_refresh_scores_job_is_allowed
-    job = Job.new('Recommendation::RefreshUserAuctionScoresJob')
+  def test_embed_job_is_allowed
+    job = Job.new('Recommendation::EmbedUnembeddedDomainsJob')
 
     assert job.valid?
-    assert_equal Recommendation::RefreshUserAuctionScoresJob, job.job_class
+    assert_equal Recommendation::EmbedUnembeddedDomainsJob, job.job_class
   end
 end
