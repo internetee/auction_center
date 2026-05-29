@@ -64,7 +64,6 @@ them requires a deploy — no DB migration needed.
 
 | constant | default | meaning |
 |---|---|---|
-| `SCORING_HORIZON` | 30 days | Auctions ending later than this are not scored. |
 | `HALF_LIFE_DAYS` | 60 | Behavioural signal decay half-life. |
 | `WISHLIST_HIT` | 120 | Bonus if exact-match wishlist domain is up for auction. |
 | `TAG_WEIGHT` / `KEYWORD_WEIGHT` | 35 / 15 | Per-interest-match boost. |

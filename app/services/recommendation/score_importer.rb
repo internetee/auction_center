@@ -6,9 +6,9 @@ module Recommendation
       end
     end
 
-    def initialize(scores:, model_name: nil, features_version: nil, calculated_at: Time.current)
+    def initialize(scores:, scorer_name: nil, features_version: nil, calculated_at: Time.current)
       @scores = Array(scores)
-      @model_name = model_name
+      @scorer_name = scorer_name
       @features_version = features_version
       @calculated_at = calculated_at
     end
@@ -34,7 +34,7 @@ module Recommendation
         user_id:,
         auction_id:,
         score: score.to_d,
-        model_name: payload[:model_name] || payload['model_name'] || @model_name,
+        scorer_name: payload[:scorer_name] || payload['scorer_name'] || @scorer_name,
         features_version: payload[:features_version] || payload['features_version'] || @features_version,
         calculated_at: payload[:calculated_at] || payload['calculated_at'] || @calculated_at,
         created_at: Time.current,

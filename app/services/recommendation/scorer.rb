@@ -22,7 +22,6 @@ module Recommendation
   # history and the candidate auction is embedded. See ADR-001 for
   # the rationale.
   class Scorer
-    SCORING_HORIZON = 30.days
     SIGNAL_LOOKBACK = 1.year
     HALF_LIFE_DAYS = 60.0
 
@@ -48,7 +47,7 @@ module Recommendation
 
     class << self
       def default_scope
-        Auction.active.where('ends_at <= ?', SCORING_HORIZON.from_now)
+        Auction.active
       end
 
       def top_auctions_for(user:, scope: default_scope, limit: nil)
@@ -93,7 +92,7 @@ module Recommendation
         user_id: @user.id,
         auction_id: auction.id,
         score: score_for(auction),
-        model_name: BASELINE_MODEL_NAME,
+        scorer_name: BASELINE_MODEL_NAME,
         features_version: FEATURES_VERSION,
         calculated_at: @calculated_at,
         created_at: Time.current,

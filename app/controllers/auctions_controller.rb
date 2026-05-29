@@ -15,7 +15,6 @@ class AuctionsController < ApplicationController
       link_extra: 'data-turbo-action="advance"'
     )
     @show_recommendation_prompt = current_user&.recommendation_profile_promptable?
-    @domain_classifications = preload_domain_classifications(@auctions)
 
     track_recommendation_impressions
 
@@ -77,13 +76,4 @@ class AuctionsController < ApplicationController
     )
   end
 
-  def preload_domain_classifications(auctions)
-    return {} if auctions.blank?
-
-    domain_names = auctions.map { |a| a.domain_name.to_s.downcase }.uniq
-    DomainClassification.where(domain_name: domain_names).index_by(&:domain_name)
-  rescue ActiveRecord::StatementInvalid
-    # Table not yet migrated; safely degrade.
-    {}
-  end
 end

@@ -33,7 +33,7 @@ module Recommendation
       assert scores[wishlist_auction.id].score > scores[category_auction.id].score
       assert scores[category_auction.id].score > scores[custom_auction.id].score
       assert scores[custom_auction.id].score > scores[neutral_auction.id].score
-      assert_equal Recommendation::Scorer::BASELINE_MODEL_NAME, scores[wishlist_auction.id].model_name
+      assert_equal Recommendation::Scorer::BASELINE_MODEL_NAME, scores[wishlist_auction.id].scorer_name
     end
 
     def test_refresh_for_uses_bid_history_tag_affinity

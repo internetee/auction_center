@@ -17,7 +17,7 @@ module Recommendation
             score: 0.75
           }
         ],
-        model_name: 'lightfm_stub',
+        scorer_name: 'lightfm_stub',
         features_version: 'v1'
       )
 
@@ -25,7 +25,7 @@ module Recommendation
 
       record = UserAuctionScore.find_by!(user: @user, auction: @auction)
       assert_equal BigDecimal('0.75'), record.score
-      assert_equal 'lightfm_stub', record.model_name
+      assert_equal 'lightfm_stub', record.scorer_name
       assert_equal 'v1', record.features_version
     end
 
