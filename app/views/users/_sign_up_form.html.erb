@@ -77,8 +77,10 @@
 
   </div>
 
-  <%= f.fields_for :recommendation_profile do |recommendation_form| %>
-    <%= render 'recommendation_profiles/fields', form: recommendation_form %>
+  <% if RecommendationProfile.selection_enabled? %>
+    <%= f.fields_for :recommendation_profile do |recommendation_form| %>
+      <%= render 'recommendation_profiles/fields', form: recommendation_form %>
+    <% end %>
   <% end %>
 
   <button class="c-btn c-btn--green c-account__btn"><%= t('users.form.sign_up') %></button>
