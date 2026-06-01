@@ -1,0 +1,35 @@
+<% content_for :title, t('.title') %>
+
+<div class="o-container">
+  <div class="c-table__filters__btns" style='padding: 1rem 0; display: flex; justify-content: end;'>
+    <%= link_to t('.new'), new_admin_interest_category_path, class: "c-btn c-btn--blue" %>
+  </div>
+
+  <div class="c-table c-table--sortable">
+    <% header_collection = [{ column: nil, caption: t('interest_categories.position'), options: {} },
+                            { column: nil, caption: t('interest_categories.code'), options: {} },
+                            { column: nil, caption: t('interest_categories.name_en'), options: {} },
+                            { column: nil, caption: t('interest_categories.name_et'), options: {} },
+                            { column: nil, caption: t('interest_categories.active'), options: {} },
+                            { column: nil, caption: '', options: {} }] %>
+    <%= component 'common/table', header_collection:, options: { class: 'js-table-dt dataTable no-footer' } do %>
+      <%= tag.tbody class: 'contents' do %>
+        <% @interest_categories.each do |category| %>
+          <tr>
+            <td><%= category.position %></td>
+            <td><%= category.code %></td>
+            <td><%= category.name_en %></td>
+            <td><%= category.name_et %></td>
+            <td><%= category.active? ? t('interest_categories.yes') : t('interest_categories.no') %></td>
+            <td>
+              <%= link_to t(:edit), edit_admin_interest_category_path(category), class: "c-btn c-btn--green" %>
+              <%= link_to t(:delete), admin_interest_category_path(category),
+                          data: { turbo_method: :delete, turbo_confirm: t(:are_you_sure) },
+                          class: "c-btn c-btn--red" %>
+            </td>
+          </tr>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+</div>

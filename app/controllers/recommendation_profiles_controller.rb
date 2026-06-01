@@ -1,5 +1,6 @@
 class RecommendationProfilesController < ApplicationController
   before_action :authenticate_user!
+  before_action :ensure_selection_enabled, only: %i[edit update]
   before_action :set_recommendation_profile
 
   def edit; end
@@ -50,6 +51,12 @@ class RecommendationProfilesController < ApplicationController
   end
 
   private
+
+  def ensure_selection_enabled
+    return if RecommendationProfile.selection_enabled?
+
+    redirect_to user_path(current_user.uuid)
+  end
 
   def set_recommendation_profile
     @recommendation_profile = current_user.recommendation_profile || current_user.build_recommendation_profile

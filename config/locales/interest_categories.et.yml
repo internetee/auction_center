@@ -1,0 +1,18 @@
+et:
+  interest_categories:
+    code: "Kood"
+    name_en: "Nimi (inglise)"
+    name_et: "Nimi (eesti)"
+    position: "Järjekord"
+    active: "Aktiivne"
+    yes: "Jah"
+    no: "Ei"
+  admin:
+    interest_categories:
+      index:
+        title: "Huvi kategooriad"
+        new: "Uus kategooria"
+      new:
+        title: "Uus huvi kategooria"
+      edit:
+        title: "Muuda huvi kategooriat"
