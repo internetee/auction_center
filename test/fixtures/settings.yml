@@ -325,3 +325,11 @@ contact_organization_email:
   value: 'info@internet.ee'
   value_format: string
 
+recommendation_interests_enabled:
+  code: 'recommendation_interests_enabled'
+  description: |
+    When 'true', users see the auction-interests selection (prompt + form).
+    Keep 'false' until interest categories are populated in admin.
+  value: 'true'
+  value_format: boolean
+

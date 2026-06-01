@@ -10,7 +10,7 @@
         <div class="u-flex u-align-center" style="gap: 16px; flex-wrap: wrap;">
           <% row.each do |category| %>
             <label class="o-checkbox-container c-login__checkbox-container">
-              <span class="o-checkbox-text"><%= t("recommendation_profiles.categories.#{category}") %></span>
+              <span class="o-checkbox-text"><%= Recommendation::InterestCatalog.label_for(category) %></span>
               <%= check_box_tag "#{form.object_name}[interest_categories][]",
                                 category,
                                 form.object.interest_categories.include?(category),

@@ -48,6 +48,7 @@ en:
   auctions_name: "Auctions"
   billing_profiles_name: "Billing Profiles"
   settings_name: "Settings"
+  interest_categories_name: "Interest categories"
   users_name: "Users"
   results_name: "Results"
   finished_auctions: "Ended auctions"

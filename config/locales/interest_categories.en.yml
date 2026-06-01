@@ -1,0 +1,18 @@
+en:
+  interest_categories:
+    code: "Code"
+    name_en: "Name (English)"
+    name_et: "Name (Estonian)"
+    position: "Position"
+    active: "Active"
+    yes: "Yes"
+    no: "No"
+  admin:
+    interest_categories:
+      index:
+        title: "Interest categories"
+        new: "New category"
+      new:
+        title: "New interest category"
+      edit:
+        title: "Edit interest category"

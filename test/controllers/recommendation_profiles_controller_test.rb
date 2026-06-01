@@ -41,4 +41,24 @@ class RecommendationProfilesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_path
     assert @user.recommendation_profile.prompt_dismissed_at.present?
   end
+
+  def test_edit_redirects_when_selection_disabled
+    settings(:recommendation_interests_enabled).update!(value: 'false')
+
+    get edit_recommendation_profile_path
+
+    assert_redirected_to user_path(@user.uuid)
+  end
+
+  def test_update_blocked_when_selection_disabled
+    settings(:recommendation_interests_enabled).update!(value: 'false')
+
+    assert_no_difference -> { RecommendationProfile.count } do
+      put recommendation_profile_path, params: {
+        recommendation_profile: { interest_categories: %w[legal] }
+      }
+    end
+
+    assert_redirected_to user_path(@user.uuid)
+  end
 end

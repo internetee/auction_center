@@ -540,3 +540,18 @@ contact_organization_email_setting = Setting.new(code: :contact_organization_ema
                                                  description: contact_organization_email_description,
                                                  value_format: 'string')
 contact_organization_email_setting.save
+
+# Recommendation interests: admin toggle that controls whether the
+# interest-selection UI is shown to users. Default OFF so a fresh deploy
+# never shows an empty picker; turn it on once categories are filled.
+recommendation_interests_enabled_description = <<~TEXT.squish
+  When 'true', users see the auction-interests selection (prompt + form).
+  Keep 'false' until interest categories are populated in admin.
+TEXT
+Setting.new(code: :recommendation_interests_enabled,
+            value: 'false',
+            description: recommendation_interests_enabled_description,
+            value_format: 'boolean').save
+
+# Recommendation interest categories (idempotent — see InterestCategory.seed_defaults!).
+InterestCategory.seed_defaults!

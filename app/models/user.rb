@@ -246,6 +246,8 @@ class User < ApplicationRecord
   end
 
   def recommendation_profile_promptable?
+    return false unless RecommendationProfile.selection_enabled?
+
     recommendation_profile&.promptable? != false
   end
 

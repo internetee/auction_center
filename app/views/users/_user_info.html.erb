@@ -77,23 +77,25 @@
     
       <a href="<%= I18n.locale == :et ? 'https://www.internet.ee/domeenid/domeenide-oksjonikeskkonna-kasutajatingimused' : 'https://www.internet.ee/domains/auction-environment-user-agreement'%>" title="" class="c-acount__link" target='_blank'><%= t('users.terms_and_conditions_link') %></a>
 
-      <div class="u-mt-20">
-        <h3 class="o-card__title c-account__title"><%= t('recommendation_profiles.profile.summary_title') %></h3>
+      <% if RecommendationProfile.selection_enabled? %>
+        <div class="u-mt-20">
+          <h3 class="o-card__title c-account__title"><%= t('recommendation_profiles.profile.summary_title') %></h3>
 
-        <% if @user.recommendation_profile&.summary_lines&.any? %>
-          <% @user.recommendation_profile.summary_lines.each do |line| %>
-            <p class="c-account__subtitle"><%= line %></p>
+          <% if @user.recommendation_profile&.summary_lines&.any? %>
+            <% @user.recommendation_profile.summary_lines.each do |line| %>
+              <p class="c-account__subtitle"><%= line %></p>
+            <% end %>
+          <% else %>
+            <p class="c-account__subtitle"><%= t('recommendation_profiles.profile.empty_state') %></p>
           <% end %>
-        <% else %>
-          <p class="c-account__subtitle"><%= t('recommendation_profiles.profile.empty_state') %></p>
-        <% end %>
 
-        <%= component 'common/links/link_button',
-                      link_title: t('recommendation_profiles.profile.edit_action'),
-                      href: edit_recommendation_profile_path(return_to: user_path(@user.uuid)),
-                      color: 'ghost',
-                      options: { target: '_top' } %>
-      </div>
+          <%= component 'common/links/link_button',
+                        link_title: t('recommendation_profiles.profile.edit_action'),
+                        href: edit_recommendation_profile_path(return_to: user_path(@user.uuid)),
+                        color: 'ghost',
+                        options: { target: '_top' } %>
+        </div>
+      <% end %>
 
       <div class="c-acount__buttons u-flex u-align-center">
         <%= component 'common/links/link_button', link_title: t(:billing), href: billing_profiles_path, color: 'ghost', options: { target: '_top' } %>

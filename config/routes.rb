@@ -69,6 +69,7 @@ Rails.application.routes.draw do
     resources :results, only: %i[index create show], concerns: %i[auditable]
 
     resources :settings, except: %i[create destroy], concerns: [:auditable]
+    resources :interest_categories
     resources :users, concerns: %i[auditable]
   end
 

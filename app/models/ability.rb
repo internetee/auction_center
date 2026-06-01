@@ -83,6 +83,7 @@ class Ability
     can %i[read create], Job
     can :manage, User
     can %i[read update], Setting
+    can :manage, InterestCategory
     can :read, Offer
     can :read, Result
     can :read, PaymentOrder

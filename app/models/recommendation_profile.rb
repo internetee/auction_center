@@ -16,6 +16,18 @@ class RecommendationProfile < ApplicationRecord
   validate :length_range_is_valid
   validate :interest_categories_are_supported
 
+  SELECTION_ENABLED_SETTING = 'recommendation_interests_enabled'.freeze
+
+  # Admin toggle (Setting). When false, the interest-selection UI is hidden
+  # from users (no prompt, no form). Already-saved interests still affect
+  # ranking — this only gates the UI. Defaults to false when the setting is
+  # missing, so a fresh / un-seeded deploy never shows an empty picker.
+  def self.selection_enabled?
+    Setting.find_by(code: SELECTION_ENABLED_SETTING)&.retrieve == true
+  rescue StandardError
+    false
+  end
+
   def completed? = completed_at.present?
 
   def promptable?
@@ -55,7 +67,7 @@ class RecommendationProfile < ApplicationRecord
   end
 
   def interest_categories_labels
-    interest_categories.map { |category| I18n.t("recommendation_profiles.categories.#{category}") }
+    interest_categories.map { |category| Recommendation::InterestCatalog.label_for(category) }
   end
 
   def rankable_interest_categories
@@ -77,7 +89,7 @@ class RecommendationProfile < ApplicationRecord
   def summary_lines
     [].tap do |lines|
       if rankable_interest_categories.any?
-        labels = rankable_interest_categories.map { |category| I18n.t("recommendation_profiles.categories.#{category}") }
+        labels = rankable_interest_categories.map { |category| Recommendation::InterestCatalog.label_for(category) }
         lines << "#{I18n.t('recommendation_profiles.summary.categories')}: #{labels.join(', ')}"
       end
 

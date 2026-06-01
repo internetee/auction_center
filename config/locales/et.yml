@@ -47,6 +47,7 @@ et:
   auctions_name: "Oksjonid"
   billing_profiles_name: "Arve aadressid"
   settings_name: "Seadistus"
+  interest_categories_name: "Huvi kategooriad"
   users_name: "Kasutajad"
   results_name: "Tulemused"
   finished_auctions: "Lõppenud oksjonite arved"

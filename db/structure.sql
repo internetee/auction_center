@@ -1269,6 +1269,42 @@ ALTER SEQUENCE public.domain_participate_auctions_id_seq OWNED BY public.domain_
 
 
 --
+-- Name: interest_categories; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.interest_categories (
+    id bigint NOT NULL,
+    uuid uuid DEFAULT gen_random_uuid() NOT NULL,
+    code character varying NOT NULL,
+    name_en character varying NOT NULL,
+    name_et character varying NOT NULL,
+    "position" integer DEFAULT 0 NOT NULL,
+    active boolean DEFAULT true NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: interest_categories_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.interest_categories_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: interest_categories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.interest_categories_id_seq OWNED BY public.interest_categories.id;
+
+
+--
 -- Name: invoice_items; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2058,6 +2094,13 @@ ALTER TABLE ONLY public.domain_participate_auctions ALTER COLUMN id SET DEFAULT 
 
 
 --
+-- Name: interest_categories id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.interest_categories ALTER COLUMN id SET DEFAULT nextval('public.interest_categories_id_seq'::regclass);
+
+
+--
 -- Name: invoice_items id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2415,6 +2458,14 @@ ALTER TABLE ONLY public.domain_classifications
 
 ALTER TABLE ONLY public.domain_participate_auctions
     ADD CONSTRAINT domain_participate_auctions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: interest_categories interest_categories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.interest_categories
+    ADD CONSTRAINT interest_categories_pkey PRIMARY KEY (id);
 
 
 --
@@ -2914,6 +2965,27 @@ CREATE INDEX index_domain_participate_auctions_on_auction_id ON public.domain_pa
 --
 
 CREATE INDEX index_domain_participate_auctions_on_user_id ON public.domain_participate_auctions USING btree (user_id);
+
+
+--
+-- Name: index_interest_categories_on_active_and_position; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_interest_categories_on_active_and_position ON public.interest_categories USING btree (active, "position");
+
+
+--
+-- Name: index_interest_categories_on_code; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_interest_categories_on_code ON public.interest_categories USING btree (code);
+
+
+--
+-- Name: index_interest_categories_on_uuid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_interest_categories_on_uuid ON public.interest_categories USING btree (uuid);
 
 
 --
@@ -3524,6 +3596,8 @@ ALTER TABLE ONLY public.invoices
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260601100100'),
+('20260601100000'),
 ('20260528100000'),
 ('20260527090300'),
 ('20260527090200'),
