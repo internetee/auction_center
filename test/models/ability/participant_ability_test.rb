@@ -82,6 +82,10 @@ class ParticipantAbilityTest < ActiveSupport::TestCase
     assert(@participant_ability.can?(:read, Invoice.new(user_id: @participant.id)))
     assert(@participant_ability.can?(:update, Invoice.new(user_id: @participant.id)))
 
+    other_users_invoice = Invoice.new(user_id: users(:second_place_participant).id)
+    assert_not(@participant_ability.can?(:read, other_users_invoice))
+    assert_not(@participant_ability.can?(:update, other_users_invoice))
+
     assert_not(@participant_ability.can?(:delete, Invoice.new(user_id: @participant.id)))
     assert_not(@participant_ability.can?(:create, Invoice.new(user_id: @participant.id)))
     assert_not(@participant_ability.can?(:manage, Invoice.new))

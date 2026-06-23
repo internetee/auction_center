@@ -2,98 +2,64 @@
   <div class="o-container">
     <div class="c-footer__grid">
       <div class="c-footer__highlight">
-        <%= render 'svg/footer_eis_logo' %>
+        <a class="layout--footer-logo" href="<%= footer_logo_url %>" target="_blank" rel="noopener">
+          <%= render 'svg/footer_eis_logo' %>
+        </a>
         <div class="c-footer__highlight__grid c-footer__highlight__grid--row-t">
           <div class="c-footer__highlight__grid">
-            <h3 class="c-footer__highlight__title">
-              <div>
-                <%= t('common.footer.copyright') %>
-              </div>
-            </h3>
-            <div class="c-footer__highlight__info">
-              <%= Setting.find_by(code: 'invoice_issuer_address').retrieve %><br>
-              <%= t('reg_no') %>: <%= Setting.find_by(code: 'invoice_issuer_reg_no').retrieve %>
-              <br>
-            </div>
+            <h3 class="c-footer__highlight__title"><%= footer_highlight_title %></h3>
+            <p class="c-footer__highlight__info"><%= footer_highlight_info %></p>
           </div>
           <div class="c-footer__highlight__contact">
             <span>
-              <%= render 'svg/email' %><a href="mailto:<%= Setting.find_by(code: 'contact_organization_email').retrieve %>"><%= Setting.find_by(code: 'contact_organization_email').retrieve %></a><br>
+              <%= render 'svg/email' %><a href="<%= footer_email_href %>" target="_blank" rel="noopener"><%= footer_email_text %></a><br>
             </span>
             <span>
-              <%= render 'svg/phone' %><a href="tel:<%= Setting.find_by(code: 'organization_phone').retrieve %>"><%= Setting.find_by(code: 'organization_phone').retrieve %></a>
+              <%= render 'svg/phone' %><%= footer_phone_text %>
             </span>
           </div>
         </div>
       </div>
       <div class="c-footer__grid__row">
+        <% footer_navigation_columns.each_with_index do |column, index| %>
+          <div class="c-footer__row__col s-footer-col">
+            <div>
+              <span style="color: rgb(255, 255, 255);">
+                <b><span style="font-size: 15px;"><%= column[:name] %><br></span></b>
+              </span>
+            </div>
+            <div>
+              <span style="color: rgb(255, 255, 255);">
+                <b><span style="font-size: 15px;"><br></span></b>
+              </span>
+            </div>
+            <div style="line-height: 23px;"><span style="color: rgb(255, 255, 255);"><b></b>
+              <% column[:links].each do |link| %>
+                <span style="font-size: 13px;"><%= link_to link[:label], link[:url], link[:html_options] %></span><br>
+              <% end %>
+              <% if index == 0 %>
+                <span style="font-size: 13px;"><a href="<%= Setting.find_by(code: 'terms_and_conditions_link').retrieve %>" target="_blank"><%= t('common.footer.labels.terms_and_conditions') %></a></span>
+              <% end %>
+              </span>
+            </div>
+          </div>
+        <% end %>
         <div class="c-footer__row__col s-footer-col">
-          <div>
-            <span style="color: rgb(255, 255, 255);">
-              <b><span style="font-size: 15px;"><%= t('common.footer.help_and_info') %> <br></span></b>
-            </span>
-          </div>
-          <div>
-            <span style="color: rgb(255, 255, 255);">
-              <b><span style="font-size: 15px;"><br></span></b>
-            </span>
-          </div>
-          <div style="line-height: 23px;"><span style="color: rgb(255, 255, 255);"><b></b>
-              <span style="font-size: 13px;"><a href="<%= footer_link(:domain_regulation) %>" target="_self"><%= t('common.footer.domain_regulation')%></a></span><br>
-              <span style="font-size: 13px;"><a href="<%= footer_link(:faq) %>" target="_self"><%= t('common.footer.faq')%></a> </span><br>
-              <span style="font-size: 13px;"><a href="<%= footer_link(:statistics) %>" target="_self"><%= t('common.footer.statistics')%></a></span><br>
-              <span style="font-size: 13px;"><a href="<%= footer_link(:dispute_committee) %>" target="_self"><%= t('common.footer.dispute_committee') %></a></span><br>
-              <span style="font-size: 13px;"><a href="<%= Setting.find_by(code: 'terms_and_conditions_link').retrieve %>" target="_self"><%= t('auctions.top_grid.terms_and_conditions_link').capitalize %></a></span>
-              <b><span style="font-size: 15px;"><br></span></b><br>
-            </span>
-          </div>
-        </div>
-
-        <div class="c-footer__row__col s-footer-col">
-          <div>
-            <b><span style="font-size: 14px;"><%= t('common.footer.registrars') %> </span><br></b>
-          </div>
+          <div><b><span style="font-size: 14px;"><%= footer_social_column_title %><br></span></b></div>
           <div><b><br></b></div>
-          <div>
-            <b></b>
-            <span style="font-size: 13px;"><a href="<%= footer_link(:list_of_accredited_registrars) %>" target="_self"> <%= t('common.footer.list_of_accredited_registrars')%></a></span><br>
-            <span style="font-size: 13px;">
-              <a href="<%= footer_link(:terms_and_conditions_for_registrars) %>" target="_self"> <%= t('common.footer.terms_and_conditions_for_registrars') %></a>
-            </span><br>
-            <span style="font-size: 13px;"><a href="<%= footer_link(:partner_programme) %>" target="_self"> <%= t('common.footer.partner_programme') %></a></span>
-            <b><br></b>
-          </div>
-        </div>
+          <div class="c-socials">
+            <% footer_social_links.each do |social| %>
+              <% partial = "svg/#{social[:key]}" %>
+              <% next unless lookup_context.exists?(partial, [], true) %>
 
-        <div class="c-footer__row__col s-footer-col">
-          <div><b><span style="font-size: 14px;"><%= t('common.footer.estonian_internet') %> <br></span></b></div>
-          <div><b><span style="font-size: 14px;"><br></span></b></div>
-          <div>
-            <span style="font-size: 14px;"><a href="<%= footer_link(:contact_us) %>" target="_self"><%= t('common.footer.contact_us') %></a></span><br>
-            <span style="font-size: 14px;"><a href="<%= footer_link(:management) %>" target="_self"><%= t('common.footer.management') %></a></span>
-            <b><span style="font-size: 14px;"><br></span></b>
-            <span style="font-size: 14px;">
-              <a href="<%= footer_link(:newsletter) %>" target="_self">
-                <span style="color: rgb(251, 170, 25);"><%= t('common.footer.newsletter') %></span>
+              <a href="<%= social[:url] %>" title="<%= social[:title] %>" target="_blank" rel="noopener">
+                <%= render partial %>
               </a>
-            </span><b>
-            <span style="font-size: 14px;"><br></span></b>
+            <% end %>
           </div>
         </div>
-
-      <div class="c-footer__row__col s-footer-col">
-        <div><b><span style="font-size: 14px;"><%= t('common.footer.social_media') %></span><br></b></div>
-        <div><b><br></b></div>
-        <div class="c-socials">
-          <a href="https://www.facebook.com/EE-748656818569233/" class="c-socials__link" target="_blank"><%= render 'svg/facebook' %></a>
-          <a href="https://twitter.com/Eesti_Internet" class="c-socials__link" target="_blank"><%= render 'svg/twitter' %></a>
-          <% if false %><a href="" class="c-socials__link" target="_blank"><%= render 'svg/linkedin' %></a><% end %>
-          <a href="https://www.youtube.com/channel/UC7nTB6zIwZYPFarlbKuEPRA" class="c-socials__link" target="_blank"><%= render 'svg/youtube' %></a>
-          <a href="https://internet.ee/index.rss" class="c-socials__link" target="_blank"><%= render 'svg/rss' %></a>
-        </div>
+        <a target="_blank" href="https://sviiter.ee" class="c-footer__sviiter"><%= render 'svg/sviiter' %></a>
       </div>
-      <a target="_blank" href="https://sviiter.ee" class="c-footer__sviiter"><%= render 'svg/sviiter' %></a>
     </div>
   </div>
-</div>
 </footer>
