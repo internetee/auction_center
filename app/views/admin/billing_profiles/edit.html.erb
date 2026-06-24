@@ -1,0 +1,18 @@
+<% content_for :title, t('.title') %>
+
+<div class="o-container">
+  <% if @billing_profile.errors.any? %>
+    <div class="ui message">
+      <div class="header">
+        <%= t(:errors_name) %>
+      </div>
+      <ul id="errors">
+        <% @billing_profile.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= render 'form', billing_profile: @billing_profile, url: admin_billing_profile_path(@billing_profile) %>
+</div>
