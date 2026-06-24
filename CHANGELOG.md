@@ -1,3 +1,6 @@
+24.06.2026
+* Admin can now change recipient of paid invoices https://github.com/internetee/auction_center/pull/1509
+
 27.05.2026
 * Profile data review warning fix https://github.com/internetee/auction_center/issues/1580
 
