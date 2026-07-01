@@ -519,9 +519,6 @@ GEM
       faraday-multipart (>= 1)
     ruby-progressbar (1.13.0)
     rubyzip (3.1.0)
-    sass-embedded (1.93.2)
-      google-protobuf (~> 4.31)
-      rake (>= 13)
     sass-embedded (1.93.2-aarch64-linux-gnu)
       google-protobuf (~> 4.31)
     sass-embedded (1.93.2-aarch64-linux-musl)
@@ -646,7 +643,7 @@ DEPENDENCIES
   devise (>= 5.0.3)
   directo!
   faker
-  faraday (>= 2.14.1)
+  faraday (>= 2.14.3)
   foreman
   freezolite
   hotwire-rails (~> 0.1.3)
