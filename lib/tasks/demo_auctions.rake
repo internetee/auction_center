@@ -175,30 +175,48 @@ namespace :demo do
     profile.save!
     profile.mark_completed!
 
+    wishlist_limit = Setting.find_by(code: 'wishlist_size').retrieve
     wishlist_picks = %w[cloudstack.ee fintechlab.ee marketflow.ee growthhub.ee]
+    wishlist_added = []
     wishlist_picks.each do |domain|
       next if user.wishlist_items.exists?(domain_name: domain)
 
-      WishlistItem.create!(user: user, domain_name: domain, cents: 5000)
+      if user.wishlist_items.count >= wishlist_limit
+        puts "  wishlist full (limit #{wishlist_limit}), skipping: #{(wishlist_picks - wishlist_added).inspect}"
+        break
+      end
+
+      item = WishlistItem.new(user: user, domain_name: domain, cents: 5000)
+      if item.save
+        wishlist_added << domain
+      else
+        puts "  skipped wishlist #{domain}: #{item.errors.full_messages.join(', ')}"
+      end
     end
 
     bid_picks = %w[
       apteek.ee kohvik.ee jurist.ee reisid.ee
     ]
+    bids_added = []
     bid_picks.each do |domain|
       auction = Auction.where(domain_name: domain).where('ends_at > ?', Time.zone.now).first
       next if auction.nil?
       next if Offer.exists?(user_id: user.id, auction_id: auction.id)
 
-      Offer.create!(user: user, auction: auction, cents: 1500, billing_profile_id: 0)
+      offer = Offer.new(user: user, auction: auction, cents: 1500, billing_profile_id: 0)
+      if offer.save
+        bids_added << domain
+      else
+        puts "  skipped bid #{domain}: #{offer.errors.full_messages.join(', ')}"
+      end
     end
 
     Recommendation::RefreshSingleUserAuctionScoresJob.enqueue_debounced(user.id)
 
     puts "Seeded signals on user ##{user.id} (#{user.email}):"
     puts "  profile interests: #{profile.interest_categories.inspect} + custom #{profile.custom_interests.inspect}"
-    puts "  wishlist:          #{wishlist_picks.inspect}"
-    puts "  bids on existing:  #{bid_picks.inspect}"
+    puts "  wishlist added:    #{wishlist_added.inspect}"
+    puts "  bids added:        #{bids_added.inspect}"
     puts
     puts 'Score refresh enqueued. After the delayed_job runs (~30s), visit /auctions while signed in as this user.'
   end
