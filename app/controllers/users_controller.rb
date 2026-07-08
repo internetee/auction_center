@@ -44,14 +44,7 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.save
         if @user.recommendation_profile&.filled?
-          @user.recommendation_profile.mark_completed!
-          Recommendation::RefreshSingleUserAuctionScoresJob.enqueue_debounced(@user.id)
-          Recommendation::EventTracker.call(
-            user: @user,
-            event_type: 'recommendation_profile_completed',
-            source: 'users#create',
-            request:
-          )
+          @user.recommendation_profile.complete!(source: 'users#create', request:)
         elsif @user.recommendation_profile.present?
           # User signed up without filling the profile. Suppress the modal
           # on the next /auctions render so they're not nagged immediately —

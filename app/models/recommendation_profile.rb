@@ -58,6 +58,30 @@ class RecommendationProfile < ApplicationRecord
     )
   end
 
+  # ---------- Prompt lifecycle ----------------------------------------
+  #
+  # Bundle each persistence change with its domain side effects (rescore the
+  # user's auctions, record the interaction) so every entry point — the
+  # profile form, sign-up, the dismiss button — triggers them the same way.
+  # `source` names the originating action for analytics.
+
+  def complete!(source:, request: nil)
+    mark_completed!
+    enqueue_rescore
+    track_event('recommendation_profile_completed', source, request:)
+  end
+
+  def skip!(source:, request: nil)
+    dismiss_prompt!
+    enqueue_rescore
+    track_event('recommendation_prompt_dismissed', source, request:)
+  end
+
+  def dismiss!(source:, request: nil)
+    dismiss_prompt!
+    track_event('recommendation_prompt_dismissed', source, request:)
+  end
+
   def interest_categories
     interest_keywords.select { |value| known_category?(value) }
   end
@@ -102,6 +126,14 @@ class RecommendationProfile < ApplicationRecord
   end
 
   private
+
+  def enqueue_rescore
+    Recommendation::RefreshSingleUserAuctionScoresJob.enqueue_debounced(user_id)
+  end
+
+  def track_event(event_type, source, request:)
+    Recommendation::EventTracker.call(user:, event_type:, source:, request:)
+  end
 
   def normalize_interest_categories
     known_categories = normalize_list(interest_keywords).select { |item| known_category?(item) }

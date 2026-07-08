@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
+import { csrfToken } from "../helpers/csrf"
 
 // Fires a `recommendation_event` when the attached element has been
 // visible in the viewport for at least `dwellMs` and the page is active.
@@ -79,15 +80,11 @@ export default class extends Controller {
       headers: {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "X-CSRF-Token": this.csrfToken()
+        "X-CSRF-Token": csrfToken()
       },
       credentials: "same-origin",
       keepalive: true,
       body: data
     }).catch(() => null)
-  }
-
-  csrfToken() {
-    return document.querySelector('meta[name="csrf-token"]')?.getAttribute("content")
   }
 }

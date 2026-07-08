@@ -404,16 +404,12 @@ module Recommendation
       end
 
       signals
-    rescue StandardError
-      {}
     end
 
     def lookup_user_results
       return [] unless Result.column_names.include?('winner_user_id')
 
       Result.where(winner_user_id: @user.id).to_a
-    rescue StandardError
-      []
     end
 
     def preload_result_classifications(results)
@@ -444,7 +440,7 @@ module Recommendation
       return 1.0 if auction_embedding.nil?
       return 1.0 if user_embedding_centroid.nil?
 
-      similarity = cosine_similarity(user_embedding_centroid, auction_embedding)
+      similarity = Recommendation::Embedding.cosine_similarity(user_embedding_centroid, auction_embedding)
       return 1.0 if similarity.nil?
 
       1.0 + [similarity, 0.0].max
@@ -472,44 +468,14 @@ module Recommendation
                      .index_by(&:domain_name)
       return nil if embeddings.empty?
 
-      sum = nil
-      total_weight = 0.0
-
-      signals.each do |signal|
-        dc = embeddings[signal[:domain_name]]
-        vec = Array(dc&.embedding)
+      weighted_vectors = signals.filter_map do |signal|
+        vec = Array(embeddings[signal[:domain_name]]&.embedding)
         next if vec.empty?
 
-        sum ||= Array.new(vec.size, 0.0)
-        next if vec.size != sum.size
-
-        weight = decay_weight(signal[:age_days])
-        vec.each_with_index { |v, i| sum[i] += v.to_f * weight }
-        total_weight += weight
+        [vec, decay_weight(signal[:age_days])]
       end
 
-      return nil if sum.nil? || total_weight.zero?
-
-      sum.map { |v| v / total_weight }
-    end
-
-    def cosine_similarity(vec_a, vec_b)
-      return nil if vec_a.nil? || vec_b.nil? || vec_a.size != vec_b.size
-
-      dot = 0.0
-      norm_a = 0.0
-      norm_b = 0.0
-      vec_a.each_with_index do |a, i|
-        b = vec_b[i].to_f
-        dot += a * b
-        norm_a += a * a
-        norm_b += b * b
-      end
-
-      denom = Math.sqrt(norm_a) * Math.sqrt(norm_b)
-      return nil if denom.zero?
-
-      dot / denom
+      Recommendation::Embedding.weighted_centroid(weighted_vectors)
     end
 
     # ---------- Structural ----------------------------------------------

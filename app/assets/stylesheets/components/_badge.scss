@@ -60,6 +60,21 @@
 }
 
 
+// Removable interest tag: spacing + a bare "x" button. Shared by the
+// server-rendered tags (recommendation_profiles/_fields) and the ones the
+// custom-interest-tags Stimulus controller injects, so the two can't drift.
+.c-badge--interest {
+  margin: rem(4px) rem(8px) rem(4px) 0;
+}
+
+.c-badge__remove {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
 .c-badge--gray {
   background-color: $grey-100-color;
   color: $grey-400-color;

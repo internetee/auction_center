@@ -4,5 +4,7 @@ class UserAuctionScore < ApplicationRecord
 
   validates :score, presence: true, numericality: true
   validates :calculated_at, presence: true
-  validates :auction_id, uniqueness: { scope: :user_id }
+  # Uniqueness of (user_id, auction_id) is enforced by a DB unique index and the
+  # upsert_all(unique_by:) write path in Recommendation::Scorer; no form surfaces
+  # this, so a redundant AR validation would only add a lost-to-the-DB race.
 end
