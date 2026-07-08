@@ -38,9 +38,9 @@
 
       <div data-form--custom-interest-tags-target="list" style="margin-top: 12px;">
         <% form.object.custom_interests.each do |interest| %>
-          <span class="c-badge c-badge--blue" data-custom-interest-value="<%= interest %>" style="display:inline-flex; align-items:center; gap:8px; margin:4px 8px 4px 0;">
+          <span class="c-badge c-badge--blue c-badge--interest" data-custom-interest-value="<%= interest %>">
             <span><%= interest %></span>
-            <button type="button" data-action="form--custom-interest-tags#remove" style="border:none; background:transparent; cursor:pointer; padding:0; line-height:1;">x</button>
+            <button type="button" class="c-badge__remove" data-action="form--custom-interest-tags#remove">x</button>
             <%= hidden_field_tag "#{form.object_name}[custom_interests][]", interest %>
           </span>
         <% end %>

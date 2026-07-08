@@ -66,9 +66,9 @@ export default class extends Controller {
   tagHtml(value) {
     const escaped = this.escapeHtml(value)
     return `
-      <span class="c-badge c-badge--blue" data-custom-interest-value="${escaped}" style="display:inline-flex; align-items:center; gap:8px; margin:4px 8px 4px 0;">
+      <span class="c-badge c-badge--blue c-badge--interest" data-custom-interest-value="${escaped}">
         <span>${escaped}</span>
-        <button type="button" data-action="form--custom-interest-tags#remove" style="border:none; background:transparent; cursor:pointer; padding:0; line-height:1;">x</button>
+        <button type="button" class="c-badge__remove" data-action="form--custom-interest-tags#remove">x</button>
         <input type="hidden" name="${this.hiddenInputName()}" value="${escaped}">
       </span>
     `

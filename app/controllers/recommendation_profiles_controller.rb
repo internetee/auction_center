@@ -8,30 +8,14 @@ class RecommendationProfilesController < ApplicationController
   def update
     @recommendation_profile.assign_attributes(recommendation_profile_params)
 
-    if !@recommendation_profile.filled?
-      @recommendation_profile.dismiss_prompt!
-      Recommendation::RefreshSingleUserAuctionScoresJob.enqueue_debounced(current_user.id)
-      Recommendation::EventTracker.call(
-        user: current_user,
-        event_type: 'recommendation_prompt_dismissed',
-        source: 'recommendation_profiles#update_blank',
-        request:
-      )
-
+    unless @recommendation_profile.filled?
+      @recommendation_profile.skip!(source: 'recommendation_profiles#update_blank', request:)
       redirect_to after_update_path, notice: t('.skipped')
       return
     end
 
     if @recommendation_profile.save
-      @recommendation_profile.mark_completed!
-      Recommendation::RefreshSingleUserAuctionScoresJob.enqueue_debounced(current_user.id)
-      Recommendation::EventTracker.call(
-        user: current_user,
-        event_type: 'recommendation_profile_completed',
-        source: 'recommendation_profiles#update',
-        request:
-      )
-
+      @recommendation_profile.complete!(source: 'recommendation_profiles#update', request:)
       redirect_to after_update_path, notice: t('.updated')
     else
       render :edit, status: :unprocessable_entity
@@ -39,14 +23,7 @@ class RecommendationProfilesController < ApplicationController
   end
 
   def dismiss
-    @recommendation_profile.dismiss_prompt!
-    Recommendation::EventTracker.call(
-      user: current_user,
-      event_type: 'recommendation_prompt_dismissed',
-      source: 'recommendation_profiles#dismiss',
-      request:
-    )
-
+    @recommendation_profile.dismiss!(source: 'recommendation_profiles#dismiss', request:)
     redirect_to dismiss_redirect_path, notice: t('.dismissed')
   end
 

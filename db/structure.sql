@@ -2933,6 +2933,13 @@ CREATE INDEX index_domain_classifications_on_keywords ON public.domain_classific
 
 
 --
+-- Name: index_domain_classifications_on_lower_domain_name; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_domain_classifications_on_lower_domain_name ON public.domain_classifications USING btree (lower((domain_name)::text));
+
+
+--
 -- Name: index_domain_classifications_on_primary_category; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3339,6 +3346,13 @@ CREATE INDEX index_wishlist_items_on_domain_name ON public.wishlist_items USING 
 
 
 --
+-- Name: index_wishlist_items_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_wishlist_items_on_user_id ON public.wishlist_items USING btree (user_id);
+
+
+--
 -- Name: users_by_identity_code_and_country; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3596,6 +3610,8 @@ ALTER TABLE ONLY public.invoices
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260708120100'),
+('20260708120000'),
 ('20260601100100'),
 ('20260601100000'),
 ('20260528100000'),
