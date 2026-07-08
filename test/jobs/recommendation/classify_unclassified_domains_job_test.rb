@@ -42,6 +42,31 @@ module Recommendation
       end
     end
 
+    def test_reclassification_resets_stale_embedding
+      skip 'embedding column not present' unless DomainClassification.column_names.include?('embedding')
+
+      row = DomainClassification.create!(domain_name: 'weak.ee',
+                                         classification_source: DomainClassification::OPENAI_SOURCE,
+                                         confidence: 0.3,
+                                         classified_at: 1.day.ago,
+                                         embedding: [0.1, 0.2, 0.3],
+                                         embedding_model: 'text-embedding-3-small',
+                                         embedded_at: 1.day.ago)
+
+      with_feature_flag(true) do
+        with_missing_domains([]) do
+          stub_llm do
+            Recommendation::ClassifyUnclassifiedDomainsJob.new.perform
+          end
+        end
+      end
+
+      row.reload
+      assert_nil row.embedding
+      assert_nil row.embedding_model
+      assert_nil row.embedded_at
+    end
+
     def test_classifies_missing_domains
       with_feature_flag(true) do
         with_missing_domains(['fresh-domain.ee']) do
