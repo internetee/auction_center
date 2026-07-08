@@ -66,10 +66,6 @@ class RecommendationProfile < ApplicationRecord
     self.interest_keywords = combine_interest_values(categories: values, custom_values: custom_interests)
   end
 
-  def interest_categories_labels
-    interest_categories.map { |category| Recommendation::InterestCatalog.label_for(category) }
-  end
-
   def rankable_interest_categories
     interest_categories - [OTHER_CATEGORY]
   end

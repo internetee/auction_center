@@ -29,6 +29,8 @@ et:
       edit_action: "Muuda huve"
     summary:
       categories: "Huvid"
+      custom_interests: "Kohandatud huvid"
+      length: "Eelistatud pikkus"
     categories:
       brandable: "Bränditavad nimed"
       shop_brand: "Poe- või kaubamärgi nimed"
