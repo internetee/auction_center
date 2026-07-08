@@ -20,9 +20,6 @@ class DomainClassification < ApplicationRecord
 
   before_validation :normalize_domain_name
 
-  scope :unclassified, -> { where(classified_at: nil) }
-  scope :by_source, ->(source) { where(classification_source: source) }
-  scope :low_confidence, -> { where('confidence IS NULL OR confidence < ?', LOW_CONFIDENCE_THRESHOLD) }
   scope :needs_llm_enrichment, lambda {
     where(classification_source: [HEURISTIC_SOURCE, nil])
       .or(where(confidence: ...LOW_CONFIDENCE_THRESHOLD))
@@ -47,7 +44,6 @@ class DomainClassification < ApplicationRecord
     { embedding: nil, embedding_model: nil, embedded_at: nil }
   end
 
-  def heuristic? = classification_source == HEURISTIC_SOURCE
   def from_llm? = classification_source == OPENAI_SOURCE
 
   def stale?

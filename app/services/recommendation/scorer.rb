@@ -262,8 +262,13 @@ module Recommendation
     # fixtures with travel_to and provides minimal performance benefit
     # at our scale.
 
+    # Each signal set is queried by several memoized consumers (feature
+    # counts, audience, centroid, ...). They depend only on @user and
+    # @calculated_at, both fixed for the instance, so memoize to run each
+    # query once per refresh instead of 2-4 times.
     def bid_domain_signals
-      Offer
+      @bid_domain_signals ||=
+        Offer
         .joins(:auction)
         .where(user_id: @user.id)
         .pluck('LOWER(auctions.domain_name)', 'offers.updated_at')
@@ -271,15 +276,17 @@ module Recommendation
     end
 
     def wishlist_domain_signals
-      @user.wishlist_items
-           .pluck('LOWER(wishlist_items.domain_name)', 'wishlist_items.updated_at')
-           .map { |domain, time| { domain_name: domain, age_days: age_in_days(time) } }
+      @wishlist_domain_signals ||=
+        @user.wishlist_items
+             .pluck('LOWER(wishlist_items.domain_name)', 'wishlist_items.updated_at')
+             .map { |domain, time| { domain_name: domain, age_days: age_in_days(time) } }
     end
 
     def view_domain_signals
       return [] unless RecommendationEvent.table_exists?
 
-      RecommendationEvent
+      @view_domain_signals ||=
+        RecommendationEvent
         .joins(:auction)
         .where(user_id: @user.id, event_type: 'auction_detail_view')
         .pluck('LOWER(auctions.domain_name)', 'recommendation_events.occurred_at')
@@ -290,7 +297,8 @@ module Recommendation
       return [] unless defined?(DomainOfferHistory) && DomainOfferHistory.table_exists?
       return [] unless DomainOfferHistory.column_names.include?('user_id')
 
-      DomainOfferHistory
+      @domain_offer_history_signals ||=
+        DomainOfferHistory
         .where(user_id: @user.id)
         .pluck('LOWER(domain_name)', 'domain_offer_histories.updated_at')
         .map { |domain, time| { domain_name: domain, age_days: age_in_days(time) } }

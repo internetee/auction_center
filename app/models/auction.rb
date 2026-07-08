@@ -34,8 +34,6 @@ class Auction < ApplicationRecord # rubocop:disable Metrics
   delegate :count, to: :offers, prefix: true
   delegate :size, to: :offers, prefix: true
 
-  def classified? = classified_at.present?
-
   def update_list_broadcast
     Auctions::UpdateListBroadcastService.call({ auction: self })
   end

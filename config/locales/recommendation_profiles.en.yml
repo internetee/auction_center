@@ -29,6 +29,8 @@ en:
       edit_action: "Edit interests"
     summary:
       categories: "Interests"
+      custom_interests: "Custom interests"
+      length: "Preferred length"
     categories:
       brandable: "Brandable names"
       shop_brand: "Shop or store names"
