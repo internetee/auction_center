@@ -143,11 +143,10 @@ namespace :demo do
       offset += opts[:sample_size]
 
       batch.each do |domain_name|
-        bucket_domain = "varied-#{domain_name}"
-        next if Auction.where(domain_name: bucket_domain).where('ends_at > ?', Time.zone.now).exists?
+        next if Auction.where(domain_name: domain_name).where('ends_at > ?', Time.zone.now).exists?
 
         Auction.create!(
-          domain_name: bucket_domain,
+          domain_name: domain_name,
           starts_at: starts_at,
           ends_at: starts_at + opts[:ends_at_offset]
         )
