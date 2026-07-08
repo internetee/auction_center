@@ -57,6 +57,23 @@ module Recommendation
       assert reloaded.calculated_at > 1.minute.ago, 'stale scores must be refreshed'
     end
 
+    def test_perform_reenqueues_when_recently_refreshed
+      auction = auctions(:valid_without_offers)
+      UserAuctionScore.create!(
+        user: @user,
+        auction: auction,
+        score: 10,
+        calculated_at: 5.seconds.ago
+      )
+
+      assert_enqueued_with(
+        job: Recommendation::RefreshSingleUserAuctionScoresJob,
+        args: [@user.id]
+      ) do
+        Recommendation::RefreshSingleUserAuctionScoresJob.new.perform(@user.id)
+      end
+    end
+
     def test_perform_no_op_for_unknown_user
       assert_nothing_raised do
         Recommendation::RefreshSingleUserAuctionScoresJob.new.perform(-1)

@@ -12,7 +12,12 @@ module Recommendation
       user = User.find_by(id: user_id)
       return unless user
 
-      return if recently_refreshed?(user)
+      # A refresh just ran (<30s ago). Don't drop this request — re-enqueue it
+      # for the next window so the change that triggered us isn't silently lost.
+      if recently_refreshed?(user)
+        self.class.set(wait: DEBOUNCE_WINDOW).perform_later(user_id)
+        return
+      end
 
       Recommendation::Scorer.refresh_for(user:)
     end

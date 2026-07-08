@@ -12,6 +12,7 @@ et:
       index:
         title: "Huvi kategooriad"
         new: "Uus kategooria"
+        rebuild_notice: "Pärast kategooriate lisamist, ümbernimetamist või kustutamist käivita Tööde lehel töö Recommendation::RebuildRecommendationsJob, et domeenid uute kategooriate järgi ümber klassifitseerida ja soovitused värskendada."
       new:
         title: "Uus huvi kategooria"
       edit:

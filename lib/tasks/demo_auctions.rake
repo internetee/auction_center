@@ -157,6 +157,40 @@ namespace :demo do
     puts "Created #{created} varied-horizon auctions."
   end
 
+  desc 'Create demo auctions that are ACTIVE immediately (for staging pipeline bootstrap)'
+  task create_active_auctions: :environment do
+    # Unlike create_blind_auctions (which starts 5 min in the future), these
+    # start in the past so Auction.active includes them right away — otherwise
+    # the recommendation pipeline (classify / ai_score / scorer all scope to
+    # Auction.active) would run against an empty set. skip_validation bypasses
+    # starts_at_cannot_be_in_the_past; safe because this is demo data only.
+    starts_at = Time.zone.now - 1.minute
+    ends_at = starts_at + 1.month
+
+    domains = DEMO_DOMAINS.values.flatten.uniq
+
+    created = 0
+    skipped = 0
+
+    domains.each do |domain_name|
+      if Auction.where(domain_name: domain_name).where('ends_at > ?', Time.zone.now).exists?
+        skipped += 1
+        next
+      end
+
+      Auction.create!(
+        domain_name: domain_name,
+        starts_at: starts_at,
+        ends_at: ends_at,
+        skip_validation: true
+      )
+
+      created += 1
+    end
+
+    puts "Created #{created} active demo auctions, skipped #{skipped} existing active auctions."
+  end
+
   desc 'Seed a participant user with wishlist + bid signals so recommendations have data to chew on'
   task seed_user_signals: :environment do
     user = User.where('? = ANY (roles)', User::PARTICIPANT_ROLE).first

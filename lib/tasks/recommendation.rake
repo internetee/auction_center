@@ -17,4 +17,18 @@ namespace :recommendation do
       puts 'BackfillDomainClassificationsJob is not yet available. Skipping.'
     end
   end
+
+  desc 'PROD: run the whole recommendation pipeline (classify -> embed -> ai_score -> per-user scores)'
+  task init: :environment do
+    summary = Recommendation::PipelineRunner.run(force: false)
+    puts "Recommendation pipeline done: #{summary.inspect}"
+  end
+
+  desc 'TEST/STAGING: create active mock auctions + signals, then run the pipeline'
+  task init_demo: :environment do
+    Rake::Task['demo:create_active_auctions'].invoke
+    Rake::Task['demo:seed_user_signals'].invoke
+    summary = Recommendation::PipelineRunner.run(force: false)
+    puts "Recommendation pipeline (demo) done: #{summary.inspect}"
+  end
 end

@@ -37,6 +37,7 @@ class InterestCategory < ApplicationRecord
   validates :position, numericality: { only_integer: true }
 
   before_validation :normalize_code
+  after_destroy_commit :purge_code_references
 
   scope :active, -> { where(active: true) }
   scope :ordered, -> { order(:position, :code) }
@@ -50,5 +51,28 @@ class InterestCategory < ApplicationRecord
 
   def normalize_code
     self.code = code.to_s.strip.downcase.presence
+  end
+
+  # There are no FKs — user profiles and domain classifications reference a
+  # category only by its string code. When a category is deleted, strip that
+  # orphaned code so it stops lingering as garbage (in profiles it would
+  # otherwise silently degrade into a custom substring interest; on domains it
+  # would remain an unmatchable tag). Cheap set-based updates, no LLM calls.
+  def purge_code_references
+    return if code.blank?
+
+    RecommendationProfile
+      .where('? = ANY (interest_keywords)', code)
+      .update_all(['interest_keywords = array_remove(interest_keywords, ?)', code])
+
+    if DomainClassification.column_names.include?('tags')
+      DomainClassification
+        .where('? = ANY (tags)', code)
+        .update_all(['tags = array_remove(tags, ?)', code])
+    end
+
+    DomainClassification
+      .where(primary_category: code)
+      .update_all(primary_category: nil)
   end
 end

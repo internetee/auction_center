@@ -50,6 +50,37 @@ module Recommendation
       end
     end
 
+    def test_upsert_resets_stale_embedding_on_conflict
+      skip 'embedding column not present' unless DomainClassification.column_names.include?('embedding')
+
+      DomainClassification.create!(
+        domain_name: 'reset-me.ee',
+        classification_source: DomainClassification::OPENAI_SOURCE,
+        confidence: 0.9,
+        classified_at: 1.hour.ago,
+        embedding: [0.1, 0.2, 0.3],
+        embedding_model: 'text-embedding-3-small',
+        embedded_at: 1.hour.ago
+      )
+
+      job = Recommendation::BackfillDomainClassificationsJob.new
+      job.send(:upsert, [{
+                 domain_name: 'reset-me.ee',
+                 primary_category: 'other',
+                 tags: ['other'],
+                 keywords: [],
+                 confidence: 0.9,
+                 classification_source: DomainClassification::OPENAI_SOURCE,
+                 classification_model: 'gpt-5',
+                 classified_at: Time.current
+               }])
+
+      row = DomainClassification.find_by(domain_name: 'reset-me.ee')
+      assert_nil row.embedding
+      assert_nil row.embedding_model
+      assert_nil row.embedded_at
+    end
+
     def test_no_op_when_openai_disabled
       Auction.create!(
         domain_name: 'no-llm.ee',
