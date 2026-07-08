@@ -37,6 +37,16 @@ class DomainClassification < ApplicationRecord
     end
   }
 
+  # Columns to null out whenever a row is (re)classified. The embedding is
+  # built from keywords (see Recommendation::DomainEmbedder), so a fresh
+  # classification makes the stored vector stale; nulling these lets
+  # EmbedUnembeddedDomainsJob recompute it on its next run.
+  def self.embedding_reset_attributes
+    return {} unless column_names.include?('embedding')
+
+    { embedding: nil, embedding_model: nil, embedded_at: nil }
+  end
+
   def heuristic? = classification_source == HEURISTIC_SOURCE
   def from_llm? = classification_source == OPENAI_SOURCE
 

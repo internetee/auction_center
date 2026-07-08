@@ -45,6 +45,19 @@ module Recommendation
       assert_not_requested :post, 'https://api.openai.com/v1/chat/completions'
     end
 
+    def test_skips_llm_when_domain_lock_is_held_by_another_worker
+      job = Recommendation::ClassifyDomainJob.new
+      # Simulate pg_try_advisory_lock returning false (another worker owns it).
+      job.define_singleton_method(:with_domain_lock) { |_name, &blk| blk.call(false) }
+
+      with_feature_flag(true) do
+        assert_no_difference -> { DomainClassification.count } do
+          job.perform('apteek.ee')
+        end
+      end
+      assert_not_requested :post, 'https://api.openai.com/v1/chat/completions'
+    end
+
     def test_no_op_for_blank_domain
       with_feature_flag(true) do
         assert_no_difference -> { DomainClassification.count } do
