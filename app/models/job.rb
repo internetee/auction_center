@@ -5,7 +5,8 @@ class Job
                          DailySummaryJob DailyBroadcastAuctionsJob DailyViewRefreshJob
                          SharedFooterFetcherJob DirectoInvoiceForwardJob ActiveAuctionsAiSortingJob
                          Recommendation::ClassifyUnclassifiedDomainsJob
-                         Recommendation::EmbedUnembeddedDomainsJob].freeze
+                         Recommendation::EmbedUnembeddedDomainsJob
+                         Recommendation::RebuildRecommendationsJob].freeze
 
   include ActiveModel::Model
 

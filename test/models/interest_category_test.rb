@@ -44,6 +44,30 @@ class InterestCategoryTest < ActiveSupport::TestCase
     end
   end
 
+  def test_destroy_purges_orphaned_code_from_profiles_and_classifications
+    category = InterestCategory.create!(code: 'temp_cat', name_en: 'Temp', name_et: 'Temp')
+
+    profile = users(:participant).recommendation_profile ||
+              RecommendationProfile.create!(user: users(:participant))
+    profile.update_columns(interest_keywords: %w[saas temp_cat]) # skip normalize
+
+    classification = DomainClassification.create!(
+      domain_name: 'temp-cat-domain.ee',
+      classification_source: DomainClassification::OPENAI_SOURCE,
+      confidence: 0.9,
+      classified_at: 1.hour.ago,
+      primary_category: 'temp_cat',
+      tags: %w[temp_cat other]
+    )
+
+    category.destroy
+
+    assert_equal %w[saas], profile.reload.interest_keywords
+    classification.reload
+    assert_equal %w[other], classification.tags
+    assert_nil classification.primary_category
+  end
+
   def test_seed_defaults_does_not_clobber_admin_edits
     InterestCategory.delete_all
     InterestCategory.seed_defaults!

@@ -1,6 +1,6 @@
 module Recommendation
-  # Classifies a single domain via the LLM as soon as it enters the system
-  # (new auction / bid / wishlist add). Runs in the background, bounded to
+  # Classifies a single domain via the LLM when a new auction is created
+  # (enqueued from Auction after_create). Runs in the background, bounded to
   # at most one LLM call per not-yet-classified domain, so cost stays
   # predictable.
   #
@@ -20,11 +20,12 @@ module Recommendation
       return unless Feature.open_ai_integration_enabled?
       return if already_classified?(name)
 
-      # Serialize concurrent jobs for the SAME domain. Two enqueue paths can
-      # fire almost simultaneously (auction after_create + first bid), and
-      # without this both pass already_classified? and each makes a paid LLM
-      # call. A worker that can't grab the lock skips the domain — it's being
-      # handled, and the nightly ClassifyUnclassifiedDomainsJob is the backstop.
+      # Serialize concurrent jobs for the SAME domain. Two auctions for the same
+      # domain (or a retry racing the original) can enqueue almost
+      # simultaneously, and without this both pass already_classified? and each
+      # makes a paid LLM call. A worker that can't grab the lock skips the domain
+      # — it's being handled, and the nightly ClassifyUnclassifiedDomainsJob is
+      # the backstop.
       with_domain_lock(name) do |acquired|
         next unless acquired
         next if already_classified?(name) # re-check now that we hold the lock

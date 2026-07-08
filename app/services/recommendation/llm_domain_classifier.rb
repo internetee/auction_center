@@ -2,8 +2,9 @@ module Recommendation
   # Tier 2 classifier: OpenAI structured outputs.
   #
   # Accepts an array of domain names (strings), returns array of attribute
-  # hashes ready to upsert into domain_classifications. NOT called from
-  # runtime paths — only from ClassifyUnclassifiedDomainsJob (cron).
+  # hashes ready to upsert into domain_classifications. Called from
+  # ClassifyDomainJob (per-domain, on auction create), the nightly
+  # ClassifyUnclassifiedDomainsJob, and BackfillDomainClassificationsJob.
   #
   # Cost: ~$0.30/month at steady state (one batch of ~5-20 domains per
   # day). Backfill: ~$1 one-time over thousands of historical domains.

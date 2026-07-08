@@ -12,6 +12,7 @@ en:
       index:
         title: "Interest categories"
         new: "New category"
+        rebuild_notice: "After adding, renaming, or deleting categories, run the Recommendation::RebuildRecommendationsJob job on the Jobs page to re-classify domains and refresh recommendations under the new categories."
       new:
         title: "New interest category"
       edit:

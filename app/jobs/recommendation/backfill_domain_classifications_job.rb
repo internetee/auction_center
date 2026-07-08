@@ -39,7 +39,10 @@ module Recommendation
       return 0 if attributes_list.blank?
 
       timestamps = { created_at: Time.current, updated_at: Time.current }
-      rows = attributes_list.map { |attrs| attrs.merge(timestamps) }
+      # Invalidate any stale embedding so EmbedUnembeddedDomainsJob recomputes it
+      # from the fresh keywords — mirrors ClassifyDomainJob / ClassifyUnclassifiedDomainsJob.
+      reset = DomainClassification.embedding_reset_attributes
+      rows = attributes_list.map { |attrs| attrs.merge(timestamps, reset) }
       DomainClassification.upsert_all(rows, unique_by: :domain_name)
       rows.size
     end

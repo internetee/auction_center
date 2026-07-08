@@ -1,6 +1,10 @@
 <% content_for :title, t('.title') %>
 
 <div class="o-container">
+  <div class="c-notice" style='padding: 1rem; margin: 1rem 0; border-left: 4px solid #2f9e44; background: #f1f8f3;'>
+    <%= t('.rebuild_notice') %>
+  </div>
+
   <div class="c-table__filters__btns" style='padding: 1rem 0; display: flex; justify-content: end;'>
     <%= link_to t('.new'), new_admin_interest_category_path, class: "c-btn c-btn--blue" %>
   </div>
