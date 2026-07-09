@@ -45,6 +45,31 @@ module Recommendation
       end
     end
 
+    def test_backfills_custom_interest_vectors_for_existing_profiles
+      skip 'column missing' unless RecommendationProfile.column_names.include?('custom_interest_vectors')
+
+      profile = with_feature_flag(false) do
+        p = RecommendationProfile.create!(user: users(:participant), interest_keywords: %w[other custom:crypto])
+        p.update_columns(custom_interest_vectors: [], custom_interests_embedded_at: nil)
+        p
+      end
+
+      with_feature_flag(true) do
+        with_no_pending do
+          with_placeholder_prompt do
+            stub_scorer do
+              stub_embeddings(1)
+              Recommendation::PipelineRunner.run
+            end
+          end
+        end
+      end
+
+      profile.reload
+      assert profile.custom_interests_embedded_at.present?, 'existing custom interests must get embedded on init'
+      assert_equal 1, profile.custom_interest_vectors.size
+    end
+
     def test_scores_every_participant
       with_feature_flag(true) do
         with_no_pending do
@@ -108,6 +133,12 @@ module Recommendation
       yield
     ensure
       Recommendation::Scorer.define_singleton_method(:refresh_for, original)
+    end
+
+    def stub_embeddings(count)
+      data = count.times.map { |i| { 'index' => i, 'embedding' => Array.new(Recommendation::DomainEmbedder::DIMENSIONS, 0.1) } }
+      stub_request(:post, 'https://api.openai.com/v1/embeddings')
+        .to_return_json(status: 200, body: { 'data' => data }, headers: {})
     end
 
     def refute_ai_sorting_called
