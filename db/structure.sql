@@ -1281,7 +1281,12 @@ CREATE TABLE public.interest_categories (
     "position" integer DEFAULT 0 NOT NULL,
     active boolean DEFAULT true NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    description text,
+    keywords character varying[] DEFAULT '{}'::character varying[] NOT NULL,
+    embedding double precision[],
+    embedding_model character varying,
+    embedded_at timestamp(6) without time zone
 );
 
 
@@ -1623,7 +1628,9 @@ CREATE TABLE public.recommendation_profiles (
     last_prompted_at timestamp(6) without time zone,
     prompt_shown_count integer DEFAULT 0 NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    custom_interest_vectors jsonb DEFAULT '[]'::jsonb NOT NULL,
+    custom_interests_embedded_at timestamp(6) without time zone
 );
 
 
@@ -2989,6 +2996,13 @@ CREATE UNIQUE INDEX index_interest_categories_on_code ON public.interest_categor
 
 
 --
+-- Name: index_interest_categories_on_embedded_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_interest_categories_on_embedded_at ON public.interest_categories USING btree (embedded_at);
+
+
+--
 -- Name: index_interest_categories_on_uuid; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3610,6 +3624,8 @@ ALTER TABLE ONLY public.invoices
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260709100100'),
+('20260709100000'),
 ('20260708120100'),
 ('20260708120000'),
 ('20260601100100'),

@@ -1,6 +1,35 @@
 require 'test_helper'
 
 class InterestCategoryTest < ActiveSupport::TestCase
+  include ActiveJob::TestHelper
+
+  def test_enqueues_enrichment_on_create_when_openai_enabled
+    with_feature_flag(true) do
+      assert_enqueued_with(job: Recommendation::EnrichInterestCategoriesJob) do
+        InterestCategory.create!(code: 'newcat', name_en: 'New', name_et: 'Uus')
+      end
+    end
+  end
+
+  def test_does_not_enqueue_enrichment_when_openai_disabled
+    with_feature_flag(false) do
+      assert_no_enqueued_jobs only: Recommendation::EnrichInterestCategoriesJob do
+        InterestCategory.create!(code: 'newcat', name_en: 'New', name_et: 'Uus')
+      end
+    end
+  end
+
+  def test_does_not_re_enqueue_on_unrelated_save
+    category = InterestCategory.create!(code: 'newcat', name_en: 'New', name_et: 'Uus')
+    category.update_columns(embedding: Array.new(3, 0.1), embedded_at: Time.current)
+
+    with_feature_flag(true) do
+      assert_no_enqueued_jobs only: Recommendation::EnrichInterestCategoriesJob do
+        category.update!(position: 99)
+      end
+    end
+  end
+
   def test_requires_code_and_names
     category = InterestCategory.new
     refute category.valid?
@@ -76,5 +105,15 @@ class InterestCategoryTest < ActiveSupport::TestCase
     InterestCategory.seed_defaults!
 
     assert_equal 'Custom SaaS', InterestCategory.find_by(code: 'saas').name_en
+  end
+
+  private
+
+  def with_feature_flag(enabled)
+    original = Feature.method(:open_ai_integration_enabled?)
+    Feature.define_singleton_method(:open_ai_integration_enabled?) { enabled }
+    yield
+  ensure
+    Feature.define_singleton_method(:open_ai_integration_enabled?, original)
   end
 end

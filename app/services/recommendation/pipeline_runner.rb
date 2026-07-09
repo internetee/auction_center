@@ -35,7 +35,11 @@ module Recommendation
         return @summary
       end
 
-      invalidate_classifications if @force
+      if @force
+        invalidate_classifications
+        invalidate_category_embeddings
+      end
+      enrich_categories
       drain(Recommendation::ClassifyUnclassifiedDomainsJob, :classify) { classify_pending_count }
       drain(Recommendation::EmbedUnembeddedDomainsJob, :embed) { embed_pending_count }
       refresh_ai_scores
@@ -73,6 +77,26 @@ module Recommendation
       end
       @summary[key] = { batches:, remaining: yield }
       log("#{job_class.name}: #{batches} batch(es), #{@summary[key][:remaining]} remaining")
+    end
+
+    # v3: turn interest categories into embeddable magnets (LLM keywords + vector)
+    # before scoring. Independent of domains — safe to run first. Cheap (~15 rows).
+    def enrich_categories
+      return unless InterestCategory.column_names.include?('embedding')
+
+      count = Recommendation::EnrichInterestCategoriesJob.perform_now
+      @summary[:categories_enriched] = count
+      log("categories enriched: #{count.inspect}")
+    end
+
+    # force mode (catalog changed): drop category vectors so enrich_categories
+    # rebuilds them under the new/edited vocabulary.
+    def invalidate_category_embeddings
+      return unless InterestCategory.column_names.include?('embedding')
+
+      count = InterestCategory.update_all(embedded_at: nil, embedding: nil)
+      @summary[:categories_invalidated] = count
+      log("force: invalidated #{count} category embedding(s)")
     end
 
     def classify_pending_count
