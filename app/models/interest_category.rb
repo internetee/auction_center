@@ -37,10 +37,15 @@ class InterestCategory < ApplicationRecord
   validates :position, numericality: { only_integer: true }
 
   before_validation :normalize_code
+  after_save_commit :enqueue_enrichment, if: :should_enrich?
   after_destroy_commit :purge_code_references
 
   scope :active, -> { where(active: true) }
   scope :ordered, -> { order(:position, :code) }
+
+  # v3: a category carries its own embedding (built from name + LLM keywords),
+  # so a selected category acts as a magnet in the unified scorer.
+  def embedded? = respond_to?(:embedding) && embedding.present?
 
   # Locale-aware display name. Falls back to the English name.
   def name
@@ -51,6 +56,21 @@ class InterestCategory < ApplicationRecord
 
   def normalize_code
     self.code = code.to_s.strip.downcase.presence
+  end
+
+  # Re-enrich only when the semantic content changed (name) or a vector is still
+  # missing — never on unrelated saves (position, active toggle). Enrichment
+  # itself uses update_columns (skips callbacks), so this never loops.
+  def should_enrich?
+    return false unless self.class.column_names.include?('embedding')
+    return false unless Feature.open_ai_integration_enabled?
+    return false unless active?
+
+    saved_change_to_name_en? || saved_change_to_name_et? || embedding.blank?
+  end
+
+  def enqueue_enrichment
+    Recommendation::EnrichInterestCategoriesJob.perform_later(id)
   end
 
   # There are no FKs — user profiles and domain classifications reference a

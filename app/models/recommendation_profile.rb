@@ -6,6 +6,7 @@ class RecommendationProfile < ApplicationRecord
   belongs_to :user
 
   before_validation :normalize_interest_categories
+  after_save_commit :enqueue_custom_interest_embedding, if: :custom_interests_changed?
 
   validates :preferred_length_min,
             numericality: { only_integer: true, greater_than: 0, less_than_or_equal_to: 63 },
@@ -95,11 +96,7 @@ class RecommendationProfile < ApplicationRecord
   end
 
   def custom_interests
-    interest_keywords.filter_map do |value|
-      next unless value.to_s.start_with?(CUSTOM_INTEREST_PREFIX)
-
-      value.to_s.delete_prefix(CUSTOM_INTEREST_PREFIX)
-    end
+    custom_interests_from(interest_keywords)
   end
 
   def custom_interests=(values)
@@ -129,6 +126,29 @@ class RecommendationProfile < ApplicationRecord
 
   def enqueue_rescore
     Recommendation::RefreshSingleUserAuctionScoresJob.enqueue_debounced(user_id)
+  end
+
+  def custom_interests_from(keywords)
+    Array(keywords).filter_map do |value|
+      next unless value.to_s.start_with?(CUSTOM_INTEREST_PREFIX)
+
+      value.to_s.delete_prefix(CUSTOM_INTEREST_PREFIX)
+    end
+  end
+
+  # v3: only re-embed when the free-text custom set actually changed — a
+  # category-only edit reuses the cached vectors and needn't touch OpenAI.
+  def custom_interests_changed?
+    return false unless self.class.column_names.include?('custom_interest_vectors')
+    return false unless Feature.open_ai_integration_enabled?
+    return false unless saved_change_to_interest_keywords?
+
+    previous = custom_interests_from(interest_keywords_before_last_save)
+    previous.sort != custom_interests.sort
+  end
+
+  def enqueue_custom_interest_embedding
+    Recommendation::EmbedCustomInterestsJob.perform_later(id)
   end
 
   def track_event(event_type, source, request:)

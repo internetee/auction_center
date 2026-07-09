@@ -1,48 +1,39 @@
 module Recommendation
-  # Recommendation::Scorer
-  # ---------------------
-  # Computes a per-user score for each active auction and upserts it
-  # into user_auction_scores. Used by Auction::UserSortable to LEFT JOIN
-  # personalised ordering onto the main /auctions index.
+  # Recommendation::Scorer (v3, unified embedding space)
+  # ----------------------------------------------------
+  # Computes a per-user score for each active auction and upserts it into
+  # user_auction_scores. Auction::UserSortable LEFT JOINs it to personalise the
+  # /auctions index.
   #
-  # Signal sources (all time-decayed where applicable):
-  # - Explicit interests from recommendation_profile (tags + custom)
-  # - Wishlist domains
-  # - Bid history (Offer, EnglishOffer's Offer parent, DomainOfferHistory)
-  # - Auction outcomes (Result) — lost auctions boost similar domains
-  # - Detail-page views (RecommendationEvent auction_detail_view)
+  # v3 model (see docs/planning/recommendation-v3-unified-embedding-plan.md):
+  # the ranking signal is *magnet pull* — everything about the user (bids,
+  # wishlist, views, selected categories, custom interests) is embedded into one
+  # vector space and the score is the mean of a candidate's two strongest pulls.
+  # Recommendation::MagnetScorer owns that computation; this class scales it and
+  # adds the structural nudges that similarity can't express (name shape + past
+  # auction outcomes).
   #
-  # Rich features (keywords, audience) come from domain_classifications
-  # joined by domain_name. Legacy auctions.classification_tags remains
-  # a fallback during migration.
+  #   score = magnet_base * MAGNET_SCALE
+  #         + length/digits/hyphen preference bonuses
+  #         + result signal (lost similar auction ↑ / won ↓)
   #
-  # Embeddings (OpenAI text-embedding-3-small, 1536 dims) are stored
-  # as plain Postgres double precision[] — no pgvector — and provide a
-  # multiplicative boost (1.0..2.0) when both user has behavioural
-  # history and the candidate auction is embedded. See ADR-001 for
-  # the rationale.
+  # No magnet or no candidate embedding → no row is written (and any stale row
+  # is deleted), so the LEFT JOIN yields NULL and the domain falls to the
+  # ai_score / RANDOM tail — exactly the "score IS NULL" branch in UserSortable.
   class Scorer
-    HALF_LIFE_DAYS = 60.0
+    HALF_LIFE_DAYS = MagnetScorer::HALF_LIFE_DAYS
 
-    WISHLIST_HIT = 120
-    TAG_WEIGHT = 35
-    KEYWORD_WEIGHT = 15
-    AUDIENCE_MATCH = 10
-    BID_AFFINITY_WEIGHT = 8
-    BID_AFFINITY_CAP = 24
-    WISHLIST_AFFINITY_WEIGHT = 6
-    WISHLIST_AFFINITY_CAP = 18
-    VIEW_AFFINITY_WEIGHT = 4
-    VIEW_AFFINITY_CAP = 12
-    SIMILAR_DOMAIN_BONUS = 15
+    # Magnet pull is ~[-3, 3] (weight ≤3 × cosine ≤1, top-2 averaged). Scaling
+    # it up lets similarity dominate the ordering while the structural bonuses
+    # below (tens) act as secondary nudges. Tuning knob — see plan §3.4.
+    MAGNET_SCALE = 100.0
+
     LENGTH_MATCH_BONUS = 10
     RESULT_LOST_BONUS = 25
     RESULT_WON_PENALTY = -5
-    DOMAIN_OFFER_HISTORY_WEIGHT = 3
-    DOMAIN_OFFER_HISTORY_CAP = 12
 
-    BASELINE_MODEL_NAME = 'baseline_rules_v2'.freeze
-    FEATURES_VERSION = 'rich_v1'.freeze
+    SCORER_NAME = 'unified_magnets_v3'.freeze
+    FEATURES_VERSION = 'unified_v3'.freeze
 
     class << self
       def default_scope
@@ -76,9 +67,14 @@ module Recommendation
       return 0 if auctions.empty?
 
       preload_classifications(auctions)
+      records = auctions.filter_map { |auction| build_score_record(auction) }
 
-      records = auctions.map { |auction| build_score_record(auction) }
-      UserAuctionScore.upsert_all(records, unique_by: %i[user_id auction_id])
+      # Drop rows for candidates that no longer earn a score (magnet vanished,
+      # embedding removed) so they correctly fall back to the tail.
+      stale_ids = auctions.map(&:id) - records.map { |record| record[:auction_id] }
+      UserAuctionScore.where(user_id: @user.id, auction_id: stale_ids).delete_all if stale_ids.any?
+
+      UserAuctionScore.upsert_all(records, unique_by: %i[user_id auction_id]) if records.any?
       records.size
     end
 
@@ -87,11 +83,14 @@ module Recommendation
     # ---------- Per-auction scoring --------------------------------------
 
     def build_score_record(auction)
+      value = score_for(auction)
+      return nil if value.nil?
+
       {
         user_id: @user.id,
         auction_id: auction.id,
-        score: score_for(auction),
-        scorer_name: BASELINE_MODEL_NAME,
+        score: value,
+        scorer_name: SCORER_NAME,
         features_version: FEATURES_VERSION,
         calculated_at: @calculated_at,
         created_at: Time.current,
@@ -100,48 +99,30 @@ module Recommendation
     end
 
     def score_for(auction)
-      tags = tags_for(auction)
-      keywords = keywords_for(auction)
-      audience = audience_for(auction)
+      base = magnet_base[auction.id]
+      return nil if base.nil?
+
       domain_name = normalized_domain_name(auction.domain_name)
 
-      score = 0.0
-
-      # --- explicit signals ---
-      score += WISHLIST_HIT if wishlist_domains.include?(auction.domain_name.to_s.downcase)
-      score += matching_interest_tags(tags).size * TAG_WEIGHT
-      score += matching_interest_keywords(keywords).size * KEYWORD_WEIGHT
-      score += matching_custom_interests(domain_name).size * 20
-      score += audience_match_bonus(audience)
-
-      # --- behavioural affinity (time-decayed) ---
-      score += affinity(tags: tags, keywords: keywords,
-                        feature_counts: bid_feature_counts,
-                        weight: BID_AFFINITY_WEIGHT, cap: BID_AFFINITY_CAP)
-      score += affinity(tags: tags, keywords: keywords,
-                        feature_counts: wishlist_feature_counts,
-                        weight: WISHLIST_AFFINITY_WEIGHT, cap: WISHLIST_AFFINITY_CAP)
-      score += affinity(tags: tags, keywords: keywords,
-                        feature_counts: view_feature_counts,
-                        weight: VIEW_AFFINITY_WEIGHT, cap: VIEW_AFFINITY_CAP)
-      score += affinity(tags: tags, keywords: keywords,
-                        feature_counts: domain_offer_history_feature_counts,
-                        weight: DOMAIN_OFFER_HISTORY_WEIGHT,
-                        cap: DOMAIN_OFFER_HISTORY_CAP)
-      score += result_signal(tags)
-
-      # --- structural ---
-      score += SIMILAR_DOMAIN_BONUS if similar_to_saved_domain?(domain_name)
+      score = base * MAGNET_SCALE
       score += LENGTH_MATCH_BONUS if within_preferred_length?(domain_name)
       score += digits_score(domain_name)
       score += hyphen_score(domain_name)
-      score += ai_prior_score(auction)
-
-      score *= embedding_multiplier(auction)
+      score += result_signal(tags_for(auction))
       score.round(6)
     end
 
-    # ---------- Classification preload -----------------------------------
+    # ---------- Magnet base (delegated) ----------------------------------
+    #
+    # { auction_id => Float|nil }. MagnetScorer owns all embedding/behavioural
+    # signal collection, so this class keeps only the structural layer.
+
+    def magnet_base
+      @magnet_base ||=
+        MagnetScorer.new(user: @user, scope: @scope, calculated_at: @calculated_at).scores
+    end
+
+    # ---------- Classification preload (for result signal) ---------------
 
     def preload_classifications(auctions)
       domain_names = auctions.map { |a| a.domain_name.to_s.downcase }.uniq
@@ -159,216 +140,13 @@ module Recommendation
 
     def tags_for(auction)
       dc = classification_for(auction)
-      tags = (dc&.tags || Array(auction.classification_tags)).map(&:to_s)
-      tags.uniq
+      (dc&.tags || Array(auction.classification_tags)).map(&:to_s).uniq
     end
 
-    def keywords_for(auction)
-      Array(classification_for(auction)&.keywords).map(&:to_s).uniq
-    end
-
-    def audience_for(auction)
-      classification_for(auction)&.audience
-    end
-
-    # ---------- Matchers --------------------------------------------------
-
-    def matching_interest_tags(tags)
-      tags & rankable_interest_categories
-    end
-
-    def matching_interest_keywords(keywords)
-      return [] if keywords.blank?
-
-      interest_keyword_pool & keywords
-    end
-
-    def interest_keyword_pool
-      @interest_keyword_pool ||= (rankable_interest_categories + custom_interests).map(&:to_s).map(&:downcase)
-    end
-
-    def matching_custom_interests(domain_name)
-      custom_interests.select do |interest|
-        normalized_interest = normalized_domain_name(interest)
-        normalized_interest.present? && domain_name.include?(normalized_interest)
-      end
-    end
-
-    # Audience match (b2b/b2c) is captured for every classified domain
-    # but RecommendationProfile does not yet expose a user-side
-    # audience_preference column. Until it does, derive a soft signal:
-    # if the user's bid history skews toward one audience, boost
-    # candidates with the same audience. Falls back to 0.
-    def audience_match_bonus(audience)
-      return 0 if audience.blank?
-      return 0 if dominant_user_audience.blank?
-      return AUDIENCE_MATCH if dominant_user_audience == audience
-
-      0
-    end
-
-    def dominant_user_audience
-      return @dominant_user_audience if defined?(@dominant_user_audience)
-
-      counts = Hash.new(0)
-      (bid_domain_signals + wishlist_domain_signals).each do |signal|
-        dc = bid_wishlist_classification_cache[signal[:domain_name]]
-        counts[dc.audience] += 1 if dc&.audience.present?
-      end
-
-      @dominant_user_audience = counts.max_by { |_, n| n }&.first
-    end
-
-    def bid_wishlist_classification_cache
-      @bid_wishlist_classification_cache ||= begin
-        names = (bid_domain_signals + wishlist_domain_signals).map { |s| s[:domain_name] }.uniq
-        DomainClassification.where(domain_name: names).index_by(&:domain_name)
-      end
-    end
-
-    # ---------- Behavioural affinity -------------------------------------
-
-    def affinity(tags:, keywords:, feature_counts:, weight:, cap:)
-      return 0 if feature_counts.blank?
-
-      tag_score = tags.sum { |tag| feature_counts[:tags][tag.to_s].to_f * weight }
-      keyword_score = keywords.sum { |kw| feature_counts[:keywords][kw.to_s].to_f * (weight / 2.0) }
-      [tag_score + keyword_score, cap].min
-    end
-
-    def bid_feature_counts
-      @bid_feature_counts ||= aggregate_features(bid_domain_signals)
-    end
-
-    def wishlist_feature_counts
-      @wishlist_feature_counts ||= aggregate_features(wishlist_domain_signals)
-    end
-
-    def view_feature_counts
-      @view_feature_counts ||= aggregate_features(view_domain_signals)
-    end
-
-    def domain_offer_history_feature_counts
-      @domain_offer_history_feature_counts ||= aggregate_features(domain_offer_history_signals)
-    end
-
-    # ---------- Signal collection ----------------------------------------
+    # ---------- Result signal --------------------------------------------
     #
-    # Each method returns an array of {domain_name:, age_days:} pairs.
-
-    # All signal queries skip an explicit time WHERE because time decay
-    # (HALF_LIFE_DAYS=60) makes events older than a few half-lives
-    # mathematically negligible. Filtering in SQL adds risk of dropping
-    # fixtures with travel_to and provides minimal performance benefit
-    # at our scale.
-
-    # Each signal set is queried by several memoized consumers (feature
-    # counts, audience, centroid, ...). They depend only on @user and
-    # @calculated_at, both fixed for the instance, so memoize to run each
-    # query once per refresh instead of 2-4 times.
-    def bid_domain_signals
-      @bid_domain_signals ||=
-        Offer
-        .joins(:auction)
-        .where(user_id: @user.id)
-        .pluck('LOWER(auctions.domain_name)', 'offers.updated_at')
-        .map { |domain, time| { domain_name: domain, age_days: age_in_days(time) } }
-    end
-
-    def wishlist_domain_signals
-      @wishlist_domain_signals ||=
-        @user.wishlist_items
-             .pluck('LOWER(wishlist_items.domain_name)', 'wishlist_items.updated_at')
-             .map { |domain, time| { domain_name: domain, age_days: age_in_days(time) } }
-    end
-
-    def view_domain_signals
-      return [] unless RecommendationEvent.table_exists?
-
-      @view_domain_signals ||=
-        RecommendationEvent
-        .joins(:auction)
-        .where(user_id: @user.id, event_type: 'auction_detail_view')
-        .pluck('LOWER(auctions.domain_name)', 'recommendation_events.occurred_at')
-        .map { |domain, time| { domain_name: domain, age_days: age_in_days(time) } }
-    end
-
-    def domain_offer_history_signals
-      return [] unless defined?(DomainOfferHistory) && DomainOfferHistory.table_exists?
-      return [] unless DomainOfferHistory.column_names.include?('user_id')
-
-      @domain_offer_history_signals ||=
-        DomainOfferHistory
-        .where(user_id: @user.id)
-        .pluck('LOWER(domain_name)', 'domain_offer_histories.updated_at')
-        .map { |domain, time| { domain_name: domain, age_days: age_in_days(time) } }
-    rescue StandardError
-      []
-    end
-
-    def aggregate_features(signals)
-      return { tags: {}, keywords: {} } if signals.empty?
-
-      domain_names = signals.map { |s| s[:domain_name] }.uniq
-      classifications = DomainClassification.where(domain_name: domain_names).index_by(&:domain_name)
-
-      # Fallback: if domain_classifications is missing a domain we have
-      # behavioural data for (legacy auctions classified pre-v2), pull
-      # the tags directly from auctions.classification_tags so the signal
-      # is not dropped.
-      missing_domains = domain_names - classifications.keys
-      auction_fallback_tags = fallback_tags_for(missing_domains)
-
-      tags = Hash.new(0.0)
-      keywords = Hash.new(0.0)
-
-      signals.each do |signal|
-        decay = decay_weight(signal[:age_days])
-        dc = classifications[signal[:domain_name]]
-
-        if dc
-          Array(dc.tags).each    { |t| tags[t.to_s] += decay }
-          Array(dc.keywords).each { |k| keywords[k.to_s] += decay }
-        elsif (fallback = auction_fallback_tags[signal[:domain_name]])
-          fallback.each { |t| tags[t.to_s] += decay }
-        end
-      end
-
-      { tags: tags, keywords: keywords }
-    end
-
-    def fallback_tags_for(domain_names)
-      return {} if domain_names.empty?
-
-      Auction
-        .where('LOWER(domain_name) IN (?)', domain_names)
-        .pluck(Arel.sql('LOWER(domain_name)'), :classification_tags)
-        .each_with_object({}) do |(name, tag_list), acc|
-          next if tag_list.blank?
-
-          acc[name] ||= []
-          acc[name].concat(Array(tag_list))
-          acc[name].uniq!
-        end
-    end
-
-    def decay_weight(age_days)
-      return 1.0 if age_days.nil? || age_days <= 0
-
-      Math.exp(-age_days.to_f / HALF_LIFE_DAYS)
-    end
-
-    def age_in_days(timestamp)
-      return 0.0 if timestamp.nil?
-
-      ((@calculated_at - timestamp).to_f / 1.day).clamp(0.0, Float::INFINITY)
-    end
-
-    # ---------- Result signal -------------------------------------------
-    #
-    # If the user previously LOST an auction on a similar-tag domain,
-    # they're still in the market — bump similar tags. If they WON,
-    # mild down-weight (they already got that domain).
+    # If the user previously LOST an auction on a similar-tag domain, they're
+    # still in the market — bump similar tags. If they WON, mild down-weight.
 
     def result_signal(tags)
       return 0 if tags.empty? || result_signal_by_tag.empty?
@@ -421,70 +199,7 @@ module Recommendation
       DomainClassification.where(domain_name: domain_names).index_by(&:domain_name)
     end
 
-    # ---------- Embedding multiplier ------------------------------------
-    #
-    # OpenAI embeddings are stored as Postgres double precision[] arrays
-    # (no pgvector). Cosine similarity is computed in Ruby — at 100-200
-    # auctions per scoring pass this is sub-100ms, well within budget.
-    #
-    # multiplier = 1 + max(0, cosine_similarity(user_centroid, auction))
-    # Range: [1.0, 2.0]. Becomes a no-op (1.0) when:
-    #   - embedding column not yet migrated
-    #   - user has no behavioural history
-    #   - auction has no embedding yet
-
-    def embedding_multiplier(auction)
-      return 1.0 unless DomainClassification.column_names.include?('embedding')
-
-      auction_embedding = embedding_for(auction)
-      return 1.0 if auction_embedding.nil?
-      return 1.0 if user_embedding_centroid.nil?
-
-      similarity = Recommendation::Embedding.cosine_similarity(user_embedding_centroid, auction_embedding)
-      return 1.0 if similarity.nil?
-
-      1.0 + [similarity, 0.0].max
-    end
-
-    def embedding_for(auction)
-      dc = classification_for(auction)
-      Array(dc&.embedding).presence
-    end
-
-    def user_embedding_centroid
-      return @user_embedding_centroid if defined?(@user_embedding_centroid)
-
-      @user_embedding_centroid = compute_user_centroid
-    end
-
-    def compute_user_centroid
-      signals = bid_domain_signals + wishlist_domain_signals + view_domain_signals
-      return nil if signals.empty?
-
-      domain_names = signals.map { |s| s[:domain_name] }.uniq
-      embeddings = DomainClassification
-                     .where(domain_name: domain_names)
-                     .where.not(embedding: nil)
-                     .index_by(&:domain_name)
-      return nil if embeddings.empty?
-
-      weighted_vectors = signals.filter_map do |signal|
-        vec = Array(embeddings[signal[:domain_name]]&.embedding)
-        next if vec.empty?
-
-        [vec, decay_weight(signal[:age_days])]
-      end
-
-      Recommendation::Embedding.weighted_centroid(weighted_vectors)
-    end
-
-    # ---------- Structural ----------------------------------------------
-
-    def similar_to_saved_domain?(domain_name)
-      saved_domain_roots.any? do |saved_root|
-        saved_root.present? && (domain_name.include?(saved_root) || saved_root.include?(domain_name))
-      end
-    end
+    # ---------- Structural (name shape) ----------------------------------
 
     def within_preferred_length?(domain_name)
       return false unless profile
@@ -520,30 +235,22 @@ module Recommendation
       end
     end
 
-    def ai_prior_score(auction)
-      auction.ai_score.to_f / 10.0
-    end
-
-    # ---------- Profile / wishlist memoisers ----------------------------
+    # ---------- Helpers --------------------------------------------------
 
     def profile
       @profile ||= @user.recommendation_profile
     end
 
-    def rankable_interest_categories
-      @rankable_interest_categories ||= Array(profile&.rankable_interest_categories).map(&:to_s)
+    def decay_weight(age_days)
+      return 1.0 if age_days.nil? || age_days <= 0
+
+      Math.exp(-age_days.to_f / HALF_LIFE_DAYS)
     end
 
-    def custom_interests
-      @custom_interests ||= Array(profile&.custom_interests).map(&:to_s)
-    end
+    def age_in_days(timestamp)
+      return 0.0 if timestamp.nil?
 
-    def wishlist_domains
-      @wishlist_domains ||= @user.wishlist_items.pluck(:domain_name).map(&:downcase)
-    end
-
-    def saved_domain_roots
-      @saved_domain_roots ||= wishlist_domains.map { |domain| normalized_domain_name(domain) }.uniq
+      ((@calculated_at - timestamp).to_f / 1.day).clamp(0.0, Float::INFINITY)
     end
 
     def normalized_domain_name(value)

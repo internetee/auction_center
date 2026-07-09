@@ -1,6 +1,16 @@
 module Auction::UserSortable
   extend ActiveSupport::Concern
 
+  # v3: ordering collapses to three buckets. Personalisation now lives entirely
+  # in user_auction_scores.score (magnet pull + structural nudges — see
+  # Recommendation::Scorer), so the old string-matched "interest" tier and its
+  # domain_classifications join are gone. An auction with no score row falls to
+  # the tail, ranked by global ai_score then RANDOM.
+  #
+  #   bucket 0: the user's own offer
+  #   bucket 1: a wishlisted domain           (only when a wishlist exists)
+  #   bucket 2: has a personal score
+  #   bucket 3: everything else (ai_score / RANDOM tail)
   class_methods do
     def sorted_for_user(user) = user ? with_user_priority_sorting(user) : self
 
@@ -8,17 +18,14 @@ module Auction::UserSortable
 
     def with_user_priority_sorting(user)
       wishlist_domains = user.wishlist_items.pluck(:domain_name)
-      interest_profile = user.recommendation_profile
-      interest_categories = interest_profile&.rankable_interest_categories || []
-      custom_interests = interest_profile&.custom_interests || []
       query = with_recommendation_scores(user.id)
-      
+
       order_sql = if wishlist_domains.any?
-                    build_five_tier_priority_sql(wishlist_domains, interest_categories, custom_interests)
+                    build_wishlist_priority_sql(wishlist_domains)
                   else
-                    build_four_tier_priority_sql(interest_categories, custom_interests)
+                    build_priority_sql
                   end
-      
+
       query.order(Arel.sql(order_sql))
     end
 
@@ -32,81 +39,41 @@ module Auction::UserSortable
         user_id
       ])
 
-      # Join domain_classifications by domain_name so the interest-match
-      # tier can read live category tags (auctions.classification_* is no
-      # longer written — classification lives on domain_classifications).
-      classifications_join = <<~SQL.squish
-        LEFT JOIN domain_classifications
-          ON LOWER(domain_classifications.domain_name) = LOWER(auctions.domain_name)
-      SQL
-
-      joins(scores_join).joins(classifications_join)
+      joins(scores_join)
     end
 
-    def build_five_tier_priority_sql(wishlist_domains, interest_categories, custom_interests)
+    def build_wishlist_priority_sql(wishlist_domains)
       sanitized_domains = wishlist_domains.map { |d| ActiveRecord::Base.connection.quote(d) }.join(',')
-      interest_match_sql = interest_match_sql(interest_categories, custom_interests)
       <<~SQL.squish
-        CASE 
+        CASE
           WHEN auctions.users_offer_id IS NOT NULL THEN 0
           WHEN auctions.domain_name IN (#{sanitized_domains}) THEN 1
           WHEN user_auction_scores.score IS NOT NULL THEN 2
-          WHEN #{interest_match_sql} THEN 3
-          ELSE 4 
+          ELSE 3
         END,
-        CASE
-          WHEN user_auction_scores.score IS NOT NULL THEN user_auction_scores.score
-          WHEN auctions.ai_score > 0 THEN auctions.ai_score
-          ELSE RANDOM()
-        END DESC
+        #{secondary_key_sql}
       SQL
     end
 
-    def build_four_tier_priority_sql(interest_categories, custom_interests)
-      interest_match_sql = interest_match_sql(interest_categories, custom_interests)
+    def build_priority_sql
       <<~SQL.squish
-        CASE 
+        CASE
           WHEN auctions.users_offer_id IS NOT NULL THEN 0
           WHEN user_auction_scores.score IS NOT NULL THEN 1
-          WHEN #{interest_match_sql} THEN 2
-          ELSE 3 
+          ELSE 2
         END,
+        #{secondary_key_sql}
+      SQL
+    end
+
+    def secondary_key_sql
+      <<~SQL.squish
         CASE
           WHEN user_auction_scores.score IS NOT NULL THEN user_auction_scores.score
           WHEN auctions.ai_score > 0 THEN auctions.ai_score
           ELSE RANDOM()
         END DESC
       SQL
-    end
-
-    MAX_CUSTOM_INTERESTS_IN_SQL = 10
-
-    def interest_match_sql(interest_categories, custom_interests)
-      match_clauses = []
-
-      whitelisted_categories = Array(interest_categories) & Recommendation::InterestCatalog.categories
-      if whitelisted_categories.any?
-        quoted_categories = whitelisted_categories
-          .map { |item| ActiveRecord::Base.connection.quote(item) }
-          .join(',')
-        match_clauses << "domain_classifications.tags && ARRAY[#{quoted_categories}]::varchar[]"
-      end
-
-      custom_interest_clauses = Array(custom_interests)
-        .first(MAX_CUSTOM_INTERESTS_IN_SQL)
-        .filter_map do |interest|
-          normalized_interest = interest.to_s.strip.downcase
-          next if normalized_interest.length < 2
-
-          pattern = "%#{ActiveRecord::Base.sanitize_sql_like(normalized_interest)}%"
-          "LOWER(auctions.domain_name) LIKE #{ActiveRecord::Base.connection.quote(pattern)}"
-        end
-
-      match_clauses.concat(custom_interest_clauses)
-
-      return 'FALSE' if match_clauses.empty?
-
-      "(#{match_clauses.join(' OR ')})"
     end
   end
 end

@@ -36,12 +36,19 @@ module Recommendation
     end
 
     def test_perform_refreshes_when_scores_are_stale
+      skip 'embedding column missing' unless DomainClassification.column_names.include?('embedding')
+
+      # v3: a score row only survives a refresh when the candidate earns a magnet
+      # pull, so give the user one signal and the candidate a matching embedding.
+      give_user_a_magnet
+      domain = "stale-refresh-#{SecureRandom.hex(4)}.ee"
       auction = Auction.create!(
-        domain_name: "stale-refresh-#{SecureRandom.hex(4)}.ee",
+        domain_name: domain,
         starts_at: 1.hour.ago,
         ends_at: 1.day.from_now,
         skip_validation: true
       )
+      classify(domain, Array.new(8, 1.0))
       UserAuctionScore.create!(
         user: @user,
         auction: auction,
@@ -78,6 +85,25 @@ module Recommendation
       assert_nothing_raised do
         Recommendation::RefreshSingleUserAuctionScoresJob.new.perform(-1)
       end
+    end
+
+    private
+
+    def give_user_a_magnet
+      history = Auction.create!(
+        domain_name: "history-#{SecureRandom.hex(4)}.ee",
+        starts_at: 2.days.ago, ends_at: 1.day.ago, skip_validation: true
+      )
+      Offer.new(user: @user, auction: history, cents: 100,
+                billing_profile: billing_profiles(:private_person)).save(validate: false)
+      classify(history.domain_name, Array.new(8, 1.0))
+    end
+
+    def classify(domain_name, embedding)
+      DomainClassification.create!(
+        domain_name: domain_name, primary_category: 'saas', tags: %w[saas], keywords: %w[cloud],
+        embedding: embedding, classified_at: 1.hour.ago, confidence: 0.9
+      )
     end
   end
 end
