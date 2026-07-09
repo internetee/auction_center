@@ -7,6 +7,16 @@ en:
     active: "Active"
     yes: "Yes"
     no: "No"
+    enrichment_status: "AI status"
+    enriched: "Enriched"
+    pending: "Pending"
+    enrichment_heading: "AI enrichment (LLM)"
+    description: "Description"
+    keywords: "Keywords"
+    embedding: "Embedding"
+    embedded_at: "Enriched at"
+    model: "Model"
+    not_enriched: "Not enriched yet. Run the recommendation pipeline (rake recommendation:init) or the EnrichInterestCategoriesJob to generate the description, keywords and embedding."
   admin:
     interest_categories:
       index:

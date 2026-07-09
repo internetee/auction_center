@@ -7,6 +7,16 @@ et:
     active: "Aktiivne"
     yes: "Jah"
     no: "Ei"
+    enrichment_status: "AI staatus"
+    enriched: "Rikastatud"
+    pending: "Ootel"
+    enrichment_heading: "AI rikastamine (LLM)"
+    description: "Kirjeldus"
+    keywords: "Märksõnad"
+    embedding: "Vektor"
+    embedded_at: "Rikastatud"
+    model: "Mudel"
+    not_enriched: "Veel rikastamata. Käivita soovituste konveier (rake recommendation:init) või EnrichInterestCategoriesJob, et luua kirjeldus, märksõnad ja vektor."
   admin:
     interest_categories:
       index:

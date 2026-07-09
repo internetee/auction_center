@@ -15,6 +15,7 @@
                             { column: nil, caption: t('interest_categories.name_en'), options: {} },
                             { column: nil, caption: t('interest_categories.name_et'), options: {} },
                             { column: nil, caption: t('interest_categories.active'), options: {} },
+                            { column: nil, caption: t('interest_categories.enrichment_status'), options: {} },
                             { column: nil, caption: '', options: {} }] %>
     <%= component 'common/table', header_collection:, options: { class: 'js-table-dt dataTable no-footer' } do %>
       <%= tag.tbody class: 'contents' do %>
@@ -25,6 +26,16 @@
             <td><%= category.name_en %></td>
             <td><%= category.name_et %></td>
             <td><%= category.active? ? t('interest_categories.yes') : t('interest_categories.no') %></td>
+            <td>
+              <% if category.embedded? %>
+                <span class="c-badge c-badge--green"><%= t('interest_categories.enriched') %></span>
+                <% if category.keywords.present? %>
+                  <span class="c-badge c-badge--gray"><%= category.keywords.size %></span>
+                <% end %>
+              <% else %>
+                <span class="c-badge c-badge--yellow"><%= t('interest_categories.pending') %></span>
+              <% end %>
+            </td>
             <td>
               <%= link_to t(:edit), edit_admin_interest_category_path(category), class: "c-btn c-btn--green" %>
               <%= link_to t(:delete), admin_interest_category_path(category),

@@ -66,6 +66,49 @@ class AdminInterestCategoriesControllerTest < ActionDispatch::IntegrationTest
     assert_response :unprocessable_entity
   end
 
+  def test_index_shows_enrichment_status
+    sign_in @admin
+    @category.update_columns(
+      description: 'SaaS and software tools',
+      keywords: %w[crm billing analytics],
+      embedding: Array.new(3, 0.1),
+      embedding_model: 'text-embedding-3-small',
+      embedded_at: Time.current
+    )
+
+    get admin_interest_categories_path
+
+    assert_response :ok
+    assert_includes response.body, I18n.t('interest_categories.enriched')
+  end
+
+  def test_edit_shows_llm_enrichment_results
+    sign_in @admin
+    @category.update_columns(
+      description: 'SaaS and software tools',
+      keywords: %w[crm billing analytics],
+      embedding: Array.new(3, 0.1),
+      embedding_model: 'text-embedding-3-small',
+      embedded_at: Time.current
+    )
+
+    get edit_admin_interest_category_path(@category)
+
+    assert_response :ok
+    assert_includes response.body, I18n.t('interest_categories.enrichment_heading')
+    assert_includes response.body, 'SaaS and software tools'
+    assert_includes response.body, 'crm'
+  end
+
+  def test_edit_shows_not_enriched_note_when_missing
+    sign_in @admin
+
+    get edit_admin_interest_category_path(@category)
+
+    assert_response :ok
+    assert_includes response.body, I18n.t('interest_categories.not_enriched')
+  end
+
   def test_not_accessible_for_non_admin
     sign_in @participant
     get admin_interest_categories_path
