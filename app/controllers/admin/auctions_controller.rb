@@ -33,12 +33,11 @@ module Admin
       collection = Auction.where(id: collection_one + collection_two).search(params)
 
       @pagy, @auctions = pagy(collection, items: params[:per_page] ||= 20, link_extra: 'data-turbo-action="advance"')
-      @classifications = classifications_for(@auctions)
     end
 
     # GET /admin/auctions/1
     def show
-      @classification = classifications_for([@auction])[@auction.domain_name.to_s.downcase]
+      @classification = DomainClassification.find_by(domain_name: @auction.domain_name.to_s.downcase)
       @offers = @auction.offers.order(cents: :desc)
       users = User.search_deposit_participants(params)
       @pagy, @users = pagy(users, items: params[:per_page] ||= 20, link_extra: 'data-turbo-action="advance"')
@@ -109,16 +108,6 @@ module Admin
 
     def set_auction
       @auction = Auction.find(params[:id])
-    end
-
-    # Preload LLM domain classifications keyed by downcased domain name so the
-    # auction list / detail can show the AI-added metadata (category, tags,
-    # keywords…) without an N+1. Classifications join by domain_name, not FK.
-    def classifications_for(auctions)
-      domain_names = auctions.map { |auction| auction.domain_name.to_s.downcase }.uniq
-      DomainClassification
-        .where(domain_name: domain_names)
-        .index_by { |classification| classification.domain_name.to_s.downcase }
     end
   end
 end

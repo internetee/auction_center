@@ -53,27 +53,6 @@ class AdminAuctionsControllerTest < ActionDispatch::IntegrationTest
     assert_includes response.body, I18n.t('admin.auctions.classification.heading')
   end
 
-  def test_index_shows_llm_classification_column
-    auction = auctions(:english_nil_starts)
-    DomainClassification.create!(
-      domain_name: auction.domain_name,
-      primary_category: 'legal',
-      tags: %w[contracts],
-      classification_source: DomainClassification::OPENAI_SOURCE,
-      confidence: 0.8,
-      classified_at: Time.current
-    )
-
-    travel_to Time.parse('2010-07-05 10:30 +0000').in_time_zone do
-      sign_in @administrator
-      get admin_auctions_path(domain_name: auction.domain_name)
-
-      assert_response :ok
-      assert_includes response.body, I18n.t('admin.auctions.classification.column')
-      assert_includes response.body, 'legal'
-    end
-  end
-
   def test_destroy_deletes_auction_when_not_started
     auction = auctions(:english_nil_starts)
 

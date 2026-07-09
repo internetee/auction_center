@@ -24,8 +24,4 @@
   <td class="auction-platform"><%= auction.platform %></td>
   <td class="auction-platform"><%= auction.deposit %></td>
   <td class="auction-platform"><%= auction.enable_deposit %></td>
-  <td class="auction-classification">
-    <%= render 'admin/auctions/classification_cell',
-               classification: local_assigns.fetch(:classifications, {})[auction.domain_name.to_s.downcase] %>
-  </td>
 </tr>
