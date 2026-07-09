@@ -163,9 +163,9 @@ class AuctionsControllerTest < ActionDispatch::IntegrationTest
   def test_admin_user_does_not_get_priority_sorting
     @admin = users(:administrator)
     sign_in @admin
-    
+
     get auctions_path, params: { admin: 'true' }
-    
+
     assert_response :success
   end
 
@@ -202,7 +202,43 @@ class AuctionsControllerTest < ActionDispatch::IntegrationTest
     assert_equal expected_domains, auction_domains
   end
 
+  def test_auction_type_column_shown_by_default
+    get auctions_path
+
+    assert_response :success
+    assert_includes response.body, I18n.t('auctions.auction_type')
+    assert_select 'td.auction-tags', false
+  end
+
+  def test_tags_column_replaces_auction_type_when_flag_enabled
+    DomainClassification.create!(
+      domain_name: @auction_without_offers.domain_name,
+      tags: %w[crypto defi],
+      classification_source: DomainClassification::OPENAI_SOURCE,
+      confidence: 0.9,
+      classified_at: Time.current
+    )
+
+    with_tags_display(true) do
+      get auctions_path
+    end
+
+    assert_response :success
+    assert_includes response.body, I18n.t('auctions.tags')
+    assert_select 'td.auction-tags'
+    assert_select 'td.auction-tags span.c-badge', text: 'crypto'
+  end
+
   private
+
+  def with_tags_display(enabled)
+    config = AuctionCenter::Application.config.customization
+    original = config[:auction_tags_display_enabled]
+    config[:auction_tags_display_enabled] = enabled
+    yield
+  ensure
+    config[:auction_tags_display_enabled] = original
+  end
 
   def query_from_link(title)
     link = css_select('a').find { |node| node.text.strip == title }

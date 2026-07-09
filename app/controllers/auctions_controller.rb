@@ -15,6 +15,7 @@ class AuctionsController < ApplicationController
       link_extra: 'data-turbo-action="advance"'
     )
     @show_recommendation_prompt = current_user&.recommendation_profile_promptable?
+    @auction_classifications = preloaded_classifications(@auctions)
 
     track_recommendation_impressions
 
@@ -38,6 +39,17 @@ class AuctionsController < ApplicationController
   private
 
   def fetch_auctions_list = Auction.active.search(params, current_user)
+
+  # Preload LLM tags for the list only when the experimental tags column is on,
+  # keyed by downcased domain name so the partial avoids an N+1.
+  def preloaded_classifications(auctions)
+    return nil unless AuctionCenter::Application.config.customization[:auction_tags_display_enabled]
+
+    domain_names = auctions.map { |auction| auction.domain_name.to_s.downcase }.uniq
+    DomainClassification
+      .where(domain_name: domain_names)
+      .index_by { |classification| classification.domain_name.to_s.downcase }
+  end
 
   def per_page_count
     count = params[:show_all] == 'true' ? @auctions_list.count : per_page

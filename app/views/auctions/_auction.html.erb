@@ -14,7 +14,22 @@
     <h3 data-controller="slashed-zero"><%= auction.domain_name %></h3>
   </td>
 
-  <td><%= component 'common/auction_type_icon', auction: auction %></td>
+  <% if auction_tags_display_enabled? %>
+    <td class="auction-tags">
+      <% tags = auction_display_tags(auction, local_assigns.fetch(:classifications, nil)) %>
+      <% if tags.any? %>
+        <div class="u-flex" style="gap: 4px; flex-wrap: wrap;">
+          <% tags.each do |tag| %>
+            <span class="c-badge c-badge--blue"><%= tag %></span>
+          <% end %>
+        </div>
+      <% else %>
+        <span class="c-badge c-badge--gray">—</span>
+      <% end %>
+    </td>
+  <% else %>
+    <td><%= component 'common/auction_type_icon', auction: auction %></td>
+  <% end %>
 
   <td><span data-auction-timezone-target="endtime"><%= auction.ends_at&.strftime('%d/%m/%Y %H:%M') %></span></td>
 
