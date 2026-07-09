@@ -38,8 +38,10 @@ module Recommendation
       if @force
         invalidate_classifications
         invalidate_category_embeddings
+        invalidate_custom_interest_embeddings
       end
       enrich_categories
+      embed_custom_interests
       drain(Recommendation::ClassifyUnclassifiedDomainsJob, :classify) { classify_pending_count }
       drain(Recommendation::EmbedUnembeddedDomainsJob, :embed) { embed_pending_count }
       refresh_ai_scores
@@ -97,6 +99,35 @@ module Recommendation
       count = InterestCategory.update_all(embedded_at: nil, embedding: nil)
       @summary[:categories_invalidated] = count
       log("force: invalidated #{count} category embedding(s)")
+    end
+
+    # force mode: drop per-user custom-interest vectors so embed_custom_interests
+    # rebuilds them (e.g. after an embedding-model change).
+    def invalidate_custom_interest_embeddings
+      return unless RecommendationProfile.column_names.include?('custom_interest_vectors')
+
+      count = RecommendationProfile.update_all(custom_interest_vectors: [], custom_interests_embedded_at: nil)
+      @summary[:custom_interests_invalidated] = count
+      log("force: invalidated custom-interest vectors on #{count} profile(s)")
+    end
+
+    # v3: backfill custom-interest vectors for profiles whose free-text interests
+    # were set before this feature existed (or before a force reset). The
+    # after_save_commit trigger only fires on a profile *save*, so existing users
+    # would otherwise never get custom magnets until they re-saved. Idempotent:
+    # only profiles with unembedded custom interests are processed.
+    def embed_custom_interests
+      return unless RecommendationProfile.column_names.include?('custom_interest_vectors')
+
+      count = 0
+      RecommendationProfile.where(custom_interests_embedded_at: nil).find_each do |profile|
+        next if profile.custom_interests.empty?
+
+        Recommendation::EmbedCustomInterestsJob.perform_now(profile.id)
+        count += 1
+      end
+      @summary[:custom_interests_embedded] = count
+      log("custom interests embedded for #{count} profile(s)")
     end
 
     def classify_pending_count
