@@ -2,7 +2,6 @@ en:
   admin:
     auctions:
       classification:
-        column: "AI classification"
         heading: "AI classification (LLM)"
         none: "Not classified"
         category: "Category"
