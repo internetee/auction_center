@@ -1,0 +1,21 @@
+en:
+  admin:
+    auctions:
+      classification:
+        column: "AI classification"
+        heading: "AI classification (LLM)"
+        none: "Not classified"
+        category: "Category"
+        tags: "Tags"
+        keywords: "Keywords"
+        audience: "Audience"
+        languages: "Languages"
+        use_cases: "Use cases"
+        brandability: "Brandability"
+        confidence: "Confidence"
+        source: "Source"
+        model: "Model"
+        classified_at: "Classified at"
+        embedding: "Embedding"
+        embedded_yes: "Vector ready"
+        embedded_no: "No vector"

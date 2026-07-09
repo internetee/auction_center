@@ -1,0 +1,21 @@
+et:
+  admin:
+    auctions:
+      classification:
+        column: "AI klassifikatsioon"
+        heading: "AI klassifikatsioon (LLM)"
+        none: "Klassifitseerimata"
+        category: "Kategooria"
+        tags: "Sildid"
+        keywords: "Märksõnad"
+        audience: "Sihtrühm"
+        languages: "Keeled"
+        use_cases: "Kasutusjuhud"
+        brandability: "Brändituvus"
+        confidence: "Kindlus"
+        source: "Allikas"
+        model: "Mudel"
+        classified_at: "Klassifitseeritud"
+        embedding: "Vektor"
+        embedded_yes: "Vektor olemas"
+        embedded_no: "Vektorit pole"
