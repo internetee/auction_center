@@ -91,4 +91,20 @@ module ApplicationHelper
   def ended_auctions_link_available?
     AuctionCenter::Application.config.customization[:ended_auctions_link_available]
   end
+
+  # Experimental flag (config/customization.yml): show LLM tags instead of the
+  # auction-type column on the public auction list.
+  def auction_tags_display_enabled?
+    AuctionCenter::Application.config.customization[:auction_tags_display_enabled]
+  end
+
+  # Tags to display for an auction, sourced from its LLM DomainClassification
+  # (joined by domain name, not FK). Pass `preloaded` — a hash keyed by
+  # downcased domain name — from the list to avoid an N+1; the single-row
+  # turbo-stream path falls back to one lookup.
+  def auction_display_tags(auction, preloaded = nil)
+    key = auction.domain_name.to_s.downcase
+    classification = preloaded ? preloaded[key] : DomainClassification.find_by(domain_name: key)
+    Array(classification&.tags).map(&:to_s).reject(&:blank?)
+  end
 end

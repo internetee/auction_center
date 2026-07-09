@@ -15,6 +15,7 @@ et:
     winning_bid: "Võidupakkumus"
     highest_price: "Kõrgeim hind"
     auction_type: "Oksjoni tüüp"
+    tags: "Sildid"
     english: "Inglise"
     blind: "Pime"
     offers: "Pakkumused"

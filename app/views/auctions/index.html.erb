@@ -37,8 +37,11 @@
     <!-- 
     These parameters are passed to the Common::Table::Component. These parameters are used to generate headers in the table component. The name "column_name" indicates the name of the column. This is necessary for sorting, so the name of this column should correspond to the name of the column in the database table. If you want to make it so that the data is not sorted by the column, then you should add a nil value. "Caption" is the table header, and "options" are additional parameters that are passed into the tags. 
     -->
+    <% type_or_tags_header = auction_tags_display_enabled? ?
+         { column: nil, caption: t('auctions.tags'), options: {} } :
+         { column: 'platform', caption: t('auctions.auction_type'), options: { class: "sorting" } } %>
     <% header_collection = [{ column: 'domain_name', caption: t('auctions.domain_name'), options: { class: "sorting", style: "width: 25% !important;" } },
-                            { column: 'platform', caption: t('auctions.auction_type'), options: { class: "sorting" } },
+                            type_or_tags_header,
                             { column: 'ends_at', caption: t('auctions.ends_at'), options: { class: "sorting" } },
                             { column: 'users_price', caption: t('auctions.current_price'), options: { class: "sorting" } },
                             # { column: 'username', caption: t('auctions.offer_owner'), options: { class: "sorting" } }, # temporary turn of because at the moment we not provde english auction
@@ -57,7 +60,8 @@
             <%= render partial: 'auction', locals: {
               auction: auction,
               user: current_user,
-              updated: false
+              updated: false,
+              classifications: @auction_classifications
             } %>
           <% end %>
         <% end %>
