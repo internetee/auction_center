@@ -161,16 +161,24 @@ class RecommendationProfile < ApplicationRecord
       interest_keywords.reject { |item| known_category?(item) }
     )
 
-    known_categories << OTHER_CATEGORY if normalized_custom_interests.any?
-    self.interest_keywords = (known_categories.uniq + normalized_custom_interests).uniq
+    self.interest_keywords = combine_categories_with_custom(known_categories, normalized_custom_interests)
   end
 
   def combine_interest_values(categories:, custom_values:)
     normalized_categories = normalize_list(categories).select { |item| known_category?(item) }
     normalized_custom_interests = normalize_custom_interests(custom_values)
 
-    normalized_categories << OTHER_CATEGORY if normalized_custom_interests.any?
-    (normalized_categories.uniq + normalized_custom_interests).uniq
+    combine_categories_with_custom(normalized_categories, normalized_custom_interests)
+  end
+
+  # `other` is purely a derived marker of "has custom interests": present iff
+  # there is at least one free-text interest. Deriving it here (rather than only
+  # appending it) means a dangling `other` checkbox left after the last custom
+  # tag was removed can never linger as an empty category.
+  def combine_categories_with_custom(categories, custom_interests)
+    categories = categories.uniq - [OTHER_CATEGORY]
+    categories << OTHER_CATEGORY if custom_interests.any?
+    (categories + custom_interests).uniq
   end
 
   def normalize_list(value)

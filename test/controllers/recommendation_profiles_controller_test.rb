@@ -33,6 +33,35 @@ class RecommendationProfilesControllerTest < ActionDispatch::IntegrationTest
     assert @user.recommendation_profile.completed?
   end
 
+  def test_edit_form_renders_custom_interest_sentinel
+    @user.create_recommendation_profile!(interest_keywords: %w[other custom:crypto])
+
+    get edit_recommendation_profile_path
+
+    assert_response :success
+    # Without this sentinel, removing every custom-interest tag drops the param
+    # entirely and the old free-text interests can never be cleared.
+    assert_select "input[type=hidden][name='recommendation_profile[custom_interests][]'][value='']"
+  end
+
+  def test_clearing_all_custom_interests_removes_them
+    @user.create_recommendation_profile!(interest_keywords: %w[legal other custom:crypto])
+
+    # What the corrected form submits after the last custom tag is removed: the
+    # sentinel-only empty param, with `other` still checked.
+    put recommendation_profile_path, params: {
+      recommendation_profile: {
+        interest_categories: %w[legal other],
+        custom_interests: ['']
+      }
+    }
+
+    @user.reload
+    assert_empty @user.recommendation_profile.custom_interests
+    # `other` must not linger as an empty category once its custom interests are gone.
+    assert_equal %w[legal], @user.recommendation_profile.interest_categories.sort
+  end
+
   def test_user_can_dismiss_recommendation_prompt
     patch dismiss_recommendation_profile_path
 

@@ -5,6 +5,10 @@
   <div class="c-account__input u-mb-20" data-controller="form--custom-interest-tags">
     <label><%= t('recommendation_profiles.form.interest_categories') %></label>
     <%= hidden_field_tag "#{form.object_name}[interest_categories][]", '' %>
+    <%# Sentinel so removing every custom-interest tag still submits the param.
+        Without it the key vanishes, strong-params drops it, and the setter that
+        clears old free-text interests never runs — they'd linger forever. %>
+    <%= hidden_field_tag "#{form.object_name}[custom_interests][]", '' %>
     <div class="u-flex u-flex-col" style="gap: 12px; padding-left: 16px;">
       <% Recommendation::InterestCatalog.categories.each_slice(2) do |row| %>
         <div class="u-flex u-align-center" style="gap: 16px; flex-wrap: wrap;">

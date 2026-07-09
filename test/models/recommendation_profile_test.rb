@@ -70,6 +70,17 @@ class RecommendationProfileTest < ActiveSupport::TestCase
     assert_equal(['marketplace', 'premium names'], @profile.custom_interests)
   end
 
+  def test_other_is_dropped_when_custom_interests_are_cleared
+    @profile.update!(interest_keywords: %w[legal other custom:crypto])
+
+    @profile.custom_interests = []
+    @profile.valid?
+
+    assert_empty @profile.custom_interests
+    # `other` is a derived marker of "has custom interests" — it must not linger.
+    assert_equal %w[legal], @profile.interest_categories
+  end
+
   private
 
   def with_feature_flag(enabled)

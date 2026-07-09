@@ -1,0 +1,19 @@
+<%# Compact LLM-classification summary for the auction list. `classification`
+    is a DomainClassification or nil (domains joined by name, not FK). %>
+<% if classification.nil? %>
+  <span class="c-badge c-badge--gray"><%= t('admin.auctions.classification.none') %></span>
+<% else %>
+  <div class="u-flex u-flex-col" style="gap: 4px; align-items: flex-start;">
+    <% if classification.primary_category.present? %>
+      <span class="c-badge c-badge--blue"><%= classification.primary_category %></span>
+    <% end %>
+    <% Array(classification.tags).first(4).each do |tag| %>
+      <span class="c-badge c-badge--gray"><%= tag %></span>
+    <% end %>
+    <% if classification.confidence.present? %>
+      <small style="opacity: 0.7;">
+        <%= t('admin.auctions.classification.confidence') %>: <%= (classification.confidence.to_f * 100).round %>%
+      </small>
+    <% end %>
+  </div>
+<% end %>

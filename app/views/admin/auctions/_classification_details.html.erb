@@ -1,0 +1,72 @@
+<%# Full LLM-classification breakdown for the auction detail page.
+    `classification` is a DomainClassification or nil. %>
+<tr>
+  <td colspan="2">
+    <strong><%= t('admin.auctions.classification.heading') %></strong>
+  </td>
+</tr>
+
+<% if classification.nil? %>
+  <tr>
+    <td colspan="2">
+      <span class="c-badge c-badge--gray"><%= t('admin.auctions.classification.none') %></span>
+    </td>
+  </tr>
+<% else %>
+  <tr>
+    <td><strong><%= t('admin.auctions.classification.category') %></strong></td>
+    <td><%= classification.primary_category.presence || '—' %></td>
+  </tr>
+  <% {
+       tags: classification.tags,
+       keywords: classification.keywords,
+       audience: classification.audience,
+       languages: classification.languages,
+       use_cases: classification.suggested_use_cases
+     }.each do |key, values| %>
+    <tr>
+      <td><strong><%= t("admin.auctions.classification.#{key}") %></strong></td>
+      <td>
+        <% if Array(values).any? %>
+          <div class="u-flex" style="gap: 4px; flex-wrap: wrap;">
+            <% Array(values).each do |value| %>
+              <span class="c-badge c-badge--gray"><%= value %></span>
+            <% end %>
+          </div>
+        <% else %>
+          —
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+  <tr>
+    <td><strong><%= t('admin.auctions.classification.brandability') %></strong></td>
+    <td><%= classification.brandability_score.present? ? "#{(classification.brandability_score.to_f * 100).round}%" : '—' %></td>
+  </tr>
+  <tr>
+    <td><strong><%= t('admin.auctions.classification.confidence') %></strong></td>
+    <td><%= classification.confidence.present? ? "#{(classification.confidence.to_f * 100).round}%" : '—' %></td>
+  </tr>
+  <tr>
+    <td><strong><%= t('admin.auctions.classification.source') %></strong></td>
+    <td><%= classification.classification_source.presence || '—' %></td>
+  </tr>
+  <tr>
+    <td><strong><%= t('admin.auctions.classification.model') %></strong></td>
+    <td><%= classification.classification_model.presence || '—' %></td>
+  </tr>
+  <tr>
+    <td><strong><%= t('admin.auctions.classification.classified_at') %></strong></td>
+    <td><%= classification.classified_at.present? ? I18n.l(classification.classified_at) : '—' %></td>
+  </tr>
+  <tr>
+    <td><strong><%= t('admin.auctions.classification.embedding') %></strong></td>
+    <td>
+      <% if classification.embedded_at.present? %>
+        <span class="c-badge c-badge--green"><%= t('admin.auctions.classification.embedded_yes') %></span>
+      <% else %>
+        <span class="c-badge c-badge--yellow"><%= t('admin.auctions.classification.embedded_no') %></span>
+      <% end %>
+    </td>
+  </tr>
+<% end %>
