@@ -47,8 +47,9 @@ class RecommendationProfilesControllerTest < ActionDispatch::IntegrationTest
   def test_clearing_all_custom_interests_removes_them
     @user.create_recommendation_profile!(interest_keywords: %w[legal other custom:crypto])
 
-    # What the corrected form submits after the last custom tag is removed: the
-    # sentinel-only empty param, with `other` still checked.
+    # `other` is derived server-side, not a user checkbox, so the form no longer
+    # submits it — but a stray `other` (old cached page, API) with no custom
+    # interests must still be stripped, not linger as an empty category.
     put recommendation_profile_path, params: {
       recommendation_profile: {
         interest_categories: %w[legal other],

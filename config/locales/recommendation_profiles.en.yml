@@ -14,9 +14,9 @@ en:
       title: "Auction interests"
       subtitle: "Optional. Choose the kinds of domain names that interest you. We will use these categories together with your bids and wishlist."
       interest_categories: "Interest categories"
-      other_interests: "Other interests"
+      other_interests: "Add your own keywords"
       other_interests_placeholder: "Type an interest and press Enter"
-      other_interests_hint: "Use this for interests that are not in the predefined list."
+      other_interests_hint: "Add any interests that are not in the list above."
     prompt:
       title: "Personalization"
       subject: "Tell us what domains interest you"

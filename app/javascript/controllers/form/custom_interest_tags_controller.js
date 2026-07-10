@@ -1,11 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["input", "list", "otherToggle", "field"]
-
-  connect() {
-    this.syncVisibility()
-  }
+  static targets = ["input", "list"]
 
   add(event) {
     if (event.key !== "Enter") return
@@ -16,18 +12,11 @@ export default class extends Controller {
     if (!value) return
     if (this.existingValues().includes(value)) {
       this.inputTarget.value = ""
-      this.syncVisibility()
       return
     }
 
     this.listTarget.insertAdjacentHTML("beforeend", this.tagHtml(value))
     this.inputTarget.value = ""
-
-    if (this.hasOtherToggleTarget) {
-      this.otherToggleTarget.checked = true
-    }
-
-    this.syncVisibility()
   }
 
   remove(event) {
@@ -36,22 +25,6 @@ export default class extends Controller {
     if (!tag) return
 
     tag.remove()
-    this.syncVisibility()
-  }
-
-  toggle() {
-    this.syncVisibility()
-  }
-
-  syncVisibility() {
-    if (!this.hasFieldTarget) return
-
-    const shouldShow = this.hasExistingTags() || (this.hasOtherToggleTarget && this.otherToggleTarget.checked)
-    this.fieldTarget.style.display = shouldShow ? "block" : "none"
-  }
-
-  hasExistingTags() {
-    return this.listTarget.querySelectorAll("[data-custom-interest-value]").length > 0
   }
 
   existingValues() {
