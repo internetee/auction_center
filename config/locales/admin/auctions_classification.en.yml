@@ -5,6 +5,7 @@ en:
         heading: "AI classification (LLM)"
         none: "Not classified"
         category: "Category"
+        description: "Description"
         tags: "Tags"
         keywords: "Keywords"
         audience: "Audience"

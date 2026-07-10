@@ -26,22 +26,32 @@ class DomainClassification < ApplicationRecord
       .or(where('classification_source = ? AND classified_at < ?', OPENAI_SOURCE, LLM_REFRESH_INTERVAL.ago))
   }
   scope :classified, -> { where.not(classified_at: nil) }
+  # A classified row needs (re-)embedding when it has no vector yet OR its vector
+  # was built under an older DomainEmbedder input format. The explicit NULL branch
+  # is required: `where.not(embedding_input_version: current)` excludes NULLs in
+  # SQL (NULL != x is unknown), and every pre-versioning row has NULL here.
   scope :needs_embedding, lambda {
-    if column_names.include?('embedding')
-      classified.where(embedding: nil)
-    else
-      none
-    end
+    next none unless column_names.include?('embedding')
+
+    base = classified
+    next base.where(embedding: nil) unless column_names.include?('embedding_input_version')
+
+    current = Recommendation::DomainEmbedder::INPUT_VERSION
+    base.where(embedding: nil)
+        .or(base.where(embedding_input_version: nil))
+        .or(base.where.not(embedding_input_version: current))
   }
 
-  # Columns to null out whenever a row is (re)classified. The embedding is
-  # built from keywords (see Recommendation::DomainEmbedder), so a fresh
-  # classification makes the stored vector stale; nulling these lets
+  # Columns to null out whenever a row is (re)classified. The embedding is built
+  # from the classification fields (see Recommendation::DomainEmbedder), so a
+  # fresh classification makes the stored vector stale; nulling these lets
   # EmbedUnembeddedDomainsJob recompute it on its next run.
   def self.embedding_reset_attributes
     return {} unless column_names.include?('embedding')
 
-    { embedding: nil, embedding_model: nil, embedded_at: nil }
+    attrs = { embedding: nil, embedding_model: nil, embedded_at: nil }
+    attrs[:embedding_input_version] = nil if column_names.include?('embedding_input_version')
+    attrs
   end
 
   def from_llm? = classification_source == OPENAI_SOURCE

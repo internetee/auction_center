@@ -3,19 +3,25 @@ module Recommendation
   # DomainClassification rows. NOT called from runtime paths — only
   # from EmbedUnembeddedDomainsJob (cron).
   #
-  # Input text per domain: "<domain_name>. <comma-separated keywords>".
-  # Description was intentionally removed (see ADR-001 + commit
-  # "Remove description from domain_classifications"), so embedding
-  # context is keywords + domain_name only. That's a deliberately
-  # sparser signal but covers our recommendation use case where we
-  # mostly want "this domain looks like the kind the user already bid on".
+  # Input text per domain is a rich, structured summary:
+  #   "<domain_name>. <description>. Category: <primary_category>.
+  #    Tags: <tags>. Use cases: <use_cases>. Audience: <audience>.
+  #    Keywords: <keywords>"
+  # (empty parts are dropped). The earlier format was only
+  # "<domain_name>. <keywords>" — a deliberately sparse signal (ADR-001) that
+  # under-served interest/wishlist matching; INPUT_VERSION tracks the format so
+  # rows built under an older version can be re-embedded without re-classifying.
   #
-  # Returns array of { domain_name:, embedding: [..1536..], embedding_model:, embedded_at: }
-  # ready for update_columns on the matching DomainClassification.
+  # Returns array of { domain_name:, embedding: [..1536..], embedding_model:,
+  # embedded_at:, embedding_input_version: } ready for update_columns on the
+  # matching DomainClassification.
   class DomainEmbedder
     MODEL = 'text-embedding-3-small'.freeze
     DIMENSIONS = 1536
     BATCH_LIMIT = 100
+    # Bump whenever build_input's format changes so needs_embedding re-embeds
+    # existing rows. v1 = "<domain_name>. <keywords>"; v2 = rich structured text.
+    INPUT_VERSION = 2
 
     class << self
       def call(...)
@@ -38,7 +44,8 @@ module Recommendation
           domain_name: domain_name_for(row),
           embedding: vectors[index],
           embedding_model: MODEL,
-          embedded_at: Time.current
+          embedded_at: Time.current,
+          embedding_input_version: INPUT_VERSION
         }
       end
     rescue StandardError, OpenAI::Error => e
@@ -60,20 +67,41 @@ module Recommendation
     end
 
     def build_input(row)
+      tags = Array(field(row, :tags)).map { |t| t.to_s.tr('_', ' ') }.reject(&:blank?)
+      use_cases = Array(field(row, :suggested_use_cases)).map(&:to_s).reject(&:blank?)
+      keywords = Array(keywords_for(row)).map(&:to_s).reject(&:blank?)
+
       parts = [
         domain_name_for(row),
-        Array(keywords_for(row)).join(', ').presence
+        field(row, :description).to_s.strip.presence,
+        labelled('Category', field(row, :primary_category)),
+        labelled('Tags', tags.join(', ').presence),
+        labelled('Use cases', use_cases.join(', ').presence),
+        labelled('Audience', field(row, :audience)),
+        labelled('Keywords', keywords.join(', ').presence)
       ].compact
       parts.join('. ')
     end
 
+    # "Label: value" or nil when value is blank, so absent fields never leave
+    # dangling "Category: ." fragments in the embedding input.
+    def labelled(label, value)
+      value = value.to_s.strip
+      return nil if value.blank?
+
+      "#{label}: #{value}"
+    end
+
     def domain_name_for(row)
-      row.respond_to?(:domain_name) ? row.domain_name : row[:domain_name]
+      field(row, :domain_name)
     end
 
     def keywords_for(row)
-      raw = row.respond_to?(:keywords) ? row.keywords : row[:keywords]
-      Array(raw)
+      Array(field(row, :keywords))
+    end
+
+    def field(row, name)
+      row.respond_to?(name) ? row.public_send(name) : row[name]
     end
   end
 end

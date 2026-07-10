@@ -5,6 +5,7 @@ et:
         heading: "AI klassifikatsioon (LLM)"
         none: "Klassifitseerimata"
         category: "Kategooria"
+        description: "Kirjeldus"
         tags: "Sildid"
         keywords: "Märksõnad"
         audience: "Sihtrühm"

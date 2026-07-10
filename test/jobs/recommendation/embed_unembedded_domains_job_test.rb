@@ -51,7 +51,34 @@ module Recommendation
       refute_includes ids, unclassified.id
     end
 
+    def test_persist_stamps_the_current_input_version
+      skip 'version column missing' unless DomainClassification.column_names.include?('embedding_input_version')
+
+      DomainClassification.create!(
+        domain_name: 'version-me.ee',
+        keywords: %w[cloud],
+        classification_source: DomainClassification::OPENAI_SOURCE,
+        classified_at: 1.hour.ago,
+        confidence: 0.9
+      )
+
+      with_feature_flag(true) do
+        stub_embeddings(1)
+        Recommendation::EmbedUnembeddedDomainsJob.new.perform
+      end
+
+      record = DomainClassification.find_by(domain_name: 'version-me.ee')
+      assert_equal Recommendation::DomainEmbedder::INPUT_VERSION, record.embedding_input_version
+      assert_equal Recommendation::DomainEmbedder::DIMENSIONS, record.embedding.size
+    end
+
     private
+
+    def stub_embeddings(count)
+      data = count.times.map { |i| { 'index' => i, 'embedding' => Array.new(Recommendation::DomainEmbedder::DIMENSIONS, 0.1) } }
+      stub_request(:post, 'https://api.openai.com/v1/embeddings')
+        .to_return_json(status: 200, body: { 'data' => data }, headers: {})
+    end
 
     def with_feature_flag(enabled)
       original = Feature.method(:open_ai_integration_enabled?)

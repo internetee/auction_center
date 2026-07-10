@@ -1,5 +1,6 @@
 module Recommendation
-  # Runs once per day via a k8s CronJob (rake recommendation:classify_unclassified).
+  # Batched LLM classifier pass. Drained by PipelineRunner (rake
+  # recommendation:init) and exposed on /admin/jobs; not a standalone cron task.
   #
   # Safety-net + maintenance pass for the LLM classifier:
   #  - discovers active-auction / wishlist domains that have NO classification

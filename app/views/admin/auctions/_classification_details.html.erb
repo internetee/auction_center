@@ -17,6 +17,12 @@
     <td><strong><%= t('admin.auctions.classification.category') %></strong></td>
     <td><%= classification.primary_category.presence || '—' %></td>
   </tr>
+  <% if classification.respond_to?(:description) %>
+    <tr>
+      <td><strong><%= t('admin.auctions.classification.description') %></strong></td>
+      <td><%= classification.description.presence || '—' %></td>
+    </tr>
+  <% end %>
   <% {
        tags: classification.tags,
        keywords: classification.keywords,

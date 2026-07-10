@@ -89,6 +89,7 @@ module Recommendation
         type: 'object',
         properties: {
           domain_name:         { type: 'string' },
+          description:         { type: 'string' },
           primary_category:    { type: 'string', enum: Recommendation::InterestCatalog.categories },
           tags:                { type: 'array', items: { type: 'string', enum: Recommendation::InterestCatalog.categories } },
           keywords:            { type: 'array', items: { type: 'string' } },
@@ -99,7 +100,7 @@ module Recommendation
           confidence:          { type: 'number' }
         },
         required: %w[
-          domain_name primary_category tags keywords audience languages
+          domain_name description primary_category tags keywords audience languages
           suggested_use_cases brandability_score confidence
         ],
         additionalProperties: false
@@ -122,6 +123,10 @@ module Recommendation
         for a recommendation system. For each provided domain return one row.
 
         Rules:
+        - description: 1-2 plain English sentences stating what the domain is
+          and what someone would use it for. Concrete, no marketing fluff. This
+          text is embedded for semantic matching, so name the topic explicitly
+          (e.g. 'An online store selling pet food and supplies.').
         - primary_category and tags MUST come from this fixed vocabulary:
           #{Recommendation::InterestCatalog.categories.join(', ')}.
         - tags: 1 to 4 entries; primary_category must be one of them.
@@ -155,6 +160,7 @@ module Recommendation
 
       {
         domain_name: domain_name,
+        description: entry['description'].to_s.strip.presence,
         primary_category: primary,
         tags: tags,
         keywords: Array(entry['keywords']).map { |k| k.to_s.strip.downcase }.reject(&:blank?).uniq,
