@@ -10,7 +10,10 @@
         clears old free-text interests never runs — they'd linger forever. %>
     <%= hidden_field_tag "#{form.object_name}[custom_interests][]", '' %>
     <div class="u-flex u-flex-col" style="gap: 12px; padding-left: 16px;">
-      <% Recommendation::InterestCatalog.categories.each_slice(2) do |row| %>
+      <%# `other` is not a user-facing checkbox: it is derived server-side from
+          having any free-text keyword (RecommendationProfile#combine_categories_with_custom).
+          The free-text field below is always shown instead. %>
+      <% Recommendation::InterestCatalog.categories.reject { |category| category == RecommendationProfile::OTHER_CATEGORY }.each_slice(2) do |row| %>
         <div class="u-flex u-align-center" style="gap: 16px; flex-wrap: wrap;">
           <% row.each do |category| %>
             <label class="o-checkbox-container c-login__checkbox-container">
@@ -18,11 +21,7 @@
               <%= check_box_tag "#{form.object_name}[interest_categories][]",
                                 category,
                                 form.object.interest_categories.include?(category),
-                                class: 'o-checkbox-sample',
-                                data: (category == RecommendationProfile::OTHER_CATEGORY ? {
-                                  form__custom_interest_tags_target: 'otherToggle',
-                                  action: 'change->form--custom-interest-tags#toggle'
-                                } : {}) %>
+                                class: 'o-checkbox-sample' %>
               <span class="o-checkmark-sample"></span>
             </label>
           <% end %>
@@ -30,7 +29,7 @@
       <% end %>
     </div>
 
-    <div class="u-mt-20" data-form--custom-interest-tags-target="field" style="padding-left: 16px;">
+    <div class="u-mt-20" style="padding-left: 16px;">
       <label><%= t('recommendation_profiles.form.other_interests') %></label>
       <input type="text"
              data-form--custom-interest-tags-target="input"

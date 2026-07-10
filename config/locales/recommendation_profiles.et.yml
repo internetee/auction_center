@@ -14,9 +14,9 @@ et:
       title: "Oksjoni huvid"
       subtitle: "Valikuline. Vali, millised domeeninimede tüübid sind huvitavad. Kasutame neid kategooriaid koos pakkumiste ja wishlistiga."
       interest_categories: "Huvi kategooriad"
-      other_interests: "Muud huvid"
+      other_interests: "Lisa oma märksõnad"
       other_interests_placeholder: "Sisesta huvi ja vajuta Enter"
-      other_interests_hint: "Kasuta seda huvide jaoks, mida eeldefineeritud nimekirjas ei ole."
+      other_interests_hint: "Lisa huvid, mida ülal olevas nimekirjas ei ole."
     prompt:
       title: "Personaliseerimine"
       subject: "Anna teada, millised domeenid sind huvitavad"
