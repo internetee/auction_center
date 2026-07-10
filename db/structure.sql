@@ -1210,7 +1210,9 @@ CREATE TABLE public.domain_classifications (
     updated_at timestamp(6) without time zone NOT NULL,
     embedding double precision[],
     embedding_model character varying,
-    embedded_at timestamp(6) without time zone
+    embedded_at timestamp(6) without time zone,
+    description text,
+    embedding_input_version integer
 );
 
 
@@ -3624,6 +3626,7 @@ ALTER TABLE ONLY public.invoices
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260710100000'),
 ('20260709100100'),
 ('20260709100000'),
 ('20260708120100'),

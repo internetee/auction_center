@@ -18,6 +18,7 @@ module Recommendation
 
       cloud = result.find { |r| r[:domain_name] == 'cloudstack.ee' }
       assert_equal 'saas', cloud[:primary_category]
+      assert_equal 'A cloudstack.ee SaaS platform for teams.', cloud[:description]
       assert_equal %w[saas b2b_service], cloud[:tags]
       assert_equal 'b2b', cloud[:audience]
       assert_includes cloud[:keywords], 'cloud'
@@ -99,6 +100,7 @@ module Recommendation
     def classification_for(name)
       {
         domain_name: name,
+        description: "A #{name} SaaS platform for teams.",
         primary_category: 'saas',
         tags: %w[saas b2b_service],
         keywords: %w[cloud platform],

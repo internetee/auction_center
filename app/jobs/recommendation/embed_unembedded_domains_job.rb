@@ -1,5 +1,6 @@
 module Recommendation
-  # Cron-only entry point (rake recommendation:embed_unembedded).
+  # Batched embedder pass. Drained by PipelineRunner (rake recommendation:init)
+  # and exposed on /admin/jobs; not a standalone cron task.
   # Picks classified rows that don't yet have an embedding, batches
   # them through DomainEmbedder, and persists the vectors as plain
   # Postgres double precision[] arrays.
@@ -49,7 +50,8 @@ module Recommendation
         record.update_columns(
           embedding: payload[:embedding],
           embedding_model: payload[:embedding_model],
-          embedded_at: payload[:embedded_at]
+          embedded_at: payload[:embedded_at],
+          embedding_input_version: payload[:embedding_input_version]
         )
       end
       results.size

@@ -112,16 +112,21 @@ module Recommendation
     end
 
     # v3: backfill custom-interest vectors for profiles whose free-text interests
-    # were set before this feature existed (or before a force reset). The
-    # after_save_commit trigger only fires on a profile *save*, so existing users
-    # would otherwise never get custom magnets until they re-saved. Idempotent:
-    # only profiles with unembedded custom interests are processed.
+    # were set before this feature existed (or before a force reset), or whose
+    # embed job silently no-op'd (OpenAI off / worker down). The after_save_commit
+    # trigger only fires on a profile *save*, so those would otherwise never get
+    # custom magnets until they re-saved. Idempotent: re-embeds a profile only
+    # when its stored vectors don't match its current custom interests.
     def embed_custom_interests
       return unless RecommendationProfile.column_names.include?('custom_interest_vectors')
 
       count = 0
-      RecommendationProfile.where(custom_interests_embedded_at: nil).find_each do |profile|
-        next if profile.custom_interests.empty?
+      RecommendationProfile.where.not(interest_keywords: []).find_each do |profile|
+        interests = profile.custom_interests
+        next if interests.empty?
+
+        vector_texts = Array(profile.custom_interest_vectors).filter_map { |v| v['text'] || v[:text] }
+        next if vector_texts.sort == interests.sort
 
         Recommendation::EmbedCustomInterestsJob.perform_now(profile.id)
         count += 1

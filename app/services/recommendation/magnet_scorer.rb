@@ -1,11 +1,11 @@
 module Recommendation
-  # Recommendation::MagnetScorer (v3, shadow mode)
+  # Recommendation::MagnetScorer (v3, live engine)
   # ----------------------------------------------
   # Computes the "unified embedding" score described in
-  # docs/planning/recommendation-v3-unified-embedding-plan.md — WITHOUT
-  # persisting anything. Phase B runs this alongside the live Scorer so we can
-  # eyeball v2-vs-v3 rankings on the demo stand before any switchover; prod's
-  # write path (user_auction_scores) is untouched.
+  # docs/planning/recommendation-v3-unified-embedding-plan.md. This is the LIVE
+  # ranking engine: Recommendation::Scorer delegates its `magnet_base` to this
+  # class, scales the result ×100, adds structural nudges, and persists it into
+  # user_auction_scores — which Auction::UserSortable joins to order /auctions.
   #
   # The user is a *set of magnets*, each a (vector, weight) pair:
   #   - every bid domain      → weight 3.0, time-decayed
@@ -18,12 +18,12 @@ module Recommendation
   #   pull(magnet) = magnet.weight * cosine(magnet.vector, auction.embedding).
   # top-2 (not raw max) keeps a single lucky magnet from deciding everything.
   #
-  # Score is nil (→ auction falls to the ai_score/random tail, as in v2) when
-  # the auction has no embedding or the user has no usable magnet.
+  # Score is nil (→ auction falls to the ai_score/random tail) when the auction
+  # has no embedding or the user has no usable magnet.
   #
-  # NOTE: signal queries mirror Recommendation::Scorer intentionally. Phase C
-  # (switchover) is where the two are DRYed into a shared collector; keeping
-  # them separate now keeps shadow mode fully decoupled from the live path.
+  # NOTE: signal queries here mirror those the Scorer would otherwise need; the
+  # two classes are kept separate so the pure embedding/behavioural computation
+  # (this class) stays independent of the structural scoring layer (Scorer).
   class MagnetScorer
     HALF_LIFE_DAYS = 60.0
 

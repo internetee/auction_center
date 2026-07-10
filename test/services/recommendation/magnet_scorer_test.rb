@@ -45,6 +45,20 @@ module Recommendation
       assert_equal aligned.id, ranking.first.first.id
     end
 
+    def test_wishlist_domain_acts_as_a_magnet
+      add_wishlist('wish.ee')
+      classify('wish.ee', ALIGNED)
+
+      aligned = classified_auction('similar-to-wish.ee', ALIGNED)
+      orthogonal = classified_auction('unrelated.ee', ORTHOGONAL)
+
+      ranking = rank([aligned, orthogonal])
+
+      assert_equal aligned.id, ranking.first.first.id,
+                   'a domain semantically close to a wishlisted domain must rank above an orthogonal one'
+      assert ranking.first.last > ranking.last.last
+    end
+
     def test_bid_history_acts_as_a_magnet
       history = ended_auction('history.ee')
       place_offer(history)
@@ -137,6 +151,12 @@ module Recommendation
         classified_at: 1.hour.ago,
         confidence: 0.9
       )
+    end
+
+    def add_wishlist(domain_name)
+      item = WishlistItem.new(user: @user, domain_name: domain_name)
+      item.save(validate: false)
+      item
     end
 
     def place_offer(auction, cents: 100)

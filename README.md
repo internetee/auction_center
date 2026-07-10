@@ -97,37 +97,30 @@ as auctions, bids and profiles change.
 
 ### What runs on a schedule (cron)
 
-Batched catch-up jobs for domains that were created in bulk or whose LLM
-classification has gone stale (6-month refresh). Schedule these like the other
-cron jobs (outside the app):
+Only two scheduled commands (outside the app, like the other cron jobs):
 
 ```bash
-bundle exec rake recommendation:classify_unclassified   # ClassifyUnclassifiedDomainsJob (batched)
-bundle exec rake recommendation:embed_unembedded        # EmbedUnembeddedDomainsJob (batched)
+bundle exec rake recommendation:init          # the whole pipeline, incremental
+bundle exec rake recommendation:prune_events  # retention: events >6mo (impressions >1mo)
 ```
 
-### What you run manually
+`init` is the single pipeline entry point. It is incremental (`force: false`):
+it enriches interest categories, backfills embeddings for existing users' custom
+interests, then **drains the batched classify + embed passes itself** — picking
+up any domain that is unclassified, stale (>6mo), or whose vector was built under
+an older embedding-input format (`DomainEmbedder::INPUT_VERSION`, so a format
+bump rolls out on the next run with no extra command) — refreshes the global
+`ai_score`, and recomputes every participant's personal scores. Already-done work
+is **not** redone. Run it on every deploy; the same run also serves as the cron
+catch-up, so there is no separate classify/embed cron task.
 
-**After every deploy** (and after first enabling the feature) run the full
-pipeline once. It is incremental (`force: false`): it enriches interest
-categories, backfills embeddings for existing users' custom interests,
-classifies + embeds any domains still missing it, refreshes the global
-`ai_score`, and recomputes every participant's personal scores. Work that is
-already done is **not** redone.
-
-```bash
-bundle exec rake recommendation:init
-```
-
-Other manual entry points:
+### What you run manually (rarely)
 
 | Command / action | When to use |
 |---|---|
-| `rake recommendation:init` | After a deploy, or after first turning the feature on |
+| `rake recommendation:backfill` | **Once**, when first enabling the feature — classifies the full historical domain set (ended auctions, wishlist, offer histories, results), a wider universe than `init` (active only), so past-bid domains get embeddings and can form magnets |
 | `rake recommendation:init_demo` | Staging/test only — seeds mock active auctions + signals, then runs the pipeline |
-| `rake recommendation:backfill` | One-shot heuristic classification of historical domains (the LLM refines them later) |
-| `rake recommendation:compare_versions` | Dev tool — prints the current ranking side by side for inspection (`LIMIT=`, `USER_ID=`) |
-| `Recommendation::RebuildRecommendationsJob` on **/admin/jobs** | Full re-tag of **every** domain (`force: true`). Run after the interest-category catalog changes (add/rename/delete), so domains are re-classified under the new vocabulary |
+| `Recommendation::RebuildRecommendationsJob` on **/admin/jobs** | Full re-tag of **every** domain (`force: true`): re-classifies via the LLM (fills the `description` field) and re-embeds. Run after the interest-category catalog changes, or once to backfill descriptions after the embedding-enrichment change |
 
 ### Where to see the results (admin)
 

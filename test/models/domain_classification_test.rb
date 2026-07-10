@@ -55,4 +55,52 @@ class DomainClassificationTest < ActiveSupport::TestCase
     assert_includes DomainClassification.needs_llm_enrichment.to_a, stale
   end
 
+  def test_needs_embedding_picks_rows_without_a_vector
+    skip 'embedding column missing' unless DomainClassification.column_names.include?('embedding')
+
+    bare = DomainClassification.create!(domain_name: 'bare-embed.ee', classified_at: 1.hour.ago)
+    assert_includes DomainClassification.needs_embedding.to_a, bare
+  end
+
+  def test_needs_embedding_picks_rows_built_under_an_older_input_version
+    skip 'version column missing' unless DomainClassification.column_names.include?('embedding_input_version')
+
+    # Has a vector but NULL version (every pre-versioning row) — must be re-embedded.
+    legacy = DomainClassification.create!(
+      domain_name: 'legacy-vec.ee',
+      classified_at: 1.hour.ago,
+      embedding: Array.new(3, 0.1),
+      embedding_input_version: nil
+    )
+    # Has a vector built under an explicitly older version.
+    older = DomainClassification.create!(
+      domain_name: 'older-vec.ee',
+      classified_at: 1.hour.ago,
+      embedding: Array.new(3, 0.1),
+      embedding_input_version: Recommendation::DomainEmbedder::INPUT_VERSION - 1
+    )
+
+    scope = DomainClassification.needs_embedding.to_a
+    assert_includes scope, legacy, 'NULL version must be caught (NULL != current is unknown in SQL)'
+    assert_includes scope, older
+  end
+
+  def test_needs_embedding_excludes_rows_at_the_current_input_version
+    skip 'version column missing' unless DomainClassification.column_names.include?('embedding_input_version')
+
+    current = DomainClassification.create!(
+      domain_name: 'current-vec.ee',
+      classified_at: 1.hour.ago,
+      embedding: Array.new(3, 0.1),
+      embedding_input_version: Recommendation::DomainEmbedder::INPUT_VERSION
+    )
+    refute_includes DomainClassification.needs_embedding.to_a, current
+  end
+
+  def test_embedding_reset_attributes_nulls_the_input_version
+    skip 'version column missing' unless DomainClassification.column_names.include?('embedding_input_version')
+
+    assert_includes DomainClassification.embedding_reset_attributes.keys, :embedding_input_version
+    assert_nil DomainClassification.embedding_reset_attributes[:embedding_input_version]
+  end
 end
