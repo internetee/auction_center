@@ -52,6 +52,7 @@ gem 'turbo-rails'
 gem 'valvat'
 gem 'view_component'
 gem 'webpush'
+gem 'websocket-driver', '>= 0.8.2'
 
 group :development, :test do
   gem 'brakeman'

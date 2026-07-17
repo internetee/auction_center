@@ -605,7 +605,7 @@ GEM
       hkdf (~> 0.2)
       jwt (~> 2.0)
     websocket (1.2.11)
-    websocket-driver (0.8.0)
+    websocket-driver (0.8.2)
       base64
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
@@ -699,6 +699,7 @@ DEPENDENCIES
   web-console (>= 3.3.0)
   webmock
   webpush
+  websocket-driver (>= 0.8.2)
 
 BUNDLED WITH
    2.6.9
