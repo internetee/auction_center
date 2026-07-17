@@ -40,7 +40,6 @@ gem 'propshaft'
 gem 'puma', '~> 7.2.0'
 gem 'rack', '~> 3.2.0'
 gem 'rails', '~> 8.1.0'
-gem 'rack', '~> 3.2', '>= 3.2.5'
 
 gem 'rails-i18n'
 gem 'recaptcha'
