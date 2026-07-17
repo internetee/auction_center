@@ -5,8 +5,12 @@ updates:
     allow:
       - dependency-type: "direct"
         update-type: "version-update:semver-patch"
+      - dependency-type: "direct"
+        update-type: "version-update:semver-minor"
   - package-ecosystem: "bundler"
     directory: "/"
     allow:
       - dependency-type: "direct"
         update-type: "version-update:semver-patch"
+      - dependency-type: "direct"
+        update-type: "version-update:semver-minor"

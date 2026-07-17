@@ -4,13 +4,14 @@
 module Admin
   class InvoicesController < BaseController
     before_action :authorize_user
-    before_action :create_invoice_if_needed, except: :toggle_partial_payments
-    before_action :set_invoice, only: %i[show download update edit toggle_partial_payments]
-    before_action :authorize_for_update, only: %i[edit update]
+    before_action :create_invoice_if_needed, except: %i[toggle_partial_payments update_billing_profile]
+    before_action :set_invoice, only: %i[show download update edit toggle_partial_payments update_billing_profile]
+    before_action :authorize_for_update, only: %i[edit update update_billing_profile]
 
     # GET /admin/invoices/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b
     def show
       @payment_orders = @invoice.payment_orders
+      @billing_profiles = @invoice.user&.billing_profiles || []
     end
 
     # GET /admin/invoices
@@ -78,6 +79,23 @@ module Admin
           format.json { render :show, status: :ok, location: @invoice }
         else
           format.html { redirect_to admin_invoice_path(@invoice), notice: t(:something_went_wrong) }
+          format.json { render json: @invoice.errors, status: :unprocessable_entity }
+        end
+      end
+    end
+
+    # PATCH /admin/invoices/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/update_billing_profile
+    def update_billing_profile
+      respond_to do |format|
+        if @invoice.update(billing_profile_id: params[:invoice][:billing_profile_id])
+          format.html do
+            redirect_to admin_invoice_path(@invoice), notice: t('invoices.billing_profile_updated')
+          end
+          format.json { render :show, status: :ok, location: @invoice }
+        else
+          format.html do
+            redirect_to admin_invoice_path(@invoice), alert: @invoice.errors.full_messages.join(', ')
+          end
           format.json { render json: @invoice.errors, status: :unprocessable_entity }
         end
       end

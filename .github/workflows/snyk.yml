@@ -31,7 +31,7 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.4.9  # use the same version as in the project
+          ruby-version: 3.4.10  # use the same version as in the project
           bundler-cache: true
 
       - name: Configure Bundler for development
@@ -85,7 +85,7 @@ jobs:
 
       - name: Add comment to PR
         if: steps.check_changes.outputs.changed == 'true'
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |

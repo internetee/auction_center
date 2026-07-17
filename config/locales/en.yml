@@ -43,6 +43,7 @@ en:
 
   close: Close
   reg_no: "Registration code"
+  business_registration_code: "Business registration code"
 
   auctions_name: "Auctions"
   billing_profiles_name: "Billing Profiles"

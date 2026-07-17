@@ -53,7 +53,7 @@ jobs:
           ref: ${{ inputs.deploy_target == 'master' && 'master' || format('refs/pull/{0}/merge', inputs.pr_number) }}
 
       - name: 🔑 Configure AWS Credentials (for ECR and EKS)
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v6
         with:
           role-to-assume: ${{ secrets.GH_ACTIONS_DEPLOY_ROLE_ARN }} 
           aws-region: ${{ env.AWS_REGION }}
@@ -87,7 +87,7 @@ jobs:
       
       - name: 🔐 Mint GitHub App installation token (for IaC repo)
         id: app-token
-        uses: actions/create-github-app-token@v2
+        uses: actions/create-github-app-token@v3
         with:
           app-id: ${{ vars.GH_APP_ID }}
           private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}

@@ -37,14 +37,15 @@ jobs:
         id: check_auto_merge
         run: |
           if [ "${{ github.actor }}" == "dependabot[bot]" ]; then
-            if [[ "${{ steps.metadata.outputs.update-type }}" == "version-update:semver-patch" ]]; then
+            if [[ "${{ steps.metadata.outputs.update-type }}" == "version-update:semver-patch" || "${{ steps.metadata.outputs.update-type }}" == "version-update:semver-minor" ]]; then
               echo "auto_merge=true" >> $GITHUB_OUTPUT
             else
               echo "auto_merge=false" >> $GITHUB_OUTPUT
             fi
           elif [ "${{ github.actor }}" == "renovate[bot]" ]; then
             patch_label=$(echo "${{ github.event.pull_request.labels.*.name }}" | grep -w patch || true)
-            if [ -n "$patch_label" ]; then
+            minor_label=$(echo "${{ github.event.pull_request.labels.*.name }}" | grep -w minor || true)
+            if [ -n "$patch_label" ] || [ -n "$minor_label" ]; then
               echo "auto_merge=true" >> $GITHUB_OUTPUT
             else
               echo "auto_merge=false" >> $GITHUB_OUTPUT
@@ -54,7 +55,7 @@ jobs:
 
       - name: Wait for CI checks
         if: steps.check_auto_merge.outputs.auto_merge == 'true'
-        uses: lewagon/wait-on-check-action@v1.4.1
+        uses: lewagon/wait-on-check-action@v1.8.1
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           repo-token: ${{ secrets.GITHUB_TOKEN }}

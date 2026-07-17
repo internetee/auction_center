@@ -24,6 +24,15 @@ require 'webmock/minitest'
 require 'spy/integration'
 require 'support/component_helpers'
 
+if ENV['COVERAGE']
+  require_relative 'models/concerns/http_requester_test'
+  require_relative 'models/concerns/health_checker_test'
+  require_relative 'models/application_health_check/email_test'
+  require_relative 'models/application_health_check/registry_test'
+  require_relative 'models/application_health_check/sms_test'
+  require_relative 'models/application_health_check/tara_test'
+end
+
 require 'rake'
 Rake::Task.clear
 Rails.application.load_tasks
