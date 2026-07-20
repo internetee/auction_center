@@ -15,6 +15,7 @@ class PaymentOrdersTest < ActionDispatch::IntegrationTest
 
     assert_equal({ 'status' => 'ok' }, response_json)
     assert_equal(200, response.status)
+    assert_match(/json/, response.headers['Content-Type'].to_s)
   end
 
   def request_params

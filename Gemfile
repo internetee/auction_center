@@ -11,12 +11,12 @@ gem 'chartkick'
 gem 'cssbundling-rails', '~> 1.4.3'
 gem 'csv'
 gem 'data_migrate', '~> 11.3.1'
-gem 'delayed_job', '~> 4.1.0'
+gem 'delayed_job', '~> 4.2.0'
 gem 'delayed_job_active_record'
-gem 'devise', '~> 4.9.3'
+gem 'devise', '>= 5.0.3'
 gem 'directo', github: 'internetee/directo', branch: 'master'
 gem 'faker'
-gem 'faraday', '>= 2.14.0'
+gem 'faraday', '>= 2.14.3'
 gem 'freezolite', require: false
 gem 'hotwire-rails', '~> 0.1.3'
 gem 'jbuilder', '~> 2.11'
@@ -69,7 +69,7 @@ group :development do
   gem 'i18n-debug'
   gem 'letter_opener', '~> 1.8'
   gem 'letter_opener_web', '~> 3.0'
-  gem 'listen', '>= 3.0.5', '< 3.10'
+  gem 'listen', '>= 3.0.5', '< 3.11'
   gem 'ruby-lsp-rails'
   gem 'web-console', '>= 3.3.0'
   gem 'foreman'
@@ -89,6 +89,7 @@ group :test do
   gem 'capybara', '>= 3.4.0'
   # gem 'cuprite'
   # gem 'selenium-webdriver'
+  gem 'minitest-mock', require: false
   gem 'selenium-webdriver'
   gem 'simplecov', require: false
   gem 'simplecov-json', require: false

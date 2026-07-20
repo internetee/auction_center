@@ -40,12 +40,12 @@ jobs:
           fi
 
       - name: ⬇️ Checkout application code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: ${{ inputs.deploy_target == 'master' && 'master' || format('refs/pull/{0}/merge', inputs.pr_number) }}
 
       - name: 🔑 Configure AWS Credentials (for ECR and EKS)
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v6
         with:
           role-to-assume: ${{ secrets.GH_ACTIONS_DEPLOY_ROLE_ARN }} 
           aws-region: ${{ env.AWS_REGION }}
@@ -79,7 +79,7 @@ jobs:
       
       - name: 🔐 Mint GitHub App installation token (for IaC repo)
         id: app-token
-        uses: actions/create-github-app-token@v2
+        uses: actions/create-github-app-token@v3
         with:
           app-id: ${{ vars.GH_APP_ID }}
           private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
@@ -87,7 +87,7 @@ jobs:
           repositories: Ry_AWS_IaC
 
       - name: 🚀 Trigger IaC deploy (repository_dispatch)
-        uses: peter-evans/repository-dispatch@v3
+        uses: peter-evans/repository-dispatch@v4
         with:
           token: ${{ steps.app-token.outputs.token }}
           repository: internetee/Ry_AWS_IaC
