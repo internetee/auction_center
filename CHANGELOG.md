@@ -1,5 +1,6 @@
 21.07.2026
 * Updates automated email messages https://github.com/internetee/auction_center/issues/1525
+* Fix bash syntax error in sync-pr-to-issue https://github.com/internetee/auction_center/pull/1560
 
 24.06.2026
 * Admin can now change recipient of paid invoices https://github.com/internetee/auction_center/pull/1509
