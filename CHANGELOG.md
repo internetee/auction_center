@@ -1,3 +1,8 @@
+23.07.2026
+* Added domain name validation before starting an auction https://github.com/internetee/auction_center/issues/1338
+* Locale settings are now persiting after login https://github.com/internetee/auction_center/issues/1474
+* Fixed invalid character info in validation error messages https://github.com/internetee/auction_center/pull/1480
+
 21.07.2026
 * Updates automated email messages https://github.com/internetee/auction_center/issues/1525
 * Fix bash syntax error in sync-pr-to-issue https://github.com/internetee/auction_center/pull/1560
