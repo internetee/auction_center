@@ -2,6 +2,7 @@
 * Added domain name validation before starting an auction https://github.com/internetee/auction_center/issues/1338
 * Locale settings are now persiting after login https://github.com/internetee/auction_center/issues/1474
 * Fixed invalid character info in validation error messages https://github.com/internetee/auction_center/pull/1480
+* Admin can now manually add partial bans to users https://github.com/internetee/auction_center/pull/1527
 
 21.07.2026
 * Updates automated email messages https://github.com/internetee/auction_center/issues/1525
