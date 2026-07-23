@@ -1,3 +1,6 @@
+23.07.2026
+* Fixed invalid character info in validation error messages https://github.com/internetee/auction_center/pull/1480
+
 21.07.2026
 * Updates automated email messages https://github.com/internetee/auction_center/issues/1525
 * Fix bash syntax error in sync-pr-to-issue https://github.com/internetee/auction_center/pull/1560
