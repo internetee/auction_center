@@ -9,6 +9,8 @@ et:
     issuer: "Arve väljastaja"
     issued_for: "Arve saaja"
     due_date: "Tähtaeg"
+    invoice_details: "Arve üksikasjad"
+    parties: "Osapooled"
     status: "Staatus"
     price: "Hind"
     billing_profile: "Arve aadress"
@@ -42,6 +44,7 @@ et:
     cancelled_expired: "Tühistatud arved"
     mark_as_paid: "Märgi makstuks."
     marked_as_paid: "Arve makstuks märgitud."
+    billing_profile_updated: "Arveldusprofiil edukalt uuendatud"
     already_paid: "Arve on juba makstud."
     paid_deposit_title: Deposiidimaksed
     pay_all: "Maksa kõik arved"

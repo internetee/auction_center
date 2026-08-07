@@ -4,18 +4,52 @@ en:
       salutation: "Dear .ee auction participant,"
       subject: "Participation in %{domain_name} auction prohibited"
       introduction: |
-        The invoice for the preferential right to register %{domain_name} purchased from the .ee
-        auction is currently overdue. Thereby You can not participate in future %{domain_name} auctions.
+        We would like to inform you that the invoice for the preferential
+        right to register the %{domain_name} domain is currently overdue.
+        According to the Auction portal terms of use, you therefore
+        cannot participate in future %{domain_name} auctions.
       number_of_strikes: |
-        This is your %{number} invoice overdue. According to clause 7.3.3 of the .ee Auction Environment
-        User Agreement, a user can use the service of the environment if there are less than 3 unpaid
-        invoices under their user account.
+        This is your %{number} overdue invoice. According to clause 8.3.3 of the
+        .ee <a href="https://www.internet.ee/domains/auction-environment-user-agreement">Auction Portal User Agreement</a>, one can use the service if there
+        are less than 3 unpaid invoices under their user account.
+        <br><br>
+        To lift the restrictions, you have the option to pay the invoice. As a
+        result, your right to participate in auctions for the domain
+        %{domain_name} will be restored and the number of active
+        violations will decrease.
       linkpay_html: |
-        You can pay for this invoice using following <a href=%{linkpay_url}>link</a>.
+        You can settle the outstanding invoice via this <a href=%{linkpay_url}>link</a>.
       footer_html: |
-        <p>If you have any further questions, please contact the Estonian Internet Foundation at
+        <p>For additional questions, please contact us at
         info@internet.ee or +372 727 1000.</p>
 
-        <p>Respectfully,</br>
+        <p>Sincerely,</br>
+        Estonian Internet Foundation</br>
+        <a href="https://internet.ee">https://internet.ee</a></p>
+
+    final_ban_mail:
+      salutation: "Dear .ee auction participant,"
+      subject: "Participation in the .ee domain auction prohibited"
+      introduction: |
+        We inform you that the invoice for the preferential right to register the .ee domain name
+        purchased from the .ee auction is overdue.
+      number_of_strikes: |
+        This is your %{number} unpaid invoice in the .ee Auction portal. According to clause 8.3.3 of the
+        .ee <a href="https://www.internet.ee/domains/auction-environment-user-agreement">Auction Portal User Agreement</a>, one can use the service if there
+        are less than three unpaid invoices related to their user account. Therefore, it is
+        not possible for you to participate in .ee domain auctions until %{ban_end_date} or until
+        the payment of the prepayment invoice(s) in which the
+        restriction is based.
+        <br><br>
+        To lift the restrictions, you have the option to pay the invoice. As a result, your right
+        to participate in auctions for the domain %{domain_name} will be restored, and the number
+        of active violations will decrease.
+      linkpay_html: |
+        You can settle the outstanding invoice via this <a href=%{linkpay_url}>link</a>.
+      footer_html: |
+        <p>For additional questions, please contact us at
+        info@internet.ee or +372 727 1000.</p>
+
+        <p>Sincerely,</br>
         Estonian Internet Foundation</br>
         <a href="https://internet.ee">https://internet.ee</a></p>

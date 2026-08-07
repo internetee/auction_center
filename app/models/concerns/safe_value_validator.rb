@@ -2,10 +2,16 @@ class SafeValueValidator < ActiveModel::EachValidator
   def validate_each(record, attribute, value)
     return true if value.blank?
 
-    # Regexp for latin characters lower/upper-case
     unicode_chars = /\p{Latin}/
-    if %r{[^a-zA-Z#{unicode_chars.source}\/\d\s\/\'\’\-\.]}.match?(value)
-      record.errors.add(attribute, I18n.t('.value_is_not_safe'))
+    invalid_chars_pattern = %r{[^a-zA-Z#{unicode_chars.source}/\d\s/'’\-.]}
+
+    if invalid_chars_pattern.match?(value)
+      invalid_chars = value.scan(invalid_chars_pattern).uniq
+
+      record.errors.add(
+        attribute,
+        I18n.t('.value_is_not_safe_with_chars', invalid_chars: invalid_chars.join(', '))
+      )
       return false
     end
     true

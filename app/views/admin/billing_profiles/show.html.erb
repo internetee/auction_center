@@ -9,6 +9,11 @@
     <%= component 'common/table', header_collection: [], options: { class: 'js-table-dt dataTable no-footer' } do %>
         <%= tag.tbody class: 'contents' do %>
           <tr>
+              <td><strong><%= t('billing_profiles.name') %></strong></td>
+              <td><%= @billing_profile.name %></td>
+          </tr>
+
+          <tr>
               <td><strong><%= t('billing_profiles.vat_code') %></strong></td>
               <td><%= @billing_profile.vat_code %></td>
           </tr>
@@ -32,13 +37,25 @@
               <td><strong><%= t('billing_profiles.country') %></strong></td>
               <td><%= @billing_profile.country_code %></td>
           </tr>
+
+          <tr>
+              <td><strong><%= t('billing_profiles.user') %></strong></td>
+              <td>
+                <% if @billing_profile.user %>
+                  <%= link_to @billing_profile.user.display_name, admin_user_path(@billing_profile.user) %>
+                <% else %>
+                  <%= t('billing_profiles.orphaned') %>
+                <% end %>
+              </td>
+          </tr>
         <% end %>
       <% end %>
 
-      <div class="c-table__filters__btns" style='padding: 1rem 0; display: flex; justify-content: end;'>
-        <%- if @billing_profile.user %>
-          <%= link_to t(:user), admin_user_path(@billing_profile.user), class: "c-btn c-btn--blue" %>
-        <% end %>
+      <div class="c-table__filters__btns" style='padding: 1rem 0; display: flex; justify-content: end; gap: 10px;'>
+        <%= link_to t(:edit), edit_admin_billing_profile_path(@billing_profile), class: "c-btn c-btn--orange" %>
+        <%= button_to t(:delete), admin_billing_profile_path(@billing_profile), method: :delete, class: "c-btn c-btn--red", form: { data: { turbo_confirm: t(".confirm_delete") } } %>
+        <%= link_to t(:versions_name), admin_billing_profile_versions_path(@billing_profile), class: "c-btn c-btn--blue" %>
+        <%= link_to t(:back), admin_billing_profiles_path, class: "c-btn c-btn--gray" %>
       </div>
   </div>
 </div>

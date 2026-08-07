@@ -5,7 +5,7 @@
     <%= form_with url: admin_billing_profiles_path, method: :get do |f| %>
       <div class="c-table__filters" >
         <div class="c-table__filters__btns" style='display: flex !important; align-items: center !important; justify-content: space-between !important; width: 100%;'>
-          <%= f.search_field :search_string, value: params[:search_string], placeholder: t('search_by_domain_name'), class: 'c-table__search__input js-table-search-dt' %>
+          <%= f.search_field :search_string, value: params[:search_string], placeholder: 'Search by name', class: 'c-table__search__input js-table-search-dt' %>
           <%= f.button t('.search'), class: "c-btn c-btn--blue" %>
         </div>
       </div>
@@ -36,5 +36,12 @@
         <% end %>
       <% end %>
     <% end %>
+
+    <%= component 'common/pagy', pagy: @pagy %>
+
+    <div class="c-table__filters__btns" style='padding: 1rem 0; display: flex; justify-content: end;'>
+      <%= link_to t('.new_billing_profile'), new_admin_billing_profile_path, class: "c-btn c-btn--green" %>
+    </div>
   </div>
 </div>
+

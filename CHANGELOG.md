@@ -1,3 +1,23 @@
+23.07.2026
+* Added domain name validation before starting an auction https://github.com/internetee/auction_center/issues/1338
+* Locale settings are now persiting after login https://github.com/internetee/auction_center/issues/1474
+* Fixed invalid character info in validation error messages https://github.com/internetee/auction_center/pull/1480
+* Admin can now manually add partial bans to users https://github.com/internetee/auction_center/pull/1527
+
+21.07.2026
+* Updates automated email messages https://github.com/internetee/auction_center/issues/1525
+* Fix bash syntax error in sync-pr-to-issue https://github.com/internetee/auction_center/pull/1560
+
+24.06.2026
+* Admin can now change recipient of paid invoices https://github.com/internetee/auction_center/pull/1509
+
+27.05.2026
+* Profile data review warning fix https://github.com/internetee/auction_center/issues/1580
+
+30.12.2025
+* Allow comma in billing profile street field https://github.com/internetee/auction_center/issues/1502
+* Fixed false error message bug on billing profile update https://github.com/internetee/auction_center/issues/1503
+
 17.10.2025
 * Fix temporary error on eid account creation https://github.com/internetee/auction_center/pull/1472
 * Fix sorting in the offers view https://github.com/internetee/auction_center/issues/1476
