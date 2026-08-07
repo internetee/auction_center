@@ -3,6 +3,16 @@ require 'test_helper'
 class InvoicesPaginationTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
+  ISSUED_INVOICE_ROWS = 'turbo-frame#outstanding_issued_invoices table > tr'
+  ISSUED_PAGE_LINK = 'turbo-frame#outstanding_issued_invoices a[href*="issued_page=2"]'
+  PAID_INVOICE_ROWS = 'turbo-frame#paid_invoices table > tr'
+  PAID_PAGE_LINK = 'turbo-frame#paid_invoices a[href*="paid_page=2"]'
+  ISSUED_FRAME = 'turbo-frame#outstanding_issued_invoices'
+  CANCELLED_PAYABLE_FRAME = 'turbo-frame#outstanding_cancelled_payable'
+  CANCELLED_EXPIRED_FRAME = 'turbo-frame#outstanding_cancelled_expired'
+  PAID_FRAME = 'turbo-frame#paid_invoices'
+  DEPOSIT_FRAME = 'turbo-frame#paid_deposits'
+
   setup do
     @user = users(:participant)
     @billing_profile = billing_profiles(:company)
@@ -15,8 +25,8 @@ class InvoicesPaginationTest < ActionDispatch::IntegrationTest
     get invoices_path
 
     assert_response :success
-    assert_select 'turbo-frame#outstanding_issued_invoices table > tr', 10
-    assert_select 'turbo-frame#outstanding_issued_invoices a[href*="issued_page=2"]'
+    assert_select ISSUED_INVOICE_ROWS, 10
+    assert_select ISSUED_PAGE_LINK
   end
 
   def test_issued_page_two_shows_remaining_invoices
@@ -25,7 +35,7 @@ class InvoicesPaginationTest < ActionDispatch::IntegrationTest
     get invoices_path(issued_page: 2)
 
     assert_response :success
-    assert_select 'turbo-frame#outstanding_issued_invoices table > tr', 1
+    assert_select ISSUED_INVOICE_ROWS, 1
     assert_match(/with-invoice\.test/, response.body)
   end
 
@@ -36,20 +46,20 @@ class InvoicesPaginationTest < ActionDispatch::IntegrationTest
     get invoices_path(issued_page: 2, paid_page: 1)
 
     assert_response :success
-    assert_select 'turbo-frame#outstanding_issued_invoices table > tr', 1
-    assert_select 'turbo-frame#paid_invoices table > tr', 10
-    assert_select 'turbo-frame#paid_invoices a[href*="paid_page=2"]'
+    assert_select ISSUED_INVOICE_ROWS, 1
+    assert_select PAID_INVOICE_ROWS, 10
+    assert_select PAID_PAGE_LINK
   end
 
   def test_index_includes_turbo_frames_for_each_invoice_tab
     get invoices_path
 
     assert_response :success
-    assert_select 'turbo-frame#outstanding_issued_invoices'
-    assert_select 'turbo-frame#outstanding_cancelled_payable'
-    assert_select 'turbo-frame#outstanding_cancelled_expired'
-    assert_select 'turbo-frame#paid_invoices'
-    assert_select 'turbo-frame#paid_deposits'
+    assert_select ISSUED_FRAME
+    assert_select CANCELLED_PAYABLE_FRAME
+    assert_select CANCELLED_EXPIRED_FRAME
+    assert_select PAID_FRAME
+    assert_select DEPOSIT_FRAME
   end
 
   private
