@@ -1,5 +1,13 @@
 name: Github Testing
-on: [push, pull_request]
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+env:
+  BUNDLE_DEPLOYMENT: "1"
+  BUNDLE_WITHOUT: "development:staging:production"
 
 jobs:
   bundle_audit:
@@ -8,14 +16,17 @@ jobs:
       - uses: actions/checkout@v6
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.4.10
-          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
-      - name: config bundler
-        run:  |
-          bundle config set without 'development staging production'
-          bundle config set deployment '[secure]'
-          bundle env
-          head -n1 $(which bundle)
+          ruby-version: ruby
+          bundler-cache: true
+      - name: Verify gems match this PR lockfile
+        run: |
+          expected=$(sed 's/^ruby-//' .ruby-version | tr -d '[:space:]')
+          actual=$(ruby -e 'print RUBY_VERSION')
+          echo "Ruby from .ruby-version: $expected"
+          echo "Installed Ruby: $actual"
+          test "$expected" = "$actual"
+          bundle check
+          bundle list
       - name: Bundle Audit Check
         run: bundle exec bundle-audit check --update
 
@@ -25,14 +36,17 @@ jobs:
       - uses: actions/checkout@v6
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.4.10
-          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
-      - name: config bundler
-        run:  |
-          bundle config set without 'development staging production'
-          bundle config set deployment '[secure]'
-          bundle env
-          head -n1 $(which bundle)
+          ruby-version: ruby
+          bundler-cache: true
+      - name: Verify gems match this PR lockfile
+        run: |
+          expected=$(sed 's/^ruby-//' .ruby-version | tr -d '[:space:]')
+          actual=$(ruby -e 'print RUBY_VERSION')
+          echo "Ruby from .ruby-version: $expected"
+          echo "Installed Ruby: $actual"
+          test "$expected" = "$actual"
+          bundle check
+          bundle list
       - name: Run Brakeman
         run: bundle exec brakeman --quiet --skip-libs --exit-on-warn -i config/brakeman.ignore
 
@@ -44,32 +58,43 @@ jobs:
         env:
           POSTGRES_PASSWORD: password
           POSTGRES_USERNAME: postgres
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5       
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-24.04]
-        ruby: [ '3.4.1' ]
+        ruby: ['3.4.9']
     runs-on: ${{ matrix.os }}
     continue-on-error: ${{ endsWith(matrix.ruby, 'head') || matrix.ruby == 'debug' }}
     steps:
-
       - uses: actions/checkout@v6
+
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: ${{ matrix.ruby }}
-          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+          ruby-version: ruby
+          bundler-cache: true
 
       - name: Hack sources.list
-        run: sudo sed -i 's|http://azure.archive.ubuntu.com/ubuntu/|http://mirror.arizona.edu/ubuntu/|g' /etc/apt/sources.list                                                                                          
+        run: sudo sed -i 's|http://azure.archive.ubuntu.com/ubuntu/|http://mirror.arizona.edu/ubuntu/|g' /etc/apt/sources.list
 
-      - name: config bundler
-        run:  |
-          bundle config set without 'development staging production'
-          bundle config set deployment '[secure]'
+      - name: Verify gems match this PR lockfile
+        run: |
+          expected=$(sed 's/^ruby-//' .ruby-version | tr -d '[:space:]')
+          actual=$(ruby -e 'print RUBY_VERSION')
+          echo "Ruby from .ruby-version: $expected"
+          echo "Installed Ruby: $actual"
+          test "$expected" = "$actual"
+          echo "Bundler: $(bundle -v)"
           bundle env
-          head -n1 $(which bundle)
+          bundle check
+          echo "Installed gems from this PR Gemfile.lock:"
+          bundle list
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            git fetch --depth=1 origin "${{ github.base_ref }}"
+            echo "Gemfile.lock changes vs ${{ github.base_ref }}:"
+            git diff "origin/${{ github.base_ref }}" -- Gemfile.lock || true
+          fi
 
       - name: Install wkhtmltopdf
         run: sudo apt-get update && sudo apt-get install -y wkhtmltopdf
@@ -92,51 +117,6 @@ jobs:
           RAILS_ENV: test
           COVERAGE: true
           DATABASE_URL: postgres://postgres:password@localhost:5432/auction_center_test
-
-      - name: Debug coverage files
-        if: always()
-        run: |
-          echo "Current directory: $(pwd)"
-          echo "Directory contents:"
-          ls -la
-          echo "Looking for coverage directory:"
-          find . -type d -name "coverage" | xargs ls -la
-          echo "Looking for all JSON files:"
-          find . -name "*.json"
-          echo "Looking specifically for SimpleCov result files:"
-          find . -name ".resultset.json" -o -name "coverage.json"
-          echo "Checking SimpleCov result format:"
-          cat > check_format.rb << 'EOF'
-          require 'json'
-          begin
-            file_path = 'coverage/.resultset.json'
-            if File.exist?(file_path)
-              data = JSON.parse(File.read(file_path))
-              puts "File structure overview:"
-              data.each do |test_name, test_data|
-                puts "Test name: #{test_name}"
-                puts "Keys in test_data: #{test_data.keys.join(', ')}"
-                if test_data.has_key?("coverage")
-                  puts "Coverage is a #{test_data['coverage'].class.name}"
-                  if test_data["coverage"].is_a?(Hash)
-                    sample_file = test_data["coverage"].keys.first
-                    puts "Sample file: #{sample_file}"
-                    puts "Coverage for sample file is a #{test_data['coverage'][sample_file].class.name}"   
-                    if test_data['coverage'][sample_file].is_a?(Hash)
-                      puts "Keys in coverage object: #{test_data['coverage'][sample_file].keys.join(', ')}" 
-                    end
-                  end
-                end
-              end
-            else
-              puts "File not found: #{file_path}"
-            end
-          rescue => e
-            puts "Error analyzing SimpleCov format: #{e.message}"
-          end
-          EOF
-
-          bundle exec ruby check_format.rb
 
       - name: Install qlty CLI
         if: always()
