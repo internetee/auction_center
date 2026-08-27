@@ -62,11 +62,10 @@ module HttpRequester
   # :nocov:
   def basic_auth_get(url:, username:, password:)
     uri = URI(url)
-    verify_mode = Rails.env.development? || Rails.env.test? ? OpenSSL::SSL::VERIFY_NONE : OpenSSL::SSL::VERIFY_PEER
 
     Net::HTTP.start(uri.host, uri.port,
                     use_ssl: uri.scheme == 'https',
-                    verify_mode:) do |http|
+                    verify_mode: OpenSSL::SSL::VERIFY_NONE) do |http|
       request = Net::HTTP::Get.new uri.request_uri
       request.basic_auth username, password
       response = http.request request
