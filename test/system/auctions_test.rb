@@ -2,6 +2,11 @@ require 'application_system_test_case'
 require "test_helper"
 
 class AuctionsTest < ApplicationSystemTestCase
+  AUCTION_ROWS_SELECTOR = 'tbody#bids tr.contents'
+  AUCTION_DOMAIN_CELLS_SELECTOR = "#{AUCTION_ROWS_SELECTOR} td:first-child"
+  ALL_LIST_I18N_KEY = 'auctions.all_list'
+  DOMAIN_NAME_SORT_QUERY = /sort_by=domain_name/
+
   def setup
     super
 
@@ -54,8 +59,8 @@ class AuctionsTest < ApplicationSystemTestCase
 
     visit('/')
 
-    assert(page.has_content?(:visible, I18n.t('auctions.all_list')))
-    click_link_or_button(I18n.t('auctions.all_list'))
+    assert(page.has_content?(:visible, I18n.t(ALL_LIST_I18N_KEY)))
+    click_link_or_button(I18n.t(ALL_LIST_I18N_KEY))
 
     assert_current_path auctions_path + '?show_all=true'
   end
@@ -65,14 +70,14 @@ class AuctionsTest < ApplicationSystemTestCase
     expected_count = Auction.active.count
 
     visit('/')
-    click_link_or_button(I18n.t('auctions.all_list'))
-    assert_selector 'tbody#bids tr.contents', count: expected_count
+    click_link_or_button(I18n.t(ALL_LIST_I18N_KEY))
+    assert_selector AUCTION_ROWS_SELECTOR, count: expected_count
 
     find('th.sorting', text: I18n.t('auctions.domain_name')).click
 
-    assert_selector 'tbody#bids tr.contents', count: expected_count
+    assert_selector AUCTION_ROWS_SELECTOR, count: expected_count
     assert page.has_current_path?(/show_all=true/, url: true)
-    assert page.has_current_path?(/sort_by=domain_name/, url: true)
+    assert page.has_current_path?(DOMAIN_NAME_SORT_QUERY, url: true)
   end
 
   def test_show_all_keeps_existing_sort
@@ -81,16 +86,16 @@ class AuctionsTest < ApplicationSystemTestCase
 
     visit('/')
     find('thead th.sorting', text: I18n.t('auctions.domain_name')).click
-    assert page.has_current_path?(/sort_by=domain_name/, url: true)
-    page_order = all('tbody#bids tr.contents td:first-child').map { |node| node.text.strip }
+    assert page.has_current_path?(DOMAIN_NAME_SORT_QUERY, url: true)
+    page_order = all(AUCTION_DOMAIN_CELLS_SELECTOR).map { |node| node.text.strip }
 
-    click_link_or_button(I18n.t('auctions.all_list'))
+    click_link_or_button(I18n.t(ALL_LIST_I18N_KEY))
 
-    assert_selector 'tbody#bids tr.contents', count: expected_count
-    all_order = all('tbody#bids tr.contents td:first-child').map { |node| node.text.strip }
+    assert_selector AUCTION_ROWS_SELECTOR, count: expected_count
+    all_order = all(AUCTION_DOMAIN_CELLS_SELECTOR).map { |node| node.text.strip }
     assert_equal page_order, all_order.first(page_order.size)
     assert page.has_current_path?(/show_all=true/, url: true)
-    assert page.has_current_path?(/sort_by=domain_name/, url: true)
+    assert page.has_current_path?(DOMAIN_NAME_SORT_QUERY, url: true)
   end
 
   # AUTOBIDER ========================================
