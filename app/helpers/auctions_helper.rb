@@ -1,4 +1,12 @@
 module AuctionsHelper
+  AUCTION_LIST_QUERY_KEYS = %w[sort_by sort_direction domain_name type auction_offer_type].freeze
+
+  def auctions_path_with_list_params(show_all: false)
+    query = request.query_parameters.slice(*AUCTION_LIST_QUERY_KEYS)
+    query = query.merge('show_all' => 'true') if show_all
+    auctions_path(query)
+  end
+
   # MS: need better way about these links. They are external and can change at any time,
   # breaking our website.
   def faq_link

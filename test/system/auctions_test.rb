@@ -60,6 +60,39 @@ class AuctionsTest < ApplicationSystemTestCase
     assert_current_path auctions_path + '?show_all=true'
   end
 
+  def test_sorting_keeps_show_all
+    create_extra_active_auctions(16)
+    expected_count = Auction.active.count
+
+    visit('/')
+    click_link_or_button(I18n.t('auctions.all_list'))
+    assert_selector 'tbody#bids tr.contents', count: expected_count
+
+    find('th.sorting', text: I18n.t('auctions.domain_name')).click
+
+    assert_selector 'tbody#bids tr.contents', count: expected_count
+    assert page.has_current_path?(/show_all=true/, url: true)
+    assert page.has_current_path?(/sort_by=domain_name/, url: true)
+  end
+
+  def test_show_all_keeps_existing_sort
+    create_extra_active_auctions(16)
+    expected_count = Auction.active.count
+
+    visit('/')
+    find('thead th.sorting', text: I18n.t('auctions.domain_name')).click
+    assert page.has_current_path?(/sort_by=domain_name/, url: true)
+    page_order = all('tbody#bids tr.contents td:first-child').map { |node| node.text.strip }
+
+    click_link_or_button(I18n.t('auctions.all_list'))
+
+    assert_selector 'tbody#bids tr.contents', count: expected_count
+    all_order = all('tbody#bids tr.contents td:first-child').map { |node| node.text.strip }
+    assert_equal page_order, all_order.first(page_order.size)
+    assert page.has_current_path?(/show_all=true/, url: true)
+    assert page.has_current_path?(/sort_by=domain_name/, url: true)
+  end
+
   # AUTOBIDER ========================================
 
   def test_autobider_available_only_for_english_type_auctions
@@ -124,5 +157,19 @@ class AuctionsTest < ApplicationSystemTestCase
 
     # TODO: Turbo stream not work in test mode
     # assert(page.has_content?(:visible, "#{I18n.t('english_offers.form.autobider')}: #{I18n.t('english_offers.form.yep')}" ))
+  end
+
+  private
+
+  def create_extra_active_auctions(count)
+    count.times do |i|
+      auction = Auction.new(
+        domain_name: "extra-#{i}.test",
+        starts_at: Time.zone.parse('2000-01-01'),
+        ends_at: Time.zone.parse('2099-12-31')
+      )
+      auction.skip_validation = true
+      auction.save!
+    end
   end
 end
