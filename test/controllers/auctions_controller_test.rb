@@ -159,8 +159,10 @@ class AuctionsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     auction_domains = css_select('tbody#bids tr.contents td:first-child').map { |e| e.text.strip }
+    expected_domains = Auction.active.search({ sort_by: 'domain_name', sort_direction: 'asc' }).map(&:domain_name)
+
     assert_equal Auction.active.count, auction_domains.size
-    assert_equal auction_domains.sort, auction_domains
+    assert_equal expected_domains, auction_domains
   end
 
   private
