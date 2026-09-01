@@ -66,23 +66,21 @@ class AuctionsTest < ApplicationSystemTestCase
   end
 
   def test_sorting_keeps_show_all
-    create_extra_active_auctions(16)
-    expected_count = Auction.active.count
+    expected_count = setup_extra_active_auctions
 
     visit('/')
     click_link_or_button(I18n.t(ALL_LIST_I18N_KEY))
-    assert_selector AUCTION_ROWS_SELECTOR, count: expected_count
+    assert_all_auction_rows(expected_count)
 
     find('th.sorting', text: I18n.t('auctions.domain_name')).click
 
-    assert_selector AUCTION_ROWS_SELECTOR, count: expected_count
+    assert_all_auction_rows(expected_count)
     assert page.has_current_path?(/show_all=true/, url: true)
     assert page.has_current_path?(DOMAIN_NAME_SORT_QUERY, url: true)
   end
 
   def test_show_all_keeps_existing_sort
-    create_extra_active_auctions(16)
-    expected_count = Auction.active.count
+    expected_count = setup_extra_active_auctions
 
     visit('/')
     find('thead th.sorting', text: I18n.t('auctions.domain_name')).click
@@ -91,7 +89,7 @@ class AuctionsTest < ApplicationSystemTestCase
 
     click_link_or_button(I18n.t(ALL_LIST_I18N_KEY))
 
-    assert_selector AUCTION_ROWS_SELECTOR, count: expected_count
+    assert_all_auction_rows(expected_count)
     all_order = all(AUCTION_DOMAIN_CELLS_SELECTOR).map { |node| node.text.strip }
     assert_equal page_order, all_order.first(page_order.size)
     assert page.has_current_path?(/show_all=true/, url: true)
@@ -165,6 +163,15 @@ class AuctionsTest < ApplicationSystemTestCase
   end
 
   private
+
+  def setup_extra_active_auctions
+    create_extra_active_auctions(16)
+    Auction.active.count
+  end
+
+  def assert_all_auction_rows(count)
+    assert_selector AUCTION_ROWS_SELECTOR, count: count
+  end
 
   def create_extra_active_auctions(count)
     count.times do |i|
