@@ -62,12 +62,15 @@ module Common
       end
 
       def regular_menu_list_items
-        items = [{ name: t(:auctions_name), path: auctions_path },
-                 { name: t(:my_invoices), path: invoices_path },
-                 { name: t(:my_offers), path: offers_path },
-                 { name: t(:my_wishlist), path: wishlist_items_path }]
+        items = [{ name: t(:auctions_name), path: auctions_path }]
 
-        items.insert(1, { name: t(:profile), path: user_path(current_user&.uuid) }) if user_signed_in?
+        if user_signed_in?
+          items.insert(1, { name: t(:profile), path: user_path(current_user&.uuid) })
+          items.insert(2, { name: t(:my_invoices), path: invoices_path })
+          items.insert(3, { name: t(:my_offers), path: offers_path })
+          items.insert(4, { name: t(:my_wishlist), path: wishlist_items_path })
+        end
+
         items
       end
     end
