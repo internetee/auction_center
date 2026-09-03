@@ -1,3 +1,7 @@
+03.09.2026
+* Fixed sorting and full list view conflict https://github.com/internetee/auction_center/issues/1623
+* Menu options not availabel to anonymous users are hidden now https://github.com/internetee/auction_center/issues/1624
+
 23.07.2026
 * Added domain name validation before starting an auction https://github.com/internetee/auction_center/issues/1338
 * Locale settings are now persiting after login https://github.com/internetee/auction_center/issues/1474
