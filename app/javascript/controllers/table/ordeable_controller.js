@@ -10,7 +10,11 @@ export default class extends Controller {
   }
 
   resortTable(_event) {
-    Turbo.visit('?sort_by=' + this.columnValue + '&sort_direction=' + this.directionValue, { frame: this.frameNameValue });
+    const url = new URL(window.location.href)
+    url.searchParams.set('sort_by', this.columnValue)
+    url.searchParams.set('sort_direction', this.directionValue)
+    url.searchParams.delete('page')
+    Turbo.visit(`${url.pathname}${url.search}`)
   }
 
   directionValueChanged() {
