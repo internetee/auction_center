@@ -30,8 +30,9 @@
     </div>
 
     <div class="u-mt-20" style="padding-left: 16px;">
-      <label><%= t('recommendation_profiles.form.other_interests') %></label>
+      <label for="<%= "#{form.object_name}_other_interests" %>"><%= t('recommendation_profiles.form.other_interests') %></label>
       <input type="text"
+             id="<%= "#{form.object_name}_other_interests" %>"
              data-form--custom-interest-tags-target="input"
              data-hidden-input-name="<%= "#{form.object_name}[custom_interests][]" %>"
              data-action="keydown->form--custom-interest-tags#add"
