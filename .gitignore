@@ -70,3 +70,7 @@ CLAUDE.md
 !/app/assets/builds/.keep
 .cursorindexingignore
 .specstory
+
+# Local agent/scratch notes, not part of the repo
+/docs/
+/style-guide/
