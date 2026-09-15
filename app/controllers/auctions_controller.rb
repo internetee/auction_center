@@ -4,6 +4,11 @@ class AuctionsController < ApplicationController
 
   DEFAULT_PAGE_LIMIT = 15
 
+  # Hard ceiling for one rendered page. A single auction row costs ~270KB of transient
+  # objects to render, so an unbounded page size (show_all, or a hand-crafted per_page)
+  # lets one request blow the container memory limit and take the process down.
+  MAX_PAGE_LIMIT = 100
+
   # GET /auctions
   def index
     set_cors_header
@@ -37,12 +42,13 @@ class AuctionsController < ApplicationController
   def fetch_auctions_list = Auction.active.search(params, current_user)
 
   def per_page_count
-    count = params[:show_all] == 'true' ? @auctions_list.count : per_page
-    count = nil if count.zero?
-    count
-  end
+    return MAX_PAGE_LIMIT if params[:show_all] == 'true'
 
-  def per_page = params[:per_page] || DEFAULT_PAGE_LIMIT
+    requested = params[:per_page].to_i
+    return DEFAULT_PAGE_LIMIT unless requested.positive?
+
+    [requested, MAX_PAGE_LIMIT].min
+  end
 
   def set_cors_header
     response.headers['Access-Control-Allow-Origin'] = request.headers['Origin']

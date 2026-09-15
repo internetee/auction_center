@@ -165,6 +165,29 @@ class AuctionsControllerTest < ActionDispatch::IntegrationTest
     assert_equal expected_domains, auction_domains
   end
 
+  def test_page_size_is_capped_regardless_of_requested_size
+    create_extra_active_auctions(AuctionsController::MAX_PAGE_LIMIT + 5)
+
+    get auctions_path, params: { show_all: 'true', sort_by: 'domain_name', sort_direction: 'asc' }
+
+    assert_response :success
+    assert_select 'tbody#bids tr.contents', AuctionsController::MAX_PAGE_LIMIT
+
+    get auctions_path, params: { per_page: '5000' }
+
+    assert_response :success
+    assert_select 'tbody#bids tr.contents', AuctionsController::MAX_PAGE_LIMIT
+  end
+
+  def test_non_numeric_per_page_falls_back_to_the_default_page_size
+    create_extra_active_auctions(20)
+
+    get auctions_path, params: { per_page: 'all' }
+
+    assert_response :success
+    assert_select 'tbody#bids tr.contents', AuctionsController::DEFAULT_PAGE_LIMIT
+  end
+
   private
 
   def query_from_link(title)
