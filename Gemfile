@@ -93,6 +93,7 @@ group :test do
   # gem 'selenium-webdriver'
   gem 'minitest-mock', require: false
   gem 'selenium-webdriver'
+  gem 'rubyzip', '>= 3.4.0'
   gem 'simplecov', require: false
   gem 'simplecov-json', require: false
   gem 'spy'
