@@ -73,16 +73,26 @@ jobs:
             sync
             renovate/artifacts
 
-      - name: Enable GitHub auto-merge
+      - name: Auto-merge PR
         if: steps.check_auto_merge.outputs.auto_merge == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
-          echo "Enabling GitHub auto-merge for PR #$PR_NUMBER"
-          if gh pr merge --auto --merge "$PR_NUMBER"; then
-            echo "GitHub auto-merge enabled"
+          if gh pr merge --merge "$PR_NUMBER"; then
+            echo "Merged PR #$PR_NUMBER"
             exit 0
           fi
-          echo "Native auto-merge unavailable; merging after green CI"
-          gh pr merge --merge "$PR_NUMBER"
+          STATE=$(gh pr view "$PR_NUMBER" --json state -q .state)
+          if [ "$STATE" = "MERGED" ]; then
+            echo "PR #$PR_NUMBER was already merged"
+            exit 0
+          fi
+          gh pr merge --auto --merge "$PR_NUMBER"
+          STATE=$(gh pr view "$PR_NUMBER" --json state -q .state)
+          if [ "$STATE" = "MERGED" ]; then
+            echo "Merged PR #$PR_NUMBER via auto-merge"
+            exit 0
+          fi
+          echo "Failed to merge PR #$PR_NUMBER (state=$STATE)" >&2
+          exit 1
