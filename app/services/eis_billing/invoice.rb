@@ -28,6 +28,8 @@ module EisBilling
       data[:custom_field1] = 'prepended'
       data[:custom_field2] = INITIATOR
       data[:invoice_number] = invoice.number
+      # Billing system expires the payment link at the end of the due date.
+      data[:due_date] = invoice.due_date&.to_date&.iso8601
 
       data
     end

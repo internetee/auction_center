@@ -1,3 +1,6 @@
+21.09.2026
+* Payment links now expire at the end of the invoice due date https://github.com/internetee/eis_billing_system/issues/212
+
 03.09.2026
 * Fixed sorting and full list view conflict https://github.com/internetee/auction_center/issues/1623
 * Menu options not availabel to anonymous users are hidden now https://github.com/internetee/auction_center/issues/1624

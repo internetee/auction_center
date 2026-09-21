@@ -256,6 +256,14 @@ class InvoiceTest < ActiveSupport::TestCase
     assert(url.include? @payable_invoice.number.to_s)
   end
 
+  def test_linkpay_url_expires_at_the_end_of_the_due_date_in_estonian_time
+    @payable_invoice.update!(due_date: Date.new(2026, 7, 9))
+
+    url = @payable_invoice.linkpay_url
+
+    assert(url.include?('expires_at=09%2F07%2F2026%2023%3A59'))
+  end
+
   def test_linkpay_url_nil_if_paid
     time = Time.parse('2010-07-06 10:30 +0000').in_time_zone
     @payable_invoice.mark_as_paid_at(time)
