@@ -8,7 +8,7 @@
 
         <p><%= t('.introduction', domain_name: @domain_name).html_safe %></p>
         <p id='number-of-strikes'><%= t('.number_of_strikes', domain_name: @domain_name, number: @past_due_invoices).html_safe %></p>
-        <p><%= t('.linkpay_html', linkpay_url: @ban.invoice.payment_link) %></p>
+        <p><%= t('.linkpay_html', linkpay_url: invoices_url) %></p>
         <%= t('.footer_html') %>
     </body>
 </html>

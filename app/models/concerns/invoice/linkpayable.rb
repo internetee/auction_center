@@ -21,9 +21,9 @@ module Invoice::Linkpayable
                                             .dig(:payment_methods,
                                                   CONFIG_NAMESPACE.to_sym, :linkpay_token)
 
-  # Payment link must not outlive the invoice: it expires at the end of the due
-  # date in Estonian time (EET/EEST). EveryPay expects "DD/MM/YYYY HH:MM".
-  # https://support.every-pay.com/en/articles/11162628-how-to-use-linkpay
+  # Payment link must not outlive the invoice: the link expiry sent to EveryPay
+  # is the end of the due date in Estonian time (EET/EEST) in "DD/MM/YYYY HH:MM".
+  # Whether EveryPay honours "expires_at" is an unverified contract assumption.
   EXPIRY_FIELD = 'expires_at'
   EXPIRY_TIME_ZONE = 'Tallinn'
   EXPIRY_FORMAT = '%d/%m/%Y %H:%M'
