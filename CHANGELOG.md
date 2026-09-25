@@ -1,3 +1,6 @@
+25.09.2026
+* Auction invoice payment links are now expiring Montonio links created by the billing system https://github.com/internetee/eis_billing_system/issues/212
+
 03.09.2026
 * Fixed sorting and full list view conflict https://github.com/internetee/auction_center/issues/1623
 * Menu options not availabel to anonymous users are hidden now https://github.com/internetee/auction_center/issues/1624

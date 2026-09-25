@@ -7,6 +7,10 @@ module InvoicesHelper
       return 'OK' if response['transaction_result'] == 'completed'
 
       fetch_everypay_errors(response)
+    when 'Montonio'
+      return 'OK' if response['payment_state'] == 'settled'
+
+      simple_format(content_tag(:a, "payment: #{response['payment_state']}", class: 'ui label'))
     end
   end
 
