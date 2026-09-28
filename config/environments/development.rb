@@ -51,9 +51,11 @@ Rails.application.configure do
 
   config.log_formatter = ::Logger::Formatter.new
   config.action_mailer.delivery_method = :letter_opener_web
+  # Montonio rejects local return urls, so the host is overridable (e.g. an
+  # ngrok hostname) when testing payment links against the Montonio sandbox.
   config.action_mailer.default_url_options = {
-    host: 'localhost:3000',
-    protocol: 'http'
+    host: ENV.fetch('APP_HOST', 'localhost:3000'),
+    protocol: ENV.fetch('APP_PROTOCOL', 'http')
   }
 
   # Debug mode disables concatenation and preprocessing of assets.

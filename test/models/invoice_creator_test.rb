@@ -308,4 +308,28 @@ class InvoiceCreatorTest < ActiveSupport::TestCase
     assert_equal result.invoice.vat_rate, BigDecimal(Setting.find_by(code: :estonian_vat_rate).retrieve, 2)
     assert_equal result.invoice.vat_rate, 0.22
   end
+
+  def test_stores_montonio_payment_link_when_billing_system_returns_one
+    stub_request(:post, 'http://eis_billing_system:3000/api/v1/invoice_generator/invoice_generator')
+      .to_return(status: 200,
+                 body: { everypay_link: 'http://link.test',
+                         payment_link: 'https://pay.montonio.com/abc-123',
+                         payment_link_provider: 'montonio' }.to_json,
+                 headers: {})
+
+    invoice = InvoiceCreator.new(@result.id).call
+
+    assert_equal 'https://pay.montonio.com/abc-123', invoice.reload.payment_link
+  end
+
+  def test_falls_back_to_everypay_link_when_payment_link_is_missing
+    stub_request(:post, 'http://eis_billing_system:3000/api/v1/invoice_generator/invoice_generator')
+      .to_return(status: 200,
+                 body: { everypay_link: 'http://link.test', payment_link: nil }.to_json,
+                 headers: {})
+
+    invoice = InvoiceCreator.new(@result.id).call
+
+    assert_equal 'http://link.test', invoice.reload.payment_link
+  end
 end
