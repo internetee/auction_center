@@ -1,3 +1,6 @@
+08.10.2026
+* Added eeID sign-in next to TARA, switched by the eeid_login_enabled setting https://github.com/internetee/auction_center/issues/1638
+
 03.09.2026
 * Fixed sorting and full list view conflict https://github.com/internetee/auction_center/issues/1623
 * Menu options not availabel to anonymous users are hidden now https://github.com/internetee/auction_center/issues/1624

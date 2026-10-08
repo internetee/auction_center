@@ -65,6 +65,14 @@ require_phone_confirmation:
   value: "false"
   value_format: boolean
 
+eeid_login_enabled:
+  code: eeid_login_enabled
+  description: |
+    Sign in with an identity document through eeID instead of TARA.
+    Can be either 'true' or 'false'. Switch back to 'false' to fall back to TARA.
+  value: "false"
+  value_format: boolean
+
 auction_duration:
   code: auction_duration
   description: |

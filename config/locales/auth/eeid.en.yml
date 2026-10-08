@@ -1,0 +1,8 @@
+en:
+  auth:
+    eeid:
+      tampering: "Tampering detected. Sign in cancelled."
+      identity_code_missing: "eeID did not return a personal identification code. Sign in cancelled."
+
+      callback:
+        title: "Create a user"

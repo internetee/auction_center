@@ -12,5 +12,6 @@ en:
       registry: Registry integration
       sms: SMS service integration
       tara: TARA service integration
+      eeid: eeID service integration
       status_ok: OK
       status_fail: FAIL

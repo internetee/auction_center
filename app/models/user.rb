@@ -10,6 +10,10 @@ class User < ApplicationRecord
 
   ESTONIAN_COUNTRY_CODE = 'EE'.freeze
   TARA_PROVIDER = 'tara'.freeze
+  EEID_PROVIDER = 'eeid'.freeze
+  IDENTITY_DOCUMENT_PROVIDERS = [TARA_PROVIDER, EEID_PROVIDER].freeze
+  # eeID subjects from eIDAS carry the ETSI "PNO<country>-" prefix, e.g. "PNOLV-123456-12345".
+  EIDAS_SUBJECT_PREFIX = /\APNO([A-Z]{2})-/
 
   devise :database_authenticatable, :recoverable, :rememberable, :validatable, :confirmable,
          :timeoutable
@@ -20,16 +24,11 @@ class User < ApplicationRecord
   validate :identity_code_must_be_valid_for_estonia, if: proc { |user|
     user.country_code.present? && user.identity_code.present?
   }
-  validates :mobile_phone, presence: true, unless: proc { |user|
-    user.provider == TARA_PROVIDER
-  }
-  validates :mobile_phone, format: { with: /\A\+[1-9]{1}[0-9]{3,14}\z/ }, unless: proc { |user|
-    user.provider == TARA_PROVIDER
-  }
+  validates :mobile_phone, presence: true, unless: :identity_document_provider?
+  validates :mobile_phone, format: { with: /\A\+[1-9]{1}[0-9]{3,14}\z/ },
+                           unless: :identity_document_provider?
 
-  validate :mobile_phone_must_not_be_already_confirmed, unless: proc { |user|
-    user.provider == TARA_PROVIDER
-  }
+  validate :mobile_phone_must_not_be_already_confirmed, unless: :identity_document_provider?
 
   validates :given_names, :surname, safe_value: true
 
@@ -124,8 +123,12 @@ class User < ApplicationRecord
     invoices&.issued&.blank?
   end
 
+  def identity_document_provider?
+    IDENTITY_DOCUMENT_PROVIDERS.include?(provider)
+  end
+
   def signed_in_with_identity_document?
-    provider == TARA_PROVIDER && uid.present?
+    identity_document_provider? && uid.present?
   end
 
   def tara_user_with_unconfirmed_email?
@@ -162,7 +165,7 @@ class User < ApplicationRecord
   end
 
   def phone_number_confirmed_unique?
-    return true if provider == TARA_PROVIDER
+    return true if identity_document_provider?
     return true unless Setting.find_by(code: 'require_phone_confirmation').retrieve
 
     !phone_number_was_already_confirmed?
@@ -194,27 +197,42 @@ class User < ApplicationRecord
   def tampered_with?(omniauth_hash)
     uid_from_hash = omniauth_hash['uid']
     provider_from_hash = omniauth_hash['provider']
+    country_code_from_hash, identity_code_from_hash = User.split_identity_uid(uid_from_hash, provider_from_hash)
 
-    begin
-      uid != uid_from_hash ||
-        provider != provider_from_hash ||
-        country_code != uid_from_hash.slice(0..1) ||
-        identity_code != uid_from_hash.slice(2..-1) ||
-        given_names != omniauth_hash.dig('info', 'first_name') ||
-        surname != omniauth_hash.dig('info', 'last_name')
-    end
+    uid != uid_from_hash ||
+      provider != provider_from_hash ||
+      country_code != country_code_from_hash ||
+      identity_code != identity_code_from_hash ||
+      given_names != omniauth_hash.dig('info', 'first_name') ||
+      surname != omniauth_hash.dig('info', 'last_name')
   end
 
+  # Returns [country_code, identity_code] for an identity provider subject such as
+  # "EE38001085718" (TARA and eeID) or "PNOLV-123456-12345" (eeID via eIDAS).
+  def self.split_identity_uid(uid, provider)
+    match = EIDAS_SUBJECT_PREFIX.match(uid) if provider == EEID_PROVIDER
+    return [match[1], match.post_match] if match
+
+    [uid.slice(0..1), uid[2..]]
+  end
+
+  # Estonian identity codes are looked up regardless of the stored country, as before;
+  # foreign codes (e.g. document numbers from eeID identity verification) are only
+  # unique within their country.
   def self.from_omniauth(omniauth_hash)
     uid = omniauth_hash['uid']
     provider = omniauth_hash['provider']
+    country_code, identity_code = split_identity_uid(uid, provider)
 
-    user = User.find_or_initialize_by(identity_code: uid[2..])
+    lookup = { identity_code: identity_code }
+    lookup[:alpha_two_country_code] = country_code unless country_code == ESTONIAN_COUNTRY_CODE
+
+    user = User.find_or_initialize_by(lookup)
     user.provider = provider
     user.uid = uid
     user.given_names = omniauth_hash.dig('info', 'first_name')
     user.surname = omniauth_hash.dig('info', 'last_name')
-    user.country_code = uid.slice(0..1)
+    user.country_code = country_code
     user.save if user.valid?
 
     user
