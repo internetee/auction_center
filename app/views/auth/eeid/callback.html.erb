@@ -1,0 +1,13 @@
+<% content_for :hero do %>
+    <div class="hero green">
+        <h1><%= t('.title') %></h1>
+    </div>
+<% end %>
+
+<div class="o-container">
+    <div class="c-block c-account c-account--createnew">
+        <div class="c-account__form">
+            <%= render 'auth/tara/form', user: @user, url: eeid_create_path %>
+        </div>
+    </div>
+</div>

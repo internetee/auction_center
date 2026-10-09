@@ -1,3 +1,5 @@
+require 'identity_provider_callback_router'
+
 OpenIDConnect.logger = Rails.logger
 OpenIDConnect.debug!
 
@@ -8,6 +10,7 @@ end
 OmniAuth.config.logger = Rails.logger
 # Block GET requests to avoid exposing self to CVE-2015-9284
 OmniAuth.config.allowed_request_methods = [:get, :post]
+OmniAuth.config.before_request_phase = IdentityProviderCallbackRouter.method(:remember_provider)
 
 # signing_keys = AuctionCenter::Application.config.customization.dig(:tara, :keys).to_json
 # signing_keys = AuctionCenter::Application.config.customization.dig(:tara, :tara_keys).to_json
@@ -21,6 +24,15 @@ token_endpoint = AuctionCenter::Application.config.customization.dig(:tara, :tok
 jwks_uri = AuctionCenter::Application.config.customization.dig(:tara, :jwks_uri)
 discovery = AuctionCenter::Application.config.customization.dig(:tara, :discovery)
 scope = AuctionCenter::Application.config.customization.dig(:tara, :scope)
+
+eeid = AuctionCenter::Application.config.customization[:eeid]
+
+if eeid.present?
+  Rails.application.config.middleware.use IdentityProviderCallbackRouter,
+                                          shared_callback_path: URI(eeid[:redirect_uri]).path,
+                                          provider: 'eeid',
+                                          callback_path: '/auth/eeid/callback'
+end
 
 Rails.application.config.middleware.use OmniAuth::Builder do
   provider "tara", {
@@ -47,4 +59,24 @@ Rails.application.config.middleware.use OmniAuth::Builder do
       redirect_uri: redirect_uri,
     },
   }
+
+  if eeid.present?
+    provider 'tara', {
+      name: 'eeid',
+      scope: eeid[:scope],
+      state: proc { SecureRandom.hex(24) },
+      client_signing_alg: :RS256,
+      send_scope_to_token_endpoint: false,
+      send_nonce: true,
+      issuer: eeid[:issuer],
+      discovery: true,
+      client_options: {
+        scheme: 'https',
+        host: URI(eeid[:issuer]).host,
+        identifier: eeid[:identifier],
+        secret: eeid[:secret],
+        redirect_uri: eeid[:redirect_uri],
+      },
+    }
+  end
 end
