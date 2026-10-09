@@ -86,6 +86,8 @@ Rails.application.routes.draw do
     match '/auth/eeid/callback', via: %i[get post], to: 'auth/eeid#callback', as: :eeid_callback
     match '/auth/eeid/cancel', via: %i[get post delete], to: 'auth/eeid#cancel', as: :eeid_cancel
     match '/auth/eeid/create', via: [:post], to: 'auth/eeid#create', as: :eeid_create
+
+    get '/auth/failure', to: 'auth/omniauth_failures#show', as: :omniauth_failure
   end
 
   devise_for :users, path: 'sessions',

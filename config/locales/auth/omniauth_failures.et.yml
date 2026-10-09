@@ -1,0 +1,4 @@
+et:
+  auth:
+    omniauth_failures:
+      sign_in_failed: "Sisselogimine ebaõnnestus. Palun proovige uuesti."

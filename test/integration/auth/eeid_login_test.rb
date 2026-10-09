@@ -80,6 +80,17 @@ class EeidLoginTest < ActionDispatch::IntegrationTest
     assert_equal I18n.t('auth.eeid.identity_code_missing'), flash[:alert]
   end
 
+  def test_error_returned_by_eeid_to_callback_redirects_with_alert
+    OmniAuth.config.mock_auth[:eeid] = :invalid_scope
+
+    post '/auth/eeid'
+    get '/auth/tara/callback'
+    follow_redirect!
+
+    assert_redirected_to root_path
+    assert_equal I18n.t('auth.omniauth_failures.sign_in_failed'), flash[:alert]
+  end
+
   def test_sign_in_button_follows_eeid_login_enabled_setting
     get new_user_session_path
     assert_select 'form[action="/auth/tara"]'
