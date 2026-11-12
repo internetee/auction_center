@@ -11,7 +11,7 @@ env:
 
 jobs:
   bundle_audit:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v6
       - uses: ruby/setup-ruby@v1
@@ -30,7 +30,7 @@ jobs:
         run: bundle exec bundle-audit check --update
 
   brakeman:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v6
       - uses: ruby/setup-ruby@v1
