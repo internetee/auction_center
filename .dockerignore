@@ -1,2 +1,39 @@
+# Dependencies
 node_modules
 package-lock.json
+yarn-error.log
+npm-debug.log
+
+# VCS
+.git
+.gitignore
+
+# Editor/OS
+.DS_Store
+.idea
+.vscode
+
+# Rails runtime
+log
+tmp
+tmp/cache
+storage
+.bundle
+
+# Bundler (keep Gemfile/Gemfile.lock!)
+vendor/bundle
+
+# Tests and coverage (not needed in image)
+spec
+test
+coverage
+
+# Env and local overrides
+.env
+.env.*
+.ruby-version
+
+# Docker & CI artifacts
+docker-compose*.yml
+Dockerfile.*
+.cache
