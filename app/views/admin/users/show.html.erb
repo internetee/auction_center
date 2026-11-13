@@ -106,7 +106,7 @@
         <div class="c-table__filters">
           <div style='width: 70%; display: flex; align-items: center; gap: 0 20px;'>
             <%= f.hidden_field :user_id, value: @ban.user_id %>
-            
+
             <%= f.label :valid_until, t('bans.valid_until'), style: 'width: 100px;' %>
             <%= f.date_field :valid_until %>
           </div>
@@ -114,8 +114,29 @@
           <%= f.submit t(:submit), class: "c-btn c-btn--blue", data: { turbo: false } %>
           </div>
         </div>
+      <% end %>
 
-    <% end %>
+      <h2><%= t('.ban_for_domain') %></h2>
+      <%= form_with(model: @ban, local: true, url: admin_bans_domain_bans_path, class: "ui form big") do |f| %>
+        <div class="c-table__filters">
+          <div style='width: 70%; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 20px;'>
+            <%= f.hidden_field :user_id, value: @ban.user_id %>
+
+            <div style='display: flex; align-items: center; gap: 10px;'>
+              <%= f.label :domain_name, t('bans.domain_name'), style: 'white-space: nowrap;' %>
+              <%= f.text_field :domain_name, placeholder: 'example.ee', required: true %>
+            </div>
+
+            <div style='display: flex; align-items: center; gap: 10px;'>
+              <%= f.label :valid_until, t('bans.valid_until'), style: 'white-space: nowrap;' %>
+              <%= f.date_field :valid_until, required: true %>
+            </div>
+          </div>
+          <div style='width: 30%'>
+            <%= f.submit t(:submit), class: "c-btn c-btn--blue", data: { turbo: false } %>
+          </div>
+        </div>
+      <% end %>
 
     <div class="c-table__filters__btns" style='padding: 1rem 0; display: flex; justify-content: end;'>
       <%= link_to t(:edit), edit_admin_user_path(@user), class: "c-btn c-btn--orange" %>

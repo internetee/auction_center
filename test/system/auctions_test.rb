@@ -2,6 +2,11 @@ require 'application_system_test_case'
 require "test_helper"
 
 class AuctionsTest < ApplicationSystemTestCase
+  AUCTION_ROWS_SELECTOR = 'tbody#bids tr.contents'
+  AUCTION_DOMAIN_CELLS_SELECTOR = "#{AUCTION_ROWS_SELECTOR} td:first-child"
+  ALL_LIST_I18N_KEY = 'auctions.all_list'
+  DOMAIN_NAME_SORT_QUERY = /sort_by=domain_name/
+
   def setup
     super
 
@@ -54,10 +59,41 @@ class AuctionsTest < ApplicationSystemTestCase
 
     visit('/')
 
-    assert(page.has_content?(:visible, I18n.t('auctions.all_list')))
-    click_link_or_button(I18n.t('auctions.all_list'))
+    assert(page.has_content?(:visible, I18n.t(ALL_LIST_I18N_KEY)))
+    click_link_or_button(I18n.t(ALL_LIST_I18N_KEY))
 
     assert_current_path auctions_path + '?show_all=true'
+  end
+
+  def test_sorting_keeps_show_all
+    expected_count = setup_extra_active_auctions
+
+    visit('/')
+    click_link_or_button(I18n.t(ALL_LIST_I18N_KEY))
+    assert_all_auction_rows(expected_count)
+
+    find('th.sorting', text: I18n.t('auctions.domain_name')).click
+
+    assert_all_auction_rows(expected_count)
+    assert page.has_current_path?(/show_all=true/, url: true)
+    assert page.has_current_path?(DOMAIN_NAME_SORT_QUERY, url: true)
+  end
+
+  def test_show_all_keeps_existing_sort
+    expected_count = setup_extra_active_auctions
+
+    visit('/')
+    find('thead th.sorting', text: I18n.t('auctions.domain_name')).click
+    assert page.has_current_path?(DOMAIN_NAME_SORT_QUERY, url: true)
+    page_order = all(AUCTION_DOMAIN_CELLS_SELECTOR).map { |node| node.text.strip }
+
+    click_link_or_button(I18n.t(ALL_LIST_I18N_KEY))
+
+    assert_all_auction_rows(expected_count)
+    all_order = all(AUCTION_DOMAIN_CELLS_SELECTOR).map { |node| node.text.strip }
+    assert_equal page_order, all_order.first(page_order.size)
+    assert page.has_current_path?(/show_all=true/, url: true)
+    assert page.has_current_path?(DOMAIN_NAME_SORT_QUERY, url: true)
   end
 
   # AUTOBIDER ========================================
@@ -124,5 +160,28 @@ class AuctionsTest < ApplicationSystemTestCase
 
     # TODO: Turbo stream not work in test mode
     # assert(page.has_content?(:visible, "#{I18n.t('english_offers.form.autobider')}: #{I18n.t('english_offers.form.yep')}" ))
+  end
+
+  private
+
+  def setup_extra_active_auctions
+    create_extra_active_auctions(16)
+    Auction.active.count
+  end
+
+  def assert_all_auction_rows(count)
+    assert_selector AUCTION_ROWS_SELECTOR, count: count
+  end
+
+  def create_extra_active_auctions(count)
+    count.times do |i|
+      auction = Auction.new(
+        domain_name: "extra-#{i}.test",
+        starts_at: Time.zone.parse('2000-01-01'),
+        ends_at: Time.zone.parse('2099-12-31')
+      )
+      auction.skip_validation = true
+      auction.save!
+    end
   end
 end

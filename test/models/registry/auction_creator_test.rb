@@ -411,6 +411,109 @@ class RegistryAuctionCreatorTest < ActiveSupport::TestCase
     end
   end
 
+  def test_domain_validation_allows_test_domains_with_underscores
+    instance = Registry::AuctionCreator.new
+
+    body = [
+      { 'id' => 'test-underscore-1', 'domain' => 'new_test_domain.test', 'status' => 'started' },
+      { 'id' => 'test-underscore-2', 'domain' => 'another_test_domain.test', 'status' => 'started' },
+      { 'id' => 'test-underscore-3', 'domain' => 'test_with_multiple_underscores.test', 'status' => 'started' }
+    ]
+    
+    response = Minitest::Mock.new
+    response.expect(:code, '200')
+    response.expect(:code, '200')
+    response.expect(:body, body.to_json)
+
+    http = Minitest::Mock.new
+    http.expect(:request, nil, [instance.request])
+
+    Net::HTTP.stub(:start, response, http) do
+      assert_changes('Auction.count', 3) do
+        instance.call
+      end
+    end
+
+    assert Auction.find_by(remote_id: 'test-underscore-1')
+    assert Auction.find_by(remote_id: 'test-underscore-2')
+    assert Auction.find_by(remote_id: 'test-underscore-3')
+  end
+
+  def test_domain_name_validation_skips_invalid_domains
+    instance = Registry::AuctionCreator.new
+
+    body = [
+      { 'id' => 'valid-1', 'domain' => 'example.ee', 'status' => 'started' },
+      { 'id' => 'valid-2', 'domain' => 'test123.ee', 'status' => 'started' },
+      { 'id' => 'valid-3', 'domain' => 'äöüõ.ee', 'status' => 'started' },
+      { 'id' => 'valid-4', 'domain' => 'test-domain.ee', 'status' => 'started' },
+      { 'id' => 'valid-5', 'domain' => 'a.ee', 'status' => 'started' },
+      { 'id' => 'valid-6', 'domain' => '123.ee', 'status' => 'started' },
+      { 'id' => 'valid-7', 'domain' => 'test-123-abc.ee', 'status' => 'started' },
+      { 'id' => 'valid-8', 'domain' => 'UPPERCASE.ee', 'status' => 'started' },
+      { 'id' => 'valid-9', 'domain' => 'šž.ee', 'status' => 'started' },
+      
+      { 'id' => 'invalid-1', 'domain' => 'test_domain.ee', 'status' => 'started' },
+      { 'id' => 'invalid-2', 'domain' => '-test.ee', 'status' => 'started' },
+      { 'id' => 'invalid-3', 'domain' => 'test-.ee', 'status' => 'started' },
+      { 'id' => 'invalid-4', 'domain' => 'te--st.ee', 'status' => 'started' },
+      { 'id' => 'invalid-5', 'domain' => 'hhla_tk.ee', 'status' => 'started' },
+      { 'id' => 'invalid-6', 'domain' => 'test@domain.ee', 'status' => 'started' },
+      { 'id' => 'invalid-7', 'domain' => 'test#domain.ee', 'status' => 'started' },
+      { 'id' => 'invalid-8', 'domain' => 'test domain.ee', 'status' => 'started' },
+      { 'id' => 'invalid-9', 'domain' => '.ee', 'status' => 'started' },
+      { 'id' => 'invalid-10', 'domain' => 'a' * 64 + '.ee', 'status' => 'started' },
+      { 'id' => 'invalid-11', 'domain' => '', 'status' => 'started' },
+      { 'id' => 'invalid-12', 'domain' => nil, 'status' => 'started' },
+    ]
+    
+    response = Minitest::Mock.new
+    response.expect(:code, '200')
+    response.expect(:code, '200')
+    response.expect(:body, body.to_json)
+
+    http = Minitest::Mock.new
+    http.expect(:request, nil, [instance.request])
+
+    logged_messages = []
+    Rails.logger.stub :info, ->(msg) { logged_messages << msg } do
+      Net::HTTP.stub(:start, response, http) do
+        assert_changes('Auction.count', 9) do
+          instance.call
+        end
+      end
+    end
+
+    assert Auction.find_by(remote_id: 'valid-1')
+    assert Auction.find_by(remote_id: 'valid-2')
+    assert Auction.find_by(remote_id: 'valid-3')
+    assert Auction.find_by(remote_id: 'valid-4')
+    assert Auction.find_by(remote_id: 'valid-5')
+    assert Auction.find_by(remote_id: 'valid-6')
+    assert Auction.find_by(remote_id: 'valid-7')
+    assert Auction.find_by(remote_id: 'valid-8')
+    assert Auction.find_by(remote_id: 'valid-9')
+
+    assert_nil Auction.find_by(remote_id: 'invalid-1')
+    assert_nil Auction.find_by(remote_id: 'invalid-2')
+    assert_nil Auction.find_by(remote_id: 'invalid-3')
+    assert_nil Auction.find_by(remote_id: 'invalid-4')
+    assert_nil Auction.find_by(remote_id: 'invalid-5')
+    assert_nil Auction.find_by(remote_id: 'invalid-6')
+    assert_nil Auction.find_by(remote_id: 'invalid-7')
+    assert_nil Auction.find_by(remote_id: 'invalid-8')
+    assert_nil Auction.find_by(remote_id: 'invalid-9')
+    assert_nil Auction.find_by(remote_id: 'invalid-10')
+    assert_nil Auction.find_by(remote_id: 'invalid-11')
+    assert_nil Auction.find_by(remote_id: 'invalid-12')
+
+    assert logged_messages.include?("Skipping invalid domain name: test_domain.ee")
+    assert logged_messages.include?("Skipping invalid domain name: hhla_tk.ee")
+    assert logged_messages.include?("Skipping invalid domain name: -test.ee")
+    assert logged_messages.include?("Skipping invalid domain name: test-.ee")
+    assert logged_messages.include?("Skipping invalid domain name: te--st.ee")
+  end
+
   def reassign_ends_at(legacy_auction, new_auction)
     t1 = legacy_auction.starts_at
     t2 = new_auction.starts_at

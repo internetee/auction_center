@@ -15,6 +15,14 @@ on:
         description: 'Number of PR to deploy (only digits, e.g., 2889). Required only for PR deploy.'
         required: false
         type: string
+      registry_url:
+        description: 'Registry base URL override (e.g. https://registry1-dev.cloud.tld.ee)'
+        required: false
+        type: string
+      billing_url:
+        description: 'Billing base URL override (e.g. https://billing1-dev.cloud.tld.ee)'
+        required: false
+        type: string
 
 permissions:
   id-token: write
@@ -98,6 +106,10 @@ jobs:
               "image_tag": "${{ steps.docker_build.outputs.IMAGE_TAG }}",
               "namespace": "auction",
               "pr_number": "${{ inputs.deploy_target == 'master' && '0' || inputs.pr_number }}",
-              "source_repo": "internetee/auction_center"
+              "source_repo": "internetee/auction_center",
+              "url_overrides": {
+                "registry_url": "${{ inputs.registry_url }}",
+                "billing_url": "${{ inputs.billing_url }}"
+              }
             }
             

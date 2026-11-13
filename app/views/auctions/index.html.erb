@@ -44,7 +44,7 @@
                             { column: nil, caption: t('auctions.offer_actions'), options: { class: 'u-text-left u-text-center-l' } }] %>
 
     <!-- In the Stimulus controller, I use the Turbo class with frame parameters named 'results' for table sorting. This means that rendering the table with the new sort order should occur within the scope of the turbo_frame_tag with the name "results". For it to work correctly, it's necessary to wrap the table content within this turbo_frame_tag with "results" name. The name "results" is assigned as a value for the orderable Stimulus controller in the table component. -->
-    <%= turbo_frame_tag "results" do %>
+    <%= turbo_frame_tag "results", data: { turbo_action: 'advance' } do %>
 
       <!-- Options attributes are used as table attributes -->
       <%= component 'common/table', header_collection:, options: { class: 'js-table-dt dataTable no-footer' } do %>
@@ -59,16 +59,16 @@
       <% end %>
 
       <%= component 'common/pagy', pagy: @pagy %>
+
+      <div class="u-text-center u-mt-40">
+        <% if params[:show_all] == 'true' %>
+          <%= component 'common/links/link_button', link_title: t('auctions.pagination_list'), href: auctions_path_with_list_params, color: 'ghost', options: { data: { turbo_action: 'advance' } } %>
+        <% else %>
+          <%= component 'common/links/link_button', link_title: t('auctions.all_list'), href: auctions_path_with_list_params(show_all: true), color: 'ghost', options: { data: { turbo_action: 'advance' } } %>
+        <% end %>
+      </div>
     <% end %>
 
-  </div>
-
-  <div class="u-text-center u-mt-40">
-    <% if params[:show_all] == 'true' %>
-      <%= component 'common/links/link_button', link_title: t('auctions.pagination_list'), href: auctions_path, color: 'ghost' %>
-    <% else %>
-      <%= component 'common/links/link_button', link_title: t('auctions.all_list'), href: auctions_path(show_all: 'true'), color: 'ghost' %>
-    <% end %>
   </div>
 </div>
 <!-- Table -- Sortable  -->

@@ -1,51 +1,98 @@
 <% content_for :title, t('.title', invoice_number: @invoice&.number) %>
 
 <div class="o-container">
-  <div class="c-table__filters" >
-    <%= link_to t(:versions_name), admin_invoice_versions_path(@invoice), class: "ui button primary" %>
-    <%= link_to t('invoices.download'), download_admin_invoice_path(@invoice),
-                { class: 'ui button secondary', download: true } %>
-    <% unless @invoice.overdue? || @invoice.paid? %>
-      <%= link_to t('invoices.mark_as_paid'), edit_admin_invoice_path(@invoice), class: "ui button secondary" %>
-      <% action = @invoice.partial_payments? ? "disallow" : "allow" %>
-      <%= button_to t("invoices.#{action}_partial_payments"), toggle_partial_payments_admin_invoice_path(@invoice), class: "ui button secondary", form: { data: { 'turbo-confirm': 'Are you sure?' } } %>
-    <% end %>
-  </div>
-  <div class="c-block">
-    <div class="o-grid o-grid--two-col">
-      <div>
-        <div class="header"><%= t('invoices.status') %></div>
-        <%= I18n.t("activerecord.enums.invoice.statuses.#{@invoice.status}") %>
-        <div class="header"><%= t('invoices.issued_for') %></div>
-        <%= @invoice.recipient %><br>
-        <%= @invoice.address %>
-        <div class="header"><%= t(:updated_by) %></div>
-        <%= @invoice.updated_by %>
-        <% if @invoice.notes %>
-          <div class="item">
-            <div class="header"><%= t('invoices.notes') %></div>
-            <%= @invoice.notes %>
+  <div class="c-block c-account">
+    <div class="o-grid o-grid--two-col o-grid--sep">
+      <div class="o-card">
+        <div class="c-account__title-wrapper u-flex u-content-sp">
+          <h2 class="o-card__title c-account__title"><%= t('invoices.invoice_details') %></h2>
+        </div>
+
+        <div class="c-account__input-wrapper u-flex u-align-start">
+          <div class="c-account__input c-account__input--readonly u-mb-20">
+            <label><%= t('invoices.status') %></label>
+            <span><%= I18n.t("activerecord.enums.invoice.statuses.#{@invoice.status}") %></span>
           </div>
-        <% end %>
+
+          <div class="c-account__input c-account__input--readonly u-mb-20">
+            <label><%= t('invoices.issue_date') %></label>
+            <span><%= @invoice.issue_date %></span>
+          </div>
+
+          <div class="c-account__input c-account__input--readonly u-mb-20">
+            <label><%= t('invoices.due_date') %></label>
+            <span><%= @invoice.due_date %></span>
+          </div>
+
+          <% if @invoice.paid_with_payment_order %>
+            <div class="c-account__input c-account__input--readonly u-mb-20">
+              <label><%= t('invoices.paid_through') %></label>
+              <span><%= @invoice.paid_with_payment_order&.channel %></span>
+            </div>
+          <% end %>
+
+          <% if @invoice.notes %>
+            <div class="c-account__input c-account__input--readonly u-mb-20">
+              <label><%= t('invoices.notes') %></label>
+              <span><%= @invoice.notes %></span>
+            </div>
+          <% end %>
+
+          <div class="c-account__input c-account__input--readonly u-mb-20">
+            <label><%= t(:updated_by) %></label>
+            <span><%= @invoice.updated_by %></span>
+          </div>
+        </div>
       </div>
-      <div>
-        <div class="header"><%= t('invoices.issuer') %></div>
-        <%= Setting.find_by(code: 'invoice_issuer').retrieve %>
-        <div class="header"><%= t('invoices.issue_date') %></div>
-        <%= @invoice.issue_date %>
-        <div class="header"><%= t('invoices.due_date') %></div>
-        <%= @invoice.due_date %>
-        <% if @invoice.paid_with_payment_order %>
-          <div class="item">
-            <div class="header"><%= t('invoices.paid_through') %></div>
-            <%= @invoice.paid_with_payment_order&.channel %>
+
+      <div class="o-card">
+        <div class="c-account__title-wrapper u-flex u-content-sp">
+          <h2 class="o-card__title c-account__title"><%= t('invoices.parties') %></h2>
+        </div>
+
+        <div class="c-account__input-wrapper u-flex u-align-start">
+          <div class="c-account__input c-account__input--readonly u-mb-20">
+            <label><%= t('invoices.issuer') %></label>
+            <span><%= Setting.find_by(code: 'invoice_issuer').retrieve %></span>
           </div>
-        <% end %>
+
+          <div class="c-account__input c-account__input--readonly u-mb-20">
+            <label><%= t('invoices.issued_for') %></label>
+            <span><%= @invoice.recipient %></span>
+          </div>
+
+          <div class="c-account__input c-account__input--readonly u-mb-20">
+            <label><%= t('billing_profiles.address') %></label>
+            <span><%= @invoice.address %></span>
+          </div>
+
+          <div class="c-account__input u-mb-20">
+            <label><%= t('invoices.change_billing_profile') %></label>
+            <%= form_with model: @invoice, url: update_billing_profile_admin_invoice_path(@invoice), method: :patch, local: true, style: "display: flex; gap: 10px; align-items: center;" do |f| %>
+              <%= f.select :billing_profile_id,
+                      options_from_collection_for_select(@billing_profiles, :id, :name, @invoice.billing_profile_id),
+                      {},
+                      class: "ui dropdown", style: "min-width: 200px;" %>
+              <%= f.submit t(:update), class: "c-btn c-btn--blue" %>
+            <% end %>
+          </div>
+        </div>
+
+        <div class="c-acount__buttons u-flex u-align-center" style="gap: 10px; flex-wrap: wrap; margin-top: 20px;">
+          <%= link_to t(:versions_name), admin_invoice_versions_path(@invoice), class: "c-btn c-btn--blue" %>
+          <%= link_to t('invoices.download'), download_admin_invoice_path(@invoice), class: 'c-btn c-btn--green', download: true %>
+          <% unless @invoice.overdue? || @invoice.paid? %>
+            <%= link_to t('invoices.mark_as_paid'), edit_admin_invoice_path(@invoice), class: "c-btn c-btn--orange" %>
+            <% action = @invoice.partial_payments? ? "disallow" : "allow" %>
+            <%= button_to t("invoices.#{action}_partial_payments"), toggle_partial_payments_admin_invoice_path(@invoice), class: "c-btn c-btn--red", form: { data: { 'turbo-confirm': 'Are you sure?' } } %>
+          <% end %>
+        </div>
       </div>
     </div>
   </div>
-  <div class="c-table c-table--sortable">
-    <h2><%= t('invoices.items') %></h2>
+
+  <div class="c-block" style="margin-top: 30px;">
+    <h2 class="o-card__title c-account__title u-mb-20"><%= t('invoices.items') %></h2>
     <% header_collection = [{column: nil, caption: '#', options: {}},
                         { column: nil, caption: t('invoices.item'), options: { class: "" } },
                         { column: nil, caption: '', options: { class: "" } },
@@ -94,10 +141,10 @@
         <% end %>
         <% if @invoice.enable_deposit? %>
           <tr style=''>
-            <td scope="col" style='font-weight: bold; background-color: #f0e68c; border-top-color: "#ccc";'></td>
-            <td scope="col" style='font-weight: bold; background-color: #f0e68c; border-top-color: "#ccc";'><%= t('invoices.deposit') %></td>
+            <td scope="col" style='font-weight: bold; background-color: #f0e68c;'></td>
+            <td scope="col" style='font-weight: bold; background-color: #f0e68c;'><%= t('invoices.deposit') %></td>
             <td style='background-color: #f0e68c;'></td>
-            <td scope="col" style='font-weight: bold; background-color: #f0e68c; border-top-color: "#ccc";'><%= t('offers.price_in_currency', price: @invoice.deposit) %></td>
+            <td scope="col" style='font-weight: bold; background-color: #f0e68c;'><%= t('offers.price_in_currency', price: @invoice.deposit) %></td>
           </tr>
           <tr>
             <td scope="col" style='font-weight: bold; background-color: #f0e68c;'></td>
@@ -108,7 +155,10 @@
         <% end %>
       </tfoot>
     <% end %>
-    <h2><%= t('payment_orders.title') %></h2>
+  </div>
+
+  <div class="c-block" style="margin-top: 30px;">
+    <h2 class="o-card__title c-account__title u-mb-20"><%= t('payment_orders.title') %></h2>
     <% header_collection = [{column: nil, caption: '#', options: {}},
                         { column: nil, caption: t('payment_orders.channel'), options: { class: "" } },
                         { column: nil, caption: t('payment_orders.status'), options: { class: "" } },
@@ -127,5 +177,9 @@
         <% end %>
       <% end %>
     <% end %>
+  </div>
+
+  <div style="padding: 1rem 0; display: flex; justify-content: start;">
+    <%= link_to t(:back), admin_invoices_path, class: "c-btn c-btn--gray" %>
   </div>
 </div>

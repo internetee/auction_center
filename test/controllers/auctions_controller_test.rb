@@ -131,4 +131,57 @@ class AuctionsControllerTest < ActionDispatch::IntegrationTest
     
     assert_response :success
   end
+
+  def test_show_all_link_preserves_sort_params
+    get auctions_path, params: { sort_by: 'domain_name', sort_direction: 'asc' }
+
+    assert_response :success
+    query = query_from_link(I18n.t('auctions.all_list'))
+    assert_equal 'true', query['show_all']
+    assert_equal 'domain_name', query['sort_by']
+    assert_equal 'asc', query['sort_direction']
+  end
+
+  def test_paginated_list_link_preserves_sort_params
+    get auctions_path, params: { show_all: 'true', sort_by: 'ends_at', sort_direction: 'desc' }
+
+    assert_response :success
+    query = query_from_link(I18n.t('auctions.pagination_list'))
+    assert_nil query['show_all']
+    assert_equal 'ends_at', query['sort_by']
+    assert_equal 'desc', query['sort_direction']
+  end
+
+  def test_show_all_with_sorting_returns_every_auction_in_sort_order
+    create_extra_active_auctions(16)
+
+    get auctions_path, params: { show_all: 'true', sort_by: 'domain_name', sort_direction: 'asc' }
+
+    assert_response :success
+    auction_domains = css_select('tbody#bids tr.contents td:first-child').map { |e| e.text.strip }
+    expected_domains = Auction.active.search({ sort_by: 'domain_name', sort_direction: 'asc' }).map(&:domain_name)
+
+    assert_equal Auction.active.count, auction_domains.size
+    assert_equal expected_domains, auction_domains
+  end
+
+  private
+
+  def query_from_link(title)
+    link = css_select('a').find { |node| node.text.strip == title }
+    assert_not_nil link, "Expected a link titled #{title}"
+    Rack::Utils.parse_query(URI.parse(link['href']).query.to_s)
+  end
+
+  def create_extra_active_auctions(count)
+    count.times do |i|
+      auction = Auction.new(
+        domain_name: "extra-#{i}.test",
+        starts_at: Time.zone.parse('2000-01-01'),
+        ends_at: Time.zone.parse('2099-12-31')
+      )
+      auction.skip_validation = true
+      auction.save!
+    end
+  end
 end

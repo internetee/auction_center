@@ -1,8 +1,15 @@
 module Auth
   class TaraController < ApplicationController
+    include InvalidUserDataHelper
+    after_action :set_invalid_data_flag_in_session, only: %i[callback create]
+
     rescue_from Errors::TamperingDetected do |e|
       redirect_to root_url, alert: t('auth.tara.tampering')
       notify_airbrake(e)
+    end
+
+    before_action do
+      I18n.locale = @user&.locale || cookies[:locale] || I18n.default_locale
     end
 
     def callback

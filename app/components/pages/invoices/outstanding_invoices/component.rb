@@ -3,16 +3,19 @@ module Pages
     module OutstandingInvoices
       class Component < ApplicationViewComponent
         attr_reader :issued_invoices, :cancelled_payable_invoices, :cancelled_expired_invoices,
-                     :unpaid_invoices_count
+                     :unpaid_invoices_count, :pagy_issued, :pagy_cancelled_payable, :pagy_cancelled_expired
 
         def initialize(issued_invoices:, cancelled_payable_invoices:, cancelled_expired_invoices:,
-                       unpaid_invoices_count:)
+                       unpaid_invoices_count:, pagy_issued:, pagy_cancelled_payable:, pagy_cancelled_expired:)
           super()
 
           @issued_invoices = issued_invoices
           @cancelled_payable_invoices = cancelled_payable_invoices
           @cancelled_expired_invoices = cancelled_expired_invoices
           @unpaid_invoices_count = unpaid_invoices_count
+          @pagy_issued = pagy_issued
+          @pagy_cancelled_payable = pagy_cancelled_payable
+          @pagy_cancelled_expired = pagy_cancelled_expired
         end
 
         def issued_invoice_table_headers

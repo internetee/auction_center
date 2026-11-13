@@ -44,7 +44,13 @@ class AutomaticBan
   end
 
   def send_email
-    BanMailer.ban_mail(@ban, user.current_bans[0].count, @domain_name).deliver_later
+    strikes = user.current_bans[0].count
+
+    if strikes >= BAN_NUMBER_OF_STRIKES.value.to_i
+      BanMailer.final_ban_mail(@ban, strikes, @domain_name).deliver_later
+    else
+      BanMailer.ban_mail(@ban, strikes, @domain_name).deliver_later
+    end
   end
 
   def remove_offer_from_active_auction

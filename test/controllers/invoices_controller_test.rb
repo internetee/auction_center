@@ -99,20 +99,21 @@ class InvoicesControllerTest < ActionController::TestCase
 
     assert_response :ok
 
-    issued = @controller.instance_variable_get(:@issued_invoices)
-    cancelled_payable = @controller.instance_variable_get(:@cancelled_payable_invoices)
-    cancelled_expired = @controller.instance_variable_get(:@cancelled_expired_invoices)
-    paid = @controller.instance_variable_get(:@paid_invoices)
+    data = @controller.instance_variable_get(:@invoices_data)
+    issued_ids = data[:issued][:records].map(&:id)
+    cancelled_payable_ids = data[:cancelled_payable][:records].map(&:id)
+    cancelled_expired_ids = data[:cancelled_expired][:records].map(&:id)
+    paid_ids = data[:paid][:records].map(&:id)
 
-    assert_includes issued.ids, @issued_invoice.id
-    assert_includes paid.ids, @paid_invoice.id
+    assert_includes issued_ids, @issued_invoice.id
+    assert_includes paid_ids, @paid_invoice.id
 
-    assert_equal [@cancelled_with_ban.id], cancelled_payable.ids
-    assert_equal [@cancelled_without_ban.id], cancelled_expired.ids
+    assert_equal [@cancelled_with_ban.id], cancelled_payable_ids
+    assert_equal [@cancelled_without_ban.id], cancelled_expired_ids
 
-    refute_includes issued.ids, @other_user_invoice.id
-    refute_includes paid.ids, @other_user_invoice.id
-    refute_includes cancelled_payable.ids, @other_user_invoice.id
-    refute_includes cancelled_expired.ids, @other_user_invoice.id
+    refute_includes issued_ids, @other_user_invoice.id
+    refute_includes paid_ids, @other_user_invoice.id
+    refute_includes cancelled_payable_ids, @other_user_invoice.id
+    refute_includes cancelled_expired_ids, @other_user_invoice.id
   end
 end

@@ -24,6 +24,33 @@ class BanTest < ActiveSupport::TestCase
     assert_equal([@ban].to_set, Ban.valid.to_set)
   end
 
+  def test_no_duplicate_active_ban_for_same_domain
+    Ban.create!(user: @user, domain_name: 'unique.ee',
+                valid_from: Time.zone.now, valid_until: Time.zone.now + 30.days)
+
+    duplicate = Ban.new(user: @user, domain_name: 'unique.ee',
+                        valid_from: Time.zone.now, valid_until: Time.zone.now + 10.days)
+    assert_not duplicate.valid?
+    assert_includes duplicate.errors[:domain_name], I18n.t('activerecord.errors.models.ban.attributes.domain_name.already_banned')
+  end
+
+  def test_allows_ban_for_different_domain
+    Ban.create!(user: @user, domain_name: 'first.ee',
+                valid_from: Time.zone.now, valid_until: Time.zone.now + 30.days)
+
+    different = Ban.new(user: @user, domain_name: 'second.ee',
+                        valid_from: Time.zone.now, valid_until: Time.zone.now + 10.days)
+    assert different.valid?
+  end
+
+  def test_allows_ban_without_domain_name_regardless_of_existing
+    Ban.create!(user: @user, domain_name: 'any.ee',
+                valid_from: Time.zone.now, valid_until: Time.zone.now + 30.days)
+
+    general = Ban.new(user: @user, valid_from: Time.zone.now, valid_until: Time.zone.now + 10.days)
+    assert general.valid?
+  end
+
   def test_valid_until_must_be_later_than_valid_from
     ban = Ban.new(user: @user)
 

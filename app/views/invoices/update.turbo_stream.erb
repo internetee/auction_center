@@ -1,0 +1,11 @@
+<% if @error_message.present? %>
+  <%= turbo_stream.toast @error_message,
+      position: 'right',
+      background: 'linear-gradient(to right, #93291E, #ED213A)' %>
+<% else %>
+  <%= turbo_stream.update 'invoice_information',
+      Modals::PayInvoice::InvoiceInformation::Component.new(invoice: @invoice) %>
+  <%= turbo_stream.toast t(:updated),
+      position: 'right',
+      background: 'linear-gradient(to right, #11998e, #38ef7d)' %>
+<% end %>
