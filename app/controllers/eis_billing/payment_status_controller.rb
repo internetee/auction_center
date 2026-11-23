@@ -47,13 +47,27 @@ module EisBilling
     end
 
     def payment_process(invoice:)
-      existing_po = invoice.partial_payments? ? nil : PaymentOrder.find_by(invoice_id: invoice.id)
-      payment_order = existing_po ||
-                      PaymentOrders::EveryPay.create(invoices: [invoice], user: invoice.user)
+      payment_order = reusable_payment_order(invoice) ||
+                      payment_order_class.create(invoices: [invoice], user: invoice.user)
 
       payment_order.response = params
       payment_order.save
       payment_order.mark_invoice_as_paid
+    end
+
+    # An order is reused only when it was issued by the same provider as the incoming
+    # settlement, so a Montonio payment can never be recorded on an EveryPay order
+    # (or the other way around).
+    def reusable_payment_order(invoice)
+      return nil if invoice.partial_payments?
+
+      PaymentOrder.find_by(invoice_id: invoice.id, type: payment_order_class.name)
+    end
+
+    def payment_order_class
+      return PaymentOrders::Montonio if params[:payment_provider].to_s == 'montonio'
+
+      PaymentOrders::EveryPay
     end
 
     def linkpay_params

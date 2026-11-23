@@ -3,6 +3,9 @@ module EisBilling
     include EisBilling::Request
     include EisBilling::BaseService
 
+    MONTONIO_LOCALES = %w[de en et fi lt lv pl ru].freeze
+    DEFAULT_LOCALE = 'en'.freeze
+
     attr_reader :invoice
 
     def initialize(invoice:)
@@ -28,8 +31,21 @@ module EisBilling
       data[:custom_field1] = 'prepended'
       data[:custom_field2] = INITIATOR
       data[:invoice_number] = invoice.number
+      data[:due_date] = invoice.due_date&.to_date&.iso8601
+      data[:locale] = payer_locale
+      data[:return_url] = return_url
 
       data
+    end
+
+    def payer_locale
+      locale = invoice.user&.locale.to_s.downcase.split(/[-_]/).first
+      MONTONIO_LOCALES.include?(locale) ? locale : DEFAULT_LOCALE
+    end
+
+    def return_url
+      Rails.application.routes.url_helpers
+           .montonio_callback_url(**ActionMailer::Base.default_url_options)
     end
 
     def send_request

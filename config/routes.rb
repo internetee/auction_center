@@ -131,6 +131,7 @@ Rails.application.routes.draw do
 
   match '/linkpay_callback', via: %i[get], to: 'linkpay#callback', as: :linkpay_callback
   match '/linkpay_deposit_callback', via: %i[get], to: 'linkpay#deposit_callback', as: :deposit_callback
+  match '/montonio_callback', via: %i[get], to: 'montonio#callback', as: :montonio_callback
 
   resource :locale, only: :update
   resources :offers, only: :index

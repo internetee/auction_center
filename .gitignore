@@ -70,3 +70,6 @@ CLAUDE.md
 !/app/assets/builds/.keep
 .cursorindexingignore
 .specstory
+
+docs/
+style-guide/

@@ -100,4 +100,80 @@ class PaymentStatusTest < ActionDispatch::IntegrationTest
 
     assert @auction.allow_to_set_bid?(@user)
   end
+
+  def test_montonio_payment_provider_creates_a_montonio_payment_order
+    invoice = Invoice.create_from_result(@invoiceable_result.id)
+
+    payload = {
+      order_reference: invoice.number.to_s,
+      transaction_time: Time.zone.now - 2.minutes,
+      standing_amount: invoice.total,
+      payment_state: 'settled',
+      invoice_number_collection: nil,
+      initial_amount: invoice.total,
+      payment_reference: 'e6d0e0a2-0000-4000-8000-000000000001',
+      payment_provider: 'montonio'
+    }
+
+    assert_nil invoice.paid_at
+
+    put eis_billing_payment_status_path, params: payload,
+                                         headers: { 'HTTP_COOKIE' => 'session=customer' }
+
+    invoice.reload
+
+    assert_response :ok
+    assert_not_nil invoice.paid_at
+    assert_instance_of PaymentOrders::Montonio, invoice.paid_with_payment_order
+  end
+
+  def test_absent_payment_provider_still_creates_an_everypay_payment_order
+    invoice = Invoice.create_from_result(@invoiceable_result.id)
+
+    payload = {
+      order_reference: invoice.number.to_s,
+      transaction_time: Time.zone.now - 2.minutes,
+      standing_amount: invoice.total,
+      payment_state: 'settled',
+      invoice_number_collection: nil,
+      initial_amount: invoice.total
+    }
+
+    put eis_billing_payment_status_path, params: payload,
+                                         headers: { 'HTTP_COOKIE' => 'session=customer' }
+
+    invoice.reload
+
+    assert_response :ok
+    assert_not_nil invoice.paid_at
+    assert_instance_of PaymentOrders::EveryPay, invoice.paid_with_payment_order
+  end
+
+  def test_montonio_settlement_is_not_absorbed_by_an_existing_everypay_payment_order
+    invoice = Invoice.create_from_result(@invoiceable_result.id)
+    everypay_order = PaymentOrders::EveryPay.create!(invoices: [invoice], user: invoice.user)
+    everypay_order.update!(invoice_id: invoice.id)
+
+    payload = {
+      order_reference: invoice.number.to_s,
+      transaction_time: Time.zone.now - 2.minutes,
+      standing_amount: invoice.total,
+      payment_state: 'settled',
+      invoice_number_collection: nil,
+      initial_amount: invoice.total,
+      payment_provider: 'montonio'
+    }
+
+    put eis_billing_payment_status_path, params: payload,
+                                         headers: { 'HTTP_COOKIE' => 'session=customer' }
+
+    invoice.reload
+    everypay_order.reload
+
+    assert_response :ok
+    assert_not_nil invoice.paid_at
+    assert_instance_of PaymentOrders::Montonio, invoice.paid_with_payment_order
+    assert_equal 'issued', everypay_order.status
+    assert_nil everypay_order.response
+  end
 end

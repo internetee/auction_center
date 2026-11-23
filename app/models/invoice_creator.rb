@@ -45,7 +45,7 @@ class InvoiceCreator
   def send_invoice_to_billing_system(invoice)
     response = EisBilling::Invoice.call(invoice:)
     if response.result?
-      link = response.instance['everypay_link']
+      link = response.instance['payment_link'].presence || response.instance['everypay_link']
       invoice.update(payment_link: link)
     else
       response.errors

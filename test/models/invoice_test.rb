@@ -263,6 +263,25 @@ class InvoiceTest < ActiveSupport::TestCase
     assert_nil @payable_invoice.linkpay_url
   end
 
+  def test_linkpay_url_prefers_persisted_payment_link
+    @payable_invoice.update!(payment_link: 'https://pay.montonio.com/abc-123')
+
+    assert_equal 'https://pay.montonio.com/abc-123', @payable_invoice.linkpay_url
+  end
+
+  def test_linkpay_url_falls_back_to_everypay_builder_when_payment_link_is_blank
+    @payable_invoice.update!(payment_link: '')
+
+    assert_equal @payable_invoice.linkpay_url_builder, @payable_invoice.linkpay_url
+  end
+
+  def test_linkpay_url_nil_if_paid_even_with_payment_link
+    @payable_invoice.update!(payment_link: 'https://pay.montonio.com/abc-123')
+    @payable_invoice.mark_as_paid_at(Time.parse('2010-07-06 10:30 +0000').in_time_zone)
+
+    assert_nil @payable_invoice.linkpay_url
+  end
+
   def test_if_auction_has_deposit_it_should_be_destracted_from_total
     assert_equal @payable_invoice.total.to_f, 10.0
     result = @payable_invoice.result
