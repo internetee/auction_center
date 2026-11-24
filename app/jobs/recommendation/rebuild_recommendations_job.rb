@@ -12,7 +12,9 @@ module Recommendation
   # slices: slice 0 only invalidates, every later slice continues where the
   # previous one stopped and re-enqueues the next until the pipeline is done.
   class RebuildRecommendationsJob < ApplicationJob
-    TIME_BUDGET = 2.minutes
+    # Checked between LLM calls, and one gpt-5 batch of 50 domains took up to ~2 min on dev,
+    # so a slice ends at roughly budget + one batch, well under the 5-minute cap.
+    TIME_BUDGET = 1.minute
     # shortcut: stops a chain whose LLM calls keep timing out; ~10k domains at 50 per slice fit.
     MAX_SLICES = 200
 
