@@ -121,8 +121,8 @@ catch-up, so there is no separate classify/embed cron task.
 | Command / action | When to use |
 |---|---|
 | `rake recommendation:backfill` | **Once**, when first enabling the feature — classifies the full historical domain set (ended auctions, wishlist, offer histories, results), a wider universe than `init` (active only), so past-bid domains get embeddings and can form magnets |
-| `rake recommendation:init_demo` | Staging/test only — seeds mock active auctions + signals, then runs the pipeline |
-| `Recommendation::RebuildRecommendationsJob` on **/admin/jobs** | Full re-tag of **every** domain (`force: true`): re-classifies via the LLM (fills the `description` field) and re-embeds. Run after the interest-category catalog changes, or once to backfill descriptions after the embedding-enrichment change |
+| `rake recommendation:init_demo` | Staging/test only (`demo:*` tasks abort in production) — seeds mock active auctions + signals, then runs the pipeline |
+| `Recommendation::RebuildRecommendationsJob` on **/admin/jobs** | Full re-tag of **every** domain (`force: true`): re-classifies via the LLM (fills the `description` field) and re-embeds. Run after the interest-category catalog changes, or once to backfill descriptions after the embedding-enrichment change. Runs as a chain of ~2-minute jobs (delayed_job kills jobs after 5 minutes), each continuing where the previous stopped; final AI and per-user scoring is enqueued as separate jobs. Expect roughly 1.5 minutes per 50 domains |
 
 ### Where to see the results (admin)
 

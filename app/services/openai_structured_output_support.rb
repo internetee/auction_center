@@ -9,10 +9,14 @@ module OpenaiStructuredOutputSupport
       return DEFAULT_MODEL if normalized_model.blank?
       return normalized_model if supported?(normalized_model)
 
-      Rails.logger.warn(
-        "OpenAI model #{normalized_model.inspect} does not support json_schema structured outputs. " \
-        "Falling back to #{DEFAULT_MODEL.inspect}."
-      )
+      # Once per process: this is called for every domain, so a per-call warning floods the log.
+      @warned_models ||= Set.new
+      if @warned_models.add?(normalized_model)
+        Rails.logger.warn(
+          "OpenAI model #{normalized_model.inspect} does not support json_schema structured outputs. " \
+          "Falling back to #{DEFAULT_MODEL.inspect}. Set openai_model to a supported model in admin settings."
+        )
+      end
       DEFAULT_MODEL
     end
 

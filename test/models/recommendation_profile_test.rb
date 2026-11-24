@@ -81,6 +81,18 @@ class RecommendationProfileTest < ActiveSupport::TestCase
     assert_equal %w[legal], @profile.interest_categories
   end
 
+  def test_limits_custom_interests_count_and_length
+    @profile.custom_interests = (1..10).map { |i| "interest #{i}" }
+    assert @profile.valid?
+
+    @profile.custom_interests = (1..11).map { |i| "interest #{i}" }
+    assert_not @profile.valid?
+
+    @profile.custom_interests = ['x' * 51]
+    assert_not @profile.valid?
+    assert_includes @profile.errors.full_messages.join, 'at most 10 keywords'
+  end
+
   private
 
   def with_feature_flag(enabled)

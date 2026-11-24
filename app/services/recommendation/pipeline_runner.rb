@@ -7,10 +7,13 @@ module Recommendation
   #   - rake recommendation:init_demo  (staging — mock data, then this)
   #   - RebuildRecommendationsJob      (admin /admin/jobs, force: true — re-tag
   #                                     every domain after the interest catalog
-  #                                     changed)
+  #                                     changed; runs in time-boxed slices)
   #
-  # Every stage runs synchronously and drains the per-run batch caps, so when
-  # run returns the pipeline is actually complete — not merely enqueued.
+  # Without a deadline every stage runs synchronously and drains the per-run
+  # batch caps, so when run returns the pipeline is actually complete — not
+  # merely enqueued. With a deadline (job mode) it stops between LLM batches
+  # once the time is up and returns summary[:incomplete]; the caller re-runs it
+  # (without force) to continue, and the final ai/user scoring is enqueued.
   class PipelineRunner
     AI_SCORE_PROMPT_SETTING = 'openai_domains_evaluation_prompt'.freeze
     # db/seeds.rb seeds this setting with the literal placeholder 'prompt'.
@@ -20,12 +23,13 @@ module Recommendation
     # loop forever (progress detection already stops normal backlogs sooner).
     MAX_BATCHES = 100
 
-    def self.run(force: false)
-      new(force:).run
+    def self.run(force: false, deadline: nil)
+      new(force:, deadline:).run
     end
 
-    def initialize(force:)
+    def initialize(force:, deadline: nil)
       @force = force
+      @deadline = deadline
       @summary = {}
     end
 
@@ -39,11 +43,15 @@ module Recommendation
         invalidate_classifications
         invalidate_category_embeddings
         invalidate_custom_interest_embeddings
+        # Job mode: stop here so a delayed_job retry of a killed slice never wipes finished work.
+        return incomplete if @deadline
       end
       enrich_categories
       embed_custom_interests
-      drain(Recommendation::ClassifyUnclassifiedDomainsJob, :classify) { classify_pending_count }
+      drain(Recommendation::ClassifyUnclassifiedDomainsJob, :classify, classify_limit) { classify_pending_count }
       drain(Recommendation::EmbedUnembeddedDomainsJob, :embed) { embed_pending_count }
+      return incomplete if out_of_time?
+
       refresh_ai_scores
       refresh_user_scores
 
@@ -69,11 +77,12 @@ module Recommendation
     # "no progress" (rather than on needs_to_run?) means stubborn rows — e.g. a
     # domain the LLM keeps scoring below the confidence threshold — cost at most
     # one extra batch instead of looping.
-    def drain(job_class, key)
+    def drain(job_class, key, *args)
       batches = 0
       previous = nil
-      while (current = yield).positive? && (previous.nil? || current < previous) && batches < MAX_BATCHES
-        job_class.perform_now
+      while (current = yield).positive? && (previous.nil? || current < previous) &&
+            batches < MAX_BATCHES && !out_of_time?
+        job_class.perform_now(*args)
         previous = current
         batches += 1
       end
@@ -128,6 +137,8 @@ module Recommendation
         vector_texts = Array(profile.custom_interest_vectors).filter_map { |v| v['text'] || v[:text] }
         next if vector_texts.sort == interests.sort
 
+        break if out_of_time?
+
         Recommendation::EmbedCustomInterestsJob.perform_now(profile.id)
         count += 1
       end
@@ -154,19 +165,37 @@ module Recommendation
         return
       end
 
-      ActiveAuctionsAiSortingJob.perform_now
-      @summary[:ai_score] = :done
-      log('ai_score refreshed')
+      # Job mode: the AI sort takes about a minute, so it gets its own job instead of eating the slice.
+      @deadline ? ActiveAuctionsAiSortingJob.perform_later : ActiveAuctionsAiSortingJob.perform_now
+      @summary[:ai_score] = @deadline ? :enqueued : :done
+      log("ai_score #{@summary[:ai_score]}")
     end
 
     def refresh_user_scores
       count = 0
       User.where('? = ANY (roles)', User::PARTICIPANT_ROLE).find_each do |user|
-        Recommendation::Scorer.refresh_for(user:)
+        # Job mode: scoring takes seconds per user, so fan out instead of blocking the slice.
+        @deadline ? RefreshSingleUserAuctionScoresJob.perform_later(user.id) : Scorer.refresh_for(user:)
         count += 1
       end
       @summary[:users_scored] = count
       log("personal scores refreshed for #{count} participant(s)")
+    end
+
+    # One LLM call per drain step in job mode, so a step can't run past the delayed_job cap.
+    def classify_limit
+      klass = Recommendation::ClassifyUnclassifiedDomainsJob
+      @deadline ? klass::BATCH_SIZE : klass::MAX_DOMAINS_PER_RUN
+    end
+
+    def out_of_time?
+      @deadline.present? && Time.current >= @deadline
+    end
+
+    def incomplete
+      @summary[:incomplete] = true
+      log("time slice used up, continuing in the next job: #{@summary.inspect}")
+      @summary
     end
 
     def log(message)

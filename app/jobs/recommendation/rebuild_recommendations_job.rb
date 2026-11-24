@@ -6,9 +6,25 @@ module Recommendation
   #
   # Force mode re-hits the LLM for every domain, so this is intentionally a
   # manual button, not a callback on InterestCategory.
+  #
+  # delayed_job kills any job after 5 minutes (config/initializers/delayed_job.rb),
+  # while a full rebuild takes 10+ minutes, so it runs as a chain of time-boxed
+  # slices: slice 0 only invalidates, every later slice continues where the
+  # previous one stopped and re-enqueues the next until the pipeline is done.
   class RebuildRecommendationsJob < ApplicationJob
-    def perform
-      Recommendation::PipelineRunner.run(force: true)
+    TIME_BUDGET = 2.minutes
+    # shortcut: stops a chain whose LLM calls keep timing out; ~10k domains at 50 per slice fit.
+    MAX_SLICES = 200
+
+    def perform(slice = 0)
+      summary = Recommendation::PipelineRunner.run(force: slice.zero?, deadline: TIME_BUDGET.from_now)
+      return unless summary[:incomplete]
+
+      if slice + 1 >= MAX_SLICES
+        Rails.logger.error("[RebuildRecommendationsJob] gave up after #{MAX_SLICES} slices: #{summary.inspect}")
+      else
+        self.class.perform_later(slice + 1)
+      end
     end
 
     def self.needs_to_run?

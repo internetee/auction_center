@@ -147,7 +147,7 @@ module Recommendation
     end
 
     def openai_model
-      OpenaiStructuredOutputSupport.model(Setting.find_by(code: 'openai_model')&.retrieve)
+      @openai_model ||= OpenaiStructuredOutputSupport.model(Setting.find_by(code: 'openai_model')&.retrieve)
     end
 
     def build_attributes(entry, raw_response)

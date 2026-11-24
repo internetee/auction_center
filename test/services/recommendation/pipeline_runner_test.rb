@@ -2,6 +2,8 @@ require 'test_helper'
 
 module Recommendation
   class PipelineRunnerTest < ActiveSupport::TestCase
+    include ActiveJob::TestHelper
+
     def test_no_op_when_openai_disabled
       with_feature_flag(false) do
         assert_equal({}, Recommendation::PipelineRunner.run)
@@ -83,6 +85,46 @@ module Recommendation
 
       expected = User.where('? = ANY (roles)', User::PARTICIPANT_ROLE).pluck(:id).sort
       assert_equal expected, @scored.sort
+    end
+
+    def test_job_mode_force_only_invalidates_then_asks_to_continue
+      with_feature_flag(true) do
+        stub_scorer do
+          summary = Recommendation::PipelineRunner.run(force: true, deadline: 2.minutes.from_now)
+
+          assert summary[:incomplete]
+          assert_nil summary[:categories_enriched], 'enrichment must wait for the next slice'
+        end
+      end
+    end
+
+    def test_job_mode_stops_before_scoring_when_time_is_up
+      with_feature_flag(true) do
+        with_no_pending do
+          stub_scorer do
+            summary = Recommendation::PipelineRunner.run(deadline: 1.second.ago)
+
+            assert summary[:incomplete]
+            assert_empty @scored
+          end
+        end
+      end
+    end
+
+    def test_job_mode_enqueues_user_scoring_instead_of_running_it
+      participants = User.where('? = ANY (roles)', User::PARTICIPANT_ROLE).count
+      with_feature_flag(true) do
+        with_no_pending do
+          with_placeholder_prompt do
+            stub_scorer do
+              assert_enqueued_jobs(participants, only: Recommendation::RefreshSingleUserAuctionScoresJob) do
+                Recommendation::PipelineRunner.run(deadline: 2.minutes.from_now)
+              end
+              assert_empty @scored
+            end
+          end
+        end
+      end
     end
 
     private

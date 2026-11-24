@@ -11,17 +11,23 @@ module Recommendation
       end
     end
 
-    def test_perform_runs_pipeline_with_force
-      captured = nil
+    def test_first_slice_forces_and_chains_until_pipeline_is_complete
+      calls = []
+      results = [{ incomplete: true }, {}]
       original = Recommendation::PipelineRunner.method(:run)
-      Recommendation::PipelineRunner.define_singleton_method(:run) do |force: false|
-        captured = force
-        {}
+      Recommendation::PipelineRunner.define_singleton_method(:run) do |force:, deadline:|
+        calls << [force, deadline.future?]
+        results.shift
       end
 
-      Recommendation::RebuildRecommendationsJob.new.perform
+      assert_enqueued_with(job: Recommendation::RebuildRecommendationsJob, args: [1]) do
+        Recommendation::RebuildRecommendationsJob.new.perform
+      end
+      assert_no_enqueued_jobs(only: Recommendation::RebuildRecommendationsJob) do
+        Recommendation::RebuildRecommendationsJob.new.perform(1)
+      end
 
-      assert_equal true, captured
+      assert_equal [[true, true], [false, true]], calls
     ensure
       Recommendation::PipelineRunner.define_singleton_method(:run, original)
     end

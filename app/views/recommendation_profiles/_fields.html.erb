@@ -16,7 +16,7 @@
       <% Recommendation::InterestCatalog.categories.reject { |category| category == RecommendationProfile::OTHER_CATEGORY }.each_slice(2) do |row| %>
         <div class="u-flex u-align-center" style="gap: 16px; flex-wrap: wrap;">
           <% row.each do |category| %>
-            <label class="o-checkbox-container c-login__checkbox-container">
+            <label class="o-checkbox-container o-checkbox-container--green c-login__checkbox-container">
               <span class="o-checkbox-text"><%= Recommendation::InterestCatalog.label_for(category) %></span>
               <%= check_box_tag "#{form.object_name}[interest_categories][]",
                                 category,
@@ -29,16 +29,18 @@
       <% end %>
     </div>
 
-    <div class="u-mt-20" style="padding-left: 16px;">
-      <label for="<%= "#{form.object_name}_other_interests" %>"><%= t('recommendation_profiles.form.other_interests') %></label>
+    <label class="u-mt-24" for="<%= "#{form.object_name}_other_interests" %>"><%= t('recommendation_profiles.form.other_interests') %></label>
+    <div style="padding-left: 16px;">
       <input type="text"
              id="<%= "#{form.object_name}_other_interests" %>"
              data-form--custom-interest-tags-target="input"
              data-hidden-input-name="<%= "#{form.object_name}[custom_interests][]" %>"
+             data-max-count="<%= RecommendationProfile::CUSTOM_INTERESTS_LIMIT %>"
+             maxlength="<%= RecommendationProfile::CUSTOM_INTEREST_MAX_LENGTH %>"
              data-action="keydown->form--custom-interest-tags#add"
              placeholder="<%= t('recommendation_profiles.form.other_interests_placeholder') %>">
 
-      <p class="c-account__subtitle"><%= t('recommendation_profiles.form.other_interests_hint') %></p>
+      <p class="c-account__subtitle"><%= t('recommendation_profiles.form.other_interests_hint', count: RecommendationProfile::CUSTOM_INTERESTS_LIMIT) %></p>
 
       <div data-form--custom-interest-tags-target="list" style="margin-top: 12px;">
         <% form.object.custom_interests.each do |interest| %>

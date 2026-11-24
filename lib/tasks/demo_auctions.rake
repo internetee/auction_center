@@ -94,8 +94,13 @@ namespace :demo do
   # enough to survive a slow boot or a paused debugger.
   AUCTION_START_BUFFER = 5.minutes
 
+  # Demo tasks create fake auctions and user signals; never let them touch production data.
+  task :not_production do
+    abort 'demo:* tasks are for test/staging only' if Rails.env.production?
+  end
+
   desc 'Create temporary blind .ee auctions for recommendation testing (~140 domains)'
-  task create_blind_auctions: :environment do
+  task create_blind_auctions: %i[not_production environment] do
     starts_at = Time.zone.now + AUCTION_START_BUFFER
     ends_at = starts_at + 1.month
 
@@ -124,7 +129,7 @@ namespace :demo do
   end
 
   desc 'Create varied auctions ending at different times (next hour, day, week, month)'
-  task create_varied_auctions: :environment do
+  task create_varied_auctions: %i[not_production environment] do
     starts_at = Time.zone.now + AUCTION_START_BUFFER
     horizons = {
       next_hour: { ends_at_offset: 1.hour, sample_size: 5 },
@@ -158,7 +163,7 @@ namespace :demo do
   end
 
   desc 'Create demo auctions that are ACTIVE immediately (for staging pipeline bootstrap)'
-  task create_active_auctions: :environment do
+  task create_active_auctions: %i[not_production environment] do
     # Unlike create_blind_auctions (which starts 5 min in the future), these
     # start in the past so Auction.active includes them right away — otherwise
     # the recommendation pipeline (classify / ai_score / scorer all scope to
@@ -192,7 +197,7 @@ namespace :demo do
   end
 
   desc 'Seed a participant user with wishlist + bid signals so recommendations have data to chew on'
-  task seed_user_signals: :environment do
+  task seed_user_signals: %i[not_production environment] do
     user = User.where('? = ANY (roles)', User::PARTICIPANT_ROLE).first
     if user.nil?
       puts 'No participant user found. Create one via the UI first, then re-run.'
@@ -220,7 +225,9 @@ namespace :demo do
       end
 
       item = WishlistItem.new(user: user, domain_name: domain, cents: 5000)
-      if item.save
+      # Picks are live demo auctions, which the UI won't wishlist ("Auction already in game");
+      # skip validation to simulate an item added before the auction started.
+      if item.save(validate: false)
         wishlist_added << domain
       else
         puts "  skipped wishlist #{domain}: #{item.errors.full_messages.join(', ')}"

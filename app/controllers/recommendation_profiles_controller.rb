@@ -18,6 +18,7 @@ class RecommendationProfilesController < ApplicationController
       @recommendation_profile.complete!(source: 'recommendation_profiles#update', request:)
       redirect_to after_update_path, notice: t('.updated')
     else
+      flash.now[:alert] = @recommendation_profile.errors.full_messages.join(', ')
       render :edit, status: :unprocessable_entity
     end
   end

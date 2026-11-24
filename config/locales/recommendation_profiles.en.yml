@@ -16,7 +16,7 @@ en:
       interest_categories: "Interest categories"
       other_interests: "Add your own keywords"
       other_interests_placeholder: "Type an interest and press Enter"
-      other_interests_hint: "Add any interests that are not in the list above."
+      other_interests_hint: "Add any interests that are not in the list above (up to %{count})."
     prompt:
       title: "Personalization"
       subject: "Tell us what domains interest you"
@@ -47,3 +47,13 @@ en:
       real_estate: "Real estate"
       numeric: "Numeric domains"
       other: "Other"
+  activerecord:
+    attributes:
+      recommendation_profile:
+        custom_interests: "Custom interests"
+    errors:
+      models:
+        recommendation_profile:
+          attributes:
+            custom_interests:
+              limits: "may contain at most %{count} keywords of up to %{length} characters each"

@@ -14,6 +14,7 @@ export default class extends Controller {
       this.inputTarget.value = ""
       return
     }
+    if (this.existingValues().length >= Number(this.inputTarget.dataset.maxCount)) return
 
     this.listTarget.insertAdjacentHTML("beforeend", this.tagHtml(value))
     this.inputTarget.value = ""

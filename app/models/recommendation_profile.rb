@@ -2,6 +2,9 @@ class RecommendationProfile < ApplicationRecord
   PROMPT_REMINDER_INTERVAL = 14.days
   CUSTOM_INTEREST_PREFIX = 'custom:'.freeze
   OTHER_CATEGORY = 'other'.freeze
+  # Every custom interest is embedded via OpenAI, so cap both cost and profile size.
+  CUSTOM_INTERESTS_LIMIT = 10
+  CUSTOM_INTEREST_MAX_LENGTH = 50
 
   belongs_to :user
 
@@ -16,6 +19,7 @@ class RecommendationProfile < ApplicationRecord
             allow_nil: true
   validate :length_range_is_valid
   validate :interest_categories_are_supported
+  validate :custom_interests_within_limits
 
   SELECTION_ENABLED_SETTING = 'recommendation_interests_enabled'.freeze
 
@@ -216,6 +220,14 @@ class RecommendationProfile < ApplicationRecord
     return if invalid_categories.empty?
 
     errors.add(:interest_keywords, :invalid)
+  end
+
+  def custom_interests_within_limits
+    interests = custom_interests
+    return if interests.size <= CUSTOM_INTERESTS_LIMIT &&
+              interests.all? { |interest| interest.length <= CUSTOM_INTEREST_MAX_LENGTH }
+
+    errors.add(:custom_interests, :limits, count: CUSTOM_INTERESTS_LIMIT, length: CUSTOM_INTEREST_MAX_LENGTH)
   end
 
   def known_category?(value)

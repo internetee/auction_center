@@ -3,7 +3,7 @@ et:
     edit:
       title: "Oksjoni huvid"
       why_it_helps_title: "Miks see kasulik on"
-      why_it_helps_body: "Vali, millist tüüpi domeeninimed sind huvitavad. Kombineerime need huvid sinu wishlisti, pakkumiste ja domeeni siltidega, et tõsta sobivamad oksjonid nimekirjas kõrgemale."
+      why_it_helps_body: "Vali, millist tüüpi domeeninimed sind huvitavad. Kombineerime need huvid sinu soovinimekirja, pakkumiste ja domeeni siltidega, et tõsta sobivamad oksjonid nimekirjas kõrgemale."
       submit: "Salvesta huvid"
     update:
       updated: "Sinu oksjoni huvid on uuendatud."
@@ -12,11 +12,11 @@ et:
       dismissed: "Tuletame seda hiljem meelde."
     form:
       title: "Oksjoni huvid"
-      subtitle: "Valikuline. Vali, millised domeeninimede tüübid sind huvitavad. Kasutame neid kategooriaid koos pakkumiste ja wishlistiga."
+      subtitle: "Valikuline. Vali, millised domeeninimede tüübid sind huvitavad. Kasutame neid kategooriaid koos pakkumiste ja soovinimekirjaga."
       interest_categories: "Huvi kategooriad"
       other_interests: "Lisa oma märksõnad"
       other_interests_placeholder: "Sisesta huvi ja vajuta Enter"
-      other_interests_hint: "Lisa huvid, mida ülal olevas nimekirjas ei ole."
+      other_interests_hint: "Lisa huvid, mida ülal olevas nimekirjas ei ole (kuni %{count})."
     prompt:
       title: "Personaliseerimine"
       subject: "Anna teada, millised domeenid sind huvitavad"
@@ -47,3 +47,13 @@ et:
       real_estate: "Kinnisvara"
       numeric: "Numbrilised domeenid"
       other: "Muu"
+  activerecord:
+    attributes:
+      recommendation_profile:
+        custom_interests: "Omad märksõnad"
+    errors:
+      models:
+        recommendation_profile:
+          attributes:
+            custom_interests:
+              limits: "võib sisaldada kuni %{count} märksõna, igaüks kuni %{length} tähemärki"

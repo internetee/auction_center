@@ -78,7 +78,7 @@
       <a href="<%= I18n.locale == :et ? 'https://www.internet.ee/domeenid/domeenide-oksjonikeskkonna-kasutajatingimused' : 'https://www.internet.ee/domains/auction-environment-user-agreement'%>" title="" class="c-acount__link" target='_blank'><%= t('users.terms_and_conditions_link') %></a>
 
       <% if RecommendationProfile.selection_enabled? %>
-        <div class="u-mt-20">
+        <div class="u-mt-24">
           <h3 class="o-card__title c-account__title"><%= t('recommendation_profiles.profile.summary_title') %></h3>
 
           <% if @user.recommendation_profile&.summary_lines&.any? %>

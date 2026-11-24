@@ -10,15 +10,16 @@ module Recommendation
   #
   # Batches everything through the LLM. NEVER called from request paths.
   class ClassifyUnclassifiedDomainsJob < ApplicationJob
-    MAX_DOMAINS_PER_RUN = 200
+    # Two LLM batches (~1.5 min each with gpt-5), so the /admin/jobs run stays under delayed_job's 5-minute cap.
+    MAX_DOMAINS_PER_RUN = 100
     BATCH_SIZE = Recommendation::LlmDomainClassifier::BATCH_LIMIT
 
     retry_on StandardError, wait: 30.seconds, attempts: 2
 
-    def perform
+    def perform(limit = MAX_DOMAINS_PER_RUN)
       return unless Feature.open_ai_integration_enabled?
 
-      domains = pending_domains
+      domains = pending_domains.first(limit)
       return if domains.empty?
 
       processed = 0
