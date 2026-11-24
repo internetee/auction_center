@@ -48,12 +48,9 @@ en:
       numeric: "Numeric domains"
       other: "Other"
   activerecord:
-    attributes:
-      recommendation_profile:
-        custom_interests: "Custom interests"
     errors:
       models:
         recommendation_profile:
           attributes:
             custom_interests:
-              limits: "may contain at most %{count} keywords of up to %{length} characters each"
+              limits: "You can add up to %{count} custom keywords, each up to %{length} characters"

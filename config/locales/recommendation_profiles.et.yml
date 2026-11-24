@@ -48,12 +48,9 @@ et:
       numeric: "Numbrilised domeenid"
       other: "Muu"
   activerecord:
-    attributes:
-      recommendation_profile:
-        custom_interests: "Omad märksõnad"
     errors:
       models:
         recommendation_profile:
           attributes:
             custom_interests:
-              limits: "võib sisaldada kuni %{count} märksõna, igaüks kuni %{length} tähemärki"
+              limits: "Oma märksõnu võib olla kuni %{count}, igaüks kuni %{length} tähemärki"

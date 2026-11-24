@@ -90,7 +90,7 @@ class RecommendationProfileTest < ActiveSupport::TestCase
 
     @profile.custom_interests = ['x' * 51]
     assert_not @profile.valid?
-    assert_includes @profile.errors.full_messages.join, 'at most 10 keywords'
+    assert_includes @profile.errors.full_messages, 'You can add up to 10 custom keywords, each up to 50 characters'
   end
 
   private
