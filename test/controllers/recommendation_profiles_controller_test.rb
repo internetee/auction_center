@@ -83,8 +83,10 @@ class RecommendationProfilesControllerTest < ActionDispatch::IntegrationTest
   end
 
   def test_dismiss_follows_local_return_to_only
-    patch dismiss_recommendation_profile_path, params: { return_to: '//evil.example' }
-    assert_redirected_to root_path
+    ["//evil.example", "/\t/evil.example"].each do |hostile|
+      patch dismiss_recommendation_profile_path, params: { return_to: hostile }
+      assert_redirected_to root_path
+    end
 
     patch dismiss_recommendation_profile_path, params: { return_to: '/auctions?page=2' }
     assert_redirected_to '/auctions?page=2'

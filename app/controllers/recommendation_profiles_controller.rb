@@ -51,10 +51,11 @@ class RecommendationProfilesController < ApplicationController
           )
   end
 
-  # Local paths only: rejects javascript:, absolute URLs and protocol-relative //host or /\host.
+  # Local paths only: rejects javascript:, absolute URLs, //host, /\host and control chars
+  # (browsers drop tabs/newlines, so "/\t/host" becomes "//host").
   def return_path
     path = params[:return_to].to_s
-    path if path.start_with?('/') && !path.start_with?('//', '/\\')
+    path if path.start_with?('/') && !path.start_with?('//', '/\\') && !path.match?(/[[:cntrl:]]/)
   end
   helper_method :return_path
 
