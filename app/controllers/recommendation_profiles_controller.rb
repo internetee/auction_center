@@ -51,17 +51,14 @@ class RecommendationProfilesController < ApplicationController
           )
   end
 
-  def after_update_path
-    requested_path = params[:return_to].to_s
-    return requested_path if requested_path.starts_with?('/')
-
-    user_path(current_user.uuid)
+  # Local paths only: rejects javascript:, absolute URLs and protocol-relative //host or /\host.
+  def return_path
+    path = params[:return_to].to_s
+    path if path.start_with?('/') && !path.start_with?('//', '/\\')
   end
+  helper_method :return_path
 
-  def dismiss_redirect_path
-    requested_path = params[:return_to].to_s
-    return requested_path if requested_path.starts_with?('/')
+  def after_update_path = return_path || user_path(current_user.uuid)
 
-    root_path
-  end
+  def dismiss_redirect_path = return_path || root_path
 end

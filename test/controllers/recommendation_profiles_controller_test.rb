@@ -15,13 +15,15 @@ class RecommendationProfilesControllerTest < ActionDispatch::IntegrationTest
     assert_nil @user.recommendation_profile
 
     assert_difference -> { RecommendationProfile.count } do
-      assert_enqueued_with(job: Recommendation::RefreshSingleUserAuctionScoresJob, args: [@user.id]) do
-        put recommendation_profile_path, params: {
-          recommendation_profile: {
-            interest_categories: %w[legal other],
-            custom_interests: ['marketplace']
+      Feature.stub(:open_ai_integration_enabled?, true) do
+        assert_enqueued_with(job: Recommendation::RefreshSingleUserAuctionScoresJob, args: [@user.id]) do
+          put recommendation_profile_path, params: {
+            recommendation_profile: {
+              interest_categories: %w[legal other],
+              custom_interests: ['marketplace']
+            }
           }
-        }
+        end
       end
     end
 
@@ -70,6 +72,22 @@ class RecommendationProfilesControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to root_path
     assert @user.recommendation_profile.prompt_dismissed_at.present?
+  end
+
+  def test_edit_ignores_non_local_return_to
+    get edit_recommendation_profile_path(return_to: 'javascript:alert(1)')
+
+    assert_response :success
+    assert_not_includes response.body, 'javascript:alert'
+    assert_select "a[href='#{user_path(@user.uuid)}']"
+  end
+
+  def test_dismiss_follows_local_return_to_only
+    patch dismiss_recommendation_profile_path, params: { return_to: '//evil.example' }
+    assert_redirected_to root_path
+
+    patch dismiss_recommendation_profile_path, params: { return_to: '/auctions?page=2' }
+    assert_redirected_to '/auctions?page=2'
   end
 
   def test_edit_redirects_when_selection_disabled

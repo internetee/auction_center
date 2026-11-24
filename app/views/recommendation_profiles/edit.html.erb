@@ -3,7 +3,7 @@
 <div class="o-container">
   <div class="c-block c-account c-account--createnew">
     <%= form_with model: @recommendation_profile, url: recommendation_profile_path, method: :put, class: "o-grid o-grid--two-col o-grid--sep" do |f| %>
-      <%= hidden_field_tag :return_to, params[:return_to] %>
+      <%= hidden_field_tag :return_to, return_path %>
       <%= render 'fields', form: f %>
 
       <div class="o-card-wrapper">
@@ -20,7 +20,7 @@
           <% end %>
         </div>
 
-        <%= component 'common/links/link_button', link_title: t(:cancel), href: params[:return_to].presence || user_path(current_user.uuid), color: 'ghost' %>
+        <%= component 'common/links/link_button', link_title: t(:cancel), href: return_path || user_path(current_user.uuid), color: 'ghost' %>
         <%= component 'common/form/form_button', form: f, btn_title: t('.submit') %>
       </div>
     <% end %>
