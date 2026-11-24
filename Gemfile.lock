@@ -92,7 +92,7 @@ GEM
       securerandom (>= 0.3)
       tzinfo (~> 2.0, >= 2.0.5)
       uri (>= 0.13.1)
-    addressable (2.9.0)
+    addressable (2.10.0)
       public_suffix (>= 2.0.2, < 8.0)
     aes_key_wrap (1.1.0)
     airbrake (13.0.5)
@@ -180,6 +180,7 @@ GEM
       multipart-post (~> 2.0)
     faraday-net_http (3.4.4)
       net-http (~> 0.5)
+    ffi (1.17.4)
     ffi (1.17.4-aarch64-linux-gnu)
     ffi (1.17.4-aarch64-linux-musl)
     ffi (1.17.4-arm-linux-gnu)
@@ -305,13 +306,14 @@ GEM
       nokogiri (~> 1)
       rake
     mini_mime (1.1.5)
+    mini_portile2 (2.8.9)
     minitest (6.1.0)
       drb (~> 2.0)
       prism (>= 1.5, < 3)
     minitest-mock (5.27.0)
     money (6.19.0)
       i18n (>= 0.6.4, <= 2)
-    msgpack (1.8.3)
+    msgpack (1.8.7)
     multipart-post (2.4.1)
     mutex_m (0.3.0)
     net-http (0.9.1)
@@ -326,6 +328,9 @@ GEM
     net-smtp (0.5.1)
       net-protocol
     nio4r (2.7.5)
+    nokogiri (1.19.7)
+      mini_portile2 (~> 2.8.2)
+      racc (~> 1.4)
     nokogiri (1.19.7-aarch64-linux-gnu)
       racc (~> 1.4)
     nokogiri (1.19.7-aarch64-linux-musl)
@@ -346,11 +351,11 @@ GEM
       http (>= 4.0.0)
       rails (>= 5.2.0)
     okcomputer (1.19.0)
-    omniauth (2.1.4)
-      hashie (>= 3.4.6)
+    omniauth (2.4.2)
+      hashie (>= 3.5.2)
       logger
-      rack (>= 2.2.3)
-      rack-protection
+      rack (>= 2.2.8)
+      rack-protection (>= 2.2.0)
     omniauth-rails_csrf_protection (1.0.2)
       actionpack (>= 4.2)
       omniauth (~> 2.0)
@@ -399,7 +404,7 @@ GEM
       date
       stringio
     public_suffix (7.0.5)
-    puma (8.0.2)
+    puma (8.0.4)
       nio4r (~> 2.0)
     racc (1.8.1)
     rack (3.2.8)
@@ -410,7 +415,7 @@ GEM
       faraday-follow_redirects
       json-jwt (>= 1.11.0)
       rack (>= 2.1.0)
-    rack-protection (4.2.1)
+    rack-protection (4.2.2)
       base64 (>= 0.1.0)
       logger (>= 1.6.0)
       rack (>= 3.0.0, < 4)
@@ -519,6 +524,9 @@ GEM
       faraday-multipart (>= 1)
     ruby-progressbar (1.13.0)
     rubyzip (3.6.0)
+    sass-embedded (1.93.2)
+      google-protobuf (~> 4.31)
+      rake (>= 13)
     sass-embedded (1.93.2-aarch64-linux-gnu)
       google-protobuf (~> 4.31)
     sass-embedded (1.93.2-aarch64-linux-musl)
@@ -582,10 +590,10 @@ GEM
       public_suffix
     valvat (2.0.1)
       rexml (>= 3.3.6, < 4.0.0)
-    view_component (4.12.0)
+    view_component (4.25.0)
       actionview (>= 7.1.0)
       activesupport (>= 7.1.0)
-      concurrent-ruby (~> 1)
+      prism (>= 1.0)
     warden (1.2.9)
       rack (>= 2.0.9)
     web-console (4.2.1)
@@ -620,6 +628,7 @@ PLATFORMS
   arm-linux-gnu
   arm-linux-musl
   arm64-darwin
+  ruby
   x86_64-darwin
   x86_64-linux-gnu
   x86_64-linux-musl
