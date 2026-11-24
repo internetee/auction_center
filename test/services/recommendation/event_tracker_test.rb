@@ -7,6 +7,22 @@ module Recommendation
       @user = users(:participant)
       @auction_a = auctions(:valid_without_offers)
       @auction_b = auctions(:valid_with_offers)
+      @openai_flag = Feature.method(:open_ai_integration_enabled?)
+      Feature.define_singleton_method(:open_ai_integration_enabled?) { true }
+    end
+
+    def teardown
+      Feature.define_singleton_method(:open_ai_integration_enabled?, @openai_flag)
+      super
+    end
+
+    def test_records_nothing_when_openai_disabled
+      Feature.stub(:open_ai_integration_enabled?, false) do
+        assert_no_difference -> { RecommendationEvent.count } do
+          Recommendation::EventTracker.track_impressions(user: @user, auctions: [@auction_a], source: 'test_index')
+          Recommendation::EventTracker.call(user: @user, auction: @auction_a, event_type: 'auction_detail_view')
+        end
+      end
     end
 
     def test_track_impressions_inserts_all_events_in_single_query

@@ -13,7 +13,7 @@ class RecommendationDetailViewTest < ActionDispatch::IntegrationTest
 
   def test_offers_new_records_detail_view
     assert_difference -> { RecommendationEvent.where(event_type: 'auction_detail_view').count }, 1 do
-      get new_auction_offer_path(auction_uuid: @auction.uuid)
+      Feature.stub(:open_ai_integration_enabled?, true) { get new_auction_offer_path(auction_uuid: @auction.uuid) }
     end
 
     event = RecommendationEvent.where(event_type: 'auction_detail_view').last

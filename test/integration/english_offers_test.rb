@@ -35,10 +35,12 @@ class EnglishOffersIntegrationTest < ActionDispatch::IntegrationTest
       }
     }
 
-    assert_enqueued_with(job: Recommendation::RefreshSingleUserAuctionScoresJob, args: [@user.id]) do
-      post auction_english_offers_path(auction_uuid: @auction.uuid),
-           params: params,
-           headers: { "HTTP_REFERER" => root_path }
+    Feature.stub(:open_ai_integration_enabled?, true) do
+      assert_enqueued_with(job: Recommendation::RefreshSingleUserAuctionScoresJob, args: [@user.id]) do
+        post auction_english_offers_path(auction_uuid: @auction.uuid),
+             params: params,
+             headers: { "HTTP_REFERER" => root_path }
+      end
     end
 
     assert @auction.offers.present?
@@ -90,10 +92,12 @@ class EnglishOffersIntegrationTest < ActionDispatch::IntegrationTest
       }
     }
 
-    assert_enqueued_with(job: Recommendation::RefreshSingleUserAuctionScoresJob, args: [@user.id]) do
-      patch english_offer_path(uuid: @auction.offers.first.uuid),
-            params: params,
-            headers: { "HTTP_REFERER" => root_path }
+    Feature.stub(:open_ai_integration_enabled?, true) do
+      assert_enqueued_with(job: Recommendation::RefreshSingleUserAuctionScoresJob, args: [@user.id]) do
+        patch english_offer_path(uuid: @auction.offers.first.uuid),
+              params: params,
+              headers: { "HTTP_REFERER" => root_path }
+      end
     end
 
     @auction.reload

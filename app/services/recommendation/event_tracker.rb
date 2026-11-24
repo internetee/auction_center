@@ -6,6 +6,9 @@ module Recommendation
       end
 
       def track_impressions(user:, auctions:, source:, request: nil)
+        # No personalisation without OpenAI, so no behaviour data is collected either.
+        return unless Feature.open_ai_integration_enabled?
+
         now = Time.current
         session_id = request&.session&.id&.to_s
         request_id = request&.request_id
@@ -45,6 +48,8 @@ module Recommendation
     end
 
     def call
+      return unless Feature.open_ai_integration_enabled?
+
       RecommendationEvent.create(
         user: @user,
         auction: @auction,

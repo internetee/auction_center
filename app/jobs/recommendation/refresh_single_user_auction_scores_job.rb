@@ -3,12 +3,15 @@ module Recommendation
     DEBOUNCE_WINDOW = 30.seconds
 
     retry_on StandardError, wait: 5.seconds, attempts: 3
+    before_enqueue { throw :abort unless Feature.open_ai_integration_enabled? }
 
     def self.enqueue_debounced(user_id)
       set(wait: DEBOUNCE_WINDOW).perform_later(user_id)
     end
 
     def perform(user_id)
+      return unless Feature.open_ai_integration_enabled?
+
       user = User.find_by(id: user_id)
       return unless user
 

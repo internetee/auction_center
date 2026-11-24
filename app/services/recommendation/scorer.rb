@@ -41,6 +41,8 @@ module Recommendation
       end
 
       def top_auctions_for(user:, scope: default_scope, limit: nil)
+        return scope.none unless Feature.open_ai_integration_enabled?
+
         query = scope
           .joins(:user_auction_scores)
           .where(user_auction_scores: { user_id: user.id })

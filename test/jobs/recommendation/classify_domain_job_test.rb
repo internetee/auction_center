@@ -69,13 +69,15 @@ module Recommendation
     end
 
     def test_auction_create_enqueues_classification
-      assert_enqueued_with(job: Recommendation::ClassifyDomainJob) do
-        Auction.create!(
-          domain_name: "trigger-test-#{SecureRandom.hex(4)}.ee",
-          starts_at: 1.hour.ago,
-          ends_at: 1.day.from_now,
-          skip_validation: true
-        )
+      with_feature_flag(true) do
+        assert_enqueued_with(job: Recommendation::ClassifyDomainJob) do
+          Auction.create!(
+            domain_name: "trigger-test-#{SecureRandom.hex(4)}.ee",
+            starts_at: 1.hour.ago,
+            ends_at: 1.day.from_now,
+            skip_validation: true
+          )
+        end
       end
     end
 

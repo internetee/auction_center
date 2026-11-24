@@ -5,6 +5,21 @@ module Recommendation
     def setup
       super
       @user = users(:participant)
+      @openai_flag = Feature.method(:open_ai_integration_enabled?)
+      Feature.define_singleton_method(:open_ai_integration_enabled?) { true }
+    end
+
+    def teardown
+      Feature.define_singleton_method(:open_ai_integration_enabled?, @openai_flag)
+      super
+    end
+
+    def test_enqueue_debounced_is_noop_when_openai_disabled
+      Feature.stub(:open_ai_integration_enabled?, false) do
+        assert_no_enqueued_jobs(only: Recommendation::RefreshSingleUserAuctionScoresJob) do
+          Recommendation::RefreshSingleUserAuctionScoresJob.enqueue_debounced(@user.id)
+        end
+      end
     end
 
     def test_enqueue_debounced_schedules_job

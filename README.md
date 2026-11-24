@@ -78,8 +78,10 @@ openai:
   access_token: 'sk-...'
 ```
 
-When disabled, no classification, embedding or scoring runs and the list falls
-back to the global `ai_score` / default order. A running job worker
+When disabled, no classification, embedding or scoring runs, no user activity
+(views, impressions, bids, wishlist changes) is recorded in `recommendation_events`,
+stored personal scores are ignored, and the list falls back to the global
+`ai_score` / default order. A running job worker
 (`bundle exec rails jobs:work`) is required for every `*_later` job below.
 
 ### What runs automatically (event-driven, no manual action)

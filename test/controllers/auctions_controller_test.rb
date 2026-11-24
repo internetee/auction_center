@@ -109,7 +109,7 @@ class AuctionsControllerTest < ActionDispatch::IntegrationTest
       calculated_at: Time.current
     )
 
-    get auctions_path
+    Feature.stub(:open_ai_integration_enabled?, true) { get auctions_path }
 
     assert_response :success
 
@@ -121,6 +121,21 @@ class AuctionsControllerTest < ActionDispatch::IntegrationTest
 
     assert with_offers_index < english_index, "User's own auction should still come first"
     assert english_index < without_offers_index, "Higher recommendation score should outrank lower score"
+  end
+
+  def test_leftover_recommendation_scores_are_ignored_when_openai_disabled
+    sign_in @participant
+    @english_auction.update_columns(ai_score: 10)
+    @auction_without_offers.update_columns(ai_score: 90)
+    UserAuctionScore.create!(user: @participant, auction: @english_auction, score: 0.95, calculated_at: Time.current)
+    UserAuctionScore.create!(user: @participant, auction: @auction_without_offers, score: 0.10,
+                             calculated_at: Time.current)
+
+    Feature.stub(:open_ai_integration_enabled?, false) { get auctions_path }
+
+    auction_domains = css_select('tbody#bids tr.contents td:first-child').map { |e| e.text.strip }
+    assert auction_domains.index(@auction_without_offers.domain_name) < auction_domains.index(@english_auction.domain_name),
+           'With OpenAI off the global ai_score must decide, not stored personal scores'
   end
 
   # v3: interest prioritisation no longer has its own string-matched sort tier.

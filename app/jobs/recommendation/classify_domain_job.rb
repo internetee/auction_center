@@ -13,6 +13,7 @@ module Recommendation
   # first appeared, or the job failed) and re-classifies stale rows.
   class ClassifyDomainJob < ApplicationJob
     retry_on StandardError, wait: 10.seconds, attempts: 3
+    before_enqueue { throw :abort unless Feature.open_ai_integration_enabled? }
 
     def perform(domain_name)
       name = domain_name.to_s.strip.downcase

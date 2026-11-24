@@ -29,10 +29,12 @@ class OffersAuctionFlowTest < ActionDispatch::IntegrationTest
       }
     }
 
-    assert_enqueued_with(job: Recommendation::RefreshSingleUserAuctionScoresJob, args: [@user.id]) do
-      post auction_offers_path(auction_uuid: @auction.uuid),
-           params: params,
-           headers: {}
+    Feature.stub(:open_ai_integration_enabled?, true) do
+      assert_enqueued_with(job: Recommendation::RefreshSingleUserAuctionScoresJob, args: [@user.id]) do
+        post auction_offers_path(auction_uuid: @auction.uuid),
+             params: params,
+             headers: {}
+      end
     end
 
     assert @auction.offers.present?
@@ -159,8 +161,10 @@ class OffersAuctionFlowTest < ActionDispatch::IntegrationTest
       }
     }
 
-    assert_enqueued_with(job: Recommendation::RefreshSingleUserAuctionScoresJob, args: [@user.id]) do
-      patch offer_path(uuid: offer.uuid), params: params
+    Feature.stub(:open_ai_integration_enabled?, true) do
+      assert_enqueued_with(job: Recommendation::RefreshSingleUserAuctionScoresJob, args: [@user.id]) do
+        patch offer_path(uuid: offer.uuid), params: params
+      end
     end
     offer.reload
 

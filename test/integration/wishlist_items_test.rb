@@ -34,8 +34,10 @@ class WishlistItemsIntegrationTest < ActionDispatch::IntegrationTest
     }
 
     assert_difference -> { WishlistItem.count } do
-      assert_enqueued_with(job: Recommendation::RefreshSingleUserAuctionScoresJob, args: [@user.id]) do
-        post wishlist_items_path, params: params, headers: {}
+      Feature.stub(:open_ai_integration_enabled?, true) do
+        assert_enqueued_with(job: Recommendation::RefreshSingleUserAuctionScoresJob, args: [@user.id]) do
+          post wishlist_items_path, params: params, headers: {}
+        end
       end
     end
   end

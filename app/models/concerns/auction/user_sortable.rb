@@ -29,14 +29,17 @@ module Auction::UserSortable
       query.order(Arel.sql(order_sql))
     end
 
+    # With OpenAI off the join matches nothing, so leftover scores no longer affect the order.
     def with_recommendation_scores(user_id)
       scores_join = ActiveRecord::Base.sanitize_sql_array([
         <<~SQL.squish,
           LEFT JOIN user_auction_scores
             ON user_auction_scores.auction_id = auctions.id
            AND user_auction_scores.user_id = ?
+           AND ?
         SQL
-        user_id
+        user_id,
+        Feature.open_ai_integration_enabled?
       ])
 
       joins(scores_join)
