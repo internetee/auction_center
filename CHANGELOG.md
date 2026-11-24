@@ -1,13 +1,5 @@
-27.05.2026
-* Recommendation system v2: per-user auction sorting backed by
-  domain_classifications, time-decayed bid/wishlist/view affinity,
-  and nightly LLM enrichment as a k8s CronJob
-  (rake recommendation:classify_unclassified). No shared-infrastructure
-  changes — no RDS extensions, no Docker image bumps for the shared
-  dev Postgres. See docs/architecture/recommendation-system.md and
-  docs/architecture/adr-001-recommendation-v2.md.
-* Batch impressions on /auctions index via insert_all (one query
-  regardless of page size), debounced score recompute on user actions.
+24.11.2026
+* Personalised auction list order (recommendation system), off unless `openai.enabled`; needs cron for `rake recommendation:init` and `rake recommendation:prune_events` https://github.com/internetee/auction_center/pull/1585
 
 03.09.2026
 * Fixed sorting and full list view conflict https://github.com/internetee/auction_center/issues/1623
