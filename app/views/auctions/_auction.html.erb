@@ -1,12 +1,6 @@
 <tr id="<%= dom_id(auction) %>" data-platform="<%= auction.platform %>" class="contents"
-    data-controller="auction-timezone<%= user ? ' recommendation-dwell' : '' %>"
-    data-auction-timezone-end-time-value="<%= auction.ends_at&.iso8601 %>"
-    <% if user %>
-      data-recommendation-dwell-auction-uuid-value="<%= auction.uuid %>"
-      data-recommendation-dwell-source-value="auctions#index"
-      data-recommendation-dwell-event-type-value="auction_detail_view"
-      data-recommendation-dwell-dwell-ms-value="1500"
-    <% end %>>
+    data-controller="auction-timezone"
+    data-auction-timezone-end-time-value="<%= auction.ends_at&.iso8601 %>">
 
   <% english_auction_presenter = EnglishBidsPresenter.new(auction) %>
 

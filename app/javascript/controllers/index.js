@@ -93,6 +93,3 @@ application.register("offer-price-validator", OfferPriceValidatorController);
 
 import RecommendationTrackerController from "./recommendation_tracker_controller";
 application.register("recommendation-tracker", RecommendationTrackerController);
-
-import RecommendationDwellController from "./recommendation_dwell_controller";
-application.register("recommendation-dwell", RecommendationDwellController);
