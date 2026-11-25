@@ -17,7 +17,7 @@ class Ability
     can :manage, BillingProfile, user_id: user.id
     can :manage, Notification, user_id: user.id
     can :pay_deposit, Auction
-    can %i[read update], Invoice
+    can %i[read update], Invoice, user_id: user.id
     can %i[read create], PaymentOrder, user_id: user.id
     can :manage, PhoneConfirmation do |phone_confirmation|
       user.id == phone_confirmation.user.id

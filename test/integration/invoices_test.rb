@@ -169,26 +169,25 @@ class InvoicesIntegrationTest < ActionDispatch::IntegrationTest
     assert response.body.start_with?('%PDF-1.4')
   end
 
-  def test_show_returns_internal_server_error_for_other_users_invoice
+  def test_show_returns_not_found_for_other_users_invoice
     sign_in @user_two
 
     get invoice_path(@invoice.uuid)
-    assert_response :internal_server_error
+    assert_response :not_found
   end
 
-  def test_oneoff_returns_internal_server_error_for_other_users_invoice
+  def test_oneoff_returns_not_found_for_other_users_invoice
     sign_in @user_two
 
     post oneoff_invoice_path(@invoice.uuid), params: { amount: '1.0' }
-    assert_response :internal_server_error
+    assert_response :not_found
   end
 
-  def test_update_redirects_to_invoices_for_other_users_invoice
+  def test_update_returns_not_found_for_other_users_invoice
     sign_in @user_two
 
     patch invoice_path(@invoice.uuid), params: { invoice: { billing_profile_id: @invoice.billing_profile_id } }
-    assert_includes [302, 500], response.status
-    assert_redirected_to invoices_path if response.redirect?
+    assert_response :not_found
   end
 
   def test_index_shows_only_current_users_invoices

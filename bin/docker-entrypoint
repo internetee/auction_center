@@ -55,29 +55,6 @@ else
   echo "Database connection settings not found. Skipping database checks."
 fi
 
-# Check for Redis connection if Redis is used
-if [ -n "$REDIS_URL" ]; then
-  echo "Redis URL is set to $REDIS_URL"
-  # Attempting Redis connection
-  if command -v redis-cli &> /dev/null; then
-    echo "Checking Redis connection..."
-    REDIS_HOST=$(echo $REDIS_URL | sed -E 's/^redis:\/\/(.*):([0-9]+)\/([0-9]+)$/\1/')
-    REDIS_PORT=$(echo $REDIS_URL | sed -E 's/^redis:\/\/(.*):([0-9]+)\/([0-9]+)$/\2/')
-    
-    if [ -n "$REDIS_HOST" ] && [ -n "$REDIS_PORT" ]; then
-      until redis-cli -h $REDIS_HOST -p $REDIS_PORT ping > /dev/null 2>&1; do
-        echo "Waiting for Redis to become available..."
-        sleep 2
-      done
-      echo "Redis is available."
-    else
-      echo "Could not parse Redis host and port from REDIS_URL. Skipping Redis connection check."
-    fi
-  else
-    echo "redis-cli not available. Skipping Redis connection check."
-  fi
-fi
-
 # Prepare assets if needed (precompilation should have been done during build)
 if [ "${PRECOMPILE_ASSETS:-false}" = "true" ] && { [ ! -d /opt/webapps/app/public/assets ] || [ -z "$(ls -A /opt/webapps/app/public/assets)" ]; }; then
   echo "Precompiling assets..."

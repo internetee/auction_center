@@ -82,12 +82,6 @@ module ApplicationHelper
      { name: t(:statistics_name), path: admin_statistics_path, data: { turbolinks: false } }]
   end
 
-  def cached_footer
-    Rails.cache.fetch("footer/#{I18n.locale}_partial", expires_in: 12.hours) do
-      RemoteViewPartial.find_by(name: 'footer', locale: I18n.locale)
-    end
-  end
-
   def ended_auctions_link_available?
     AuctionCenter::Application.config.customization[:ended_auctions_link_available]
   end
