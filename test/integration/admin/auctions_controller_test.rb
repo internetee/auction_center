@@ -30,6 +30,29 @@ class AdminAuctionsControllerTest < ActionDispatch::IntegrationTest
     assert_response :ok
   end
 
+  def test_show_renders_llm_classification
+    auction = auctions(:valid_without_offers)
+    DomainClassification.create!(
+      domain_name: auction.domain_name,
+      primary_category: 'saas',
+      tags: %w[cloud analytics],
+      keywords: %w[dashboard metrics],
+      classification_source: DomainClassification::OPENAI_SOURCE,
+      confidence: 0.91,
+      classified_at: Time.current
+    )
+
+    sign_in @administrator
+    User.stub(:search_deposit_participants, User.none) do
+      get admin_auction_path(auction.id)
+    end
+
+    assert_response :ok
+    assert_includes response.body, 'saas'
+    assert_includes response.body, 'cloud'
+    assert_includes response.body, I18n.t('admin.auctions.classification.heading')
+  end
+
   def test_destroy_deletes_auction_when_not_started
     auction = auctions(:english_nil_starts)
 

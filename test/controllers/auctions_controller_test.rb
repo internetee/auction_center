@@ -93,6 +93,58 @@ class AuctionsControllerTest < ActionDispatch::IntegrationTest
     assert_equal sorted_domains, auction_domains
   end
 
+  def test_recommendation_scores_are_used_before_global_ai_score_for_logged_in_users
+    sign_in @participant
+
+    UserAuctionScore.create!(
+      user: @participant,
+      auction: @english_auction,
+      score: 0.95,
+      calculated_at: Time.current
+    )
+    UserAuctionScore.create!(
+      user: @participant,
+      auction: @auction_without_offers,
+      score: 0.10,
+      calculated_at: Time.current
+    )
+
+    Feature.stub(:open_ai_integration_enabled?, true) { get auctions_path }
+
+    assert_response :success
+
+    auction_domains = css_select('tbody#bids tr.contents td:first-child').map { |e| e.text.strip }
+
+    with_offers_index = auction_domains.index(@auction_with_offers.domain_name)
+    english_index = auction_domains.index(@english_auction.domain_name)
+    without_offers_index = auction_domains.index(@auction_without_offers.domain_name)
+
+    assert with_offers_index < english_index, "User's own auction should still come first"
+    assert english_index < without_offers_index, "Higher recommendation score should outrank lower score"
+  end
+
+  def test_leftover_recommendation_scores_are_ignored_when_openai_disabled
+    sign_in @participant
+    @english_auction.update_columns(ai_score: 10)
+    @auction_without_offers.update_columns(ai_score: 90)
+    UserAuctionScore.create!(user: @participant, auction: @english_auction, score: 0.95, calculated_at: Time.current)
+    UserAuctionScore.create!(user: @participant, auction: @auction_without_offers, score: 0.10,
+                             calculated_at: Time.current)
+
+    Feature.stub(:open_ai_integration_enabled?, false) { get auctions_path }
+
+    auction_domains = css_select('tbody#bids tr.contents td:first-child').map { |e| e.text.strip }
+    assert auction_domains.index(@auction_without_offers.domain_name) < auction_domains.index(@english_auction.domain_name),
+           'With OpenAI off the global ai_score must decide, not stored personal scores'
+  end
+
+  # v3: interest prioritisation no longer has its own string-matched sort tier.
+  # A selected category / custom interest becomes a magnet whose pull lands in
+  # user_auction_scores.score (which requires embeddings, exercised in
+  # Recommendation::MagnetScorer / Scorer unit tests and the demo comparison).
+  # At the controller level, ordering is driven by that score — see
+  # test_recommendation_scores_are_used_before_global_ai_score_for_logged_in_users.
+
   def test_sorting_with_pagination_keeps_user_auctions_prioritized
     sign_in @participant
     
@@ -126,9 +178,9 @@ class AuctionsControllerTest < ActionDispatch::IntegrationTest
   def test_admin_user_does_not_get_priority_sorting
     @admin = users(:administrator)
     sign_in @admin
-    
+
     get auctions_path, params: { admin: 'true' }
-    
+
     assert_response :success
   end
 
@@ -165,7 +217,43 @@ class AuctionsControllerTest < ActionDispatch::IntegrationTest
     assert_equal expected_domains, auction_domains
   end
 
+  def test_auction_type_column_shown_by_default
+    get auctions_path
+
+    assert_response :success
+    assert_includes response.body, I18n.t('auctions.auction_type')
+    assert_select 'td.auction-tags', false
+  end
+
+  def test_tags_column_replaces_auction_type_when_flag_enabled
+    DomainClassification.create!(
+      domain_name: @auction_without_offers.domain_name,
+      tags: %w[crypto defi],
+      classification_source: DomainClassification::OPENAI_SOURCE,
+      confidence: 0.9,
+      classified_at: Time.current
+    )
+
+    with_tags_display(true) do
+      get auctions_path
+    end
+
+    assert_response :success
+    assert_includes response.body, I18n.t('auctions.tags')
+    assert_select 'td.auction-tags'
+    assert_select 'td.auction-tags span.c-badge', text: 'crypto'
+  end
+
   private
+
+  def with_tags_display(enabled)
+    config = AuctionCenter::Application.config.customization
+    original = config[:auction_tags_display_enabled]
+    config[:auction_tags_display_enabled] = enabled
+    yield
+  ensure
+    config[:auction_tags_display_enabled] = original
+  end
 
   def query_from_link(title)
     link = css_select('a').find { |node| node.text.strip == title }

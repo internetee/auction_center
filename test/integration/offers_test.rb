@@ -4,6 +4,7 @@ class OffersAuctionFlowTest < ActionDispatch::IntegrationTest
   OFFER_COUNT = 'Offer.count'
 
   include Devise::Test::IntegrationHelpers
+  include ActiveJob::TestHelper
 
   def setup
     @user = users(:participant)
@@ -15,6 +16,7 @@ class OffersAuctionFlowTest < ActionDispatch::IntegrationTest
 
     Recaptcha.configuration.skip_verify_env.push('test')
     travel_to Time.parse('2010-07-05 11:30 +0000').in_time_zone
+    clear_enqueued_jobs
   end
 
   def test_user_can_create_a_bid
@@ -27,9 +29,13 @@ class OffersAuctionFlowTest < ActionDispatch::IntegrationTest
       }
     }
 
-    post auction_offers_path(auction_uuid: @auction.uuid),
-         params: params,
-         headers: {}
+    Feature.stub(:open_ai_integration_enabled?, true) do
+      assert_enqueued_with(job: Recommendation::RefreshSingleUserAuctionScoresJob, args: [@user.id]) do
+        post auction_offers_path(auction_uuid: @auction.uuid),
+             params: params,
+             headers: {}
+      end
+    end
 
     assert @auction.offers.present?
     assert_equal @auction.offers.first.cents, 600
@@ -155,7 +161,11 @@ class OffersAuctionFlowTest < ActionDispatch::IntegrationTest
       }
     }
 
-    patch offer_path(uuid: offer.uuid), params: params
+    Feature.stub(:open_ai_integration_enabled?, true) do
+      assert_enqueued_with(job: Recommendation::RefreshSingleUserAuctionScoresJob, args: [@user.id]) do
+        patch offer_path(uuid: offer.uuid), params: params
+      end
+    end
     offer.reload
 
     assert_equal offer.cents, 1500

@@ -21,6 +21,9 @@ default: &default
   mobile_sms_sent_time_limit_in_minutes: 1
   auction_filter_available: false
   ended_auctions_link_available: false
+  # Experimental: on the public auction list, replace the "auction type" column
+  # with the domain's LLM-derived tags. Off (or absent) => auction-type icon.
+  auction_tags_display_enabled: false
 
   mailer:
     # Host to which links from emails should redirect to

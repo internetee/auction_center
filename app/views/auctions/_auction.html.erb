@@ -1,11 +1,27 @@
-<tr id="<%= dom_id(auction) %>" data-platform="<%= auction.platform %>" class="contents" 
-    data-controller="auction-timezone" data-auction-timezone-end-time-value="<%= auction.ends_at&.iso8601 %>">
-  
+<tr id="<%= dom_id(auction) %>" data-platform="<%= auction.platform %>" class="contents"
+    data-controller="auction-timezone"
+    data-auction-timezone-end-time-value="<%= auction.ends_at&.iso8601 %>">
+
   <% english_auction_presenter = EnglishBidsPresenter.new(auction) %>
 
-  <td><h3 data-controller="slashed-zero"><%= auction.domain_name %></h3></td>
-  
-  <td><%= component 'common/auction_type_icon', auction: auction %></td>
+  <td>
+    <h3 data-controller="slashed-zero"><%= auction.domain_name %></h3>
+  </td>
+
+  <% if auction_tags_display_enabled? %>
+    <td class="auction-tags">
+      <% tags = auction_display_tags(auction, local_assigns.fetch(:classifications, nil)) %>
+      <% if tags.any? %>
+        <div class="u-flex" style="gap: 4px; flex-wrap: wrap;">
+          <% tags.each do |tag| %>
+            <span class="c-badge c-badge--blue"><%= tag %></span>
+          <% end %>
+        </div>
+      <% end %>
+    </td>
+  <% else %>
+    <td><%= component 'common/auction_type_icon', auction: auction %></td>
+  <% end %>
 
   <td><span data-auction-timezone-target="endtime"><%= auction.ends_at&.strftime('%d/%m/%Y %H:%M') %></span></td>
 
@@ -16,7 +32,7 @@
       <span data-controller="slashed-zero"><%= auction.users_price.zero? ? '' : "#{auction.users_price} €" %></span>
     <% end %>
   </td>
-  
+
   <% if auction.english? %>
     <td class="initial-color current_<%= auction.currently_winning_offer&.user_id %>_user">
       <%= english_auction_presenter.bidder_name(auction.currently_winning_offer, user) %>

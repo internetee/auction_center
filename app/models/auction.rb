@@ -8,6 +8,7 @@ class Auction < ApplicationRecord # rubocop:disable Metrics
   ENGLISH = '1'.freeze
 
   after_create :find_auction_turns
+  after_create :enqueue_domain_classification
   validates :domain_name, presence: true
 
   attr_accessor :skip_broadcast, :skip_validation
@@ -21,6 +22,8 @@ class Auction < ApplicationRecord # rubocop:disable Metrics
   has_many :offers, dependent: :delete_all
   has_many :domain_participate_auctions, dependent: :delete_all
   has_many :domain_offer_histories
+  has_many :recommendation_events, dependent: :nullify
+  has_many :user_auction_scores, dependent: :delete_all
   has_one :result, required: false, dependent: :destroy
 
   enum :platform, %i[blind english]
@@ -203,6 +206,12 @@ class Auction < ApplicationRecord # rubocop:disable Metrics
 
   def find_auction_turns
     update(turns_count: calculate_turns_count)
+  end
+
+  def enqueue_domain_classification
+    return if domain_name.blank?
+
+    Recommendation::ClassifyDomainJob.perform_later(domain_name)
   end
 
   def calculate_turns_count

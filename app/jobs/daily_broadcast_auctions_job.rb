@@ -5,14 +5,17 @@ class DailyBroadcastAuctionsJob < ApplicationJob
         unsubscribe = Rails.application.message_verifier(:unsubscribe).generate(user.id)
         NotificationMailer.daily_auctions_broadcast_email(
           recipient: user.email,
-          auctions: active_auctions,
+          auctions: active_auctions_for(user),
           unsubscribe: unsubscribe
         ).deliver_later
       end
     end
   end
 
-  def active_auctions
+  def active_auctions_for(user)
+    scored_auctions = Recommendation::Scorer.top_auctions_for(user:, limit: 20).to_a
+    return scored_auctions if scored_auctions.any?
+
     Auction.active.to_a
   end
 

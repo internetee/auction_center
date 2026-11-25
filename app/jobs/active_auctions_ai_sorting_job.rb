@@ -50,15 +50,15 @@ class ActiveAuctionsAiSortingJob < ApplicationJob
   end
 
   def chat_parameters(auctions_list, temp)
+    model_name = openai_model
     {
-      model: openai_model,
+      model: model_name,
       response_format: {
         type: 'json_schema',
         json_schema: schema
       },
-      messages: messages(auctions_list),
-      temperature: temp
-    }
+      messages: messages(auctions_list)
+    }.merge(OpenaiStructuredOutputSupport.temperature_options(model_name, temp))
   end
 
   # rubocop:disable Metrics/MethodLength
@@ -144,6 +144,6 @@ class ActiveAuctionsAiSortingJob < ApplicationJob
   end
 
   def openai_model
-    Setting.find_by(code: 'openai_model').retrieve
+    OpenaiStructuredOutputSupport.model(Setting.find_by(code: 'openai_model').retrieve)
   end
 end

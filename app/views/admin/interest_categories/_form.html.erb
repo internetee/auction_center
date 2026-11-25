@@ -1,0 +1,41 @@
+<%= form_with model: interest_category, url: url do |f| %>
+  <% if interest_category.errors.any? %>
+    <div class="ui message">
+      <div class="header"><%= t(:errors_name) %></div>
+      <ul id="errors">
+        <% interest_category.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div style='display: flex; align-items: center; gap: 0 20px; margin-bottom: 20px;'>
+    <%= f.label :code, t('interest_categories.code'), style: 'width: 150px;' %>
+    <%= f.text_field :code, class: "form-control" %>
+  </div>
+  <div style='display: flex; align-items: center; gap: 0 20px; margin-bottom: 20px;'>
+    <%= f.label :name_en, t('interest_categories.name_en'), style: 'width: 150px;' %>
+    <%= f.text_field :name_en, class: "form-control" %>
+  </div>
+  <div style='display: flex; align-items: center; gap: 0 20px; margin-bottom: 20px;'>
+    <%= f.label :name_et, t('interest_categories.name_et'), style: 'width: 150px;' %>
+    <%= f.text_field :name_et, class: "form-control" %>
+  </div>
+  <div style='display: flex; align-items: center; gap: 0 20px; margin-bottom: 20px;'>
+    <%= f.label :position, t('interest_categories.position'), style: 'width: 150px;' %>
+    <%= f.number_field :position, class: "form-control" %>
+  </div>
+  <div style='display: flex; align-items: center; gap: 0 20px; margin-bottom: 20px;'>
+    <%= f.label :active, t('interest_categories.active'), style: 'width: 150px;' %>
+    <%= f.check_box :active %>
+  </div>
+
+  <div style='padding: 1rem 0; display: flex; justify-content: end;'>
+    <%= f.button t(:submit), class: "c-btn c-btn--blue", data: { turbo: false } %>
+  </div>
+
+  <div class="c-table__filters__btns" style='padding: 1rem 0; display: flex; justify-content: start;'>
+    <%= link_to t(:back), admin_interest_categories_path, class: "c-btn c-btn--green" %>
+  </div>
+<% end %>

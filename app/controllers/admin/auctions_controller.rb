@@ -37,6 +37,7 @@ module Admin
 
     # GET /admin/auctions/1
     def show
+      @classification = DomainClassification.find_by(domain_name: @auction.domain_name.to_s.downcase)
       @offers = @auction.offers.order(cents: :desc)
       users = User.search_deposit_participants(params)
       @pagy, @users = pagy(users, items: params[:per_page] ||= 20, link_extra: 'data-turbo-action="advance"')

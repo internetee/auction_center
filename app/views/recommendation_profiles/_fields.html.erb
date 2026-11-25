@@ -1,0 +1,57 @@
+<div class="o-card">
+  <h2 class="o-card__title c-account__title"><%= t('recommendation_profiles.form.title') %></h2>
+  <p class="c-account__subtitle"><%= t('recommendation_profiles.form.subtitle') %></p>
+
+  <div class="c-account__input u-mb-20" data-controller="form--custom-interest-tags">
+    <label><%= t('recommendation_profiles.form.interest_categories') %></label>
+    <%= hidden_field_tag "#{form.object_name}[interest_categories][]", '' %>
+    <%# Sentinel so removing every custom-interest tag still submits the param.
+        Without it the key vanishes, strong-params drops it, and the setter that
+        clears old free-text interests never runs — they'd linger forever. %>
+    <%= hidden_field_tag "#{form.object_name}[custom_interests][]", '' %>
+    <div class="u-flex u-flex-col" style="gap: 12px; padding-left: 16px;">
+      <%# `other` is not a user-facing checkbox: it is derived server-side from
+          having any free-text keyword (RecommendationProfile#combine_categories_with_custom).
+          The free-text field below is always shown instead. %>
+      <% Recommendation::InterestCatalog.categories.reject { |category| category == RecommendationProfile::OTHER_CATEGORY }.each_slice(2) do |row| %>
+        <div class="u-flex u-align-center" style="gap: 16px; flex-wrap: wrap;">
+          <% row.each do |category| %>
+            <label class="o-checkbox-container o-checkbox-container--green c-login__checkbox-container">
+              <span class="o-checkbox-text"><%= Recommendation::InterestCatalog.label_for(category) %></span>
+              <%= check_box_tag "#{form.object_name}[interest_categories][]",
+                                category,
+                                form.object.interest_categories.include?(category),
+                                class: 'o-checkbox-sample' %>
+              <span class="o-checkmark-sample"></span>
+            </label>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+
+    <label class="u-mt-24" for="<%= "#{form.object_name}_other_interests" %>"><%= t('recommendation_profiles.form.other_interests') %></label>
+    <div style="padding-left: 16px;">
+      <input type="text"
+             id="<%= "#{form.object_name}_other_interests" %>"
+             data-form--custom-interest-tags-target="input"
+             data-hidden-input-name="<%= "#{form.object_name}[custom_interests][]" %>"
+             data-max-count="<%= RecommendationProfile::CUSTOM_INTERESTS_LIMIT %>"
+             maxlength="<%= RecommendationProfile::CUSTOM_INTEREST_MAX_LENGTH %>"
+             data-action="keydown->form--custom-interest-tags#add"
+             placeholder="<%= t('recommendation_profiles.form.other_interests_placeholder') %>">
+
+      <p class="c-account__subtitle"><%= t('recommendation_profiles.form.other_interests_hint', count: RecommendationProfile::CUSTOM_INTERESTS_LIMIT) %></p>
+
+      <div data-form--custom-interest-tags-target="list" style="margin-top: 12px;">
+        <% form.object.custom_interests.each do |interest| %>
+          <span class="c-badge c-badge--blue c-badge--interest" data-custom-interest-value="<%= interest %>">
+            <span><%= interest %></span>
+            <button type="button" class="c-badge__remove" data-action="form--custom-interest-tags#remove">x</button>
+            <%= hidden_field_tag "#{form.object_name}[custom_interests][]", interest %>
+          </span>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -6,15 +6,16 @@ updates:
       interval: "weekly"
     allow:
       - dependency-type: "direct"
-        update-type: "version-update:semver-patch"
-      - dependency-type: "direct"
-        update-type: "version-update:semver-minor"
+    # Patch and minor only; `update-type` is not valid under `allow`.
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
   - package-ecosystem: "bundler"
     directory: "/"
     schedule:
       interval: "weekly"
     allow:
       - dependency-type: "direct"
-        update-type: "version-update:semver-patch"
-      - dependency-type: "direct"
-        update-type: "version-update:semver-minor"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]

@@ -34,6 +34,9 @@ application.register("form--autosave", Form__AutosaveController);
 import Form__CheckAllController from "./form/check_all_controller";
 application.register("form--check-all", Form__CheckAllController);
 
+import Form__CustomInterestTagsController from "./form/custom_interest_tags_controller";
+application.register("form--custom-interest-tags", Form__CustomInterestTagsController);
+
 import Table__OrdeableController from "./table/ordeable_controller";
 application.register("table--ordeable", Table__OrdeableController);
 
@@ -87,3 +90,6 @@ application.register("slashed-zero", SlashedZeroController);
 
 import OfferPriceValidatorController from "./offer_price_validator_controller";
 application.register("offer-price-validator", OfferPriceValidatorController);
+
+import RecommendationTrackerController from "./recommendation_tracker_controller";
+application.register("recommendation-tracker", RecommendationTrackerController);

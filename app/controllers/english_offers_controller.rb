@@ -20,6 +20,7 @@ class EnglishOffersController < ApplicationController
 
     BillingProfile.create_default_for_user(current_user.id)
     @offer = Offer.new(auction_id: @auction.id, user_id: current_user.id)
+    track_detail_view
   end
 
   # POST /auctions/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/offers
@@ -36,6 +37,16 @@ class EnglishOffersController < ApplicationController
       send_outbided_notification(auction: @auction, offer: @offer, flash:)
       update_auction_values(@auction, t('english_offers.create.created'))
       Rails.logger.info("User #{current_user.id} created offer #{@offer.id} for auction #{@auction.id}")
+      Recommendation::RefreshSingleUserAuctionScoresJob.enqueue_debounced(current_user.id)
+      Recommendation::ClassifyDomainJob.perform_later(@auction.domain_name)
+      Recommendation::EventTracker.call(
+        user: current_user,
+        auction: @auction,
+        event_type: 'bid_create',
+        source: 'english_offers#create',
+        properties: { offer_id: @offer.id, cents: @offer.cents },
+        request:
+      )
     else
       errors = if @offer.errors.full_messages_for(:cents).present?
                  @offer.errors.full_messages_for(:cents).join
@@ -70,6 +81,16 @@ class EnglishOffersController < ApplicationController
       send_outbided_notification(auction: @auction, offer: @offer, flash:)
       update_auction_values(@auction, t('english_offers.edit.bid_updated'))
       Rails.logger.info("User #{current_user.id} updated offer #{@offer.id} for auction #{@auction.id}")
+      Recommendation::RefreshSingleUserAuctionScoresJob.enqueue_debounced(current_user.id)
+      Recommendation::ClassifyDomainJob.perform_later(@auction.domain_name)
+      Recommendation::EventTracker.call(
+        user: current_user,
+        auction: @auction,
+        event_type: 'bid_update',
+        source: 'english_offers#update',
+        properties: { offer_id: @offer.id, cents: @offer.cents },
+        request:
+      )
     else
       errors = if @offer.errors.full_messages_for(:cents).present?
                  @offer.errors.full_messages_for(:cents).join
@@ -102,5 +123,17 @@ class EnglishOffersController < ApplicationController
   def update_params
     update_params = params.require(:offer).permit(:price, :billing_profile_id)
     merge_updated_by(update_params)
+  end
+
+  def track_detail_view
+    return unless current_user && @auction
+
+    Recommendation::EventTracker.call(
+      user: current_user,
+      auction: @auction,
+      event_type: 'auction_detail_view',
+      source: 'english_offers#new',
+      request:
+    )
   end
 end

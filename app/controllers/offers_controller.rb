@@ -13,6 +13,7 @@ class OffersController < ApplicationController
   def new
     BillingProfile.create_default_for_user(current_user.id)
     @offer = Offer.new(auction_id: @auction.id, user_id: current_user.id)
+    track_detail_view
   end
 
   # POST /auctions/aa450f1a-45e2-4f22-b2c3-f5f46b5f906b/offers
@@ -30,6 +31,16 @@ class OffersController < ApplicationController
         end
       elsif create_predicate
         Rails.logger.info("User #{current_user.id} created offer #{@offer.id} for auction #{@auction.id}")
+        Recommendation::RefreshSingleUserAuctionScoresJob.enqueue_debounced(current_user.id)
+        Recommendation::ClassifyDomainJob.perform_later(@auction.domain_name)
+        Recommendation::EventTracker.call(
+          user: current_user,
+          auction: @auction,
+          event_type: 'bid_create',
+          source: 'offers#create',
+          properties: { offer_id: @offer.id, cents: @offer.cents },
+          request:
+        )
         format.html { redirect_to root_path, notice: t('.created') }
         format.json { render :show, status: :created, location: @offer }
       else
@@ -67,6 +78,16 @@ class OffersController < ApplicationController
 
       if update_predicate
         Rails.logger.info("User #{current_user.id} updated offer #{@offer.id} for auction #{@offer.auction.id}")
+        Recommendation::RefreshSingleUserAuctionScoresJob.enqueue_debounced(current_user.id)
+        Recommendation::ClassifyDomainJob.perform_later(@offer.auction.domain_name)
+        Recommendation::EventTracker.call(
+          user: current_user,
+          auction: @offer.auction,
+          event_type: 'bid_update',
+          source: 'offers#update',
+          properties: { offer_id: @offer.id, cents: @offer.cents },
+          request:
+        )
         format.html { redirect_to root_path, notice: t(:updated), status: :see_other }
         format.json { render :show, status: :ok, location: @offer }
       else
@@ -118,5 +139,17 @@ class OffersController < ApplicationController
   def update_params
     update_params = params.require(:offer).permit(:price, :billing_profile_id)
     merge_updated_by(update_params)
+  end
+
+  def track_detail_view
+    return unless current_user && @auction
+
+    Recommendation::EventTracker.call(
+      user: current_user,
+      auction: @auction,
+      event_type: 'auction_detail_view',
+      source: 'offers#new',
+      request:
+    )
   end
 end

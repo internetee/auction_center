@@ -1,0 +1,205 @@
+module Recommendation
+  # One-command orchestrator for the whole recommendation pipeline:
+  #   classify -> embed -> global ai_score -> per-user scores.
+  #
+  # Used by:
+  #   - rake recommendation:init       (prod, force: false — incremental)
+  #   - rake recommendation:init_demo  (staging — mock data, then this)
+  #   - RebuildRecommendationsJob      (admin /admin/jobs, force: true — re-tag
+  #                                     every domain after the interest catalog
+  #                                     changed; runs in time-boxed slices)
+  #
+  # Without a deadline every stage runs synchronously and drains the per-run
+  # batch caps, so when run returns the pipeline is actually complete — not
+  # merely enqueued. With a deadline (job mode) it stops between LLM batches
+  # once the time is up and returns summary[:incomplete]; the caller re-runs it
+  # (without force) to continue, and the final ai/user scoring is enqueued.
+  class PipelineRunner
+    AI_SCORE_PROMPT_SETTING = 'openai_domains_evaluation_prompt'.freeze
+    # db/seeds.rb seeds this setting with the literal placeholder 'prompt'.
+    # Running ai_score against it produces meaningless scores, so we skip.
+    AI_SCORE_PLACEHOLDER_PROMPT = 'prompt'.freeze
+    # Safety cap so a stubborn domain that keeps re-entering scope can never
+    # loop forever (progress detection already stops normal backlogs sooner).
+    MAX_BATCHES = 100
+
+    def self.run(force: false, deadline: nil)
+      new(force:, deadline:).run
+    end
+
+    def initialize(force:, deadline: nil)
+      @force = force
+      @deadline = deadline
+      @summary = {}
+    end
+
+    def run
+      unless Feature.open_ai_integration_enabled?
+        log('OpenAI integration disabled — nothing to do')
+        return @summary
+      end
+
+      if @force
+        invalidate_classifications
+        invalidate_category_embeddings
+        invalidate_custom_interest_embeddings
+        # Job mode: stop here so a delayed_job retry of a killed slice never wipes finished work.
+        return incomplete if @deadline
+      end
+      enrich_categories
+      embed_custom_interests
+      drain(Recommendation::ClassifyUnclassifiedDomainsJob, :classify, classify_limit) { classify_pending_count }
+      drain(Recommendation::EmbedUnembeddedDomainsJob, :embed) { embed_pending_count }
+      return incomplete if out_of_time?
+
+      refresh_ai_scores
+      refresh_user_scores
+
+      log("pipeline complete: #{@summary.inspect}")
+      @summary
+    end
+
+    private
+
+    # force mode: push every LLM classification past the staleness threshold so
+    # ClassifyUnclassifiedDomainsJob re-classifies it under the current interest
+    # catalog. The re-classify upsert resets the embedding automatically, so the
+    # embed stage repopulates vectors from the fresh keywords.
+    def invalidate_classifications
+      count = DomainClassification
+              .where(classification_source: DomainClassification::OPENAI_SOURCE)
+              .update_all(classified_at: 7.months.ago)
+      @summary[:invalidated] = count
+      log("force: invalidated #{count} classification(s) for re-run")
+    end
+
+    # Run the batched job until its pending backlog stops shrinking. Stopping on
+    # "no progress" (rather than on needs_to_run?) means stubborn rows — e.g. a
+    # domain the LLM keeps scoring below the confidence threshold — cost at most
+    # one extra batch instead of looping.
+    def drain(job_class, key, *args)
+      batches = 0
+      previous = nil
+      while (current = yield).positive? && (previous.nil? || current < previous) &&
+            batches < MAX_BATCHES && !out_of_time?
+        job_class.perform_now(*args)
+        previous = current
+        batches += 1
+      end
+      @summary[key] = { batches:, remaining: yield }
+      log("#{job_class.name}: #{batches} batch(es), #{@summary[key][:remaining]} remaining")
+    end
+
+    # v3: turn interest categories into embeddable magnets (LLM keywords + vector)
+    # before scoring. Independent of domains — safe to run first. Cheap (~15 rows).
+    def enrich_categories
+      return unless InterestCategory.column_names.include?('embedding')
+
+      count = Recommendation::EnrichInterestCategoriesJob.perform_now
+      @summary[:categories_enriched] = count
+      log("categories enriched: #{count.inspect}")
+    end
+
+    # force mode (catalog changed): drop category vectors so enrich_categories
+    # rebuilds them under the new/edited vocabulary.
+    def invalidate_category_embeddings
+      return unless InterestCategory.column_names.include?('embedding')
+
+      count = InterestCategory.update_all(embedded_at: nil, embedding: nil)
+      @summary[:categories_invalidated] = count
+      log("force: invalidated #{count} category embedding(s)")
+    end
+
+    # force mode: drop per-user custom-interest vectors so embed_custom_interests
+    # rebuilds them (e.g. after an embedding-model change).
+    def invalidate_custom_interest_embeddings
+      return unless RecommendationProfile.column_names.include?('custom_interest_vectors')
+
+      count = RecommendationProfile.update_all(custom_interest_vectors: [], custom_interests_embedded_at: nil)
+      @summary[:custom_interests_invalidated] = count
+      log("force: invalidated custom-interest vectors on #{count} profile(s)")
+    end
+
+    # v3: backfill custom-interest vectors for profiles whose free-text interests
+    # were set before this feature existed (or before a force reset), or whose
+    # embed job silently no-op'd (OpenAI off / worker down). The after_save_commit
+    # trigger only fires on a profile *save*, so those would otherwise never get
+    # custom magnets until they re-saved. Idempotent: re-embeds a profile only
+    # when its stored vectors don't match its current custom interests.
+    def embed_custom_interests
+      return unless RecommendationProfile.column_names.include?('custom_interest_vectors')
+
+      count = 0
+      RecommendationProfile.where.not(interest_keywords: []).find_each do |profile|
+        interests = profile.custom_interests
+        next if interests.empty?
+
+        vector_texts = Array(profile.custom_interest_vectors).filter_map { |v| v['text'] || v[:text] }
+        next if vector_texts.sort == interests.sort
+
+        break if out_of_time?
+
+        Recommendation::EmbedCustomInterestsJob.perform_now(profile.id)
+        count += 1
+      end
+      @summary[:custom_interests_embedded] = count
+      log("custom interests embedded for #{count} profile(s)")
+    end
+
+    def classify_pending_count
+      Recommendation::ClassifyUnclassifiedDomainsJob.scope.count +
+        Recommendation::ClassifyUnclassifiedDomainsJob.missing_domains.size
+    end
+
+    def embed_pending_count
+      return 0 unless DomainClassification.column_names.include?('embedding')
+
+      Recommendation::EmbedUnembeddedDomainsJob.scope.count
+    end
+
+    def refresh_ai_scores
+      prompt = Setting.find_by(code: AI_SCORE_PROMPT_SETTING)&.retrieve.to_s.strip
+      if prompt.blank? || prompt == AI_SCORE_PLACEHOLDER_PROMPT
+        @summary[:ai_score] = :skipped
+        log("skipping ai_score: #{AI_SCORE_PROMPT_SETTING} is not configured (#{prompt.inspect})")
+        return
+      end
+
+      # Job mode: the AI sort takes about a minute, so it gets its own job instead of eating the slice.
+      @deadline ? ActiveAuctionsAiSortingJob.perform_later : ActiveAuctionsAiSortingJob.perform_now
+      @summary[:ai_score] = @deadline ? :enqueued : :done
+      log("ai_score #{@summary[:ai_score]}")
+    end
+
+    def refresh_user_scores
+      count = 0
+      User.where('? = ANY (roles)', User::PARTICIPANT_ROLE).find_each do |user|
+        # Job mode: scoring takes seconds per user, so fan out instead of blocking the slice.
+        @deadline ? RefreshSingleUserAuctionScoresJob.perform_later(user.id) : Scorer.refresh_for(user:)
+        count += 1
+      end
+      @summary[:users_scored] = count
+      log("personal scores refreshed for #{count} participant(s)")
+    end
+
+    # One LLM call per drain step in job mode, so a step can't run past the delayed_job cap.
+    def classify_limit
+      klass = Recommendation::ClassifyUnclassifiedDomainsJob
+      @deadline ? klass::BATCH_SIZE : klass::MAX_DOMAINS_PER_RUN
+    end
+
+    def out_of_time?
+      @deadline.present? && Time.current >= @deadline
+    end
+
+    def incomplete
+      @summary[:incomplete] = true
+      log("time slice used up, continuing in the next job: #{@summary.inspect}")
+      @summary
+    end
+
+    def log(message)
+      Rails.logger.info("[Recommendation::PipelineRunner] #{message}")
+    end
+  end
+end

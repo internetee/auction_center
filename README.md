@@ -59,6 +59,86 @@ To send out emails and perform other asynchronous tasks, we use a background pro
 
 Part of running the application according to EIS business rules includes creating new auctions at the beginning of the day. Jobs are scheduled outside of the application, as the exact times are no concern of the application.
 
+## Recommendation system
+
+The public auction list is personalised: each user sees auctions ranked by how
+well every domain matches their behaviour and stated interests. Ranking is
+built on a single embedding space ("magnets") — everything about a user (bids,
+wishlist, views, selected categories, free-text interests) becomes a vector,
+and domains are ranked by their pull towards those vectors.
+
+### Prerequisite: feature flag
+
+The whole system is gated by the OpenAI integration. In
+`config/customization.yml`:
+
+```yaml
+openai:
+  enabled: true
+  access_token: 'sk-...'
+```
+
+When disabled, no classification, embedding or scoring runs, no user activity
+(views, impressions, bids, wishlist changes) is recorded in `recommendation_events`,
+stored personal scores are ignored, and the list falls back to the global
+`ai_score` / default order. A running job worker
+(`bundle exec rails jobs:work`) is required for every `*_later` job below.
+
+### What runs automatically (event-driven, no manual action)
+
+| Trigger | Job | Effect |
+|---|---|---|
+| A new auction is created | `ClassifyDomainJob` (`Auction after_create`) | Classifies + embeds that domain |
+| A user bids or changes the wishlist | `RefreshSingleUserAuctionScoresJob` (30 s debounce) | Re-scores that one user (views and clicks are recorded and used on the next re-score) |
+| A user saves their interest profile | `RefreshSingleUserAuctionScoresJob` (debounced) | Re-scores that user |
+| A user adds/edits free-text ("other") interests | `EmbedCustomInterestsJob` | Embeds the new interests, then re-scores |
+| An admin adds/renames an interest category | `EnrichInterestCategoriesJob` | Generates description + keywords + embedding for that category |
+
+In normal operation this is all that happens — the system keeps itself current
+as auctions, bids and profiles change.
+
+### What runs on a schedule (cron)
+
+Only two scheduled commands (outside the app, like the other cron jobs):
+
+```bash
+bundle exec rake recommendation:init          # the whole pipeline, incremental
+bundle exec rake recommendation:prune_events  # retention: events >6mo (impressions >1mo)
+```
+
+`init` is the single pipeline entry point. It is incremental (`force: false`):
+it enriches interest categories, backfills embeddings for existing users' custom
+interests, then **drains the batched classify + embed passes itself** — picking
+up any domain that is unclassified, stale (>6mo), or whose vector was built under
+an older embedding-input format (`DomainEmbedder::INPUT_VERSION`, so a format
+bump rolls out on the next run with no extra command) — refreshes the global
+`ai_score`, and recomputes every participant's personal scores. Already-done work
+is **not** redone. Run it on every deploy; the same run also serves as the cron
+catch-up, so there is no separate classify/embed cron task.
+
+### What you run manually (rarely)
+
+| Command / action | When to use |
+|---|---|
+| `rake recommendation:backfill` | **Once**, when first enabling the feature — classifies the full historical domain set (ended auctions, wishlist, offer histories, results), a wider universe than `init` (active only), so past-bid domains get embeddings and can form magnets |
+| `rake recommendation:init_demo` | Staging/test only (`demo:*` tasks abort in production) — seeds mock active auctions + signals, then runs the pipeline |
+| `Recommendation::RebuildRecommendationsJob` on **/admin/jobs** | Full re-tag of **every** domain (`force: true`): re-classifies via the LLM (fills the `description` field) and re-embeds. Run after the interest-category catalog changes, or once to backfill descriptions after the embedding-enrichment change. Runs as a chain of short jobs (each stops after ~1 minute, between LLM calls, because delayed_job kills jobs after 5 minutes), each continuing where the previous stopped; final AI and per-user scoring is enqueued as separate jobs. On dev, 198 domains took ~11 minutes (about 2 minutes per 50 domains with gpt-5) |
+
+### Where to see the results (admin)
+
+- **/admin/interest_categories** — each category shows its AI status
+  (enriched / pending); the edit page shows the generated description,
+  keywords and embedding details.
+- **/admin/auctions/:id** — the auction detail page shows the domain's full LLM
+  classification (category, tags, keywords, audience, languages, brandability,
+  confidence, embedding status).
+
+### Experimental: tags on the public list
+
+`auction_tags_display_enabled` in `config/customization.yml` (default `false`)
+swaps the "auction type" column on the public auction list for the domain's
+LLM-derived tags. A missing key is treated as `false`.
+
 ## Audits
 
 Due to various regulatory requirements, all database tables are audited according to the following procedure:

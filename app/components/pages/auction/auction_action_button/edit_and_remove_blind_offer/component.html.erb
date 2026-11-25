@@ -1,6 +1,16 @@
 <div class="c-btn-group c-btn-group--ghost">
   <%= component 'common/links/link_button', link_title: nil, href: edit_offer_path(@auction.users_offer_uuid),
-                color: 'ghost', options: { data: { turbo_frame: 'modal' } } do %>
+                color: 'ghost',
+                options: {
+                  data: {
+                    turbo_frame: 'modal',
+                    controller: 'recommendation-tracker',
+                    action: 'click->recommendation-tracker#track',
+                    recommendation_tracker_auction_uuid_value: @auction.uuid,
+                    recommendation_tracker_source_value: 'auction_action_edit_blind_offer',
+                    recommendation_tracker_event_type_value: 'auction_click'
+                  }
+                } do %>
     <span class="o-edit-icon"></span>
   <% end %>
   <%= component 'common/buttons/button_to', title_caption: nil, href: offer_path(@auction.offer_from_user(@user).uuid), color: 'ghost',

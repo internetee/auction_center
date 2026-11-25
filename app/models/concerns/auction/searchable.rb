@@ -92,7 +92,9 @@ module Auction::Searchable
       sort_admin_column = params[:sort_by].presence_in(FILTERING_COLUMNS) || 'id'
       sort_direction = params[:sort_direction].presence_in(DIRECTION) || 'desc'
       is_from_admin = params[:admin] == 'true'
-      should_apply_user_sorting = params[:sort_by].blank? && params[:sort_direction].blank? && !is_from_admin && current_user
+      no_explicit_sort = params[:sort_by].blank? && params[:sort_direction].blank? && !is_from_admin
+      should_apply_user_sorting = no_explicit_sort && current_user
+      should_apply_anonymous_default = no_explicit_sort && current_user.nil?
 
       query =
         with_highest_offers
@@ -107,6 +109,8 @@ module Auction::Searchable
 
       if should_apply_user_sorting
         query.sorted_for_user(current_user)
+      elsif should_apply_anonymous_default
+        query.order(Arel.sql('auctions.ends_at ASC NULLS LAST'))
       elsif params[:sort_by] == 'users_price'
         query.with_max_offer_cents_for_english_auction(current_user)
              .order("offers_subquery.max_offer_cents #{sort_direction} NULLS LAST")

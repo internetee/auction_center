@@ -1,3 +1,6 @@
+24.11.2026
+* Personalised auction list order (recommendation system), off unless `openai.enabled`; needs cron for `rake recommendation:init` and `rake recommendation:prune_events` https://github.com/internetee/auction_center/pull/1585
+
 03.09.2026
 * Fixed sorting and full list view conflict https://github.com/internetee/auction_center/issues/1623
 * Menu options not availabel to anonymous users are hidden now https://github.com/internetee/auction_center/issues/1624

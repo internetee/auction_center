@@ -274,7 +274,7 @@ openai_model:
   code: 'openai_model'
   description: |
     OpenAI API model
-  value: 'gpt-3.5-turbo'
+  value: 'gpt-5'
   value_format: string
 
 openai_domains_evaluation_prompt:
@@ -324,4 +324,12 @@ contact_organization_email:
     Default organization email
   value: 'info@internet.ee'
   value_format: string
+
+recommendation_interests_enabled:
+  code: 'recommendation_interests_enabled'
+  description: |
+    When 'true', users see the auction-interests selection (prompt + form).
+    Keep 'false' until interest categories are populated in admin.
+  value: 'true'
+  value_format: boolean
 

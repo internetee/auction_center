@@ -1,0 +1,29 @@
+en:
+  interest_categories:
+    code: "Code"
+    name_en: "Name (English)"
+    name_et: "Name (Estonian)"
+    position: "Position"
+    active: "Active"
+    yes: "Yes"
+    no: "No"
+    enrichment_status: "AI status"
+    enriched: "Enriched"
+    pending: "Pending"
+    enrichment_heading: "AI enrichment (LLM)"
+    description: "Description"
+    keywords: "Keywords"
+    embedding: "Embedding"
+    embedded_at: "Enriched at"
+    model: "Model"
+    not_enriched: "Not enriched yet. Run the recommendation pipeline (rake recommendation:init) or the EnrichInterestCategoriesJob to generate the description, keywords and embedding."
+  admin:
+    interest_categories:
+      index:
+        title: "Interest categories"
+        new: "New category"
+        rebuild_notice: "After adding, renaming, or deleting categories, run the Recommendation::RebuildRecommendationsJob job on the Jobs page to re-classify domains and refresh recommendations under the new categories."
+      new:
+        title: "New interest category"
+      edit:
+        title: "Edit interest category"

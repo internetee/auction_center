@@ -1,0 +1,236 @@
+class RecommendationProfile < ApplicationRecord
+  PROMPT_REMINDER_INTERVAL = 14.days
+  CUSTOM_INTEREST_PREFIX = 'custom:'.freeze
+  OTHER_CATEGORY = 'other'.freeze
+  # Every custom interest is embedded via OpenAI, so cap both cost and profile size.
+  CUSTOM_INTERESTS_LIMIT = 10
+  CUSTOM_INTEREST_MAX_LENGTH = 50
+
+  belongs_to :user
+
+  before_validation :normalize_interest_categories
+  after_save_commit :enqueue_custom_interest_embedding, if: :custom_interests_changed?
+
+  validates :preferred_length_min,
+            numericality: { only_integer: true, greater_than: 0, less_than_or_equal_to: 63 },
+            allow_nil: true
+  validates :preferred_length_max,
+            numericality: { only_integer: true, greater_than: 0, less_than_or_equal_to: 63 },
+            allow_nil: true
+  validate :length_range_is_valid
+  validate :interest_categories_are_supported
+  validate :custom_interests_within_limits
+
+  SELECTION_ENABLED_SETTING = 'recommendation_interests_enabled'.freeze
+
+  # Admin toggle (Setting). When false, the interest-selection UI is hidden
+  # from users (no prompt, no form). Already-saved interests still affect
+  # ranking — this only gates the UI. Defaults to false when the setting is
+  # missing, so a fresh / un-seeded deploy never shows an empty picker.
+  def self.selection_enabled?
+    Setting.find_by(code: SELECTION_ENABLED_SETTING)&.retrieve == true
+  rescue StandardError
+    false
+  end
+
+  def completed? = completed_at.present?
+
+  def promptable?
+    return false if completed?
+    return true if prompt_dismissed_at.blank?
+
+    prompt_dismissed_at <= PROMPT_REMINDER_INTERVAL.ago
+  end
+
+  def filled?
+    rankable_interest_categories.any? ||
+      custom_interests.any? ||
+      preferred_length_min.present? ||
+      preferred_length_max.present? ||
+      !allow_numbers.nil? ||
+      !allow_hyphens.nil?
+  end
+
+  def mark_completed!
+    update!(completed_at: Time.current, prompt_dismissed_at: nil)
+  end
+
+  def dismiss_prompt!
+    update!(
+      prompt_dismissed_at: Time.current,
+      last_prompted_at: Time.current,
+      prompt_shown_count: prompt_shown_count + 1
+    )
+  end
+
+  # ---------- Prompt lifecycle ----------------------------------------
+  #
+  # Bundle each persistence change with its domain side effects (rescore the
+  # user's auctions, record the interaction) so every entry point — the
+  # profile form, sign-up, the dismiss button — triggers them the same way.
+  # `source` names the originating action for analytics.
+
+  def complete!(source:, request: nil)
+    mark_completed!
+    enqueue_rescore
+    track_event('recommendation_profile_completed', source, request:)
+  end
+
+  def skip!(source:, request: nil)
+    dismiss_prompt!
+    enqueue_rescore
+    track_event('recommendation_prompt_dismissed', source, request:)
+  end
+
+  def dismiss!(source:, request: nil)
+    dismiss_prompt!
+    track_event('recommendation_prompt_dismissed', source, request:)
+  end
+
+  def interest_categories
+    interest_keywords.select { |value| known_category?(value) }
+  end
+
+  def interest_categories=(values)
+    self.interest_keywords = combine_interest_values(categories: values, custom_values: custom_interests)
+  end
+
+  def rankable_interest_categories
+    interest_categories - [OTHER_CATEGORY]
+  end
+
+  def custom_interests
+    custom_interests_from(interest_keywords)
+  end
+
+  def custom_interests=(values)
+    self.interest_keywords = combine_interest_values(categories: interest_categories, custom_values: values)
+  end
+
+  def summary_lines
+    [].tap do |lines|
+      if rankable_interest_categories.any?
+        labels = rankable_interest_categories.map { |category| Recommendation::InterestCatalog.label_for(category) }
+        lines << "#{I18n.t('recommendation_profiles.summary.categories')}: #{labels.join(', ')}"
+      end
+
+      if custom_interests.any?
+        lines << "#{I18n.t('recommendation_profiles.summary.custom_interests')}: #{custom_interests.join(', ')}"
+      end
+
+      if preferred_length_min.present? || preferred_length_max.present?
+        min = preferred_length_min || '?'
+        max = preferred_length_max || '?'
+        lines << "#{I18n.t('recommendation_profiles.summary.length')}: #{min}-#{max}"
+      end
+    end
+  end
+
+  private
+
+  def enqueue_rescore
+    Recommendation::RefreshSingleUserAuctionScoresJob.enqueue_debounced(user_id)
+  end
+
+  def custom_interests_from(keywords)
+    Array(keywords).filter_map do |value|
+      next unless value.to_s.start_with?(CUSTOM_INTEREST_PREFIX)
+
+      value.to_s.delete_prefix(CUSTOM_INTEREST_PREFIX)
+    end
+  end
+
+  # v3: only re-embed when the free-text custom set actually changed — a
+  # category-only edit reuses the cached vectors and needn't touch OpenAI.
+  def custom_interests_changed?
+    return false unless self.class.column_names.include?('custom_interest_vectors')
+    return false unless Feature.open_ai_integration_enabled?
+    return false unless saved_change_to_interest_keywords?
+
+    previous = custom_interests_from(interest_keywords_before_last_save)
+    previous.sort != custom_interests.sort
+  end
+
+  def enqueue_custom_interest_embedding
+    Recommendation::EmbedCustomInterestsJob.perform_later(id)
+  end
+
+  def track_event(event_type, source, request:)
+    Recommendation::EventTracker.call(user:, event_type:, source:, request:)
+  end
+
+  def normalize_interest_categories
+    known_categories = normalize_list(interest_keywords).select { |item| known_category?(item) }
+    normalized_custom_interests = normalize_custom_interests(
+      interest_keywords.reject { |item| known_category?(item) }
+    )
+
+    self.interest_keywords = combine_categories_with_custom(known_categories, normalized_custom_interests)
+  end
+
+  def combine_interest_values(categories:, custom_values:)
+    normalized_categories = normalize_list(categories).select { |item| known_category?(item) }
+    normalized_custom_interests = normalize_custom_interests(custom_values)
+
+    combine_categories_with_custom(normalized_categories, normalized_custom_interests)
+  end
+
+  # `other` is purely a derived marker of "has custom interests": present iff
+  # there is at least one free-text interest. Deriving it here (rather than only
+  # appending it) means a dangling `other` checkbox left after the last custom
+  # tag was removed can never linger as an empty category.
+  def combine_categories_with_custom(categories, custom_interests)
+    categories = categories.uniq - [OTHER_CATEGORY]
+    categories << OTHER_CATEGORY if custom_interests.any?
+    (categories + custom_interests).uniq
+  end
+
+  def normalize_list(value)
+    Array(value)
+      .flat_map do |item|
+        item.is_a?(String) ? item.to_s.split(',') : item
+      end
+      .map { |item| item.to_s.strip.downcase }
+      .reject(&:blank?)
+      .uniq
+  end
+
+  def normalize_custom_interests(values)
+    normalize_list(values).filter_map do |value|
+      next if known_category?(value)
+
+      normalized_value = value.delete_prefix(CUSTOM_INTEREST_PREFIX).strip
+      next if normalized_value.blank?
+
+      "#{CUSTOM_INTEREST_PREFIX}#{normalized_value}"
+    end
+  end
+
+  def length_range_is_valid
+    return unless preferred_length_min.present? && preferred_length_max.present?
+    return if preferred_length_min <= preferred_length_max
+
+    errors.add(:preferred_length_min, :invalid)
+  end
+
+  def interest_categories_are_supported
+    invalid_categories = interest_keywords.reject do |value|
+      known_category?(value) || value.to_s.start_with?(CUSTOM_INTEREST_PREFIX)
+    end
+    return if invalid_categories.empty?
+
+    errors.add(:interest_keywords, :invalid)
+  end
+
+  def custom_interests_within_limits
+    interests = custom_interests
+    return if interests.size <= CUSTOM_INTERESTS_LIMIT &&
+              interests.all? { |interest| interest.length <= CUSTOM_INTEREST_MAX_LENGTH }
+
+    errors.add(:custom_interests, :limits, count: CUSTOM_INTERESTS_LIMIT, length: CUSTOM_INTEREST_MAX_LENGTH)
+  end
+
+  def known_category?(value)
+    Recommendation::InterestCatalog.categories.include?(value.to_s)
+  end
+end
