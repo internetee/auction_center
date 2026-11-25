@@ -89,7 +89,7 @@ stored personal scores are ignored, and the list falls back to the global
 | Trigger | Job | Effect |
 |---|---|---|
 | A new auction is created | `ClassifyDomainJob` (`Auction after_create`) | Classifies + embeds that domain |
-| A user bids / wishlists / views a domain | `RefreshSingleUserAuctionScoresJob` (30 s debounce, via `EventTracker`) | Re-scores that one user |
+| A user bids or changes the wishlist | `RefreshSingleUserAuctionScoresJob` (30 s debounce) | Re-scores that one user (views and clicks are recorded and used on the next re-score) |
 | A user saves their interest profile | `RefreshSingleUserAuctionScoresJob` (debounced) | Re-scores that user |
 | A user adds/edits free-text ("other") interests | `EmbedCustomInterestsJob` | Embeds the new interests, then re-scores |
 | An admin adds/renames an interest category | `EnrichInterestCategoriesJob` | Generates description + keywords + embedding for that category |
