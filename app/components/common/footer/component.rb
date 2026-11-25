@@ -271,9 +271,9 @@ module Common
         link = build_footer_nav_link_from_slot(key)
         return columns unless link
 
-        columns.each do |column|
-          next if column[:links].any? { |entry| entry[:key] == key }
+        return columns if columns.any? { |column| column[:links].any? { |entry| entry[:key] == key } }
 
+        columns.each do |column|
           anchor_index = column[:links].index { |entry| entry[:key] == after }
           next unless anchor_index
 
@@ -281,6 +281,8 @@ module Common
           return columns
         end
 
+        # Anchor link missing from Voog (renamed/removed): keep the link visible anyway.
+        columns.first&.fetch(:links)&.push(link)
         columns
       end
 
@@ -326,10 +328,9 @@ module Common
         { target: '_blank', rel: 'noopener' }
       end
 
+      # Opens the cookie consent modal in place; no target/rel on a javascript: link.
       def cookie_settings_link_html_options
         {
-          target: '_blank',
-          rel: 'noopener',
           title: footer_link_label(:cookie_settings),
           'data-cc': 'c-settings'
         }

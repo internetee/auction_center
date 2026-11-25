@@ -58,6 +58,32 @@ class FooterTest < ViewComponent::TestCase
     end
   end
 
+  def test_cookie_settings_link_kept_when_voog_lacks_anchor_link
+    structure = {
+      'en' => {
+        'columns' => [
+          {
+            'name' => 'Help and info',
+            'links' => [{ 'key' => 'faq', 'url' => 'https://www.internet.ee/faq', 'text' => 'FAQ' }],
+            'social_links' => []
+          }
+        ]
+      }
+    }
+
+    VoogFooter.configure { |config| config.enabled = true }
+    VoogFooter.stub(:structure, structure) do
+      I18n.with_locale(:en) do
+        render_inline(Common::Footer::Component.new)
+
+        assert_selector ".c-footer__row__col.s-footer-col a[href='https://www.internet.ee/faq']"
+        assert_cookie_settings_link
+      end
+    end
+  ensure
+    VoogFooter.configure { |config| config.enabled = false }
+  end
+
   private
 
   def assert_column(title)
@@ -74,7 +100,7 @@ class FooterTest < ViewComponent::TestCase
     url = I18n.t("common.footer.links.cookie_settings")
     label = I18n.t("common.footer.labels.cookie_settings")
     assert_selector(
-      ".c-footer__row__col.s-footer-col a[data-cc='c-settings'][href='#{url}']",
+      ".c-footer__row__col.s-footer-col a[data-cc='c-settings'][href='#{url}']:not([target])",
       text: label
     )
   end
