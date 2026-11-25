@@ -1471,39 +1471,6 @@ ALTER SEQUENCE public.payment_orders_id_seq OWNED BY public.payment_orders.id;
 
 
 --
--- Name: remote_view_partials; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.remote_view_partials (
-    id bigint NOT NULL,
-    name character varying NOT NULL,
-    locale character varying NOT NULL,
-    content text NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: remote_view_partials_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.remote_view_partials_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: remote_view_partials_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.remote_view_partials_id_seq OWNED BY public.remote_view_partials.id;
-
-
---
 -- Name: results; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1923,13 +1890,6 @@ ALTER TABLE ONLY public.payment_orders ALTER COLUMN id SET DEFAULT nextval('publ
 
 
 --
--- Name: remote_view_partials id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.remote_view_partials ALTER COLUMN id SET DEFAULT nextval('public.remote_view_partials_id_seq'::regclass);
-
-
---
 -- Name: results id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2250,14 +2210,6 @@ ALTER TABLE ONLY public.offers
 
 ALTER TABLE ONLY public.payment_orders
     ADD CONSTRAINT payment_orders_pkey PRIMARY KEY (id);
-
-
---
--- Name: remote_view_partials remote_view_partials_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.remote_view_partials
-    ADD CONSTRAINT remote_view_partials_pkey PRIMARY KEY (id);
 
 
 --
@@ -3051,6 +3003,7 @@ ALTER TABLE ONLY public.invoices
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261125120000'),
 ('20251105120000'),
 ('20251105100000'),
 ('20251104081848'),

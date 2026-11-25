@@ -19,7 +19,6 @@ default: &default
   vapid_private: "2xl1lvaQARjFHRCKrPo2B-MbTAc1IZ3UrfugDh6cJiE="
 
   voog_site_url: "https://www.internet.ee"
-  voog_api_key: ""
   voog_site_fetching_enabled: false
   voog_footer_cache_ttl: "3600"
 
