@@ -1,0 +1,8 @@
+et:
+  auth:
+    eeid:
+      tampering: "Avastatud urkimine. Sisselogimine tühistatud."
+      identity_code_missing: "eeID ei edastanud isikukoodi. Sisselogimine tühistatud."
+
+      callback:
+        title: "Loo kasutaja"

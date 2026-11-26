@@ -89,6 +89,10 @@ en:
         identity_document_text: |
           Sign in using an Estonian (incl. e-residents) ID card, mobile ID,
           Bank link or other EU citizen's electronic ID supported by EIDAS.
+        eeid_identity_document_text: |
+          Sign in using an Estonian (incl. e-residents) ID card, Mobile-ID, Smart-ID,
+          another EU country's electronic ID (eIDAS), a passkey, or verify your identity
+          online with your passport or ID card.
         sign_in_with_password: "Sign in with a password"
       user:
         signed_in: "Signed in successfully."

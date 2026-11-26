@@ -1,0 +1,4 @@
+en:
+  auth:
+    omniauth_failures:
+      sign_in_failed: "Sign in failed. Please try again."

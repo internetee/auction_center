@@ -120,6 +120,19 @@ phone_confirmation_setting = Setting.new(code: :require_phone_confirmation,
 
 phone_confirmation_setting.save
 
+# Sign in with an identity document through eeID instead of TARA
+eeid_login_enabled_description = <<~TEXT.squish
+  Sign in with an identity document through eeID instead of TARA.
+  Can be either 'true' or 'false'. Switch back to 'false' to fall back to TARA.
+TEXT
+
+eeid_login_enabled_setting = Setting.new(code: :eeid_login_enabled,
+                                         value: 'false',
+                                         description: eeid_login_enabled_description,
+                                         value_format: 'boolean')
+
+eeid_login_enabled_setting.save
+
 # Default auction starts at
 auctions_start_at_description = <<~TEXT.squish
   Whole hour at which auctions should start. Allowed values are anything between 0 and 23 or

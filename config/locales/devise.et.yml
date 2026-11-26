@@ -90,6 +90,10 @@ et:
         identity_document_text: |
           Sisene kasutades Eesti (sh e-residendi) ID kaarti,
           Mobiil-ID'd, pangalinki või EU liikmeriikide elektroonset isikutunnistust (EIDAS).
+        eeid_identity_document_text: |
+          Sisene kasutades Eesti (sh e-residendi) ID-kaarti, Mobiil-ID-d, Smart-ID-d,
+          teise EL liikmesriigi elektroonset isikutunnistust (eIDAS), pääsuvõtit või
+          tuvasta oma isik veebis passi või ID-kaardiga.
         sign_in_with_password: "Logi sisse salasõnaga"
       user:
         signed_in: "Oled sisse logitud"

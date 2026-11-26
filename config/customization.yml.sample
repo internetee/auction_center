@@ -107,6 +107,22 @@ default: &default
     # When commented out, no proxy is used.
     # proxy: "http://user:password@address.com:8080"
 
+  # eeID (https://eeid.ee) OpenID Connect login, mounted next to TARA at /auth/eeid.
+  # Which provider the sign-in button uses is switched at runtime by the
+  # `eeid_login_enabled` setting, so TARA stays available as a fallback.
+  # Uses the same eeID service (client id, secret and registered callback) as TARA:
+  # eeID redirects back to /auth/tara/callback and the request is routed to the
+  # provider that started the login. Endpoints are resolved via discovery.
+  # Remove this block to disable eeID entirely.
+  eeid:
+    issuer: 'https://test-auth.eeid.ee/hydra-public/'
+    identifier: 'identifier'
+    secret: 'secret'
+    redirect_uri: 'https://auction.test/auth/tara/callback'
+    # Space-separated; every scope must be allowed for the client in eeID.
+    # `webauthn` also offers document verification (Veriff) to users without an eID.
+    scope: 'openid webauthn phone email'
+
   registry_integration:
     enabled: true
     url: 'http://registry:3000/api/v1/auctions/'
