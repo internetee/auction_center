@@ -1,3 +1,6 @@
+26.11.2026
+* Implemented eeID authentication https://github.com/internetee/auction_center/issues/1638
+
 08.10.2026
 * Added eeID sign-in next to TARA, switched by the eeid_login_enabled setting https://github.com/internetee/auction_center/issues/1638
 * TARA/eeID sign-in errors (e.g. rejected scope) redirect with an alert instead of failing on missing /auth/failure https://github.com/internetee/auction_center/issues/1638
