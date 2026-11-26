@@ -9,7 +9,7 @@
     "@rails/request.js": "^0.0.13",
     "@rails/ujs": "^7.0.4",
     "autoprefixer": "^10.4.13",
-    "chokidar": "5.0.0",
+    "chokidar": "6.0.0",
     "el-transition": "^0.0.7",
     "esbuild": "^0.28.0",
     "esbuild-rails": "^1.0.4",
